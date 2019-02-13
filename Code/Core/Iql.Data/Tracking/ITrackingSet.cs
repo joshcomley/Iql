@@ -12,9 +12,9 @@ namespace Iql.Data.Tracking
 {
     public interface ITrackingSet : IJsonSerializable
     {
-        IEntityStateBase Synchronise(object entity);
+        IEntityStateBase Synchronise(object entity, bool overrideChanges, bool isRemote);
         IEntityStateBase AttachEntity(object entity, bool isLocal);
-        ITrackingSet Merge(object localEntity, object remoteEntity);
+        ITrackingSet Merge(object localEntity, object remoteEntity, bool overrideChanges, bool isRemote);
         IDataContext DataContext { get; }
         DataTracker DataTracker { get; }
         void SetKey(object entity, Action action);
@@ -30,9 +30,12 @@ namespace Iql.Data.Tracking
         //List<IEntityStateBase> TrackEntities(IList data, bool isNew = true, bool allowNew = true, bool onlyMergeWithExisting = false);
         //IEntityStateBase AttachEntity(object entity, object mergeWith = null, bool isNew = true, bool onlyMergeWithExisting = false);
         void RemoveEntity(object entity);
-        void ResetEntity(object entity);
-        void Reset(IEntityStateBase state);
-        void ResetAll(List<IEntityStateBase> states);
+        void HardResetEntity(object entity);
+        void HardReset(IEntityStateBase state);
+        void SoftResetEntity(object entity, bool markAsNotNew);
+        void SoftReset(IEntityStateBase state, bool markAsNotNew);
+        void HardResetAll(List<IEntityStateBase> states);
+        void SoftResetAll(List<IEntityStateBase> states, bool markAsNotNew);
         IEnumerable<IEntityCrudOperationBase> GetInserts(object[] entities = null);
         IEnumerable<IEntityCrudOperationBase> GetDeletions(object[] entities = null);
         IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null);

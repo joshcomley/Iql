@@ -93,15 +93,28 @@ namespace Iql.Data.Tracking.State
             CascadeDeletedBy.Add(new CascadeDeletion(relationship, from));
         }
 
-        public void Reset()
+        public void HardReset()
         {
             IsNew = false;
             for (var i = 0; i < Properties.Count; i++)
             {
                 var propertyState = Properties[i];
-                propertyState.Reset();
+                propertyState.HardReset();
             }
             //_remoteKey = EntityConfiguration.GetCompositeKey(Entity);
+        }
+
+        public void SoftReset(bool markAsNotNew)
+        {
+            if (markAsNotNew)
+            {
+                IsNew = false;
+            }
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var propertyState = Properties[i];
+                propertyState.SoftReset();
+            }
         }
 
         public CompositeKey CurrentKey { get; set; }
@@ -124,6 +137,7 @@ namespace Iql.Data.Tracking.State
 
         public Guid? PersistenceKey { get; set; }
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
+        public bool Floating { get; set; }
         public DataTracker DataTracker { get; }
         public T Entity { get; }
         object IEntityStateBase.Entity => Entity;

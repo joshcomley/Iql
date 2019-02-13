@@ -20,6 +20,29 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task RetrievingLatestDataFromRemoteDatabaseDoesNotOverrideLocalChanges()
+        {
+            var unchanged = "Unchanged";
+            var item = new Person
+            {
+                Id = 1,
+                Title = unchanged
+            };
+            AppDbContext.InMemoryDb.People.Add(item);
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 7
+            });
+            var person = await Db.People.GetWithKeyAsync(1);
+            Assert.AreEqual(unchanged, person.Title);
+            var changed = "Changed";
+            person.Title = changed;
+            Assert.AreEqual(changed, person.Title);
+            await Db.People.GetWithKeyAsync(1);
+            Assert.AreEqual(changed, person.Title);
+        }
+
+        [TestMethod]
         public async Task AddingAnUntrackedEntityToANonNewTrackedRelatedListShouldSetTheRelationshipKey()
         {
             AppDbContext.InMemoryDb.People.Add(new Person
@@ -215,7 +238,7 @@ namespace Iql.Tests.Tests
 
         [TestMethod]
         public async Task
-            AssigningAnEntityAToARelatedListOnEntityBThenRefreshingEntityAShouldClearTheItemFromTheRelatedListOnEntityA()
+            AssigningAnEntityAToARelatedListOnEntityBThenRefreshingEntityAShouldKeepTheItemInTheRelatedListOnEntityA()
         {
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
             {
@@ -225,11 +248,14 @@ namespace Iql.Tests.Tests
             {
                 Id = 2
             });
-            AppDbContext.InMemoryDb.Clients.Add(new Client
+            var clientRemoteName = "Client Remote";
+            var clientRemote = new Client
             {
                 Id = 1,
                 TypeId = 1,
-            });
+                Name = clientRemoteName
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
             var client = await Db.Clients.GetWithKeyAsync(1);
             var relationship = Db.EntityConfigurationContext.EntityType<Client>()
                 .FindPropertyByExpression(c => c.Type)
@@ -238,17 +264,62 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, key.Keys[0].Value);
             var clientType2 = await Db.ClientTypes.GetWithKeyAsync(2);
             clientType2.Clients.Add(client);
+            Assert.AreEqual(2, client.TypeId);
             key = relationship.GetCompositeKey(client, true);
             Assert.AreEqual(2, key.Keys[0].Value);
             Assert.AreEqual(1, clientType2.Clients.Count);
+            Assert.AreEqual(clientRemoteName, clientRemote.Name);
+            var clientRemoteNewName = "A new name";
+            clientRemote.Name = clientRemoteNewName;
             var refreshedClient = await Db.Clients.GetWithKeyAsync(1);
             Assert.AreEqual(client, refreshedClient);
-            Assert.AreEqual(1, refreshedClient.TypeId);
-            Assert.AreEqual(0, clientType2.Clients.Count);
+            Assert.AreEqual(2, refreshedClient.TypeId);
+            Assert.AreEqual(1, clientType2.Clients.Count);
+            Assert.AreEqual(clientRemoteNewName, refreshedClient.Name);
+            Assert.AreEqual(client, refreshedClient);
         }
 
         [TestMethod]
-        public async Task AssigningAnEntityAToARelatedListWithASelfReferentialConstraintOnEntityBThenRefreshingEntityAShouldClearTheItemFromTheRelatedListOnEntityA()
+        public async Task
+            ChangingAValueLocallyAndThenRefreshingTheEntityShouldKeepTheChangedValueButUpdateTheRemoteValue()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2
+            });
+            var clientRemoteName = "Client Remote";
+            var clientRemote = new Client
+            {
+                Id = 1,
+                TypeId = 1,
+                Name = clientRemoteName
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var client = await Db.Clients.GetWithKeyAsync(1);
+            client.Name = "My name";
+            var state = Db.GetEntityState(client);
+            var propertyState = state.GetPropertyState(nameof(Client.Name));
+            Assert.AreEqual("Client Remote", propertyState.RemoteValue);
+            Assert.AreEqual("My name", propertyState.LocalValue);
+            clientRemote.Name = "New Remote Name";
+            Assert.AreEqual("Client Remote", propertyState.RemoteValue);
+            Assert.AreEqual("My name", propertyState.LocalValue);
+            propertyState.RemoteValueChanged.Subscribe(_ =>
+            {
+                int a = 0;
+            });
+            await Db.Clients.GetWithKeyAsync(1);
+            Assert.AreEqual("New Remote Name", propertyState.RemoteValue);
+            Assert.AreEqual("My name", propertyState.LocalValue);
+            Assert.IsTrue(propertyState.HasChanged);
+        }
+
+        [TestMethod]
+        public async Task AssigningAnEntityAToARelatedListWithASelfReferentialConstraintOnEntityBThenRefreshingEntityAShouldKeepTheItemInTheRelatedListOnEntityA()
         {
             AppDbContext.InMemoryDb.Sites.Add(new Site
             {
@@ -262,8 +333,8 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, site.ParentId);
             Assert.AreEqual(1, site.Children.Count);
             var refreshedSite = await Db.Sites.GetWithKeyAsync(1);
-            Assert.AreEqual(null, site.ParentId);
-            Assert.AreEqual(0, site.Children.Count);
+            Assert.AreEqual(1, site.ParentId);
+            Assert.AreEqual(1, site.Children.Count);
             Assert.AreEqual(site, refreshedSite);
         }
 

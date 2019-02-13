@@ -810,7 +810,7 @@ namespace Iql.Data.Context
             {
                 entityType = entity.GetType();
             }
-            return (IEntityStateBase)AddInternalMethod.InvokeGeneric(this, new[] { entity }, entity.GetType());
+            return (IEntityStateBase)AddInternalMethod.InvokeGeneric(this, new[] { entity }, entityType);
         }
 
         public async Task<T> RefreshEntity<T>(T entity
@@ -1422,10 +1422,6 @@ namespace Iql.Data.Context
                 {
                     localDataTracker = new DataTracker(EntityConfigurationContext, "No Tracking", false, true);
                 }
-                else if (response.IsOffline)
-                {
-                    localDataTracker = OfflineDataTracker;
-                }
 
                 void TrackResponse(DataTracker dataTracker)
                 {
@@ -1441,8 +1437,9 @@ namespace Iql.Data.Context
                             for (var i = 0; i < response.Root.Count; i++)
                             {
                                 var item = response.Root[i];
-                                var state = dataTracker.TrackingSetByType(typeof(TEntity))
-                                    .Synchronise(item);
+                                var trackingSet = dataTracker.TrackingSetByType(typeof(TEntity));
+                                var state = trackingSet.FindMatchingEntityState(item);
+                                state = trackingSet.Synchronise(item, false, true);
                                 if (dataTracker == localDataTracker)
                                 {
                                     dbList.Add((TEntity)state.Entity);
@@ -1459,13 +1456,15 @@ namespace Iql.Data.Context
                                 if (!dealtWith.ContainsKey(item))
                                 {
                                     dataTracker.TrackingSetByType(pair.Key)
-                                        .Synchronise(item);
+                                        .Synchronise(item, false, true);
                                 }
                             }
                         }
                     }
                 }
 
+                DataStore.OfflineDataStore?.SynchroniseData(response.Data);
+                
                 if (shouldTrackResults && !response.IsOffline)
                 {
                     DataTracker.ForAllDataTrackers(tracker =>
@@ -1476,6 +1475,10 @@ namespace Iql.Data.Context
                 else
                 {
                     TrackResponse(localDataTracker);
+                    if (OfflineDataTracker != null && !response.IsOffline)
+                    {
+                        TrackResponse(OfflineDataTracker);
+                    }
                 }
             }
 

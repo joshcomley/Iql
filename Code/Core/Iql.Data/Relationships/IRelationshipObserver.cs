@@ -8,6 +8,7 @@ namespace Iql.Data.Relationships
 {
     public interface IRelationshipObserver
     {
+        EventEmitter<RelationshipChangedEvent> RelationshipChanged { get; }
         EventEmitter<UntrackedEntityAddedEvent> UntrackedEntityAdded { get; }
         void RunIfNotIgnored(Action action, IProperty property, object entity);
         void ObserveAll(Dictionary<Type, IList> dictionary);
@@ -15,7 +16,8 @@ namespace Iql.Data.Relationships
         void ObserveList(IList list, Type entityType);
         void Observe(object entity, Type entityType);
         void Unobserve(object entity, Type entityType);
-        bool IsAssignedToAnyRelationship(object entity, Type entityType);
+        bool IsAttachedToAnotherEntity(object entity, Type entityType);
+        bool IsDetachedPivot(object entity, Type entityType);
         void DeleteRelationships(object entity, Type type);
         void Clear();
     }

@@ -167,7 +167,7 @@ namespace Iql.Data.DataStores.InMemory
             {
                 var entity = DataSet<TEntity>()[index];
                 new SimplePropertyMerger(EntityConfigurationBuilder.EntityType<TEntity>())
-                    .Merge(
+                    .MergeAllProperties(
                         entity, 
                         operation.Operation.Entity,
                         operation.Operation.Properties);

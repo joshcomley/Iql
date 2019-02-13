@@ -20,21 +20,30 @@ namespace Iql.Data.Tracking
 {
     public class DataTracker : IJsonSerializable
     {
-        private RelationshipObserver _relationshipObserver;
-
-        public DataTracker(EntityConfigurationBuilder entityConfigurationBuilder, string name,
-            bool offline = false, bool silent = false)
+        public DataTracker(
+            EntityConfigurationBuilder entityConfigurationBuilder, 
+            string name,
+            bool offline = false, 
+            bool silent = false)
         {
             EntityConfigurationBuilder = entityConfigurationBuilder;
             Name = name;
             Offline = offline;
             SetsMap = new Dictionary<string, ITrackingSet>();
             Sets = new List<ITrackingSet>();
+            RelationshipObserver = new RelationshipObserver(this);
+            RelationshipObserver.RelationshipChanged.Subscribe(RelationshipChanged);
             //Id = Guid.NewGuid().ToString();
             if (!silent)
             {
                 _allDataTrackers.Add(this);
             }
+        }
+
+        private void RelationshipChanged(RelationshipChangedEvent relationshipChangedEvent)
+        {
+            var trackingSet = TrackingSetByType(relationshipChangedEvent.Relationship.Source.EntityConfiguration.Type);
+            (trackingSet as TrackingSetBase).RelationshipChanged(relationshipChangedEvent);
         }
 
         public Dictionary<string, ITrackingSet> SetsMap { get; set; }
@@ -46,18 +55,7 @@ namespace Iql.Data.Tracking
         public bool Offline { get; }
         public IDataContext DataContext { get; set; }
 
-        public IRelationshipObserver RelationshipObserver
-        {
-            get
-            {
-                if (_relationshipObserver == null)
-                {
-                    _relationshipObserver = new RelationshipObserver(this);
-                }
-
-                return _relationshipObserver;
-            }
-        }
+        public IRelationshipObserver RelationshipObserver { get; }
 
         private static List<DataTracker> _allDataTrackers { get; }
             = new List<DataTracker>();
@@ -269,7 +267,13 @@ namespace Iql.Data.Tracking
             return operation;
         }
 
-        public void Reset(Dictionary<Type, IList> entities)
+        public void HardReset(Dictionary<Type, IList> entities)
+        {
+            Reset(entities, entityState =>
+                entityState.HardReset());
+        }
+
+        private void Reset(Dictionary<Type, IList> entities, Action<IEntityStateBase> onEntityState)
         {
             foreach (var entry in entities)
             {
@@ -279,10 +283,20 @@ namespace Iql.Data.Tracking
                 {
                     foreach (var entity in entry.Value)
                     {
-                        set.FindMatchingEntityState(entity)?.Reset();
+                        var state = set.FindMatchingEntityState(entity);
+                        if (state != null)
+                        {
+                            onEntityState(state);
+                        }
                     }
                 }
             }
+        }
+
+        public void SoftReset(Dictionary<Type, IList> entities, bool markAsNotNew)
+        {
+            Reset(entities, entityState =>
+                entityState.SoftReset(markAsNotNew));
         }
 
         public void AbandonChanges()
@@ -510,15 +524,57 @@ namespace Iql.Data.Tracking
             }
         }
 
+        public IEntityStateBase AddEntity<T>(T entity)
+            where T : class
+        {
+            var entityType = ResolveTrackingSet(entity, out var set);
+            var state = set.AttachEntity(entity, true);
+            RelationshipObserver.Observe(entity, entityType);
+            return state;
+        }
+
         public void RemoveEntity<T>(T entity)
             where T : class
         {
-            var set = TrackingSet<T>();
+            var entityType = ResolveTrackingSet(entity, out var set);
             set.RemoveEntity(entity);
-            RelationshipObserver.Unobserve(entity, typeof(T));
+            RelationshipObserver.Unobserve(entity, entityType);
         }
 
-        public void ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
+        private Type ResolveTrackingSet<T>(T entity, out ITrackingSet set) where T : class
+        {
+            var entityType = typeof(T);
+            if (entityType == typeof(object))
+            {
+                entityType = entity.GetType();
+            }
+
+            set = TrackingSetByType(entityType);
+            return entityType;
+        }
+
+        public IEntityStateBase GetEntityState<T>(T entity)
+            where T : class
+        {
+            var entityType = ResolveTrackingSet(entity, out var set);
+            var state = set.GetEntityState(entity);
+            return state;
+        }
+
+        public TrackingState GetTrackingState<T>(T entity)
+            where T : class
+        {
+            var entityType = ResolveTrackingSet(entity, out var set);
+            var state = set.GetEntityState(entity);
+            if (state == null)
+            {
+                return TrackingState.Untracked;
+            }
+
+            return state.IsNew ? TrackingState.TrackedLocal : TrackingState.TrackedRemote;
+        }
+
+        public IEntityState<TEntity> ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
         {
             var trackingSet = TrackingSet<TEntity>();
             var state = trackingSet.AttachEntity(
@@ -529,8 +585,10 @@ namespace Iql.Data.Tracking
                 isOffline);
             if (!isOffline)
             {
-                state.Reset();
+                state.HardReset();
             }
+
+            return state;
         }
 
         public void ApplyUpdate<TEntity>(QueuedUpdateEntityOperation<TEntity> operation, bool isOffline)
@@ -544,7 +602,7 @@ namespace Iql.Data.Tracking
                 property.Property.SetValue(ourState.Entity, property.LocalValue);
                 if (!isOffline)
                 {
-                    property.Reset();
+                    property.HardReset();
                 }
             }
         }

@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Extensions;
 using Iql.Entities;
+using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Entities.PropertyChangers;
 using Newtonsoft.Json;
@@ -11,10 +12,11 @@ namespace Iql.Data.Tracking.State
     [DebuggerDisplay("{Property.Name}")]
     public class PropertyState : IPropertyState
     {
+
         private bool _hasChanged;
-        private object _oldObjectClone;
+        private object _remoteValueClone;
         private bool _originalValueSet;
-        private object _newValue;
+        private object _localValue;
 
         public PropertyState(
             IProperty property,
@@ -30,7 +32,7 @@ namespace Iql.Data.Tracking.State
         }
 
         private PropertyChanger _propertyChanger;
-        private object _oldObject;
+        private object _remoteValue;
 
         private PropertyChanger PropertyChanger
         {
@@ -62,7 +64,7 @@ namespace Iql.Data.Tracking.State
 
         private void EnsureOldValue()
         {
-            if (_originalValueSet && _oldObject == null && _newValue != null && Property.Relationship != null
+            if (_originalValueSet && _remoteValue == null && _localValue != null && Property.Relationship != null
                 && !Property.Relationship.ThisIsTarget &&
                 Property == Property.Relationship.ThisEnd.Property)
             {
@@ -78,12 +80,11 @@ namespace Iql.Data.Tracking.State
 
                 if (canMatchToKey)
                 {
-                    var objectKey = Property.Relationship.OtherEnd.GetCompositeKey(_newValue, true);
+                    var objectKey = Property.Relationship.OtherEnd.GetCompositeKey(_localValue, true);
                     var relationshipKey = Property.Relationship.ThisEnd.GetCompositeKey(EntityState.Entity);
                     if (objectKey.Matches(relationshipKey))
                     {
-                        _oldObject = _newValue;
-                        _oldObjectClone = PropertyChanger.CloneValue(_newValue);
+                        SetRemoteValue(_localValue);
                         _originalValueSet = true;
                     }
                 }
@@ -93,8 +94,7 @@ namespace Iql.Data.Tracking.State
                 _originalValueSet = true;
                 if (EntityState != null)
                 {
-                    _oldObject = Property.GetValue(EntityState.Entity);
-                    _oldObjectClone = PropertyChanger.CloneValue(_oldObject);
+                    SetRemoteValue(Property.GetValue(EntityState.Entity));
                 }
             }
         }
@@ -124,40 +124,72 @@ namespace Iql.Data.Tracking.State
             get
             {
                 EnsureOldValue();
-                return _oldObjectClone;
+                return _remoteValueClone;
             }
             set
             {
                 _originalValueSet = true;
-                _oldObjectClone = PropertyChanger.CloneValue(value);
-                _oldObject = value;
+                SetRemoteValue(value);
                 UpdateHasChanged();
+            }
+        }
+
+        private void SetRemoteValue(object value)
+        {
+            var oldValue = _remoteValue;
+            _remoteValueClone = PropertyChanger.CloneValue(value);
+            _remoteValue = value;
+            if (_remoteValue != oldValue)
+            {
+                RemoteValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
             }
         }
 
         public object LocalValue
         {
-            get => _newValue;
+            get => _localValue;
             set
             {
-                _newValue = value;
+                var oldValue = _localValue;
+                _localValue = value;
+                if (oldValue != value)
+                {
+                    LocalValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
+                }
                 UpdateHasChanged();
             }
         }
 
         private void UpdateHasChanged()
         {
+            var oldValue = _hasChanged;
             _hasChanged = !PropertyChanger.AreEquivalent(RemoteValue, LocalValue);
+            if (oldValue != _hasChanged)
+            {
+                HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
+            }
         }
 
+        public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
+        public EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
         public IEntityStateBase EntityState { get; }
         public IProperty Property { get; }
-        public void Reset()
+
+        public void HardReset()
         {
             var newValue = Property.GetValue(EntityState.Entity);
             _originalValueSet = false;
             EnsureOldValue();
             LocalValue = newValue;
+        }
+
+        public void SoftReset()
+        {
+            if (!HasChanged)
+            {
+                HardReset();
+            }
         }
 
         public IPropertyState Copy()
@@ -173,8 +205,8 @@ namespace Iql.Data.Tracking.State
         {
             if (HasChanged)
             {
-                EntityState.Entity.SetPropertyValue(Property, _oldObjectClone);
-                Reset();
+                EntityState.Entity.SetPropertyValue(Property, _remoteValueClone);
+                HardReset();
                 //PropertyChanger.ApplyTo(_oldObjectClone, _oldObject);
             }
             //_hasChanged = false;

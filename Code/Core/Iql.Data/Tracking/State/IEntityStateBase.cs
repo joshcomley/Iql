@@ -11,6 +11,7 @@ namespace Iql.Data.Tracking.State
 {
     public interface IEntityStateBase : IJsonSerializable
     {
+        bool Floating { get; set; }
         DataTracker DataTracker { get; }
         object Entity { get; }
         IPropertyState[] PropertyStates { get; }
@@ -24,7 +25,8 @@ namespace Iql.Data.Tracking.State
         List<CascadeDeletion> CascadeDeletedBy { get; }
 
         bool HasValidKey();
-        void Reset();
+        void HardReset();
+        void SoftReset(bool markAsNotNew);
         CompositeKey KeyBeforeChanges();
         IPropertyState[] GetChangedProperties(IProperty[] properties = null);
         IEntityConfiguration EntityConfiguration { get; }

@@ -21,7 +21,7 @@ namespace Iql.Data.Crud.Operations.Results
 
         IList IFlattenedGetDataResult.Root
         {
-            get => Root;
+            get => (IList)Root;
             set => Root = (List<T>) value;
         }
 

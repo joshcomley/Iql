@@ -143,9 +143,14 @@ namespace Iql.Data.Context
                                     ? DataContext.OfflineDataTracker.TrackingSet<TEntity>()
                                         .FindMatchingEntityState(localEntity)
                                     : null;
-                            DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
-                            if (isOfflineResync)
+                            if (!isOfflineResync)
                             {
+                                var state = DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
+                            }
+                            else
+                            {
+                                DataContext.OfflineDataTracker.TrackingSet<TEntity>()
+                                    .Merge(localEntity, remoteEntity, true, true);
                                 var temporalEntityState = DataContext.TemporalDataTracker.TrackingSet<TEntity>()
                                     .FindMatchingEntityState(localEntity);
                                 localEntity = (TEntity)(temporalEntityState?.Entity ??
@@ -155,7 +160,8 @@ namespace Iql.Data.Context
                             //var trackingSet = DataContext.DataTracker.TrackingSet<TEntity>();
                             //trackingSet.TrackEntity(localEntity, remoteEntity, false);
                             //trackingSet.FindMatchingEntityState(localEntity).Reset();
-                            DataContext.TemporalDataTracker.TrackingSet<TEntity>().Merge(localEntity, remoteEntity);
+                            DataContext.TemporalDataTracker.TrackingSet<TEntity>().Merge(
+                                localEntity, remoteEntity, true, true);
                             await DataContext.RefreshEntity(localEntity
 #if TypeScript
                         , typeof(TEntity)
@@ -232,6 +238,7 @@ namespace Iql.Data.Context
                             if (result.Success)
                             {
                                 DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation, isOffline);
+                                var changes = DataContext.OfflineDataTracker?.GetChanges();
                                 if (isOffline)
                                 {
                                     DataContext.TemporalDataTracker.ApplyUpdate(updateEntityOperation, false);
@@ -245,7 +252,9 @@ namespace Iql.Data.Context
                                             tracker.TrackingSet<TEntity>()
                                                 .Merge(
                                                     updateEntityOperation.Operation.Entity,
-                                                    updateEntityOperation.Operation.Entity);
+                                                    updateEntityOperation.Operation.Entity,
+                                                    true,
+                                                    true);
                                         },
                                         DataContext);
 

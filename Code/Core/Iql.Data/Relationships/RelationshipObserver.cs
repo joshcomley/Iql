@@ -74,6 +74,8 @@ namespace Iql.Data.Relationships
 
         public EventEmitter<UntrackedEntityAddedEvent> UntrackedEntityAdded { get; } =
             new EventEmitter<UntrackedEntityAddedEvent>();
+        public EventEmitter<RelationshipChangedEvent> RelationshipChanged { get; } =
+            new EventEmitter<RelationshipChangedEvent>();
 
         public void RunIfNotIgnored(Action action, IProperty property, object entity)
         {
@@ -148,7 +150,21 @@ namespace Iql.Data.Relationships
             }
         }
 
-        public bool IsAssignedToAnyRelationship(object entity, Type entityType)
+        public bool IsDetachedPivot(object entity, Type entityType)
+        {
+            var entityConfiguration = EntityConfigurationContext.GetEntityByType(entityType);
+            foreach (var key in entityConfiguration.Key.Properties)
+            {
+                if (key.Relationship != null && key.GetValue(entity).IsDefaultValue(key.TypeDefinition))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsAttachedToAnotherEntity(object entity, Type entityType)
         {
             if (_moving.ContainsKey(entity))
             {
@@ -855,6 +871,8 @@ namespace Iql.Data.Relationships
             {
                 _moving.Remove(source);
             }
+
+            RelationshipChanged.Emit(() => new RelationshipChangedEvent(source, relationship));
         }
     }
 }

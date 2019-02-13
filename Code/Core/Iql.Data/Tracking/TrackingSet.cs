@@ -52,7 +52,7 @@ namespace Iql.Data.Tracking
                 }
             }
             DataTracker.RelationshipObserver.ObserveAll(flattened);
-            return (IEntityState<T>) entityState;
+            return (IEntityState<T>)entityState;
         }
 
         internal override IEntityStateBase AttachEntityInternal(object entity, bool isLocal)
@@ -91,13 +91,18 @@ namespace Iql.Data.Tracking
                 TrackRemoteKey(entityState, null);
                 if (!isLocal)
                 {
-                    entityState.Reset();
+                    entityState.HardReset();
                 }
 
                 return entityState;
             }
 
-            return (IEntityState<T>) GetEntityState(entity);
+            return (IEntityState<T>)GetEntityState(entity);
+        }
+
+        internal override void RelationshipChanged(RelationshipChangedEvent relationshipChangedEvent)
+        {
+            //RemoveIfNecessary(relationshipChangedEvent.Source, relationshipChangedEvent.Relationship.Source.Type);
         }
 
         IEntityStateBase ITrackingSet.AttachEntity(object entity, bool isLocal)
@@ -105,24 +110,34 @@ namespace Iql.Data.Tracking
             return AttachEntity((T)entity, isLocal);
         }
 
-        public TrackingSet<T> Merge(T localEntity, T remoteEntity)
+        public TrackingSet<T> Merge(T localEntity, T remoteEntity, bool overrideChanges, bool isRemote)
         {
             var entityState = FindMatchingEntityState(localEntity);
             if (entityState != null)
             {
-                entityState.IsNew = false;
-                SilentlyMerge(entityState.Entity, remoteEntity);
-                entityState.Reset();
+                if (isRemote)
+                {
+                    entityState.IsNew = false;
+                }
+                SilentlyMerge(entityState.Entity, remoteEntity, overrideChanges);
+                if (overrideChanges)
+                {
+                    entityState.HardReset();
+                }
+                else
+                {
+                    entityState.SoftReset(isRemote);
+                }
             }
             return this;
         }
 
-        ITrackingSet ITrackingSet.Merge(object localEntity, object remoteEntity)
+        ITrackingSet ITrackingSet.Merge(object localEntity, object remoteEntity, bool overrideChanges, bool isRemote)
         {
-            return Merge((T)localEntity, (T)remoteEntity);
+            return Merge((T)localEntity, (T)remoteEntity, overrideChanges, isRemote);
         }
 
-        public IEntityState<T> Synchronise(T entity)
+        public IEntityState<T> Synchronise(T entity, bool overrideChanges, bool isRemote)
         {
             var state = (IEntityState<T>)FindMatchingEntityState(entity);
             if (state == null)
@@ -130,20 +145,20 @@ namespace Iql.Data.Tracking
                 var clone = entity.CloneAs(EntityConfiguration.Builder, EntityConfiguration.Type,
                     RelationshipCloneMode.DoNotClone);
                 state = AttachEntity(
-                    clone, false);
+                    clone, !isRemote);
                 return state;
             }
             if (state.Entity != entity)
             {
-                Merge(state.Entity, entity);
+                Merge(state.Entity, entity, overrideChanges, isRemote);
             }
 
             return state;
         }
 
-        IEntityStateBase ITrackingSet.Synchronise(object entity)
+        IEntityStateBase ITrackingSet.Synchronise(object entity, bool overrideChanges, bool isRemote)
         {
-            return Synchronise((T)entity);
+            return Synchronise((T)entity, overrideChanges, isRemote);
         }
 
         public EntityConfiguration<T> EntityConfiguration => _entityConfiguration =
@@ -236,22 +251,41 @@ namespace Iql.Data.Tracking
             RemoveEntity((T)entity);
         }
 
-        public void ResetEntity(object entity)
+        public void HardResetEntity(object entity)
         {
-            Reset(GetEntityState(entity));
+            HardReset(GetEntityState(entity));
         }
 
-        public void Reset(IEntityStateBase state)
+        public void HardReset(IEntityStateBase state)
         {
-            state.Reset();
+            state.HardReset();
         }
 
-        public void ResetAll(List<IEntityStateBase> states)
+        public void SoftResetEntity(object entity, bool markAsNotNew)
+        {
+            SoftReset(GetEntityState(entity), markAsNotNew);
+        }
+
+        public void SoftReset(IEntityStateBase state, bool markAsNotNew)
+        {
+            state.SoftReset(markAsNotNew);
+        }
+
+        public void HardResetAll(List<IEntityStateBase> states)
         {
             for (var i = 0; i < states.Count; i++)
             {
                 var state = states[i];
-                Reset(state);
+                HardReset(state);
+            }
+        }
+
+        public void SoftResetAll(List<IEntityStateBase> states, bool markAsNotNew)
+        {
+            for (var i = 0; i < states.Count; i++)
+            {
+                var state = states[i];
+                SoftReset(state, markAsNotNew);
             }
         }
 
@@ -538,6 +572,10 @@ namespace Iql.Data.Tracking
         public void RemoveEntity(T entity)
         {
             var state = GetEntityState(entity);
+            if (state == null)
+            {
+                return;
+            }
             var stateKey = state.KeyBeforeChanges();
             RemoveEntityByKey(stateKey);
             entity = (T)state.Entity;
@@ -654,7 +692,7 @@ namespace Iql.Data.Tracking
                         if (changeEvent.Item != null)
                         {
                             if (DataContext != null &&
-                                !DataTracker.RelationshipObserver.IsAssignedToAnyRelationship(changeEvent.Item,
+                                !DataTracker.RelationshipObserver.IsAttachedToAnotherEntity(changeEvent.Item,
                                     changeEvent.ItemType))
                             {
                                 DataContext.DeleteEntity(changeEvent.Item);
@@ -664,6 +702,21 @@ namespace Iql.Data.Tracking
                         break;
                 }
             }, changeEvent.Item, changeEvent.List.Owner);
+        }
+
+        private void RemoveIfNecessary(object entity, Type entityType)
+        {
+            if (!DataTracker.RelationshipObserver.IsAttachedToAnotherEntity(entity,
+                    entityType) ||
+                DataTracker.RelationshipObserver.IsDetachedPivot(entity, entityType)
+            )
+            {
+                var state = GetEntityState(entity);
+                if (state != null)
+                {
+                    state.MarkedForDeletion = true;
+                }
+            }
         }
 
         private void EntityPropertyChanged(IPropertyChangeEvent propertyChange)
@@ -714,8 +767,11 @@ namespace Iql.Data.Tracking
                 property.Kind.HasFlag(PropertyKind.Primitive))
             {
                 var entityState = GetEntityState(propertyChange.Entity);
-                var propertyState = entityState.GetPropertyState(property.Name);
-                propertyState.LocalValue = propertyChange.NewValue;
+                if (entityState != null)
+                {
+                    var propertyState = entityState.GetPropertyState(property.Name);
+                    propertyState.LocalValue = propertyChange.NewValue;
+                }
             }
         }
 
@@ -729,14 +785,25 @@ namespace Iql.Data.Tracking
             //}
         }
 
-        private void SilentlyMerge(object entity, object mergeWith)
+        private void SilentlyMerge(object entity, object mergeWith, bool overrideChanges)
         {
             _changeIgnorer.IgnoreAndRunIfNotAlreadyIgnored(() =>
             {
-                SimplePropertyMerger.Merge(
-                    entity,
-                    mergeWith
-                );
+                var entityState = GetEntityState(entity);
+                if (entityState == null || overrideChanges)
+                {
+                    SimplePropertyMerger.MergeAllProperties(
+                        entity,
+                        mergeWith
+                    );
+                }
+                else
+                {
+                    SimplePropertyMerger.MergeUnchangedProperties(
+                        entityState,
+                        mergeWith
+                    );
+                }
                 Reindex(entity);
             }, entity);
         }

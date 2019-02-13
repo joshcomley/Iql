@@ -1,4 +1,5 @@
 using System.Linq;
+using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 
@@ -6,72 +7,53 @@ namespace Iql.Data
 {
     public class SimplePropertyMerger
     {
-        public IEntityConfiguration EntityConfiguration { get; }
-
         public SimplePropertyMerger(IEntityConfiguration entityConfiguration)
         {
             EntityConfiguration = entityConfiguration;
         }
 
-        public void Merge(
+        public IEntityConfiguration EntityConfiguration { get; }
+
+        public void MergeAllProperties(
             object entity,
             object mergeWith,
             IProperty[] properties = null
-            )
+        )
         {
             properties = properties ?? EntityConfiguration.Properties.ToArray();
-            foreach (var property in properties)
+            foreach (var property in properties) MergeProperty(entity, mergeWith, property);
+        }
+
+        private static void MergeProperty(object entity, object mergeWith, IProperty property)
+        {
+            if (property.Kind.HasFlag(PropertyKind.Count) ||
+                property.Kind.HasFlag(PropertyKind.Key) ||
+                property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
+                property.Kind.HasFlag(PropertyKind.Primitive))
             {
-                if (property.Kind.HasFlag(PropertyKind.Count) ||
-                   property.Kind.HasFlag(PropertyKind.Key) ||
-                   property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
-                   property.Kind.HasFlag(PropertyKind.Primitive)
-                   )
-                {
-                    entity.SetPropertyValue(property,
-                        mergeWith.GetPropertyValue(property));
-                }
+                entity.SetPropertyValue(property,
+                    mergeWith.GetPropertyValue(property));
             }
         }
 
-        //private static void MergeSimpleProperty(object localEntity, object remoteEntity, string propertyName, Type entityType, IDataContext dataContext)
-        //{
-        //    dataContext.DataStore.GetTracking().TrackingSet(entityType).ChangeEntity(localEntity, () =>
-        //    {
-        //        var property = dataContext.EntityConfigurationContext.GetEntityByType(entityType).FindProperty(propertyName);
-        //        var localValue = localEntity.GetPropertyValue(propertyName);
-        //        var remoteValue = remoteEntity.GetPropertyValue(propertyName);
-        //        var isCollection = remoteValue is IEnumerable && !(remoteValue is string);
-        //        // Local value or remote value is a primitive value or null, so just reassign
-        //        if (!isCollection || localValue == null || remoteValue == null)
-        //        {
-        //            if (!property.Nullable)
-        //            {
-        //                if (Platform.Name == "JavaScript")
-        //                {
-        //                    if (property.Type == typeof(DateTime))
-        //                    {
-        //                        remoteValue = 0;
-        //                    }
-        //                    else if (property.ConvertedFromType == "Guid")
-        //                    {
-        //                        remoteValue = Guid.Empty;
-        //                    }
-        //                }
-        //            }
-        //            localEntity.SetPropertyValue(propertyName, remoteValue);
-        //        }
-        //        else
-        //        {
-        //            var localCollection = (IList)localValue;
-        //            var remoteCollection = (IList)remoteValue;
-        //            localCollection.Clear();
-        //            foreach (var value in remoteCollection)
-        //            {
-        //                localCollection.Add(value);
-        //            }
-        //        }
-        //    }, ChangeEntityMode.Silent);
-        //}
+        public void MergeUnchangedProperties(
+            IEntityStateBase entityState,
+            object mergeWith
+        )
+        {
+            foreach (var property in entityState.EntityConfiguration.Properties)
+            {
+                var propertyState = entityState.PropertyStates.SingleOrDefault(_ => _.Property == property);
+                if (propertyState == null || !propertyState.HasChanged)
+                {
+                    MergeProperty(entityState.Entity, mergeWith, property);
+                }
+
+                if (propertyState != null && propertyState.HasChanged)
+                {
+                    propertyState.RemoteValue = mergeWith.GetPropertyValue(property);
+                }
+            }
+        }
     }
 }
