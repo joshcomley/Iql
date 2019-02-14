@@ -12,6 +12,7 @@ namespace Iql.Data.Tracking
 {
     public interface ITrackingSet : IJsonSerializable
     {
+        IEntityStateBase AddEntity(object entity);
         IEntityStateBase Synchronise(object entity, bool overrideChanges, bool isRemote);
         IEntityStateBase AttachEntity(object entity, bool isLocal);
         ITrackingSet Merge(object localEntity, object remoteEntity, bool overrideChanges, bool isRemote);

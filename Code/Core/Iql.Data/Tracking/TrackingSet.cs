@@ -36,6 +36,43 @@ namespace Iql.Data.Tracking
             PersistenceKey = EntityConfiguration.Properties.SingleOrDefault(p => p.Name == "PersistenceKey");
         }
 
+        public IEntityState<T> AddEntity(T entity)
+        {
+            var rootTrackingSet = DataTracker.TrackingSet<T>();
+            if (rootTrackingSet.IsMatchingEntityTracked(entity))
+            {
+                var state = rootTrackingSet.FindMatchingEntityState(entity);
+                state.MarkedForDeletion = false;
+                return (IEntityState<T>) state;
+            }
+            var entityType = typeof(T);
+            var flattened = DataTracker.EntityConfigurationBuilder.FlattenObjectGraph(entity, entityType);
+            IEntityStateBase entityState = null;
+            foreach (var group in flattened)
+            {
+                foreach (var item in group.Value)
+                {
+                    var thisTrackingSet = DataTracker.TrackingSetByType(group.Key);
+                    var state = thisTrackingSet.AttachEntity(item, true);
+                    state.UnmarkForDeletion();
+                    if (item == (object)entity)
+                    {
+                        entityState = state;
+                        if (entityState.Entity != (object)entity)
+                        {
+                            throw new Exception("An item with the same key is already being tracked.");
+                        }
+                    }
+                }
+            }
+            DataTracker.RelationshipObserver.ObserveAll(flattened);
+            return (EntityState<T>)entityState;
+        }
+
+        IEntityStateBase ITrackingSet.AddEntity(object entity)
+        {
+            return AddEntity((T)entity);
+        }
         public IEntityState<T> AttachEntity(T entity, bool isLocal)
         {
             IEntityStateBase entityState = null;

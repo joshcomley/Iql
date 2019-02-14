@@ -148,6 +148,13 @@ namespace Iql.Data.Tracking
             return SetsMap[type.Name];
         }
 
+        public IEntityState<T> AddEntity<T>(T entity)
+        where T : class
+        {
+            var entityType = ResolveTrackingSet(entity, out var set);
+            return (IEntityState<T>) TrackingSetByType(entityType).AddEntity(entity);
+        }
+
         public TrackingSet<T> TrackingSet<T>() where T : class
         {
             var type = typeof(T);
@@ -516,7 +523,7 @@ namespace Iql.Data.Tracking
             var state = set.GetEntityStateByKey(key);
             if (state != null)
             {
-                RemoveEntity((T)state.Entity);
+                UnattachEntity((T)state.Entity);
             }
             else
             {
@@ -524,7 +531,7 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public IEntityStateBase AddEntity<T>(T entity)
+        public IEntityStateBase AttachEntity<T>(T entity)
             where T : class
         {
             var entityType = ResolveTrackingSet(entity, out var set);
@@ -533,7 +540,7 @@ namespace Iql.Data.Tracking
             return state;
         }
 
-        public void RemoveEntity<T>(T entity)
+        public void UnattachEntity<T>(T entity)
             where T : class
         {
             var entityType = ResolveTrackingSet(entity, out var set);

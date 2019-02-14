@@ -72,38 +72,10 @@ namespace Iql.Data.Context
             return (EntityState<TEntity>)AddInternalMethod.InvokeGeneric(this, new[] { entity }, entityType);
         }
 
-        private IEntityStateBase AddInternal<T>(T entity)
+        private IEntityState<T> AddInternal<T>(T entity)
             where T : class
         {
-            var rootTrackingSet = TemporalDataTracker.TrackingSet<T>();
-            if (rootTrackingSet.IsMatchingEntityTracked(entity))
-            {
-                var state = rootTrackingSet.FindMatchingEntityState(entity);
-                state.MarkedForDeletion = false;
-                return state;
-            }
-            var entityType = typeof(T);
-            var flattened = EntityConfigurationContext.FlattenObjectGraph(entity, entityType);
-            IEntityStateBase entityState = null;
-            foreach (var group in flattened)
-            {
-                foreach (var item in group.Value)
-                {
-                    var thisTrackingSet = TemporalDataTracker.TrackingSetByType(group.Key);
-                    var state = thisTrackingSet.AttachEntity(item, true);
-                    state.UnmarkForDeletion();
-                    if (item == (object)entity)
-                    {
-                        entityState = state;
-                        if (entityState.Entity != (object)entity)
-                        {
-                            throw new Exception("An item with the same key is already being tracked.");
-                        }
-                    }
-                }
-            }
-            TemporalDataTracker.RelationshipObserver.ObserveAll(flattened);
-            return (EntityState<T>)entityState;
+            return TemporalDataTracker.AddEntity(entity);
         }
 
 
