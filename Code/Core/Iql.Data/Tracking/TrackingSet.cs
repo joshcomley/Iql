@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Data.Context;
@@ -43,7 +42,7 @@ namespace Iql.Data.Tracking
             {
                 var state = rootTrackingSet.FindMatchingEntityState(entity);
                 state.MarkedForDeletion = false;
-                return (IEntityState<T>) state;
+                return (IEntityState<T>)state;
             }
             var entityType = typeof(T);
             var flattened = DataTracker.EntityConfigurationBuilder.FlattenObjectGraph(entity, entityType);
@@ -535,7 +534,6 @@ namespace Iql.Data.Tracking
                 DataTracker,
                 (T)entity,
                 typeof(T),
-                DataContext,
                 EntityConfiguration);
             EntitiesByObject.Add(entity, entityState);
             if (!entityState.CurrentKey.HasDefaultValue())
@@ -714,26 +712,20 @@ namespace Iql.Data.Tracking
                     case RelatedListChangeKind.Added:
                         if (changeEvent.Item != null)
                         {
-                            if (DataContext != null)
+                            var state = DataTracker.AddEntity(changeEvent.Item);
+                            if (state.Entity != changeEvent.Item)
                             {
-                                var state = DataContext.AddEntity(changeEvent.Item);
-                                if (state.Entity != changeEvent.Item)
-                                {
-                                    changeEvent.ObservableListChangeEvent.Disallow = true;
-                                }
+                                changeEvent.ObservableListChangeEvent.Disallow = true;
                             }
                         }
 
                         break;
                     case RelatedListChangeKind.Removed:
-                        if (changeEvent.Item != null)
+                        if (changeEvent.Item != null &&
+                            !DataTracker.RelationshipObserver.IsAttachedToAnotherEntity(changeEvent.Item,
+                                changeEvent.ItemType))
                         {
-                            if (DataContext != null &&
-                                !DataTracker.RelationshipObserver.IsAttachedToAnotherEntity(changeEvent.Item,
-                                    changeEvent.ItemType))
-                            {
-                                DataContext.DeleteEntity(changeEvent.Item);
-                            }
+                            DataTracker.DeleteEntity(changeEvent.Item);
                         }
 
                         break;

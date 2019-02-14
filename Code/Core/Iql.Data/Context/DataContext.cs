@@ -75,7 +75,7 @@ namespace Iql.Data.Context
         private IEntityState<T> AddInternal<T>(T entity)
             where T : class
         {
-            return TemporalDataTracker.AddEntity(entity);
+            return (IEntityState<T>) TemporalDataTracker.AddEntity(entity);
         }
 
 
@@ -1511,15 +1511,12 @@ namespace Iql.Data.Context
             return (EntityState<TEntity>)DeleteInternalMethod.InvokeGeneric(this, new[] { entity }, entityType);
         }
 
-        private EntityState<T> DeleteInternal<T>(T entity)
+        private IEntityState<T> DeleteInternal<T>(T entity)
             where T : class
         {
-            var trackingSet = TemporalDataTracker.TrackingSet<T>();
-            trackingSet.MarkForDelete(entity);
-            TemporalDataTracker.RelationshipObserver.DeleteRelationships(entity, typeof(T));
-            var entityState = (EntityState<T>)trackingSet.FindMatchingEntityState(entity);
-            return entityState;
+            return (IEntityState<T>) TemporalDataTracker.DeleteEntity(entity);
         }
+
         public static bool IsEntityTracked(object entity)
         {
             return FindDataContextForEntity(entity) != null;

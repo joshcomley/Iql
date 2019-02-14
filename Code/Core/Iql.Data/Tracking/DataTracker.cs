@@ -21,9 +21,9 @@ namespace Iql.Data.Tracking
     public class DataTracker : IJsonSerializable
     {
         public DataTracker(
-            EntityConfigurationBuilder entityConfigurationBuilder, 
+            EntityConfigurationBuilder entityConfigurationBuilder,
             string name,
-            bool offline = false, 
+            bool offline = false,
             bool silent = false)
         {
             EntityConfigurationBuilder = entityConfigurationBuilder;
@@ -148,11 +148,21 @@ namespace Iql.Data.Tracking
             return SetsMap[type.Name];
         }
 
-        public IEntityState<T> AddEntity<T>(T entity)
+        public IEntityStateBase DeleteEntity<T>(T entity)
         where T : class
         {
             var entityType = ResolveTrackingSet(entity, out var set);
-            return (IEntityState<T>) TrackingSetByType(entityType).AddEntity(entity);
+            set.MarkForDelete(entity);
+            RelationshipObserver.DeleteRelationships(entity, entityType);
+            var entityState = set.FindMatchingEntityState(entity);
+            return entityState;
+        }
+
+        public IEntityStateBase AddEntity<T>(T entity)
+        where T : class
+        {
+            var entityType = ResolveTrackingSet(entity, out var set);
+            return TrackingSetByType(entityType).AddEntity(entity);
         }
 
         public TrackingSet<T> TrackingSet<T>() where T : class
@@ -475,41 +485,41 @@ namespace Iql.Data.Tracking
         //    //return (IEntityState<TEntity>) TrackingSet<TEntity>().GetEntityState(result[0]);
         //}
 
-//        private TrackCollectionResult TrackCollection(
-//            IList set, Type type, Dictionary<Type, IList> data, bool mergeExistingOnly, bool reset = true)
-//        {
-//            var states = new List<IEntityStateBase>();
-//            if (set.Count > 0)
-//            {
-//#if TypeScript
-//                set = EntityConfigurationBuilder.EnsureTypedListByType(set, type, null, null, false, true);
-//#endif
-//                var trackingSet = TrackingSetByType(type);
-//                states = trackingSet.TrackEntities(set, false, !mergeExistingOnly, mergeExistingOnly);
-//                if (reset)
-//                {
-//                    trackingSet.ResetAll(states);
-//                }
+        //        private TrackCollectionResult TrackCollection(
+        //            IList set, Type type, Dictionary<Type, IList> data, bool mergeExistingOnly, bool reset = true)
+        //        {
+        //            var states = new List<IEntityStateBase>();
+        //            if (set.Count > 0)
+        //            {
+        //#if TypeScript
+        //                set = EntityConfigurationBuilder.EnsureTypedListByType(set, type, null, null, false, true);
+        //#endif
+        //                var trackingSet = TrackingSetByType(type);
+        //                states = trackingSet.TrackEntities(set, false, !mergeExistingOnly, mergeExistingOnly);
+        //                if (reset)
+        //                {
+        //                    trackingSet.ResetAll(states);
+        //                }
 
-//                set = states.Select(s => s.Entity).EnumerableToList(type);
-//                if (data.ContainsKey(type))
-//                {
-//                    foreach (var item in set)
-//                    {
-//                        if (!data[type].Contains(item))
-//                        {
-//                            data[type].Add(item);
-//                        }
-//                    }
-//                }
-//                else
-//                {
-//                    data.Add(type, set);
-//                }
-//            }
+        //                set = states.Select(s => s.Entity).EnumerableToList(type);
+        //                if (data.ContainsKey(type))
+        //                {
+        //                    foreach (var item in set)
+        //                    {
+        //                        if (!data[type].Contains(item))
+        //                        {
+        //                            data[type].Add(item);
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    data.Add(type, set);
+        //                }
+        //            }
 
-//            return new TrackCollectionResult(set, states);
-//        }
+        //            return new TrackCollectionResult(set, states);
+        //        }
 
         public void RemoveEntityByKey<T>(CompositeKey key)
             where T : class
@@ -585,7 +595,7 @@ namespace Iql.Data.Tracking
         {
             var trackingSet = TrackingSet<TEntity>();
             var state = trackingSet.AttachEntity(
-                (TEntity) operation.Result.RemoteEntity.Clone(
+                (TEntity)operation.Result.RemoteEntity.Clone(
                     EntityConfigurationBuilder,
                     typeof(TEntity),
                     RelationshipCloneMode.DoNotClone),

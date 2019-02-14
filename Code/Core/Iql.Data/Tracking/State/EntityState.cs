@@ -142,20 +142,18 @@ namespace Iql.Data.Tracking.State
         public T Entity { get; }
         object IEntityStateBase.Entity => Entity;
         public Type EntityType { get; }
-        public IDataContext DataContext { get; }
+        public IDataContext DataContext => DataTracker.DataContext;
         public IEntityConfiguration EntityConfiguration { get; }
 
         public EntityState(
             DataTracker dataTracker,
             T entity, 
             Type entityType, 
-            IDataContext dataContext, 
             IEntityConfiguration entityConfiguration)
         {
             DataTracker = dataTracker;
             Entity = entity;
             EntityType = entityType;
-            DataContext = dataContext;
             EntityConfiguration = entityConfiguration;
             Properties = new List<IPropertyState>();
             foreach (var property in EntityConfiguration.Properties)

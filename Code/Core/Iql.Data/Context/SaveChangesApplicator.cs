@@ -449,7 +449,9 @@ namespace Iql.Data.Context
                 updateEntityOperation,
                 new UpdateEntityResult<TMap>(true, updateEntityOperation));
 
-            var dummyEntityState = new EntityState<TMap>(update.Operation.EntityState.DataTracker, mappedEntity, typeof(TMap), DataContext,
+            var dummyEntityState = new EntityState<TMap>(
+                update.Operation.EntityState.DataTracker,
+                mappedEntity, typeof(TMap), 
                 DataContext.EntityConfigurationContext.EntityType<TMap>());
             updateEntityOperation.EntityState = dummyEntityState;
             for (var i = 0; i < update.Operation.EntityState.PropertyStates.Length; i++)
