@@ -16,7 +16,7 @@
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0022-1-Debug" />
+        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0023-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>

@@ -58,7 +58,7 @@ namespace Iql.Tests.Tests.DataContextTests
             AppDbContext.InMemoryDb.Clients.Add(clientRemote);
             var entity1 = await Db.Clients.SetTracking(false).GetWithKeyAsync(156187);
             Assert.AreEqual("abc", entity1.Name);
-            var entity2 = (Client)await Db.Clients.GetWithAsync(entity1);
+            var entity2 = (Client)await Db.Clients.GetWithKeyOrEntityAsync(entity1);
             Assert.AreNotEqual(entity1, entity2);
             Assert.AreEqual("abc", entity2.Name);
         }

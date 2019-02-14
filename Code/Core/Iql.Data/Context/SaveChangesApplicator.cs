@@ -21,15 +21,7 @@ namespace Iql.Data.Context
 {
     public class SaveChangesApplicator
     {
-        private static MethodInfo MarkAsDeletedByKeyTypedMethod { get; }
         public EntityConfigurationBuilder EntityConfigurationContext => DataContext.EntityConfigurationContext;
-
-        static SaveChangesApplicator()
-        {
-            MarkAsDeletedByKeyTypedMethod = typeof(SaveChangesApplicator)
-                .GetMethod(nameof(MarkAsDeletedByKey),
-                    BindingFlags.Instance | BindingFlags.Public);
-        }
 
         public IDataContext DataContext { get; }
 
@@ -268,7 +260,7 @@ namespace Iql.Data.Context
                             }
                             else
                             {
-                                await MarkAsDeletedIfNecessary(operationEntity);
+                                await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore(operationEntity);
                             }
                         }
                         //GetTracking().TrackingSet<TEntity>().TrackEntity(operationEntity);
@@ -333,15 +325,15 @@ namespace Iql.Data.Context
                         }
                         if (result.Success)
                         {
-                            //if (isOffline)
-                            {
-                                DataContext.OfflineDataTracker?.ApplyDelete(deleteEntityOperation, isOffline);
-                            }
-                            MarkAsDeletedByKey<TEntity>(deleteEntityOperation.Operation.Key);
+                            DataContext.OfflineDataTracker?.ApplyDelete(deleteEntityOperation, isOffline);
+                            RemoveEntityByKeyAndType(
+                                deleteEntityOperation.Operation.Key,
+                                typeof(TEntity),
+                                isOffline);
                         }
                         else
                         {
-                            await MarkAsDeletedIfNecessary(deleteEntityOperation.Operation.Entity);
+                            await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore(deleteEntityOperation.Operation.Entity);
                         }
                     }
 
@@ -451,7 +443,7 @@ namespace Iql.Data.Context
 
             var dummyEntityState = new EntityState<TMap>(
                 update.Operation.EntityState.DataTracker,
-                mappedEntity, typeof(TMap), 
+                mappedEntity, typeof(TMap),
                 DataContext.EntityConfigurationContext.EntityType<TMap>());
             updateEntityOperation.EntityState = dummyEntityState;
             for (var i = 0; i < update.Operation.EntityState.PropertyStates.Length; i++)
@@ -522,44 +514,49 @@ namespace Iql.Data.Context
             return true;
         }
 
-        public async Task MarkAsDeletedIfNecessary<TEntity>(TEntity entity) where TEntity : class
+        private async Task RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore<TEntity>(TEntity entity) where TEntity : class
         {
             // TODO: We should return NotFound from our data store implementations
             // Todoot: 159
-            var result = await DataContext.GetDbSetByEntityType(typeof(TEntity)).SetTracking(false).GetWithKeyAsync(DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)).GetCompositeKey(entity));
-            if (result == null)
+            var result = await DataContext.GetDbSetByEntityType(typeof(TEntity))
+                .SetTracking(false)
+                .WithKey(
+                    DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)).GetCompositeKey(entity)
+                )
+                .ToListWithResponseAsync();
+            if (result.IsOffline == false && (result.Root == null || result.Root.Count == 0))
             {
-                MarkAsDeleted(entity);
+                var entityType = typeof(TEntity);
+#if TypeScript
+                entityType = entityType ?? entity.GetType();
+#endif
+                var key = DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)).GetCompositeKey(entity);
+                RemoveEntityByKeyAndType(key, entityType, false);
             }
         }
 
-        public void MarkAsDeleted<TEntity>(TEntity entity) where TEntity : class
+        private void RemoveEntityByKeyAndType(CompositeKey entityKey, Type entityType, bool isOfflineDelete)
         {
-            var entityType = typeof(TEntity);
-#if TypeScript
-            entityType = entityType ?? entity.GetType();
-#endif
-            var key = DataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity)).GetCompositeKey(entity);
-            MarkAsDeletedByKeyAndType(key, entityType);
-        }
-
-        public void MarkAsDeletedByKeyAndType(CompositeKey entityKey, Type entityType)
-        {
-            MarkAsDeletedByKeyTypedMethod.InvokeGeneric(this, new object[] { entityKey }, entityType);
-        }
-
-        public void MarkAsDeletedByKey<TEntity>(CompositeKey entityKey)
-            where TEntity : class
-        {
-            DataTracker.ForAnEntityAcrossAllDataTrackers(entityKey, (dataTracker, key) =>
+            void Apply(DataTracker dataTracker, CompositeKey key)
+            {
+                if (dataTracker.EntityConfigurationBuilder == EntityConfigurationContext)
                 {
-                    var trackingSet = dataTracker.TrackingSet<TEntity>();
+                    var trackingSet = dataTracker.TrackingSetByType(entityType);
                     var state = trackingSet.GetEntityStateByKey(key);
-                    dataTracker.RemoveEntityByKey<TEntity>(entityKey);
+                    dataTracker.RemoveEntityByKeyAndType(entityKey, entityType);
                     var iEntity = (IEntity)state?.Entity;
                     iEntity?.ExistsChanged?.Emit(() => new ExistsChangeEvent(state, false));
-                },
-                DataContext);
+                }
+            }
+            if (isOfflineDelete)
+            {
+                Apply(DataContext.TemporalDataTracker, entityKey);
+            }
+            else
+            {
+                DataTracker.ForAnEntityAcrossAllDataTrackers(entityKey, Apply,
+                    DataContext);
+            }
         }
     }
 }

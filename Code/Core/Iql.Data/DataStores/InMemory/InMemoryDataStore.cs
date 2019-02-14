@@ -8,7 +8,6 @@ using Iql.Conversion;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
-using Iql.Data.Relationships;
 using Iql.Data.Tracking;
 using Iql.Entities;
 using Iql.Entities.Extensions;
@@ -47,7 +46,7 @@ namespace Iql.Data.DataStores.InMemory
         public virtual IList<TEntity> DataSet<TEntity>()
             where TEntity : class
         {
-            return (List<TEntity>) DataSetByType(typeof(TEntity));
+            return (List<TEntity>)DataSetByType(typeof(TEntity));
         }
 
         public InMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
@@ -57,7 +56,7 @@ namespace Iql.Data.DataStores.InMemory
         private DataTracker _inMemoryDataTracker;
         private DataTracker InMemoryDataTracker
         {
-            get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(EntityConfigurationBuilder, "In Memory", true);
+            get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(DataTrackerKind.Online, EntityConfigurationBuilder, "In Memory", true);
         }
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
@@ -105,7 +104,7 @@ namespace Iql.Data.DataStores.InMemory
                             {
                                 clone.SetPropertyValue(property, NextIdString(data, property));
                             }
-                            else if(property.TypeDefinition.Kind == IqlType.Guid)
+                            else if (property.TypeDefinition.Kind == IqlType.Guid)
                             {
                                 clone.SetPropertyValue(property, NextIdGuid(data, property));
                             }
@@ -168,7 +167,7 @@ namespace Iql.Data.DataStores.InMemory
                 var entity = DataSet<TEntity>()[index];
                 new SimplePropertyMerger(EntityConfigurationBuilder.EntityType<TEntity>())
                     .MergeAllProperties(
-                        entity, 
+                        entity,
                         operation.Operation.Entity,
                         operation.Operation.Properties);
                 operation.Result.Success = true;
@@ -217,7 +216,7 @@ namespace Iql.Data.DataStores.InMemory
             {
                 var clone = item.Clone(EntityConfigurationBuilder, typeof(TEntity), RelationshipCloneMode.DoNotClone);
                 cloneLookup.Add(item, clone);
-                clonedResult.Add((TEntity) clone);
+                clonedResult.Add((TEntity)clone);
             }
             var dictionary = new Dictionary<Type, IList>();
             foreach (var pair in inMemoryContext.AllData)
@@ -274,7 +273,7 @@ namespace Iql.Data.DataStores.InMemory
             foreach (var entry in data)
             {
                 SynchroniseDataTypedMethod.InvokeGeneric(
-                    this, new object[] {entry.Value}, entry.Key);
+                    this, new object[] { entry.Value }, entry.Key);
             }
         }
 
@@ -308,7 +307,7 @@ namespace Iql.Data.DataStores.InMemory
                 {
                     source.Remove(match);
                 }
-                var clone = (T) entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.DoNotClone);
+                var clone = (T)entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.DoNotClone);
                 source.Add(clone);
             }
         }

@@ -246,6 +246,10 @@ namespace Iql.OData
                          new Dictionary<Type, IList>(),
                          new GetDataOperation<TEntity>(null, null),
                          false);
+            if (httpResult.IsOffline)
+            {
+                result.RequestStatus = RequestStatus.Offline;
+            }
             result.Success = httpResult.Success;
             if (!result.IsSuccessful())
             {
@@ -386,7 +390,11 @@ namespace Iql.OData
             var json = JsonSerializer.Serialize(operation.Operation.Entity, EntityConfigurationBuilder);
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             var responseData = await httpResult.GetResponseTextAsync();
-            if (httpResult.Success)
+            if (httpResult.IsOffline)
+            {
+                operation.Result.RequestStatus = RequestStatus.Offline;
+            }
+            else if (httpResult.Success)
             {
                 var odataResultRoot = JObject.Parse(responseData);
                 ParseObj(odataResultRoot, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), false);
@@ -424,7 +432,14 @@ namespace Iql.OData
                 changedProperties);
             var httpResult = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
-            operation.Result.Success = httpResult.Success;
+            if (httpResult.IsOffline)
+            {
+                operation.Result.RequestStatus = RequestStatus.Offline;
+            }
+            else
+            {
+                operation.Result.Success = httpResult.Success;
+            }
             ParseValidation(operation.Result, operation.Operation.Entity, await httpResult.GetResponseTextAsync());
             return operation.Result;
         }
@@ -436,7 +451,14 @@ namespace Iql.OData
             var http = configuration.HttpProvider;
             var entityUri = ResolveEntityUriByType(operation.Operation.Key, typeof(TEntity));
             var httpResult = await http.Delete(entityUri);
-            operation.Result.Success = httpResult.Success;
+            if (httpResult.IsOffline)
+            {
+                operation.Result.RequestStatus = RequestStatus.Offline;
+            }
+            else
+            {
+                operation.Result.Success = httpResult.Success;
+            }
             ParseValidation(operation.Result, operation.Operation.Entity, await httpResult.GetResponseTextAsync());
             return operation.Result;
         }

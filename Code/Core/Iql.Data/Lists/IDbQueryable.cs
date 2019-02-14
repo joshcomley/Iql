@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Data.Context;
+using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.Search;
 using Iql.Data.Tracking;
@@ -18,7 +19,7 @@ namespace Iql.Data.Lists
     {
         void DeleteEntity(object entity);
         IEntityStateBase Add(object entity);
-        Task<object> GetWithAsync(object key);
+        Task<IGetDataResult> ToListWithResponseAsync();
         Task<object> GetWithKeyAsync(object key);
         Task<IList> GetWithKeysAsync(IEnumerable<object> keys);
         Task<IList> LoadRelationshipPropertyAsync(object entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
@@ -33,7 +34,9 @@ namespace Iql.Data.Lists
         IDbQueryable ExpandAllSingleRelationships();
         IDbQueryable ExpandAllCollectionCounts();
         IDbQueryable WithKeys(IEnumerable<object> keys);
+        IDbQueryable WithKey(object entityOrKey);
         IDbQueryable WithCompositeKeys(IEnumerable<CompositeKey> keys);
+        IDbQueryable WithCompositeKey(CompositeKey key);
         IDbQueryable Search(string search, PropertySearchKind searchKind, bool? splitIntoTerms = null);
         IDbQueryable SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null, bool? splitIntoTerms = null);
         IDbQueryable SearchProperties(string search, IEnumerable<IProperty> properties, bool? splitIntoTerms = null);

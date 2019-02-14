@@ -63,6 +63,52 @@ namespace Iql.Tests.Tests.Offline
         }
 
         [TestMethod]
+        public async Task DeleteEntityWhenOfflineAndResyncWhenOnline()
+        {
+            var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
+            bool RemoteClientExists()
+            {
+                var remoteClient = onlineDataSet.FirstOrDefault(_ => _.Id == 1);
+                return remoteClient != null;
+            }
+
+            Assert.IsTrue(RemoteClientExists());
+            Db.IsOffline = false;
+            var client = await Db.Clients.GetWithKeyAsync(1);
+
+            Assert.IsNotNull(client);
+
+            Db.IsOffline = true;
+            var client2 = await Db.Clients.GetWithKeyAsync(1);
+            Assert.IsNotNull(client);
+            Assert.AreEqual(client, client2);
+
+            var entityState = Db.Delete(client);
+            Assert.IsTrue(entityState.MarkedForDeletion);
+
+            client2 = await Db.Clients.GetWithKeyAsync(1);
+            Assert.IsNotNull(client);
+            Assert.AreEqual(client, client2);
+
+            Assert.AreEqual(1, Db.GetChanges().Length);
+            Assert.AreEqual(0, Db.GetOfflineChanges().Length);
+
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.IsTrue(RemoteClientExists());
+            Assert.AreEqual(0, Db.GetChanges().Length);
+            Assert.AreEqual(1, Db.GetOfflineChanges().Length);
+
+            Db.IsOffline = false;
+
+            var offlineResyncResult = await Db.SaveOfflineChangesAsync();
+            Assert.IsTrue(offlineResyncResult.Success);
+            Assert.AreEqual(0, Db.GetChanges().Length);
+            Assert.AreEqual(0, Db.GetOfflineChanges().Length);
+            Assert.IsFalse(RemoteClientExists());
+        }
+
+        [TestMethod]
         public async Task NonTrackedResultsShouldNotPropagateToOffline()
         {
             // Go online

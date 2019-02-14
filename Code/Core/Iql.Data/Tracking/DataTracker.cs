@@ -20,12 +20,15 @@ namespace Iql.Data.Tracking
 {
     public class DataTracker : IJsonSerializable
     {
+        public DataTrackerKind Kind { get; }
         public DataTracker(
+            DataTrackerKind kind,
             EntityConfigurationBuilder entityConfigurationBuilder,
             string name,
             bool offline = false,
             bool silent = false)
         {
+            Kind = kind;
             EntityConfigurationBuilder = entityConfigurationBuilder;
             Name = name;
             Offline = offline;
@@ -534,6 +537,25 @@ namespace Iql.Data.Tracking
             if (state != null)
             {
                 UnattachEntity((T)state.Entity);
+            }
+            else
+            {
+                set.RemoveEntityByKey(key);
+            }
+        }
+
+        public void RemoveEntityByKeyAndType(CompositeKey key, Type entityType)
+        {
+            if (key == null)
+            {
+                return;
+            }
+
+            var set = TrackingSetByType(entityType);
+            var state = set.GetEntityStateByKey(key);
+            if (state != null)
+            {
+                UnattachEntity(state.Entity);
             }
             else
             {

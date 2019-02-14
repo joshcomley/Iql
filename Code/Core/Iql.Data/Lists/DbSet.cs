@@ -51,12 +51,22 @@ namespace Iql.Data.Lists
 
         public DbSet<T, TKey> WithKey(TKey key)
         {
-            return (DbSet<T, TKey>) WithCompositeKey(CompositeKey.Ensure(key, EntityConfiguration));
+            return (DbSet<T, TKey>)WithCompositeKey(CompositeKey.Ensure(key, EntityConfiguration));
+        }
+
+        public DbSet<T, TKey> WithKeyOrEntity(object keyOrEntity)
+        {
+            return (DbSet<T, TKey>)WithCompositeKey(CompositeKey.Ensure(keyOrEntity, EntityConfiguration));
         }
 
         public async Task<T> GetWithKeyAsync(TKey key)
         {
             return (await GetWithKeyWithResponseAsync(key)).Data;
+        }
+
+        public async Task<T> GetWithKeyOrEntityAsync(object keyOrEntity)
+        {
+            return (await GetWithKeyOrEntityWithResponseAsync(keyOrEntity)).Data;
         }
 
         public async Task<DbList<T>> GetWithKeysAsync(IEnumerable<TKey> keys)
@@ -67,6 +77,11 @@ namespace Iql.Data.Lists
         public async Task<GetSingleResult<T>> GetWithKeyWithResponseAsync(TKey key)
         {
             return await WithKey(key).SingleOrDefaultWithResponseAsync();
+        }
+
+        public async Task<GetSingleResult<T>> GetWithKeyOrEntityWithResponseAsync(object keyOrEntity)
+        {
+            return await WithKeyOrEntity(keyOrEntity).SingleOrDefaultWithResponseAsync();
         }
 
         public async Task<GetDataResult<T>> GetWithKeysWithResponseAsync(IEnumerable<TKey> keys)

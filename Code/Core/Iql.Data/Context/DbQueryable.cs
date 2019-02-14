@@ -107,6 +107,16 @@ namespace Iql.Data.Context
             return WithKeys(keys);
         }
 
+        public DbQueryable<T> WithKey(object entityOrKey)
+        {
+            return Then(new WithKeyOperation(CompositeKey.Ensure(entityOrKey, EntityConfiguration)));
+        }
+
+        IDbQueryable IDbQueryable.WithKey(object entityOrKey)
+        {
+            return WithKey(entityOrKey);
+        }
+
         IDbQueryable IDbQueryable.WithCompositeKeys(IEnumerable<CompositeKey> keys)
         {
             return WithKeys(keys);
@@ -593,6 +603,11 @@ namespace Iql.Data.Context
             return result?.Data;
         }
 
+        async Task<IGetDataResult> IDbQueryable.ToListWithResponseAsync()
+        {
+            return await ToListWithResponseAsync();
+        }
+
         public async Task<GetDataResult<T>> ToListWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -949,14 +964,9 @@ namespace Iql.Data.Context
             Delete((T)entity);
         }
 
-        public override Task<object> GetWithKeyAsync(object key)
+        public override async Task<object> GetWithKeyAsync(object entityOrKey)
         {
-            return GetWithAsync(key);
-        }
-
-        public override async Task<object> GetWithAsync(object key)
-        {
-            return await Then(new WithKeyOperation(CompositeKey.Ensure(key, EntityConfiguration))).SingleOrDefaultAsync();
+            return await WithKey(entityOrKey).SingleOrDefaultAsync();
         }
 
         public override async Task<IList> GetWithKeysAsync(IEnumerable<object> keys)
@@ -1075,6 +1085,11 @@ namespace Iql.Data.Context
         public DbQueryable<T> WithCompositeKey(CompositeKey key)
         {
             return Then(new WithKeyOperation(key));
+        }
+
+        IDbQueryable IDbQueryable.WithCompositeKey(CompositeKey key)
+        {
+            return WithCompositeKey(key);
         }
 
         public async Task<T> GetWithCompositeKeyAsync(CompositeKey key)
