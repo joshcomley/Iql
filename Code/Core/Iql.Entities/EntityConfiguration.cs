@@ -690,41 +690,68 @@ namespace Iql.Entities
         //        RelationshipMapType.Many,
         //        property);
         //}
-        public EntityConfiguration<T> SetDisplay(string key, DisplayConfigurationKind kind, params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
+        public EntityConfiguration<T> SetDisplay(
+            string key,
+            DisplayConfigurationKind kind,
+            Action<EntityConfiguration<T>, DisplayConfiguration> configure
+        )
         {
             var configuration = GetOrDefineDisplayConfiguration(kind, key);
             configuration.Kind = kind;
-            configuration.Properties = PrepareDisplayProperties(properties);
+            configure(this, configuration);
             return this;
         }
 
-        public EntityConfiguration<T> SetEditDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
+        public EntityConfiguration<T> SetEditDisplay(
+            Action<EntityConfiguration<T>, DisplayConfiguration> configure
+        )
         {
-            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Edit, DisplayConfigurationKeys.Default);
+            var configuration =
+                GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Edit, DisplayConfigurationKeys.Default);
             configuration.Kind = DisplayConfigurationKind.Edit;
-            configuration.Properties = PrepareDisplayProperties(properties);
+            configure(this, configuration);
             return this;
         }
 
-        public EntityConfiguration<T> SetReadDisplay(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
+        DisplayConfiguration IEntityConfiguration.GetOrDefineDisplayConfigurationBase<TEntity>(DisplayConfigurationKind kind, string key, Action<EntityConfiguration<TEntity>, DisplayConfiguration> configure = null)
         {
-            var configuration = GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Read, DisplayConfigurationKeys.Default);
-            configuration.Kind = DisplayConfigurationKind.Read;
-            configuration.Properties = PrepareDisplayProperties(properties);
-            return this;
-        }
-
-        private List<IPropertyGroup> PrepareDisplayProperties(Func<EntityConfiguration<T>, IPropertyGroup>[] properties)
-        {
-            var coll = new List<IPropertyGroup>();
-            for (var i = 0; i < properties.Length; i++)
+            return GetOrDefineDisplayConfiguration(kind, key, (configuration, displayConfiguration) =>
             {
-                var property = properties[i];
-                coll.Add(property(this));
-            }
+                if(configure != null)
+                {
+                    configure((EntityConfiguration<TEntity>)(object)configuration, displayConfiguration);
+                }
+            });
+        }
 
-            var result = coll.ToList();
-            return result;
+        public DisplayConfiguration GetOrDefineDisplayConfiguration(
+            DisplayConfigurationKind kind,
+            string key,
+            Action<EntityConfiguration<T>, DisplayConfiguration> configure = null
+        )
+        {
+            var definition = GetDisplayConfiguration(kind, key) ??
+                             new DisplayConfiguration(kind, null, key);
+            if (!DisplayConfigurations.Contains(definition))
+            {
+                DisplayConfigurations.Add(definition);
+            }
+            if (configure != null)
+            {
+                configure(this, definition);
+            }
+            return definition;
+        }
+
+        public EntityConfiguration<T> SetReadDisplay(
+            Action<EntityConfiguration<T>, DisplayConfiguration> configure
+        )
+        {
+            var configuration =
+                GetOrDefineDisplayConfiguration(DisplayConfigurationKind.Read, DisplayConfigurationKeys.Default);
+            configuration.Kind = DisplayConfigurationKind.Read;
+            configure(this, configuration);
+            return this;
         }
 
         public IPropertyCollection PropertyCollection(params Func<EntityConfiguration<T>, IPropertyGroup>[] properties)

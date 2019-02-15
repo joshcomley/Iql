@@ -6211,16 +6211,27 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Site";
                 });
             });
-            builder.EntityType<Site>().SetDisplay("", DisplayConfigurationKind.Edit, _ => _.FindRelationship(_1 => _1.Client), _ => _.FindPropertyByExpression(_1 => _1.Name), _ => _.FindRelationship(_1 => _1.Parent), _ => _.PropertyCollection(_1 => _1.FindPropertyByExpression(_2 => _2.Address), _2 => _2.FindPropertyByExpression(_3 => _3.PostCode)).Configure(coll3 => {
-                coll3.ContentAlignment = ContentAlignment.Horizontal;
-                coll3.Name = "Site Address";
-                coll3.Title = "Site Address";
-                coll3.FriendlyName = "Site Address";
-                coll3.Hints = new List<string>(new[]
-                {
-                    "Iql:HelpText:Top"
-                });
-            }), _ => _.FindPropertyByExpression(_1 => _1.Parent), _ => _.FindPropertyByExpression(_1 => _1.Key), _ => _.FindPropertyByExpression(_1 => _1.Location));
+            builder.EntityType<Site>().SetDisplay("", DisplayConfigurationKind.Edit,
+                (entityConfiguration, displayConfiguration) => displayConfiguration.SetProperties<Site>(
+                    entityConfiguration,
+                    _ => _.FindRelationship(_1 => _1.Client), _ => _.FindPropertyByExpression(_1 => _1.Name),
+                    _ => _.FindRelationship(_1 => _1.Parent), _ => _
+                        .PropertyCollection(_1 => _1.FindPropertyByExpression(_2 => _2.Address),
+                            _2 => _2.FindPropertyByExpression(_3 => _3.PostCode)).Configure(coll3 =>
+                        {
+                            coll3.ContentAlignment = ContentAlignment.Horizontal;
+                            coll3.Name = "Site Address";
+                            coll3.Title = "Site Address";
+                            coll3.FriendlyName = "Site Address";
+                            coll3.Hints = new List<string>(new[]
+                                {
+                                    "Iql:HelpText:Top"
+                                }
+                            );
+                        }),
+                    _ => _.FindPropertyByExpression(_1 => _1.Parent), _ => _.FindPropertyByExpression(_1 => _1.Key),
+                    _ => _.FindPropertyByExpression(_1 => _1.Location)
+                ));
         }
         public ApplicationUserSet Users
         {

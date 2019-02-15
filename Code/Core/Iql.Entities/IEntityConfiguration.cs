@@ -12,7 +12,8 @@ namespace Iql.Entities
         DisplayConfiguration GetFullDisplayConfiguration(DisplayConfigurationKind? kind = null);
         DisplayConfiguration FindDisplayConfiguration(DisplayConfigurationKind? kind = null);
         DisplayConfiguration GetDisplayConfiguration(DisplayConfigurationKind kind, params string[] keys);
-        DisplayConfiguration GetOrDefineDisplayConfiguration(DisplayConfigurationKind kind, string key);
+        DisplayConfiguration GetOrDefineDisplayConfigurationBase<T>(DisplayConfigurationKind kind, string key, Action<EntityConfiguration<T>, DisplayConfiguration> configure = null)
+            where T : class;
         SpecialTypeDefinition SpecialTypeDefinition { get; set; }
         IProperty TitleProperty { get; }
         IProperty PreviewProperty { get; }

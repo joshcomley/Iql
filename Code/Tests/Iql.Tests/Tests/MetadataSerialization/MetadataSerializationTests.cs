@@ -42,21 +42,23 @@ namespace Iql.Tests.Tests.MetadataSerialization
                 .HasNestedSet(c => c.AverageIncome, c => c.AverageSales, setKey: "MyNestedSet");
             clientConfig.Geographics[0].SetHint(KnownHints.BigText);
             clientConfig.SetEditDisplay(
-                c => c.FindProperty(nameof(Client.Name)),
-                c => c.PropertyCollection(
-                        c1 => c1.PropertyPath(_ => _.Type.Name),
-                        c1 => c1.FindProperty(nameof(Client.Id)),
-                        c1 => c1.FindRelationship(c2 => c2.Type),
-                        c1 => c1.Geographics[0],
-                        c1 => c1.PropertyCollection(
-                            c2 => c2.FindProperty(nameof(Client.Description)),
-                            c2 => c2.FindProperty(nameof(Client.Category))))
-                    .Configure(c3 =>
-                    {
-                        c3.SetHint(KnownHints.HelpTextBottom);
-                        c3.ContentAlignment = ContentAlignment.Horizontal;
-                    }),
-                c => c.NestedSets[0]);
+                (entityConfiguration, displayConfiguration) => displayConfiguration.SetProperties(
+                    entityConfiguration,
+                    c => c.FindProperty(nameof(Client.Name)),
+                    c => c.PropertyCollection(
+                            c1 => c1.PropertyPath(_ => _.Type.Name),
+                            c1 => c1.FindProperty(nameof(Client.Id)),
+                            c1 => c1.FindRelationship(c2 => c2.Type),
+                            c1 => c1.Geographics[0],
+                            c1 => c1.PropertyCollection(
+                                c2 => c2.FindProperty(nameof(Client.Description)),
+                                c2 => c2.FindProperty(nameof(Client.Category))))
+                        .Configure(c3 =>
+                        {
+                            c3.SetHint(KnownHints.HelpTextBottom);
+                            c3.ContentAlignment = ContentAlignment.Horizontal;
+                        }),
+                    c => c.NestedSets[0]));
             clientConfig.HasFile(f => f.Description,
                 f =>
                 {

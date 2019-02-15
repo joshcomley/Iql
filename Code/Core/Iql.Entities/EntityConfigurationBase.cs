@@ -202,17 +202,6 @@ namespace Iql.Entities
             return config;
         }
 
-        public DisplayConfiguration GetOrDefineDisplayConfiguration(DisplayConfigurationKind kind, string key)
-        {
-            var definition = GetDisplayConfiguration(kind, key) ??
-                             new DisplayConfiguration(kind, null, key);
-            if (!DisplayConfigurations.Contains(definition))
-            {
-                DisplayConfigurations.Add(definition);
-            }
-            return definition;
-        }
-
         public virtual IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration,
             bool appendMissingProperties = true)
         {
