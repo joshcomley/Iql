@@ -10,7 +10,7 @@ using Iql.Entities;
 
 namespace Iql.Data.Tracking
 {
-    public interface ITrackingSet : IJsonSerializable
+    public interface ITrackingSet : IJsonSerializable, IDataChangeProvider
     {
         void RemoveEntityByKey(CompositeKey compositeKey);
         IEntityStateBase AddEntity(object entity);
@@ -38,9 +38,6 @@ namespace Iql.Data.Tracking
         void SoftReset(IEntityStateBase state, bool markAsNotNew);
         void HardResetAll(List<IEntityStateBase> states);
         void SoftResetAll(List<IEntityStateBase> states, bool markAsNotNew);
-        IEnumerable<IEntityCrudOperationBase> GetInserts(object[] entities = null);
-        IEnumerable<IEntityCrudOperationBase> GetDeletions(object[] entities = null);
-        IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null);
         void AbandonChanges();
         void AbandonChangesForEntity(object entity);
         void AbandonChangesForEntities(IEnumerable<object> entities);

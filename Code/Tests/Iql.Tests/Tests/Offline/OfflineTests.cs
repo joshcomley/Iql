@@ -5,9 +5,10 @@ using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.DataStores;
 using Iql.Entities;
+using Iql.JavaScript.Extensions;
+#if TypeScript
 using Iql.Parsing;
-using Iql.Parsing.Expressions;
-using Iql.Queryable;
+#endif
 using Iql.Tests.Context;
 using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -44,6 +45,10 @@ namespace Iql.Tests.Tests.Offline
             var entityState = Db.GetEntityState(client);
             var json = Db.TemporalDataTracker.SerializeToJson();
             var state = JsonConvert.DeserializeObject(json, typeof(TrackingState));
+            var compressedJson = json.CompressJson();
+            Assert.AreEqual(
+                @"{""Sets"":[{""Type"":""Client"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":1}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":1,""LocalValue"":2,""Property"":""TypeId""},{""RemoteValue"":""Coca-Cola"",""LocalValue"":""Changed"",""Property"":""Name""}]}]},{""Type"":""ClientType"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":2}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":""Software"",""LocalValue"":""A new name"",""Property"":""Name""}]}]}]}",
+                compressedJson);
         }
 
         [TestMethod]

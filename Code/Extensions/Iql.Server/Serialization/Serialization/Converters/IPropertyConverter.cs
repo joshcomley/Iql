@@ -95,10 +95,6 @@ namespace Iql.Server.Serialization.Serialization.Converters
             settings.Converters.Add(new IPropertyConverter(true, allowAnyPropertyConversion));
             //settings.Converters.Add(new IPropertyConverter());
             var ppp = writer.Path;
-            if (ppp == "EntityTypes[6].Properties[13]")
-            {
-                int a = 0;
-            }
             var serialized = JsonConvert.SerializeObject(value, value.GetType(), indented, settings);
             writer.WriteRawValue(serialized);
         }

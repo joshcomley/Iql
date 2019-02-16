@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
+using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
@@ -251,7 +253,7 @@ namespace Iql.Data.Tracking.State
 
         public string SerializeToJson()
         {
-            return JsonConvert.SerializeObject(PrepareForJson());
+            return this.ToJson();
         }
 
         public object PrepareForJson()

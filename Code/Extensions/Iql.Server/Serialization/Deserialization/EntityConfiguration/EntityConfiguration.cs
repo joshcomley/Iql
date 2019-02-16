@@ -13,13 +13,12 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
     [DebuggerDisplay("{Name} - {SetName}")]
     public class EntityConfiguration : EntityConfigurationBase, IEntityConfiguration
     {
-        protected override Entities.IEntityConfigurationContainer ConfigurationContainer => _configurationContainer;
+        protected override IEntityConfigurationContainer ConfigurationContainer => _configurationContainer;
 
-        private EntityConfigurationBuilder _builder;
-        private  Entities.IEntityConfigurationContainer _configurationContainer;
+        private  IEntityConfigurationContainer _configurationContainer;
         IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
 
-        internal void SetConfigurationProvider(Entities.IEntityConfigurationContainer container)
+        internal void SetConfigurationProvider(IEntityConfigurationContainer container)
         {
             _configurationContainer = container;
         }
@@ -119,7 +118,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
             return FindProperty(name);
         }
 
-        public EntityConfiguration(Entities.IEntityConfigurationContainer configurationContainer)
+        public EntityConfiguration(IEntityConfigurationContainer configurationContainer)
             : base(configurationContainer)
         {
         }

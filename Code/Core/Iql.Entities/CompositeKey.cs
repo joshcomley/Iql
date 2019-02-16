@@ -158,7 +158,7 @@ namespace Iql.Entities
 
         public string SerializeToJson()
         {
-            return JsonConvert.SerializeObject(PrepareForJson());
+            return this.ToJson();
         }
 
         public object PrepareForJson()

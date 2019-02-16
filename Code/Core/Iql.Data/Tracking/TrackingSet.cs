@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
+using Iql.Data.Extensions;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
@@ -325,7 +327,12 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public IEnumerable<IEntityCrudOperationBase> GetInserts(object[] entities = null)
+        List<IEntityCrudOperationBase> IDataChangeProvider.GetInserts(object[] entities = null)
+        {
+            return GetInserts(entities).Select(_ => (IEntityCrudOperationBase)_).ToList();
+        }
+
+        public List<AddEntityOperation<T>> GetInserts(object[] entities = null)
         {
             var inserts = new List<AddEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
@@ -345,7 +352,12 @@ namespace Iql.Data.Tracking
             return inserts;
         }
 
-        public IEnumerable<IEntityCrudOperationBase> GetDeletions(object[] entities = null)
+        List<IEntityCrudOperationBase> IDataChangeProvider.GetDeletions(object[] entities = null)
+        {
+            return GetDeletions(entities).Select(_ => (IEntityCrudOperationBase)_).ToList();
+        }
+
+        public List<DeleteEntityOperation<T>> GetDeletions(object[] entities = null)
         {
             var deletions = new List<DeleteEntityOperation<T>>();
             foreach (var key in EntitiesByRemoteKey)
@@ -382,7 +394,12 @@ namespace Iql.Data.Tracking
             return deletions;
         }
 
-        public IEnumerable<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null)
+        List<IUpdateEntityOperation> IDataChangeProvider.GetUpdates(object[] entities = null, IProperty[] properties = null)
+        {
+            return GetUpdates(entities, properties).Select(_ => (IUpdateEntityOperation)_).ToList();
+        }
+
+        public List<UpdateEntityOperation<T>> GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
             var updates = new List<UpdateEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
@@ -480,7 +497,7 @@ namespace Iql.Data.Tracking
 
         public string SerializeToJson()
         {
-            return JsonConvert.SerializeObject(PrepareForJson());
+            return this.ToJson();
         }
 
         public object PrepareForJson()

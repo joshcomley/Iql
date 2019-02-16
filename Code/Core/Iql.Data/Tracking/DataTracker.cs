@@ -7,9 +7,7 @@ using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
-using Iql.Data.Crud.Operations.Results;
 using Iql.Data.Extensions;
-using Iql.Data.Lists;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
@@ -18,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking
 {
-    public class DataTracker : IJsonSerializable
+    public class DataTracker : IJsonSerializable, IDataChangeProvider
     {
         public DataTrackerKind Kind { get; }
         public DataTracker(
@@ -65,14 +63,16 @@ namespace Iql.Data.Tracking
 
         public string SerializeToJson()
         {
-            return JsonConvert.SerializeObject(PrepareForJson());
+            return this.ToJson();
         }
 
         public object PrepareForJson()
         {
             return new
             {
-                Sets = Sets.Select(_ => _.PrepareForJson())
+                Sets = Sets
+                    .Where(_ => _.GetQueuedChanges().Length > 0)
+                    .Select(_ => _.PrepareForJson())
             };
         }
 
@@ -242,50 +242,6 @@ namespace Iql.Data.Tracking
         //        set.TrackEntity(obj.Entity);
         //    }
         //}
-
-        private IEnumerable<IQueuedOperation> GetQueuedOperations(object[] entities = null,
-            IProperty[] properties = null)
-        {
-            var changes = new List<IQueuedOperation>();
-            GetDeletions(entities).ForEach(deletion =>
-            {
-                var queuedOperation =
-                    Activator.CreateInstance(
-                        typeof(QueuedDeleteEntityOperation<>).MakeGenericType(deletion.EntityType), deletion, null);
-                changes.Add((IQueuedOperation)queuedOperation);
-            });
-            GetUpdates(entities, properties).ForEach(update =>
-            {
-                var queuedOperation =
-                    Activator.CreateInstance(
-                        typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
-                changes.Add((IQueuedOperation)queuedOperation);
-            });
-            GetInserts(entities).ForEach(insert =>
-            {
-                var queuedOperation =
-                    Activator.CreateInstance(
-                        typeof(QueuedAddEntityOperation<>).MakeGenericType(insert.EntityType), insert, null);
-                changes.Add((IQueuedOperation)queuedOperation);
-            });
-            return changes;
-        }
-
-        public virtual IQueuedOperation Filter<TEntity>(
-            IQueuedOperation operation) where TEntity : class
-        {
-            switch (operation.Operation.Type)
-            {
-                case OperationType.Add:
-                    break;
-                case OperationType.Delete:
-                    break;
-                case OperationType.Update:
-                    break;
-            }
-
-            return operation;
-        }
 
         public void HardReset(Dictionary<Type, IList> entities)
         {
@@ -666,25 +622,7 @@ namespace Iql.Data.Tracking
 
         public IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null)
         {
-            var queue = new List<IQueuedOperation>();
-            var queuedOperations = GetQueuedOperations(entities, properties).ToArray();
-            for (var i = 0; i < queuedOperations.Length; i++)
-            {
-                var operation = queuedOperations[i];
-                var filteredOperation = GetType()
-                        .GetMethod(nameof(Filter))
-                        .InvokeGeneric(this, new object[]
-                        {
-                            operation
-                        }, operation.Operation.EntityType)
-                    as IQueuedOperation;
-                if (filteredOperation != null)
-                {
-                    queue.Add(filteredOperation);
-                }
-            }
-
-            return queue.ToArray();
+            return this.GetQueuedChanges(entities, properties);
         }
 
         private class TrackCollectionResult
@@ -702,26 +640,11 @@ namespace Iql.Data.Tracking
         internal static void ForAnEntityAcrossAllDataTrackers(
             CompositeKey key, Action<DataTracker, CompositeKey> action, IDataContext dataContext = null)
         {
-            // This needs to also accept a CompositeKey
-            //var sourceEntity = entity as IEntity;
-            //var alreadyEmitted = new Dictionary<string, string>();
-            //var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
             ForAllDataTrackers(dataTracker =>
                 {
-                    //var keyString = key.AsKeyString();
-                    //if (!alreadyEmitted.ContainsKey(keyString))
-                    //{
-                    //    alreadyEmitted.Add(keyString, keyString);
-                    //}
                     action(dataTracker, key);
                 },
                 dataContext);
-            //if (sourceEntity != null && !dataTrackersDealtWith.ContainsKey(DataTracker) &&
-            //    !alreadyEmitted.ContainsKey(sourceEntity))
-            //{
-            //    var entityState = Tracking.TrackingSet<TEntity>().GetEntityState(entity);
-            //    action(DataTracker, (EntityState<TEntity>)entityState);
-            //}
         }
     }
 }

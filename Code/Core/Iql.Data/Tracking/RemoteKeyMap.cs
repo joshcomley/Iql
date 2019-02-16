@@ -1,6 +1,7 @@
 using System.Linq;
 using Iql.Conversion;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Extensions;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Newtonsoft.Json;
@@ -22,7 +23,7 @@ namespace Iql.Data.Tracking
 
         public string SerializeToJson()
         {
-            return JsonConvert.SerializeObject(PrepareForJson());
+            return this.ToJson();
         }
 
         public object PrepareForJson()

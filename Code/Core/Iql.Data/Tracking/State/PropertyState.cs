@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Iql.Conversion;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Extensions;
 using Iql.Entities;
@@ -214,7 +215,7 @@ namespace Iql.Data.Tracking.State
 
         public string SerializeToJson()
         {
-            return JsonConvert.SerializeObject(PrepareForJson());
+            return this.ToJson();
         }
 
         public object PrepareForJson()
