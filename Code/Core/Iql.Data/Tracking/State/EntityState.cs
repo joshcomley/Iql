@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Iql.Conversion;
+using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
@@ -139,6 +140,25 @@ namespace Iql.Data.Tracking.State
 
         public Guid? PersistenceKey { get; set; }
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
+        public void Restore(SerializedEntityState state)
+        {
+            for (var i = 0; i < state.PropertyStates.Length; i++)
+            {
+                var deserializedPropertyState = state.PropertyStates[i];
+                GetPropertyState(deserializedPropertyState.Property)
+                    .Restore(deserializedPropertyState);
+            }
+            MarkedForDeletion = state.MarkedForDeletion;
+            MarkedForCascadeDeletion = state.MarkedForCascadeDeletion;
+            if (state.PersistenceKey != null)
+            {
+                PersistenceKey = state.PersistenceKey.EnsureGuid();
+            }
+
+            IsNew = state.IsNew;
+            CurrentKey = state.CurrentKey.ToCompositeKey(EntityConfiguration);
+        }
+
         public bool Floating { get; set; }
         public DataTracker DataTracker { get; }
         public T Entity { get; }

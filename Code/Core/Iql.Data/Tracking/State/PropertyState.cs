@@ -213,6 +213,12 @@ namespace Iql.Data.Tracking.State
             //_hasChanged = false;
         }
 
+        public void Restore(Conversion.State.SerializedPropertyState state)
+        {
+            LocalValue = state.LocalValue;
+            RemoteValue = state.RemoteValue;
+        }
+
         public string SerializeToJson()
         {
             return this.ToJson();

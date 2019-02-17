@@ -34,7 +34,7 @@ namespace Iql.Tests.Tests.Offline
         public static OfflineAppDbContext Db => _db;
 
         [TestMethod]
-        public async Task SerializeState()
+        public async Task SerializeAndDeserializeState()
         {
             Db.IsOffline = false;
             var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
@@ -43,12 +43,18 @@ namespace Iql.Tests.Tests.Offline
             client.TypeId = 2;
             client.Type.Name = "A new name";
             var entityState = Db.GetEntityState(client);
-            var json = Db.TemporalDataTracker.SerializeToJson();
-            var state = JsonConvert.DeserializeObject(json, typeof(TrackingState));
-            var compressedJson = json.CompressJson();
+            var jsonWithChanges = Db.TemporalDataTracker.SerializeToJson();
             Assert.AreEqual(
                 @"{""Sets"":[{""Type"":""Client"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":1}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":1,""LocalValue"":2,""Property"":""TypeId""},{""RemoteValue"":""Coca-Cola"",""LocalValue"":""Changed"",""Property"":""Name""}]}]},{""Type"":""ClientType"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":2}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":""Software"",""LocalValue"":""A new name"",""Property"":""Name""}]}]}]}",
-                compressedJson);
+                jsonWithChanges.CompressJson());
+            Db.TemporalDataTracker.AbandonChanges();
+            var jsonWithoutChanges = Db.TemporalDataTracker.SerializeToJson();
+            Assert.AreEqual(@"{}", jsonWithoutChanges.CompressJson());
+            Db.TemporalDataTracker.RestoreFromJson(jsonWithChanges);
+            var jsonWithChanges2 = Db.TemporalDataTracker.SerializeToJson();
+            Assert.AreEqual(jsonWithChanges, jsonWithChanges2);
+            // TODO: Now restore state to a new data context and verify GetChanges()
+            // TODO: Add a delete and an add to the changes and ensure they serialize/deserialize correctly
         }
 
         [TestMethod]

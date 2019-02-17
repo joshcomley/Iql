@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Conversion;
+using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.DataStores;
@@ -12,6 +13,7 @@ namespace Iql.Data.Tracking
 {
     public interface ITrackingSet : IJsonSerializable, IDataChangeProvider
     {
+        IEntityStateBase Restore(SerializedEntityState entityState);
         void RemoveEntityByKey(CompositeKey compositeKey);
         IEntityStateBase AddEntity(object entity);
         IEntityStateBase Synchronise(object entity, bool overrideChanges, bool isRemote);

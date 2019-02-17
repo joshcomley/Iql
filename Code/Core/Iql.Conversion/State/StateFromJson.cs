@@ -2,44 +2,42 @@
 
 namespace Iql.Conversion.State
 {
-    public partial class TrackingState
+    public partial class SerializedTrackingState
     {
-        public bool TrackEntities { get; set; }
-        public Guid Id { get; set; }
-        public Set[] Sets { get; set; }
+        public SerializedSet[] Sets { get; set; }
     }
 
-    public partial class Set
+    public partial class SerializedSet
     {
         public string Type { get; set; }
-        public EntityState[] EntityStates { get; set; }
+        public SerializedEntityState[] EntityStates { get; set; }
     }
 
-    public partial class EntityState
+    public partial class SerializedEntityState
     {
-        public CurrentKey CurrentKey { get; set; }
+        public SerializedCompositeKey CurrentKey { get; set; }
         public object PersistenceKey { get; set; }
         public bool IsNew { get; set; }
         public bool MarkedForDeletion { get; set; }
         public bool MarkedForCascadeDeletion { get; set; }
-        public PropertyState[] PropertyStates { get; set; }
+        public SerializedPropertyState[] PropertyStates { get; set; }
     }
 
-    public partial class CurrentKey
+    public partial class SerializedCompositeKey
     {
-        public Key[] Keys { get; set; }
+        public SerializedKeyPart[] Keys { get; set; }
     }
 
-    public partial class Key
+    public partial class SerializedKeyPart
     {
         public string Name { get; set; }
         public long Value { get; set; }
     }
 
-    public partial class PropertyState
+    public partial class SerializedPropertyState
     {
-        public string RemoteValue { get; set; }
-        public string LocalValue { get; set; }
+        public object RemoteValue { get; set; }
+        public object LocalValue { get; set; }
         public string Property { get; set; }
     }
 }

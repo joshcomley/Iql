@@ -1,4 +1,5 @@
 ﻿using Iql.Conversion;
+using Iql.Conversion.State;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
@@ -19,5 +20,6 @@ namespace Iql.Data.Crud.Operations
         void SoftReset();
         IPropertyState Copy();
         void AbandonChange();
+        void Restore(SerializedPropertyState state);
     }
 }

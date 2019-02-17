@@ -12,6 +12,19 @@ namespace Iql.Data.Extensions
 {
     public static class TrackingExensions
     {
+        public static Guid? EnsureGuid(this object persistenceKey)
+        {
+            if (persistenceKey is string)
+            {
+                return new Guid(persistenceKey as string);
+            }
+            if (persistenceKey is Guid)
+            {
+                return (Guid)persistenceKey;
+            }
+            return null;
+        }
+
         public static IQueuedOperation[] GetQueuedChanges(
             this IDataChangeProvider changeProvider, 
             object[] entities = null, 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Iql.Conversion;
+using Iql.Conversion.State;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
 using Iql.Entities;
@@ -11,6 +12,7 @@ namespace Iql.Data.Tracking.State
 {
     public interface IEntityStateBase : IJsonSerializable
     {
+        void Restore(SerializedEntityState state);
         bool Floating { get; set; }
         DataTracker DataTracker { get; }
         object Entity { get; }

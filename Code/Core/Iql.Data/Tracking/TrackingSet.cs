@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Conversion;
+using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
@@ -605,6 +606,32 @@ namespace Iql.Data.Tracking
             var entityStateByKey = GetEntityStateByKey(result.CompositeKey);
             result.State = entityStateByKey;
             return result;
+        }
+
+        public IEntityStateBase Restore(SerializedEntityState entityState)
+        {
+            var compositeKey = entityState.CurrentKey.ToCompositeKey(EntityConfiguration);
+
+            IEntityStateBase state = null;
+            var keyString = compositeKey.AsKeyString();
+            if (EntitiesByKey.ContainsKey(keyString))
+            {
+                state = EntitiesByKey[keyString];
+            }
+            if (entityState.PersistenceKey != null)
+            {
+                var guid = entityState.PersistenceKey.EnsureGuid();
+                state = guid.HasValue ? EntitiesByPersistenceKey[guid.Value] : null;
+            }
+
+            if (state == null)
+            {
+                var entity = Activator.CreateInstance(EntityConfiguration.Type);
+                state = CreateEntityState(entity);
+            }
+
+            state.Restore(entityState);
+            return state;
         }
 
         public void RemoveEntityByKey(CompositeKey compositeKey)

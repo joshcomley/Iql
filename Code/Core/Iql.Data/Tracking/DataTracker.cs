@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Iql.Conversion;
+using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
@@ -68,12 +69,18 @@ namespace Iql.Data.Tracking
 
         public object PrepareForJson()
         {
-            return new
+            var trackingSets = Sets
+                .Where(_ => _.GetQueuedChanges().Length > 0)
+                .ToArray();
+            if(trackingSets.Length == 0)
             {
-                Sets = Sets
-                    .Where(_ => _.GetQueuedChanges().Length > 0)
-                    .Select(_ => _.PrepareForJson())
-            };
+                return new { };
+            }
+            return new
+                {
+                    Sets = trackingSets
+                        .Select(_ => _.PrepareForJson())
+                };
         }
 
         public int GetPendingDependencyCount(object entity, Type entityType = null)
@@ -645,6 +652,35 @@ namespace Iql.Data.Tracking
                     action(dataTracker, key);
                 },
                 dataContext);
+        }
+
+        public void RestoreFromJson(string jsonWithChanges)
+        {
+            var deserialized = (SerializedTrackingState)JsonConvert.DeserializeObject(jsonWithChanges, typeof(SerializedTrackingState));
+            Restore(deserialized);
+        }
+
+        public void Restore(SerializedTrackingState deserialized)
+        {
+            AbandonChanges();
+            // Almost there...
+            for (var i = 0; i < deserialized.Sets.Length; i++)
+            {
+                var deserializedSet = deserialized.Sets[i];
+                var set = TrackingSetByTypeName(deserializedSet.Type);
+                for (var j = 0; j < deserializedSet.EntityStates.Length; j++)
+                {
+                    var entityState = deserializedSet.EntityStates[j];
+                    set.Restore(entityState);
+                }
+            }
+        }
+
+        public ITrackingSet TrackingSetByTypeName(string typeName)
+        {
+            var entityConfiguration = EntityConfigurationBuilder.GetEntityByTypeName(typeName);
+            var set = TrackingSetByType(entityConfiguration.Type);
+            return set;
         }
     }
 }
