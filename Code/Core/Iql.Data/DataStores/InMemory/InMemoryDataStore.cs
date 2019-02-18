@@ -14,7 +14,6 @@ using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Extensions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Iql.Data.DataStores.InMemory
 {

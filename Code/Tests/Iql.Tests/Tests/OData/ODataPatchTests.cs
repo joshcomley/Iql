@@ -34,7 +34,7 @@ namespace Iql.Tests.Tests.OData
                 Assert.AreEqual(@"{
   ""Name"": ""Some new name"",
   ""Id"": 0
-}".CompressJson(), request.Body.Body.CompressJson());
+}".NormalizeJson(), request.Body.Body.NormalizeJson());
                 Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", request.Uri);
                 client.Name = "Some new name 2";
                 client.Description = "Some new description 2";
@@ -44,7 +44,7 @@ namespace Iql.Tests.Tests.OData
                 Assert.AreEqual(@"{
   ""Description"": ""Some new description 2"",
   ""Id"": 0
-}".CompressJson(), request.Body.Body.CompressJson());
+}".NormalizeJson(), request.Body.Body.NormalizeJson());
                 Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", request.Uri);
             });
         }
@@ -66,7 +66,7 @@ namespace Iql.Tests.Tests.OData
                 Assert.AreEqual(@"{
   ""Name"": ""Some new name"",
   ""Id"": 0
-}".CompressJson(), request.Body.Body.CompressJson());
+}".NormalizeJson(), request.Body.Body.NormalizeJson());
                 Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", request.Uri);
             });
         }
@@ -96,7 +96,7 @@ namespace Iql.Tests.Tests.OData
                 Assert.AreEqual(@"{
   ""PersonId"": 2,
   ""TypeId"": 1
-}".CompressJson(), request.Body.Body.CompressJson());
+}".NormalizeJson(), request.Body.Body.NormalizeJson());
             });
         }
     }

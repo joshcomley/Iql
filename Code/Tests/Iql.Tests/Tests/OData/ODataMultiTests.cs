@@ -59,7 +59,7 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(@"{
   ""Name"": ""Some new name"",
   ""Id"": 0
-}".CompressJson(), patch.Body.Body.CompressJson());
+}".NormalizeJson(), patch.Body.Body.NormalizeJson());
             Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", patch.Uri);
         }
 
@@ -81,7 +81,7 @@ namespace Iql.Tests.Tests.OData
   ""CreatedDate"": ""2018-01-01T00:00:00.0+00:00"",
   ""Version"": 0,
   ""PersistenceKey"": ""e4a693fc-1041-4dd9-9f57-7097dd7053a3""
-}".CompressJson(), request.Body.Body.CompressJson());
+}".NormalizeJson(), request.Body.Body.NormalizeJson());
         }
     }
 }

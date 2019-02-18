@@ -63,7 +63,7 @@ namespace Iql.Tests.Tests.OData
                 Assert.AreEqual(0, changes.Count);
                 Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);
                 var body = request.Body.Body;
-                var compressed = body.CompressJson();
+                var compressed = body.NormalizeJson();
                 Assert.AreEqual(@"{
   ""Id"": 0,
   ""TypeId"": 7,
@@ -72,7 +72,7 @@ namespace Iql.Tests.Tests.OData
   ""CreatedDate"": ""2018-01-01T00:00:00.0+00:00"",
   ""Version"": 0,
   ""PersistenceKey"": ""e4a693fc-1041-4dd9-9f57-7097dd7053a3""
-}".CompressJson(), compressed);
+}".NormalizeJson(), compressed);
                 await db.SaveChangesAsync();
                 Assert.AreEqual(0, log.Posts.Count);
             });
@@ -100,7 +100,7 @@ namespace Iql.Tests.Tests.OData
                 Assert.AreEqual(0, changes.Count);
                 Assert.AreEqual("http://localhost:28000/odata/People", request.Uri);
                 var body = request.Body.Body;
-                var compressed = body.CompressJson();
+                var compressed = body.NormalizeJson();
                 Assert.AreEqual(@"{
   ""Id"": 0,
   ""Title"": ""Dummy"",
@@ -109,7 +109,7 @@ namespace Iql.Tests.Tests.OData
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",
   ""CreatedDate"": ""0001-01-01T00:00:00.0+00:00"",
   ""PersistenceKey"": ""eb6f72b5-ba5c-49c5-b34b-832bb172d353""
-}".CompressJson(), compressed);
+}".NormalizeJson(), compressed);
                 await db.SaveChangesAsync();
                 Assert.AreEqual(0, log.Posts.Count);
             });
@@ -139,7 +139,7 @@ namespace Iql.Tests.Tests.OData
                 Assert.AreEqual(0, changes.Count);
                 Assert.AreEqual("http://localhost:28000/odata/Sites", request.Uri);
                 var body = request.Body.Body;
-                var compressed = body.CompressJson();
+                var compressed = body.NormalizeJson();
                 Assert.AreEqual(@"{
   ""Id"": 0,
   ""Location"": {
@@ -195,7 +195,7 @@ namespace Iql.Tests.Tests.OData
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",
   ""CreatedDate"": ""0001-01-01T00:00:00.0+00:00"",
   ""PersistenceKey"": ""90a702bd-9d2b-444e-ad3e-2ef15c31e016""
-}".CompressJson(), compressed);
+}".NormalizeJson(), compressed);
                 await db.SaveChangesAsync();
                 Assert.AreEqual(0, log.Posts.Count);
             });

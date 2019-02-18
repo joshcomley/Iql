@@ -48,10 +48,10 @@ namespace Iql.Tests.Tests.Offline
             var jsonWithChanges = Db.TemporalDataTracker.SerializeToJson();
             Assert.AreEqual(
                 @"{""Sets"":[{""Type"":""Client"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":1}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":1,""LocalValue"":2,""Property"":""TypeId""},{""RemoteValue"":""Coca-Cola"",""LocalValue"":""Changed"",""Property"":""Name""}]}]},{""Type"":""ClientType"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":2}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":""Software"",""LocalValue"":""A new name"",""Property"":""Name""}]}]}]}",
-                jsonWithChanges.CompressJson());
+                jsonWithChanges.NormalizeJson());
             Db.TemporalDataTracker.AbandonChanges();
             var jsonWithoutChanges = Db.TemporalDataTracker.SerializeToJson();
-            Assert.AreEqual(@"{}", jsonWithoutChanges.CompressJson());
+            Assert.AreEqual(@"{}", jsonWithoutChanges.NormalizeJson());
             Db.TemporalDataTracker.RestoreFromJson(jsonWithChanges);
             var jsonWithChanges2 = Db.TemporalDataTracker.SerializeToJson();
             Assert.AreEqual(jsonWithChanges, jsonWithChanges2);
@@ -62,9 +62,9 @@ namespace Iql.Tests.Tests.Offline
         public async Task SerializeAndDeserializeStore()
         {
             var json = Db.DataStore.SerializeEntitiesToJson();
-            var compressedJson = json.CompressJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Coca-Cola"",""AverageSales"":0.0,""AverageIncome"":12.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""Name"":""Pepsi"",""AverageSales"":0.0,""AverageIncome"":33.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""Name"":""Microsoft"",""AverageSales"":0.0,""AverageIncome"":97.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]}]",
-                compressedJson);
+            var normalizedJson = json.NormalizeJson();
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]}]",
+                normalizedJson);
             var sets = JsonDataSerializer.DeserializeEntitySets(Db.EntityConfigurationContext, json);
             Assert.AreEqual(2, sets.Count);
             var clients = sets[Db.EntityConfigurationContext.EntityType<Client>()];

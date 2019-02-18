@@ -10,7 +10,7 @@ namespace Iql.JavaScript.Extensions
             var json = JsonConvert.SerializeObject(expression);
             if (NormalizeJson)
             {
-                json = json.CompressJson();
+                json = json.NormalizeJson();
             }
             return $"JSON.parse('{json}')";
         }
