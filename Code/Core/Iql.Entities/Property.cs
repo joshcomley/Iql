@@ -118,7 +118,7 @@ namespace Iql.Entities
                     }
                 }
 
-                return PropertySetterTyped((TOwner)o, (TProperty)v);
+                return PropertySetterTyped((TOwner)o, (TProperty)TypeDefinition.EnsureValueType(v));
             };
         }
 

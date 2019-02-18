@@ -53,7 +53,9 @@ namespace Iql.Serialization
             {
                 return value;
             }
-            return Convert.ChangeType(value, type);
+
+            var underlyingType = Nullable.GetUnderlyingType(type);
+            return Convert.ChangeType(value, underlyingType ?? type);
 #else
             if (type == typeof(String) && !(value is String))
             {
