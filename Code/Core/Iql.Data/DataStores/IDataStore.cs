@@ -14,6 +14,7 @@ namespace Iql.Data.DataStores
 {
     public interface IDataStore
     {
+        string SerializeEntitiesToJson();
         EventEmitter<DataSetRetrievedEvent> DataSetRetrieved { get; }
         EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
         IOfflineDataStore OfflineDataStore { get; set; }

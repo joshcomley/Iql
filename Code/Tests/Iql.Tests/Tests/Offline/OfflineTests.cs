@@ -4,6 +4,7 @@ using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.DataStores;
+using Iql.Data.Serialization;
 using Iql.Entities;
 using Iql.JavaScript.Extensions;
 #if TypeScript
@@ -37,6 +38,7 @@ namespace Iql.Tests.Tests.Offline
         public async Task SerializeAndDeserializeState()
         {
             Db.IsOffline = false;
+            
             var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
             var client = clients.First();
             client.Name = "Changed";
@@ -55,6 +57,19 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(jsonWithChanges, jsonWithChanges2);
             // TODO: Now restore state to a new data context and verify GetChanges()
             // TODO: Add a delete and an add to the changes and ensure they serialize/deserialize correctly
+        }
+        [TestMethod]
+        public async Task SerializeAndDeserializeStore()
+        {
+            var json = Db.DataStore.SerializeEntitiesToJson();
+            var compressedJson = json.CompressJson();
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Coca-Cola"",""AverageSales"":0.0,""AverageIncome"":12.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""Name"":""Pepsi"",""AverageSales"":0.0,""AverageIncome"":33.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""Name"":""Microsoft"",""AverageSales"":0.0,""AverageIncome"":97.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]}]",
+                compressedJson);
+            var sets = JsonDataSerializer.DeserializeEntitySets(Db.EntityConfigurationContext, json);
+            Assert.AreEqual(2, sets.Count);
+            var clients = sets[Db.EntityConfigurationContext.EntityType<Client>()];
+            Assert.AreEqual(3, clients.Count);
+            Assert.AreEqual("Coca-Cola", (clients[0] as Client).Name);
         }
 
         [TestMethod]

@@ -1,4 +1,4 @@
-﻿namespace Iql.OData.Extensions
+﻿namespace Iql.Data.Extensions
 {
     public static class StringExtensions
     {

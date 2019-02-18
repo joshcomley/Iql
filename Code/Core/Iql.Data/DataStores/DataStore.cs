@@ -9,10 +9,12 @@ using Iql.Entities.Events;
 
 namespace Iql.Data.DataStores
 {
-    public class DataStore : IDataStore
+    public abstract class DataStore : IDataStore
     {
         private EntityConfigurationBuilder _entityConfigurationBuilder;
         private IOfflineDataStore _offlineDataStore;
+        public abstract string SerializeEntitiesToJson();
+
         public EventEmitter<DataSetRetrievedEvent> DataSetRetrieved { get; }
         public DataStore(IOfflineDataStore offlineDataStore = null)
         {

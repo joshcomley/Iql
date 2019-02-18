@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Data.Context;
@@ -8,14 +9,53 @@ using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Extensions;
-using Iql.OData.Extensions;
-using Iql.Queryable.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Iql.OData.Json
+namespace Iql.Data.Serialization
 {
-    public static class JsonSerializer
+    public abstract class DeserializeResult<T>
+    {
+        public abstract T Deserialize(bool ensureType = false);
+
+        public IEntityConfiguration EntityConfiguration { get; }
+
+        protected DeserializeResult(IEntityConfiguration entityConfiguration)
+        {
+            EntityConfiguration = entityConfiguration;
+        }
+    }
+    public class DeserializeCollectionResult<T> : DeserializeResult<IEnumerable<T>>
+    {
+        public JObject Root { get; set; }
+
+        public DeserializeCollectionResult(IEntityConfiguration entityConfiguration, JObject root) : base(entityConfiguration)
+        {
+            Root = root;
+        }
+
+        public override IEnumerable<T> Deserialize(bool ensureType = false)
+        {
+            return Root.ToObject<T[]>();
+        }
+    }
+
+    public class DeserializeSingleResult<T> : DeserializeResult<T>
+    {
+        public JObject Root { get; set; }
+
+        public DeserializeSingleResult(IEntityConfiguration entityConfiguration, JObject root) : base(entityConfiguration)
+        {
+            Root = root;
+        }
+
+        public override T Deserialize(bool ensureType = false)
+        {
+            return Root.ToObject<T>();
+        }
+    }
+
+    public static class JsonDataSerializer
     {
         public static string NormalizeDate(this DateTimeOffset offset)
         {
@@ -26,15 +66,167 @@ namespace Iql.OData.Json
             return iso;
         }
 
-        public static string Serialize(object entity,
-            IEntityConfigurationBuilder entityConfigurationBuilder,
-            params IPropertyState[] properties)
+        //public static List<JObject> PrepareListForSerialization(IList entities,
+        //    IEntityConfiguration entityConfiguration,
+        //    params IPropertyState[] properties)
+        //{
+        //    var all = new List<JObject>();
+        //    var arr = entities as object[] ?? entities.ToArray();
+        //    for (var i = 0; i < arr.Length; i++)
+        //    {
+        //        var entity = arr[i];
+        //        all.Add(SerializeInternal(entityConfiguration, entity, properties));
+        //    }
+
+        //    return all;
+        //}
+
+        class SerializedEntitySet
         {
-            var obj = SerializeInternal(entityConfigurationBuilder, entity, properties);
-            return obj.ToString();
+            public string Type { get; set; }
+            public JArray Entities { get; set; }
         }
 
-        private static JObject SerializeInternal(IEntityConfigurationBuilder entityConfigurationBuilder, object entity, IEnumerable<IPropertyState> properties)
+        public static Dictionary<IEntityConfiguration, IList> DeserializeEntitySets(EntityConfigurationBuilder builder, string json)
+        {
+            var dictionary = new Dictionary<IEntityConfiguration, IList>();
+            var deserialized = (SerializedEntitySet[])JsonConvert.DeserializeObject(json, typeof(SerializedEntitySet[]));
+            foreach (var set in deserialized)
+            {
+                var entityConfiguration = builder.GetEntityByTypeName(set.Type);
+                var genericList = ListExtensions.NewGenericList(entityConfiguration.Type);
+                foreach (var entity in set.Entities)
+                {
+                    var parsed = ParseEntityInternal(entity, entityConfiguration, false);
+                    var entityResult = parsed.ToObject(entityConfiguration.Type);
+                    entityResult = builder.EnsureTypedEntityByType(entityResult, entityConfiguration.Type, false);
+                    genericList.Add(entityResult);
+                }
+                dictionary.Add(entityConfiguration, genericList);
+            }
+            return dictionary;
+        }
+
+        public static List<JObject> PrepareCollectionForSerialization(IEnumerable entities,
+            IEntityConfiguration entityConfiguration,
+            params IPropertyState[] properties)
+        {
+            var all = new List<JObject>();
+            foreach (var entity in entities)
+            {
+                all.Add(SerializeInternal(entityConfiguration, entity, properties));
+            }
+            return all;
+        }
+
+        public static JObject PrepareEntityForSerialization(object entity,
+            IEntityConfiguration entityConfiguration,
+            params IPropertyState[] properties)
+        {
+            var obj = SerializeInternal(entityConfiguration, entity, properties);
+            return obj;
+        }
+
+        public static string SerializeEntityToJson(object entity,
+            IEntityConfiguration entityConfigurationBuilder,
+            params IPropertyState[] properties)
+        {
+            return PrepareEntityForSerialization(entity, entityConfigurationBuilder, properties).ToString();
+        }
+
+        public static DeserializeCollectionResult<T> DeserializeCollection<T>(string json,
+            IEntityConfiguration entityConfiguration)
+        {
+            var odataResultRoot = JObject.Parse(json);
+            ParseEntityInternal(odataResultRoot, entityConfiguration, true);
+            return new DeserializeCollectionResult<T>(entityConfiguration, odataResultRoot);
+        }
+
+        public static DeserializeSingleResult<T> DeserializeEntity<T>(string json,
+            IEntityConfiguration entityConfiguration)
+        {
+            var odataResultRoot = JObject.Parse(json);
+            ParseEntityInternal(odataResultRoot, entityConfiguration, false);
+            return new DeserializeSingleResult<T>(entityConfiguration, odataResultRoot);
+        }
+
+        public static void ParseSerializedValue(JToken jvalue, IEntityConfiguration entityType)
+        {
+            ParseEntityInternal(jvalue, entityType, false);
+        }
+
+        private static JToken ParseEntityInternal(JToken jvalue, IEntityConfiguration entityType, bool isCollectionRoot, IProperty property = null)
+        {
+            if (property != null)
+            {
+                if (property.TypeDefinition.Kind.IsGeographic())
+                {
+                    return jvalue as JObject == null ? null : JObject.FromObject(JsonDataSerializer.ConvertODataGeographyToIqlGeography(jvalue as JObject, property.TypeDefinition.Kind));
+                }
+            }
+            if (jvalue is JArray)
+            {
+                foreach (var child in (JArray)jvalue)
+                {
+                    ParseEntityInternal(child, entityType, isCollectionRoot);
+                }
+            }
+            else if (jvalue is JObject)
+            {
+                var jobj = (JObject)jvalue;
+                foreach (var prop in jobj.Properties().ToArray())
+                {
+                    var value = jobj[prop.Name];
+                    const string odataKey = "@odata.";
+                    if (prop.Name.Contains(odataKey))
+                    {
+                        var index = prop.Name.IndexOf(odataKey);
+                        var odataName = prop.Name.Substring(index + odataKey.Length);
+                        var before = prop.Name.Substring(0, index);
+                        switch (odataName)
+                        {
+                            case "count":
+                                odataName = "Count";
+                                break;
+                        }
+                        jobj[before + odataName] = value;
+                        jobj.Remove(prop.Name);
+                    }
+
+                    if (!isCollectionRoot && entityType != null)
+                    {
+                        var entityProperty = entityType.Properties.SingleOrDefault(p => p.PropertyName == prop.Name);
+                        if (entityProperty != null)
+                        {
+                            if (entityProperty.Kind == PropertyKind.Relationship)
+                            {
+                                jobj[prop.Name] = ParseEntityInternal(value, entityProperty.Relationship.OtherEnd.EntityConfiguration, false, entityProperty);
+                            }
+                            else
+                            {
+                                jobj[prop.Name] = ParseEntityInternal(value, entityType, false, entityProperty);
+                            }
+                        }
+                    }
+                }
+
+                if (isCollectionRoot)
+                {
+                    var collection = jobj["value"] as JArray;
+                    foreach (var entity in collection)
+                    {
+                        ParseEntityInternal(entity, entityType, false);
+                    }
+                }
+            }
+
+            return jvalue;
+        }
+
+        private static JObject SerializeInternal(
+            IEntityConfiguration entityConfiguration, 
+            object entity, 
+            IEnumerable<IPropertyState> properties)
         {
             var obj = new JObject();
             if (properties == null)
@@ -47,47 +239,11 @@ namespace Iql.OData.Json
                 var state = DataContext.FindEntityState(entity);
                 if (state?.IsNew != false)
                 {
-                    propertyChanges = entityConfigurationBuilder.EntityNonNullProperties(entity).ToArray();
+                    propertyChanges = entityConfiguration.Builder.EntityNonNullProperties(entity).ToArray();
                 }
             }
             foreach (var property in propertyChanges)
             {
-                //if (property.ChildChangedProperties.Any() || property.Property.ElementType.IsClass &&
-                //    !typeof(string).IsAssignableFrom(property.Property.ElementType))
-                //{
-                //    var memberType = entity.GetPropertyValue(property.Property).GetType();
-                //    if (typeof(IEnumerable).IsAssignableFrom(memberType))
-                //    {
-                //        var enumerable = (IEnumerable)entity.GetPropertyValue(property.Property);
-                //        var array = new JArray();
-                //        var i = 0;
-                //        foreach (var item in enumerable)
-                //        {
-                //            if (property.EnumerableChangedProperties.ContainsKey(i))
-                //            {
-                //                array.Add(SerializeInternal(dataContext, item, property.EnumerableChangedProperties[i]));
-                //            }
-                //            else
-                //            {
-                //                array.Add(SerializeInternal(dataContext, item, null));
-                //            }
-                //            i++;
-                //        }
-                //        obj[property.Property.Name] = array;
-                //    }
-                //    else
-                //    {
-                //        obj[property.Property.Name] = SerializeInternal(dataContext, entity.GetPropertyValue(property.Property), property.ChildChangedProperties);
-                //    }
-                //}
-                //else
-                //{
-                //    obj[property.Property.Name] = new JValue(entity.GetPropertyValue(property.Property));
-                //}
-                //if (property.Property.IsCollection)
-                //{
-                //    propertyValue = (propertyValue as IList).ToArray(property.Property.ElementType);
-                //}
                 var propertyValue = entity.GetPropertyValue(property.Property);
                 if (property.Property.Kind.HasFlag(PropertyKind.Count) || property.Property.Kind.HasFlag(PropertyKind.Relationship))
                 {
@@ -147,7 +303,7 @@ namespace Iql.OData.Json
                                     value = ((int)propertyValue).ToString();
                                 }
                             }
-                            else if(enumUnderlyingType == typeof(short))
+                            else if (enumUnderlyingType == typeof(short))
                             {
                                 try
                                 {
@@ -174,7 +330,6 @@ namespace Iql.OData.Json
                     }
                 }
             }
-            var entityConfiguration = entityConfigurationBuilder.GetEntityByType(entity.GetType());
             foreach (var key in entityConfiguration.Key.Properties)
             {
                 if (propertyChanges.Any(p => p.Property.Name == key.Name))

@@ -55,5 +55,15 @@ namespace Iql.Data.DataStores.InMemory
             }
             return list.ToArray();
         }
+
+        public Dictionary<IEntityConfiguration, IList> AllDataSourceMaps()
+        {
+            var list = new Dictionary<IEntityConfiguration, IList>();
+            foreach (var source in _sources)
+            {
+                list.Add(Builder.GetEntityByTypeName(source.Key), (IList)source.Value.Compile().DynamicInvoke());
+            }
+            return list;
+        }
     }
 }

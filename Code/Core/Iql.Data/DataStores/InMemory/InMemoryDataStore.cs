@@ -8,10 +8,13 @@ using Iql.Conversion;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
+using Iql.Data.Serialization;
 using Iql.Data.Tracking;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Extensions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Iql.Data.DataStores.InMemory
 {
@@ -60,6 +63,18 @@ namespace Iql.Data.DataStores.InMemory
         }
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
+
+        public override string SerializeEntitiesToJson()
+        {
+            var allSets = AllDataSetMaps().Select(_ =>
+                new
+                {
+                    Type = _.Key.Name,
+                    Entities = JsonDataSerializer.PrepareCollectionForSerialization(_.Value, _.Key)
+                }
+            );
+            return JsonConvert.SerializeObject(allSets);
+        }
 
         public override Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
             QueuedAddEntityOperation<TEntity> operation)
@@ -255,6 +270,20 @@ namespace Iql.Data.DataStores.InMemory
                 list.Add(source.Value);
             }
             return list.ToArray();
+        }
+
+        public Dictionary<IEntityConfiguration, IList> AllDataSetMaps()
+        {
+            if (Configuration != null)
+            {
+                return Configuration.AllDataSourceMaps();
+            }
+            var list = new Dictionary<IEntityConfiguration, IList>();
+            foreach (var source in _sources)
+            {
+                list.Add(EntityConfigurationBuilder.GetEntityByType(source.Key), source.Value);
+            }
+            return list;
         }
 
         public void Clear()

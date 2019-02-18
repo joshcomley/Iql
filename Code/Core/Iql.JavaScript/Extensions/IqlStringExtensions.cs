@@ -18,7 +18,7 @@ namespace Iql.JavaScript.Extensions
 #else
             JsonReader reader = new JsonTextReader(new StringReader(json));
             reader.DateParseHandling = DateParseHandling.None;
-            var jObject = JObject.Load(reader);
+            var jObject = JToken.Load(reader);
             return jObject.ToString(Formatting.None).Clean();
 #endif
         }

@@ -22,7 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using JsonSerializer = Iql.OData.Json.JsonSerializer;
+using Iql.Data.Serialization;
 
 namespace Iql.OData
 {
@@ -128,10 +128,11 @@ namespace Iql.OData
                             {
                                 if (parameter.Value != null)
                                 {
+                                    var entityConfiguration = EntityConfigurationBuilder.GetEntityByType(parameter.ValueType);
                                     jobject[parameter.Name] =
-                                        EntityConfigurationBuilder.GetEntityByType(parameter.ValueType) == null
+                                        entityConfiguration == null
                                             ? JToken.FromObject(parameter.Value)
-                                            : JToken.Parse(JsonSerializer.Serialize(parameter.Value, EntityConfigurationBuilder, EntityConfigurationBuilder.EntityNonNullProperties(parameter.Value).ToArray()));
+                                            : JToken.Parse(JsonDataSerializer.SerializeEntityToJson(parameter.Value, entityConfiguration, EntityConfigurationBuilder.EntityNonNullProperties(parameter.Value).ToArray()));
                                 }
                                 else
                                 {
@@ -284,11 +285,11 @@ namespace Iql.OData
         {
             var isValueResult = EntityConfigurationBuilder.GetEntityByType(typeof(TResult)) == null;
             var json = await httpResult.GetResponseTextAsync();
-            var odataResultRoot = JObject.Parse(json);
-            ParseObj(odataResultRoot, EntityConfigurationBuilder.GetEntityByType(typeof(TResult)), false);
-            var value = isValueResult ? odataResultRoot["value"] : odataResultRoot;
-            var oDataGetResult =
-                value.ToObject<TResult>();
+            var result = JsonDataSerializer.DeserializeEntity<TResult>(
+                json, 
+                EntityConfigurationBuilder.GetEntityByType(typeof(TResult)));
+            var value = isValueResult ? result.Root["value"] : result.Root;
+            var oDataGetResult = value.ToObject<TResult>();
             return oDataGetResult;
         }
 
@@ -303,82 +304,19 @@ namespace Iql.OData
         }
 
         private async Task<ODataCollectionResult<TEntity>> GetODataCollectionResponseAsync<TEntity>(IHttpResult httpResult)
+            where TEntity : class
         {
             var json = await httpResult.GetResponseTextAsync();
-            var odataResultRoot = JObject.Parse(json);
-            ParseObj(odataResultRoot, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), true);
-            var countToken = odataResultRoot["Count"];
+            var result = JsonDataSerializer.DeserializeCollection<TEntity>(json, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)));
+            var countToken = result.Root["Count"];
             var count = countToken?.ToObject<int?>();
-            var values = odataResultRoot["value"].ToObject<TEntity[]>();
+            var values = result.Root["value"].ToObject<TEntity[]>();
             return new ODataCollectionResult<TEntity>(values, count);
         }
 
-        private static JToken ParseObj(JToken jvalue, IEntityConfiguration entityType, bool isCollectionRoot, IProperty property = null)
+        public override string SerializeEntitiesToJson()
         {
-            if (property != null)
-            {
-                if (property.TypeDefinition.Kind.IsGeographic())
-                {
-                    return jvalue as JObject == null ? null : JObject.FromObject(JsonSerializer.ConvertODataGeographyToIqlGeography(jvalue as JObject, property.TypeDefinition.Kind));
-                }
-            }
-            if (jvalue is JArray)
-            {
-                foreach (var child in (JArray)jvalue)
-                {
-                    ParseObj(child, entityType, isCollectionRoot);
-                }
-            }
-            else if (jvalue is JObject)
-            {
-                var jobj = (JObject)jvalue;
-                foreach (var prop in jobj.Properties().ToArray())
-                {
-                    var value = jobj[prop.Name];
-                    const string odataKey = "@odata.";
-                    if (prop.Name.Contains(odataKey))
-                    {
-                        var index = prop.Name.IndexOf(odataKey);
-                        var odataName = prop.Name.Substring(index + odataKey.Length);
-                        var before = prop.Name.Substring(0, index);
-                        switch (odataName)
-                        {
-                            case "count":
-                                odataName = "Count";
-                                break;
-                        }
-                        jobj[before + odataName] = value;
-                        jobj.Remove(prop.Name);
-                    }
-
-                    if (!isCollectionRoot && entityType != null)
-                    {
-                        var entityProperty = entityType.Properties.SingleOrDefault(p => p.PropertyName == prop.Name);
-                        if (entityProperty != null)
-                        {
-                            if (entityProperty.Kind == PropertyKind.Relationship)
-                            {
-                                jobj[prop.Name] = ParseObj(value, entityProperty.Relationship.OtherEnd.EntityConfiguration, false, entityProperty);
-                            }
-                            else
-                            {
-                                jobj[prop.Name] = ParseObj(value, entityType, false, entityProperty);
-                            }
-                        }
-                    }
-                }
-
-                if (isCollectionRoot)
-                {
-                    var collection = jobj["value"] as JArray;
-                    foreach (var entity in collection)
-                    {
-                        ParseObj(entity, entityType, false);
-                    }
-                }
-            }
-
-            return jvalue;
+            throw new NotImplementedException();
         }
 
         public override async Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
@@ -387,7 +325,7 @@ namespace Iql.OData
             var configuration = Configuration;
             var http = configuration.HttpProvider;
             var entitySetUri = Configuration.ResolveEntitySetUri<TEntity>();
-            var json = JsonSerializer.Serialize(operation.Operation.Entity, EntityConfigurationBuilder);
+            var json = JsonDataSerializer.SerializeEntityToJson(operation.Operation.Entity, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)));
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             var responseData = await httpResult.GetResponseTextAsync();
             if (httpResult.IsOffline)
@@ -397,7 +335,7 @@ namespace Iql.OData
             else if (httpResult.Success)
             {
                 var odataResultRoot = JObject.Parse(responseData);
-                ParseObj(odataResultRoot, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), false);
+                JsonDataSerializer.ParseSerializedValue(odataResultRoot, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)));
                 operation.Result.RemoteEntity = odataResultRoot.ToObject<TEntity>();
             }
             operation.Result.Success = httpResult.Success;
@@ -419,16 +357,17 @@ namespace Iql.OData
                 properties.Add(property.Property.Name);
             }
 
-            var keys = EntityConfigurationBuilder.EntityType<TEntity>().Key.Properties;
+            var entityConfiguration = EntityConfigurationBuilder.EntityType<TEntity>();
+            var keys = entityConfiguration.Key.Properties;
             for (var i = 0; i < keys.Length; i++)
             {
                 var key = keys[i];
                 properties.Add(key.Name);
             }
 
-            var json = JsonSerializer.Serialize(
+            var json = JsonDataSerializer.SerializeEntityToJson(
                 operation.Operation.Entity,
-                EntityConfigurationBuilder,
+                entityConfiguration,
                 changedProperties);
             var httpResult = await http.Put(entityUri, new HttpRequest(json));
             //var remoteEntity = JsonConvert.DeserializeObject<TEntity>(result.ResponseData);
