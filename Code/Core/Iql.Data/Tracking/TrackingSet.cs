@@ -627,6 +627,11 @@ namespace Iql.Data.Tracking
             if (state == null)
             {
                 var entity = Activator.CreateInstance(EntityConfiguration.Type);
+                for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
+                {
+                    var key = EntityConfiguration.Key.Properties[i];
+                    key.SetValue(entity, compositeKey.Keys.Single(_ => _.Name == key.PropertyName).Value);
+                }
                 state = CreateEntityState(entity);
             }
 

@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.DataStores;
@@ -13,7 +12,6 @@ using Iql.Parsing;
 using Iql.Tests.Context;
 using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 
 namespace Iql.Tests.Tests.Offline
 {
@@ -35,11 +33,28 @@ namespace Iql.Tests.Tests.Offline
         public static OfflineAppDbContext Db => _db;
 
         [TestMethod]
+        public async Task RestoringStateAndFetchingPreChangedEntitiesShouldLeaveChangesIntact()
+        {
+            Db.IsOffline = false;
+            Db.Reset();
+            var changes = Db.GetChanges();
+            Assert.AreEqual(0, changes.Length);
+            Db.TemporalDataTracker.RestoreFromJson(@"{""Sets"":[{""Type"":""Client"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":1}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":1,""LocalValue"":2,""Property"":""TypeId""},{""RemoteValue"":""Coca-Cola"",""LocalValue"":""Changed"",""Property"":""Name""}]}]},{""Type"":""ClientType"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":2}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":""Software"",""LocalValue"":""A new name"",""Property"":""Name""}]}]}]}");
+            changes = Db.GetChanges();
+            Assert.AreEqual(2, Db.GetChanges().Length);
+            var clients = await Db.Clients.ToListAsync();
+            Assert.AreEqual(2, Db.GetChanges().Length);
+            var client = clients.Single(_ => _.Id == 1);
+            Assert.AreEqual("Changed", client.Name);
+            Assert.AreEqual(2, Db.GetChanges().Length);
+        }
+
+        [TestMethod]
         public async Task SerializeAndDeserializeState()
         {
             Db.IsOffline = false;
             var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
-            var client = clients.First();
+            var client = clients.First(_ => _.Id == 1);
             var oldClientTypeId = client.TypeId;
             var oldClientName = client.Name;
             var oldClientType = client.Type;

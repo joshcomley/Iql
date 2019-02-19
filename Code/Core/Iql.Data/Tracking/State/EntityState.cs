@@ -148,6 +148,7 @@ namespace Iql.Data.Tracking.State
                 GetPropertyState(deserializedPropertyState.Property)
                     .Restore(deserializedPropertyState);
             }
+
             MarkedForDeletion = state.MarkedForDeletion;
             MarkedForCascadeDeletion = state.MarkedForCascadeDeletion;
             if (state.PersistenceKey != null)
@@ -157,6 +158,11 @@ namespace Iql.Data.Tracking.State
 
             IsNew = state.IsNew;
             CurrentKey = state.CurrentKey.ToCompositeKey(EntityConfiguration);
+            for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
+            {
+                var key = EntityConfiguration.Key.Properties[i];
+                key.SetValue(Entity, CurrentKey.Keys.Single(_ => _.Name == key.PropertyName).Value);
+            }
         }
 
         public bool Floating { get; set; }
