@@ -21,6 +21,7 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
+        bool RefreshDisabled { get; set; }
         DbList<TEntity> TrackGetDataResult<TEntity>(
             FlattenedGetDataResult<TEntity> response)
             where TEntity : class;

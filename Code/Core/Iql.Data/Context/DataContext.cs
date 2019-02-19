@@ -1368,6 +1368,8 @@ namespace Iql.Data.Context
             }
         }
 
+        public bool RefreshDisabled { get; set; }
+
         public DbList<TEntity> TrackGetDataResult<TEntity>(
             FlattenedGetDataResult<TEntity> response)
             where TEntity : class
@@ -1436,6 +1438,7 @@ namespace Iql.Data.Context
                 }
 
                 DataStore.OfflineDataStore?.SynchroniseData(response.Data);
+                DataStore.OfflineDataStore?.SaveStateAsync();
                 
                 if (shouldTrackResults && !response.IsOffline)
                 {

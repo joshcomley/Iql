@@ -75,7 +75,7 @@ namespace Iql.Data.DataStores
         {
             throw new NotImplementedException();
         }
-        
+
         public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
             where TEntity : class

@@ -33,10 +33,65 @@ namespace Iql.Tests.Tests.Offline
         public static OfflineAppDbContext Db => _db;
 
         [TestMethod]
+        public async Task OfflineStoreShouldBeUpdatedWithEachRequest()
+        {
+        //    Db.
+        }
+
+        [TestMethod]
+        public async Task AddingAnEntityRemotelyShouldAlsoAddItToOfflineDataStore()
+        {
+            var clientSet = Db.OfflineDataStore.DataSet<Client>();
+            Assert.AreEqual(0, clientSet.Count);
+            var client = new Client();
+            client.Name = "Newly added client";
+            client.TypeId = 1;
+            Db.Clients.Add(client);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(1, clientSet.Count);
+        }
+
+        [TestMethod]
+        public async Task UpdatingAnEntityRemotelyShouldAlsoUpdateItInTheOfflineDataStore()
+        {
+            var clientSet = Db.OfflineDataStore.DataSet<Client>();
+            Assert.AreEqual(0, clientSet.Count);
+            var clients = await Db.Clients.ToListAsync();
+            var offlineClient = clientSet.Single(_ => _.Id == 1);
+            Assert.IsNotNull(offlineClient);
+            Assert.AreEqual(3, clients.Count);
+            var client = clients.First(_ => _.Id == 1);
+            client.Name = "Abc123";
+            Assert.AreEqual(1, Db.GetChanges().Length);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(0, Db.GetChanges().Length);
+            Assert.AreEqual("Abc123", offlineClient.Name);
+        }
+
+        [TestMethod]
+        public async Task DeletingAnEntityRemotelyShouldAlsoDeleteItFromTheOfflineDataStore()
+        {
+            var clientSet = Db.OfflineDataStore.DataSet<Client>();
+            Assert.AreEqual(0, clientSet.Count);
+            var client = new Client();
+            client.Name = "Newly added client";
+            client.TypeId = 1;
+            Db.Clients.Add(client);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(1, clientSet.Count);
+            Db.DeleteEntity(client);
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(0, clientSet.Count);
+        }
+
+        [TestMethod]
         public async Task RestoringStateAndFetchingPreChangedEntitiesShouldLeaveChangesIntact()
         {
             Db.IsOffline = false;
-            Db.Reset();
             var changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
             Db.TemporalDataTracker.RestoreFromJson(@"{""Sets"":[{""Type"":""Client"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":1}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":1,""LocalValue"":2,""Property"":""TypeId""},{""RemoteValue"":""Coca-Cola"",""LocalValue"":""Changed"",""Property"":""Name""}]}]},{""Type"":""ClientType"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":2}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":""Software"",""LocalValue"":""A new name"",""Property"":""Name""}]}]}]}");

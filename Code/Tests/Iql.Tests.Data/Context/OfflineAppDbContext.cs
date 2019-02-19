@@ -23,6 +23,7 @@ namespace Iql.Tests.Context
         {
             DataStore = new OfflinableInMemoryDataStore(new InMemoryDataStore());
             Reset();
+            RefreshDisabled = true;
         }
 
         public void Reset()

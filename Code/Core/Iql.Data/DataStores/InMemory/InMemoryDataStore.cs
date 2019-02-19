@@ -257,6 +257,16 @@ namespace Iql.Data.DataStores.InMemory
             return operation.Result;
         }
 
+        public virtual Task ClearStateAsync()
+        {
+            return Task.FromResult<object>(null);
+        }
+
+        public virtual Task SaveStateAsync()
+        {
+            return Task.FromResult<object>(null);
+        }
+
         public IList[] AllDataSets()
         {
             if (Configuration != null)
@@ -305,37 +315,72 @@ namespace Iql.Data.DataStores.InMemory
             }
         }
 
-        public Task<AddEntityResult<TEntity>> ScheduleAddAsync<TEntity>(QueuedAddEntityOperation<TEntity> operation) where TEntity : class
+        public Task ApplyAddAsync<TEntity>(QueuedAddEntityOperation<TEntity> operation) where TEntity : class
         {
-            operation.Result.Success = true;
-            return Task.FromResult(operation.Result);
+            var operationEntity = operation.Operation.Entity;
+            TrackEntity(operationEntity);
+            return Task.FromResult<object>(null);
         }
 
-        public Task<UpdateEntityResult<TEntity>> ScheduleUpdateAsync<TEntity>(QueuedUpdateEntityOperation<TEntity> operation) where TEntity : class
+        private void TrackEntity<TEntity>(TEntity operationEntity) where TEntity : class
         {
-            operation.Result.Success = true;
-            return Task.FromResult(operation.Result);
+            var list = new List<TEntity>();
+            list.Add(operationEntity);
+            SynchroniseDataTyped(list);
         }
 
-        public Task<DeleteEntityResult<TEntity>> ScheduleDeleteAsync<TEntity>(QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
+        public Task ApplyUpdateAsync<TEntity>(
+            QueuedUpdateEntityOperation<TEntity> operation,
+            IPropertyState[] changedProperties) where TEntity : class
         {
-            operation.Result.Success = true;
-            return Task.FromResult(operation.Result);
+            var match = TryFindEntity(operation.Operation.Entity, out var source);
+            if (match != null)
+            {
+                for (var i = 0; i < changedProperties.Length; i++)
+                {
+                    var propertyState = changedProperties[i];
+                    propertyState.Property.SetValue(match, propertyState.LocalValue);
+                }
+            }
+            else
+            {
+                TrackEntity(operation.Operation.Entity);
+            }
+            return Task.FromResult<object>(null);
+        }
+
+        public Task ApplyDeleteAsync<TEntity>(QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
+        {
+            var match = TryFindEntity(operation.Operation.Entity, out var source);
+            if (match != null)
+            {
+                source.Remove(match);
+            }
+            return Task.FromResult<object>(null);
+        }
+
+        private TEntity TryFindEntity<TEntity>(TEntity operationEntity, out IList<TEntity> source) where TEntity : class
+        {
+            source = DataSetByType(typeof(TEntity)) as IList<TEntity>;
+            var entityConfig = EntityConfigurationBuilder.GetEntityByType(typeof(TEntity));
+            var key = entityConfig.GetCompositeKey(operationEntity);
+            return source.SingleOrDefault(_ => entityConfig.GetCompositeKey(_).Matches(key));
         }
 
         private void SynchroniseDataTyped<T>(IList<T> data)
         {
             var source = DataSetByType(typeof(T)) as IList<T>;
             var entityConfig = EntityConfigurationBuilder.GetEntityByType(typeof(T));
-            foreach (var entity in data)
+            for (var i = 0; i < data.Count; i++)
             {
+                var entity = data[i];
                 var key = entityConfig.GetCompositeKey(entity);
                 var match = source.SingleOrDefault(_ => entityConfig.GetCompositeKey(_).Matches(key));
                 if (match != null)
                 {
                     source.Remove(match);
                 }
-                var clone = (T)entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.DoNotClone);
+                var clone = (T) entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.DoNotClone);
                 source.Add(clone);
             }
         }

@@ -130,14 +130,9 @@ namespace Iql.Data.Context
 #endif
                         if (remoteEntity != null && result.Success)
                         {
-                            var offlineEntityState =
-                                isOfflineResync
-                                    ? DataContext.OfflineDataTracker.TrackingSet<TEntity>()
-                                        .FindMatchingEntityState(localEntity)
-                                    : null;
                             if (!isOfflineResync)
                             {
-                                var state = DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
+                                DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
                             }
                             else
                             {
@@ -154,11 +149,19 @@ namespace Iql.Data.Context
                             //trackingSet.FindMatchingEntityState(localEntity).Reset();
                             DataContext.TemporalDataTracker.TrackingSet<TEntity>().Merge(
                                 localEntity, remoteEntity, true, true);
-                            await DataContext.RefreshEntity(localEntity
+
+                            if (!DataContext.RefreshDisabled)
+                            {
+                                await DataContext.RefreshEntity(localEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
                                 );
+                            }
+                            if (!isOffline && DataContext.DataStore.OfflineDataStore != null)
+                            {
+                                await DataContext.DataStore.OfflineDataStore?.ApplyAddAsync(addEntityOperation);
+                            }
                         }
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     }
@@ -188,6 +191,7 @@ namespace Iql.Data.Context
                         }
                         else
                         {
+                            var changedProperties = updateEntityOperation.Operation.GetChangedProperties();
                             var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
                             if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
                             {
@@ -252,11 +256,21 @@ namespace Iql.Data.Context
 
                                 }
                                 // TODO: Should be able to refresh an entity yet maintain existing changes
-                                await DataContext.RefreshEntity(operationEntity
+                                if (!DataContext.RefreshDisabled)
+                                {
+                                    await DataContext.RefreshEntity(operationEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
-                                );
+                                    );
+                                }
+
+                                if (!isOffline && DataContext.DataStore.OfflineDataStore != null)
+                                {
+                                    await DataContext.DataStore.OfflineDataStore.ApplyUpdateAsync(
+                                        updateEntityOperation,
+                                        changedProperties);
+                                }
                             }
                             else
                             {
@@ -330,6 +344,11 @@ namespace Iql.Data.Context
                                 deleteEntityOperation.Operation.Key,
                                 typeof(TEntity),
                                 isOffline);
+
+                            if (!isOffline && DataContext.DataStore.OfflineDataStore != null)
+                            {
+                                await DataContext.DataStore.OfflineDataStore?.ApplyDeleteAsync(deleteEntityOperation);
+                            }
                         }
                         else
                         {
