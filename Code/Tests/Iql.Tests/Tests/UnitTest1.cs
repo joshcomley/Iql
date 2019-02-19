@@ -711,16 +711,16 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(existingClient, changeOperation.EntityState.Entity);
             Assert.AreEqual(existingClient, changeOperation.Entity);
             var propertyChanges = changeOperation.EntityState.GetChangedProperties();
-            Assert.AreEqual(2, propertyChanges.Length);
+            Assert.AreEqual(1, propertyChanges.Length);
 
             var keyPropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.TypeId));
             Assert.IsNotNull(keyPropertyChange);
             Assert.AreEqual(clientType2.Id, keyPropertyChange.RemoteValue);
             Assert.AreEqual(clientType1.Id, keyPropertyChange.LocalValue);
-            var referencePropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.Type));
-            Assert.IsNotNull(referencePropertyChange);
-            Assert.AreEqual(clientType2, referencePropertyChange.RemoteValue);
-            Assert.AreEqual(clientType1, referencePropertyChange.LocalValue);
+            //var referencePropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.Type));
+            //Assert.IsNotNull(referencePropertyChange);
+            //Assert.AreEqual(clientType2, referencePropertyChange.RemoteValue);
+            //Assert.AreEqual(clientType1, referencePropertyChange.LocalValue);
 
             //var relationshipPropertyChange = propertyChanges.SingleOrDefault(p => p.Property.Name == nameof(Client.Type));
             //Assert.IsNotNull(relationshipPropertyChange);

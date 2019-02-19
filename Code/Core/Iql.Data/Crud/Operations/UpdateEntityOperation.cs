@@ -18,7 +18,7 @@ namespace Iql.Data.Crud.Operations
             : base(OperationType.Update, entity, dataContext)
         {
             Properties = properties;
-            EntityState = entityState?? dataContext.GetEntityState(entity
+            EntityState = entityState ?? dataContext.GetEntityState(entity
 #if TypeScript
             , typeof(T)
 #endif

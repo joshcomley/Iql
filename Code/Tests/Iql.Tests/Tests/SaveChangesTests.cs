@@ -309,16 +309,16 @@ namespace Iql.Tests.Tests
                 Assert.AreEqual(site, update.Operation.Entity);
 
                 var propertyChanges = update.Operation.EntityState.GetChangedProperties();
-                Assert.AreEqual(2, propertyChanges.Length);
+                Assert.AreEqual(1, propertyChanges.Length);
                 var propertyKeyChange = propertyChanges.First(p => p.Property.Name == nameof(Site.ClientId));//.Single(p => p.Property.Name == nameof(Site.ClientId));
-                var propertyReferenceChange = propertyChanges.First(p => p.Property.Name == nameof(Site.Client));//.Single(p => p.Property.Name == nameof(Site.ClientId));
+                //var propertyReferenceChange = propertyChanges.First(p => p.Property.Name == nameof(Site.Client));//.Single(p => p.Property.Name == nameof(Site.ClientId));
 
                 Assert.AreEqual(nameof(Site.ClientId), propertyKeyChange.Property.Name);
                 Assert.AreEqual(client1.Id, propertyKeyChange.RemoteValue);
                 Assert.AreEqual(client2.Id, propertyKeyChange.LocalValue);
-                Assert.AreEqual(nameof(Site.Client), propertyReferenceChange.Property.Name);
-                Assert.AreEqual(client1, propertyReferenceChange.RemoteValue);
-                Assert.AreEqual(client2, propertyReferenceChange.LocalValue);
+                //Assert.AreEqual(nameof(Site.Client), propertyReferenceChange.Property.Name);
+                //Assert.AreEqual(client1, propertyReferenceChange.RemoteValue);
+                //Assert.AreEqual(client2, propertyReferenceChange.LocalValue);
             }
 
             AssertQueue();

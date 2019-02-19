@@ -367,6 +367,10 @@ namespace Iql.Entities
         public IEntityProperty<T> DefineAndGetPropertyInternal<TProperty>(string name, Expression<Func<T, TProperty>> property, string convertedFromType, bool nullable = true,
             IqlType? iqlType = null)
         {
+            if(name == "TypeId")
+            {
+                int a = 0;
+            }
 #if !TypeScript
             if (typeof(TProperty).IsEnumerableType())
             {
@@ -629,6 +633,10 @@ namespace Iql.Entities
             IqlType kind,
             IProperty countRelationship)
         {
+            if(propertyName == "TypeId")
+            {
+                int a = 0;
+            }
             var definition = FindProperty(propertyName) as Property<T, TPropertyType, TElementType>;
             if (definition == null)
             {

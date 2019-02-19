@@ -9,10 +9,10 @@ namespace Iql
         public double X { get; set; }
         public double Y { get; set; }
 
-        public IqlPointExpression(double xOrLongitude, double yOrLatitude, IqlType type = IqlType.GeographyPoint, int? srid = null) : base(srid, type)
+        public IqlPointExpression(double? xOrLongitude = null, double? yOrLatitude = null, IqlType type = IqlType.GeographyPoint, int? srid = null) : base(srid, type)
         {
-            X = xOrLongitude;
-            Y = yOrLatitude;
+            X = xOrLongitude ?? 0;
+            Y = yOrLatitude ?? 0;
         }
 
         public IqlPointExpression() : base(null, IqlType.GeographyPoint)

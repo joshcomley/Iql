@@ -38,23 +38,80 @@ namespace Iql.Tests.Tests.Offline
         public async Task SerializeAndDeserializeState()
         {
             Db.IsOffline = false;
-            
             var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
             var client = clients.First();
-            client.Name = "Changed";
+            var oldClientTypeId = client.TypeId;
+            var oldClientName = client.Name;
+            var oldClientType = client.Type;
             client.TypeId = 2;
+            var oldClientTypeName = client.Type.Name;
+            void AssertChanges()
+            {
+                var changes = Db.GetChanges();
+                Assert.AreEqual(2, changes.Length);
+                var clientChange = changes.FirstOrDefault(_ => _.Operation.EntityType == typeof(Client));
+                var clientTypeChange = changes.FirstOrDefault(_ => _.Operation.EntityType == typeof(ClientType));
+                Assert.IsNotNull(clientChange);
+                Assert.IsNotNull(clientTypeChange);
+
+                var clientUpdate = clientChange.Operation as IUpdateEntityOperation;
+                Assert.IsNotNull(clientUpdate);
+                var clientChangedProperties = clientUpdate.GetChangedProperties();
+                Assert.AreEqual(2, clientChangedProperties.Length);
+
+                var clientNameChange =
+                    clientChangedProperties.SingleOrDefault(_ => _.Property.PropertyName == nameof(Client.Name));
+                Assert.IsNotNull(clientNameChange);
+
+                Assert.AreEqual(oldClientName, clientNameChange.RemoteValue);
+                Assert.AreEqual("Changed", clientNameChange.LocalValue);
+
+                var clientTypeIdChange =
+                    clientChangedProperties.SingleOrDefault(_ => _.Property.PropertyName == nameof(Client.TypeId));
+                Assert.IsNotNull(clientTypeIdChange);
+                Assert.AreEqual(oldClientTypeId, clientTypeIdChange.RemoteValue);
+                Assert.AreEqual(2, clientTypeIdChange.LocalValue);
+
+                var clientTypeUpdate = clientTypeChange.Operation as IUpdateEntityOperation;
+                Assert.IsNotNull(clientTypeUpdate);
+                var clientTypeChangedProperties = clientTypeUpdate.GetChangedProperties();
+                Assert.AreEqual(1, clientTypeChangedProperties.Length);
+
+                var clientTypeNameChange =
+                    clientTypeChangedProperties.SingleOrDefault(_ => _.Property.PropertyName == nameof(ClientType.Name));
+                Assert.IsNotNull(clientTypeNameChange);
+                Assert.AreEqual(oldClientTypeName, clientTypeNameChange.RemoteValue);
+                Assert.AreEqual("A new name", clientTypeNameChange.LocalValue);
+            }
+
+            client.Name = "Changed";
+            var newClientTypeId = 2;
+            Assert.AreNotEqual(oldClientType, client.Type);
             client.Type.Name = "A new name";
             var entityState = Db.GetEntityState(client);
             var jsonWithChanges = Db.TemporalDataTracker.SerializeToJson();
             Assert.AreEqual(
                 @"{""Sets"":[{""Type"":""Client"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":1}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":1,""LocalValue"":2,""Property"":""TypeId""},{""RemoteValue"":""Coca-Cola"",""LocalValue"":""Changed"",""Property"":""Name""}]}]},{""Type"":""ClientType"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":2}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":""Software"",""LocalValue"":""A new name"",""Property"":""Name""}]}]}]}",
                 jsonWithChanges.NormalizeJson());
+
+            AssertChanges();
+
             Db.TemporalDataTracker.AbandonChanges();
+
+            Assert.AreEqual(oldClientType, client.Type);
+
             var jsonWithoutChanges = Db.TemporalDataTracker.SerializeToJson();
             Assert.AreEqual(@"{}", jsonWithoutChanges.NormalizeJson());
+
             Db.TemporalDataTracker.RestoreFromJson(jsonWithChanges);
+
+            Assert.AreEqual(client.TypeId, newClientTypeId);
+            Assert.AreNotEqual(oldClientType, client.Type);
+
             var jsonWithChanges2 = Db.TemporalDataTracker.SerializeToJson();
             Assert.AreEqual(jsonWithChanges, jsonWithChanges2);
+
+            AssertChanges();
             // TODO: Now restore state to a new data context and verify GetChanges()
             // TODO: Add a delete and an add to the changes and ensure they serialize/deserialize correctly
         }
@@ -63,13 +120,20 @@ namespace Iql.Tests.Tests.Offline
         {
             var json = Db.DataStore.SerializeEntitiesToJson();
             var normalizedJson = json.NormalizeJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]}]",
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]},{""Type"":""Site"",""Entities"":[{""Id"":0,""Location"":{""type"":""Point"",""coordinates"":[13.2846516,52.5069704]},""Name"":""Berlin"",""Left"":0,""Right"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]}]",
                 normalizedJson);
             var sets = JsonDataSerializer.DeserializeEntitySets(Db.EntityConfigurationContext, json);
-            Assert.AreEqual(2, sets.Count);
-            var clients = sets[Db.EntityConfigurationContext.EntityType<Client>()];
+            Assert.AreEqual(3, sets.Count);
+            var clients = sets.Set<Client>();
             Assert.AreEqual(3, clients.Count);
-            Assert.AreEqual("Coca-Cola", (clients[0] as Client).Name);
+            Assert.AreEqual("Coca-Cola", clients[0].Name);
+            var sites = sets.Set<Site>();
+            var site = sites.First();
+            Assert.AreEqual(13.2846516, site.Location.X);
+            Assert.AreEqual(52.5069704, site.Location.Y);
+            // DONE: Check Geographic properties serialize correctly
+            // TODO: Create "Restore" method on DataStore
+            // TODO: OfflineDataStore should persist to file the state upon every change commit
         }
 
         [TestMethod]

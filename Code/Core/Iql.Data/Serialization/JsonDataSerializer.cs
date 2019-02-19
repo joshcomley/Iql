@@ -87,7 +87,7 @@ namespace Iql.Data.Serialization
             public JArray Entities { get; set; }
         }
 
-        public static Dictionary<IEntityConfiguration, IList> DeserializeEntitySets(EntityConfigurationBuilder builder, string json)
+        public static DeserializedEntitySets DeserializeEntitySets(EntityConfigurationBuilder builder, string json)
         {
             var dictionary = new Dictionary<IEntityConfiguration, IList>();
             var deserialized = (SerializedEntitySet[])JsonConvert.DeserializeObject(json, typeof(SerializedEntitySet[]));
@@ -104,7 +104,7 @@ namespace Iql.Data.Serialization
                 }
                 dictionary.Add(entityConfiguration, genericList);
             }
-            return dictionary;
+            return new DeserializedEntitySets(dictionary);
         }
 
         public static List<JObject> PrepareCollectionForSerialization(IEnumerable entities,
@@ -492,5 +492,35 @@ namespace Iql.Data.Serialization
                 ? (IqlPointExpression)new IqlPointExpression(c[0], c[1])
                 : new IqlPointExpression(c[0], c[1]));
         }
+    }
+
+    public class DeserializedEntitySets
+    {
+        private Dictionary<IEntityConfiguration, IList> Dictionary { get; }
+
+        public int Count => Dictionary.Keys.Count;
+
+        public DeserializedEntitySets(Dictionary<IEntityConfiguration, IList> dictionary)
+        {
+            Dictionary = dictionary;
+        }
+
+        public IList<T> Set<T>()
+        {
+            return Dictionary.Single(_ => _.Key.Type == typeof(T)).Value as IList<T>;
+        }
+
+        public IList<object> SetByType(Type type)
+        {
+            var list = Dictionary.Single(_ => _.Key.Type == type).Value;
+            var newList = new List<object>();
+            foreach (var item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
+        }
+
+        public Type[] Types => Dictionary.Keys.Select(_ => _.Type).ToArray();
     }
 }

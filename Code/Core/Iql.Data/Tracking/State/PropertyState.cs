@@ -139,6 +139,10 @@ namespace Iql.Data.Tracking.State
         {
             var oldValue = _remoteValue;
             _remoteValueClone = PropertyChanger.CloneValue(value);
+            if(Property.PropertyName == "TypeId" && _remoteValueClone is long)
+            {
+                int a = 0;
+            }
             _remoteValue = value;
             if (_remoteValue != oldValue)
             {
@@ -180,6 +184,14 @@ namespace Iql.Data.Tracking.State
         public void HardReset()
         {
             var newValue = Property.GetValue(EntityState.Entity);
+            if (Property.PropertyName == "TypeId")
+            {
+                int a = 0;
+            }
+            if(newValue is long)
+            {
+                int a = 0;
+            }
             _originalValueSet = false;
             EnsureOldValue();
             LocalValue = newValue;
@@ -215,8 +227,9 @@ namespace Iql.Data.Tracking.State
 
         public void Restore(Conversion.State.SerializedPropertyState state)
         {
-            LocalValue = state.LocalValue;
-            RemoteValue = state.RemoteValue;
+            LocalValue = Property.TypeDefinition.EnsureValueType(state.LocalValue);
+            RemoteValue = Property.TypeDefinition.EnsureValueType(state.RemoteValue);
+            Property.SetValue(EntityState.Entity, LocalValue);
         }
 
         public string SerializeToJson()

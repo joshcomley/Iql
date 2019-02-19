@@ -68,6 +68,13 @@ namespace Iql.Tests.Context
                 Id = 2,
                 Name = "Software"
             });
+            var sites = OfflinableDataStore.DataSet<Site>();
+            sites.Clear();
+            sites.Add(new Site
+            {
+                Name = "Berlin",
+                Location = new IqlPointExpression(13.2846516, 52.5069704)
+            });
         }
 
         public InMemoryDataStore OfflineDataStore => (InMemoryDataStore)DataStore?.OfflineDataStore;
