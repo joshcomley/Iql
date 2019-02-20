@@ -35,7 +35,7 @@ namespace Iql.Tests.Context
         public HazceptionDataContext(IDataStore dataStore = null) :
             base(dataStore)
         {
-            DataStore = DataStore ?? new InMemoryDataStore();
+            DataStore = DataStore ?? new InMemoryDataStore("InMemory");
             if (InMemoryDataStoreConfiguration == null)
             {
                 InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration(EntityConfigurationContext);

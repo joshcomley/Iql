@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.DataStores;
 using Iql.Data.Serialization;
+using Iql.Data.Tracking;
 using Iql.Entities;
 using Iql.JavaScript.Extensions;
 #if TypeScript
@@ -33,9 +35,55 @@ namespace Iql.Tests.Tests.Offline
         public static OfflineAppDbContext Db => _db;
 
         [TestMethod]
-        public async Task OfflineStoreShouldBeUpdatedWithEachRequest()
+        public async Task OfflineStoreShouldBeUpdatedWithEachPersistedStateChange()
         {
-        //    Db.
+            await Db.OfflineDataStore.ResetAsync();
+            await Db.OfflinableDataStore.ResetAsync();
+            var oldPersistenceKeyGenerator = PersistenceKeyGenerator.New;
+            PersistenceKeyGenerator.New = () => new Guid("dec281fe-96fd-4117-8e4e-2eb575d3b5a2");
+            var state = Db.OfflineDataStore.SerializeStateToJson();
+            Assert.AreEqual("[]", state);
+            var client = new Client();
+            client.Name = "Newly added client";
+            client.TypeId = 1;
+            Db.Clients.Add(client);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            state = Db.OfflineDataStore.SerializeStateToJson();
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0.0,""AverageIncome"":0.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+                state);
+            client.Name = "Newly added client2";
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            state = Db.OfflineDataStore.SerializeStateToJson();
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0.0,""AverageIncome"":0.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+                state);
+            PersistenceKeyGenerator.New = oldPersistenceKeyGenerator;
+        }
+
+        [TestMethod]
+        public async Task RestoreOfDataStoreState()
+        {
+            Db.IsOffline = true;
+            await Db.OfflineDataStore.ResetAsync();
+            var currentStateJson = Db.OfflineDataStore.SerializeStateToJson();
+            Assert.AreEqual("[]", currentStateJson);
+            var stateJson =
+                @"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]},{""Type"":""Site"",""Entities"":[{""Id"":0,""Location"":{""type"":""Point"",""coordinates"":[13.2846516,52.5069704]},""Name"":""Berlin"",""Left"":0,""Right"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]}]";
+            await Db.OfflineDataStore.RestoreStateFromJsonAsync(stateJson);
+            var clients = await Db.Clients.ToListAsync();
+            Assert.AreEqual(3, clients.Count);
+        }
+
+        [TestMethod]
+        public async Task RestoreOfEmptyDataStoreState()
+        {
+            Db.IsOffline = true;
+            var stateJson =
+                @"[]";
+            await Db.OfflineDataStore.RestoreStateFromJsonAsync(stateJson);
+            var clients = await Db.Clients.ToListAsync();
+            Assert.AreEqual(0, clients.Count);
         }
 
         [TestMethod]
@@ -185,10 +233,11 @@ namespace Iql.Tests.Tests.Offline
             // TODO: Now restore state to a new data context and verify GetChanges()
             // TODO: Add a delete and an add to the changes and ensure they serialize/deserialize correctly
         }
+
         [TestMethod]
         public async Task SerializeAndDeserializeStore()
         {
-            var json = Db.DataStore.SerializeEntitiesToJson();
+            var json = Db.DataStore.SerializeStateToJson();
             var normalizedJson = json.NormalizeJson();
             Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]},{""Type"":""Site"",""Entities"":[{""Id"":0,""Location"":{""type"":""Point"",""coordinates"":[13.2846516,52.5069704]},""Name"":""Berlin"",""Left"":0,""Right"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]}]",
                 normalizedJson);

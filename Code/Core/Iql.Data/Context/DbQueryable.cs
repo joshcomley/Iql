@@ -674,7 +674,7 @@ namespace Iql.Data.Context
             var flattenedGetDataResult = new FlattenedGetDataResult<T>(flattened, getOperation, getDataResult.Success);
             flattenedGetDataResult.Root = list;
             flattenedGetDataResult.Queryable = this;
-            var dbList = DataContext.TrackGetDataResult(
+            var dbList = await DataContext.TrackGetDataResultAsync(
                 flattenedGetDataResult);
             var result = new GetDataResult<T>(getDataResult.IsOffline, dbList, getOperation, getDataResult.Success);
             return result;

@@ -19,6 +19,8 @@ namespace Iql.Data.DataStores.InMemory
 {
     public class InMemoryDataStore : DataStore, IOfflineDataStore
     {
+        public string Name { get; set; }
+
         static InMemoryDataStore()
         {
             SynchroniseDataTypedMethod = typeof(InMemoryDataStore).GetMethod(nameof(SynchroniseDataTyped),
@@ -51,8 +53,9 @@ namespace Iql.Data.DataStores.InMemory
             return (List<TEntity>)DataSetByType(typeof(TEntity));
         }
 
-        public InMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
+        public InMemoryDataStore(string name, IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
         {
+            Name = name;
         }
 
         private DataTracker _inMemoryDataTracker;
@@ -63,7 +66,7 @@ namespace Iql.Data.DataStores.InMemory
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
 
-        public override string SerializeEntitiesToJson()
+        public override string SerializeStateToJson()
         {
             var allSets = AllDataSetMaps().Select(_ =>
                 new
@@ -257,14 +260,68 @@ namespace Iql.Data.DataStores.InMemory
             return operation.Result;
         }
 
-        public virtual Task ClearStateAsync()
+        public Task ResetAsync()
         {
+            _sources.Clear();
+            Configuration?.Reset();
             return Task.FromResult<object>(null);
         }
 
-        public virtual Task SaveStateAsync()
+        public async Task<bool> RestoreStateAsync(IPersistState persistState)
         {
-            return Task.FromResult<object>(null);
+            if(persistState != null)
+            {
+                var state = await persistState.FetchStateAsync(PersistStateKey());
+                await RestoreStateFromJsonAsync(state);
+                return true;
+            }
+
+            return false;
+        }
+
+        public Task<bool> RestoreStateFromJsonAsync(string json)
+        {
+            var sets = JsonDataSerializer.DeserializeEntitySets(EntityConfigurationBuilder, json);
+            return RestoreStateFromSetsAsync(sets);
+        }
+
+        public async Task<bool> RestoreStateFromSetsAsync(DeserializedEntitySets sets)
+        {
+            Clear();
+            // Restore...
+            for (var i = 0; i < sets.Types.Length; i++)
+            {
+                var type = sets.Types[i];
+                var list = DataSetByType(type);
+                list.Clear();
+                var objects = sets.SetByType(type);
+                for (var j = 0; j < objects.Count; j++)
+                {
+                    var entity = objects[j];
+                    list.Add(entity);
+                }
+            }
+            return true;
+        }
+
+        public virtual async Task<bool> ClearStateAsync(IPersistState persistState)
+        {
+            Clear();
+            return await SaveStateAsync(persistState);
+        }
+
+        private string PersistStateKey()
+        {
+            return $"DataStore-{Name}";
+        }
+
+        public virtual async Task<bool> SaveStateAsync(IPersistState persistState)
+        {
+            if (persistState != null)
+            {
+                return await persistState.SaveStateAsync(PersistStateKey(), SerializeStateToJson());
+            }
+            return false;
         }
 
         public IList[] AllDataSets()

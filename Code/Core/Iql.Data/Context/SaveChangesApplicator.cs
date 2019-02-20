@@ -160,7 +160,7 @@ namespace Iql.Data.Context
                             }
                             if (!isOffline && DataContext.DataStore.OfflineDataStore != null)
                             {
-                                await DataContext.DataStore.OfflineDataStore?.ApplyAddAsync(addEntityOperation);
+                                await DataContext.DataStore.OfflineDataStore.ApplyAddAsync(addEntityOperation);
                             }
                         }
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
@@ -237,7 +237,7 @@ namespace Iql.Data.Context
                                 var changes = DataContext.OfflineDataTracker?.GetChanges();
                                 if (isOffline)
                                 {
-                                    DataContext.TemporalDataTracker.ApplyUpdate(updateEntityOperation, false);
+                                    DataContext.TemporalDataTracker?.ApplyUpdate(updateEntityOperation, false);
                                 }
                                 else
                                 {
@@ -347,7 +347,7 @@ namespace Iql.Data.Context
 
                             if (!isOffline && DataContext.DataStore.OfflineDataStore != null)
                             {
-                                await DataContext.DataStore.OfflineDataStore?.ApplyDeleteAsync(deleteEntityOperation);
+                                await DataContext.DataStore.OfflineDataStore.ApplyDeleteAsync(deleteEntityOperation);
                             }
                         }
                         else
@@ -364,6 +364,7 @@ namespace Iql.Data.Context
             {
                 saveChangesResult.Results.Add(entityCrudResult);
             }
+            await DataContext.SaveStateAsync();
         }
 
         private async Task<AddEntityResult<TEntity>> PerformMappedAddAsync<TEntity, TMap>(

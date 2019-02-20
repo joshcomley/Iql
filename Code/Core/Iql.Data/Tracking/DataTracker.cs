@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Context;
@@ -61,6 +62,43 @@ namespace Iql.Data.Tracking
 
         private static List<DataTracker> _allDataTrackers { get; }
             = new List<DataTracker>();
+
+
+        public async Task<bool> ClearStateAsync(IPersistState persistState)
+        {
+            if (persistState != null)
+            {
+                return await persistState.DeleteStateAsync(PersistStateKey());
+            }
+
+            return false;
+        }
+
+        public async Task<bool> SaveStateAsync(IPersistState persistState)
+        {
+            if (persistState != null)
+            {
+                return await persistState.SaveStateAsync(PersistStateKey(), SerializeToJson());
+            }
+
+            return false;
+        }
+
+        public async Task<bool> RestoreStateAsync(IPersistState persistState)
+        {
+            if (persistState != null)
+            {
+                var state = await persistState.FetchStateAsync(PersistStateKey());
+                RestoreFromJson(state);
+                return true;
+            }
+            return false;
+        }
+
+        private string PersistStateKey()
+        {
+            return $"DataTracker-{Kind.ToString()}-{Name}";
+        }
 
         public string SerializeToJson()
         {
@@ -664,14 +702,17 @@ namespace Iql.Data.Tracking
         {
             AbandonChanges();
             // Almost there...
-            for (var i = 0; i < deserialized.Sets.Length; i++)
+            if(deserialized != null && deserialized.Sets != null)
             {
-                var deserializedSet = deserialized.Sets[i];
-                var set = TrackingSetByTypeName(deserializedSet.Type);
-                for (var j = 0; j < deserializedSet.EntityStates.Length; j++)
+                for (var i = 0; i < deserialized.Sets.Length; i++)
                 {
-                    var entityState = deserializedSet.EntityStates[j];
-                    set.Restore(entityState);
+                    var deserializedSet = deserialized.Sets[i];
+                    var set = TrackingSetByTypeName(deserializedSet.Type);
+                    for (var j = 0; j < deserializedSet.EntityStates.Length; j++)
+                    {
+                        var entityState = deserializedSet.EntityStates[j];
+                        set.Restore(entityState);
+                    }
                 }
             }
         }

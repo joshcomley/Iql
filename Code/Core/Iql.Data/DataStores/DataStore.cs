@@ -13,7 +13,7 @@ namespace Iql.Data.DataStores
     {
         private EntityConfigurationBuilder _entityConfigurationBuilder;
         private IOfflineDataStore _offlineDataStore;
-        public abstract string SerializeEntitiesToJson();
+        public abstract string SerializeStateToJson();
 
         public EventEmitter<DataSetRetrievedEvent> DataSetRetrieved { get; }
         public DataStore(IOfflineDataStore offlineDataStore = null)

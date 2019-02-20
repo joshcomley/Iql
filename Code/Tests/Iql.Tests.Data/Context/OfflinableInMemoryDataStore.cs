@@ -9,7 +9,7 @@ namespace Iql.Tests.Context
 {
     public class OfflinableInMemoryDataStore : InMemoryDataStore
     {
-        public OfflinableInMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
+        public OfflinableInMemoryDataStore(IOfflineDataStore offlineDataStore = null) : base("OfflinableInMemoryDataStore", offlineDataStore)
         {
             
         }

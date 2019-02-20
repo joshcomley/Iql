@@ -1,18 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
-using Iql.Data.Crud.Operations.Results;
+using Iql.Data.Serialization;
+using Iql.Data.Tracking;
 
 namespace Iql.Data.DataStores
 {
     public interface IOfflineDataStore : IDataStore
     {
-        Task ClearStateAsync();
-        Task SaveStateAsync();
+        string Name { get; set; }
+        Task ResetAsync();
+        Task<bool> RestoreStateAsync(IPersistState persistState);
+        Task<bool> ClearStateAsync(IPersistState persistState);
+        Task<bool> SaveStateAsync(IPersistState persistState);
+        Task<bool> RestoreStateFromJsonAsync(string json);
+        Task<bool> RestoreStateFromSetsAsync(DeserializedEntitySets sets);
         IList[] AllDataSets();
 
         IList<T> DataSet<T>()

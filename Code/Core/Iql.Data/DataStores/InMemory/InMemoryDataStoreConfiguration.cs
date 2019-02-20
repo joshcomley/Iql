@@ -46,6 +46,11 @@ namespace Iql.Data.DataStores.InMemory
             return _sources[name].Compile().DynamicInvoke() as IList;
         }
 
+        public void Reset()
+        {
+            _sources.Clear();
+        }
+
         public IList[] AllDataSources()
         {
             var list = new List<IList>();

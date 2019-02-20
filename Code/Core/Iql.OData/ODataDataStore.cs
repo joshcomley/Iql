@@ -314,7 +314,7 @@ namespace Iql.OData
             return new ODataCollectionResult<TEntity>(values, count);
         }
 
-        public override string SerializeEntitiesToJson()
+        public override string SerializeStateToJson()
         {
             throw new NotImplementedException();
         }

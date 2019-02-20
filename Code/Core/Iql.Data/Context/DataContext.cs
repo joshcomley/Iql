@@ -75,7 +75,7 @@ namespace Iql.Data.Context
         private IEntityState<T> AddInternal<T>(T entity)
             where T : class
         {
-            return (IEntityState<T>) TemporalDataTracker.AddEntity(entity);
+            return (IEntityState<T>)TemporalDataTracker.AddEntity(entity);
         }
 
 
@@ -882,7 +882,6 @@ namespace Iql.Data.Context
 
         private MethodInfo _validateEntityPropertyInternalAsyncMethod;
         private MethodInfo _validateEntityInternalAsyncMethod;
-        private SaveChangesApplicator _saveChangesApplicator;
         private IDataStore _dataStore;
 
         private MethodInfo ValidateEntityPropertyInternalAsyncMethod
@@ -890,6 +889,78 @@ namespace Iql.Data.Context
             get => _validateEntityPropertyInternalAsyncMethod
             = _validateEntityPropertyInternalAsyncMethod ?? typeof(DataContext).GetMethod(nameof(ValidateEntityPropertyInternalAsync),
                   BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+
+        public async Task<bool> ClearStateAsync()
+        {
+            if (PersistState == null)
+            {
+                return false;
+            }
+            var success = true;
+            if (DataStore.OfflineDataStore != null)
+            {
+                if (!await DataStore.OfflineDataStore.ClearStateAsync(PersistState))
+                {
+                    success = false;
+                }
+            }
+            if (OfflineDataTracker != null)
+            {
+                if (!await OfflineDataTracker.ClearStateAsync(PersistState))
+                {
+                    success = false;
+                }
+            }
+            return success;
+        }
+
+        public async Task<bool> SaveStateAsync()
+        {
+            if (PersistState == null)
+            {
+                return false;
+            }
+            var success = true;
+            if (DataStore.OfflineDataStore != null)
+            {
+                if (!await DataStore.OfflineDataStore.SaveStateAsync(PersistState))
+                {
+                    success = false;
+                }
+            }
+            if (OfflineDataTracker != null)
+            {
+                if (!await OfflineDataTracker.SaveStateAsync(PersistState))
+                {
+                    success = false;
+                }
+            }
+            return success;
+        }
+
+        public async Task<bool> RestoreStateAsync()
+        {
+            if (PersistState == null)
+            {
+                return false;
+            }
+            var success = true;
+            if (DataStore.OfflineDataStore != null)
+            {
+                if (!await DataStore.OfflineDataStore.RestoreStateAsync(PersistState))
+                {
+                    success = false;
+                }
+            }
+            if (OfflineDataTracker != null)
+            {
+                if (!await OfflineDataTracker.RestoreStateAsync(PersistState))
+                {
+                    success = false;
+                }
+            }
+            return success;
         }
 
         public IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null)
@@ -1331,7 +1402,7 @@ namespace Iql.Data.Context
             response.Queryable = (global::Iql.Queryable.IQueryable<TEntity>)operation.Queryable.Copy();
 
             // In here, if we're offline, we don't want to update other trackers (I think)
-            var dbList = TrackGetDataResult(response);
+            var dbList = await TrackGetDataResultAsync(response);
 
             var getDataResult =
                 new GetDataResult<TEntity>(response.IsOffline, dbList, operation, response.IsSuccessful())
@@ -1368,9 +1439,11 @@ namespace Iql.Data.Context
             }
         }
 
+        public IPersistState PersistState { get; set; }
+
         public bool RefreshDisabled { get; set; }
 
-        public DbList<TEntity> TrackGetDataResult<TEntity>(
+        public async Task<DbList<TEntity>> TrackGetDataResultAsync<TEntity>(
             FlattenedGetDataResult<TEntity> response)
             where TEntity : class
         {
@@ -1438,8 +1511,11 @@ namespace Iql.Data.Context
                 }
 
                 DataStore.OfflineDataStore?.SynchroniseData(response.Data);
-                DataStore.OfflineDataStore?.SaveStateAsync();
-                
+                if (DataStore.OfflineDataStore != null && PersistState != null)
+                {
+                    await DataStore.OfflineDataStore?.SaveStateAsync(PersistState);
+                }
+
                 if (shouldTrackResults && !response.IsOffline)
                 {
                     DataTracker.ForAllDataTrackers(tracker =>
@@ -1517,7 +1593,7 @@ namespace Iql.Data.Context
         private IEntityState<T> DeleteInternal<T>(T entity)
             where T : class
         {
-            return (IEntityState<T>) TemporalDataTracker.DeleteEntity(entity);
+            return (IEntityState<T>)TemporalDataTracker.DeleteEntity(entity);
         }
 
         public static bool IsEntityTracked(object entity)

@@ -6,6 +6,7 @@ using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores.NestedSets;
+using Iql.Data.Serialization;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
@@ -14,7 +15,7 @@ namespace Iql.Data.DataStores
 {
     public interface IDataStore
     {
-        string SerializeEntitiesToJson();
+        string SerializeStateToJson();
         EventEmitter<DataSetRetrievedEvent> DataSetRetrieved { get; }
         EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
         IOfflineDataStore OfflineDataStore { get; set; }

@@ -21,12 +21,16 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
+        IPersistState PersistState { get; set; }
         bool RefreshDisabled { get; set; }
-        DbList<TEntity> TrackGetDataResult<TEntity>(
+        Task<DbList<TEntity>> TrackGetDataResultAsync<TEntity>(
             FlattenedGetDataResult<TEntity> response)
             where TEntity : class;
         DataTracker TemporalDataTracker { get; }
         DataTracker OfflineDataTracker { get; }
+        Task<bool> ClearStateAsync();
+        Task<bool> SaveStateAsync();
+        Task<bool> RestoreStateAsync();
         IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
         IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null);
         IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);

@@ -21,7 +21,7 @@ namespace Iql.Tests.Context
         public static int Client2TypeId = 1;
         public OfflineAppDbContext()
         {
-            DataStore = new OfflinableInMemoryDataStore(new InMemoryDataStore());
+            DataStore = new OfflinableInMemoryDataStore(new InMemoryDataStore("OfflineData"));
             Reset();
             RefreshDisabled = true;
         }
