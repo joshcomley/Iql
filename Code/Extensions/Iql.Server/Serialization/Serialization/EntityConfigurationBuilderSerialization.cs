@@ -10,14 +10,28 @@ namespace Iql.Server.Serialization.Serialization
     {
         public static string ToJson(this IEntityConfigurationBuilder entityConfigurationBuilder)
         {
+
             var settings = new JsonSerializerSettings
             {
-                ContractResolver = new InterfaceContractResolver()
+                ContractResolver = new InterfaceContractResolver(),
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
             settings.Converters.Add(new RelationshipConverter(false));
             settings.Converters.Add(new ExpressionJsonConverter());
             settings.Converters.Add(new IPropertyConverter());
             settings.Converters.Add(new TypeConverter());
+            settings.Formatting = Formatting.Indented;
+
+            var serialized = JsonConvert.SerializeObject(
+                ToSerializableDocument(entityConfigurationBuilder),
+                settings);
+
+            return serialized;
+        }
+
+        private static EntityConfigurationDocument ToSerializableDocument(
+            IEntityConfigurationBuilder entityConfigurationBuilder)
+        {
             var doc = new EntityConfigurationDocument();
             doc.EntityTypes.AddRange(entityConfigurationBuilder.AllEntityTypes());
             doc.EnumTypes.AddRange(entityConfigurationBuilder.AllEnumTypes());
@@ -25,9 +39,7 @@ namespace Iql.Server.Serialization.Serialization
             doc.UsersDefinition = entityConfigurationBuilder.UsersDefinition;
             doc.CustomReportsDefinition = entityConfigurationBuilder.CustomReportsDefinition;
             doc.UserSettingsDefinition = entityConfigurationBuilder.UserSettingsDefinition;
-            settings.Formatting = Formatting.Indented;
-            var serialized = JsonConvert.SerializeObject(doc, settings);
-            return serialized;
+            return doc;
         }
     }
 }

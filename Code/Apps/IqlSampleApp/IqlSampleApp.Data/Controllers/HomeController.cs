@@ -23,5 +23,13 @@ namespace IqlSampleApp.Data.Controllers
             IqlJson = IqlJson ?? entityConfigurationBuilder.ToJson();
             return Content(IqlJson, "application/json");
         }
+
+        [HttpGet("~/unql")]
+        public IActionResult Unql()
+        {
+            var entityConfigurationBuilder = _entityConfigurationProvider.Get<IIqlSampleAppService>();
+            IqlJson = IqlJson ?? entityConfigurationBuilder.ToJson();
+            return Content(IqlJson, "application/json");
+        }
     }
 }
