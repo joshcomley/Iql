@@ -37,8 +37,13 @@ namespace Iql.Entities.SpecialTypes
             {
                 return _cachedProperties.ToArray();
             }
+
             var all = new List<IPropertyGroup>();
-            all.Add(IdProperty);
+            if (IdProperty != null)
+            {
+                all.Add(IdProperty);
+            }
+
             all.AddRange(GetSpecialTypeProperties());
             if (all.All(_ => _ != null))
             {

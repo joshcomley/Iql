@@ -14,7 +14,7 @@ namespace Iql.Server.Serialization.Serialization
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new InterfaceContractResolver(),
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                //PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
             settings.Converters.Add(new RelationshipConverter(false));
             settings.Converters.Add(new ExpressionJsonConverter());

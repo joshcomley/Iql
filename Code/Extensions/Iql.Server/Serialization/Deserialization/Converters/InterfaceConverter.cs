@@ -94,16 +94,6 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             var path = reader.Path;
             var value = reader.Value;
             var existingValue2 = existingValue;
-            if (path.Contains("RelationshipMappings") && 
-                (value != null || existingValue2 != null))
-            {
-                int a = 0;
-            }
-            //if (reader.TokenType != JsonToken.StartObject)
-            //{
-            //    var result2 = reader.Read();
-            //    return result2;
-            //}
             var isConvertedProperty = (objectType == typeof(IRelationshipDetail) || objectType == typeof(IProperty) || objectType == typeof(IPropertyGroup)) && reader.Value is string &&
                                       !string.IsNullOrWhiteSpace(reader.Value as string) &&
                                       (reader.Value as string).StartsWith("{");
@@ -120,6 +110,10 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                 if (match.Success)
                 {
                     Details.CurrentEntityConfigurationIndex = Convert.ToInt32(match.Groups["Index"].Value);
+                }
+                else
+                {
+                    throw new Exception("Unexpected path: " + path);
                 }
             }
             var typeMapping = TypeMappings.ContainsKey(objectType) ? TypeMappings[objectType] : objectType;

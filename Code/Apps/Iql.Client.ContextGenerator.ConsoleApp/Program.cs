@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Iql.OData.TypeScript.Generator;
 using Iql.OData.TypeScript.Generator.DataContext;
+using TypeSharp.Conversion;
 
 namespace Iql.Client.ContextGenerator.ConsoleApp
 {

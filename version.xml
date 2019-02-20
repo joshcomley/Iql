@@ -2,7 +2,7 @@
 <Project>
   <PropertyGroup>
     <VersionPrefix>0.0.28</VersionPrefix>
-    <VersionSuffix>preview20412</VersionSuffix>
+    <VersionSuffix>preview20413</VersionSuffix>
     <BuildNumber>0-Release</BuildNumber>
   </PropertyGroup>
 </Project>

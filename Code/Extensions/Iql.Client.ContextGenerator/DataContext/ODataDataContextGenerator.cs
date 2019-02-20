@@ -129,6 +129,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 typeof(UsersDefinition),
                 typeof(CustomReportsDefinition),
                 typeof(UserSettingsDefinition),
+                typeof(EntityConfiguration<>),
                 typeof(EntityConfigurationBuilder),
                 typeof(IDataStore),
                 typeof(ODataDataStore),

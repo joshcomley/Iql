@@ -25,7 +25,14 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             if (typeof(SpecialTypeDefinition).IsAssignableFrom(type))
             {
                 return base.CreateProperties(type, memberSerialization)
-                    .Where(p => !new string[]{nameof(SpecialTypeDefinition.InternalType), nameof(SpecialTypeDefinition.EntityConfiguration)}.Contains(p.PropertyName))
+                    .Where(p => !new string[] { nameof(SpecialTypeDefinition.InternalType), nameof(SpecialTypeDefinition.EntityConfiguration) }.Contains(p.PropertyName))
+                    .ToList();
+            }
+
+            if (typeof(PropertyMap).IsAssignableFrom(type))
+            {
+                return base.CreateProperties(type, memberSerialization)
+                    .Where(p => !new string[] { nameof(PropertyMap.EntityConfiguration) }.Contains(p.PropertyName))
                     .ToList();
             }
 

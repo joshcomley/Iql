@@ -1283,7 +1283,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
             {
                 var properties = string.Join(",\n", displayConfiguration.Properties.Select(p => SerializePropertyGroups(p, entityMetadata, 0)));
                 var configurator = $@"(ec, displayConfiguration) => {{
-                    displayConfiguration.SetProperties(
+                    displayConfiguration.{nameof(DisplayConfiguration.SetProperties)}(
                         ec,
                         {properties});
             }}";
