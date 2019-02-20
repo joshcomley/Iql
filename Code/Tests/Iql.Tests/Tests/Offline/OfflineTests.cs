@@ -24,6 +24,7 @@ namespace Iql.Tests.Tests.Offline
         public void TestInitialize()
         {
             Db.Reset();
+            Db.IsOffline = false;
         }
 
         [TestCleanup]
@@ -49,14 +50,14 @@ namespace Iql.Tests.Tests.Offline
             Db.Clients.Add(client);
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
-            state = Db.OfflineDataStore.SerializeStateToJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0.0,""AverageIncome"":0.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+            state = Db.OfflineDataStore.SerializeStateToJson().NormalizeJson();
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
             client.Name = "Newly added client2";
             result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
-            state = Db.OfflineDataStore.SerializeStateToJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0.0,""AverageIncome"":0.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+            state = Db.OfflineDataStore.SerializeStateToJson().NormalizeJson();
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
             PersistenceKeyGenerator.New = oldPersistenceKeyGenerator;
         }
@@ -66,7 +67,7 @@ namespace Iql.Tests.Tests.Offline
         {
             Db.IsOffline = true;
             await Db.OfflineDataStore.ResetAsync();
-            var currentStateJson = Db.OfflineDataStore.SerializeStateToJson();
+            var currentStateJson = Db.OfflineDataStore.SerializeStateToJson().NormalizeJson();
             Assert.AreEqual("[]", currentStateJson);
             var stateJson =
                 @"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]},{""Type"":""Site"",""Entities"":[{""Id"":0,""Location"":{""type"":""Point"",""coordinates"":[13.2846516,52.5069704]},""Name"":""Berlin"",""Left"":0,""Right"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]}]";
