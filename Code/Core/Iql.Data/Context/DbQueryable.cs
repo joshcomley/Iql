@@ -182,7 +182,7 @@ namespace Iql.Data.Context
         async Task<IList> IDbQueryable.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
             return await LoadRelationshipPropertyAsync((T)entity, DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType())
-                .FindPropertyByExpression(relationship),
+                .FindPropertyByLambdaExpression(relationship),
                 queryFilter);
         }
 

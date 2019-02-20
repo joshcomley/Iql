@@ -30,7 +30,6 @@ namespace Iql.Entities
         IEntityConfiguration SetDefaultSortExpression(string expression);
         IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration, bool appendMissingProperties = true);
         IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary);
-        IProperty FindPropertyByExpression(Expression<Func<object, object>> expression);
         IProperty[] FindPropertiesByHint(string hint);
         IProperty FindPropertyByLambdaExpression(LambdaExpression property);
         IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression);

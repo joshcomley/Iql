@@ -116,9 +116,11 @@ namespace Iql.Server.Serialization.Deserialization.Converters
 
             if (typeof(IEntityConfiguration).IsAssignableFrom(objectType))
             {
-                Details.CurrentEntityConfigurationIndex = Convert.ToInt32(Regex
-                    .Match(path, $@"^{nameof(EntityConfigurationDocument.EntityTypes)}\[(?<Index>\d+)\]")
-                    .Groups["Index"].Value);
+                var match = Regex.Match(path, $@"^{nameof(EntityConfigurationDocument.EntityTypes)}\[(?<Index>\d+)\]");
+                if (match.Success)
+                {
+                    Details.CurrentEntityConfigurationIndex = Convert.ToInt32(match.Groups["Index"].Value);
+                }
             }
             var typeMapping = TypeMappings.ContainsKey(objectType) ? TypeMappings[objectType] : objectType;
             if (reader.Path == nameof(EntityConfigurationDocument.UsersDefinition))

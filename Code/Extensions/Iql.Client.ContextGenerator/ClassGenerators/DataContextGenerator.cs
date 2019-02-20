@@ -1271,14 +1271,24 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
             return sb.ToString();
         }
 
-        private void ConfigureDisplaySetting(IVariable builder, 
-            DisplayConfiguration displayConfiguration, StringBuilder sb, KeyValuePair<string, IEntityConfiguration> config,
-            string displaySettingMethodName, IEntityMetadata entityMetadata)
+        private void ConfigureDisplaySetting(
+            IVariable builder, 
+            DisplayConfiguration displayConfiguration, 
+            StringBuilder sb, 
+            KeyValuePair<string, IEntityConfiguration> config,
+            string displaySettingMethodName, 
+            IEntityMetadata entityMetadata)
         {
             if (displayConfiguration != null && displayConfiguration.Properties?.Any() == true)
             {
+                var properties = string.Join(",\n", displayConfiguration.Properties.Select(p => SerializePropertyGroups(p, entityMetadata, 0)));
+                var configurator = $@"(ec, displayConfiguration) => {{
+                    displayConfiguration.SetProperties(
+                        ec,
+                        {properties});
+            }}";
                 sb.AppendLine(
-                    $"{GetEntityTypeConfiguration(builder, config.Key)}.{displaySettingMethodName}({String(displayConfiguration.Key)}, {nameof(DisplayConfigurationKind)}.{displayConfiguration.Kind}, {string.Join(",\n", displayConfiguration.Properties.Select(p => SerializePropertyGroups(p, entityMetadata, 0)))});");
+                    $"{GetEntityTypeConfiguration(builder, config.Key)}.{displaySettingMethodName}({String(displayConfiguration.Key)}, {nameof(DisplayConfigurationKind)}.{displayConfiguration.Kind}, {configurator});");
             }
         }
 

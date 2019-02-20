@@ -280,12 +280,6 @@ namespace Iql.Entities
             return FindNestedPropertyByLambdaExpression(property);
         }
 
-        IProperty IEntityConfiguration.FindPropertyByExpression(
-            Expression<Func<object, object>> expression)
-        {
-            return FindPropertyByLambdaExpression(expression);
-        }
-
         public EntityConfiguration<T> HasKey<TKey>(
             Expression<Func<T, TKey>> property,
             IqlType? iqlType = null
