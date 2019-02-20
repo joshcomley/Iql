@@ -28,6 +28,7 @@ x64/
 x86/
 build/
 !/Code/Build
+!/Code/Extensions/Build
 bld/
 bin/
 Bin/
