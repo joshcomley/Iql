@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Iql\Iql.csproj" />
+    <ProjectReference Include="..\..\Core\Iql\Iql.csproj" />
   </ItemGroup>
 
 </Project>

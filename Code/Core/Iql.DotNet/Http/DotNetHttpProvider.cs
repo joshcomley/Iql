@@ -23,18 +23,18 @@ namespace Iql.DotNet.Http
             return httpResult;
         }
 
-        public string AppedQueryStringValues(string uri, object obj)
-        {
-            var uriBuilder = new UriBuilder(uri);
-            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-            foreach (var property in obj.GetType().GetProperties())
-            {
-                var value = property.GetValue(obj, null);
-                query[property.Name] = value?.ToString();
-            }
-            uriBuilder.Query = query.ToString();
-            return uriBuilder.ToString();
-        }
+        //public string AppedQueryStringValues(string uri, object obj)
+        //{
+        //    var uriBuilder = new UriBuilder(uri);
+        //    var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+        //    foreach (var property in obj.GetType().GetProperties())
+        //    {
+        //        var value = property.GetValue(obj, null);
+        //        query[property.Name] = value?.ToString();
+        //    }
+        //    uriBuilder.Query = query.ToString();
+        //    return uriBuilder.ToString();
+        //}
 
         public async Task<IHttpResult> Post(string uri, IHttpRequest payload = null)
         {

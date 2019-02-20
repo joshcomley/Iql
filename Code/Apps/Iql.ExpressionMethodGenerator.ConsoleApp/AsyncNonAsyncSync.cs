@@ -16,7 +16,7 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
             text = Regex.Replace(text, @"Task\<(?<Return>.*?)\>\s", "${Return} ");
             text = text.Replace("async ", "");
             text = text.Replace("await ", "");
-            text = text.Replace("Async", "", StringComparison.CurrentCulture);
+            text = text.Replace("Async", "");
             text = $@"// DO NOT EDIT - this code was auto generated from ""{Path.GetFileName(sourceFile)}""
 
 {text}";

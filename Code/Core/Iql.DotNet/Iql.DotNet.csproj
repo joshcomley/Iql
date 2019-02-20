@@ -5,18 +5,21 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
   </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net46'">
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
       <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0023-0-Release" />
+        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0024-0-Release" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0023-1-Debug" />
+        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0024-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>

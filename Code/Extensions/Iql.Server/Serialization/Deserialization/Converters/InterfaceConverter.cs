@@ -144,10 +144,6 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             object result = null;
             if (objectType == typeof(IPropertyGroup) || objectType == typeof(IRelationshipDetail))
             {
-                if (objectType == typeof(IRelationshipDetail))
-                {
-                    int a = 0;
-                }
                 var jobj = serializer.Deserialize(reader) as JObject;
                 if (jobj != null)
                 {
