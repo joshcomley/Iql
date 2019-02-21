@@ -19,8 +19,6 @@ namespace Iql.Data.DataStores.InMemory
 {
     public class InMemoryDataStore : DataStore, IOfflineDataStore
     {
-        public string Name { get; set; }
-
         static InMemoryDataStore()
         {
             SynchroniseDataTypedMethod = typeof(InMemoryDataStore).GetMethod(nameof(SynchroniseDataTyped),
@@ -53,7 +51,7 @@ namespace Iql.Data.DataStores.InMemory
             return (List<TEntity>)DataSetByType(typeof(TEntity));
         }
 
-        public InMemoryDataStore(string name, IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
+        public InMemoryDataStore(string name = null) : base(name ?? nameof(InMemoryDataStore))
         {
             Name = name;
         }

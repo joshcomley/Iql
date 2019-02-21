@@ -1,13 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores.NestedSets;
-using Iql.Data.Serialization;
-using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
 
@@ -15,10 +10,10 @@ namespace Iql.Data.DataStores
 {
     public interface IDataStore
     {
+        string Name { get; set; }
         string SerializeStateToJson();
         EventEmitter<DataSetRetrievedEvent> DataSetRetrieved { get; }
         EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
-        IOfflineDataStore OfflineDataStore { get; set; }
         //DbList<T> TrackGetDataResult<T>(FlattenedGetDataResult<T> response) where T : class;
         INestedSetsProviderBase NestedSetsProviderForType(Type type);
         INestedSetsProvider<T> NestedSetsProviderFor<T>();

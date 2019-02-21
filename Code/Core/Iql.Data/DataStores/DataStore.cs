@@ -11,42 +11,18 @@ namespace Iql.Data.DataStores
 {
     public abstract class DataStore : IDataStore
     {
-        private EntityConfigurationBuilder _entityConfigurationBuilder;
-        private IOfflineDataStore _offlineDataStore;
+        public string Name { get; set; }
         public abstract string SerializeStateToJson();
 
         public EventEmitter<DataSetRetrievedEvent> DataSetRetrieved { get; }
-        public DataStore(IOfflineDataStore offlineDataStore = null)
+
+        protected DataStore(string name)
         {
-            OfflineDataStore = offlineDataStore;
+            Name = name;
             DataSetRetrieved = new EventEmitter<DataSetRetrievedEvent>();
         }
 
-        public EntityConfigurationBuilder EntityConfigurationBuilder
-        {
-            get => _entityConfigurationBuilder;
-            set
-            {
-                _entityConfigurationBuilder = value;
-                if (OfflineDataStore != null)
-                {
-                    OfflineDataStore.EntityConfigurationBuilder = value;
-                }
-            }
-        }
-
-        public IOfflineDataStore OfflineDataStore
-        {
-            get => _offlineDataStore;
-            set
-            {
-                _offlineDataStore = value;
-                if (value != null)
-                {
-                    value.EntityConfigurationBuilder = EntityConfigurationBuilder;
-                }
-            }
-        }
+        public EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
 
         public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
         {

@@ -11,7 +11,6 @@ namespace Iql.Data.DataStores
 {
     public interface IOfflineDataStore : IDataStore
     {
-        string Name { get; set; }
         Task ResetAsync();
         Task<bool> RestoreStateAsync(IPersistState persistState);
         Task<bool> ClearStateAsync(IPersistState persistState);

@@ -38,11 +38,11 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task OfflineStoreShouldBeUpdatedWithEachPersistedStateChange()
         {
-            await Db.OfflineDataStore.ResetAsync();
+            await Db.OfflineInMemoryDataStore.ResetAsync();
             await Db.OfflinableDataStore.ResetAsync();
             var oldPersistenceKeyGenerator = PersistenceKeyGenerator.New;
             PersistenceKeyGenerator.New = () => new Guid("dec281fe-96fd-4117-8e4e-2eb575d3b5a2");
-            var state = Db.OfflineDataStore.SerializeStateToJson();
+            var state = Db.OfflineInMemoryDataStore.SerializeStateToJson();
             Assert.AreEqual("[]", state);
             var client = new Client();
             client.Name = "Newly added client";
@@ -50,13 +50,13 @@ namespace Iql.Tests.Tests.Offline
             Db.Clients.Add(client);
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
-            state = Db.OfflineDataStore.SerializeStateToJson().NormalizeJson();
+            state = Db.OfflineInMemoryDataStore.SerializeStateToJson().NormalizeJson();
             Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
             client.Name = "Newly added client2";
             result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
-            state = Db.OfflineDataStore.SerializeStateToJson().NormalizeJson();
+            state = Db.OfflineInMemoryDataStore.SerializeStateToJson().NormalizeJson();
             Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
             PersistenceKeyGenerator.New = oldPersistenceKeyGenerator;
@@ -66,12 +66,12 @@ namespace Iql.Tests.Tests.Offline
         public async Task RestoreOfDataStoreState()
         {
             Db.IsOffline = true;
-            await Db.OfflineDataStore.ResetAsync();
-            var currentStateJson = Db.OfflineDataStore.SerializeStateToJson().NormalizeJson();
+            await Db.OfflineInMemoryDataStore.ResetAsync();
+            var currentStateJson = Db.OfflineInMemoryDataStore.SerializeStateToJson().NormalizeJson();
             Assert.AreEqual("[]", currentStateJson);
             var stateJson =
                 @"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]},{""Type"":""Site"",""Entities"":[{""Id"":0,""Location"":{""type"":""Point"",""coordinates"":[13.2846516,52.5069704]},""Name"":""Berlin"",""Left"":0,""Right"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]}]";
-            await Db.OfflineDataStore.RestoreStateFromJsonAsync(stateJson);
+            await Db.OfflineInMemoryDataStore.RestoreStateFromJsonAsync(stateJson);
             var clients = await Db.Clients.ToListAsync();
             Assert.AreEqual(3, clients.Count);
         }
@@ -82,15 +82,15 @@ namespace Iql.Tests.Tests.Offline
             Db.IsOffline = true;
             var stateJson =
                 @"[]";
-            await Db.OfflineDataStore.RestoreStateFromJsonAsync(stateJson);
+            await Db.OfflineInMemoryDataStore.RestoreStateFromJsonAsync(stateJson);
             var clients = await Db.Clients.ToListAsync();
             Assert.AreEqual(0, clients.Count);
         }
 
         [TestMethod]
-        public async Task AddingAnEntityRemotelyShouldAlsoAddItToOfflineDataStore()
+        public async Task AddingAnEntityRemotelyShouldAlsoAddItToOfflineDataStore2()
         {
-            var clientSet = Db.OfflineDataStore.DataSet<Client>();
+            var clientSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
             Assert.AreEqual(0, clientSet.Count);
             var client = new Client();
             client.Name = "Newly added client";
@@ -102,9 +102,9 @@ namespace Iql.Tests.Tests.Offline
         }
 
         [TestMethod]
-        public async Task UpdatingAnEntityRemotelyShouldAlsoUpdateItInTheOfflineDataStore()
+        public async Task UpdatingAnEntityRemotelyShouldAlsoUpdateItInTheOfflineDataStore2()
         {
-            var clientSet = Db.OfflineDataStore.DataSet<Client>();
+            var clientSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
             Assert.AreEqual(0, clientSet.Count);
             var clients = await Db.Clients.ToListAsync();
             var offlineClient = clientSet.Single(_ => _.Id == 1);
@@ -120,9 +120,9 @@ namespace Iql.Tests.Tests.Offline
         }
 
         [TestMethod]
-        public async Task DeletingAnEntityRemotelyShouldAlsoDeleteItFromTheOfflineDataStore()
+        public async Task DeletingAnEntityRemotelyShouldAlsoDeleteItFromTheOfflineDataStore2()
         {
-            var clientSet = Db.OfflineDataStore.DataSet<Client>();
+            var clientSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
             Assert.AreEqual(0, clientSet.Count);
             var client = new Client();
             client.Name = "Newly added client";
@@ -253,7 +253,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(52.5069704, site.Location.Y);
             // DONE: Check Geographic properties serialize correctly
             // TODO: Create "Restore" method on DataStore
-            // TODO: OfflineDataStore should persist to file the state upon every change commit
+            // TODO: OfflineDataStore2 should persist to file the state upon every change commit
         }
 
         [TestMethod]
@@ -366,7 +366,7 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task AddingAnEntityWhenOnline()
         {
-            var offlineDataSet = Db.DataStore.OfflineDataStore.DataSet<Client>();
+            var offlineDataSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
             var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
 
             Assert.AreEqual(0, offlineDataSet.Count);
@@ -404,7 +404,7 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task AddingAnEntityWhenOffline()
         {
-            var offlineDataSet = Db.DataStore.OfflineDataStore.DataSet<Client>();
+            var offlineDataSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
             var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
 
             Assert.AreEqual(0, offlineDataSet.Count);
@@ -456,7 +456,7 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task AddingAnEntityWithANewDependencyWhenOffline()
         {
-            var offlineDataSet = Db.DataStore.OfflineDataStore.DataSet<Client>();
+            var offlineDataSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
             var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
 
             Assert.AreEqual(0, offlineDataSet.Count);
@@ -505,7 +505,7 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task SaveChangeWhenOfflineAndResyncWhenOnline()
         {
-            var offlineDataSet = Db.DataStore.OfflineDataStore.DataSet<Client>();
+            var offlineDataSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
             var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
 
             Assert.AreEqual(0, offlineDataSet.Count);

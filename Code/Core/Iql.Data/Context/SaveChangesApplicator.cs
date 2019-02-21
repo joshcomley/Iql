@@ -59,7 +59,7 @@ namespace Iql.Data.Context
             var isOffline = !allowOnline;
             ICrudResult result;
             var dataStore = DataContext.DataStore;
-            var offlineDataStore = DataContext.DataStore.OfflineDataStore;
+            var offlineDataStore = DataContext.OfflineDataStore;
             var offlineDataTracker = DataContext.OfflineDataTracker;
             var dataTracker = DataContext.TemporalDataTracker;
             if (!allowOnline)
@@ -158,9 +158,9 @@ namespace Iql.Data.Context
 #endif
                                 );
                             }
-                            if (!isOffline && DataContext.DataStore.OfflineDataStore != null)
+                            if (!isOffline && DataContext.SupportsOffline)
                             {
-                                await DataContext.DataStore.OfflineDataStore.ApplyAddAsync(addEntityOperation);
+                                await DataContext.OfflineDataStore.ApplyAddAsync(addEntityOperation);
                             }
                         }
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
@@ -265,9 +265,9 @@ namespace Iql.Data.Context
                                     );
                                 }
 
-                                if (!isOffline && DataContext.DataStore.OfflineDataStore != null)
+                                if (!isOffline && DataContext.SupportsOffline)
                                 {
-                                    await DataContext.DataStore.OfflineDataStore.ApplyUpdateAsync(
+                                    await DataContext.OfflineDataStore.ApplyUpdateAsync(
                                         updateEntityOperation,
                                         changedProperties);
                                 }
@@ -345,9 +345,9 @@ namespace Iql.Data.Context
                                 typeof(TEntity),
                                 isOffline);
 
-                            if (!isOffline && DataContext.DataStore.OfflineDataStore != null)
+                            if (!isOffline && DataContext.SupportsOffline)
                             {
-                                await DataContext.DataStore.OfflineDataStore.ApplyDeleteAsync(deleteEntityOperation);
+                                await DataContext.OfflineDataStore.ApplyDeleteAsync(deleteEntityOperation);
                             }
                         }
                         else

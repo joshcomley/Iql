@@ -21,6 +21,9 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
+        bool EnableOffline { get; set; }
+        bool SupportsOffline { get; }
+        IOfflineDataStore OfflineDataStore { get; set; }
         IPersistState PersistState { get; set; }
         bool RefreshDisabled { get; set; }
         Task<DbList<TEntity>> TrackGetDataResultAsync<TEntity>(

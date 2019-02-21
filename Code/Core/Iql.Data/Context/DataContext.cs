@@ -11,6 +11,7 @@ using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
+using Iql.Data.DataStores.InMemory;
 using Iql.Data.DataStores.NestedSets;
 using Iql.Data.Extensions;
 using Iql.Data.Lists;
@@ -34,6 +35,33 @@ namespace Iql.Data.Context
 {
     public class DataContext : IDataContext
     {
+        private IOfflineDataStore _offlineDataStore = new InMemoryDataStore("OfflineData");
+
+        public bool EnableOffline { get; set; }
+
+        public bool SupportsOffline => EnableOffline && OfflineDataStore != null;
+
+        public IOfflineDataStore OfflineDataStore
+        {
+            get
+            {
+                if(_offlineDataStore != null && _offlineDataStore.EntityConfigurationBuilder == null)
+                {
+                    _offlineDataStore.EntityConfigurationBuilder = EntityConfigurationContext;
+                }
+
+                return _offlineDataStore;
+            }
+            set
+            {
+                _offlineDataStore = value;
+                if (value != null)
+                {
+                    value.EntityConfigurationBuilder = EntityConfigurationContext;
+                }
+            }
+        }
+
         private MethodInfo _addInternalMethod;
 
         private MethodInfo AddInternalMethod =>
@@ -161,17 +189,7 @@ namespace Iql.Data.Context
         }
         private DataTracker _offlineDataTracker;
 
-        public DataTracker OfflineDataTracker
-        {
-            get
-            {
-                if (DataStore?.OfflineDataStore == null)
-                {
-                    return null;
-                }
-                return _offlineDataTracker;
-            }
-        }
+        public DataTracker OfflineDataTracker => SupportsOffline ? _offlineDataTracker : null;
 
         public DataContext(
             IDataStore dataStore = null,
@@ -898,9 +916,9 @@ namespace Iql.Data.Context
                 return false;
             }
             var success = true;
-            if (DataStore.OfflineDataStore != null)
+            if (OfflineDataStore != null)
             {
-                if (!await DataStore.OfflineDataStore.ClearStateAsync(PersistState))
+                if (!await OfflineDataStore.ClearStateAsync(PersistState))
                 {
                     success = false;
                 }
@@ -922,9 +940,9 @@ namespace Iql.Data.Context
                 return false;
             }
             var success = true;
-            if (DataStore.OfflineDataStore != null)
+            if (OfflineDataStore != null)
             {
-                if (!await DataStore.OfflineDataStore.SaveStateAsync(PersistState))
+                if (!await OfflineDataStore.SaveStateAsync(PersistState))
                 {
                     success = false;
                 }
@@ -946,9 +964,9 @@ namespace Iql.Data.Context
                 return false;
             }
             var success = true;
-            if (DataStore.OfflineDataStore != null)
+            if (OfflineDataStore != null)
             {
-                if (!await DataStore.OfflineDataStore.RestoreStateAsync(PersistState))
+                if (!await OfflineDataStore.RestoreStateAsync(PersistState))
                 {
                     success = false;
                 }
@@ -1394,7 +1412,7 @@ namespace Iql.Data.Context
             //    TrackGetDataResult(OfflineDataTracker, response, false);
             //    OfflineDataTracker.Reset(response.Data);
             //}
-            //DataStore.OfflineDataStore?.SynchroniseData(response.Data);
+            //OfflineDataStore?.SynchroniseData(response.Data);
             //// Update "offline" repository with these results
 
             // Clone the queryable so any changes made in the application code
@@ -1425,17 +1443,17 @@ namespace Iql.Data.Context
                 if (response.RequestStatus == RequestStatus.Offline)
                 {
                     // Magic happens here...
-                    if (DataStore.OfflineDataStore != null)
+                    if (SupportsOffline)
                     {
                         response.IsOffline = true;
-                        await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
+                        await OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
                     }
                 }
             }
-            else if (DataStore.OfflineDataStore != null)
+            else if (SupportsOffline)
             {
                 response.IsOffline = true;
-                await DataStore.OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
+                await OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
             }
         }
 
@@ -1510,10 +1528,13 @@ namespace Iql.Data.Context
                     }
                 }
 
-                DataStore.OfflineDataStore?.SynchroniseData(response.Data);
-                if (DataStore.OfflineDataStore != null && PersistState != null)
+                if(SupportsOffline)
                 {
-                    await DataStore.OfflineDataStore?.SaveStateAsync(PersistState);
+                    OfflineDataStore?.SynchroniseData(response.Data);
+                    if (OfflineDataStore != null && PersistState != null)
+                    {
+                        await OfflineDataStore?.SaveStateAsync(PersistState);
+                    }
                 }
 
                 if (shouldTrackResults && !response.IsOffline)

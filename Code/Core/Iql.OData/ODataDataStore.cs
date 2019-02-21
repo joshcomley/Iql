@@ -28,11 +28,6 @@ namespace Iql.OData
 {
     public class ODataDataStore : DataStore
     {
-        public ODataDataStore(IOfflineDataStore offlineDataStore = null) : base(offlineDataStore)
-        {
-            
-        }
-
         public ODataConfiguration Configuration { get; set; }
 
         public IHttpProvider GetHttp()
@@ -615,5 +610,9 @@ namespace Iql.OData
             return null;
         }
         #endregion Validation
+
+        public ODataDataStore(string name = null) : base(name ?? nameof(ODataDataStore))
+        {
+        }
     }
 }

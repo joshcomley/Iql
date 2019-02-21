@@ -1,6 +1,4 @@
-﻿using Iql.Data.DataStores;
-using Iql.Data.DataStores.InMemory;
-using Iql.OData;
+﻿using Iql.Data.DataStores.InMemory;
 using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Context
@@ -21,9 +19,10 @@ namespace Iql.Tests.Context
         public static int Client2TypeId = 1;
         public OfflineAppDbContext()
         {
-            DataStore = new OfflinableInMemoryDataStore(new InMemoryDataStore("OfflineData"));
-            Reset();
+            DataStore = new OfflinableInMemoryDataStore();
             RefreshDisabled = true;
+            EnableOffline = true;
+            Reset();
         }
 
         public void Reset()
@@ -78,7 +77,7 @@ namespace Iql.Tests.Context
             });
         }
 
-        public InMemoryDataStore OfflineDataStore => (InMemoryDataStore)DataStore?.OfflineDataStore;
+        public InMemoryDataStore OfflineInMemoryDataStore => (InMemoryDataStore)OfflineDataStore;
         public OfflinableInMemoryDataStore OfflinableDataStore => (OfflinableInMemoryDataStore)DataStore;
     }
 }
