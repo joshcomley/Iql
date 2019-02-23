@@ -279,7 +279,15 @@ namespace Iql.Data.DataStores.InMemory
 
         public Task<bool> RestoreStateFromJsonAsync(string json)
         {
-            var sets = JsonDataSerializer.DeserializeEntitySets(EntityConfigurationBuilder, json);
+            DeserializedEntitySets sets;
+            try
+            {
+                sets = JsonDataSerializer.DeserializeEntitySets(EntityConfigurationBuilder, json);
+            }
+            catch
+            {
+                return Task.FromResult(false);
+            }
             return RestoreStateFromSetsAsync(sets);
         }
 
