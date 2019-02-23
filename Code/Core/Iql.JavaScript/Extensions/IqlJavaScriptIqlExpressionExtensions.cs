@@ -32,13 +32,12 @@ namespace Iql.JavaScript.Extensions
                 coalesceWith = "{}";
             }
 
-            var isFunc = coalesceWith == @"""""";
+            var isFunc = coalesceWith == @"''";
             return new IqlAggregateExpression(
                 new IqlFinalExpression<string>(@"("),
                 parent,
-                new IqlFinalExpression<string>($@" || {coalesceWith}){(isFunc ? "." : "[\"")}"),
-                accessorExpression,
-                new IqlFinalExpression<string>($@"{(isFunc ? "" : "\"]")}")
+                new IqlFinalExpression<string>($@" || {coalesceWith})."),
+                accessorExpression
             );
         }
     }

@@ -22,10 +22,6 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             IqlExpression[] args)
         {
             var arr = new List<IqlExpression>();
-            if (caller != null)
-            {
-                
-            }
             arr.Add(new IqlFinalExpression<string>(name));
             arr.Add(new IqlFinalExpression<string>("("));
             for (var i = 0; i < args.Length; i++)
@@ -45,7 +41,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
             if (parser.AllowTranspilation())
             {
-                return caller.Coalesce(invocation, new[] { "trim", "toUpperCase", "toLowerCase" }.Contains(name) ? @"""""" : null);
+                return caller.Coalesce(invocation, new[] { "trim", "toUpperCase", "toLowerCase", "includes" }.Contains(name) ? @"''" : null);
             }
 
             return caller.DotAccess(invocation);

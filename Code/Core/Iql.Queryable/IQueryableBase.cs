@@ -89,7 +89,7 @@ namespace Iql.Queryable
         //#endif
         //        );
 
-        IqlPropertyExpression PropertyExpression(string propertyName);
+        IqlPropertyExpression PropertyExpression(string propertyName, string rootReferenceName = null);
 
         Task<IqlDataSetQueryExpression> ToIqlAsync(IExpressionToIqlConverter expressionConverter = null
 #if TypeScript

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Iql.Conversion;
+using Iql.Data.IqlToIql;
 using Iql.Entities;
 using Iql.Extensions;
 using Iql.JavaScript.IqlToJavaScriptExpression;

@@ -190,7 +190,14 @@ namespace Iql.Queryable
         )
         {
             var orderByOperation = new OrderByOperation(null, descending);
-            orderByOperation.Expression = PropertyExpression(propetyName);
+            var rootReferenceName = "entity";
+            var propertyExpression = PropertyExpression(propetyName, rootReferenceName);
+            var lambdaExpression = new IqlLambdaExpression
+            {
+                Body = propertyExpression
+            };
+            lambdaExpression.Parameters.Add(propertyExpression.Parent as IqlRootReferenceExpression);
+            orderByOperation.Expression = lambdaExpression;
             return Then(orderByOperation);
         }
         IQueryableBase IQueryableBase.OrderByDefault(bool? descending = null)
@@ -379,10 +386,10 @@ namespace Iql.Queryable
         {
             return Then(operation);
         }
-        public virtual IqlPropertyExpression PropertyExpression(string propertyName)
+        public virtual IqlPropertyExpression PropertyExpression(string propertyName, string rootReferenceName = null)
         {
             //var property = this.Configuration.GetEntityByType(typeof(T)).Properties.Single(p => p.Name == propertyName);
-            return IqlExpression.GetPropertyExpression(propertyName);
+            return IqlExpression.GetPropertyExpression(propertyName, rootReferenceName);
         }
 
         IQueryableBase IQueryableBase.WherePropertyEquals(string propertyName, object value

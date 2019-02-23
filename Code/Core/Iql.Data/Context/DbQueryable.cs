@@ -588,9 +588,9 @@ namespace Iql.Data.Context
             return this.OrderByProperty(defaultSort, EntityConfiguration.DefaultSortDescending);
         }
 
-        public override IqlPropertyExpression PropertyExpression(string propertyName)
+        public override IqlPropertyExpression PropertyExpression(string propertyName, string rootReferenceName = null)
         {
-            return IqlPropertyPath.FromString(propertyName, this.EntityConfiguration).Expression;
+            return IqlPropertyPath.FromString(propertyName, this.EntityConfiguration, null, rootReferenceName).Expression;
         }
 
         public override async Task<DbList<T>> ToListAsync(Expression<Func<T, bool>> expression = null

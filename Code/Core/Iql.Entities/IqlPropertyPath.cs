@@ -179,9 +179,10 @@ namespace Iql.Entities
 
         public static IqlPropertyPath FromString(string path,
             IEntityConfiguration entityConfigurationContext,
-            IqlPropertyExpression parent = null)
+            IqlPropertyExpression parent = null,
+            string rootReferenceName = null)
         {
-            var propertyExpression = IqlExpression.GetPropertyExpression(path);
+            var propertyExpression = IqlExpression.GetPropertyExpression(path, rootReferenceName);
             if (parent != null)
             {
                 propertyExpression.Parent = parent;

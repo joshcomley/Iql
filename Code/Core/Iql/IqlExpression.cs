@@ -64,9 +64,9 @@ namespace Iql
             return this as T;
         }
 
-        public static IqlPropertyExpression GetPropertyExpression(string propertyName)
+        public static IqlPropertyExpression GetPropertyExpression(string propertyName, string rootReferenceName = null)
         {
-            var rootReferenceExpression = new IqlRootReferenceExpression("entity", "");
+            var rootReferenceExpression = new IqlRootReferenceExpression(rootReferenceName ?? "entity", "");
             var parts = propertyName.Split('/');
             IqlReferenceExpression parent = rootReferenceExpression;
             IqlPropertyExpression propertyExpression = null;

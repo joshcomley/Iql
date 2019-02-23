@@ -5,7 +5,7 @@ namespace Iql
 {
     public class IqlStringIncludesExpression : IqlParentValueExpression
     {
-        public IqlStringIncludesExpression(IqlReferenceExpression parent, IqlReferenceExpression value)
+        public IqlStringIncludesExpression(IqlReferenceExpression parent = null, IqlReferenceExpression value = null)
             : base(parent, value, IqlExpressionKind.StringIncludes, IqlType.Boolean)
         {
         }

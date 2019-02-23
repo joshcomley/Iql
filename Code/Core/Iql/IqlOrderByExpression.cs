@@ -5,7 +5,7 @@ namespace Iql
 {
     public class IqlOrderByExpression : IqlExpression
     {
-        public IqlOrderByExpression(IqlExpression orderExpression, IqlExpression parent = null) : base(IqlExpressionKind.OrderBy, IqlType.Collection, parent)
+        public IqlOrderByExpression(IqlExpression orderExpression = null, IqlExpression parent = null) : base(IqlExpressionKind.OrderBy, IqlType.Collection, parent)
         {
             OrderExpression = orderExpression;
         }
