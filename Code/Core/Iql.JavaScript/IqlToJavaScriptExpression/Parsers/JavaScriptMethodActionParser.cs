@@ -41,7 +41,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 
             if (parser.AllowTranspilation())
             {
-                return caller.Coalesce(invocation, new[] { "trim", "toUpperCase", "toLowerCase", "includes" }.Contains(name) ? @"''" : null);
+                return caller.Coalesce(invocation, new[] { "trim", "toUpperCase", "toLowerCase", "includes", "indexOf" }.Contains(name) ? @"''" : null);
             }
 
             return caller.DotAccess(invocation);

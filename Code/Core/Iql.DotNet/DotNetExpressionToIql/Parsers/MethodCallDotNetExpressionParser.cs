@@ -127,6 +127,10 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                     parent = context.Parse(node.Object, context) as IqlReferenceExpression;
                     var lineExpression = new IqlLengthExpression(parent);
                     return lineExpression;
+                case nameof(IqlParsingObjectExtensions.NullPropagate):
+                    parent = context.Parse(node.Arguments[0], context) as IqlReferenceExpression;
+                    var propertyExpression = new IqlPropertyExpression(node.Arguments[1].GetValue() as string, parent);
+                    return propertyExpression;
             }
             throw new NotImplementedException();
         }

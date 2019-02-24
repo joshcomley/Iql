@@ -11,6 +11,7 @@ using Iql.Entities;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Parsing.Reduction;
+using Iql.Serialization;
 
 namespace Iql.Data.DataStores.InMemory
 {
@@ -82,28 +83,51 @@ namespace Iql.Data.DataStores.InMemory
         public InMemoryContext<TEntity> Where(Expression<Func<TEntity, bool>> predicate, IqlExpression actionFilter)
         {
             var entityConfiguration = DataStore.EntityConfigurationBuilder.GetEntityByType(typeof(TEntity));
-            RelationshipMatches matches = null;
             if (actionFilter != null)
             {
                 var relationshipExpander = new RelationshipExpander();
+                actionFilter = actionFilter.EnsureIsIql();
                 WithRelationships(
                     actionFilter,
                     entityConfiguration,
                     (path, relationship) =>
                     {
-                        matches = relationshipExpander.FindMatches(
-                            ResolveSource(path.Property.Relationship.OtherEnd.Type).ToList(path.Property.Relationship.OtherEnd.Type),
-                            SourceList.ToList(),
-                            path.Property.Relationship.Relationship,
-                            true);
+                        while (true)
+                        {
+                            var matches = relationshipExpander.FindMatches(
+                                ResolveSource(path.Property.Relationship.Relationship.Source.Type).ToList(path.Property.Relationship.Relationship.Source.Type),
+                                ResolveSource(path.Property.Relationship.Relationship.Target.Type).ToList(path.Property.Relationship.Relationship.Target.Type),
+                                path.Property.Relationship.Relationship,
+                                true);
+                            if (matches != null)
+                            {
+                                Enqueue(() => matches.UnassignRelationships());
+                            }
+                            if (path.Parent == null)
+                            {
+                                break;
+                            }
+                            path = path.Parent;
+                        }
                     });
             }
             SourceList = SourceList.Where(predicate.Compile());
-            if (matches != null)
-            {
-                matches.UnassignRelationships();
-            }
             return this;
+        }
+
+        private readonly List<Action> _queue = new List<Action>();
+        private void Enqueue(Action action)
+        {
+            _queue.Add(action);
+        }
+
+        public void Finish()
+        {
+            foreach (var action in _queue)
+            {
+                action();
+            }
+            _queue.Clear();
         }
 
         private static void WithRelationships(
@@ -112,6 +136,19 @@ namespace Iql.Data.DataStores.InMemory
             Action<IqlPropertyPath, IRelationship> expand
             )
         {
+            var topLevelPropertyExpressions = expression.TopLevelPropertyExpressions();
+            for (var i = 0; i < topLevelPropertyExpressions.Length; i++)
+            {
+                var iqlPropertyExpression = topLevelPropertyExpressions[i].Expression as IqlPropertyExpression;
+                var path = IqlPropertyPath.FromPropertyExpression(
+                    entityConfiguration,
+                    iqlPropertyExpression);
+                if (path != null && path.RelationshipPath != null)
+                {
+                    expand(path.RelationshipPath, path.RelationshipPath.Property.Relationship.Relationship);
+                }
+            }
+
             var reducer = new IqlReducer();
             var all = reducer.Traverse(expression);
             var anyAlls = all.Where(_ => _.Kind == IqlExpressionKind.Any || _.Kind == IqlExpressionKind.All || _.Kind == IqlExpressionKind.Count).ToArray();

@@ -66,13 +66,15 @@ namespace Iql.Data.DataStores.InMemory
 
         public override string SerializeStateToJson()
         {
-            var allSets = AllDataSetMaps().Select(_ =>
-                new
-                {
-                    Type = _.Key.Name,
-                    Entities = JsonDataSerializer.PrepareCollectionForSerialization(_.Value, _.Key)
-                }
-            );
+            var allSets = AllDataSetMaps()
+                .OrderBy(_ => _.Key.Name)
+                .Select(_ =>
+                    new
+                    {
+                        Type = _.Key.Name,
+                        Entities = JsonDataSerializer.PrepareCollectionForSerialization(_.Value, _.Key)
+                    }
+                );
             return JsonConvert.SerializeObject(allSets);
         }
 
@@ -224,6 +226,7 @@ namespace Iql.Data.DataStores.InMemory
             var inMemoryContext = new InMemoryContext<TEntity>(this);
             var result = func(inMemoryContext);
             var resultList = result.SourceList.ToList();
+            inMemoryContext.Finish();
             inMemoryContext.AddMatches(typeof(TEntity), resultList);
             var cloneLookup = new Dictionary<object, object>();
             var clonedResult = new List<TEntity>();

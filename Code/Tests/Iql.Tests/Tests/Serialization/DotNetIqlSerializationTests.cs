@@ -302,7 +302,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 c => !(c.Name != "Josh"),
-                @"c => !((((c.Name == null) ? c.Name : c.Name.ToUpper()) != ""JOSH""))");
+                @"c => !((((c.NullPropagate(""Name"") == null) ? c.NullPropagate(""Name"") : c.NullPropagate(""Name"").ToUpper()) != ""JOSH""))");
         }
 
         [TestMethod]
@@ -310,7 +310,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 c => c.Sites.Any(s => s.Address == "some address"),
-                @"c => (c.Sites.LongCount(s => (((s.Address == null) ? s.Address : s.Address.ToUpper()) == ""SOME ADDRESS"")) > 0)");
+                @"c => (c.NullPropagate(""Sites"").LongCount(s => (((s.NullPropagate(""Address"") == null) ? s.NullPropagate(""Address"") : s.NullPropagate(""Address"").ToUpper()) == ""SOME ADDRESS"")) > 0)");
         }
 
         [TestMethod]
@@ -318,7 +318,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 c => !string.IsNullOrWhiteSpace(c.Name) || !string.IsNullOrWhiteSpace(c.Description),
-                @"c => (((((c.Name == null) ? c.Name : c.Name.ToUpper()) == null) || (((c.Name.Trim() == null) ? c.Name.Trim() : c.Name.Trim().ToUpper()) == """")) || ((((c.Description == null) ? c.Description : c.Description.ToUpper()) == null) || (((c.Description.Trim() == null) ? c.Description.Trim() : c.Description.Trim().ToUpper()) == """")))");
+                @"c => (((((c.NullPropagate(""Name"") == null) ? c.NullPropagate(""Name"") : c.NullPropagate(""Name"").ToUpper()) == null) || (((c.NullPropagate(""Name"").Trim() == null) ? c.NullPropagate(""Name"").Trim() : c.NullPropagate(""Name"").Trim().ToUpper()) == """")) || ((((c.NullPropagate(""Description"") == null) ? c.NullPropagate(""Description"") : c.NullPropagate(""Description"").ToUpper()) == null) || (((c.NullPropagate(""Description"").Trim() == null) ? c.NullPropagate(""Description"").Trim() : c.NullPropagate(""Description"").Trim().ToUpper()) == """")))");
         }
 
         [TestMethod]
@@ -326,7 +326,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 s => s.Name != null && s.Name.Length > 50,
-                @"s => ((((s.Name == null) ? s.Name : s.Name.ToUpper()) != null) && (s.Name.Length > 50))");
+                @"s => ((((s.NullPropagate(""Name"") == null) ? s.NullPropagate(""Name"") : s.NullPropagate(""Name"").ToUpper()) != null) && (s.NullPropagate(""Name"").Length > 50))");
         }
 
         [TestMethod]
@@ -334,7 +334,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             AssertCode(
                 s => (s.Name == null || s.Name.Length > 50) && (s.Name == "Jim"),
-                @"s => (((((s.Name == null) ? s.Name : s.Name.ToUpper()) == null) || (s.Name.Length > 50)) && (((s.Name == null) ? s.Name : s.Name.ToUpper()) == ""JIM""))");
+                @"s => (((((s.NullPropagate(""Name"") == null) ? s.NullPropagate(""Name"") : s.NullPropagate(""Name"").ToUpper()) == null) || (s.NullPropagate(""Name"").Length > 50)) && (((s.NullPropagate(""Name"") == null) ? s.NullPropagate(""Name"") : s.NullPropagate(""Name"").ToUpper()) == ""JIM""))");
         }
 
 
@@ -344,7 +344,7 @@ namespace Iql.Tests.Tests.Serialization
             //
             AssertCode(
                 s => s.Name != null && s.Name.Substring(2) == "hi",
-                @"s => ((((s.Name == null) ? s.Name : s.Name.ToUpper()) != null) && (((s.Name.Substring(2) == null) ? s.Name.Substring(2) : s.Name.Substring(2).ToUpper()) == ""HI""))"
+                @"s => ((((s.NullPropagate(""Name"") == null) ? s.NullPropagate(""Name"") : s.NullPropagate(""Name"").ToUpper()) != null) && (((s.NullPropagate(""Name"").Substring(2) == null) ? s.NullPropagate(""Name"").Substring(2) : s.NullPropagate(""Name"").Substring(2).ToUpper()) == ""HI""))"
             );
         }
 
@@ -354,7 +354,7 @@ namespace Iql.Tests.Tests.Serialization
             //
             AssertCode(
                 s => s.Name != null && s.Name.Substring(2, 3) == "hi",
-                @"s => ((((s.Name == null) ? s.Name : s.Name.ToUpper()) != null) && (((s.Name.Substring(2, 3) == null) ? s.Name.Substring(2, 3) : s.Name.Substring(2, 3).ToUpper()) == ""HI""))"
+                @"s => ((((s.NullPropagate(""Name"") == null) ? s.NullPropagate(""Name"") : s.NullPropagate(""Name"").ToUpper()) != null) && (((s.NullPropagate(""Name"").Substring(2, 3) == null) ? s.NullPropagate(""Name"").Substring(2, 3) : s.NullPropagate(""Name"").Substring(2, 3).ToUpper()) == ""HI""))"
             );
         }
 

@@ -66,5 +66,21 @@ namespace Iql.JavaScript.Extensions
             return jObject.ToString(Formatting.None, new NumberConverter()).Clean();
 #endif
         }
+
+        public static string NormalizeJsonNoNulls(this string json)
+        {
+#if TypeScript
+            return JObject.Parse(json).ToString();
+#else
+            JsonReader reader = new JsonTextReader(new StringReader(json));
+            reader.DateParseHandling = DateParseHandling.None;
+            var jObject = JToken.Load(reader);
+            var newJson = JsonConvert.SerializeObject(jObject, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }).Clean();
+            return newJson;
+#endif
+        }
     }
 }
