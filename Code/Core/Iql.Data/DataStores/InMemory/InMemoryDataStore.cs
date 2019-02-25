@@ -19,6 +19,144 @@ namespace Iql.Data.DataStores.InMemory
 {
     public class InMemoryDataStore : DataStore, IOfflineDataStore
     {
+        private class InMemoryDatabase
+        {
+            public AutoIntegerIdStrategy DefaultIntegerIdStrategy { get; set; } = AutoIntegerIdStrategy.Positive;
+
+            public virtual IList DataSetByType(Type type)
+            {
+                if (!Data.ContainsKey(type))
+                {
+                    Data.Add(type, ListExtensions.NewGenericList(type));
+                }
+
+                return Data[type];
+            }
+
+            private readonly Dictionary<Type, int> _guidCount = new Dictionary<Type, int>();
+            public Guid NextIdGuid(Type entityType,  IProperty property)
+            {
+                if (!_guidCount.ContainsKey(entityType))
+                {
+                    _guidCount.Add(entityType, 0);
+                }
+
+                var data = DataSetByType(entityType);
+                var guidCount = _guidCount[entityType];
+                Guid guid = GuidFromId(++guidCount);
+                while (true)
+                {
+                    var allow = true;
+                    foreach (var item in data)
+                    {
+                        if ((Guid)property.GetValue(item) == guid)
+                        {
+                            allow = false;
+                            break;
+                        }
+                    }
+
+                    if (allow)
+                    {
+                        break;
+                    }
+                    guid = GuidFromId(++guidCount);
+                }
+                _guidCount[entityType] = guidCount;
+                return guid;
+            }
+
+            private static Guid GuidFromId(int id)
+            {
+                var idStr = id.ToString();
+                var remain = 12 - idStr.Length;
+                for (var i = 0; i < remain; i++)
+                {
+                    idStr = "0" + idStr;
+                }
+
+                return new Guid($"00000000-0000-0000-0000-{idStr}");
+            }
+
+            private readonly Dictionary<Type, int> _idCount = new Dictionary<Type, int>();
+            public int NextIdInteger(Type entityType,  IProperty property)
+            {
+                if (!_idCount.ContainsKey(entityType))
+                {
+                    _idCount.Add(entityType, 0);
+                }
+                var data = DataSetByType(entityType);
+
+                var idCount = _idCount[entityType];
+                var integerIdStrategy = GetSetConfiguration(entityType).IntegerIdStrategy ?? DefaultIntegerIdStrategy;
+                if (integerIdStrategy == AutoIntegerIdStrategy.Negative)
+                {
+                    foreach (var existingEntity in data)
+                    {
+                        var value = (int)existingEntity.GetPropertyValue(property);
+                        if (value > idCount)
+                        {
+                            idCount = value;
+                        }
+                    }
+
+                    idCount++;
+                }
+                else
+                {
+                    foreach (var existingEntity in data)
+                    {
+                        var value = (int)existingEntity.GetPropertyValue(property);
+                        if (value < idCount)
+                        {
+                            idCount = value;
+                        }
+                    }
+
+                    idCount--;
+                }
+                _idCount[entityType] = idCount;
+                return idCount;
+            }
+
+            public string NextIdString(Type entityType, IProperty property)
+            {
+                return NextIdGuid(entityType, property).ToString();
+            }
+
+            private readonly Dictionary<Type, OfflineDataStoreSetConfiguration> _setConfigurations = new Dictionary<Type, OfflineDataStoreSetConfiguration>();
+            public OfflineDataStoreSetConfiguration GetSetConfiguration(Type type)
+            {
+                if (!_setConfigurations.ContainsKey(type))
+                {
+                    _setConfigurations.Add(type, new OfflineDataStoreSetConfiguration());
+                }
+                return _setConfigurations[type];
+            }
+            public Dictionary<Type, IList> Data { get; } = new Dictionary<Type, IList>();
+            private DataTracker _inMemoryDataTracker;
+            public DataTracker InMemoryDataTracker
+            {
+                get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(DataTrackerKind.Online, EntityConfigurationBuilder, "In Memory", true);
+            }
+            public IEntityConfigurationBuilder EntityConfigurationBuilder { get; }
+
+            public InMemoryDatabase(IEntityConfigurationBuilder entityConfigurationBuilder)
+            {
+                EntityConfigurationBuilder = entityConfigurationBuilder;
+            }
+
+            public void Clear()
+            {
+                _guidCount.Clear();
+                _idCount.Clear();
+                foreach (var entry in Data)
+                {
+                    entry.Value.Clear();
+                }
+                Data.Clear();
+            }
+        }
         static InMemoryDataStore()
         {
             SynchroniseDataTypedMethod = typeof(InMemoryDataStore).GetMethod(nameof(SynchroniseDataTyped),
@@ -27,7 +165,19 @@ namespace Iql.Data.DataStores.InMemory
 
         private static MethodInfo SynchroniseDataTypedMethod { get; }
 
-        private readonly Dictionary<Type, IList> _sources = new Dictionary<Type, IList>();
+        private static readonly Dictionary<string, InMemoryDatabase> Databases = new Dictionary<string, InMemoryDatabase>();
+
+        private InMemoryDatabase Database => EnsureInMemoryDatabase();
+
+        private InMemoryDatabase EnsureInMemoryDatabase()
+        {
+            if (!Databases.ContainsKey(SynchronicityKey))
+            {
+                Databases.Add(SynchronicityKey, new InMemoryDatabase(EntityConfigurationBuilder));
+            }
+
+            return Databases[SynchronicityKey];
+        }
 
         public InMemoryDataStoreConfiguration Configuration { get; set; }
         public virtual IList DataSetByType(Type type)
@@ -37,12 +187,13 @@ namespace Iql.Data.DataStores.InMemory
             {
                 return source;
             }
-            if (!_sources.ContainsKey(type))
+
+            if (!Database.Data.ContainsKey(type))
             {
-                _sources.Add(type, ListExtensions.NewGenericList(type));
+                Database.Data.Add(type, ListExtensions.NewGenericList(type));
             }
 
-            return _sources[type];
+            return Database.Data[type];
         }
 
         public virtual IList<TEntity> DataSet<TEntity>()
@@ -57,11 +208,7 @@ namespace Iql.Data.DataStores.InMemory
             DefaultIntegerIdStrategy = defaultAutoIntegerIdStrategy;
         }
 
-        private DataTracker _inMemoryDataTracker;
-        private DataTracker InMemoryDataTracker
-        {
-            get => _inMemoryDataTracker = _inMemoryDataTracker ?? new DataTracker(DataTrackerKind.Online, EntityConfigurationBuilder, "In Memory", true);
-        }
+        private DataTracker InMemoryDataTracker => Database.InMemoryDataTracker;
 
         private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
 
@@ -116,15 +263,15 @@ namespace Iql.Data.DataStores.InMemory
                             //var oldId = clone.GetPropertyValue(property);
                             if (property.TypeDefinition.ElementType == typeof(int))
                             {
-                                clone.SetPropertyValue(property, NextIdInteger(rootTrackingSet.EntityType, data, property));
+                                clone.SetPropertyValue(property, Database.NextIdInteger(rootTrackingSet.EntityType, property));
                             }
                             else if (property.TypeDefinition.ElementType == typeof(string))
                             {
-                                clone.SetPropertyValue(property, NextIdString(rootTrackingSet.EntityType, data, property));
+                                clone.SetPropertyValue(property, Database.NextIdString(rootTrackingSet.EntityType, property));
                             }
                             else if (property.TypeDefinition.Kind == IqlType.Guid)
                             {
-                                clone.SetPropertyValue(property, NextIdGuid(rootTrackingSet.EntityType, data, property));
+                                clone.SetPropertyValue(property, Database.NextIdGuid(rootTrackingSet.EntityType, property));
                             }
                         }
                     }
@@ -133,95 +280,6 @@ namespace Iql.Data.DataStores.InMemory
             operation.Result.Success = true;
             operation.Result.RemoteEntity = clone;
             return Task.FromResult(operation.Result);
-        }
-
-        private readonly Dictionary<Type, int> _guidCount = new Dictionary<Type, int>();
-        private Guid NextIdGuid(Type entityType, IList data, IProperty property)
-        {
-            if (!_guidCount.ContainsKey(entityType))
-            {
-                _guidCount.Add(entityType, 0);
-            }
-
-            var guidCount = _guidCount[entityType];
-            Guid guid = GuidFromId(++guidCount);
-            while (true)
-            {
-                var allow = true;
-                foreach (var item in data)
-                {
-                    if ((Guid)property.GetValue(item) == guid)
-                    {
-                        allow = false;
-                        break;
-                    }
-                }
-
-                if (allow)
-                {
-                    break;
-                }
-                guid = GuidFromId(++guidCount);
-            }
-            _guidCount[entityType] = guidCount;
-            return guid;
-        }
-
-        private static Guid GuidFromId(int id)
-        {
-            var idStr = id.ToString();
-            var remain = 12 - idStr.Length;
-            for (var i = 0; i < remain; i++)
-            {
-                idStr = "0" + idStr;
-            }
-
-            return new Guid($"00000000-0000-0000-0000-{idStr}");
-        }
-
-        private readonly Dictionary<Type, int> _idCount = new Dictionary<Type, int>();
-        public int NextIdInteger(Type entityType, IList data, IProperty property)
-        {
-            if (!_idCount.ContainsKey(entityType))
-            {
-                _idCount.Add(entityType, 0);
-            }
-
-            var idCount = _idCount[entityType];
-            var integerIdStrategy = GetSetConfiguration(entityType).IntegerIdStrategy ?? DefaultIntegerIdStrategy;
-            if (integerIdStrategy == AutoIntegerIdStrategy.Negative)
-            {
-                foreach (var existingEntity in data)
-                {
-                    var value = (int)existingEntity.GetPropertyValue(property);
-                    if (value > idCount)
-                    {
-                        idCount = value;
-                    }
-                }
-
-                idCount++;
-            }
-            else
-            {
-                foreach (var existingEntity in data)
-                {
-                    var value = (int)existingEntity.GetPropertyValue(property);
-                    if (value < idCount)
-                    {
-                        idCount = value;
-                    }
-                }
-
-                idCount--;
-            }
-            _idCount[entityType] = idCount;
-            return idCount;
-        }
-
-        public string NextIdString(Type entityType, IList data, IProperty property)
-        {
-            return NextIdGuid(entityType, data, property).ToString();
         }
 
         private int FindEntityIndexFromOperation<TEntity>(EntityCrudOperation<TEntity> operation) where TEntity : class
@@ -289,7 +347,7 @@ namespace Iql.Data.DataStores.InMemory
             var cloneLookup = new Dictionary<object, object>();
             var clonedResult = new List<TEntity>();
             var pageSize =
-                iql.Take ?? GetSetConfiguration(typeof(TEntity)).PageSize ?? DefaultPageSize;
+                iql.Take ?? Database.GetSetConfiguration(typeof(TEntity)).PageSize ?? DefaultPageSize;
             var take = 0;
             for (var i = 0; i < resultList.Count; i++)
             {
@@ -305,7 +363,7 @@ namespace Iql.Data.DataStores.InMemory
                 var item = resultList[i];
                 var clone = item.Clone(EntityConfigurationBuilder, typeof(TEntity), RelationshipCloneMode.DoNotClone);
                 cloneLookup.Add(item, clone);
-                clonedResult.Add((TEntity) clone);
+                clonedResult.Add((TEntity)clone);
             }
 
             var dictionary = new Dictionary<Type, IList>();
@@ -334,27 +392,70 @@ namespace Iql.Data.DataStores.InMemory
             return operation.Result;
         }
 
-        private readonly Dictionary<Type, OfflineDataStoreSetConfiguration> _setConfigurations = new Dictionary<Type, OfflineDataStoreSetConfiguration>();
-        public int? DefaultPageSize { get; set; }
-        public AutoIntegerIdStrategy DefaultIntegerIdStrategy { get; set; } = AutoIntegerIdStrategy.Positive;
+        private string _synchronicityKey;
+        private bool _synchronicityKeySet = false;
+        private AutoIntegerIdStrategy _defaultIntegerIdStrategy;
+        private bool _defaultIntegerIdStrategySet = false;
 
-        public OfflineDataStoreSetConfiguration GetSetConfiguration(Type type)
+        public string SynchronicityKey
         {
-            if (!_setConfigurations.ContainsKey(type))
+            get => (!_synchronicityKeySet ? Name : _synchronicityKey) ?? "default";
+        }
+
+        public int? DefaultPageSize { get; set; }
+
+        public override IEntityConfigurationBuilder EntityConfigurationBuilder 
+        {
+            get { return base.EntityConfigurationBuilder; }
+            set
             {
-                _setConfigurations.Add(type, new OfflineDataStoreSetConfiguration());
+                base.EntityConfigurationBuilder = value;
+                if (value != null)
+                {
+                    EnsureInMemoryDatabase();
+                    if (_defaultIntegerIdStrategySet)
+                    {
+                        Database.DefaultIntegerIdStrategy = _defaultIntegerIdStrategy;
+                    }
+                }
             }
-            return _setConfigurations[type];
+        } 
+
+        public AutoIntegerIdStrategy DefaultIntegerIdStrategy
+        {
+            get
+            {
+                return EntityConfigurationBuilder == null
+                    ? _defaultIntegerIdStrategy
+                    : Database.DefaultIntegerIdStrategy;
+            }
+            set
+            {
+                if (EntityConfigurationBuilder == null)
+                {
+                    _defaultIntegerIdStrategySet = true;
+                    _defaultIntegerIdStrategy = value;
+                }
+                else
+                {
+                    Database.DefaultIntegerIdStrategy = value;
+                }
+            }
         }
 
         public void ConfigureSet(Type type, Action<OfflineDataStoreSetConfiguration> configure)
         {
-            configure(GetSetConfiguration(type));
+            configure(Database.GetSetConfiguration(type));
         }
-        
+
+        public OfflineDataStoreSetConfiguration GetSetConfiguration(Type type)
+        {
+            return Database.GetSetConfiguration(type);
+        }
+
         public Task ResetAsync()
         {
-            _sources.Clear();
+            Database.Clear();
             Configuration?.Reset();
             return Task.FromResult<object>(null);
         }
@@ -431,7 +532,7 @@ namespace Iql.Data.DataStores.InMemory
                 return Configuration.AllDataSources();
             }
             var list = new List<IList>();
-            foreach (var source in _sources)
+            foreach (var source in Database.Data)
             {
                 list.Add(source.Value);
             }
@@ -445,7 +546,7 @@ namespace Iql.Data.DataStores.InMemory
                 return Configuration.AllDataSourceMaps();
             }
             var list = new Dictionary<IEntityConfiguration, IList>();
-            foreach (var source in _sources)
+            foreach (var source in Database.Data)
             {
                 list.Add(EntityConfigurationBuilder.GetEntityByType(source.Key), source.Value);
             }
@@ -454,6 +555,7 @@ namespace Iql.Data.DataStores.InMemory
 
         public void Clear()
         {
+            Database.Clear();
             foreach (var source in AllDataSets())
             {
                 source.Clear();

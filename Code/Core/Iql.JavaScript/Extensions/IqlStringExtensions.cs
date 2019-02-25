@@ -77,7 +77,8 @@ namespace Iql.JavaScript.Extensions
             var jObject = JToken.Load(reader);
             var newJson = JsonConvert.SerializeObject(jObject, new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                Converters = new[] { new NumberConverter() }
             }).Clean();
             return newJson;
 #endif

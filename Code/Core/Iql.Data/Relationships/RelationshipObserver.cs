@@ -70,7 +70,7 @@ namespace Iql.Data.Relationships
         public static MethodInfo WatchListTypedMethod { get; set; }
         public DataTracker DataTracker { get; }
 
-        public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
+        public IEntityConfigurationBuilder EntityConfigurationContext { get; set; }
 
         public EventEmitter<UntrackedEntityAddedEvent> UntrackedEntityAdded { get; } =
             new EventEmitter<UntrackedEntityAddedEvent>();

@@ -1,5 +1,6 @@
 ﻿using System;
 using Iql.Conversion;
+using Iql.Data.DataStores.InMemory;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
@@ -41,6 +42,10 @@ namespace Iql.Tests.Tests
         {
             // Boot
             var c = Db.EntityConfigurationContext;
+            if (Db.DataStore is InMemoryDataStore)
+            {
+                (Db.DataStore as InMemoryDataStore).Clear();
+            }
         }
 
         [TestCleanup]

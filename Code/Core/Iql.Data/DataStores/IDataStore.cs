@@ -13,7 +13,7 @@ namespace Iql.Data.DataStores
         string Name { get; set; }
         string SerializeStateToJson();
         EventEmitter<DataSetRetrievedEvent> DataSetRetrieved { get; }
-        EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
+        IEntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
         //DbList<T> TrackGetDataResult<T>(FlattenedGetDataResult<T> response) where T : class;
         INestedSetsProviderBase NestedSetsProviderForType(Type type);
         INestedSetsProvider<T> NestedSetsProviderFor<T>();

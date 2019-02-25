@@ -23,12 +23,16 @@ namespace Iql.Data.Tracking
         public DataTrackerKind Kind { get; }
         public DataTracker(
             DataTrackerKind kind,
-            EntityConfigurationBuilder entityConfigurationBuilder,
+            IEntityConfigurationBuilder entityConfigurationBuilder,
             string name,
             bool offline = false,
             bool silent = false)
         {
             Kind = kind;
+            if (entityConfigurationBuilder == null)
+            {
+                int a = 0;
+            }
             EntityConfigurationBuilder = entityConfigurationBuilder;
             Name = name;
             Offline = offline;
@@ -53,7 +57,7 @@ namespace Iql.Data.Tracking
         public List<ITrackingSet> Sets { get; set; }
 
         public bool AllowLocalKeyGeneration => Offline;
-        public EntityConfigurationBuilder EntityConfigurationBuilder { get; }
+        public IEntityConfigurationBuilder EntityConfigurationBuilder { get; }
         public string Name { get; }
         public bool Offline { get; }
         public IDataContext DataContext { get; set; }

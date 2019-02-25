@@ -39,6 +39,76 @@ namespace Iql.Tests.Tests.Offline
         public static OfflineAppDbContext Db => _db;
 
         [TestMethod]
+        public async Task TestGetAllPages()
+        {
+            Db.IsOffline = false;
+            var offlinePeopleTypes = Db.OfflinableDataStore.DataSet<PersonType>();
+            for (var i = 1; i <= 300; i++)
+            {
+                offlinePeopleTypes.Add(new PersonType { Id = i });
+            }
+            Db.InMemoryDataStore.DefaultPageSize = 10;
+            var peopleTypes = await Db.PersonTypes.Take(125).ToListAsync();
+            Assert.IsTrue(peopleTypes.Success);
+            Assert.AreEqual(125, peopleTypes.Count);
+
+            Db.IsOffline = true;
+            var peopleTypesOffline = await Db.PersonTypes.Take(125).ToListAsync();
+            Assert.IsTrue(peopleTypesOffline.Success);
+            Assert.AreEqual(125, peopleTypesOffline.Count);
+
+            Db.IsOffline = false;
+            peopleTypes = await Db.PersonTypes.Take(60).ToListAsync();
+            Assert.IsTrue(peopleTypes.Success);
+            Assert.AreEqual(60, peopleTypes.Count);
+
+            Db.IsOffline = true;
+            peopleTypesOffline = await Db.PersonTypes.Take(125).ToListAsync();
+            Assert.IsTrue(peopleTypesOffline.Success);
+            Assert.AreEqual(125, peopleTypesOffline.Count);
+        }
+
+        [TestMethod]
+        public async Task OfflineCacheBetweenTwoDataContextsShouldBeSynchronised()
+        {
+            Db.IsOffline = false;
+            var offlinePeopleTypes = Db.OfflinableDataStore.DataSet<PersonType>();
+            for (var i = 1; i <= 300; i++)
+            {
+                offlinePeopleTypes.Add(new PersonType { Id = i });
+            }
+            var tempDb = new OfflineAppDbContext();
+            var tempOfflinePeopleTypes = tempDb.OfflinableDataStore.DataSet<PersonType>();
+            Assert.AreEqual(offlinePeopleTypes.Count, tempOfflinePeopleTypes.Count);
+            tempDb.IsOffline = false;
+            var personTypes = await tempDb.PersonTypes.ToListAsync();
+            Assert.AreEqual(300, personTypes.Count);
+            Db.IsOffline = true;
+            var personTypesOffline = await Db.PersonTypes.ToListAsync();
+            Assert.AreEqual(300, personTypesOffline.Count);
+        }
+
+        [TestMethod]
+        public async Task OfflineChangesBetweenTwoDataContextsShouldBeSynchronised()
+        {
+            Db.IsOffline = false;
+            var offlinePeopleTypes = Db.OfflinableDataStore.DataSet<PersonType>();
+            for (var i = 1; i <= 300; i++)
+            {
+                offlinePeopleTypes.Add(new PersonType { Id = i });
+            }
+
+            var personType1 = await Db.PersonTypes.GetWithKeyAsync(1);
+            personType1.Title = "Changed";
+            Db.IsOffline = true;
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.IsTrue(Db.HasOfflineChanges());
+            var tempDb = new OfflineAppDbContext();
+            Assert.IsTrue(tempDb.HasOfflineChanges());
+        }
+
+        [TestMethod]
         public async Task OfflineStoreShouldBeUpdatedWithEachPersistedStateChange()
         {
             await Db.OfflineInMemoryDataStore.ResetAsync();
@@ -242,14 +312,14 @@ namespace Iql.Tests.Tests.Offline
             var json = Db.DataStore.SerializeStateToJson();
             var normalizedJson = json.NormalizeJsonNoNulls();
 #if !TypeScript
-            Assert.AreEqual(@"[{""Type"":""ApplicationUser"",""Entities"":[{""Id"":""user1"",""IsLockedOut"":false,""ClientId"":1,""Permissions"":""0"",""UserType"":""0"",""FullName"":null,""UserName"":""User 1"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false},{""Id"":""user2"",""IsLockedOut"":false,""ClientId"":2,""Permissions"":""0"",""UserType"":""0"",""FullName"":null,""UserName"":""User 2"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false},{""Id"":""user3"",""IsLockedOut"":false,""ClientId"":3,""Permissions"":""0"",""UserType"":""0"",""FullName"":null,""UserName"":""User 3"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false}]},{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""CreatedByUserId"":""user1"",""Name"":""Coca-Cola"",""AverageSales"":0.0,""AverageIncome"":12.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""CreatedByUserId"":""user2"",""Name"":""Pepsi"",""AverageSales"":0.0,""AverageIncome"":33.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""CreatedByUserId"":""user3"",""Name"":""Microsoft"",""AverageSales"":0.0,""AverageIncome"":97.0,""Category"":0,""Discount"":0.0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]},{""Type"":""Site"",""Entities"":[{""Id"":0,""Location"":{""type"":""Point"",""coordinates"":[13.2846516,52.5069704]},""Name"":""Berlin"",""Left"":0,""Right"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]}]",
+            Assert.AreEqual(@"[{""Type"":""ApplicationUser"",""Entities"":[{""Id"":""user1"",""IsLockedOut"":false,""ClientId"":1,""Permissions"":""0"",""UserType"":""0"",""FullName"":null,""UserName"":""User 1"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false},{""Id"":""user2"",""IsLockedOut"":false,""ClientId"":2,""Permissions"":""0"",""UserType"":""0"",""FullName"":null,""UserName"":""User 2"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false},{""Id"":""user3"",""IsLockedOut"":false,""ClientId"":3,""Permissions"":""0"",""UserType"":""0"",""FullName"":null,""UserName"":""User 3"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false}]},{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""CreatedByUserId"":""user1"",""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""CreatedByUserId"":""user2"",""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""CreatedByUserId"":""user3"",""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]},{""Type"":""PersonType"",""Entities"":[]},{""Type"":""Site"",""Entities"":[{""Id"":0,""Location"":{""type"":""Point"",""coordinates"":[13.2846516,52.5069704]},""Name"":""Berlin"",""Left"":0,""Right"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]}]",
                 normalizedJson);
 #else
-            Assert.AreEqual(@"[{""Type"":""ApplicationUser"",""Entities"":[{""Id"":""user1"",""IsLockedOut"":false,""ClientId"":1,""Permissions"":""0"",""UserType"":""0"",""UserName"":""User 1"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false},{""Id"":""user2"",""IsLockedOut"":false,""ClientId"":2,""Permissions"":""0"",""UserType"":""0"",""UserName"":""User 2"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false},{""Id"":""user3"",""IsLockedOut"":false,""ClientId"":3,""Permissions"":""0"",""UserType"":""0"",""UserName"":""User 3"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false}]},{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""CreatedByUserId"":""user1"",""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""CreatedByUserId"":""user2"",""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""CreatedByUserId"":""user3"",""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]},{""Type"":""Site"",""Entities"":[{""Id"":0,""Location"":{""type"":""Point"",""coordinates"":[13.2846516,52.5069704]},""Name"":""Berlin"",""Left"":0,""Right"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]}]",
+            Assert.AreEqual(@"[{""Type"":""ApplicationUser"",""Entities"":[{""Id"":""user1"",""IsLockedOut"":false,""ClientId"":1,""Permissions"":""0"",""UserType"":""0"",""UserName"":""User 1"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false},{""Id"":""user2"",""IsLockedOut"":false,""ClientId"":2,""Permissions"":""0"",""UserType"":""0"",""UserName"":""User 2"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false},{""Id"":""user3"",""IsLockedOut"":false,""ClientId"":3,""Permissions"":""0"",""UserType"":""0"",""UserName"":""User 3"",""EmailConfirmed"":false,""PhoneNumberConfirmed"":false,""TwoFactorEnabled"":false,""LockoutEnabled"":false}]},{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""CreatedByUserId"":""user1"",""Name"":""Coca-Cola"",""AverageSales"":0,""AverageIncome"":12,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":2,""TypeId"":1,""CreatedByUserId"":""user2"",""Name"":""Pepsi"",""AverageSales"":0,""AverageIncome"":33,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""},{""Id"":3,""TypeId"":2,""CreatedByUserId"":""user3"",""Name"":""Microsoft"",""AverageSales"":0,""AverageIncome"":97,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]},{""Type"":""ClientType"",""Entities"":[{""Id"":1,""Name"":""Beverages""},{""Id"":2,""Name"":""Software""}]},{""Type"":""PersonType"",""Entities"":[]},{""Type"":""Site"",""Entities"":[{""Id"":0,""Location"":{""type"":""Point"",""coordinates"":[13.2846516,52.5069704]},""Name"":""Berlin"",""Left"":0,""Right"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""00000000-0000-0000-0000-000000000000""}]}]",
                 normalizedJson);
 #endif
             var sets = JsonDataSerializer.DeserializeEntitySets(Db.EntityConfigurationContext, json);
-            Assert.AreEqual(4, sets.Count);
+            Assert.AreEqual(5, sets.Count);
             var clients = sets.Set<Client>();
             Assert.AreEqual(3, clients.Count);
             Assert.AreEqual("Coca-Cola", clients[0].Name);

@@ -87,7 +87,7 @@ namespace Iql.Data.Serialization
             public JArray Entities { get; set; }
         }
 
-        public static DeserializedEntitySets DeserializeEntitySets(EntityConfigurationBuilder builder, string json)
+        public static DeserializedEntitySets DeserializeEntitySets(IEntityConfigurationBuilder builder, string json)
         {
             var dictionary = new Dictionary<IEntityConfiguration, IList>();
             var deserialized = (SerializedEntitySet[])JsonConvert.DeserializeObject(json, typeof(SerializedEntitySet[]));

@@ -12,6 +12,7 @@ namespace Iql.Data.DataStores
 {
     public interface IOfflineDataStore : IDataStore
     {
+        string SynchronicityKey { get; }
         int? DefaultPageSize { get; set; }
         AutoIntegerIdStrategy DefaultIntegerIdStrategy { get; set; }
         void ConfigureSet(Type type, Action<OfflineDataStoreSetConfiguration> configuration);

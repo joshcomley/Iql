@@ -22,7 +22,7 @@ namespace Iql.Data.DataStores
             DataSetRetrieved = new EventEmitter<DataSetRetrievedEvent>();
         }
 
-        public EntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
+        public virtual IEntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
 
         public virtual INestedSetsProviderBase NestedSetsProviderForType(Type type)
         {

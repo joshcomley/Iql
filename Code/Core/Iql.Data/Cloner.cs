@@ -23,13 +23,13 @@ namespace Iql.Data
     }
     public static class Cloner
     {
-        public static T CloneAs<T>(this T obj, EntityConfigurationBuilder entityConfigurationBuilder, Type entityType, RelationshipCloneMode cloneRelationships, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
+        public static T CloneAs<T>(this T obj, IEntityConfigurationBuilder entityConfigurationBuilder, Type entityType, RelationshipCloneMode cloneRelationships, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
             where T : class
         {
             return (T)obj.Clone(entityConfigurationBuilder, entityType, cloneRelationships, cloneMap, mergeMap);
         }
 
-        public static object Clone(this object obj, EntityConfigurationBuilder entityConfigurationBuilder, Type entityType,
+        public static object Clone(this object obj, IEntityConfigurationBuilder entityConfigurationBuilder, Type entityType,
             RelationshipCloneMode cloneRelationships, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
         {
             var clonedObjects = cloneMap ?? new Dictionary<object, object>();
@@ -66,7 +66,7 @@ namespace Iql.Data
 
         private static object CloneInternal(
             this object obj, 
-            EntityConfigurationBuilder entityConfigurationBuilder, 
+            IEntityConfigurationBuilder entityConfigurationBuilder, 
             Type entityType, 
             RelationshipCloneMode cloneRelationships, 
             Dictionary<object, object> clonedObjects,
@@ -199,7 +199,7 @@ namespace Iql.Data
             //#endif
         }
 
-        private static object CloneKeysOnly(EntityConfigurationBuilder entityConfigurationBuilder, IProperty property, object value)
+        private static object CloneKeysOnly(IEntityConfigurationBuilder entityConfigurationBuilder, IProperty property, object value)
         {
             var newValue = Activator.CreateInstance(property.Relationship.OtherEnd.Type);
             var relationshipTypeConfiguration =

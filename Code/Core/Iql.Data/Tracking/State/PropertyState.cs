@@ -44,6 +44,11 @@ namespace Iql.Data.Tracking.State
         {
             get
             {
+                if (Property.IsReadOnly)
+                {
+                    return false;
+                }
+
                 if (Property.Kind.HasFlag(PropertyKind.Count))
                 {
                     return false;

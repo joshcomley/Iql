@@ -22,7 +22,6 @@ namespace Iql.Tests.Context
             DataStore = new OfflinableInMemoryDataStore();
             RefreshDisabled = true;
             EnableOffline = true;
-            Reset();
         }
 
         public void Reset()
@@ -33,6 +32,9 @@ namespace Iql.Tests.Context
             TemporalDataTracker.Clear();
             
             // Load up with data
+            var peopleTypes = OfflinableDataStore.DataSet<PersonType>();
+            peopleTypes.Clear();
+
             var users = OfflinableDataStore.DataSet<ApplicationUser>();
             users.Clear();
             users.Add(new ApplicationUser
