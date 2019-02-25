@@ -599,13 +599,107 @@ namespace Iql.Data.Context
 #endif
         )
         {
-            var result = await ToListWithResponseAsync();
+            var result = await ToListWithResponseAsync(expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
             return result?.Data;
         }
 
-        async Task<IGetDataResult> IDbQueryable.ToListWithResponseAsync()
+        public override async Task<DbList<T>> AllPagesToListAsync(ProgressNotifier progressNotifier = null,
+            Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
-            return await ToListWithResponseAsync();
+            var result = await AllPagesToListWithResponseAsync(progressNotifier, expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+            return result?.Data;
+        }
+
+        public async Task<AggregatedGetDataResult<T>> AllPagesToListWithResponseAsync(ProgressNotifier progressNotifier = null,
+            Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var results = new List<GetDataResult<T>>();
+            GetDataResult<T> response = null;
+            progressNotifier?.NotifyProgress(0, false);
+            while (true)
+            {
+                if (response == null)
+                {
+                    response = await ToListWithResponseAsync(expression);
+                }
+                results.Add(response);
+                if (response.Success)
+                {
+                    if (response.Data.HasNextPage)
+                    {
+                        progressNotifier?.NotifyProgress((float)(response.Data.PagingInfo.Page + 1) / (float)response.Data.PagingInfo.PageCount, false);
+                        response = await response.Data.NewNextPageQuery().ToListWithResponseAsync(expression);
+                    }
+                    else
+                    {
+                        progressNotifier?.NotifyProgress(1, true);
+                        break;
+                    }
+                }
+                else
+                {
+                    progressNotifier?.NotifyProgress(progressNotifier.CurrentProgress, true);
+                    break;
+                }
+            }
+            var result = new AggregatedGetDataResult<T>(results.ToArray());
+            //while (initialResult.Success)
+            //{
+            //    if (initialResult.Data.HasNextPage)
+            //    {
+
+            //    }
+            //    else
+            //    {
+            //        progressNotifier?.NotifyProgress(1, true);
+            //    }
+            //}
+
+            return result;
+        }
+
+        async Task<IGetDataResult> IDbQueryable.ToListWithResponseAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await ToListWithResponseAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IAggregatedGetDataResult> IDbQueryable.AllPagesToListWithResponseAsync(ProgressNotifier progressNotifier = null,
+            LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
+        {
+            return await AllPagesToListWithResponseAsync(progressNotifier,
+                (Expression<Func<T, bool>>)expression
+#if TypeScript
+                , evaluateContext
+#endif
+                );
         }
 
         public async Task<GetDataResult<T>> ToListWithResponseAsync(Expression<Func<T, bool>> expression = null
@@ -682,7 +776,7 @@ namespace Iql.Data.Context
 
         public EntityState<T> Add(T entity)
         {
-            return (EntityState<T>) DataContext.AddEntity(entity);
+            return (EntityState<T>)DataContext.AddEntity(entity);
         }
 
         //public UpdateEntityResult<T> Update(T entity)
@@ -693,7 +787,7 @@ namespace Iql.Data.Context
 
         public EntityState<T> Delete(T entity)
         {
-            return (EntityState<T>) DataContext.DeleteEntity(entity);
+            return (EntityState<T>)DataContext.DeleteEntity(entity);
         }
 
         private DbQueryable<T> UseWhereIfExists(Expression<Func<T, bool>> expression
@@ -956,7 +1050,7 @@ namespace Iql.Data.Context
 
         IEntityStateBase IDbQueryable.Add(object entity)
         {
-            return Add((T) entity);
+            return Add((T)entity);
         }
 
         public override void DeleteEntity(object entity)
@@ -1201,11 +1295,13 @@ namespace Iql.Data.Context
                 }
                 else if (operation is SkipOperation)
                 {
-                    queryExpression.Skip = (operation as SkipOperation).Skip;
+                    queryExpression.Skip = queryExpression.Skip ?? 0;
+                    queryExpression.Skip += (operation as SkipOperation).Skip;
                 }
                 else if (operation is TakeOperation)
                 {
-                    queryExpression.Take = (operation as TakeOperation).Take;
+                    queryExpression.Take = queryExpression.Take ?? 0;
+                    queryExpression.Take += (operation as TakeOperation).Take;
                 }
                 else if (operation is IncludeCountOperation)
                 {

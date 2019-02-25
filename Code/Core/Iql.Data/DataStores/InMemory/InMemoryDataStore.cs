@@ -188,7 +188,8 @@ namespace Iql.Data.DataStores.InMemory
             }
 
             var idCount = _idCount[entityType];
-            if (GetAutoIntegerIdStrategy(entityType) == AutoIntegerIdStrategy.Negative)
+            var integerIdStrategy = GetSetConfiguration(entityType).IntegerIdStrategy ?? DefaultIntegerIdStrategy;
+            if (integerIdStrategy == AutoIntegerIdStrategy.Negative)
             {
                 foreach (var existingEntity in data)
                 {
@@ -287,12 +288,26 @@ namespace Iql.Data.DataStores.InMemory
             inMemoryContext.AddMatches(typeof(TEntity), resultList);
             var cloneLookup = new Dictionary<object, object>();
             var clonedResult = new List<TEntity>();
-            foreach (var item in resultList)
+            var pageSize =
+                iql.Take ?? GetSetConfiguration(typeof(TEntity)).PageSize ?? DefaultPageSize;
+            var take = 0;
+            for (var i = 0; i < resultList.Count; i++)
             {
+                if (iql.Skip != null && i < iql.Skip)
+                {
+                    continue;
+                }
+                if (pageSize != null && take == pageSize)
+                {
+                    break;
+                }
+                take++;
+                var item = resultList[i];
                 var clone = item.Clone(EntityConfigurationBuilder, typeof(TEntity), RelationshipCloneMode.DoNotClone);
                 cloneLookup.Add(item, clone);
-                clonedResult.Add((TEntity)clone);
+                clonedResult.Add((TEntity) clone);
             }
+
             var dictionary = new Dictionary<Type, IList>();
             foreach (var pair in inMemoryContext.AllData)
             {
@@ -309,40 +324,34 @@ namespace Iql.Data.DataStores.InMemory
                         newList.Add(item.Clone(EntityConfigurationBuilder, pair.Key, RelationshipCloneMode.DoNotClone));
                     }
                 }
-
                 dictionary.Add(pair.Key, newList);
             }
+
+            operation.Result.TotalCount = resultList.Count;
             operation.Result.Root = clonedResult;
             operation.Result.Success = true;
             operation.Result.Data = dictionary;
             return operation.Result;
         }
 
-        private readonly Dictionary<Type, AutoIntegerIdStrategy> _integerIdStrategies = new Dictionary<Type, AutoIntegerIdStrategy>();
+        private readonly Dictionary<Type, OfflineDataStoreSetConfiguration> _setConfigurations = new Dictionary<Type, OfflineDataStoreSetConfiguration>();
+        public int? DefaultPageSize { get; set; }
         public AutoIntegerIdStrategy DefaultIntegerIdStrategy { get; set; } = AutoIntegerIdStrategy.Positive;
 
-        public void SetAutoIntegerIdStrategy(Type type, AutoIntegerIdStrategy integerIdStrategy)
+        public OfflineDataStoreSetConfiguration GetSetConfiguration(Type type)
         {
-            if (!_integerIdStrategies.ContainsKey(type))
+            if (!_setConfigurations.ContainsKey(type))
             {
-                _integerIdStrategies.Add(type, integerIdStrategy);
+                _setConfigurations.Add(type, new OfflineDataStoreSetConfiguration());
             }
-            else
-            {
-                _integerIdStrategies[type] = integerIdStrategy;
-            }
+            return _setConfigurations[type];
         }
 
-        public AutoIntegerIdStrategy GetAutoIntegerIdStrategy(Type type)
+        public void ConfigureSet(Type type, Action<OfflineDataStoreSetConfiguration> configure)
         {
-            if (!_integerIdStrategies.ContainsKey(type))
-            {
-                return DefaultIntegerIdStrategy;
-            }
-
-            return _integerIdStrategies[type];
+            configure(GetSetConfiguration(type));
         }
-
+        
         public Task ResetAsync()
         {
             _sources.Clear();

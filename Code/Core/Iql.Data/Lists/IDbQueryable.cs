@@ -11,6 +11,9 @@ using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
+#if TypeScript
+using Iql.Parsing;
+#endif
 using Iql.Queryable;
 
 namespace Iql.Data.Lists
@@ -19,7 +22,17 @@ namespace Iql.Data.Lists
     {
         void DeleteEntity(object entity);
         IEntityStateBase Add(object entity);
-        Task<IGetDataResult> ToListWithResponseAsync();
+        Task<IGetDataResult> ToListWithResponseAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IAggregatedGetDataResult> AllPagesToListWithResponseAsync(ProgressNotifier progressNotifier = null,
+            LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
         Task<object> GetWithKeyAsync(object key);
         Task<IList> GetWithKeysAsync(IEnumerable<object> keys);
         Task<IList> LoadRelationshipPropertyAsync(object entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);

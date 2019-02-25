@@ -12,9 +12,10 @@ namespace Iql.Data.DataStores
 {
     public interface IOfflineDataStore : IDataStore
     {
+        int? DefaultPageSize { get; set; }
         AutoIntegerIdStrategy DefaultIntegerIdStrategy { get; set; }
-        void SetAutoIntegerIdStrategy(Type type, AutoIntegerIdStrategy integerIdStrategy);
-        AutoIntegerIdStrategy GetAutoIntegerIdStrategy(Type type);
+        void ConfigureSet(Type type, Action<OfflineDataStoreSetConfiguration> configuration);
+        OfflineDataStoreSetConfiguration GetSetConfiguration(Type type);
         Task ResetAsync();
         Task<bool> RestoreStateAsync(IPersistState persistState);
         Task<bool> ClearStateAsync(IPersistState persistState);

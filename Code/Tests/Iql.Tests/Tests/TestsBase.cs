@@ -37,14 +37,14 @@ namespace Iql.Tests.Tests
         }
 
         [TestInitialize]
-        public void TestInitialize()
+        public virtual void TestInitialize()
         {
             // Boot
             var c = Db.EntityConfigurationContext;
         }
 
         [TestCleanup]
-        public void TestCleanUp()
+        public virtual void TestCleanUp()
         {
             TestsBlock.TestCleanUp();
         }

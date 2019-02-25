@@ -20,12 +20,6 @@ namespace Iql.Data.Lists
         public bool Success { get; set; }
         public PagingInfo PagingInfo { get; set; }
 
-        PagingInfo IDbList.PagingInfo
-        {
-            get => PagingInfo;
-            set => PagingInfo = value;
-        }
-
         IDbQueryable IDbList.SourceQueryable
         {
             get => SourceQueryable;
@@ -67,7 +61,10 @@ namespace Iql.Data.Lists
             return await PreviousPage();
         }
 
+        public bool HasPreviousPage => PagingInfo != null && PagingInfo.Page > 0;
 
+        public bool HasNextPage => PagingInfo != null && PagingInfo.Page + 1 < PagingInfo.PageCount;
+        
         public DbQueryable<T> NewNextPageQuery()
         {
             if (PagingInfo == null)
@@ -75,17 +72,21 @@ namespace Iql.Data.Lists
                 throw new Exception("No page size defined for this query result");
             }
             var queryable = SourceQueryable.Copy();
-            if (PagingInfo.Page == PagingInfo.PageCount)
+            if (!HasNextPage)
             {
                 return queryable;
             }
             return queryable.Skip(PagingInfo.PageSize).Take(PagingInfo.PageSize);
         }
 
-        public async Task LoadNextPage()
+        public async Task<bool> LoadNextPage()
         {
             var result = await NextPage();
-            Merge(result);
+            if (result.Success)
+            {
+                Merge(result);
+            }
+            return result.Success;
         }
 
         public async Task<DbList<T>> NextPage()
@@ -94,10 +95,14 @@ namespace Iql.Data.Lists
             return result;
         }
 
-        public async Task LoadPreviousPage()
+        public async Task<bool> LoadPreviousPage()
         {
             var result = await PreviousPage();
-            Merge(result);
+            if (result.Success)
+            {
+                Merge(result);
+            }
+            return result.Success;
         }
 
         public async Task<DbList<T>> PreviousPage()

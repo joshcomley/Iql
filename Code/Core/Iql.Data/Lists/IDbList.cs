@@ -16,5 +16,7 @@ namespace Iql.Data.Lists
         Task<IDbList> NextPage();
         Task<IDbList> Page(int page, int pageSize);
         Task<IDbList> PreviousPage();
+        bool HasPreviousPage { get; }
+        bool HasNextPage { get; }
     }
 }

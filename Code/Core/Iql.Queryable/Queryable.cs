@@ -269,6 +269,13 @@ namespace Iql.Queryable
             , EvaluateContext evaluateContext = null
 #endif
         );
+        public abstract Task<TResult> AllPagesToListAsync(ProgressNotifier progressNotifier = null,
+            Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
         public abstract Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -294,9 +301,23 @@ namespace Iql.Queryable
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
-            )
+        )
         {
-            return await ToListAsync((Expression<Func<T, bool>>) expression
+            return await ToListAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
+
+        async Task<IEnumerable> IQueryableBase.AllPagesToListAsync(ProgressNotifier progressNotifier = null,
+            LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await AllPagesToListAsync(progressNotifier, (Expression<Func<T, bool>>)expression
 #if TypeScript
 , evaluateContext
 #endif

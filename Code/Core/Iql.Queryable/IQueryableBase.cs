@@ -28,6 +28,12 @@ namespace Iql.Queryable
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
+        );
+        Task<IEnumerable> AllPagesToListAsync(ProgressNotifier progressNotifier = null,
+            LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
             );
         Task<object> FirstAsync(LambdaExpression expression = null
 #if TypeScript

@@ -5,7 +5,7 @@ using Iql.Queryable;
 
 namespace Iql.Data.Crud.Operations.Results
 {
-    public class DataResult<T, TResult> : CrudResult<T, GetDataOperation<T>>, IDataResult
+    public class DataResult<T, TResult> : CrudResult<T, GetDataOperation<T>>, IQueryableDataResult
         where T : class
     {
         public DataResult(TResult data, GetDataOperation<T> operation, bool success, RequestStatus requestStatus = RequestStatus.Online) 
@@ -23,7 +23,7 @@ namespace Iql.Data.Crud.Operations.Results
             set => Root = (IList<T>) value;
         }
         public IQueryable<T> Queryable { get; set; }
-        IQueryableBase IDataResult.Queryable
+        IQueryableBase IQueryableDataResult.Queryable
         {
             get => Queryable;
             set => Queryable = (IQueryable<T>)value;

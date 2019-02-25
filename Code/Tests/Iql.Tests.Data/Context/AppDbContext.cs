@@ -48,6 +48,7 @@ namespace Iql.Tests.Context
             Initialise();
         }
 
+        public InMemoryDataStore InMemoryDataStore => DataStore as InMemoryDataStore;
         protected virtual void Initialise()
         {
             if (InMemoryDataStoreConfiguration == null)
@@ -98,7 +99,7 @@ namespace Iql.Tests.Context
                 .DefineProperty(_ => _.MySortDescending, true, IqlType.String)
                 .DefineProperty(_ => _.MySearch, true, IqlType.String)
                 .HasKey(_ => _.MyId);
-                ;
+            ;
             EntityConfigurationContext.CustomReportsDefinition = CustomReportsDefinition.Define(
                 EntityConfigurationContext.EntityType<MyCustomReport>(),
                 _ => _.MyId,

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.Tracking.State;
 using Iql.Parsing.Expressions.QueryExpressions;
+using Iql.Queryable;
 
 #if TypeScript
 using Iql.Parsing;
@@ -126,6 +127,12 @@ namespace Iql.Data.Lists
         );
 
         Task<DbList<T>> ToListAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
+        Task<DbList<T>> AllPagesToListAsync(ProgressNotifier progressNotifier = null, Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
