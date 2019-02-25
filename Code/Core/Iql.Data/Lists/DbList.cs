@@ -17,6 +17,7 @@ namespace Iql.Data.Lists
         }
 
         public DbQueryable<T> SourceQueryable { get; set; }
+        public bool Success { get; set; }
         public PagingInfo PagingInfo { get; set; }
 
         PagingInfo IDbList.PagingInfo
@@ -125,6 +126,7 @@ namespace Iql.Data.Lists
                              result.PagingInfo.Page,
                              result.PagingInfo.PageCount);
             SourceQueryable = result.SourceQueryable;
+            Success = result.Success;
             Clear();
             AddRange(result);
         }

@@ -333,6 +333,7 @@ namespace Iql.Data.Context
         }
 
         public bool TrackEntities { get; set; } = true;
+        public bool AllowOffline { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
         public EvaluateContext EvaluateContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
@@ -1443,14 +1444,14 @@ namespace Iql.Data.Context
                 if (response.RequestStatus == RequestStatus.Offline)
                 {
                     // Magic happens here...
-                    if (SupportsOffline)
+                    if (SupportsOffline && response.Queryable.AllowOffline != false)
                     {
                         response.IsOffline = true;
                         await OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
                     }
                 }
             }
-            else if (SupportsOffline)
+            else if (SupportsOffline && response.Queryable.AllowOffline != false)
             {
                 response.IsOffline = true;
                 await OfflineDataStore.PerformGetAsync(queuedGetDataOperation);
@@ -1474,7 +1475,8 @@ namespace Iql.Data.Context
             dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
             // Flatten before we merge because the merge will update the result data set with
             // tracked data
-            if (response.IsSuccessful())
+            dbList.Success = response.IsSuccessful();
+            if (dbList.Success)
             {
                 var shouldTrackResults = TrackEntities;
                 if (dbList.SourceQueryable != null && dbList.SourceQueryable.TrackEntities.HasValue)
@@ -1528,7 +1530,7 @@ namespace Iql.Data.Context
                     }
                 }
 
-                if(SupportsOffline)
+                if(SupportsOffline && response.Queryable.AllowOffline != false)
                 {
                     OfflineDataStore?.SynchroniseData(response.Data);
                     if (OfflineDataStore != null && PersistState != null)

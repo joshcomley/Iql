@@ -28,6 +28,7 @@ namespace Iql.Queryable
         }
 
         public bool? TrackEntities { get; set; } = null;
+        public bool? AllowOffline { get; set; } = null;
 
         public EvaluateContext EvaluateContext { get; set; }
 
@@ -358,6 +359,7 @@ namespace Iql.Queryable
             var queryable = New();
             queryable.HasDefaults = HasDefaults;
             queryable.TrackEntities = TrackEntities;
+            queryable.AllowOffline = AllowOffline;
             Operations.ForEach(element => { queryable.Operations.Add(element); });
             return queryable;
         }

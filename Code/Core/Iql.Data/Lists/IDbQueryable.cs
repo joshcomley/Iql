@@ -26,6 +26,9 @@ namespace Iql.Data.Lists
         Task<IList> LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
         Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both);
         Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<EntityRelationship> relationships);
+        IDbQueryable SetAllowOffline(bool enabled);
+        IDbQueryable NoOffline();
+        IDbQueryable NoTracking();
         IDbQueryable SetTracking(bool enabled);
         IDbQueryable IncludeCount();
         IDbQueryable ExpandAll();

@@ -984,6 +984,21 @@ namespace Iql.Data.Context
             return SetTracking(false);
         }
 
+        IDbQueryable IDbQueryable.NoTracking()
+        {
+            return NoTracking();
+        }
+
+        public DbQueryable<T> NoOffline()
+        {
+            return SetAllowOffline(false);
+        }
+
+        IDbQueryable IDbQueryable.NoOffline()
+        {
+            return NoOffline();
+        }
+
         /// <summary>
         /// Any value here will override the data context's value
         /// A null value will resort to the data context's value
@@ -994,6 +1009,13 @@ namespace Iql.Data.Context
         {
             var queryable = Copy();
             queryable.TrackEntities = enabled;
+            return queryable;
+        }
+
+        public DbQueryable<T> SetAllowOffline(bool? enabled)
+        {
+            var queryable = Copy();
+            queryable.AllowOffline = enabled;
             return queryable;
         }
 
@@ -1010,6 +1032,11 @@ namespace Iql.Data.Context
         IDbQueryable IDbQueryable.SetTracking(bool enabled)
         {
             return SetTracking(enabled);
+        }
+
+        IDbQueryable IDbQueryable.SetAllowOffline(bool enabled)
+        {
+            return SetAllowOffline(enabled);
         }
 
         IDbQueryable IDbQueryable.IncludeCount()

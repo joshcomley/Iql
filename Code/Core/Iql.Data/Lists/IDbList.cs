@@ -6,6 +6,7 @@ namespace Iql.Data.Lists
 {
     public interface IDbList : IList
     {
+        bool Success { get; set; }
         PagingInfo PagingInfo { get; set; }
         IDbQueryable SourceQueryable { get; set; }
         Task LoadNextPage();

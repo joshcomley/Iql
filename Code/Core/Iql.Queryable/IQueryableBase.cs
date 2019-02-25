@@ -12,6 +12,7 @@ namespace Iql.Queryable
 {
     public interface IQueryableBase
     {
+        bool? AllowOffline { get; set; }
         bool? TrackEntities { get; set; }
         bool HasDefaults { get; set; }
         EvaluateContext EvaluateContext { get; }

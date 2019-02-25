@@ -277,6 +277,25 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(3, clientsOffline2.Count);
         }
 
+
+        [TestMethod]
+        public async Task GetDataWhenOnlineAndRefetchWhenOfflineWithOfflineDisabledInQueryableShouldYieldNoResults()
+        {
+            Db.IsOffline = true;
+            var clientsOffline1 = await Db.Clients.ToListAsync();
+            Assert.AreEqual(0, clientsOffline1.Count);
+
+            Db.IsOffline = false;
+            var clients = await Db.Clients.Expand(_ => _.Type).ToListAsync();
+            Assert.AreEqual(3, clients.Count);
+
+            Db.IsOffline = true;
+            var dbClients = Db.Clients;
+            var clientsOffline2 = await dbClients.NoOffline().Expand(_ => _.Type).ToListAsync();
+            Assert.IsFalse(clientsOffline2.Success);
+            Assert.AreEqual(0, clientsOffline2.Count);
+        }
+
         [TestMethod]
         public async Task GetExpandedDataWhenOnlineAndRefetchWhenOffline()
         {
