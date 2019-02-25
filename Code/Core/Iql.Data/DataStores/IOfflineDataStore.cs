@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
+using Iql.Data.DataStores.InMemory;
 using Iql.Data.Serialization;
 using Iql.Data.Tracking;
 
@@ -11,6 +12,9 @@ namespace Iql.Data.DataStores
 {
     public interface IOfflineDataStore : IDataStore
     {
+        AutoIntegerIdStrategy DefaultIntegerIdStrategy { get; set; }
+        void SetAutoIntegerIdStrategy(Type type, AutoIntegerIdStrategy integerIdStrategy);
+        AutoIntegerIdStrategy GetAutoIntegerIdStrategy(Type type);
         Task ResetAsync();
         Task<bool> RestoreStateAsync(IPersistState persistState);
         Task<bool> ClearStateAsync(IPersistState persistState);

@@ -51,9 +51,10 @@ namespace Iql.Data.DataStores.InMemory
             return (List<TEntity>)DataSetByType(typeof(TEntity));
         }
 
-        public InMemoryDataStore(string name = null) : base(name ?? nameof(InMemoryDataStore))
+        public InMemoryDataStore(string name = null, AutoIntegerIdStrategy defaultAutoIntegerIdStrategy = AutoIntegerIdStrategy.Positive) : base(name ?? nameof(InMemoryDataStore))
         {
             Name = name;
+            DefaultIntegerIdStrategy = defaultAutoIntegerIdStrategy;
         }
 
         private DataTracker _inMemoryDataTracker;
@@ -115,15 +116,15 @@ namespace Iql.Data.DataStores.InMemory
                             //var oldId = clone.GetPropertyValue(property);
                             if (property.TypeDefinition.ElementType == typeof(int))
                             {
-                                clone.SetPropertyValue(property, NextIdInteger(data, property));
+                                clone.SetPropertyValue(property, NextIdInteger(rootTrackingSet.EntityType, data, property));
                             }
                             else if (property.TypeDefinition.ElementType == typeof(string))
                             {
-                                clone.SetPropertyValue(property, NextIdString(data, property));
+                                clone.SetPropertyValue(property, NextIdString(rootTrackingSet.EntityType, data, property));
                             }
                             else if (property.TypeDefinition.Kind == IqlType.Guid)
                             {
-                                clone.SetPropertyValue(property, NextIdGuid(data, property));
+                                clone.SetPropertyValue(property, NextIdGuid(rootTrackingSet.EntityType, data, property));
                             }
                         }
                     }
@@ -134,36 +135,92 @@ namespace Iql.Data.DataStores.InMemory
             return Task.FromResult(operation.Result);
         }
 
-        private int _guidCount = 0;
-        private Guid NextIdGuid(IList data, IProperty property)
+        private readonly Dictionary<Type, int> _guidCount = new Dictionary<Type, int>();
+        private Guid NextIdGuid(Type entityType, IList data, IProperty property)
         {
-            _guidCount++;
-            var id = _guidCount.ToString();
-            var remain = 12 - id.Length;
+            if (!_guidCount.ContainsKey(entityType))
+            {
+                _guidCount.Add(entityType, 0);
+            }
+
+            var guidCount = _guidCount[entityType];
+            Guid guid = GuidFromId(++guidCount);
+            while (true)
+            {
+                var allow = true;
+                foreach (var item in data)
+                {
+                    if ((Guid)property.GetValue(item) == guid)
+                    {
+                        allow = false;
+                        break;
+                    }
+                }
+
+                if (allow)
+                {
+                    break;
+                }
+                guid = GuidFromId(++guidCount);
+            }
+            _guidCount[entityType] = guidCount;
+            return guid;
+        }
+
+        private static Guid GuidFromId(int id)
+        {
+            var idStr = id.ToString();
+            var remain = 12 - idStr.Length;
             for (var i = 0; i < remain; i++)
             {
-                id = "0" + id;
+                idStr = "0" + idStr;
             }
-            return new Guid($"00000000-0000-0000-0000-{id}");
+
+            return new Guid($"00000000-0000-0000-0000-{idStr}");
         }
 
-        public int NextIdInteger(IList data, IProperty property)
+        private readonly Dictionary<Type, int> _idCount = new Dictionary<Type, int>();
+        public int NextIdInteger(Type entityType, IList data, IProperty property)
         {
-            int max = 0;
-            foreach (var existingEntity in data)
+            if (!_idCount.ContainsKey(entityType))
             {
-                var value = (int)existingEntity.GetPropertyValue(property);
-                if (value > max)
-                {
-                    max = value;
-                }
+                _idCount.Add(entityType, 0);
             }
-            return ++max;
+
+            var idCount = _idCount[entityType];
+            if (GetAutoIntegerIdStrategy(entityType) == AutoIntegerIdStrategy.Negative)
+            {
+                foreach (var existingEntity in data)
+                {
+                    var value = (int)existingEntity.GetPropertyValue(property);
+                    if (value > idCount)
+                    {
+                        idCount = value;
+                    }
+                }
+
+                idCount++;
+            }
+            else
+            {
+                foreach (var existingEntity in data)
+                {
+                    var value = (int)existingEntity.GetPropertyValue(property);
+                    if (value < idCount)
+                    {
+                        idCount = value;
+                    }
+                }
+
+                idCount--;
+            }
+            _idCount[entityType] = idCount;
+            return idCount;
         }
 
-        public string NextIdString(IList data, IProperty property)
+        public string NextIdString(Type entityType, IList data, IProperty property)
         {
-            return Guid.NewGuid().ToString();
+            return NextIdGuid(entityType, data, property).ToString();
         }
 
         private int FindEntityIndexFromOperation<TEntity>(EntityCrudOperation<TEntity> operation) where TEntity : class
@@ -261,6 +318,31 @@ namespace Iql.Data.DataStores.InMemory
             return operation.Result;
         }
 
+        private readonly Dictionary<Type, AutoIntegerIdStrategy> _integerIdStrategies = new Dictionary<Type, AutoIntegerIdStrategy>();
+        public AutoIntegerIdStrategy DefaultIntegerIdStrategy { get; set; } = AutoIntegerIdStrategy.Positive;
+
+        public void SetAutoIntegerIdStrategy(Type type, AutoIntegerIdStrategy integerIdStrategy)
+        {
+            if (!_integerIdStrategies.ContainsKey(type))
+            {
+                _integerIdStrategies.Add(type, integerIdStrategy);
+            }
+            else
+            {
+                _integerIdStrategies[type] = integerIdStrategy;
+            }
+        }
+
+        public AutoIntegerIdStrategy GetAutoIntegerIdStrategy(Type type)
+        {
+            if (!_integerIdStrategies.ContainsKey(type))
+            {
+                return DefaultIntegerIdStrategy;
+            }
+
+            return _integerIdStrategies[type];
+        }
+
         public Task ResetAsync()
         {
             _sources.Clear();
@@ -270,7 +352,7 @@ namespace Iql.Data.DataStores.InMemory
 
         public async Task<bool> RestoreStateAsync(IPersistState persistState)
         {
-            if(persistState != null)
+            if (persistState != null)
             {
                 var state = await persistState.FetchStateAsync(PersistStateKey());
                 await RestoreStateFromJsonAsync(state);
@@ -446,7 +528,7 @@ namespace Iql.Data.DataStores.InMemory
                 {
                     source.Remove(match);
                 }
-                var clone = (T) entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.DoNotClone);
+                var clone = (T)entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.DoNotClone);
                 source.Add(clone);
             }
         }

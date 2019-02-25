@@ -35,7 +35,7 @@ namespace Iql.Data.Context
 {
     public class DataContext : IDataContext
     {
-        private IOfflineDataStore _offlineDataStore = new InMemoryDataStore("OfflineData");
+        private IOfflineDataStore _offlineDataStore = new InMemoryDataStore("OfflineData", AutoIntegerIdStrategy.Negative);
 
         public bool EnableOffline { get; set; }
 

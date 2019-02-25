@@ -23,6 +23,7 @@ namespace Iql.Tests.Tests.Offline
         [TestInitialize]
         public void TestInitialize()
         {
+            _oldPersistenceKeyGenerator = PersistenceKeyGenerator.New;
             Db.Reset();
             Db.IsOffline = false;
         }
@@ -30,9 +31,11 @@ namespace Iql.Tests.Tests.Offline
         [TestCleanup]
         public void TestCleanUp()
         {
+            PersistenceKeyGenerator.New = _oldPersistenceKeyGenerator;
         }
 
         private static OfflineAppDbContext _db = new OfflineAppDbContext();
+        private Func<Guid> _oldPersistenceKeyGenerator;
         public static OfflineAppDbContext Db => _db;
 
         [TestMethod]
@@ -40,7 +43,6 @@ namespace Iql.Tests.Tests.Offline
         {
             await Db.OfflineInMemoryDataStore.ResetAsync();
             await Db.OfflinableDataStore.ResetAsync();
-            var oldPersistenceKeyGenerator = PersistenceKeyGenerator.New;
             PersistenceKeyGenerator.New = () => new Guid("dec281fe-96fd-4117-8e4e-2eb575d3b5a2");
             var state = Db.OfflineInMemoryDataStore.SerializeStateToJson();
             Assert.AreEqual("[]", state);
@@ -51,15 +53,14 @@ namespace Iql.Tests.Tests.Offline
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             state = Db.OfflineInMemoryDataStore.SerializeStateToJson().NormalizeJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":-1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
             client.Name = "Newly added client2";
             result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             state = Db.OfflineInMemoryDataStore.SerializeStateToJson().NormalizeJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":-1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
-            PersistenceKeyGenerator.New = oldPersistenceKeyGenerator;
         }
 
         [TestMethod]

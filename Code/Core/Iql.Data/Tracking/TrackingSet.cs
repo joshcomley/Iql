@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
+using Iql.Data.DataStores.InMemory;
 using Iql.Data.Events;
 using Iql.Data.Extensions;
 using Iql.Data.Relationships;
@@ -20,12 +22,16 @@ namespace Iql.Data.Tracking
     public class TrackingSet<T> : TrackingSetBase, ITrackingSet
         where T : class
     {
+        public Type EntityType => typeof(T);
+        private int _idCount = 0;
         private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
         private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
         private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
 
         private readonly Dictionary<object, object> _tracking = new Dictionary<object, object>();
         private EntityConfiguration<T> _entityConfiguration;
+
+        public AutoIntegerIdStrategy AutoIntegerIdStrategy { get; set; } = AutoIntegerIdStrategy.Positive;
 
         public TrackingSet(DataTracker dataTracker)
         {
@@ -1118,6 +1124,38 @@ namespace Iql.Data.Tracking
             public Guid PersistenceKey { get; set; }
             public CompositeKey CompositeKey { get; set; }
             public IEntityStateBase State { get; set; }
+        }
+
+        public int NextIdInteger(IList data, IProperty property)
+        {
+            if (AutoIntegerIdStrategy == AutoIntegerIdStrategy.Negative)
+            {
+                int max = _idCount;
+                foreach (var existingEntity in data)
+                {
+                    var value = (int)existingEntity.GetPropertyValue(property);
+                    if (value > max)
+                    {
+                        max = value;
+                    }
+                }
+
+                _idCount++;
+                return _idCount;
+            }
+
+            var min = _idCount;
+            foreach (var existingEntity in data)
+            {
+                var value = (int)existingEntity.GetPropertyValue(property);
+                if (value < min)
+                {
+                    min = value;
+                }
+            }
+
+            _idCount--;
+            return _idCount;
         }
     }
 }

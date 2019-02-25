@@ -6,6 +6,7 @@ using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.DataStores;
+using Iql.Data.DataStores.InMemory;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 
@@ -13,6 +14,7 @@ namespace Iql.Data.Tracking
 {
     public interface ITrackingSet : IJsonSerializable, IDataChangeProvider
     {
+        Type EntityType { get; }
         IEntityStateBase Restore(SerializedEntityState entityState);
         void RemoveEntityByKey(CompositeKey compositeKey);
         IEntityStateBase AddEntity(object entity);

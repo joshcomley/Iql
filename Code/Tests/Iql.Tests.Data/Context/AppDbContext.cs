@@ -44,7 +44,7 @@ namespace Iql.Tests.Context
         public AppDbContext(IDataStore dataStore = null) :
             base(dataStore)
         {
-            DataStore = DataStore ?? new InMemoryDataStore("InMemory");
+            DataStore = DataStore ?? new InMemoryDataStore("InMemory", AutoIntegerIdStrategy.Negative);
             Initialise();
         }
 
