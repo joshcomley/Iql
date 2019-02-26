@@ -234,25 +234,31 @@ namespace Iql.Data.Context
                             if (result.Success)
                             {
                                 DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation, isOffline);
-                                var changes = DataContext.OfflineDataTracker?.GetChanges();
                                 if (isOffline)
                                 {
                                     DataContext.TemporalDataTracker?.ApplyUpdate(updateEntityOperation, false);
                                 }
                                 else
                                 {
-                                    DataTracker.ForAnEntityAcrossAllDataTrackers(
-                                        updateEntityOperation.Operation.EntityState.CurrentKey,
-                                        (tracker, compositeKey) =>
+                                    DataContext.ForMatchingDataContexts(
+                                        (dataContext) =>
                                         {
-                                            tracker.TrackingSet<TEntity>()
+                                            dataContext.TemporalDataTracker.TrackingSet<TEntity>()
                                                 .Merge(
                                                     updateEntityOperation.Operation.Entity,
                                                     updateEntityOperation.Operation.Entity,
                                                     true,
                                                     true);
-                                        },
-                                        DataContext);
+                                            if (dataContext.OfflineDataTracker != null)
+                                            {
+                                                dataContext.OfflineDataTracker.TrackingSet<TEntity>()
+                                                    .Merge(
+                                                        updateEntityOperation.Operation.Entity,
+                                                        updateEntityOperation.Operation.Entity,
+                                                        true,
+                                                        true);
+                                            }
+                                        });
 
                                 }
                                 // TODO: Should be able to refresh an entity yet maintain existing changes
@@ -557,12 +563,12 @@ namespace Iql.Data.Context
 
         private void RemoveEntityByKeyAndType(CompositeKey entityKey, Type entityType, bool isOfflineDelete)
         {
-            void Apply(DataTracker dataTracker, CompositeKey key)
+            void Apply(DataTracker dataTracker)
             {
                 if (dataTracker.EntityConfigurationBuilder == EntityConfigurationContext)
                 {
                     var trackingSet = dataTracker.TrackingSetByType(entityType);
-                    var state = trackingSet.GetEntityStateByKey(key);
+                    var state = trackingSet.GetEntityStateByKey(entityKey);
                     dataTracker.RemoveEntityByKeyAndType(entityKey, entityType);
                     var iEntity = (IEntity)state?.Entity;
                     iEntity?.ExistsChanged?.Emit(() => new ExistsChangeEvent(state, false));
@@ -570,12 +576,18 @@ namespace Iql.Data.Context
             }
             if (isOfflineDelete)
             {
-                Apply(DataContext.TemporalDataTracker, entityKey);
+                Apply(DataContext.TemporalDataTracker);
             }
             else
             {
-                DataTracker.ForAnEntityAcrossAllDataTrackers(entityKey, Apply,
-                    DataContext);
+                DataContext.ForMatchingDataContexts(dataContext =>
+                {
+                    Apply(dataContext.TemporalDataTracker);
+                    if (dataContext.OfflineDataTracker != null)
+                    {
+                        Apply(dataContext.OfflineDataTracker);
+                    }
+                });
             }
         }
     }

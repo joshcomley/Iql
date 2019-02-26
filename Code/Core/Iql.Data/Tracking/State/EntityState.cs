@@ -170,7 +170,7 @@ namespace Iql.Data.Tracking.State
         public T Entity { get; }
         object IEntityStateBase.Entity => Entity;
         public Type EntityType { get; }
-        public IDataContext DataContext => DataTracker.DataContext;
+        //public IDataContext DataContext => DataTracker.DataContext;
         public IEntityConfiguration EntityConfiguration { get; }
 
         public EntityState(

@@ -1,12 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Iql.Conversion;
 using Iql.Conversion.State;
-using Iql.Data.Context;
-using Iql.Data.Crud.Operations;
-using Iql.Data.DataStores;
-using Iql.Data.DataStores.InMemory;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 
@@ -21,7 +16,6 @@ namespace Iql.Data.Tracking
         IEntityStateBase Synchronise(object entity, bool overrideChanges, bool isRemote);
         IEntityStateBase AttachEntity(object entity, bool isLocal);
         ITrackingSet Merge(object localEntity, object remoteEntity, bool overrideChanges, bool isRemote);
-        IDataContext DataContext { get; }
         DataTracker DataTracker { get; }
         void SetKey(object entity, Action action);
         bool IsTracked(object entity);

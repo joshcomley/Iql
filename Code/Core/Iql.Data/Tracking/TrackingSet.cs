@@ -217,7 +217,7 @@ namespace Iql.Data.Tracking
         private Dictionary<string, IEntityStateBase> EntitiesByKey { get; }
 
         protected IProperty PersistenceKey { get; set; }
-        public IDataContext DataContext => DataTracker.DataContext;
+        //public IDataContext DataContext => DataTracker.DataContext;
 
         bool ITrackingSet.DifferentEntityWithSameKeyIsTracked(object entity)
         {
@@ -334,12 +334,12 @@ namespace Iql.Data.Tracking
             }
         }
 
-        List<IEntityCrudOperationBase> IDataChangeProvider.GetInserts(object[] entities = null)
+        List<IEntityCrudOperationBase> IDataChangeProvider.GetInserts(IDataContext dataContext, object[] entities = null)
         {
-            return GetInserts(entities).Select(_ => (IEntityCrudOperationBase)_).ToList();
+            return GetInserts(dataContext, entities).Select(_ => (IEntityCrudOperationBase)_).ToList();
         }
 
-        public List<AddEntityOperation<T>> GetInserts(object[] entities = null)
+        public List<AddEntityOperation<T>> GetInserts(IDataContext dataContext, object[] entities = null)
         {
             var inserts = new List<AddEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
@@ -352,19 +352,19 @@ namespace Iql.Data.Tracking
                 var entityState = GetEntityState(entity);
                 if (entityState.IsNew && !entityState.MarkedForAnyDeletion)
                 {
-                    inserts.Add(new AddEntityOperation<T>((T)entity, DataContext));
+                    inserts.Add(new AddEntityOperation<T>((T)entity, dataContext));
                 }
             }
 
             return inserts;
         }
 
-        List<IEntityCrudOperationBase> IDataChangeProvider.GetDeletions(object[] entities = null)
+        List<IEntityCrudOperationBase> IDataChangeProvider.GetDeletions(IDataContext dataContext, object[] entities = null)
         {
-            return GetDeletions(entities).Select(_ => (IEntityCrudOperationBase)_).ToList();
+            return GetDeletions(dataContext, entities).Select(_ => (IEntityCrudOperationBase)_).ToList();
         }
 
-        public List<DeleteEntityOperation<T>> GetDeletions(object[] entities = null)
+        public List<DeleteEntityOperation<T>> GetDeletions(IDataContext dataContext, object[] entities = null)
         {
             var deletions = new List<DeleteEntityOperation<T>>();
             foreach (var key in EntitiesByRemoteKey)
@@ -378,7 +378,7 @@ namespace Iql.Data.Tracking
                 deletions.Add(new DeleteEntityOperation<T>(
                     key.Value.Key,
                     (T)key.Value.State.Entity,
-                    DataContext));
+                    dataContext));
             }
 
             foreach (var entity in EntitiesByObject.Keys)
@@ -393,7 +393,7 @@ namespace Iql.Data.Tracking
                     var entityState = GetEntityState(entity);
                     if (entityState.MarkedForAnyDeletion && !entityState.IsNew)
                     {
-                        deletions.Add(new DeleteEntityOperation<T>(entityState.CurrentKey, (T)entity, DataContext));
+                        deletions.Add(new DeleteEntityOperation<T>(entityState.CurrentKey, (T)entity, dataContext));
                     }
                 }
             }
@@ -401,12 +401,12 @@ namespace Iql.Data.Tracking
             return deletions;
         }
 
-        List<IUpdateEntityOperation> IDataChangeProvider.GetUpdates(object[] entities = null, IProperty[] properties = null)
+        List<IUpdateEntityOperation> IDataChangeProvider.GetUpdates(IDataContext dataContext, object[] entities = null, IProperty[] properties = null)
         {
-            return GetUpdates(entities, properties).Select(_ => (IUpdateEntityOperation)_).ToList();
+            return GetUpdates(dataContext, entities, properties).Select(_ => (IUpdateEntityOperation)_).ToList();
         }
 
-        public List<UpdateEntityOperation<T>> GetUpdates(object[] entities = null, IProperty[] properties = null)
+        public List<UpdateEntityOperation<T>> GetUpdates(IDataContext dataContext, object[] entities = null, IProperty[] properties = null)
         {
             var updates = new List<UpdateEntityOperation<T>>();
             foreach (var entity in EntitiesByObject.Keys)
@@ -421,7 +421,7 @@ namespace Iql.Data.Tracking
                     !entityState.MarkedForAnyDeletion &&
                     entityState.GetChangedProperties().Any())
                 {
-                    updates.Add(new UpdateEntityOperation<T>((T)entity, DataContext, entityState,
+                    updates.Add(new UpdateEntityOperation<T>((T)entity, dataContext, entityState,
                         properties?.Where(p => p.EntityConfiguration == EntityConfiguration).ToArray()));
                 }
             }

@@ -82,6 +82,7 @@ namespace Iql.Data.Context
         bool TrackEntities { get; set; }
         bool AllowOffline { get; set; }
         string SynchronicityKey { get; set; }
+        string OfflineSynchronicityKey { get; set; }
         EvaluateContext EvaluateContext { get; set; }
         IDataStore DataStore { get; }
         EntityConfigurationBuilder EntityConfigurationContext { get; set; }

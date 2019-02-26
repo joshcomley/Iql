@@ -12,6 +12,23 @@ namespace Iql.Data.Extensions
 {
     public static class DataContextExtensions
     {
+        internal static void ForMatchingDataContexts(this IDataContext sourceDataContext,
+            Action<IDataContext> action)
+        {
+            var dataContextsDealtWith = new Dictionary<IDataContext, IDataContext>();
+            foreach (var dataContext in DataContext.AllDataContexts)
+            {
+                if (!dataContextsDealtWith.ContainsKey(dataContext))
+                {
+                    dataContextsDealtWith.Add(dataContext, dataContext);
+                    if (dataContext.SynchronicityKey == sourceDataContext.SynchronicityKey && dataContext.EntityConfigurationContext == sourceDataContext.EntityConfigurationContext)
+                    {
+                        action(dataContext);
+                    }
+                }
+            }
+        }
+
         public static bool? IsEntityNew3(this IDataContext dataContext, object entity
 #if TypeScript
             , Type entityType

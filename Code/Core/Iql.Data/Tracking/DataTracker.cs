@@ -20,6 +20,7 @@ namespace Iql.Data.Tracking
 {
     public class DataTracker : IJsonSerializable, IDataChangeProvider
     {
+        public string SynchronicityKey => Name;
         public DataTrackerKind Kind { get; }
         public DataTracker(
             DataTrackerKind kind,
@@ -29,10 +30,6 @@ namespace Iql.Data.Tracking
             bool silent = false)
         {
             Kind = kind;
-            if (entityConfigurationBuilder == null)
-            {
-                int a = 0;
-            }
             EntityConfigurationBuilder = entityConfigurationBuilder;
             Name = name;
             Offline = offline;
@@ -60,7 +57,7 @@ namespace Iql.Data.Tracking
         public IEntityConfigurationBuilder EntityConfigurationBuilder { get; }
         public string Name { get; }
         public bool Offline { get; }
-        public IDataContext DataContext { get; set; }
+        //public IDataContext DataContext { get; set; }
 
         public IRelationshipObserver RelationshipObserver { get; }
 
@@ -112,7 +109,7 @@ namespace Iql.Data.Tracking
         public object PrepareForJson()
         {
             var trackingSets = Sets
-                .Where(_ => _.GetQueuedChanges().Length > 0)
+                .Where(_ => _.GetQueuedChanges(null).Length > 0)
                 .ToArray();
             if(trackingSets.Length == 0)
             {
@@ -151,12 +148,12 @@ namespace Iql.Data.Tracking
             return count;
         }
 
-        public List<IEntityCrudOperationBase> GetInserts(object[] entities = null)
+        public List<IEntityCrudOperationBase> GetInserts(IDataContext dataContext = null, object[] entities = null)
         {
             var inserts = new List<IEntityCrudOperationBase>();
             foreach (var set in Sets)
             {
-                inserts.AddRange(set.GetInserts(entities));
+                inserts.AddRange(set.GetInserts(dataContext, entities));
             }
 
             inserts = inserts
@@ -165,23 +162,23 @@ namespace Iql.Data.Tracking
             return inserts;
         }
 
-        public List<IUpdateEntityOperation> GetUpdates(object[] entities = null, IProperty[] properties = null)
+        public List<IUpdateEntityOperation> GetUpdates(IDataContext dataContext = null, object[] entities = null, IProperty[] properties = null)
         {
             var updates = new List<IUpdateEntityOperation>();
             foreach (var set in Sets)
             {
-                updates.AddRange(set.GetUpdates(entities, properties));
+                updates.AddRange(set.GetUpdates(dataContext, entities, properties));
             }
 
             return updates;
         }
 
-        public List<IEntityCrudOperationBase> GetDeletions(object[] entities = null)
+        public List<IEntityCrudOperationBase> GetDeletions(IDataContext dataContext = null, object[] entities = null)
         {
             var deletions = new List<IEntityCrudOperationBase>();
             foreach (var set in Sets)
             {
-                deletions.AddRange(set.GetDeletions(entities));
+                deletions.AddRange(set.GetDeletions(dataContext, entities));
             }
 
             return deletions;
@@ -350,32 +347,7 @@ namespace Iql.Data.Tracking
 
         public bool HasChanges()
         {
-            return GetChanges().Any();
-        }
-
-        internal static void ForAllDataTrackers(
-            Action<DataTracker> action, IDataContext dataContext = null)
-        {
-            var dataTrackersDealtWith = new Dictionary<DataTracker, DataTracker>();
-            var allDataTrackers = AllDataTrackers();
-            foreach (var dataTracker in allDataTrackers)
-            {
-                if (!dataTrackersDealtWith.ContainsKey(dataTracker))
-                {
-                    dataTrackersDealtWith.Add(dataTracker, dataTracker);
-                }
-
-                if (dataContext == null)
-                {
-                    action(dataTracker);
-                }
-                else if (dataTracker.DataContext != null &&
-                    dataTracker.DataContext.EntityConfigurationContext == dataContext.EntityConfigurationContext &&
-                    dataTracker.DataContext.SynchronicityKey == dataContext.SynchronicityKey)
-                {
-                    action(dataTracker);
-                }
-            }
+            return GetChanges(null).Any();
         }
 
         ///// <summary>
@@ -658,6 +630,10 @@ namespace Iql.Data.Tracking
             if (isOffline)
             {
                 var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
+                if (ourState != null)
+                {
+                    int a = 0;
+                }
                 var theirState = operation.Operation.EntityState;
                 ourState.MarkedForDeletion = theirState.MarkedForDeletion;
                 ourState.MarkedForCascadeDeletion = theirState.MarkedForCascadeDeletion;
@@ -669,9 +645,9 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null)
+        public IQueuedOperation[] GetChanges(IDataContext dataContext = null, object[] entities = null, IProperty[] properties = null)
         {
-            return this.GetQueuedChanges(entities, properties);
+            return this.GetQueuedChanges(dataContext, entities, properties);
         }
 
         private class TrackCollectionResult
@@ -684,16 +660,6 @@ namespace Iql.Data.Tracking
 
             public IList Data { get; }
             public List<IEntityStateBase> States { get; }
-        }
-
-        internal static void ForAnEntityAcrossAllDataTrackers(
-            CompositeKey key, Action<DataTracker, CompositeKey> action, IDataContext dataContext = null)
-        {
-            ForAllDataTrackers(dataTracker =>
-                {
-                    action(dataTracker, key);
-                },
-                dataContext);
         }
 
         public void RestoreFromJson(string jsonWithChanges)

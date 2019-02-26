@@ -105,6 +105,8 @@ namespace Iql.Tests.Tests.Offline
             Assert.IsTrue(result.Success);
             Assert.IsTrue(Db.HasOfflineChanges());
             var tempDb = new OfflineAppDbContext();
+            var areSame = tempDb.OfflineDataTracker == Db.OfflineDataTracker;
+            Assert.AreEqual(tempDb.OfflineDataTracker, Db.OfflineDataTracker);
             Assert.IsTrue(tempDb.HasOfflineChanges());
         }
 

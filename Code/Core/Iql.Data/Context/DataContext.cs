@@ -35,6 +35,21 @@ namespace Iql.Data.Context
 {
     public class DataContext : IDataContext
     {
+        private class SynchronisedDataContextConfiguration
+        {
+            private DataTracker _offlineDataTracker;
+            public DataTracker OfflineDataTracker => _offlineDataTracker;
+
+            public IEntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
+            public string SynchronicityKey { get; set; }
+
+            public SynchronisedDataContextConfiguration(IEntityConfigurationBuilder entityConfigurationBuilder, string synchronicityKey)
+            {
+                EntityConfigurationBuilder = entityConfigurationBuilder;
+                SynchronicityKey = synchronicityKey;
+                _offlineDataTracker = new DataTracker(DataTrackerKind.Offline, entityConfigurationBuilder, "Offline", true);
+            }
+        }
         private IOfflineDataStore _offlineDataStore = new InMemoryDataStore("OfflineData", AutoIntegerIdStrategy.Negative);
 
         public bool EnableOffline { get; set; }
@@ -148,7 +163,17 @@ namespace Iql.Data.Context
         public static IDataContext FindDataContextForEntity(object entity)
         {
             var tracker = FindTrackingForEntity(entity);
-            return tracker?.DataContext;
+            if (tracker != null)
+            {
+                foreach (var dataContext in AllDataContexts)
+                {
+                    if (dataContext.TemporalDataTracker.TrackingSetByType(tracker.EntityType) == tracker)
+                    {
+                        return dataContext;
+                    }
+                }
+            }
+            return null;
         }
 
         public static ITrackingSet FindTrackingForEntity(object entity)
@@ -181,28 +206,55 @@ namespace Iql.Data.Context
                 {
                     _dataTracker = new DataTracker(DataTrackerKind.Temporal, EntityConfigurationContext, "Temporal");
                     _dataTracker.RelationshipObserver.UntrackedEntityAdded.Subscribe(_ => { AddEntity(_.Entity); });
-                    _dataTracker.DataContext = this;
+                    //_dataTracker.DataContext = this;
                 }
 
                 return _dataTracker;
             }
         }
-        private DataTracker _offlineDataTracker;
 
-        public DataTracker OfflineDataTracker => SupportsOffline ? _offlineDataTracker : null;
+        private static readonly
+            Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>>
+            SynchronisedDataContextConfigurations
+                = new Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>
+                >();
+        public DataTracker OfflineDataTracker => SupportsOffline ? SynchronisedConfiguration.OfflineDataTracker : null;
 
+        private SynchronisedDataContextConfiguration SynchronisedConfiguration
+        {
+            get
+            {
+                if (_synchronisedConfiguration != null)
+                {
+                    return _synchronisedConfiguration;
+                }
+                if (!SynchronisedDataContextConfigurations.ContainsKey(EntityConfigurationContext))
+                {
+                    SynchronisedDataContextConfigurations.Add(EntityConfigurationContext, new Dictionary<string, SynchronisedDataContextConfiguration>());
+                }
+
+                var lookup = SynchronisedDataContextConfigurations[EntityConfigurationContext];
+                if (!lookup.ContainsKey(OfflineSynchronicityKey))
+                {
+                    lookup.Add(OfflineSynchronicityKey, new SynchronisedDataContextConfiguration(EntityConfigurationContext, SynchronicityKey));
+                }
+
+                _synchronisedConfiguration = lookup[OfflineSynchronicityKey];
+                return _synchronisedConfiguration;
+            }
+        }
+        internal static List<IDataContext> AllDataContexts { get; } = new List<IDataContext>();
         public DataContext(
             IDataStore dataStore = null,
             EvaluateContext evaluateContext = null
         )
         {
+            AllDataContexts.Add(this);
             EvaluateContext = evaluateContext;
-
             void midSetup()
             {
                 DataStore = dataStore;
-                _offlineDataTracker = new DataTracker(DataTrackerKind.Offline, EntityConfigurationContext, "Offline", true);
-                _offlineDataTracker.DataContext = this;
+                //_offlineDataTracker.DataContext = this;
             }
             var thisType = GetType();
             if (!EntityConfigurationsBuilders.ContainsKey(thisType))
@@ -318,7 +370,7 @@ namespace Iql.Data.Context
                 return new SaveChangesResult(SaveChangeKind.NoAction);
             }
 
-            var changes = OfflineDataTracker.GetChanges();
+            var changes = OfflineDataTracker.GetChanges(this);
             if (changes == null || changes.Length == 0)
             {
                 return new SaveChangesResult(SaveChangeKind.NoAction);
@@ -335,6 +387,7 @@ namespace Iql.Data.Context
         public bool TrackEntities { get; set; } = true;
         public bool AllowOffline { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
+        public string OfflineSynchronicityKey { get; set; } = "offline";
         public EvaluateContext EvaluateContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
 
@@ -902,6 +955,7 @@ namespace Iql.Data.Context
         private MethodInfo _validateEntityPropertyInternalAsyncMethod;
         private MethodInfo _validateEntityInternalAsyncMethod;
         private IDataStore _dataStore;
+        private SynchronisedDataContextConfiguration _synchronisedConfiguration;
 
         private MethodInfo ValidateEntityPropertyInternalAsyncMethod
         {
@@ -986,7 +1040,7 @@ namespace Iql.Data.Context
         {
             if (OfflineDataTracker != null)
             {
-                return OfflineDataTracker.GetChanges(entities, properties).ToArray();
+                return OfflineDataTracker.GetChanges(this, entities, properties).ToArray();
             }
 
             return new IQueuedOperation[] { };
@@ -994,12 +1048,12 @@ namespace Iql.Data.Context
 
         public IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return TemporalDataTracker.GetChanges(entities, properties).ToArray();
+            return TemporalDataTracker.GetChanges(this, entities, properties).ToArray();
         }
 
         public IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
-            return TemporalDataTracker.GetChanges(entities, properties).Where(op => op.Type == QueuedOperationType.Update).ToArray();
+            return TemporalDataTracker.GetChanges(this, entities, properties).Where(op => op.Type == QueuedOperationType.Update).ToArray();
         }
 
         public List<T> AttachEntities<T>(IEnumerable<T> entities, bool? cloneIfAttachedElsewhere = null)
@@ -1492,10 +1546,9 @@ namespace Iql.Data.Context
 
                 void TrackResponse(DataTracker dataTracker)
                 {
-                    if (dataTracker == localDataTracker ||
-                        (
-                        dataTracker.EntityConfigurationBuilder == EntityConfigurationContext &&
-                        dataTracker.DataContext?.SynchronicityKey == SynchronicityKey)
+                    if (
+                        dataTracker == localDataTracker ||
+                        dataTracker.EntityConfigurationBuilder == EntityConfigurationContext
                         )
                     {
                         Dictionary<object, object> dealtWith = new Dictionary<object, object>();
@@ -1541,9 +1594,13 @@ namespace Iql.Data.Context
 
                 if (shouldTrackResults && !response.IsOffline)
                 {
-                    DataTracker.ForAllDataTrackers(tracker =>
+                    this.ForMatchingDataContexts(dataContext =>
                     {
-                        TrackResponse(tracker);
+                        TrackResponse(dataContext.TemporalDataTracker);
+                        if (dataContext.OfflineDataTracker != null)
+                        {
+                            TrackResponse(dataContext.OfflineDataTracker);
+                        }
                     });
                 }
                 else
