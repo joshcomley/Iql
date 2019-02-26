@@ -87,7 +87,18 @@ namespace Iql.Entities
             {
                 return _entitiesByTypeName[typeName];
             }
-
+            foreach (var entityConfiguration in _entities)
+            {
+                var type = entityConfiguration.Value.Type;
+                while (type != null && type != typeof(object))
+                {
+                    if (entityConfiguration.Key.Name == typeName)
+                    {
+                        return entityConfiguration.Value;
+                    }
+                    type = type.BaseType;
+                }
+            }
             return null;
         }
 
@@ -137,10 +148,21 @@ namespace Iql.Entities
             else
             {
                 entityConfiguration = new EntityConfiguration<T>(this);
-                _entities[entityType] = entityConfiguration;
-                _entitiesByTypeName[entityType.Name] = entityConfiguration;
+                CacheEntityConfigurationByType(entityType, entityConfiguration);
             }
             return entityConfiguration;
+        }
+
+        private void CacheEntityConfigurationByType(Type entityType, IEntityConfiguration entityConfiguration)
+        {
+            if (!_entities.ContainsKey(entityType))
+            {
+                _entities.Add(entityType, entityConfiguration);
+            }
+            if (!_entitiesByTypeName.ContainsKey(entityType.Name))
+            {
+                _entitiesByTypeName.Add(entityType.Name, entityConfiguration);
+            }
         }
 
         public IEnumConfiguration EnumType<T>()
@@ -162,7 +184,13 @@ namespace Iql.Entities
         {
             if (!_entities.ContainsKey(type))
             {
-                return null;
+                foreach (var entityConfiguration in _entities)
+                {
+                    if (entityConfiguration.Key.IsAssignableFrom(type))
+                    {
+                        return entityConfiguration.Value;
+                    }
+                }
             }
             return _entities[type];
         }

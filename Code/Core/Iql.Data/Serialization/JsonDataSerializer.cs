@@ -90,19 +90,32 @@ namespace Iql.Data.Serialization
         public static DeserializedEntitySets DeserializeEntitySets(IEntityConfigurationBuilder builder, string json)
         {
             var dictionary = new Dictionary<IEntityConfiguration, IList>();
-            var deserialized = (SerializedEntitySet[])JsonConvert.DeserializeObject(json, typeof(SerializedEntitySet[]));
-            foreach (var set in deserialized)
+            if (!string.IsNullOrWhiteSpace(json))
             {
-                var entityConfiguration = builder.GetEntityByTypeName(set.Type);
-                var genericList = ListExtensions.NewGenericList(entityConfiguration.Type);
-                foreach (var entity in set.Entities)
+                try
                 {
-                    var parsed = ParseEntityInternal(entity, entityConfiguration, false);
-                    var entityResult = parsed.ToObject(entityConfiguration.Type);
-                    entityResult = builder.EnsureTypedEntityByType(entityResult, entityConfiguration.Type, false);
-                    genericList.Add(entityResult);
+                    var deserialized =
+                        (SerializedEntitySet[]) JsonConvert.DeserializeObject(json, typeof(SerializedEntitySet[]));
+                    foreach (var set in deserialized)
+                    {
+                        var entityConfiguration = builder.GetEntityByTypeName(set.Type);
+                        var genericList = ListExtensions.NewGenericList(entityConfiguration.Type);
+                        foreach (var entity in set.Entities)
+                        {
+                            var parsed = ParseEntityInternal(entity, entityConfiguration, false);
+                            var entityResult = parsed.ToObject(entityConfiguration.Type);
+                            entityResult =
+                                builder.EnsureTypedEntityByType(entityResult, entityConfiguration.Type, false);
+                            genericList.Add(entityResult);
+                        }
+
+                        dictionary.Add(entityConfiguration, genericList);
+                    }
                 }
-                dictionary.Add(entityConfiguration, genericList);
+                catch
+                {
+
+                }
             }
             return new DeserializedEntitySets(dictionary);
         }

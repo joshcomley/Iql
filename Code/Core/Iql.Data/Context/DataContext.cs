@@ -22,6 +22,7 @@ using Iql.Data.SpecialTypes;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
+using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
@@ -39,6 +40,7 @@ namespace Iql.Data.Context
         {
             private DataTracker _offlineDataTracker;
             public DataTracker OfflineDataTracker => _offlineDataTracker;
+            public EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged { get; } = new EventEmitter<OfflineChangeStateChangedEvent>();
 
             public IEntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
             public string SynchronicityKey { get; set; }
@@ -50,7 +52,11 @@ namespace Iql.Data.Context
                 _offlineDataTracker = new DataTracker(DataTrackerKind.Offline, entityConfigurationBuilder, "Offline", true);
             }
         }
+
         private IOfflineDataStore _offlineDataStore = new InMemoryDataStore("OfflineData", AutoIntegerIdStrategy.Negative);
+
+        public EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged =>
+            SynchronisedConfiguration.OfflineStateChanged;
 
         public bool EnableOffline { get; set; }
 
@@ -254,7 +260,7 @@ namespace Iql.Data.Context
             void midSetup()
             {
                 DataStore = dataStore;
-                //_offlineDataTracker.DataContext = this;
+                int a = 0;
             }
             var thisType = GetType();
             if (!EntityConfigurationsBuilders.ContainsKey(thisType))
@@ -753,6 +759,7 @@ namespace Iql.Data.Context
 
         private async Task<SaveChangesResult> CommitQueueInternalAsync(IEnumerable<IQueuedOperation> queue, bool forceOnline)
         {
+            var offlineChangesBefore = OfflineDataTracker?.SerializeToJson();
             var saveChangesResult = new SaveChangesResult(SaveChangeKind.NoAction);
             var hasAny = false;
             var queuedOperations = queue as IQueuedOperation[] ?? queue.ToArray();
@@ -775,7 +782,21 @@ namespace Iql.Data.Context
                 saveChangesResult.Success = queuedOperations.All(_ => _.Result.Success);
             }
 
+            if (queuedOperations.Any(_ => _.Result.Success))
+            {
+                var offlineChangesAfter = OfflineDataTracker?.SerializeToJson();
+                if (offlineChangesBefore != offlineChangesAfter)
+                {
+                    EmitOfflineChangeStateEvent();
+                }
+            }
+
             return saveChangesResult;
+        }
+
+        protected virtual void EmitOfflineChangeStateEvent()
+        {
+            OfflineStateChanged.Emit(() => new OfflineChangeStateChangedEvent(this, OfflineDataTracker, HasOfflineChanges()));
         }
 
         public virtual Task PerformAsync<TEntity>(
@@ -1028,9 +1049,16 @@ namespace Iql.Data.Context
             }
             if (OfflineDataTracker != null)
             {
+                var offlineChangesBefore = OfflineDataTracker.SerializeToJson();
                 if (!await OfflineDataTracker.RestoreStateAsync(PersistState))
                 {
                     success = false;
+                }
+
+                var offlineChangesAfter = OfflineDataTracker.SerializeToJson();
+                if (offlineChangesBefore != offlineChangesAfter)
+                {
+                    EmitOfflineChangeStateEvent();
                 }
             }
             return success;

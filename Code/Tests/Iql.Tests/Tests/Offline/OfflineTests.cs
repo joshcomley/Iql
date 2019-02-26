@@ -39,8 +39,15 @@ namespace Iql.Tests.Tests.Offline
         public static OfflineAppDbContext Db => _db;
 
         [TestMethod]
-        public async Task TestGetAllPages()
+        public async Task RestoreEmptyOrBadStateShouldNotThrowError()
         {
+            await Db.RestoreStateAsync();
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+            public async Task TestGetAllPages()
+            {
             Db.IsOffline = false;
             var offlinePeopleTypes = Db.OfflinableDataStore.DataSet<PersonType>();
             for (var i = 1; i <= 300; i++)
@@ -105,9 +112,98 @@ namespace Iql.Tests.Tests.Offline
             Assert.IsTrue(result.Success);
             Assert.IsTrue(Db.HasOfflineChanges());
             var tempDb = new OfflineAppDbContext();
-            var areSame = tempDb.OfflineDataTracker == Db.OfflineDataTracker;
             Assert.AreEqual(tempDb.OfflineDataTracker, Db.OfflineDataTracker);
             Assert.IsTrue(tempDb.HasOfflineChanges());
+        }
+
+        [TestMethod]
+        public async Task OfflineChangesToDataTrackerShouldTriggerEvent()
+        {
+            var eventCount = 0;
+            Db.OfflineStateChanged.Subscribe(_ =>
+            {
+                eventCount++;
+                switch (eventCount)
+                {
+                    case 1:
+                        Assert.IsTrue(_.HasChanges);
+                        break;
+                    case 2:
+                        Assert.IsFalse(_.HasChanges);
+                        break;
+                }
+            });
+            Db.IsOffline = false;
+            var offlinePeopleTypes = Db.OfflinableDataStore.DataSet<PersonType>();
+            for (var i = 1; i <= 300; i++)
+            {
+                offlinePeopleTypes.Add(new PersonType { Id = i });
+            }
+
+            var personType1 = await Db.PersonTypes.GetWithKeyAsync(1);
+            personType1.Title = "Changed";
+            Db.IsOffline = true;
+            var result = await Db.SaveChangesAsync();
+            Assert.AreEqual(1, eventCount);
+            result = await Db.SaveChangesAsync();
+            Assert.AreEqual(1, eventCount);
+            Assert.IsTrue(result.Success);
+            Assert.IsTrue(Db.HasOfflineChanges());
+            var tempDb = new OfflineAppDbContext();
+            Assert.AreEqual(tempDb.OfflineDataTracker, Db.OfflineDataTracker);
+            Assert.IsTrue(tempDb.HasOfflineChanges());
+            Db.IsOffline = false;
+            Assert.AreEqual(1, eventCount);
+            result = await Db.SaveOfflineChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(2, eventCount);
+            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(tempDb.HasOfflineChanges());
+        }
+
+        [TestMethod]
+        public async Task OfflineChangesToDataTrackerShouldTriggerEventOnSynchronisedDataContext()
+        {
+            var eventCount = 0;
+            var tempDb = new OfflineAppDbContext();
+            tempDb.OfflineStateChanged.Subscribe(_ =>
+            {
+                eventCount++;
+                switch (eventCount)
+                {
+                    case 1:
+                        Assert.IsTrue(_.HasChanges);
+                        break;
+                    case 2:
+                        Assert.IsFalse(_.HasChanges);
+                        break;
+                }
+            });
+            Db.IsOffline = false;
+            var offlinePeopleTypes = Db.OfflinableDataStore.DataSet<PersonType>();
+            for (var i = 1; i <= 300; i++)
+            {
+                offlinePeopleTypes.Add(new PersonType { Id = i });
+            }
+
+            var personType1 = await Db.PersonTypes.GetWithKeyAsync(1);
+            personType1.Title = "Changed";
+            Db.IsOffline = true;
+            var result = await Db.SaveChangesAsync();
+            Assert.AreEqual(1, eventCount);
+            result = await Db.SaveChangesAsync();
+            Assert.AreEqual(1, eventCount);
+            Assert.IsTrue(result.Success);
+            Assert.IsTrue(Db.HasOfflineChanges());
+            Assert.AreEqual(tempDb.OfflineDataTracker, Db.OfflineDataTracker);
+            Assert.IsTrue(tempDb.HasOfflineChanges());
+            Db.IsOffline = false;
+            Assert.AreEqual(1, eventCount);
+            result = await Db.SaveOfflineChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(2, eventCount);
+            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(tempDb.HasOfflineChanges());
         }
 
         [TestMethod]
