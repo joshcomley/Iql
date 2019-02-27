@@ -220,7 +220,7 @@ namespace Iql.Data.DataStores.InMemory
                     new
                     {
                         Type = _.Key.Name,
-                        Entities = JsonDataSerializer.PrepareCollectionForSerialization(_.Value, _.Key)
+                        Entities = JsonDataSerializer.PrepareCollectionForSerialization(_.Value, _.Key, false)
                     }
                 );
             return JsonConvert.SerializeObject(allSets);

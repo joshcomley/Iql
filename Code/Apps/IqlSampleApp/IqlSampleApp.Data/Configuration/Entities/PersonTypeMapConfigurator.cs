@@ -1,9 +1,19 @@
 using Brandless.AspNetCore.OData.Extensions.Configuration;
+using Iql.Entities;
+using Iql.Server;
 using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
 
 namespace IqlSampleApp.Data.Configuration.Entities
 {
+    public class PersonTypeMapIqlConfigurator : IIqlEntitySetConfigurator
+    {
+        public void Configure(IEntityConfigurationBuilder builder)
+        {
+            builder.EntityType<PersonTypeMap>().Key.Editable = true;
+        }
+    }
+
     public class PersonTypeMapConfigurator : IODataEntitySetConfigurator
     {
         public void Configure(ODataModelBuilder builder)

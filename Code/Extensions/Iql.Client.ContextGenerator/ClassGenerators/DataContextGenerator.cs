@@ -211,7 +211,12 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                       else
                                       {
                                           hasKeyParameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{keyIqlType}"));
+                                          hasKeyParameters.Add(new PropertyDefinition($"{entityConfiguration.Key.Editable.ToString().ToLower()}"));
                                       }
+                                  }
+                                  else
+                                  {
+                                      hasKeyParameters.Insert(0, new PropertyDefinition($"{entityConfiguration.Key.Editable.ToString().ToLower()}"));
                                   }
                                   // Currently only support types with single property keys
                                   MethodCall(

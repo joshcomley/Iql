@@ -74,7 +74,6 @@ namespace Iql.Tests.Tests.OData
             Assert.AreEqual(0, changes.Count);
             Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);
             Assert.AreEqual(@"{
-  ""Id"": 0,
   ""TypeId"": 7,
   ""Name"": ""New client 123"",
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",

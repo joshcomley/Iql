@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10014-1-Debug" />
-    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0035-1-Debug" />
+    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0037-1-Debug" />
   </ItemGroup>
 
   <ItemGroup>

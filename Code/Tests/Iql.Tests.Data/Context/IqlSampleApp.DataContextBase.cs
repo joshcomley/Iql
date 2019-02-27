@@ -81,7 +81,7 @@ namespace IqlSampleApp.ApiContext.Base
         public ODataConfiguration ODataConfiguration => _oDataConfiguration = _oDataConfiguration ?? new ODataConfiguration(EntityConfigurationContext);
         public override void Configure(EntityConfigurationBuilder builder)
         {
-            builder.EntityType<ApplicationUser>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean).ConfigureProperty(p => p.IsLockedOut, p => {
+            builder.EntityType<ApplicationUser>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean).ConfigureProperty(p => p.IsLockedOut, p => {
                 p.PropertyName = "IsLockedOut";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -413,7 +413,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ApplicationUser";
                 p.FriendlyName = "Application User";
             });
-            builder.EntityType<ApplicationLog>().HasKey(p => p.Id, IqlType.Unknown).DefineConvertedProperty(p => p.Id, "Guid", false, IqlType.String).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<ApplicationLog>().HasKey(p => p.Id, IqlType.Unknown, false).DefineConvertedProperty(p => p.Id, "Guid", false, IqlType.String).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -465,7 +465,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ApplicationLog";
                 p.FriendlyName = "Application Log";
             });
-            builder.EntityType<Client>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.TypeId, false, IqlType.Integer).ConfigureProperty(p => p.TypeId, p => {
+            builder.EntityType<Client>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.TypeId, false, IqlType.Integer).ConfigureProperty(p => p.TypeId, p => {
                 p.PropertyName = "TypeId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -714,7 +714,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Client";
                 p.FriendlyName = "Client";
             });
-            builder.EntityType<ClientType>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<ClientType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -748,7 +748,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ClientType";
                 p.FriendlyName = "Client Type";
             });
-            builder.EntityType<DocumentCategory>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<DocumentCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -923,7 +923,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "DocumentCategory";
                 p.FriendlyName = "Document Category";
             });
-            builder.EntityType<SiteDocument>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.CategoryId, false, IqlType.Integer).ConfigureProperty(p => p.CategoryId, p => {
+            builder.EntityType<SiteDocument>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CategoryId, false, IqlType.Integer).ConfigureProperty(p => p.CategoryId, p => {
                 p.PropertyName = "CategoryId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1124,7 +1124,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "SiteDocument";
                 p.FriendlyName = "Site Document";
             });
-            builder.EntityType<ReportActionsTaken>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.FaultReportId, false, IqlType.Integer).ConfigureProperty(p => p.FaultReportId, p => {
+            builder.EntityType<ReportActionsTaken>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.FaultReportId, false, IqlType.Integer).ConfigureProperty(p => p.FaultReportId, p => {
                 p.PropertyName = "FaultReportId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1308,7 +1308,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ReportActionsTaken";
                 p.FriendlyName = "Report Actions Taken";
             });
-            builder.EntityType<ReportCategory>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<ReportCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1483,7 +1483,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ReportCategory";
                 p.FriendlyName = "Report Category";
             });
-            builder.EntityType<ReportDefaultRecommendation>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<ReportDefaultRecommendation>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1667,7 +1667,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ReportDefaultRecommendation";
                 p.FriendlyName = "Report Default Recommendation";
             });
-            builder.EntityType<ReportRecommendation>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.ReportId, false, IqlType.Integer).ConfigureProperty(p => p.ReportId, p => {
+            builder.EntityType<ReportRecommendation>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.ReportId, false, IqlType.Integer).ConfigureProperty(p => p.ReportId, p => {
                 p.PropertyName = "ReportId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1868,7 +1868,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ReportRecommendation";
                 p.FriendlyName = "Report Recommendation";
             });
-            builder.EntityType<ReportType>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<ReportType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2060,7 +2060,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ReportType";
                 p.FriendlyName = "Report Type";
             });
-            builder.EntityType<Project>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
+            builder.EntityType<Project>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
@@ -2236,7 +2236,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Project";
                 p.FriendlyName = "Project";
             });
-            builder.EntityType<ReportReceiverEmailAddress>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
+            builder.EntityType<ReportReceiverEmailAddress>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
                 p.PropertyName = "SiteId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2420,7 +2420,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ReportReceiverEmailAddress";
                 p.FriendlyName = "Report Receiver Email Address";
             });
-            builder.EntityType<RiskAssessment>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
+            builder.EntityType<RiskAssessment>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
                 p.PropertyName = "SiteInspectionId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2603,7 +2603,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "RiskAssessment";
                 p.FriendlyName = "Risk Assessment";
             });
-            builder.EntityType<RiskAssessmentSolution>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.RiskAssessmentId, false, IqlType.Integer).ConfigureProperty(p => p.RiskAssessmentId, p => {
+            builder.EntityType<RiskAssessmentSolution>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.RiskAssessmentId, false, IqlType.Integer).ConfigureProperty(p => p.RiskAssessmentId, p => {
                 p.PropertyName = "RiskAssessmentId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2778,7 +2778,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "RiskAssessmentSolution";
                 p.FriendlyName = "Risk Assessment Solution";
             });
-            builder.EntityType<RiskAssessmentAnswer>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.QuestionId, false, IqlType.Integer).ConfigureProperty(p => p.QuestionId, p => {
+            builder.EntityType<RiskAssessmentAnswer>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.QuestionId, false, IqlType.Integer).ConfigureProperty(p => p.QuestionId, p => {
                 p.PropertyName = "QuestionId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2971,7 +2971,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "RiskAssessmentAnswer";
                 p.FriendlyName = "Risk Assessment Answer";
             });
-            builder.EntityType<RiskAssessmentQuestion>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<RiskAssessmentQuestion>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3146,7 +3146,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "RiskAssessmentQuestion";
                 p.FriendlyName = "Risk Assessment Question";
             });
-            builder.EntityType<Person>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Location, true, IqlType.GeographyPoint).ConfigureProperty(p => p.Location, p => {
+            builder.EntityType<Person>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Location, true, IqlType.GeographyPoint).ConfigureProperty(p => p.Location, p => {
                 p.PropertyName = "Location";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
@@ -3619,7 +3619,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Person";
                 p.FriendlyName = "Person";
             });
-            builder.EntityType<PersonInspection>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
+            builder.EntityType<PersonInspection>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
                 p.PropertyName = "SiteInspectionId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3851,7 +3851,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "PersonInspection";
                 p.FriendlyName = "Person Inspection";
             });
-            builder.EntityType<PersonLoading>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<PersonLoading>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4026,7 +4026,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "PersonLoading";
                 p.FriendlyName = "Person Loading";
             });
-            builder.EntityType<PersonType>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<PersonType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4209,7 +4209,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "PersonType";
                 p.FriendlyName = "Person Type";
             });
-            builder.EntityType<PersonTypeMap>().HasCompositeKey(p => p.PersonId, p => p.TypeId).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
+            builder.EntityType<PersonTypeMap>().HasCompositeKey(true, p => p.PersonId, p => p.TypeId).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
                 p.PropertyName = "PersonId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4328,7 +4328,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "PersonTypeMap";
                 p.FriendlyName = "Person Type Map";
             });
-            builder.EntityType<PersonReport>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
+            builder.EntityType<PersonReport>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
                 p.PropertyName = "PersonId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4553,7 +4553,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "PersonReport";
                 p.FriendlyName = "Person Report";
             });
-            builder.EntityType<Site>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<Site>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4994,7 +4994,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Site";
                 p.FriendlyName = "Site";
             });
-            builder.EntityType<SiteArea>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<SiteArea>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5177,7 +5177,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "SiteArea";
                 p.FriendlyName = "Site Area";
             });
-            builder.EntityType<SiteInspection>().HasKey(p => p.Id, IqlType.Unknown).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<SiteInspection>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5384,7 +5384,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "SiteInspection";
                 p.FriendlyName = "Site Inspection";
             });
-            builder.EntityType<UserSite>().HasCompositeKey(p => p.SiteId, p => p.UserId).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
+            builder.EntityType<UserSite>().HasCompositeKey(false, p => p.SiteId, p => p.UserId).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
                 p.PropertyName = "SiteId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();

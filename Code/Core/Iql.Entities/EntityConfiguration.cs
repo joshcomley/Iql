@@ -282,11 +282,13 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> HasKey<TKey>(
             Expression<Func<T, TKey>> property,
-            IqlType? iqlType = null
+            IqlType? iqlType = null,
+            bool editable = false
         )
         {
             var definedProperty = DefineAndGetProperty(property, null, false, iqlType);
             Key = new EntityKey<T, TKey>();
+            Key.Editable = editable;
             var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
             iql.ReturnType = iqlType ?? typeof(TKey).ToIqlType();
             Key.AddProperty(definedProperty);
@@ -308,10 +310,12 @@ namespace Iql.Entities
         }
 
         public EntityConfiguration<T> HasCompositeKey(
+            bool editable,
             params Expression<Func<T, object>>[] properties
         )
         {
             Key = new EntityKey<T, CompositeKey>();
+            Key.Editable = editable;
             foreach (var property in properties)
             {
                 var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;

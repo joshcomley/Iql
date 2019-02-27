@@ -65,7 +65,6 @@ namespace Iql.Tests.Tests.OData
                 var body = request.Body.Body;
                 var compressed = body.NormalizeJson();
                 Assert.AreEqual(@"{
-  ""Id"": 0,
   ""TypeId"": 7,
   ""Name"": ""New client 123"",
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",
@@ -102,7 +101,6 @@ namespace Iql.Tests.Tests.OData
                 var body = request.Body.Body;
                 var compressed = body.NormalizeJson();
                 Assert.AreEqual(@"{
-  ""Id"": 0,
   ""Title"": ""Dummy"",
   ""Skills"": ""5"",
   ""Category"": ""2"",
@@ -141,7 +139,6 @@ namespace Iql.Tests.Tests.OData
                 var body = request.Body.Body;
                 var compressed = body.NormalizeJson();
                 Assert.AreEqual(@"{
-  ""Id"": 0,
   ""Location"": {
     ""type"": ""Point"",
     ""coordinates"": [

@@ -122,29 +122,32 @@ namespace Iql.Data.Serialization
 
         public static List<JObject> PrepareCollectionForSerialization(IEnumerable entities,
             IEntityConfiguration entityConfiguration,
+            bool areNew,
             params IPropertyState[] properties)
         {
             var all = new List<JObject>();
             foreach (var entity in entities)
             {
-                all.Add(SerializeInternal(entityConfiguration, entity, properties));
+                all.Add(SerializeInternal(entityConfiguration, entity, areNew, properties));
             }
             return all;
         }
 
         public static JObject PrepareEntityForSerialization(object entity,
             IEntityConfiguration entityConfiguration,
+            bool isNew,
             params IPropertyState[] properties)
         {
-            var obj = SerializeInternal(entityConfiguration, entity, properties);
+            var obj = SerializeInternal(entityConfiguration, entity, isNew, properties);
             return obj;
         }
 
         public static string SerializeEntityToJson(object entity,
             IEntityConfiguration entityConfigurationBuilder,
+            bool isNew,
             params IPropertyState[] properties)
         {
-            return PrepareEntityForSerialization(entity, entityConfigurationBuilder, properties).ToString();
+            return PrepareEntityForSerialization(entity, entityConfigurationBuilder, isNew, properties).ToString();
         }
 
         public static DeserializeCollectionResult<T> DeserializeCollection<T>(string json,
@@ -239,6 +242,7 @@ namespace Iql.Data.Serialization
         private static JObject SerializeInternal(
             IEntityConfiguration entityConfiguration, 
             object entity, 
+            bool isNew,
             IEnumerable<IPropertyState> properties)
         {
             var obj = new JObject();
@@ -257,7 +261,12 @@ namespace Iql.Data.Serialization
             }
             foreach (var property in propertyChanges)
             {
-                var propertyValue = entity.GetPropertyValue(property.Property);
+                if (property.Property.Kind.HasFlag(PropertyKind.Key) && isNew &&
+                    !property.Property.EntityConfiguration.Key.Editable)
+                {
+                    continue;
+                }
+                var propertyValue = property.Property.GetValue(entity);
                 if (property.Property.Kind.HasFlag(PropertyKind.Count) || property.Property.Kind.HasFlag(PropertyKind.Relationship))
                 {
                     continue;

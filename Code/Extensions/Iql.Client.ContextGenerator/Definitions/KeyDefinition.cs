@@ -8,7 +8,6 @@ namespace Iql.OData.TypeScript.Generator.Definitions
         {
             Properties = new List<PropertyDefinition>();
         }
-
         public List<PropertyDefinition> Properties { get; set; }
     }
 }
