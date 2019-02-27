@@ -31,9 +31,9 @@ namespace Iql.Data.Context
             where TEntity : class;
         DataTracker TemporalDataTracker { get; }
         DataTracker OfflineDataTracker { get; }
-        Task<bool> ClearStateAsync();
-        Task<bool> SaveStateAsync();
-        Task<bool> RestoreStateAsync();
+        Task<bool> ClearOfflineStateAsync();
+        Task<bool> SaveOfflineStateAsync();
+        Task<bool> RestoreOfflineStateAsync();
         IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
         IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null);
         IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);

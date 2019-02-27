@@ -81,14 +81,15 @@ namespace Iql.Data.Extensions
             return true;
         }
 
-        public static List<IPropertyState> EntityNonNullProperties(this IEntityConfigurationBuilder entityConfigurationBuilder, object entity)
+        public static List<IPropertyState> EntityNonNullProperties(this IEntityConfigurationBuilder entityConfigurationBuilder, object entity, bool includeNonEditableKey = false)
         {
             var entityConfiguration = entityConfigurationBuilder.GetEntityByType(entity.GetType());
             var properties = new List<IPropertyState>();
             foreach (var property in entityConfiguration.Properties)
             {
                 var propertyValue = entity.GetPropertyValue(property);
-                if (propertyValue != null || !property.TypeDefinition.Nullable && !property.Kind.HasFlag(PropertyKind.Relationship))
+                if (propertyValue != null || !property.TypeDefinition.Nullable && !property.Kind.HasFlag(PropertyKind.Relationship) &&
+                    (!property.Kind.HasFlag(PropertyKind.Key) || property.EntityConfiguration.Key.Editable || includeNonEditableKey))
                 {
                     var state = new PropertyState(property, null);
                     properties.Add(state);

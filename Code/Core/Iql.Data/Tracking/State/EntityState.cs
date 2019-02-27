@@ -290,7 +290,7 @@ namespace Iql.Data.Tracking.State
                 IsNew,
                 MarkedForDeletion,
                 MarkedForCascadeDeletion,
-                PropertyStates = PropertyStates.Where(_ => _.HasChanged).Select(_ => _.PrepareForJson()).Where(_ => _ != null)
+                PropertyStates = PropertyStates.Where(_ => IsNew || _.HasChanged).Select(_ => _.PrepareForJson()).Where(_ => _ != null)
             };
         }
     }

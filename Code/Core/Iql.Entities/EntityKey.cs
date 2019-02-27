@@ -29,6 +29,8 @@ namespace Iql.Entities
         public bool HasRelationshipKeys => Properties.Any(p =>
             p.Relationship != null && !p.Relationship.ThisIsTarget);
 
+        public bool Editable { get; set; }
+
         public IProperty[] Properties
         {
             get => _properties;

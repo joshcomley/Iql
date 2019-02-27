@@ -646,7 +646,7 @@ namespace Iql.Tests.Tests
             person.Types.Remove(typeMap);
             var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
-            Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
+            Assert.AreEqual(QueuedOperationKind.Delete, changes[0].Kind, "Expecting a delete operation");
 
             Assert.AreEqual(0, person.Types.Count);
             var newEquivalentTypeMap = new PersonTypeMap
@@ -686,7 +686,7 @@ namespace Iql.Tests.Tests
             person.Types.Remove(typeMap);
             var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
-            Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
+            Assert.AreEqual(QueuedOperationKind.Delete, changes[0].Kind, "Expecting a delete operation");
             var result = await Db.SaveChangesAsync();
             changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
@@ -793,7 +793,7 @@ namespace Iql.Tests.Tests
             person.Types.Remove(typeMap);
             var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
-            Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type, "Expecting a delete operation");
+            Assert.AreEqual(QueuedOperationKind.Delete, changes[0].Kind, "Expecting a delete operation");
 
             Assert.AreEqual(0, person.Types.Count);
             var newEquivalentTypeMap = new PersonTypeMap
@@ -807,8 +807,8 @@ namespace Iql.Tests.Tests
             changes = Db.GetChanges();
             Assert.AreEqual(2, changes.Length);
             Assert.AreEqual(2, changes.Length);
-            Assert.AreEqual(QueuedOperationType.Delete, changes[0].Type);
-            Assert.AreEqual(QueuedOperationType.Add, changes[1].Type);
+            Assert.AreEqual(QueuedOperationKind.Delete, changes[0].Kind);
+            Assert.AreEqual(QueuedOperationKind.Add, changes[1].Kind);
             return newEquivalentTypeMap;
         }
 

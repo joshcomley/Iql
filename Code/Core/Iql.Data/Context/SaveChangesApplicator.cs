@@ -30,12 +30,14 @@ namespace Iql.Data.Context
             DataContext = dataContext;
         }
 
-        private bool CheckPendingDependencies<TEntity, TOperation>(TOperation operation, EntityCrudResult<TEntity, TOperation> result)
+        private bool CheckPendingDependencies<TEntity, TOperation>(
+            bool isOffline,
+            TOperation operation, EntityCrudResult<TEntity, TOperation> result)
             where TEntity : class
             where TOperation : EntityCrudOperation<TEntity>
         {
-            if (DataContext.TemporalDataTracker.GetPendingDependencyCount(operation.Entity,
-                    operation.EntityType) > 0)
+            var dataTracker = isOffline ? DataContext.OfflineDataTracker : DataContext.TemporalDataTracker;
+            if (dataTracker.GetPendingDependencyCount(operation.Entity, operation.EntityType) > 0)
             {
                 result.Success = false;
                 result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
@@ -72,13 +74,13 @@ namespace Iql.Data.Context
                 case OperationType.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
                     var addEntityValidationResult = await DataContext.ValidateEntityAsync(addEntityOperation.Operation.Entity);
-                    if (addEntityValidationResult.HasValidationFailures())
+                    if (!isOfflineResync && addEntityValidationResult.HasValidationFailures())
                     {
                         addEntityOperation.Result.Success = false;
                         addEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
                         addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.Entity, addEntityValidationResult);
                     }
-                    else if (CheckPendingDependencies(addEntityOperation.Operation, addEntityOperation.Result) &&
+                    else if (CheckPendingDependencies(isOfflineResync, addEntityOperation.Operation, addEntityOperation.Result) &&
                              (isOfflineResync || await CheckNotAlreadyExistsAsync(addEntityOperation)))
                     {
                         var localEntity = addEntityOperation.Operation.Entity;
@@ -130,14 +132,20 @@ namespace Iql.Data.Context
 #endif
                         if (remoteEntity != null && result.Success)
                         {
+                            var temporalEntity = (TEntity)DataContext.TemporalDataTracker.TrackingSet<TEntity>()
+                                .FindMatchingEntityState(localEntity)?.Entity;
                             if (!isOfflineResync)
                             {
                                 DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
+                                DataContext.TemporalDataTracker.TrackingSet<TEntity>()
+                                    .Synchronise(remoteEntity, true, true, temporalEntity);
                             }
                             else
                             {
+                                DataContext.TemporalDataTracker.TrackingSet<TEntity>()
+                                    .Synchronise(remoteEntity, true, true, temporalEntity);
                                 DataContext.OfflineDataTracker.TrackingSet<TEntity>()
-                                    .Merge(localEntity, remoteEntity, true, true);
+                                    .Synchronise(remoteEntity, true, true, localEntity);
                                 var temporalEntityState = DataContext.TemporalDataTracker.TrackingSet<TEntity>()
                                     .FindMatchingEntityState(localEntity);
                                 localEntity = (TEntity)(temporalEntityState?.Entity ??
@@ -147,8 +155,6 @@ namespace Iql.Data.Context
                             //var trackingSet = DataContext.DataTracker.TrackingSet<TEntity>();
                             //trackingSet.TrackEntity(localEntity, remoteEntity, false);
                             //trackingSet.FindMatchingEntityState(localEntity).Reset();
-                            DataContext.TemporalDataTracker.TrackingSet<TEntity>().Merge(
-                                localEntity, remoteEntity, true, true);
 
                             if (!DataContext.RefreshDisabled)
                             {
@@ -180,10 +186,10 @@ namespace Iql.Data.Context
                         failure.AddFailure("", "This entity has not yet been saved so it cannot be updated.");
                         updateEntityOperation.Result.RootEntityValidationResult = failure;
                     }
-                    else if (isEntityNew != null && CheckPendingDependencies(updateEntityOperation.Operation, updateEntityOperation.Result))
+                    else if (CheckPendingDependencies(isOfflineResync, updateEntityOperation.Operation, updateEntityOperation.Result))
                     {
                         var updateEntityValidationResult = await DataContext.ValidateEntityAsync(updateEntityOperation.Operation.Entity);
-                        if (updateEntityValidationResult.HasValidationFailures())
+                        if (!isOfflineResync && updateEntityValidationResult.HasValidationFailures())
                         {
                             updateEntityOperation.Result.Success = false;
                             updateEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
@@ -304,10 +310,10 @@ namespace Iql.Data.Context
                         operation.Result.Success = false;
                         var failure = new EntityValidationResult<TEntity>(
                             deleteEntityOperation.Operation.Entity);
-                        failure.AddFailure("", "This entity has not yet been saved so it cannot be updated.");
+                        failure.AddFailure("", "This entity has not yet been saved so it cannot be deleted.");
                         deleteEntityOperation.Result.RootEntityValidationResult = failure;
                     }
-                    else if (entityNew != null || deleteEntityOperation.Key != null)
+                    else if (deleteEntityOperation.Key != null)
                     {
                         var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
                         if (specialTypeMap != null && specialTypeMap.EntityConfiguration.Type != typeof(TEntity))
@@ -370,7 +376,7 @@ namespace Iql.Data.Context
             {
                 saveChangesResult.Results.Add(entityCrudResult);
             }
-            await DataContext.SaveStateAsync();
+            await DataContext.SaveOfflineStateAsync();
         }
 
         private async Task<AddEntityResult<TEntity>> PerformMappedAddAsync<TEntity, TMap>(

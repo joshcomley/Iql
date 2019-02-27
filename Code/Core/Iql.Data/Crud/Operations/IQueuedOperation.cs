@@ -4,6 +4,6 @@ namespace Iql.Data.Crud.Operations
     {
         ICrudResult Result { get; }
         IEntitySetCrudOperationBase Operation { get; }
-        QueuedOperationType Type { get; }
+        QueuedOperationKind Kind { get; }
     }
 }

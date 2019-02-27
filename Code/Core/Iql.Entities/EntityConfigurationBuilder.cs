@@ -218,35 +218,6 @@ namespace Iql.Entities
             return GetEntityByType(type) != null;
         }
 
-        public Dictionary<Type, IList> FlattenObjectGraphs(Type entityType, IEnumerable entities)
-        {
-            return FlattenObjectGraphsInternal(entityType, entities, false);
-        }
-
-        public Dictionary<Type, IList> FlattenDependencyGraphs(Type entityType, IEnumerable entities)
-        {
-            return FlattenObjectGraphsInternal(entityType, entities, true);
-        }
-
-        private Dictionary<Type, IList> FlattenObjectGraphsInternal(Type entityType, IEnumerable entities, bool dependenciesOnly)
-        {
-            var dictionary = new Dictionary<Type, Dictionary<string, object>>();
-            var recursionLookup = new Dictionary<object, object>();
-            var result = new Dictionary<Type, IList>();
-            foreach (var entity in entities)
-            {
-                FlattenObjectGraphRecursive(
-                    entity,
-                    entityType,
-                    dictionary,
-                    result,
-                    recursionLookup,
-                    dependenciesOnly
-                );
-            }
-            return result;
-        }
-
         /// <summary>
         /// Flattens an object graph, producing a list of distinctive entities contained within
         /// </summary>
@@ -255,99 +226,22 @@ namespace Iql.Entities
         /// <returns></returns>
         public Dictionary<Type, IList> FlattenObjectGraph(object entity, Type entityType)
         {
-            return FlattenObjectGraphInternal(entity, entityType, false);
+            return GraphFlattener.FlattenObjectGraphInternal(this, entity, entityType);
         }
 
-        public Dictionary<Type, IList> FlattenDependencyGraph(object entity, Type entityType)
+        public Dictionary<Type, IList> FlattenObjectGraphs(Type entityType, IEnumerable entities)
         {
-            return FlattenObjectGraphInternal(entity, entityType, true);
+            return GraphFlattener.FlattenObjectGraphsInternal(this, entityType, entities);
         }
 
-        private Dictionary<Type, IList> FlattenObjectGraphInternal(object entity, Type entityType, bool dependenciesOnly)
-        {
-            var result = new Dictionary<Type, IList>();
-            FlattenObjectGraphRecursive(
-                entity,
-                entityType,
-                new Dictionary<Type, Dictionary<string, object>>(),
-                result,
-                new Dictionary<object, object>(),
-                dependenciesOnly
-            );
-            return result;
-        }
+        //public Dictionary<Type, IList> FlattenDependencyGraph(object entity, Type entityType)
+        //{
+        //    return this.FlattenDependencyGraphInternal(entity, entityType);
+        //}
 
-        private void FlattenObjectGraphRecursive(
-            object objectGraphRoot,
-            Type entityType,
-            Dictionary<Type, Dictionary<string, object>> dictionary,
-            Dictionary<Type, IList> result,
-            Dictionary<object, object> recursionLookup,
-            bool dependenciesOnly
-            )
-        {
-            if (!dictionary.ContainsKey(entityType))
-            {
-                dictionary.Add(entityType, new Dictionary<string, object>());
-                result.Add(entityType, ListOfType(entityType));
-            }
-
-            var typeGroup = dictionary[entityType];
-            if (recursionLookup.ContainsKey(objectGraphRoot))
-            {
-                // Prevent infinite recursion
-                return;
-            }
-            recursionLookup.Add(objectGraphRoot, objectGraphRoot);
-            var graphEntityConfiguration = GetEntityByType(entityType);
-            var compositeKey = graphEntityConfiguration.GetCompositeKey(objectGraphRoot);
-            var keyString = compositeKey.AsKeyString();
-            if (compositeKey.HasDefaultValue())
-            {
-                keyString += Guid.NewGuid().ToString();
-            }
-
-            if (typeGroup.ContainsKey(keyString))
-            {
-                return;
-            }
-
-            result[entityType].Add(objectGraphRoot);
-            typeGroup.Add(
-                keyString,
-                objectGraphRoot);
-
-            foreach (var relationship in graphEntityConfiguration.AllRelationships())
-            {
-                if (relationship.ThisIsTarget && dependenciesOnly)
-                {
-                    continue;
-                }
-                var property = relationship.ThisEnd.Property;
-                var relationshipValue = objectGraphRoot.GetPropertyValue(property);
-                var childType = relationship.OtherEnd.Type;
-                if (relationshipValue != null)
-                {
-                    var isArray = relationshipValue is IEnumerable && !(relationshipValue is string);
-                    if (isArray)
-                    {
-                            var list = (IList)relationshipValue;
-                            foreach (var item in list)
-                            {
-                                FlattenObjectGraphRecursive(item, childType, dictionary, result, recursionLookup, dependenciesOnly);
-                            }
-                    }
-                    else
-                    {
-                        FlattenObjectGraphRecursive(relationshipValue, childType, dictionary, result, recursionLookup, dependenciesOnly);
-                    }
-                }
-            }
-        }
-
-        private static IList ListOfType(Type entityType)
-        {
-            return (IList) Activator.CreateInstance(typeof(List<>).MakeGenericType(entityType));
-        }
+        //public Dictionary<Type, IList> FlattenDependencyGraphs(Type entityType, IEnumerable entities)
+        //{
+        //    return this.FlattenDependencyGraphsInternal(entityType, entities);
+        //}
     }
 }

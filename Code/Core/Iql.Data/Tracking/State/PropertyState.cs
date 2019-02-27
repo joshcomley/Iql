@@ -70,8 +70,12 @@ namespace Iql.Data.Tracking.State
 
         private void EnsureOldValue()
         {
-            if (_originalValueSet && _remoteValue == null && _localValue != null && Property.Relationship != null
-                && !Property.Relationship.ThisIsTarget &&
+            if (EntityState != null && 
+                _originalValueSet && 
+                _remoteValue == null && 
+                _localValue != null && 
+                Property.Relationship != null && 
+                !Property.Relationship.ThisIsTarget &&
                 Property == Property.Relationship.ThisEnd.Property)
             {
                 var canMatchToKey = true;
@@ -252,7 +256,7 @@ namespace Iql.Data.Tracking.State
             return new
             {
                 RemoteValue,
-                LocalValue,
+                LocalValue = Property.GetValue(EntityState.Entity),
                 Property = Property.PropertyName
             };
         }

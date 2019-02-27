@@ -985,7 +985,7 @@ namespace Iql.Data.Context
                   BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        public async Task<bool> ClearStateAsync()
+        public async Task<bool> ClearOfflineStateAsync()
         {
             if (PersistState == null)
             {
@@ -1009,7 +1009,7 @@ namespace Iql.Data.Context
             return success;
         }
 
-        public async Task<bool> SaveStateAsync()
+        public async Task<bool> SaveOfflineStateAsync()
         {
             if (PersistState == null)
             {
@@ -1033,7 +1033,7 @@ namespace Iql.Data.Context
             return success;
         }
 
-        public async Task<bool> RestoreStateAsync()
+        public async Task<bool> RestoreOfflineStateAsync()
         {
             if (PersistState == null)
             {
@@ -1081,7 +1081,7 @@ namespace Iql.Data.Context
 
         public IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
-            return TemporalDataTracker.GetChanges(this, entities, properties).Where(op => op.Type == QueuedOperationType.Update).ToArray();
+            return TemporalDataTracker.GetChanges(this, entities, properties).Where(op => op.Kind == QueuedOperationKind.Update).ToArray();
         }
 
         public List<T> AttachEntities<T>(IEnumerable<T> entities, bool? cloneIfAttachedElsewhere = null)
@@ -1586,8 +1586,7 @@ namespace Iql.Data.Context
                             {
                                 var item = response.Root[i];
                                 var trackingSet = dataTracker.TrackingSetByType(typeof(TEntity));
-                                var state = trackingSet.FindMatchingEntityState(item);
-                                state = trackingSet.Synchronise(item, false, true);
+                                var state = trackingSet.Synchronise(item, false, true, null);
                                 if (dataTracker == localDataTracker)
                                 {
                                     dbList.Add((TEntity)state.Entity);
@@ -1604,7 +1603,7 @@ namespace Iql.Data.Context
                                 if (!dealtWith.ContainsKey(item))
                                 {
                                     dataTracker.TrackingSetByType(pair.Key)
-                                        .Synchronise(item, false, true);
+                                        .Synchronise(item, false, true, null);
                                 }
                             }
                         }

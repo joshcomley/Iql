@@ -22,6 +22,7 @@ namespace Iql.Tests.Context
             DataStore = new OfflinableInMemoryDataStore();
             RefreshDisabled = true;
             EnableOffline = true;
+            PersistState = new StaticPersistState();
         }
 
         public void Reset()

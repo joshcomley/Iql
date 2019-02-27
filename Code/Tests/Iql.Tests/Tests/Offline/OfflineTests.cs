@@ -41,7 +41,7 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task RestoreEmptyOrBadStateShouldNotThrowError()
         {
-            await Db.RestoreStateAsync();
+            await Db.RestoreOfflineStateAsync();
             Assert.IsTrue(true);
         }
 
@@ -221,13 +221,13 @@ namespace Iql.Tests.Tests.Offline
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             state = Db.OfflineInMemoryDataStore.SerializeStateToJson().NormalizeJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":-1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
             client.Name = "Newly added client2";
             result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             state = Db.OfflineInMemoryDataStore.SerializeStateToJson().NormalizeJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":-1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
         }
 
@@ -648,6 +648,38 @@ namespace Iql.Tests.Tests.Offline
 
 
         [TestMethod]
+        public async Task ResyncingAnEntityAddedWhenOffline()
+        {
+            var offlineDataSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
+            var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
+
+            Assert.AreEqual(0, offlineDataSet.Count);
+            Assert.AreEqual(3, onlineDataSet.Count);
+
+            Assert.IsFalse(Db.HasOfflineChanges());
+
+            // Go offline
+            Db.IsOffline = true;
+            var newClient = new Client();
+            var newClientName = "New Client 123";
+            newClient.Name = newClientName;
+            newClient.TypeId = 2;
+            Db.Clients.Add(newClient);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(Db.HasOfflineChanges());
+            await Db.SaveOfflineStateAsync();
+            await Db.ClearOfflineStateAsync();
+            StaticPersistState.UseDummyState = true;
+            await Db.RestoreOfflineStateAsync();
+            StaticPersistState.UseDummyState = false;
+            Db.IsOffline = false;
+            result = await Db.SaveOfflineChangesAsync();
+            Assert.IsTrue(result.Success);
+            var client = onlineDataSet.SingleOrDefault(_ => _.Name == "New Client 123");
+            Assert.IsNotNull(client);
+        }
+
+        [TestMethod]
         public async Task AddingAnEntityWhenOffline()
         {
             var offlineDataSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
@@ -670,7 +702,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.IsTrue(Db.HasOfflineChanges());
             var offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Length);
-            Assert.IsTrue(offlineChanges[0].Type == QueuedOperationType.Add);
+            Assert.IsTrue(offlineChanges[0].Kind == QueuedOperationKind.Add);
 
             Assert.IsTrue(result.Success);
 
@@ -747,6 +779,40 @@ namespace Iql.Tests.Tests.Offline
 
             Assert.IsFalse(Db.HasOfflineChanges());
         }
+
+        [TestMethod]
+        public async Task AddingARelatedEntityWhenOfflineShouldResyncNewEntityFirst()
+        {
+            var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<ClientType>();
+            var client = await Db.Clients.FirstOrDefaultAsync();
+            // Go offline
+            Db.IsOffline = true;
+
+            var clientType = new ClientType
+            {
+                Name = "New related entity"
+            };
+
+            Db.ClientTypes.Add(clientType);
+            client.Type = clientType;
+            var changes = Db.GetChanges();
+            Assert.AreEqual(changes[0].Kind, QueuedOperationKind.Add, "Add operation should come first");
+            Assert.AreEqual(changes[1].Kind, QueuedOperationKind.Update, "Update operation should come second");
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(-1, clientType.Id);
+            Assert.AreEqual(-1, client.TypeId);
+            Db.IsOffline = false;
+            changes = Db.GetOfflineChanges();
+            Assert.AreEqual(changes[0].Kind, QueuedOperationKind.Add, "Add operation should come first");
+            Assert.AreEqual(changes[1].Kind, QueuedOperationKind.Update, "Update operation should come second");
+            result = await Db.SaveOfflineChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(3, clientType.Id);
+            Assert.AreEqual(3, client.TypeId);
+            Assert.IsFalse(Db.HasOfflineChanges());
+        }
+
 
         [TestMethod]
         public async Task SaveChangeWhenOfflineAndResyncWhenOnline()

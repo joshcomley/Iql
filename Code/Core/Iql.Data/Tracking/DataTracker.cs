@@ -135,8 +135,21 @@ namespace Iql.Data.Tracking
         {
             var count = 0;
             var flattened =
-                EntityConfigurationBuilder.FlattenDependencyGraph(entity,
-                    entityType);
+                GraphFlattener.FlattenDependencyGraphInternal(
+                    EntityConfigurationBuilder,
+                    entity,
+                    entityType,
+                    (obj, relationship) =>
+                    {
+                        var value = relationship.Property.GetValue(obj);
+                        if (value == null)
+                        {
+                            var key = relationship.GetCompositeKey(obj, true);
+                            var type = relationship.OtherSide.Type;
+                            return TrackingSetByType(type).FindMatchingEntityState(key)?.Entity;
+                        }
+                        return value;
+                    });
             foreach (var item in flattened)
             {
                 var tracking = TrackingSetByType(item.Key);
@@ -481,7 +494,14 @@ namespace Iql.Data.Tracking
 
         public IQueuedOperation[] GetChanges(IDataContext dataContext = null, object[] entities = null, IProperty[] properties = null)
         {
-            return this.GetQueuedChanges(dataContext, entities, properties);
+            return this.GetQueuedChanges(dataContext, entities, properties).OrderBy(_ =>
+            {
+                if (_.Operation is IEntityCrudOperationBase op)
+                {
+                    return GetPendingDependencyCount(op.Entity, op.EntityType);
+                }
+                return 0;
+            }).ToArray();
         }
 
         private class TrackCollectionResult

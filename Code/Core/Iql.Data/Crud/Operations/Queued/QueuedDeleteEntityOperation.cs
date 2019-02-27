@@ -7,7 +7,7 @@ namespace Iql.Data.Crud.Operations.Queued
     {
         public CompositeKey Key => Operation.Key ?? Operation.DataContext.GetEntityState(Operation.Entity).CurrentKey;
         public QueuedDeleteEntityOperation(DeleteEntityOperation<T> operation,
-            DeleteEntityResult<T> result) : base(QueuedOperationType.Delete, operation, result ?? new DeleteEntityResult<T>(false, operation))
+            DeleteEntityResult<T> result) : base(QueuedOperationKind.Delete, operation, result ?? new DeleteEntityResult<T>(false, operation))
         {
         }
     }

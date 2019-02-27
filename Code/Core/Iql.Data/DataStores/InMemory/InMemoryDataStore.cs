@@ -89,7 +89,7 @@ namespace Iql.Data.DataStores.InMemory
 
                 var idCount = _idCount[entityType];
                 var integerIdStrategy = GetSetConfiguration(entityType).IntegerIdStrategy ?? DefaultIntegerIdStrategy;
-                if (integerIdStrategy == AutoIntegerIdStrategy.Negative)
+                if (integerIdStrategy == AutoIntegerIdStrategy.Positive)
                 {
                     foreach (var existingEntity in data)
                     {

@@ -13,7 +13,7 @@ namespace Iql.Data.Tracking
         IEntityStateBase Restore(SerializedEntityState entityState);
         void RemoveEntityByKey(CompositeKey compositeKey);
         IEntityStateBase AddEntity(object entity);
-        IEntityStateBase Synchronise(object entity, bool overrideChanges, bool isRemote);
+        IEntityStateBase Synchronise(object remoteEntity, bool overrideChanges, bool isRemote, object existingEntity);
         IEntityStateBase AttachEntity(object entity, bool isLocal);
         ITrackingSet Merge(object localEntity, object remoteEntity, bool overrideChanges, bool isRemote);
         DataTracker DataTracker { get; }

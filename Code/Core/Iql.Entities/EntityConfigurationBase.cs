@@ -463,14 +463,15 @@ namespace Iql.Entities
 
         public CompositeKey GetCompositeKey(object entity)
         {
-            var key = new CompositeKey(Key.Properties.Length);
-            for (var i = 0; i < Key.Properties.Length; i++)
-            {
-                var property = Key.Properties[i];
-                key.Keys[i] = new KeyValue(property.Name, entity.GetPropertyValue(property), property.TypeDefinition);
-            }
+            return CompositeKey.Ensure(entity, (IEntityConfiguration)this);
+            //var key = new CompositeKey(Key.Properties.Length);
+            //for (var i = 0; i < Key.Properties.Length; i++)
+            //{
+            //    var property = Key.Properties[i];
+            //    key.Keys[i] = new KeyValue(property.Name, entity.GetPropertyValue(property), property.TypeDefinition);
+            //}
 
-            return key;
+            //return key;
         }
 
         public string GetCompositeKeyString(object entity)

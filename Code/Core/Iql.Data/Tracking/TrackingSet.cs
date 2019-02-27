@@ -182,28 +182,28 @@ namespace Iql.Data.Tracking
             return Merge((T)localEntity, (T)remoteEntity, overrideChanges, isRemote);
         }
 
-        public IEntityState<T> Synchronise(T entity, bool overrideChanges, bool isRemote)
+        public IEntityState<T> Synchronise(T remoteEntity, bool overrideChanges, bool isRemote, T existingEntity)
         {
-            var state = (IEntityState<T>)FindMatchingEntityState(entity);
+            var state = (IEntityState<T>)FindMatchingEntityState(existingEntity ?? remoteEntity);
             if (state == null)
             {
-                var clone = entity.CloneAs(EntityConfiguration.Builder, EntityConfiguration.Type,
+                var clone = remoteEntity.CloneAs(EntityConfiguration.Builder, EntityConfiguration.Type,
                     RelationshipCloneMode.DoNotClone);
                 state = AttachEntity(
                     clone, !isRemote);
                 return state;
             }
-            if (state.Entity != entity)
+            if (state.Entity != remoteEntity)
             {
-                Merge(state.Entity, entity, overrideChanges, isRemote);
+                Merge(state.Entity, remoteEntity, overrideChanges, isRemote);
             }
 
             return state;
         }
 
-        IEntityStateBase ITrackingSet.Synchronise(object entity, bool overrideChanges, bool isRemote)
+        IEntityStateBase ITrackingSet.Synchronise(object remoteEntity, bool overrideChanges, bool isRemote, object existingEntity)
         {
-            return Synchronise((T)entity, overrideChanges, isRemote);
+            return Synchronise((T)remoteEntity, overrideChanges, isRemote, (T)existingEntity);
         }
 
         public EntityConfiguration<T> EntityConfiguration => _entityConfiguration =
@@ -596,7 +596,7 @@ namespace Iql.Data.Tracking
                 return result;
             }
 
-            if (PersistenceKey != null)
+            if (PersistenceKey != null && entity.GetType() == EntityType)
             {
                 var persistenceKey = entity.GetPropertyValueAs<Guid>(PersistenceKey);
                 if ( // ReSharper disable once ConditionIsAlwaysTrueOrFalse

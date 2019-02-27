@@ -5,15 +5,15 @@ namespace Iql.Data.Crud.Operations
         where TOperation : IEntitySetCrudOperationBase
         where TResult : ICrudResult
     {
-        public QueuedOperation(QueuedOperationType type, TOperation operation, TResult result)
+        public QueuedOperation(QueuedOperationKind kind, TOperation operation, TResult result)
         {
-            Type = type;
+            Kind = kind;
             Operation = operation;
             Result = result;
         }
 
         public TOperation Operation { get; set; }
-        public QueuedOperationType Type { get; }
+        public QueuedOperationKind Kind { get; }
         public TResult Result { get; }
         ICrudResult IQueuedOperation.Result => Result;
         IEntitySetCrudOperationBase IQueuedOperation.Operation => Operation;

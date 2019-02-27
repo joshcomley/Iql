@@ -261,7 +261,7 @@ namespace Iql.Tests.Tests
             changes = Db.GetUpdates().ToList();
             Assert.AreEqual(1, changes.Count);
             var change = changes[0];
-            Assert.AreEqual(QueuedOperationType.Update, change.Type);
+            Assert.AreEqual(QueuedOperationKind.Update, change.Kind);
             var updateOperation = change as QueuedUpdateEntityOperation<ClientType>;
             Assert.IsNotNull(updateOperation);
             Assert.AreEqual(1, updateOperation.Operation.EntityState.GetChangedProperties().Length);
@@ -707,7 +707,7 @@ namespace Iql.Tests.Tests
             var change = changes.First();
             var changeOperation = change.Operation as UpdateEntityOperation<Client>;
             Assert.IsNotNull(changeOperation);
-            Assert.AreEqual(QueuedOperationType.Update, change.Type);
+            Assert.AreEqual(QueuedOperationKind.Update, change.Kind);
             Assert.AreEqual(existingClient, changeOperation.EntityState.Entity);
             Assert.AreEqual(existingClient, changeOperation.Entity);
             var propertyChanges = changeOperation.EntityState.GetChangedProperties();

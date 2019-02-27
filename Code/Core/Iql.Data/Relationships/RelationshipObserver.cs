@@ -248,9 +248,10 @@ namespace Iql.Data.Relationships
                     idLookup = _ids[relationship];
                 }
 
+                var key = CompositeKey.Ensure(entity, EntityConfigurationContext.GetEntityByType(relationship.Target.Type));
                 if (!idLookup.ContainsKey(entity))
                 {
-                    idLookup.Add(entity, Guid.NewGuid().ToString());
+                    idLookup.Add(entity, key.HasDefaultValue() ? Guid.NewGuid().ToString() : key.AsKeyString());
                 }
 
                 return idLookup[entity];
@@ -336,7 +337,7 @@ namespace Iql.Data.Relationships
 
         private void RelatedListChanged(IRelatedListChangeEvent relatedListChangeEvent)
         {
-            var listProperty = EntityConfigurationByType(relatedListChangeEvent.OwnerType).FindProperty(
+            var listProperty = EntityConfigurationContext.GetEntityByType(relatedListChangeEvent.OwnerType).FindProperty(
                 relatedListChangeEvent.List.PropertyName);
             var sourceProperty = listProperty.Relationship.Relationship.Source.Property;
             if (!_propertyChangeIgnorer.AreAnyIgnored(new[] {listProperty}, relatedListChangeEvent.Owner))
@@ -480,6 +481,10 @@ namespace Iql.Data.Relationships
 
         private void ProcessTargetKeyChange(object entity, IEntityConfiguration entityConfiguration)
         {
+            if (DataTracker?.Kind == DataTrackerKind.Offline)
+            {
+                int a = 0;
+            }
             foreach (var relationship in entityConfiguration.AllRelationships())
             {
                 if (relationship.ThisIsTarget)
@@ -634,11 +639,6 @@ namespace Iql.Data.Relationships
                     }
                 }
             }
-        }
-
-        private IEntityConfiguration EntityConfigurationByType(Type type)
-        {
-            return DataTracker.TrackingSetByType(type).EntityConfiguration;
         }
 
         private EntityConfiguration<T> EntityConfiguration<T>()

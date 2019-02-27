@@ -53,20 +53,28 @@ namespace Iql.Entities
             return compositeKey;
         }
 
-        public static CompositeKey Ensure(object key, IEntityConfiguration entityConfiguration)
+        public static CompositeKey Ensure(object entityOrKey, IEntityConfiguration entityConfiguration)
         {
             CompositeKey compositeKey;
-            if (key.GetType() == entityConfiguration.Type)
+            if (entityOrKey.GetType() == entityConfiguration.Type)
             {
-                return entityConfiguration.GetCompositeKey(key);
+                compositeKey = new CompositeKey(entityConfiguration.Key.Properties.Length);
+                for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
+                {
+                    var property = entityConfiguration.Key.Properties[i];
+                    compositeKey.Keys[i] = new KeyValue(property.Name, entityOrKey.GetPropertyValue(property), property.TypeDefinition);
+                }
+
+                return compositeKey;
+                //return entityConfiguration.GetCompositeKey(entityOrKey);
             }
-            if (key is CompositeKey)
+            if (entityOrKey is CompositeKey)
             {
-                compositeKey = key as CompositeKey;
+                compositeKey = entityOrKey as CompositeKey;
             }
             else
             {
-                compositeKey = GetCompositeKeyFromSingularKey(key, entityConfiguration);
+                compositeKey = GetCompositeKeyFromSingularKey(entityOrKey, entityConfiguration);
             }
 
             return compositeKey;
