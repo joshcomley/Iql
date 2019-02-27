@@ -5,13 +5,26 @@ using System.Reflection;
 
 namespace Iql.Entities.Extensions
 {
-    public static class IqlQueryableObjectExtensions
+    public static class IqlEntitiesObjectExtensions
     {
         public static PropertyInfo[] GetProperties(this object value)
         {
             return value == null
                 ? new PropertyInfo[] { }
                 : value.GetType().GetProperties().ToArray();
+        }
+
+        public static bool IsValueType(this object value)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+#if !TypeScript
+            return value is string || value.GetType().IsValueType;
+#else
+            return value is string || value is float || value is DateTime;
+#endif
         }
 
         public static bool IsDefaultValue(this object value, ITypeDefinition type)

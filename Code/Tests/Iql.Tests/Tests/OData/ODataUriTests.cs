@@ -464,6 +464,27 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task TestExpandDisplayFormatter()
+        {
+            var query = Db.SiteInspections.ExpandForDisplayFormatter();
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/SiteInspections?$expand=Site,CreatedByUser", uri);
+        }
+
+        [TestMethod]
+        public async Task TestExpandDisplayFormatterWithOtherFilters()
+        {
+            var query = Db.SiteInspections.ExpandForDisplayFormatter()
+                .SearchForDisplayFormatter("abc", null, true)
+                .OrderByDefault(false)
+                .Take(5);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/SiteInspections?$filter=(contains($it/Site/Name,'abc') or contains($it/CreatedByUser/FullName,'abc'))&$expand=Site,CreatedByUser&$orderby=$it/CreatedDate desc&$top=5", uri);
+        }
+
+        [TestMethod]
         public async Task TestExpandCount()
         {
             var query = Db.Clients.ExpandRelationship(nameof(Client.SitesCount));

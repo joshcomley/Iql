@@ -784,7 +784,11 @@ namespace Iql.Tests.Tests.Offline
         public async Task AddingARelatedEntityWhenOfflineShouldResyncNewEntityFirst()
         {
             var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<ClientType>();
+            var offlineClientsDataSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
+            var offlineClientTypesDataSet = Db.OfflineInMemoryDataStore.DataSet<ClientType>();
             var client = await Db.Clients.FirstOrDefaultAsync();
+            var offlineClient = offlineClientsDataSet.Single(_ => _.Id == 1);
+            Assert.AreEqual(1, offlineClient.TypeId);
             // Go offline
             Db.IsOffline = true;
 
@@ -802,6 +806,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.IsTrue(result.Success);
             Assert.AreEqual(-1, clientType.Id);
             Assert.AreEqual(-1, client.TypeId);
+            Assert.AreEqual(-1, offlineClient.TypeId);
             Db.IsOffline = false;
             changes = Db.GetOfflineChanges();
             Assert.AreEqual(changes[0].Kind, QueuedOperationKind.Add, "Add operation should come first");
@@ -810,7 +815,9 @@ namespace Iql.Tests.Tests.Offline
             Assert.IsTrue(result.Success);
             Assert.AreEqual(3, clientType.Id);
             Assert.AreEqual(3, client.TypeId);
+            Assert.AreEqual(3, offlineClient.TypeId);
             Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsNotNull(offlineClientTypesDataSet.Single(_ => _.Id == 3));
         }
 
 

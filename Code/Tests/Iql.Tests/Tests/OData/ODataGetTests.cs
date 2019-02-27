@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Iql.OData;
 using Iql.Tests.Context;
 using IqlSampleApp.Data.Entities;
@@ -10,7 +11,7 @@ namespace Iql.Tests.Tests.OData
     public class ODataGetTests : TestsBase
     {
         [TestMethod]
-        public async Task TestGetExpand()
+        public async Task TestGetExpandSingle()
         {
             var db = new HazceptionDataContext(new ODataDataStore());
             var user = await
@@ -25,6 +26,40 @@ namespace Iql.Tests.Tests.OData
                     )
                     .GetWithKeyAsync("2b2b0e44-4579-4965-8e3a-097e6684b767");
             Assert.AreEqual(1, user.ExamResults.Count);
+
+            var result = user.ExamResults[0];
+            Assert.IsNotNull(result.Exam);
+            Assert.IsNotNull(result.Video);
+        }
+
+        [TestMethod]
+        public async Task TestGetExpandCollection()
+        {
+            var db = new HazceptionDataContext(new ODataDataStore());
+            var clients = await db.Clients.Expand(_ => _.CreatedByUser).Expand(_ => _.Type).ToListAsync();
+            var client1 = clients.First(_ => _.Id == 1);
+            Assert.IsNotNull(client1.CreatedByUser);
+            Assert.IsNotNull(client1.Type);
+            Assert.AreEqual(client1.TypeId, client1.Type.Id);
+            Assert.AreEqual(client1.CreatedByUserId, client1.CreatedByUser.Id);
+            Assert.AreEqual(client1.TypeId, 11);
+            Assert.AreEqual(client1.CreatedByUserId, "6a01c713-f19e-4631-98e9-086ba24b8bec");
+
+            var client2 = clients.First(_ => _.Id == 2);
+            Assert.IsNotNull(client2.CreatedByUser);
+            Assert.IsNotNull(client2.Type);
+            Assert.AreEqual(client2.TypeId, client2.Type.Id);
+            Assert.AreEqual(client2.CreatedByUserId, client2.CreatedByUser.Id);
+            Assert.AreEqual(client2.TypeId, 12);
+            Assert.AreEqual(client2.CreatedByUserId, "156d0004-f7ea-427d-b31a-816745363ded");
+
+            var client3 = clients.First(_ => _.Id == 3);
+            Assert.IsNotNull(client3.CreatedByUser);
+            Assert.IsNotNull(client3.Type);
+            Assert.AreEqual(client3.TypeId, client3.Type.Id);
+            Assert.AreEqual(client3.CreatedByUserId, client3.CreatedByUser.Id);
+            Assert.AreEqual(client3.TypeId, 13);
+            Assert.AreEqual(client3.CreatedByUserId, "8ce9d27d-b018-47ba-8316-fe9a1baf1c61");
         }
 
         [TestMethod]

@@ -55,26 +55,35 @@ namespace Iql.Entities
 
         public static CompositeKey Ensure(object entityOrKey, IEntityConfiguration entityConfiguration)
         {
-            CompositeKey compositeKey;
+            if (entityOrKey == null)
+            {
+                return null;
+            }
             if (entityOrKey.GetType() == entityConfiguration.Type)
             {
-                compositeKey = new CompositeKey(entityConfiguration.Key.Properties.Length);
-                for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
-                {
-                    var property = entityConfiguration.Key.Properties[i];
-                    compositeKey.Keys[i] = new KeyValue(property.Name, entityOrKey.GetPropertyValue(property), property.TypeDefinition);
-                }
-
-                return compositeKey;
+                return ExtractCompositeKey(entityOrKey, entityConfiguration);
                 //return entityConfiguration.GetCompositeKey(entityOrKey);
             }
             if (entityOrKey is CompositeKey)
             {
-                compositeKey = entityOrKey as CompositeKey;
+                return entityOrKey as CompositeKey;
             }
-            else
+            if (entityOrKey.IsValueType())
             {
-                compositeKey = GetCompositeKeyFromSingularKey(entityOrKey, entityConfiguration);
+                return GetCompositeKeyFromSingularKey(entityOrKey, entityConfiguration);
+            }
+            return ExtractCompositeKey(entityOrKey, entityConfiguration);
+        }
+
+        private static CompositeKey ExtractCompositeKey(object entityOrKey, IEntityConfiguration entityConfiguration)
+        {
+            CompositeKey compositeKey;
+            compositeKey = new CompositeKey(entityConfiguration.Key.Properties.Length);
+            for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
+            {
+                var property = entityConfiguration.Key.Properties[i];
+                compositeKey.Keys[i] =
+                    new KeyValue(property.Name, entityOrKey.GetPropertyValue(property), property.TypeDefinition);
             }
 
             return compositeKey;

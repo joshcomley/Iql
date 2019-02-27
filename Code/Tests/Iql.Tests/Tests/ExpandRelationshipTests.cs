@@ -10,6 +10,35 @@ namespace Iql.Tests.Tests
     public class ExpandRelationshipTests : TestsBase
     {
         [TestMethod]
+        public async Task SimpleMultiExpand()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 62, TypeId = 52, ClientId = 77 });
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 63, TypeId = 53, ClientId = 78 });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 77 });
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 78 });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType { Id = 52 });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType { Id = 53 });
+
+            var query = Db.People.Expand(_ => _.Client).Expand(_ => _.Type);
+            var people = await query.ToListAsync();
+            var person1 = people.First(_ => _.Id == 62);
+            Assert.IsNotNull(person1.Type);
+            Assert.AreEqual(52, person1.Type.Id);
+            Assert.AreEqual(52, person1.TypeId);
+            Assert.IsNotNull(person1.Client);
+            Assert.AreEqual(77, person1.Client.Id);
+            Assert.AreEqual(77, person1.ClientId);
+
+            var person2 = people.First(_ => _.Id == 63);
+            Assert.IsNotNull(person2.Type);
+            Assert.AreEqual(53, person2.Type.Id);
+            Assert.AreEqual(53, person2.TypeId);
+            Assert.IsNotNull(person2.Client);
+            Assert.AreEqual(78, person2.Client.Id);
+            Assert.AreEqual(78, person2.ClientId);
+        }
+
+        [TestMethod]
         public async Task BuildExpandOperationFromIqlExpression()
         {
             AppDbContext.InMemoryDb.People.Add(new Person { Id = 62, TypeId = 52 });
@@ -27,6 +56,10 @@ namespace Iql.Tests.Tests
                     nameof(PersonType.CreatedByUser),
                 }));
             var people = await query.ToListAsync();
+            var person = people.First(_ => _.Id == 62);
+            Assert.IsNotNull(person.Type);
+            Assert.AreEqual(52, person.Type.Id);
+            Assert.AreEqual(52, person.TypeId);
         }
 
         [TestMethod]
