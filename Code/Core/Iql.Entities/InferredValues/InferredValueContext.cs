@@ -120,14 +120,9 @@ namespace Iql.Entities.InferredValues
     public class InferredValueContext<T> : IInferredValueContext
         where T : class
     {
-        private T _oldEntityState;
         public Type EntityType => typeof(T) ?? OldEntityState?.GetType() ?? CurrentEntityState?.GetType();
 
-        public T OldEntityState
-        {
-            get => _oldEntityState ?? CurrentEntityState;
-            set => _oldEntityState = value;
-        }
+        public T OldEntityState { get; set; }
 
         object IInferredValueContext.OldEntityState
         {

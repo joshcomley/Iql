@@ -1,10 +1,7 @@
-using System;
-
 namespace Iql.Entities.Rules.Relationship
 {
-    public interface IRelationshipFilterContext
+    public interface IRelationshipFilterContext : IEntityType
     {
-        Type EntityType { get; }
         object Owner { get; set; }
     }
 }

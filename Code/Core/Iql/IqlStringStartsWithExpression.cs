@@ -5,7 +5,9 @@ namespace Iql
 {
     public class IqlStringStartsWithExpression : IqlParentValueExpression
     {
-        public IqlStringStartsWithExpression(IqlReferenceExpression parent, IqlReferenceExpression value)
+        public IqlStringStartsWithExpression(
+            IqlReferenceExpression parent = null,
+            IqlReferenceExpression value = null)
             : base(parent, value, IqlExpressionKind.StringStartsWith, IqlType.Boolean)
         {
         }

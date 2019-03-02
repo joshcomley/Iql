@@ -318,7 +318,7 @@ namespace Iql.Server.OData.Net
         {
             var serverEvaluator = new IqlServerEvaluator(CrudManager, true);
             await EntityConfiguration.TrySetInferredValuesAsync(
-                currentEntity,
+                null,
                 currentEntity,
                 serverEvaluator,
                 ResolveServiceProviderProvider());

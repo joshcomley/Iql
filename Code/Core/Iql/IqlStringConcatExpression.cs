@@ -5,7 +5,9 @@ namespace Iql
 {
     public class IqlStringConcatExpression : IqlParentValueExpression
     {
-        public IqlStringConcatExpression(IqlReferenceExpression parent, IqlReferenceExpression value)
+        public IqlStringConcatExpression(
+            IqlReferenceExpression parent = null, 
+            IqlReferenceExpression value = null)
             : base(parent, value, IqlExpressionKind.StringConcat, IqlType.String)
         {
         }

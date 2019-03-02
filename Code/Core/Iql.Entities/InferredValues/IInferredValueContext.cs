@@ -1,10 +1,10 @@
 ﻿using System;
+using Iql.Entities.Rules.Relationship;
 
 namespace Iql.Entities.InferredValues
 {
-    public interface IInferredValueContext
+    public interface IInferredValueContext : IEntityType
     {
-        Type EntityType { get; }
         object OldEntityState { get; set; }
         object CurrentEntityState { get; set; }
     }

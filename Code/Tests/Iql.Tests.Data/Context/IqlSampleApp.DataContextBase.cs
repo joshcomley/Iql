@@ -3370,14 +3370,11 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 Test = new IqlAndExpression
                                 {
-                                    Left = new IqlIsEqualToExpression
+                                    Left = new IqlOrExpression
                                     {
-                                        Left = new IqlPropertyExpression
+                                        Left = new IqlIsEqualToExpression
                                         {
-                                            PropertyName = "Key",
-                                            Kind = IqlExpressionKind.Property,
-                                            ReturnType = IqlType.Unknown,
-                                            Parent = new IqlPropertyExpression
+                                            Left = new IqlPropertyExpression
                                             {
                                                 PropertyName = "OldEntityState",
                                                 Kind = IqlExpressionKind.Property,
@@ -3390,16 +3387,49 @@ namespace IqlSampleApp.ApiContext.Base
                                                     Kind = IqlExpressionKind.RootReference,
                                                     ReturnType = IqlType.Unknown
                                                 }
-                                            }
+                                            },
+                                            Right = new IqlLiteralExpression
+                                            {
+                                                InferredReturnType = IqlType.Unknown,
+                                                Kind = IqlExpressionKind.Literal,
+                                                ReturnType = IqlType.Unknown
+                                            },
+                                            Kind = IqlExpressionKind.IsEqualTo,
+                                            ReturnType = IqlType.Unknown
                                         },
-                                        Right = new IqlLiteralExpression
+                                        Right = new IqlIsEqualToExpression
                                         {
-                                            Value = "ABC",
-                                            InferredReturnType = IqlType.String,
-                                            Kind = IqlExpressionKind.Literal,
-                                            ReturnType = IqlType.String
+                                            Left = new IqlPropertyExpression
+                                            {
+                                                PropertyName = "Key",
+                                                Kind = IqlExpressionKind.Property,
+                                                ReturnType = IqlType.Unknown,
+                                                Parent = new IqlPropertyExpression
+                                                {
+                                                    PropertyName = "OldEntityState",
+                                                    Kind = IqlExpressionKind.Property,
+                                                    ReturnType = IqlType.Unknown,
+                                                    Parent = new IqlRootReferenceExpression
+                                                    {
+                                                        EntityTypeName = "InferredValueContext<Person>",
+                                                        VariableName = "_",
+                                                        InferredReturnType = IqlType.Unknown,
+                                                        Kind = IqlExpressionKind.RootReference,
+                                                        ReturnType = IqlType.Unknown
+                                                    }
+                                                }
+                                            },
+                                            Right = new IqlLiteralExpression
+                                            {
+                                                Value = "ABC",
+                                                InferredReturnType = IqlType.String,
+                                                Kind = IqlExpressionKind.Literal,
+                                                ReturnType = IqlType.String
+                                            },
+                                            Kind = IqlExpressionKind.IsEqualTo,
+                                            ReturnType = IqlType.Unknown
                                         },
-                                        Kind = IqlExpressionKind.IsEqualTo,
+                                        Kind = IqlExpressionKind.Or,
                                         ReturnType = IqlType.Unknown
                                     },
                                     Right = new IqlIsEqualToExpression

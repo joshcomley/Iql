@@ -244,13 +244,14 @@ namespace Iql.Data.Tracking.State
 
         public T EntityBeforeChanges()
         {
-            var entity = Entity.Clone(EntityConfiguration.Builder, EntityType, RelationshipCloneMode.DoNotClone);
-            if (!IsNew)
+            if (IsNew)
             {
-                foreach (var property in Properties)
-                {
-                    property.Property.SetValue(entity, property.RemoteValue);
-                }
+                return default(T);
+            }
+            var entity = Entity.Clone(EntityConfiguration.Builder, EntityType, RelationshipCloneMode.DoNotClone);
+            foreach (var property in Properties)
+            {
+                property.Property.SetValue(entity, property.RemoteValue);
             }
             return (T) entity;
         }

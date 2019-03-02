@@ -6,7 +6,7 @@ namespace Iql
     public class IqlParenthesisExpression : IqlExpression
     {
         public IqlParenthesisExpression(
-            IqlExpression expression) : base(IqlExpressionKind.Parenthesis)
+            IqlExpression expression = null) : base(IqlExpressionKind.Parenthesis)
         {
             Expression = expression;
         }

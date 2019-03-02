@@ -26,7 +26,7 @@ namespace Iql.Tests.Tests.Properties
             person.Key = "DEF";
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
-            Assert.AreEqual("Nothing", person.InferredWhenKeyChanges);
+            Assert.AreEqual("alphabet!", person.InferredWhenKeyChanges);
         }
 
         [TestMethod]

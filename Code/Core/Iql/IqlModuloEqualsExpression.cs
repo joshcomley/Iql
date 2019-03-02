@@ -6,8 +6,8 @@ namespace Iql
     public class IqlModuloEqualsExpression : IqlBinaryExpression
     {
         public IqlModuloEqualsExpression(
-            IqlExpression left,
-            IqlExpression right) : base(IqlExpressionKind.ModuloEquals, left, right)
+            IqlExpression left = null,
+            IqlExpression right = null) : base(IqlExpressionKind.ModuloEquals, left, right)
         {
         }
 

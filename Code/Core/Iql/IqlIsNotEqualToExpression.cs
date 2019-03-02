@@ -6,8 +6,8 @@ namespace Iql
     public class IqlIsNotEqualToExpression : IqlBinaryExpression
     {
         public IqlIsNotEqualToExpression(
-            IqlExpression left,
-            IqlExpression right) : base(IqlExpressionKind.IsNotEqualTo, left, right)
+            IqlExpression left = null,
+            IqlExpression right = null) : base(IqlExpressionKind.IsNotEqualTo, left, right)
         {
         }
 

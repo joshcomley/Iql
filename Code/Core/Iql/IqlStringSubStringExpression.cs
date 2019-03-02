@@ -5,8 +5,10 @@ namespace Iql
 {
     public class IqlStringSubStringExpression : IqlParentValueExpression
     {
-        public IqlStringSubStringExpression(IqlReferenceExpression parent, IqlReferenceExpression value,
-            IqlReferenceExpression take) :
+        public IqlStringSubStringExpression(
+            IqlReferenceExpression parent = null, 
+            IqlReferenceExpression value = null,
+            IqlReferenceExpression take = null) :
             base(parent, value, IqlExpressionKind.StringSubString, IqlType.String)
         {
             Take = take;

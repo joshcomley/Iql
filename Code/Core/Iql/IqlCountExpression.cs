@@ -7,9 +7,9 @@ namespace Iql
     {
         public string RootVariableName { get; set; }
         public IqlCountExpression(
-            string rootVariableName,
-            IqlReferenceExpression parent,
-            IqlExpression expression) : base(parent, expression, IqlExpressionKind.Count, IqlType.Integer)
+            string rootVariableName = null,
+            IqlReferenceExpression parent = null,
+            IqlExpression expression = null) : base(parent, expression, IqlExpressionKind.Count, IqlType.Integer)
         {
             RootVariableName = rootVariableName;
         }
@@ -20,46 +20,46 @@ namespace Iql
 
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlCountExpression(null, null, null);
-			expression.RootVariableName = RootVariableName;
-			expression.Value = Value?.Clone();
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
-
-		internal override void FlattenInternal(IqlFlattenContext context)
+        public override IqlExpression Clone()
         {
-			// #FlattenStart
+            // #CloneStart
 
-				context.Flatten(Value);
-				context.Flatten(Parent);
+            var expression = new IqlCountExpression(null, null, null);
+            expression.RootVariableName = RootVariableName;
+            expression.Value = Value?.Clone();
+            expression.Key = Key;
+            expression.Kind = Kind;
+            expression.ReturnType = ReturnType;
+            expression.Parent = Parent?.Clone();
+            return expression;
 
-			// #FlattenEnd
+            // #CloneEnd
         }
 
-		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
-		{
-			// #ReplaceStart
+        internal override void FlattenInternal(IqlFlattenContext context)
+        {
+            // #FlattenStart
 
-			Value = context.Replace(this, nameof(Value), null, Value);
-			Parent = context.Replace(this, nameof(Parent), null, Parent);
-			var replaced = context.Replacer(context, this);
-			if(replaced != this)
-			{
-				return replaced;	
-			}
-			return this;
+            context.Flatten(Value);
+            context.Flatten(Parent);
 
-			// #ReplaceEnd
-		}
+            // #FlattenEnd
+        }
+
+        internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+        {
+            // #ReplaceStart
+
+            Value = context.Replace(this, nameof(Value), null, Value);
+            Parent = context.Replace(this, nameof(Parent), null, Parent);
+            var replaced = context.Replacer(context, this);
+            if (replaced != this)
+            {
+                return replaced;
+            }
+            return this;
+
+            // #ReplaceEnd
+        }
     }
 }

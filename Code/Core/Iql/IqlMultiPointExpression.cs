@@ -7,7 +7,7 @@ namespace Iql
     public class IqlMultiPointExpression : IqlSridExpression, IPointsExpression
     {
         public List<IqlPointExpression> Points { get; set; }
-        public IqlMultiPointExpression(IEnumerable<IqlPointExpression> points, IqlType type = IqlType.GeographyMultiPoint, int? srid = null) : base(srid, type)
+        public IqlMultiPointExpression(IEnumerable<IqlPointExpression> points = null, IqlType type = IqlType.GeographyMultiPoint, int? srid = null) : base(srid, type)
         {
             Points = points?.ToList();
         }

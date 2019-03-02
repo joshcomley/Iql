@@ -6,8 +6,8 @@ namespace Iql
     public class IqlBitwiseNotExpression : IqlBinaryExpression
     {
         public IqlBitwiseNotExpression(
-            IqlExpression left,
-            IqlExpression right) : base(IqlExpressionKind.BitwiseNot, left, right)
+            IqlExpression left = null,
+            IqlExpression right = null) : base(IqlExpressionKind.BitwiseNot, left, right)
         {
         }
 
@@ -15,48 +15,48 @@ namespace Iql
         {
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlBitwiseNotExpression(null, null);
-			expression.Left = Left?.Clone();
-			expression.Right = Right?.Clone();
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
-
-		internal override void FlattenInternal(IqlFlattenContext context)
+        public override IqlExpression Clone()
         {
-			// #FlattenStart
+            // #CloneStart
 
-				context.Flatten(Left);
-				context.Flatten(Right);
-				context.Flatten(Parent);
+            var expression = new IqlBitwiseNotExpression(null, null);
+            expression.Left = Left?.Clone();
+            expression.Right = Right?.Clone();
+            expression.Key = Key;
+            expression.Kind = Kind;
+            expression.ReturnType = ReturnType;
+            expression.Parent = Parent?.Clone();
+            return expression;
 
-			// #FlattenEnd
+            // #CloneEnd
         }
 
-		internal override IqlExpression ReplaceExpressions(ReplaceContext context)
-		{
-			// #ReplaceStart
+        internal override void FlattenInternal(IqlFlattenContext context)
+        {
+            // #FlattenStart
 
-			Left = context.Replace(this, nameof(Left), null, Left);
-			Right = context.Replace(this, nameof(Right), null, Right);
-			Parent = context.Replace(this, nameof(Parent), null, Parent);
-			var replaced = context.Replacer(context, this);
-			if(replaced != this)
-			{
-				return replaced;	
-			}
-			return this;
+            context.Flatten(Left);
+            context.Flatten(Right);
+            context.Flatten(Parent);
 
-			// #ReplaceEnd
-		}
+            // #FlattenEnd
+        }
+
+        internal override IqlExpression ReplaceExpressions(ReplaceContext context)
+        {
+            // #ReplaceStart
+
+            Left = context.Replace(this, nameof(Left), null, Left);
+            Right = context.Replace(this, nameof(Right), null, Right);
+            Parent = context.Replace(this, nameof(Parent), null, Parent);
+            var replaced = context.Replacer(context, this);
+            if (replaced != this)
+            {
+                return replaced;
+            }
+            return this;
+
+            // #ReplaceEnd
+        }
     }
 }

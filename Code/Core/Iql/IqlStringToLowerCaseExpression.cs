@@ -5,7 +5,7 @@ namespace Iql
 {
     public class IqlStringToLowerCaseExpression : IqlReferenceExpression
     {
-        public IqlStringToLowerCaseExpression(IqlReferenceExpression parent)
+        public IqlStringToLowerCaseExpression(IqlReferenceExpression parent = null)
             : base(IqlExpressionKind.StringToLowerCase, IqlType.String, parent)
         {
         }

@@ -5,7 +5,7 @@ namespace Iql
 {
     public class IqlToStringExpression : IqlReferenceExpression
     {
-        public IqlToStringExpression(IqlReferenceExpression parent)
+        public IqlToStringExpression(IqlReferenceExpression parent = null)
             : base(IqlExpressionKind.ToString, IqlType.String, parent)
         {
         }

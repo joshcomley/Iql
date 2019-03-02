@@ -5,7 +5,9 @@ namespace Iql
 {
     public class IqlStringEndsWithExpression : IqlParentValueExpression
     {
-        public IqlStringEndsWithExpression(IqlReferenceExpression parent, IqlReferenceExpression value)
+        public IqlStringEndsWithExpression(
+            IqlReferenceExpression parent = null, 
+            IqlReferenceExpression value = null)
             : base(parent, value, IqlExpressionKind.StringEndsWith, IqlType.Boolean)
         {
         }

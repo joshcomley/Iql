@@ -7,7 +7,7 @@ namespace Iql
     {
         public IqlReferenceExpression Polygon { get; set; }
 
-        public IqlIntersectsExpression(IqlReferenceExpression parent, IqlReferenceExpression polygon, int? srid = null) : base(srid, IqlType.Boolean, parent, IqlExpressionKind.Intersects)
+        public IqlIntersectsExpression(IqlReferenceExpression parent = null, IqlReferenceExpression polygon = null, int? srid = null) : base(srid, IqlType.Boolean, parent, IqlExpressionKind.Intersects)
         {
             Polygon = polygon;
             Srid = IqlConstants.DefaultGeographicSrid;

@@ -5,7 +5,7 @@ namespace Iql
 {
     public class IqlStringToUpperCaseExpression : IqlReferenceExpression
     {
-        public IqlStringToUpperCaseExpression(IqlReferenceExpression parent) : base(IqlExpressionKind.StringToUpperCase,
+        public IqlStringToUpperCaseExpression(IqlReferenceExpression parent = null) : base(IqlExpressionKind.StringToUpperCase,
             IqlType.String, parent)
         {
         }

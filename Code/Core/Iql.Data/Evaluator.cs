@@ -324,13 +324,9 @@ namespace Iql.Data
             serviceProviderProvider = serviceProviderProvider ?? builder;
             var propertyExpressions = iql.TopLevelPropertyExpressions();
             var lookup = new Dictionary<IqlPropertyPath, object>();
-            if (parameter is IRelationshipFilterContext relationshipFilterContext)
+            if (parameter is IEntityType entityTypeClass)
             {
-                entityType = relationshipFilterContext.Owner.GetType();
-            }
-            if (parameter is IInferredValueContext inferredValueContext)
-            {
-                entityType = inferredValueContext.EntityType;
+                entityType = entityTypeClass.EntityType;
             }
 
             var processResult = await iql.ProcessAsync(builder.GetEntityByType(
@@ -342,6 +338,12 @@ namespace Iql.Data
                 var path = IqlPropertyPath.FromPropertyExpression(
                     builder.GetEntityByType(entityType),
                     propertyExpression.Expression as IqlPropertyExpression);
+                if (path == null)
+                {
+                    path = IqlPropertyPath.FromPropertyExpression(
+                        builder.GetEntityByType(entityType),
+                        propertyExpression.Expression as IqlPropertyExpression);
+                }
                 lookup.Add(path, null);
             }
             return new ProcessExpressionResult(

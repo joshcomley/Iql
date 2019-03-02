@@ -7,7 +7,7 @@ namespace Iql
     public class IqlMultiLineExpression : IqlSridExpression
     {
         public List<IqlLineExpression> Lines { get; set; }
-        public IqlMultiLineExpression(IEnumerable<IqlLineExpression> points, IqlType type = IqlType.GeographyMultiLine, int? srid = null) : base(srid, type)
+        public IqlMultiLineExpression(IEnumerable<IqlLineExpression> points = null, IqlType type = IqlType.GeographyMultiLine, int? srid = null) : base(srid, type)
         {
             Lines = points?.ToList();
         }

@@ -9,7 +9,7 @@ namespace Iql
         public IqlRingExpression OuterRing { get; set; }
         public List<IqlRingExpression> InnerRings { get; set; }
 
-        public IqlPolygonExpression(IqlRingExpression outerRing, IEnumerable<IqlRingExpression> innerRings = null, IqlType type = IqlType.GeographyPolygon, int? srid = null) : base(srid, type)
+        public IqlPolygonExpression(IqlRingExpression outerRing = null, IEnumerable<IqlRingExpression> innerRings = null, IqlType type = IqlType.GeographyPolygon, int? srid = null) : base(srid, type)
         {
             OuterRing = outerRing;
             InnerRings = innerRings?.ToList();

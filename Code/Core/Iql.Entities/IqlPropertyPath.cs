@@ -204,11 +204,13 @@ namespace Iql.Entities
             var list = new List<IqlPropertyExpression>();
             list.Add(propertyExpression);
             var parent = propertyExpression.Parent;
+            IqlRootReferenceExpression lastRootReference = null;
             while (parent is IqlPropertyExpression || parent is IqlRootReferenceExpression)
             {
                 if (parent is IqlRootReferenceExpression)
                 {
                     var rootReference = parent as IqlRootReferenceExpression;
+                    lastRootReference = rootReference;
                     if (rootReference.Parent != null && traverseNestedRootReferences)
                     {
                         parent = rootReference.Parent;
@@ -255,6 +257,10 @@ namespace Iql.Entities
                 entityConfig = property.Relationship.OtherEnd.Property.EntityConfiguration;
             }
 
+            if (propertyPath == null && lastRootReference != null)
+            {
+                return new IqlPropertyPath(null, propertyExpression, null);
+            }
             return propertyPath;
         }
 

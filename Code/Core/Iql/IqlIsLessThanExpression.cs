@@ -6,8 +6,8 @@ namespace Iql
     public class IqlIsLessThanExpression : IqlBinaryExpression
     {
         public IqlIsLessThanExpression(
-            IqlExpression left,
-            IqlExpression right) : base(IqlExpressionKind.IsLessThan, left, right)
+            IqlExpression left = null,
+            IqlExpression right = null) : base(IqlExpressionKind.IsLessThan, left, right)
         {
         }
 

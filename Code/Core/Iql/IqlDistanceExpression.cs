@@ -5,7 +5,7 @@ namespace Iql
 {
     public class IqlDistanceExpression : IqlBinaryExpression, ISrid
     {
-        public IqlDistanceExpression(IqlReferenceExpression left, IqlReferenceExpression right) : base(IqlExpressionKind.Distance, left, right)
+        public IqlDistanceExpression(IqlReferenceExpression left = null, IqlReferenceExpression right = null) : base(IqlExpressionKind.Distance, left, right)
         {
             Srid = IqlConstants.DefaultGeographicSrid;
             ReturnType = IqlType.Decimal;

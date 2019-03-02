@@ -1,4 +1,5 @@
 ﻿#if !TypeScript
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,30 @@ namespace Iql.Tests.Tests.DotNet
     [TestClass]
     public class DotNetTests : TestsBase
     {
+        [TestMethod]
+        public void EnsureNullableParametersOnIqlExpressions()
+        {
+            var iqlExpressionTypes = typeof(IqlExpression).Assembly.GetTypes()
+                .Where(t => typeof(IqlExpression).IsAssignableFrom(t) && !t.IsAbstract).ToArray();
+            var success = true;
+            var sb = new StringBuilder();
+            foreach (var iqlExpressionType in iqlExpressionTypes)
+            {
+                var constructor = iqlExpressionType.GetConstructors()[0];
+                foreach (var parameter in constructor.GetParameters())
+                {
+                    if (!parameter.HasDefaultValue && !parameter.IsOptional && parameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length == 0)
+                    {
+                        sb.AppendLine(
+                            $"At least one parameter (\"{parameter.Name}\") on constructor of type \"{iqlExpressionType.Name}\" does not have a default value.");
+                        success = false;
+                        break;
+                    }
+                }
+            }
+            Assert.IsTrue(success, sb.ToString());
+        }
+
         [TestMethod]
         public void TestEnumComparisonParsers()
         {

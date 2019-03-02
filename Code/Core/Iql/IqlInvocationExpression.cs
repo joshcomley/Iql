@@ -8,7 +8,7 @@ namespace Iql
     {
         public string MethodName { get; set; }
 
-        public IqlInvocationExpression(string methodName, IqlType? returnType = IqlType.Unknown, IqlExpression parent = null) : base(IqlExpressionKind.Invocation, returnType, parent)
+        public IqlInvocationExpression(string methodName = null, IqlType? returnType = IqlType.Unknown, IqlExpression parent = null) : base(IqlExpressionKind.Invocation, returnType, parent)
         {
             MethodName = methodName;
         }

@@ -6,8 +6,8 @@ namespace Iql
     public class IqlMultiplyEqualsExpression : IqlBinaryExpression
     {
         public IqlMultiplyEqualsExpression(
-            IqlExpression left,
-            IqlExpression right) : base(IqlExpressionKind.MultiplyEquals, left, right)
+            IqlExpression left = null,
+            IqlExpression right = null) : base(IqlExpressionKind.MultiplyEquals, left, right)
         {
         }
 

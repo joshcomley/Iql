@@ -6,7 +6,7 @@ namespace Iql
     public class IqlFinalExpression<TValue> : IqlFinalExpressionBase
     {
         public IqlFinalExpression(
-            TValue value) : base(IqlExpressionKind.Final, null)
+            TValue value = default(TValue)) : base(IqlExpressionKind.Final, null)
         {
             Value = value;
         }

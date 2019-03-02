@@ -7,7 +7,7 @@ namespace Iql
     public class IqlMultiPolygonExpression : IqlSridExpression
     {
         public List<IqlPolygonExpression> Polygons { get; set; }
-        public IqlMultiPolygonExpression(IEnumerable<IqlPolygonExpression> points, IqlType type = IqlType.GeographyMultiPolygon, int? srid = null) : base(srid, type)
+        public IqlMultiPolygonExpression(IEnumerable<IqlPolygonExpression> points = null, IqlType type = IqlType.GeographyMultiPolygon, int? srid = null) : base(srid, type)
         {
             Polygons = points?.ToList();
         }

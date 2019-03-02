@@ -5,7 +5,7 @@ namespace Iql
 {
     public class IqlStringTrimExpression : IqlReferenceExpression
     {
-        public IqlStringTrimExpression(IqlReferenceExpression parent) : base(IqlExpressionKind.StringTrim,
+        public IqlStringTrimExpression(IqlReferenceExpression parent = null) : base(IqlExpressionKind.StringTrim,
             IqlType.String, parent)
         {
         }

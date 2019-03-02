@@ -6,7 +6,7 @@ namespace Iql
     public class IqlNotExpression : IqlExpression
     {
         public IqlNotExpression(
-            IqlExpression expression) : base(IqlExpressionKind.Not)
+            IqlExpression expression = null) : base(IqlExpressionKind.Not)
         {
             Expression = expression;
         }

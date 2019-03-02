@@ -107,7 +107,8 @@ namespace Iql.Data.Extensions
             object entity)
         {
             var config = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
-            var oldEntity = dataContext.GetEntityState(entity)?.EntityBeforeChanges();
+            var entityState = dataContext.GetEntityState(entity);
+            var oldEntity = entityState?.EntityBeforeChanges();
             return await config.TrySetInferredValuesAsync(oldEntity, entity, new DefaultEvaluator(dataContext), dataContext);
         }
 

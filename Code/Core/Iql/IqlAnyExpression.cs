@@ -6,9 +6,9 @@ namespace Iql
     public class IqlAnyExpression : IqlAnyAllExpression
     {
         public IqlAnyExpression(
-            string rootVariableName,
-            IqlReferenceExpression parent,
-            IqlExpression expression) : base(rootVariableName, IqlExpressionKind.Any, parent, expression)
+            string rootVariableName = null,
+            IqlReferenceExpression parent = null,
+            IqlExpression expression = null) : base(rootVariableName, IqlExpressionKind.Any, parent, expression)
         {
         }
 

@@ -30,6 +30,20 @@ namespace Iql.Data.Extensions
 
             if (entity == null)
             {
+                evaluationResult.Success = propertyPath.Parent == null;
+                if (evaluationResult.Success)
+                {
+                    evaluationResult.Results = new IqlPropertyPathEvaluated[]
+                    {
+                        new IqlPropertyPathEvaluated(
+                            evaluationResult,
+                            propertyPath,
+                            null,
+                            null,
+                            propertyPath.PropertyPath.Length,
+                            0)
+                    };
+                }
                 return evaluationResult;
             }
 
@@ -40,7 +54,7 @@ namespace Iql.Data.Extensions
             {
                 var part = propertyPath.PropertyPath[i];
                 var parent = result;
-                result = result.GetPropertyValueByName(part.PropertyName);
+                result = part.PropertyName == null ? result : result.GetPropertyValueByName(part.PropertyName);
                 if (result == null)
                 {
                     if (part.Property.Kind.HasFlag(PropertyKind.Relationship))

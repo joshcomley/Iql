@@ -6,8 +6,8 @@ namespace Iql
     public class IqlSubtractEqualsExpression : IqlBinaryExpression
     {
         public IqlSubtractEqualsExpression(
-            IqlExpression left,
-            IqlExpression right) : base(IqlExpressionKind.SubtractEquals, left, right)
+            IqlExpression left = null,
+            IqlExpression right = null) : base(IqlExpressionKind.SubtractEquals, left, right)
         {
         }
 
