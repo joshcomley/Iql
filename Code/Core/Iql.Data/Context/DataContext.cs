@@ -24,6 +24,7 @@ using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
+using Iql.Entities.InferredValues;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
 using Iql.Entities.Validation;
@@ -66,7 +67,7 @@ namespace Iql.Data.Context
         {
             get
             {
-                if(_offlineDataStore != null && _offlineDataStore.EntityConfigurationBuilder == null)
+                if (_offlineDataStore != null && _offlineDataStore.EntityConfigurationBuilder == null)
                 {
                     _offlineDataStore.EntityConfigurationBuilder = EntityConfigurationContext;
                 }
@@ -184,17 +185,18 @@ namespace Iql.Data.Context
 
         public static ITrackingSet FindTrackingForEntity(object entity)
         {
-            var trackers = DataTracker.AllDataTrackers();
-            for (var i = 0; i < trackers.Length; i++)
-            {
-                var tracker = trackers[i];
-                var set = tracker.GetTrackingSetForEntity(entity);
-                if (set != null)
-                {
-                    return set;
-                }
-            }
-            return null;
+            return GlobalTracking.GetTrackingSet(entity);
+            //var trackers = DataTracker.AllDataTrackers();
+            //for (var i = 0; i < trackers.Length; i++)
+            //{
+            //    var tracker = trackers[i];
+            //    var set = tracker.GetTrackingSetForEntity(entity);
+            //    if (set != null)
+            //    {
+            //        return set;
+            //    }
+            //}
+            //return null;
         }
 
         public static IEntityStateBase FindEntity(object entity)
@@ -804,8 +806,8 @@ namespace Iql.Data.Context
             SaveChangesResult saveChangesResult,
             bool forceOnline) where TEntity : class
         {
-            return new SaveChangesApplicator(this).PerformAsync<TEntity>(
-                operation, saveChangesResult, forceOnline);
+            return new SaveChangesApplicator(this)
+                .PerformAsync<TEntity>(operation, saveChangesResult, forceOnline);
         }
 
         public bool IsIdMatch(object left, object right, Type type)
@@ -1191,15 +1193,6 @@ namespace Iql.Data.Context
             return CompositeKey.AreEquivalent(leftKey, rightKey);
         }
 
-        async Task<IEntityValidationResult> IDataContext.ValidateEntityAsync(object entity)
-        {
-            var task = (Task<IEntityValidationResult>)ValidateEntityInternalAsyncMethod.InvokeGeneric(this,
-                new object[] { entity },
-                entity.GetType());
-            var result = await task;
-            return result;
-        }
-
         async Task<IPropertyValidationResult> IDataContext.ValidateEntityPropertyByExpressionAsync<T, TProperty>(object entity,
             Expression<Func<object, TProperty>> expression)
         {
@@ -1235,6 +1228,15 @@ namespace Iql.Data.Context
             where T : class
         {
             return (EntityValidationResult<T>)(await ValidateEntityInternalAsync(entity));
+        }
+
+        async Task<IEntityValidationResult> IDataContext.ValidateEntityBaseAsync(object entity)
+        {
+            var task = (Task<IEntityValidationResult>)ValidateEntityInternalAsyncMethod.InvokeGeneric(this,
+                new object[] { entity },
+                entity.GetType());
+            var result = await task;
+            return result;
         }
 
         private async Task<IEntityValidationResult> ValidateEntityInternalAsync<T>(T entity) where T : class
@@ -1299,7 +1301,7 @@ namespace Iql.Data.Context
             where T : class
         {
             var validationResult = new PropertyValidationResult<T>(entity, property);
-
+            var oldEntity = GetEntityState(entity)?.EntityBeforeChanges();
             if (property.HasInferredWith)
             {
                 var inferredWithIgnored = false;
@@ -1310,7 +1312,10 @@ namespace Iql.Data.Context
                         var inferredWith = property.InferredValueConfigurations[i];
                         if (inferredWith.HasCondition)
                         {
-                            var result = await inferredWith.InferredWithConditionIql.EvaluateIqlAsync(entity, this, typeof(T));
+                            var result = await inferredWith.InferredWithConditionIql.EvaluateIqlAsync(
+                                new InferredValueContext<T>((T)oldEntity, entity),
+                                this,
+                                typeof(T));
                             if (!Equals(result.Result, true))
                             {
                                 inferredWithIgnored = true;
@@ -1610,7 +1615,7 @@ namespace Iql.Data.Context
                     }
                 }
 
-                if(SupportsOffline && response.Queryable.AllowOffline != false)
+                if (SupportsOffline && response.Queryable.AllowOffline != false)
                 {
                     OfflineDataStore?.SynchroniseData(response.Data);
                     if (OfflineDataStore != null && PersistState != null)

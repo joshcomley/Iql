@@ -10,6 +10,7 @@ using Brandless.AspNetCore.OData.Extensions.Controllers;
 using Brandless.Data.EntityFramework.Crud;
 using Brandless.Data.Models;
 using Brandless.Data.Mptt;
+using Iql.Data;
 using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Entities.NestedSets;
@@ -77,7 +78,7 @@ namespace Iql.Server.OData.Net
             return Ok();
         }
 
-        public override async Task OnAfterPostAsync(T postedEntity)
+        protected override async Task OnAfterPostAsync(T postedEntity)
         {
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
             {
@@ -125,7 +126,7 @@ namespace Iql.Server.OData.Net
             return success;
         }
 
-        public override async Task OnAfterPatchAsync(KeyValuePair<string, object>[] id, T currentEntity, Delta<T> patch)
+        protected override async Task OnAfterPatchAsync(KeyValuePair<string, object>[] id, T currentEntity, Delta<T> patch)
         {
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
             {
@@ -299,60 +300,33 @@ namespace Iql.Server.OData.Net
             return Task.FromResult<object>(null);
         }
 
-        protected override async Task OnBeforePostAndPatchAsync(T currentEntity, Delta<T> patch)
+        protected override async Task OnPatchAsync(Delta<T> patch, T dbObject)
         {
-            //            PropertyExtensions.TrySetInferredValuesAsync()
-            var serverEvaluator = new IqlServerEvaluator(CrudManager, Request.Method.ToLower() == "post");
-            var entityConfiguration = Builder.EntityType<T>();
-            await entityConfiguration.TrySetInferredValuesAsync(
+            var serverEvaluator = new IqlServerEvaluator(CrudManager, false);
+            var clone = (T)dbObject.Clone(Builder, EntityConfiguration.Type,
+                RelationshipCloneMode.DoNotClone);
+            await base.OnPatchAsync(patch, dbObject);
+            await EntityConfiguration.TrySetInferredValuesAsync(
+                clone,
+                dbObject,
+                serverEvaluator,
+                ResolveServiceProviderProvider());
+            ClearNestedEntities(dbObject);
+        }
+
+        protected override async Task OnBeforePostAsync(T currentEntity)
+        {
+            var serverEvaluator = new IqlServerEvaluator(CrudManager, true);
+            await EntityConfiguration.TrySetInferredValuesAsync(
+                currentEntity,
                 currentEntity,
                 serverEvaluator,
                 ResolveServiceProviderProvider());
-            // Clear any nested entities
-            foreach (var property in EntityConfiguration.Properties)
-            {
-                property.Relationship?.ThisEnd.Property.SetValue(currentEntity, null);
-            }
-            //    //if (property.InferredWithIql != null)
-            //    //{
-            //    //    var evaluatedValue = await ExpressionEvaluator.EvaluateIqlCustomAsync(
-            //    //        property.InferredWithIql,
-            //    //        Builder,
-            //    //        ResolveServiceProviderProvider(),
-            //    //        currentEntity,
-            //    //        async (entity, type, path, flattenedExpression, length, i) => await ProcessPropertyPathAsync(currentEntity, patch, path));
-            //    //    property.SetValue(currentEntity, evaluatedValue);
-            //    //    //var propertyExpressions = property.InferredWithIql.TopLevelPropertyExpressions();
-            //    //    //entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
-            //    //    //var path = IqlPropertyPath.FromPropertyExpression(property.EntityConfiguration, 
-            //    //    //    property.InferredWithIql as IqlPropertyExpression);
-            //    //    //var value = await ProcessPropertyPathAsync(currentEntity, patch, path);
-            //    //    ////postedValues[property.Name] = new JObject(value);
-            //    //    //if (property.Kind.HasFlag(PropertyKind.Primitive))
-            //    //    //{
-            //    //    //    if (value != null &&
-            //    //    //        property.TypeDefinition.Type == typeof(string) &&
-            //    //    //        !(value is string))
-            //    //    //    {
-            //    //    //        value = value.ToString();
-            //    //    //    }
+            ClearNestedEntities(currentEntity);
+        }
 
-            //    //    //    patch?.TrySetPropertyValue(property.Name, value);
-            //    //    //    property.SetValue(currentEntity, value);
-            //    //    //}
-            //    //    //if (!Equals(null, value) && property.Kind.HasFlag(PropertyKind.Relationship))
-            //    //    //{
-            //    //    //    var key = property.Relationship.OtherEnd.GetCompositeKey(value, true);
-            //    //    //    foreach (var constraint in key.Keys)
-            //    //    //    {
-            //    //    //        //postedValues[constraint.Name] = new JValue(constraint.Value);
-            //    //    //        currentEntity.SetPropertyValueByName(constraint.Name, constraint.Value);
-            //    //    //        patch?.TrySetPropertyValue(constraint.Name, constraint.Value);
-            //    //    //    }
-            //    //    //}
-            //    //}
-            //}
-
+        protected override async Task OnBeforePostAndPatchAsync(T currentEntity, Delta<T> patch)
+        {
             if (EntityConfiguration.Files != null)
             {
                 foreach (var file in EntityConfiguration.Files)
@@ -371,6 +345,15 @@ namespace Iql.Server.OData.Net
                 }
             }
             await base.OnBeforePostAndPatchAsync(currentEntity, patch);
+        }
+
+        private void ClearNestedEntities(T currentEntity)
+        {
+// Clear any nested entities
+            foreach (var property in EntityConfiguration.Properties)
+            {
+                property.Relationship?.ThisEnd.Property.SetValue(currentEntity, null);
+            }
         }
 
         private static void UpdateFileUrlWithVersion(T currentEntity, Delta<T> patch, IFileUrl<T> file)

@@ -4,6 +4,7 @@ namespace Iql.Entities.InferredValues
 {
     public interface IInferredValueConfiguration
     {
+        string[] OnPropertyChanges { get; set; }
         IPropertyMetadata Property { get; set; }
         string Key { get; set; }
         IqlExpression InferredWithIql { get; set; }
@@ -12,7 +13,7 @@ namespace Iql.Entities.InferredValues
         bool ForNewOnly { get; set; }
         InferredValueMode Mode { get; set; }
         bool HasCondition { get; }
-        IInferredValueConfiguration SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false);
+        IInferredValueConfiguration SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges);
         IInferredValueConfiguration SetConditionallyInferredWithExpression(LambdaExpression expression, LambdaExpression condition);
     }
 }

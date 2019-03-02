@@ -242,6 +242,24 @@ namespace Iql.Data.Tracking.State
         }
         private List<IPropertyState> Properties { get; }
 
+        public T EntityBeforeChanges()
+        {
+            var entity = Entity.Clone(EntityConfiguration.Builder, EntityType, RelationshipCloneMode.DoNotClone);
+            if (!IsNew)
+            {
+                foreach (var property in Properties)
+                {
+                    property.Property.SetValue(entity, property.RemoteValue);
+                }
+            }
+            return (T) entity;
+        }
+
+        object IEntityStateBase.EntityBeforeChanges()
+        {
+            return EntityBeforeChanges();
+        }
+
         public IPropertyState[] PropertyStates => Properties.ToArray();
 
         public IPropertyState GetPropertyState(string name)

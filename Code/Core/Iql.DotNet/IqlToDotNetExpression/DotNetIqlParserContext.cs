@@ -76,7 +76,8 @@ namespace Iql.DotNet.IqlToDotNetExpression
             var parameterVariableName = parameter.VariableName ?? "";
             if (!lookup.ContainsKey(parameterVariableName))
             {
-                lookup.Add(parameterVariableName, System.Linq.Expressions.Expression.Parameter(ResolveParameterType(parameterVariableName), parameterVariableName));
+                var parameterType = ResolveParameterType(parameterVariableName);
+                lookup.Add(parameterVariableName, System.Linq.Expressions.Expression.Parameter(parameterType, parameterVariableName));
             }
 
             return lookup[parameterVariableName];

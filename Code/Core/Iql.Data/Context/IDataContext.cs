@@ -57,7 +57,10 @@ namespace Iql.Data.Context
         /// <param name="right">Right entity or composite key.</param>
         /// <returns>Whether the two objects represent database equivalency.</returns>
         bool AreEquivalent(object left, object right);
-        Task<IEntityValidationResult> ValidateEntityAsync(object entity);
+        Task<IEntityValidationResult> ValidateEntityBaseAsync(object entity);
+        Task<EntityValidationResult<T>> ValidateEntityAsync<T>(T entity)
+            where T : class
+            ;
         Task<IPropertyValidationResult> ValidateEntityPropertyByExpressionAsync<T, TProperty>(object entity,
             Expression<Func<object, TProperty>> property)
             where T : class

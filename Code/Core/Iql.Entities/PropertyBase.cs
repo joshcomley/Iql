@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
-using Iql.Conversion;
 using Iql.Entities.InferredValues;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
@@ -113,10 +111,10 @@ namespace Iql.Entities
             }
         }
 
-        public void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)
+        public void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges)
         {
             InferredValueConfigurations.Add(new InferredValueConfiguration(this)
-                .SetInferredWithExpression(value, onlyIfNew, mode, canOverride));
+                .SetInferredWithExpression(value, onlyIfNew, mode, canOverride, onlyWhenPropertyChanges));
         }
 
         public void SetConditionallyInferredWithExpression(

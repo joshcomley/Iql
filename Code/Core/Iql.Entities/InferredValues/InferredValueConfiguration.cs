@@ -61,15 +61,18 @@ namespace Iql.Entities.InferredValues
         }
 
         public IInferredValueConfiguration SetInferredWithExpression(
-            LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)
+            LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges)
         {
             // This expression is lazy converted to IQL on demand
             _inferredWithExpression = value;
             ForNewOnly = onlyIfNew;
             Mode = mode;
             CanOverride = canOverride;
+            OnPropertyChanges = onlyWhenPropertyChanges;
             return this;
         }
+
+        public string[] OnPropertyChanges { get; set; }
 
         public IInferredValueConfiguration SetConditionallyInferredWithExpression(
             LambdaExpression expression, LambdaExpression condition)

@@ -102,6 +102,7 @@ namespace Iql.Tests.Tests.OData
                 var compressed = body.NormalizeJson();
                 Assert.AreEqual(@"{
   ""Title"": ""Dummy"",
+  ""Description"":""I'm \\ \""auto\"""",
   ""Skills"": ""5"",
   ""Category"": ""2"",
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",
@@ -186,7 +187,7 @@ namespace Iql.Tests.Tests.OData
       ]
     ]
   },
-  ""FullAddress"": ""abc"",
+  ""FullAddress"": ""\n"",
   ""Left"": 0,
   ""Right"": 0,
   ""Guid"": ""00000000-0000-0000-0000-000000000000"",

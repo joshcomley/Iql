@@ -67,7 +67,7 @@ namespace Iql
         public static IqlPropertyExpression GetPropertyExpression(string propertyName, string rootReferenceName = null)
         {
             var rootReferenceExpression = new IqlRootReferenceExpression(rootReferenceName ?? "entity", "");
-            var parts = propertyName.Split('/');
+            var parts = propertyName.Contains("/") ? propertyName.Split('/') : propertyName.Split('.');
             IqlReferenceExpression parent = rootReferenceExpression;
             IqlPropertyExpression propertyExpression = null;
             for (var i = 0; i < parts.Length; i++)
@@ -304,7 +304,7 @@ namespace Iql
         public IqlFlattenedExpression[] TopLevelPropertyExpressions()
         {
             var expressions = Flatten()
-                .Where(_=>_.Expression.Kind == IqlExpressionKind.Property)
+                .Where(_ => _.Expression.Kind == IqlExpressionKind.Property)
                 .ToArray();
             return expressions.Where(_ =>
             {

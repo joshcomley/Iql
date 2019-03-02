@@ -61,7 +61,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 odataParts.Add($"$skip={action.Skip}");
             }
 
-            if (action.Take.HasValue)
+            if (action.Take.HasValue && action.WithKey == null)
             {
                 odataParts.Add($"$top={action.Take}");
             }

@@ -39,13 +39,13 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 var str = action.Value as string;
                 if (action.Value != null)
                 {
-                    // ReSharper disable once RedundantCast
 #if !TypeScript
                     str = Regex.Replace(str, @"\\", @"\\\\");
                     str = Regex.Replace(str, @"'", @"\\\\'");
                     str = Regex.Replace(str, @"""", @"\\\""");
 #else
-                    str = Regex.Replace(str, (string)"\\", @"\\");
+                    // ReSharper disable once RedundantCast
+                    str = Regex.Replace(str, @"\\", @"\\");
                     str = Regex.Replace(str, @"'", @"\'");
                     str = Regex.Replace(str, @"""", @"\""");
                     str = Regex.Replace(str, "\n", "\\n");

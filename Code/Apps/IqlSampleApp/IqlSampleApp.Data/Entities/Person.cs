@@ -20,6 +20,7 @@ namespace IqlSampleApp.Data.Entities
         public SiteArea SiteArea { get; set; }
         public int? SiteAreaId { get; set; }
         public string Key { get; set; }
+        public string InferredWhenKeyChanges { get; set; }
         //public string Location { get; set; }
 
         //[Required(ErrorMessage = "Please enter a title")]

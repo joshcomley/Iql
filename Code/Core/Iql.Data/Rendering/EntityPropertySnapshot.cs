@@ -17,9 +17,56 @@ namespace Iql.Data.Rendering
         public bool IsNumber => Kind == PropertyRenderingKind.Number;
         public bool IsGeoPolygon => Kind == PropertyRenderingKind.GeoPolygon;
         public bool IsGeoPoint => Kind == PropertyRenderingKind.GeoPoint;
-        public bool IsKey => Kind == PropertyRenderingKind.Key;
-        public bool IsRelationshipKey => Kind == PropertyRenderingKind.RelationshipKey;
-        public bool IsRelationship => Kind == PropertyRenderingKind.Relationship;
+
+        private bool _asPropertySet = false;
+        private IProperty _asProperty;
+        private IProperty AsProperty
+        {
+            get
+            {
+                if (!_asPropertySet)
+                {
+                    _asProperty = Property as IProperty;
+                }
+
+                return _asProperty;
+            }
+        }
+
+        public bool IsKey
+        {
+            get
+            {
+                if (AsProperty != null)
+                {
+                    return AsProperty.Kind.HasFlag(PropertyKind.Key);
+                }
+                return false;
+            }
+        }
+
+        public bool IsRelationshipKey
+        {
+            get
+            {
+                if (AsProperty != null)
+                {
+                    return AsProperty.Kind.HasFlag(PropertyKind.RelationshipKey);
+                }
+                return false;
+            }
+        }
+        public bool IsRelationship
+        {
+            get
+            {
+                if (AsProperty != null)
+                {
+                    return AsProperty.Kind.HasFlag(PropertyKind.Relationship);
+                }
+                return false;
+            }
+        }
         public bool IsRelationshipTarget => Kind == PropertyRenderingKind.RelationshipTarget;
         public bool IsRelationshipSource => Kind == PropertyRenderingKind.RelationshipSource;
         public bool IsFile => Kind == PropertyRenderingKind.File;

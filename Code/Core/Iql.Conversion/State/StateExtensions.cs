@@ -1,3 +1,0 @@
-﻿namespace Iql.Conversion.State
-{
-}

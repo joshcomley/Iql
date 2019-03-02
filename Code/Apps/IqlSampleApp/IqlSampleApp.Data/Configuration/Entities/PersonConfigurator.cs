@@ -19,14 +19,18 @@ namespace IqlSampleApp.Data.Configuration.Entities
             var model = builder.EntityType<Person>();
             model.ConfigureProperty(_ => _.Client, p =>
             {
-                p.IsInferredWith(_ => _.Site.Client);
+                p.IsInferredWith(_ => _.CurrentEntityState.Site.Client);
             });
             model.FindCollectionRelationship(_ => _.Reports).AllowInlineEditing = true;
             model.ConfigureProperty(_ => _.Description,
-                p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.Category == PersonCategory.AutoDescription); });
+                p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.CurrentEntityState.Category == PersonCategory.AutoDescription); });
             model.ConfigureProperty(_ => _.Location, p =>
             {
                 p.IsInferredWith(_ => new IqlCurrentLocationExpression(), false, InferredValueMode.IfNull, true);
+            });
+            model.ConfigureProperty(_ => _.InferredWhenKeyChanges, p =>
+            {
+                p.IsInferredWith(_ => _.OldEntityState.Key == "ABC" && _.CurrentEntityState.Key == "DEF" ? "alphabet!" : _.CurrentEntityState.InferredWhenKeyChanges, false, InferredValueMode.Always, false, nameof(Person.Key));
             });
             model.DefineRelationshipFilterRule(
                 _ => _.Site,

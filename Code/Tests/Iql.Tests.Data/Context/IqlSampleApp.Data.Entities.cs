@@ -2562,6 +2562,15 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "Key", _key, value, _propertyChanging, _propertyChanged, newValue => this._key = newValue);
             }
         }
+        protected string _inferredWhenKeyChanges;
+        public string InferredWhenKeyChanges
+        {
+            get => _inferredWhenKeyChanges;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "InferredWhenKeyChanges", _inferredWhenKeyChanges, value, _propertyChanging, _propertyChanged, newValue => this._inferredWhenKeyChanges = newValue);
+            }
+        }
         protected string _title;
         public string Title
         {

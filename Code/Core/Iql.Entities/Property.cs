@@ -200,14 +200,14 @@ namespace Iql.Entities
             return UseFunctionDefaultValue(async owner => (TElementType)await resolver(owner));
         }
 
-        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)
+        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<InferredValueContext<TOwner>, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onPropertyChanges)
         {
-            SetInferredWithExpression(expression, onlyIfNew, mode, canOverride);
+            SetInferredWithExpression(expression, onlyIfNew, mode, canOverride, onPropertyChanges);
             return this;
         }
 
         public Property<TOwner, TProperty, TElementType> IsConditionallyInferredWith(
-            Expression<Func<TOwner, object>> expression, Expression<Func<TOwner, bool>> condition)
+            Expression<Func<InferredValueContext<TOwner>, object>> expression, Expression<Func<InferredValueContext<TOwner>, bool>> condition)
         {
             SetConditionallyInferredWithExpression(expression, condition);
             return this;
@@ -222,12 +222,12 @@ namespace Iql.Entities
             return this;
         }
 
-        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<TOwner, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<InferredValueContext<TOwner>, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onPropertyChanges)
         {
-            return IsInferredWith(expression, onlyIfNew, mode, canOverride);
+            return IsInferredWith(expression, onlyIfNew, mode, canOverride, onPropertyChanges);
         }
 
-        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsConditionallyInferredWith(Expression<Func<TOwner, object>> expression, Expression<Func<TOwner, bool>> condition)
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsConditionallyInferredWith(Expression<Func<InferredValueContext<TOwner>, object>> expression, Expression<Func<InferredValueContext<TOwner>, bool>> condition)
         {
             return IsConditionallyInferredWith(expression, condition);
         }

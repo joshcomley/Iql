@@ -13,6 +13,7 @@ using Iql.Data.Extensions;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
+using Iql.Entities.InferredValues;
 using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
 using Iql.Extensions;
@@ -69,11 +70,13 @@ namespace Iql.Data.Context
                 dataStore = offlineDataStore ?? dataStore;
                 dataTracker = offlineDataTracker ?? dataTracker;
             }
+
+            InferredValuesResult inferredValuesResult = null;
             switch (operation.Operation.Type)
             {
                 case OperationType.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
-                    var addEntityValidationResult = await DataContext.ValidateEntityAsync(addEntityOperation.Operation.Entity);
+                    var addEntityValidationResult = await DataContext.ValidateEntityAsync<TEntity>(addEntityOperation.Operation.Entity);
                     if (!isOfflineResync && addEntityValidationResult.HasValidationFailures())
                     {
                         addEntityOperation.Result.Success = false;
@@ -83,6 +86,7 @@ namespace Iql.Data.Context
                     else if (CheckPendingDependencies(isOfflineResync, addEntityOperation.Operation, addEntityOperation.Result) &&
                              (isOfflineResync || await CheckNotAlreadyExistsAsync(addEntityOperation)))
                     {
+                        inferredValuesResult = await DataContext.TrySetInferredValuesAsync(addEntityOperation.Operation.Entity);
                         var localEntity = addEntityOperation.Operation.Entity;
 
                         var specialTypeMap = EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
@@ -130,6 +134,10 @@ namespace Iql.Data.Context
                                 (TEntity)EntityConfigurationContext.EnsureTypedEntityByType(remoteEntity, typeof(TEntity), false);
                         }
 #endif
+                        if (!result.Success && inferredValuesResult != null)
+                        {
+                            inferredValuesResult.UndoChanges();
+                        }
                         if (remoteEntity != null && result.Success)
                         {
                             var temporalEntity = (TEntity)DataContext.TemporalDataTracker.TrackingSet<TEntity>()
@@ -188,12 +196,14 @@ namespace Iql.Data.Context
                     }
                     else if (CheckPendingDependencies(isOfflineResync, updateEntityOperation.Operation, updateEntityOperation.Result))
                     {
+                        inferredValuesResult = await DataContext.TrySetInferredValuesAsync(updateEntityOperation.Operation.Entity);
                         var updateEntityValidationResult = await DataContext.ValidateEntityAsync(updateEntityOperation.Operation.Entity);
                         if (!isOfflineResync && updateEntityValidationResult.HasValidationFailures())
                         {
                             updateEntityOperation.Result.Success = false;
                             updateEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
                             updateEntityOperation.Result.EntityValidationResults.Add(updateEntityOperation.Operation.Entity, updateEntityValidationResult);
+                            inferredValuesResult?.UndoChanges();
                         }
                         else
                         {
@@ -237,6 +247,10 @@ namespace Iql.Data.Context
                             var operationEntity = updateEntityOperation
                                 .Operation
                                 .Entity;
+                            if (!result.Success && inferredValuesResult != null)
+                            {
+                                inferredValuesResult.UndoChanges();
+                            }
                             if (result.Success)
                             {
                                 DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation, isOffline);

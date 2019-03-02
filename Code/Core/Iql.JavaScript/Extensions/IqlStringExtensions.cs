@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TypeSharp.Extensions;
@@ -52,13 +53,15 @@ namespace Iql.JavaScript.Extensions
 
         public static string Clean(this string str)
         {
+            str = Regex.Replace(str, @"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d*\+\d\d:\d\d",
+                @"0001-01-01T00:00:00.0+00:00");
             return str.Replace("\r", "");
         }
 
         public static string NormalizeJson(this string json)
         {
 #if TypeScript
-            return JObject.Parse(json).ToString();
+            return JObject.Parse(json).ToString().Clean();
 #else
             JsonReader reader = new JsonTextReader(new StringReader(json));
             reader.DateParseHandling = DateParseHandling.None;
@@ -70,7 +73,7 @@ namespace Iql.JavaScript.Extensions
         public static string NormalizeJsonNoNulls(this string json)
         {
 #if TypeScript
-            return JObject.Parse(json).ToString();
+            return JObject.Parse(json).ToString().Clean();
 #else
             JsonReader reader = new JsonTextReader(new StringReader(json));
             reader.DateParseHandling = DateParseHandling.None;

@@ -85,18 +85,18 @@ namespace Iql.Data.Rendering
                         kind = PropertyRenderingKind.GeoPoint;
                         break;
                 }
-                if (prop.Kind.HasFlag(PropertyKind.Key))
-                {
-                    kind = PropertyRenderingKind.Key;
-                }
-                else if (prop.Kind.HasFlag(PropertyKind.RelationshipKey))
-                {
-                    kind = PropertyRenderingKind.RelationshipKey;
-                }
-                else if (prop.Kind == PropertyKind.Relationship)
-                {
-                    kind = PropertyRenderingKind.Relationship;
-                }
+                //if (prop.Kind.HasFlag(PropertyKind.Key))
+                //{
+                //    kind = PropertyRenderingKind.Key;
+                //}
+                //else if (prop.Kind.HasFlag(PropertyKind.RelationshipKey))
+                //{
+                //    kind = PropertyRenderingKind.RelationshipKey;
+                //}
+                //else if (prop.Kind == PropertyKind.Relationship)
+                //{
+                //    kind = PropertyRenderingKind.Relationship;
+                //}
             }
             else if (rel != null && rel.RelationshipSide == RelationshipSide.Target)
             {

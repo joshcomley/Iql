@@ -16,12 +16,12 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 .ConfigureProperty(_ => _.Key,
                     _ =>
                     {
-                        _.IsInferredWith(site => site.ClientId);
+                        _.IsInferredWith(site => site.CurrentEntityState.ClientId);
                     })
                 .ConfigureProperty(_ => _.FullAddress,
                     _ =>
                     {
-                        _.IsInferredWith(site => site.Address + "\n" + site.PostCode);
+                        _.IsInferredWith(site => site.CurrentEntityState.Address + "\n" + site.CurrentEntityState.PostCode);
                     })                
                 .DefinePropertyValidation(_ => _.FullAddress, _ => _.FullAddress == null || _.FullAddress == "")
                 .SetEditDisplay((entityConfiguration, displayConfiguration) =>

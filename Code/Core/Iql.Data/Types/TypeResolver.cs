@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Iql.Entities;
+using Iql.Entities.InferredValues;
 using Iql.Entities.Rules.Relationship;
 using Iql.Parsing.Types;
 
@@ -28,9 +29,19 @@ namespace Iql.Data.Types
             }
 
             Type resolvedType = null;
+
             if (typeName.StartsWith(nameof(RelationshipFilterContext<int>)))
             {
                 resolvedType = typeof(RelationshipFilterContext<>);
+                if (subTypes != null && subTypes.Any())
+                {
+                    resolvedType = resolvedType.MakeGenericType(subTypes);
+                }
+            }
+
+            if (typeName.StartsWith(nameof(InferredValueContext<object>)))
+            {
+                resolvedType = typeof(InferredValueContext<>);
                 if (subTypes != null && subTypes.Any())
                 {
                     resolvedType = resolvedType.MakeGenericType(subTypes);

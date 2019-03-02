@@ -342,6 +342,7 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
                 )
+                .Take(1)
                 .ToListWithResponseAsync();
             return ResolveSingle(result);
         }
@@ -357,6 +358,7 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
                 )
+                .Take(1)
                 .ToListWithResponseAsync();
             return ResolveSingle(result);
         }
@@ -385,6 +387,7 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
                 )
+                .Take(1)
                 .ToListWithResponseAsync();
             return ResolveSingleOrDefault(result);
         }
@@ -400,6 +403,7 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
                 )
+                .Take(1)
                 .ToListWithResponseAsync();
             return ResolveSingleOrDefault(result);
         }
@@ -428,6 +432,7 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
                 )
+                .Take(1)
                 .ToListWithResponseAsync();
             return ResolveFirst(result);
         }
@@ -443,6 +448,7 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
                 )
+                .Take(1)
                 .ToListWithResponseAsync();
             return ResolveFirst(result);
         }
@@ -471,6 +477,7 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
                 )
+                .Take(1)
                 .ToListWithResponseAsync();
             return ResolveFirstOrDefault(result);
         }
@@ -486,6 +493,7 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
                 )
+                .Take(1)
                 .ToListWithResponseAsync();
             return ResolveFirstOrDefault(result);
         }

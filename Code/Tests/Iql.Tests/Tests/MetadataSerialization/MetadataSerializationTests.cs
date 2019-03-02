@@ -34,7 +34,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
             Assert.AreNotEqual(clientRelationship, clientRelationship.OtherSide);
             clientRelationship.Metadata.Set("NumberSeven", 7);
             clientRelationship.AllowInlineEditing = true;
-            sitesConfig.FindPropertyByExpression(c => c.Client).IsInferredWith(_ => _.CreatedByUser.Client);
+            sitesConfig.FindPropertyByExpression(c => c.Client).IsInferredWith(_ => _.CurrentEntityState.CreatedByUser.Client);
             sitesRelationship.AllowInlineEditing = true;
             clientConfig
                 .HasGeographic(c => c.AverageIncome, c => c.AverageIncome, "MyGeographic");

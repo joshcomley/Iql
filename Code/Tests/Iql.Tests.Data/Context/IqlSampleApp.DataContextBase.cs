@@ -510,7 +510,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Client",
+                                    EntityTypeName = "InferredValueContext<Client>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -519,7 +519,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -616,7 +618,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Client",
+                                    EntityTypeName = "InferredValueContext<Client>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -625,7 +627,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -785,7 +789,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "DocumentCategory",
+                                    EntityTypeName = "InferredValueContext<DocumentCategory>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -794,7 +798,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -850,7 +856,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "DocumentCategory",
+                                    EntityTypeName = "InferredValueContext<DocumentCategory>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -859,7 +865,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -967,7 +975,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "SiteDocument",
+                                    EntityTypeName = "InferredValueContext<SiteDocument>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -976,7 +984,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1041,7 +1051,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "SiteDocument",
+                                    EntityTypeName = "InferredValueContext<SiteDocument>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1050,7 +1060,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1160,7 +1172,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportActionsTaken",
+                                    EntityTypeName = "InferredValueContext<ReportActionsTaken>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1169,7 +1181,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1234,7 +1248,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportActionsTaken",
+                                    EntityTypeName = "InferredValueContext<ReportActionsTaken>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1243,7 +1257,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1345,7 +1361,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportCategory",
+                                    EntityTypeName = "InferredValueContext<ReportCategory>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1354,7 +1370,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1410,7 +1428,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportCategory",
+                                    EntityTypeName = "InferredValueContext<ReportCategory>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1419,7 +1437,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1520,7 +1540,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportDefaultRecommendation",
+                                    EntityTypeName = "InferredValueContext<ReportDefaultRecommendation>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1529,7 +1549,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1594,7 +1616,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportDefaultRecommendation",
+                                    EntityTypeName = "InferredValueContext<ReportDefaultRecommendation>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1603,7 +1625,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1711,7 +1735,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportRecommendation",
+                                    EntityTypeName = "InferredValueContext<ReportRecommendation>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1720,7 +1744,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1785,7 +1811,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportRecommendation",
+                                    EntityTypeName = "InferredValueContext<ReportRecommendation>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1794,7 +1820,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1913,7 +1941,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportType",
+                                    EntityTypeName = "InferredValueContext<ReportType>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1922,7 +1950,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -1978,7 +2008,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportType",
+                                    EntityTypeName = "InferredValueContext<ReportType>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -1987,7 +2017,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2088,7 +2120,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Project",
+                                    EntityTypeName = "InferredValueContext<Project>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2097,7 +2129,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2171,7 +2205,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Project",
+                                    EntityTypeName = "InferredValueContext<Project>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2180,7 +2214,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2272,7 +2308,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportReceiverEmailAddress",
+                                    EntityTypeName = "InferredValueContext<ReportReceiverEmailAddress>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2281,7 +2317,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2346,7 +2384,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "ReportReceiverEmailAddress",
+                                    EntityTypeName = "InferredValueContext<ReportReceiverEmailAddress>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2355,7 +2393,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2465,7 +2505,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "RiskAssessment",
+                                    EntityTypeName = "InferredValueContext<RiskAssessment>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2474,7 +2514,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2521,7 +2563,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "RiskAssessment",
+                                    EntityTypeName = "InferredValueContext<RiskAssessment>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2530,7 +2572,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2639,7 +2683,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "RiskAssessmentSolution",
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentSolution>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2648,7 +2692,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2704,7 +2750,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "RiskAssessmentSolution",
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentSolution>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2713,7 +2759,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2814,7 +2862,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "RiskAssessmentAnswer",
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentAnswer>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2823,7 +2871,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -2897,7 +2947,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "RiskAssessmentAnswer",
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentAnswer>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -2906,7 +2956,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -3008,7 +3060,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "RiskAssessmentQuestion",
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentQuestion>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3017,7 +3069,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -3073,7 +3127,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "RiskAssessmentQuestion",
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentQuestion>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3082,7 +3136,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -3174,7 +3230,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Person",
+                                    EntityTypeName = "InferredValueContext<Person>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3183,7 +3239,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.Kind = PropertyKind.Primitive;
@@ -3267,7 +3325,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Person",
+                                    EntityTypeName = "InferredValueContext<Person>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3276,7 +3334,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -3293,6 +3353,144 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Key";
                 p.Title = "Key";
                 p.FriendlyName = "Key";
+            }).DefineProperty(p => p.InferredWhenKeyChanges, true, IqlType.String).ConfigureProperty(p => p.InferredWhenKeyChanges, p => {
+                p.SearchKind = PropertySearchKind.Secondary;
+                p.PropertyName = "InferredWhenKeyChanges";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.Always,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlConditionExpression
+                            {
+                                Test = new IqlAndExpression
+                                {
+                                    Left = new IqlIsEqualToExpression
+                                    {
+                                        Left = new IqlPropertyExpression
+                                        {
+                                            PropertyName = "Key",
+                                            Kind = IqlExpressionKind.Property,
+                                            ReturnType = IqlType.Unknown,
+                                            Parent = new IqlPropertyExpression
+                                            {
+                                                PropertyName = "OldEntityState",
+                                                Kind = IqlExpressionKind.Property,
+                                                ReturnType = IqlType.Unknown,
+                                                Parent = new IqlRootReferenceExpression
+                                                {
+                                                    EntityTypeName = "InferredValueContext<Person>",
+                                                    VariableName = "_",
+                                                    InferredReturnType = IqlType.Unknown,
+                                                    Kind = IqlExpressionKind.RootReference,
+                                                    ReturnType = IqlType.Unknown
+                                                }
+                                            }
+                                        },
+                                        Right = new IqlLiteralExpression
+                                        {
+                                            Value = "ABC",
+                                            InferredReturnType = IqlType.String,
+                                            Kind = IqlExpressionKind.Literal,
+                                            ReturnType = IqlType.String
+                                        },
+                                        Kind = IqlExpressionKind.IsEqualTo,
+                                        ReturnType = IqlType.Unknown
+                                    },
+                                    Right = new IqlIsEqualToExpression
+                                    {
+                                        Left = new IqlPropertyExpression
+                                        {
+                                            PropertyName = "Key",
+                                            Kind = IqlExpressionKind.Property,
+                                            ReturnType = IqlType.Unknown,
+                                            Parent = new IqlPropertyExpression
+                                            {
+                                                PropertyName = "CurrentEntityState",
+                                                Kind = IqlExpressionKind.Property,
+                                                ReturnType = IqlType.Unknown,
+                                                Parent = new IqlRootReferenceExpression
+                                                {
+                                                    EntityTypeName = "InferredValueContext<Person>",
+                                                    VariableName = "_",
+                                                    InferredReturnType = IqlType.Unknown,
+                                                    Kind = IqlExpressionKind.RootReference,
+                                                    ReturnType = IqlType.Unknown
+                                                }
+                                            }
+                                        },
+                                        Right = new IqlLiteralExpression
+                                        {
+                                            Value = "DEF",
+                                            InferredReturnType = IqlType.String,
+                                            Kind = IqlExpressionKind.Literal,
+                                            ReturnType = IqlType.String
+                                        },
+                                        Kind = IqlExpressionKind.IsEqualTo,
+                                        ReturnType = IqlType.Unknown
+                                    },
+                                    Kind = IqlExpressionKind.And,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                IfTrue = new IqlLiteralExpression
+                                {
+                                    Value = "alphabet!",
+                                    InferredReturnType = IqlType.String,
+                                    Kind = IqlExpressionKind.Literal,
+                                    ReturnType = IqlType.String
+                                },
+                                IfFalse = new IqlPropertyExpression
+                                {
+                                    PropertyName = "InferredWhenKeyChanges",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlPropertyExpression
+                                    {
+                                        PropertyName = "CurrentEntityState",
+                                        Kind = IqlExpressionKind.Property,
+                                        ReturnType = IqlType.Unknown,
+                                        Parent = new IqlRootReferenceExpression
+                                        {
+                                            EntityTypeName = "InferredValueContext<Person>",
+                                            VariableName = "_",
+                                            InferredReturnType = IqlType.Unknown,
+                                            Kind = IqlExpressionKind.RootReference,
+                                            ReturnType = IqlType.Unknown
+                                        }
+                                    }
+                                },
+                                Kind = IqlExpressionKind.Condition,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Person>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {
+                            "Key"
+                        }
+                    }
+                };
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "InferredWhenKeyChanges";
+                p.Title = "InferredWhenKeyChanges";
+                p.FriendlyName = "Inferred When Key Changes";
             }).DefineProperty(p => p.Title, true, IqlType.String).ConfigureProperty(p => p.Title, p => {
                 p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Title";
@@ -3322,13 +3520,19 @@ namespace IqlSampleApp.ApiContext.Base
                                     PropertyName = "Category",
                                     Kind = IqlExpressionKind.Property,
                                     ReturnType = IqlType.Unknown,
-                                    Parent = new IqlRootReferenceExpression
+                                    Parent = new IqlPropertyExpression
                                     {
-                                        EntityTypeName = "Person",
-                                        VariableName = "_",
-                                        InferredReturnType = IqlType.Unknown,
-                                        Kind = IqlExpressionKind.RootReference,
-                                        ReturnType = IqlType.Unknown
+                                        PropertyName = "CurrentEntityState",
+                                        Kind = IqlExpressionKind.Property,
+                                        ReturnType = IqlType.Unknown,
+                                        Parent = new IqlRootReferenceExpression
+                                        {
+                                            EntityTypeName = "InferredValueContext<Person>",
+                                            VariableName = "_",
+                                            InferredReturnType = IqlType.Unknown,
+                                            Kind = IqlExpressionKind.RootReference,
+                                            ReturnType = IqlType.Unknown
+                                        }
                                     }
                                 },
                                 Right = new IqlEnumLiteralExpression
@@ -3355,7 +3559,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Person",
+                                    EntityTypeName = "InferredValueContext<Person>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3378,7 +3582,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Person",
+                                    EntityTypeName = "InferredValueContext<Person>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3449,7 +3653,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Person",
+                                    EntityTypeName = "InferredValueContext<Person>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3458,7 +3662,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -3515,13 +3721,19 @@ namespace IqlSampleApp.ApiContext.Base
                                     PropertyName = "Site",
                                     Kind = IqlExpressionKind.Property,
                                     ReturnType = IqlType.Unknown,
-                                    Parent = new IqlRootReferenceExpression
+                                    Parent = new IqlPropertyExpression
                                     {
-                                        EntityTypeName = "Person",
-                                        VariableName = "_",
-                                        InferredReturnType = IqlType.Unknown,
-                                        Kind = IqlExpressionKind.RootReference,
-                                        ReturnType = IqlType.Unknown
+                                        PropertyName = "CurrentEntityState",
+                                        Kind = IqlExpressionKind.Property,
+                                        ReturnType = IqlType.Unknown,
+                                        Parent = new IqlRootReferenceExpression
+                                        {
+                                            EntityTypeName = "InferredValueContext<Person>",
+                                            VariableName = "_",
+                                            InferredReturnType = IqlType.Unknown,
+                                            Kind = IqlExpressionKind.RootReference,
+                                            ReturnType = IqlType.Unknown
+                                        }
                                     }
                                 }
                             },
@@ -3529,7 +3741,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Person",
+                                    EntityTypeName = "InferredValueContext<Person>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3538,7 +3750,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.Kind = PropertyKind.Relationship;
@@ -3655,7 +3869,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "PersonInspection",
+                                    EntityTypeName = "InferredValueContext<PersonInspection>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3664,7 +3878,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -3777,7 +3993,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "PersonInspection",
+                                    EntityTypeName = "InferredValueContext<PersonInspection>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3786,7 +4002,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -3888,7 +4106,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "PersonLoading",
+                                    EntityTypeName = "InferredValueContext<PersonLoading>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3897,7 +4115,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -3953,7 +4173,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "PersonLoading",
+                                    EntityTypeName = "InferredValueContext<PersonLoading>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -3962,7 +4182,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -4063,7 +4285,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "PersonType",
+                                    EntityTypeName = "InferredValueContext<PersonType>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -4072,7 +4294,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -4128,7 +4352,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "PersonType",
+                                    EntityTypeName = "InferredValueContext<PersonType>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -4137,7 +4361,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -4282,7 +4508,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "PersonTypeMap",
+                                    EntityTypeName = "InferredValueContext<PersonTypeMap>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -4291,7 +4517,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -4381,7 +4609,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "PersonReport",
+                                    EntityTypeName = "InferredValueContext<PersonReport>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -4390,7 +4618,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -4454,7 +4684,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "PersonReport",
+                                    EntityTypeName = "InferredValueContext<PersonReport>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -4463,7 +4693,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -4630,7 +4862,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Site",
+                                    EntityTypeName = "InferredValueContext<Site>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -4639,7 +4871,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -4669,13 +4903,19 @@ namespace IqlSampleApp.ApiContext.Base
                                         PropertyName = "Address",
                                         Kind = IqlExpressionKind.Property,
                                         ReturnType = IqlType.Unknown,
-                                        Parent = new IqlRootReferenceExpression
+                                        Parent = new IqlPropertyExpression
                                         {
-                                            EntityTypeName = "Site",
-                                            VariableName = "site",
-                                            InferredReturnType = IqlType.Unknown,
-                                            Kind = IqlExpressionKind.RootReference,
-                                            ReturnType = IqlType.Unknown
+                                            PropertyName = "CurrentEntityState",
+                                            Kind = IqlExpressionKind.Property,
+                                            ReturnType = IqlType.Unknown,
+                                            Parent = new IqlRootReferenceExpression
+                                            {
+                                                EntityTypeName = "InferredValueContext<Site>",
+                                                VariableName = "site",
+                                                InferredReturnType = IqlType.Unknown,
+                                                Kind = IqlExpressionKind.RootReference,
+                                                ReturnType = IqlType.Unknown
+                                            }
                                         }
                                     },
                                     Right = new IqlLiteralExpression
@@ -4693,13 +4933,19 @@ namespace IqlSampleApp.ApiContext.Base
                                     PropertyName = "PostCode",
                                     Kind = IqlExpressionKind.Property,
                                     ReturnType = IqlType.Unknown,
-                                    Parent = new IqlRootReferenceExpression
+                                    Parent = new IqlPropertyExpression
                                     {
-                                        EntityTypeName = "Site",
-                                        VariableName = "site",
-                                        InferredReturnType = IqlType.Unknown,
-                                        Kind = IqlExpressionKind.RootReference,
-                                        ReturnType = IqlType.Unknown
+                                        PropertyName = "CurrentEntityState",
+                                        Kind = IqlExpressionKind.Property,
+                                        ReturnType = IqlType.Unknown,
+                                        Parent = new IqlRootReferenceExpression
+                                        {
+                                            EntityTypeName = "InferredValueContext<Site>",
+                                            VariableName = "site",
+                                            InferredReturnType = IqlType.Unknown,
+                                            Kind = IqlExpressionKind.RootReference,
+                                            ReturnType = IqlType.Unknown
+                                        }
                                     }
                                 },
                                 Kind = IqlExpressionKind.Add,
@@ -4709,7 +4955,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Site",
+                                    EntityTypeName = "InferredValueContext<Site>",
                                     VariableName = "site",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -4718,7 +4964,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.Kind = PropertyKind.Primitive;
@@ -4761,20 +5009,26 @@ namespace IqlSampleApp.ApiContext.Base
                                 PropertyName = "ClientId",
                                 Kind = IqlExpressionKind.Property,
                                 ReturnType = IqlType.Unknown,
-                                Parent = new IqlRootReferenceExpression
+                                Parent = new IqlPropertyExpression
                                 {
-                                    EntityTypeName = "Site",
-                                    VariableName = "site",
-                                    InferredReturnType = IqlType.Unknown,
-                                    Kind = IqlExpressionKind.RootReference,
-                                    ReturnType = IqlType.Unknown
+                                    PropertyName = "CurrentEntityState",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "InferredValueContext<Site>",
+                                        VariableName = "site",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
                                 }
                             },
                             Parameters = new List<IqlRootReferenceExpression>
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Site",
+                                    EntityTypeName = "InferredValueContext<Site>",
                                     VariableName = "site",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -4783,7 +5037,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.Kind = PropertyKind.Primitive;
@@ -4854,7 +5110,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "Site",
+                                    EntityTypeName = "InferredValueContext<Site>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -4863,7 +5119,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -5039,7 +5297,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "SiteArea",
+                                    EntityTypeName = "InferredValueContext<SiteArea>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -5048,7 +5306,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -5095,7 +5355,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "SiteArea",
+                                    EntityTypeName = "InferredValueContext<SiteArea>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -5104,7 +5364,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -5222,7 +5484,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "SiteInspection",
+                                    EntityTypeName = "InferredValueContext<SiteInspection>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -5231,7 +5493,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;
@@ -5294,7 +5558,7 @@ namespace IqlSampleApp.ApiContext.Base
                             {
                                 new IqlRootReferenceExpression
                                 {
-                                    EntityTypeName = "SiteInspection",
+                                    EntityTypeName = "InferredValueContext<SiteInspection>",
                                     VariableName = "_",
                                     InferredReturnType = IqlType.Unknown,
                                     Kind = IqlExpressionKind.RootReference,
@@ -5303,7 +5567,9 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             Kind = IqlExpressionKind.Lambda,
                             ReturnType = IqlType.Unknown
-                        }
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
                     }
                 };
                 p.MarkedReadOnly = true;

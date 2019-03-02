@@ -9,8 +9,10 @@ using Iql.Data.Evaluation;
 using Iql.Data.Extensions;
 using Iql.Data.IqlToIql;
 using Iql.Entities;
+using Iql.Entities.InferredValues;
 using Iql.Entities.Rules.Relationship;
 using Iql.Entities.Services;
+using Iql.Extensions;
 using Iql.Parsing.Evaluation;
 
 namespace Iql.Data
@@ -53,7 +55,7 @@ namespace Iql.Data
         public IqlPropertyPathEvaluationResult[] Paths { get; set; }
 
         public IqlExpressonEvaluationResult(
-            bool success, 
+            bool success,
             object result,
             IEnumerable<IqlPropertyPathEvaluationResult> paths) : base(success, result)
         {
@@ -194,44 +196,71 @@ namespace Iql.Data
             this IqlExpression expression,
             IEntityConfigurationBuilder builder,
             IServiceProviderProvider serviceProviderProvider,
-            object entity,
+            object parameter,
             IIqlCustomEvaluator customEvaluator,
             Type entityType = null)
         {
             var success = true;
             var paths = new List<IqlPropertyPathEvaluationResult>();
-            entityType = entityType ?? entity.GetType();
+            entityType = entityType ?? parameter.GetType();
+            //if (parameter is IInferredValueContext context)
+            //{
+            //    entityType = context.EntityType;
+            //}
             var processResult = await ProcessIqlExpressionAsync(
                 expression.Clone(),
-                entity,
+                parameter,
                 entityType,
                 builder,
                 serviceProviderProvider);
             success = processResult.Success;
-            var iqlPropertyPaths = processResult.lookup.Keys.ToArray();
+            var iqlPropertyPaths = processResult.propertyExpressions.ToArray();
+            var keys = processResult.lookup.Keys.ToArray();
             for (var i = 0; i < iqlPropertyPaths.Length; i++)
             {
-                var item = iqlPropertyPaths[i];
-                var e = entity;
-                if (e is IRelationshipFilterContext)
+                IqlPropertyPath item = null;
+                var e = parameter;
+                var relationshipFilterContext = e as IRelationshipFilterContext;
+                var inferredValueContext = e as IInferredValueContext;
+                if (relationshipFilterContext != null)
                 {
-                    e = (e as IRelationshipFilterContext).Owner;
+                    e = relationshipFilterContext.Owner;
+                    entityType = relationshipFilterContext.EntityType;
                 }
-                var flattenedExpression = processResult.propertyExpressions.First(_ => _.Expression == item.Expression);
+                else if (inferredValueContext != null)
+                {
+                    var path = iqlPropertyPaths[i].Expression.ToSimplePropertyPath();
+                    if (path.PathParts.Length > 0)
+                    {
+                        switch (path.PathParts[0])
+                        {
+                            case nameof(IInferredValueContext.OldEntityState):
+                                e = inferredValueContext.OldEntityState;
+                                break;
+                            case nameof(IInferredValueContext.CurrentEntityState):
+                                e = inferredValueContext.CurrentEntityState;
+                                break;
+                        }
+                    }
+                    entityType = inferredValueContext.EntityType;
+                    item = IqlPropertyPath.FromString(path.PathAfter(1, false), builder.GetEntityByType(entityType), null, path.PathParts[0]);
+                }
+                item = item ?? keys[i];
                 var evaluationResult = await item.EvaluateCustomAsync(
                     e,
                     customEvaluator);
                 paths.Add(evaluationResult);
+                var flattenedExpression = processResult.propertyExpressions.First(_ => _.Expression == iqlPropertyPaths[i].Expression);
                 var value = evaluationResult.Value ?? ResolveNull(item, flattenedExpression);
                 var iqlEvaluationResult = new IqlObjectEvaluationResult(evaluationResult.Success, value);
-                processResult.lookup[item] = iqlEvaluationResult.Result;
+                processResult.lookup[keys[i]] = iqlEvaluationResult.Result;
                 if (!iqlEvaluationResult.Success)
                 {
                     success = false;
                 }
             }
 
-            var finalResult = Finalise(entity, processResult.lookup, processResult.expression, processResult.propertyExpressions);
+            var finalResult = Finalise(parameter, processResult.lookup, processResult.expression, processResult.propertyExpressions);
             return new IqlExpressonEvaluationResult(success, finalResult, paths);
         }
 
@@ -286,7 +315,7 @@ namespace Iql.Data
 
         private static async Task<ProcessExpressionResult> ProcessIqlExpressionAsync(
             IqlExpression iql,
-            object entity,
+            object parameter,
             Type entityType,
             IEntityConfigurationBuilder builder,
             IServiceProviderProvider serviceProviderProvider)
@@ -295,9 +324,13 @@ namespace Iql.Data
             serviceProviderProvider = serviceProviderProvider ?? builder;
             var propertyExpressions = iql.TopLevelPropertyExpressions();
             var lookup = new Dictionary<IqlPropertyPath, object>();
-            if (entity is IRelationshipFilterContext)
+            if (parameter is IRelationshipFilterContext relationshipFilterContext)
             {
-                entityType = (entity as IRelationshipFilterContext).Owner.GetType();
+                entityType = relationshipFilterContext.Owner.GetType();
+            }
+            if (parameter is IInferredValueContext inferredValueContext)
+            {
+                entityType = inferredValueContext.EntityType;
             }
 
             var processResult = await iql.ProcessAsync(builder.GetEntityByType(

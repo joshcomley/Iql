@@ -13,9 +13,9 @@
         public static string Number = "number";
         public static string GeoPolygon = "geo-polygon";
         public static string GeoPoint = "geo-point";
-        public static string Key = "key";
-        public static string RelationshipKey = "relationship-key";
-        public static string Relationship = "relationship";
+        //public static string Key = "key";
+        //public static string RelationshipKey = "relationship-key";
+        //public static string Relationship = "relationship";
         public static string RelationshipTarget = "relationship-target";
         public static string RelationshipSource = "relationship-source";
         public static string Group = "group";

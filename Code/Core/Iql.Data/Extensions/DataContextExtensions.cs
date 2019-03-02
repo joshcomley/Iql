@@ -7,6 +7,8 @@ using Iql.Data.Evaluation;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Extensions;
+using Iql.Entities.InferredValues;
+using Iql.Entities.Validation.Validation;
 
 namespace Iql.Data.Extensions
 {
@@ -100,12 +102,22 @@ namespace Iql.Data.Extensions
             return properties;
         }
 
-        public static async Task<bool> TrySetInferredValuesAsync(
+        public static async Task<InferredValuesResult> TrySetInferredValuesAsync(
             this IDataContext dataContext,
             object entity)
         {
             var config = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
-            return await config.TrySetInferredValuesAsync(entity, new DefaultEvaluator(dataContext), dataContext);
+            var oldEntity = dataContext.GetEntityState(entity)?.EntityBeforeChanges();
+            return await config.TrySetInferredValuesAsync(oldEntity, entity, new DefaultEvaluator(dataContext), dataContext);
+        }
+
+        public static async Task<InferredValuesResult> TryGetInferredValuesAsync(
+            this IDataContext dataContext,
+            object entity)
+        {
+            var config = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
+            var oldEntity = dataContext.GetEntityState(entity)?.EntityBeforeChanges();
+            return await config.TryGetInferredValuesAsync(oldEntity, entity, new DefaultEvaluator(dataContext), dataContext);
         }
     }
 }

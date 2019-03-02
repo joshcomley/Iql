@@ -16,6 +16,7 @@ namespace Iql.Data.Tracking.State
         bool Floating { get; set; }
         DataTracker DataTracker { get; }
         object Entity { get; }
+        object EntityBeforeChanges();
         IPropertyState[] PropertyStates { get; }
         CompositeKey CurrentKey { get; set; }
         bool MarkedForDeletion { get; set; }

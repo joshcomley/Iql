@@ -1675,6 +1675,14 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Person_Key = _Person_Key ?? FindPropertyByName<Person>("Key");
             }
         }
+        private IProperty _Person_InferredWhenKeyChanges = null;
+        public IProperty Person_InferredWhenKeyChanges
+        {
+            get
+            {
+                return _Person_InferredWhenKeyChanges = _Person_InferredWhenKeyChanges ?? FindPropertyByName<Person>("InferredWhenKeyChanges");
+            }
+        }
         private IProperty _Person_Title = null;
         public IProperty Person_Title
         {
