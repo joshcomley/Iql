@@ -31,6 +31,7 @@ namespace IqlSampleApp.Data.Contracts
         IQueryable<Site> Sites { get; }
         IQueryable<SiteArea> SiteAreas { get; }
         IQueryable<SiteInspection> SiteInspections { get; }
+        IQueryable<UserSetting> UserSettings { get; }
         IQueryable<UserSite> UserSites { get; }
     }
 }

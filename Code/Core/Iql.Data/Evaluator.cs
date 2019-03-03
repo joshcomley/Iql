@@ -320,14 +320,15 @@ namespace Iql.Data
             IEntityConfigurationBuilder builder,
             IServiceProviderProvider serviceProviderProvider)
         {
-            builder = builder ?? DataContext.FindBuilderForEntityType(entityType);
-            serviceProviderProvider = serviceProviderProvider ?? builder;
-            var propertyExpressions = iql.TopLevelPropertyExpressions();
-            var lookup = new Dictionary<IqlPropertyPath, object>();
             if (parameter is IEntityType entityTypeClass)
             {
                 entityType = entityTypeClass.EntityType;
             }
+            builder = builder ?? DataContext.FindBuilderForEntityType(entityType);
+            serviceProviderProvider = serviceProviderProvider ?? builder;
+
+            var propertyExpressions = iql.TopLevelPropertyExpressions();
+            var lookup = new Dictionary<IqlPropertyPath, object>();
 
             var processResult = await iql.ProcessAsync(builder.GetEntityByType(
                 entityType), serviceProviderProvider);

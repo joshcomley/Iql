@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Brandless.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace IqlSampleApp.Data.Entities
@@ -36,9 +35,10 @@ namespace IqlSampleApp.Data.Entities
         public List<RiskAssessmentSolution> RiskAssessmentSolutionsCreated { get; set; }
         public List<RiskAssessmentQuestion> RiskAssessmentQuestionsCreated { get; set; }
         public List<PersonLoading> PersonLoadingsCreated { get; set; }
-
         public List<Site> SitesCreated { get; set; }
         public List<SiteArea> SiteAreasCreated { get; set; }
+        public List<UserSetting> UserSettingsCreated { get; set; }
+        public List<UserSetting> UserSettings { get; set; }
 
         //public override string NormalizedEmail { get; set; }
         [Required(ErrorMessage = "Please select a user type")]

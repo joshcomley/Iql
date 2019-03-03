@@ -12,9 +12,4 @@
     <ProjectReference Include="..\Iql.Parsing\Iql.Parsing.csproj" />
     <ProjectReference Include="..\Iql\Iql.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.EntityFrameworkCore">
-      <HintPath>C:\Users\Josh Comley\.nuget\packages\microsoft.entityframeworkcore\2.0.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>

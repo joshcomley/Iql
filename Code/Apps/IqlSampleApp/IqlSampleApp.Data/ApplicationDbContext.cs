@@ -65,6 +65,7 @@ namespace IqlSampleApp.Data
         public DbSet<SiteArea> SiteAreas { get; set; }
         public DbSet<SiteDocument> SiteDocuments { get; set; }
         public DbSet<SiteInspection> SiteInspections { get; set; }
+        public DbSet<UserSetting> UserSettings { get; set; }
         public DbSet<UserSite> UserSites { get; set; }
 
         IQueryable<ApplicationLog> IIqlSampleAppService.ApplicationLogs => ApplicationLogs;
@@ -78,10 +79,8 @@ namespace IqlSampleApp.Data
         IQueryable<ReportRecommendation> IIqlSampleAppService.ReportRecommendations => ReportRecommendations;
         IQueryable<ReportType> IIqlSampleAppService.ReportTypes => ReportTypes;
         IQueryable<Project> IIqlSampleAppService.Projects => Projects;
-
         IQueryable<ReportReceiverEmailAddress> IIqlSampleAppService.ReportReceiverEmailAddresses =>
             ReportReceiverEmailAddresses;
-
         IQueryable<RiskAssessment> IIqlSampleAppService.RiskAssessments => RiskAssessments;
         IQueryable<RiskAssessmentSolution> IIqlSampleAppService.RiskAssessmentSolutions => RiskAssessmentSolutions;
         IQueryable<RiskAssessmentAnswer> IIqlSampleAppService.RiskAssessmentAnswers => RiskAssessmentAnswers;
@@ -96,6 +95,7 @@ namespace IqlSampleApp.Data
         IQueryable<SiteArea> IIqlSampleAppService.SiteAreas => SiteAreas;
         IQueryable<SiteDocument> IIqlSampleAppService.SiteDocuments => SiteDocuments;
         IQueryable<SiteInspection> IIqlSampleAppService.SiteInspections => SiteInspections;
+        IQueryable<UserSetting> IIqlSampleAppService.UserSettings => UserSettings;
         IQueryable<UserSite> IIqlSampleAppService.UserSites => UserSites;
         public const string ConnectionString = "Server=.;Database=IqlSampleApp;Integrated Security=True;";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

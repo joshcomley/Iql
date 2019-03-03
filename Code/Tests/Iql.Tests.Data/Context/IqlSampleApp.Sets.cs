@@ -271,6 +271,14 @@ namespace IqlSampleApp.Sets
 }
 namespace IqlSampleApp.Sets
 {
+    public class UserSettingSet: DbSet<UserSetting, Guid>
+    {
+        public UserSettingSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
+        {}
+    }
+}
+namespace IqlSampleApp.Sets
+{
     public class UserSiteSet: DbSet<UserSite, CompositeKey>
     {
         public UserSiteSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)

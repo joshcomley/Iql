@@ -53,6 +53,50 @@ namespace IqlSampleApp.Data.Entities
 }
 namespace IqlSampleApp.Data.Entities
 {
+    public class UserSettingBase: IEntity
+    {
+        protected Boolean _propertyChangingSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanging;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanging
+        {
+            get => _propertyChanging;
+            set
+            {
+                _propertyChanging = value;
+                this._propertyChangingSet = value != null;
+            }
+        }
+        protected Boolean _propertyChangedSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanged;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanged
+        {
+            get => _propertyChanged;
+            set
+            {
+                _propertyChanged = value;
+                this._propertyChangedSet = value != null;
+            }
+        }
+        protected Boolean _existsChangedSet;
+        protected EventEmitter<ExistsChangeEvent>_existsChanged;
+        public EventEmitter<ExistsChangeEvent>ExistsChanged
+        {
+            get => _existsChanged;
+            set
+            {
+                _existsChanged = value;
+                this._existsChangedSet = value != null;
+            }
+        }
+        public static String ClassName
+        {
+            get;
+            set;
+        } = "UserSettingBase";
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
     public class SiteInspectionBase: IEntity
     {
         protected Boolean _propertyChangingSet;
@@ -1300,6 +1344,130 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "Site", _site, value, _propertyChanging, _propertyChanged, newValue => this._site = newValue);
+            }
+        }
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
+    public class UserSetting: UserSettingBase,
+    IEntity
+    {
+        protected string _createdByUserId;
+        public string CreatedByUserId
+        {
+            get => _createdByUserId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
+            }
+        }
+        protected string _key1;
+        public string Key1
+        {
+            get => _key1;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Key1", _key1, value, _propertyChanging, _propertyChanged, newValue => this._key1 = newValue);
+            }
+        }
+        protected Guid _id;
+        public Guid Id
+        {
+            get => _id;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
+            }
+        }
+        protected string _userId;
+        public string UserId
+        {
+            get => _userId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "UserId", _userId, value, _propertyChanging, _propertyChanged, newValue => this._userId = newValue);
+            }
+        }
+        protected string _key2;
+        public string Key2
+        {
+            get => _key2;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Key2", _key2, value, _propertyChanging, _propertyChanged, newValue => this._key2 = newValue);
+            }
+        }
+        protected string _key3;
+        public string Key3
+        {
+            get => _key3;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Key3", _key3, value, _propertyChanging, _propertyChanged, newValue => this._key3 = newValue);
+            }
+        }
+        protected string _key4;
+        public string Key4
+        {
+            get => _key4;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Key4", _key4, value, _propertyChanging, _propertyChanged, newValue => this._key4 = newValue);
+            }
+        }
+        protected string _value;
+        public string Value
+        {
+            get => _value;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Value", _value, value, _propertyChanging, _propertyChanged, newValue => this._value = newValue);
+            }
+        }
+        protected DateTimeOffset _createdDate;
+        public DateTimeOffset CreatedDate
+        {
+            get => _createdDate;
+            set
+            {
+                DatePropertyChanger.Instance.ChangeProperty(this, "CreatedDate", _createdDate, value, _propertyChanging, _propertyChanged, newValue => this._createdDate = newValue);
+            }
+        }
+        protected string _revisionKey;
+        public string RevisionKey
+        {
+            get => _revisionKey;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RevisionKey", _revisionKey, value, _propertyChanging, _propertyChanged, newValue => this._revisionKey = newValue);
+            }
+        }
+        protected Guid _persistenceKey;
+        public Guid PersistenceKey
+        {
+            get => _persistenceKey;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PersistenceKey", _persistenceKey, value, _propertyChanging, _propertyChanged, newValue => this._persistenceKey = newValue);
+            }
+        }
+        protected ApplicationUser _createdByUser;
+        public ApplicationUser CreatedByUser
+        {
+            get => _createdByUser;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
+            }
+        }
+        protected ApplicationUser _user;
+        public ApplicationUser User
+        {
+            get => _user;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "User", _user, value, _propertyChanging, _propertyChanged, newValue => this._user = newValue);
             }
         }
     }
@@ -4893,6 +5061,42 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "SiteInspectionsCreated", _siteInspectionsCreated, value, _propertyChanging, _propertyChanged, newValue => this._siteInspectionsCreated = newValue);
+            }
+        }
+        public Int64 UserSettingsCreatedCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<ApplicationUser, UserSetting>_userSettingsCreated;
+        public RelatedList<ApplicationUser, UserSetting>UserSettingsCreated
+        {
+            get
+            {
+                this._userSettingsCreated = this._userSettingsCreated ?? new RelatedList<ApplicationUser, UserSetting>(this, nameof(UserSettingsCreated));
+                return _userSettingsCreated;
+            }
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "UserSettingsCreated", _userSettingsCreated, value, _propertyChanging, _propertyChanged, newValue => this._userSettingsCreated = newValue);
+            }
+        }
+        public Int64 UserSettingsCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<ApplicationUser, UserSetting>_userSettings;
+        public RelatedList<ApplicationUser, UserSetting>UserSettings
+        {
+            get
+            {
+                this._userSettings = this._userSettings ?? new RelatedList<ApplicationUser, UserSetting>(this, nameof(UserSettings));
+                return _userSettings;
+            }
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "UserSettings", _userSettings, value, _propertyChanging, _propertyChanged, newValue => this._userSettings = newValue);
             }
         }
         public Int64 SitesCount

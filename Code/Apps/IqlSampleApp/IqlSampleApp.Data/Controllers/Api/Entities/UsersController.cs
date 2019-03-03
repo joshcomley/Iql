@@ -47,6 +47,5 @@ namespace IqlSampleApp.Data.Controllers.Api.Entities
         }
 
         #endregion Imports
-
     }
 }

@@ -65,6 +65,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             ApplyCreatedByUser(builder, p => p.SitesCreated);
             ApplyCreatedByUser(builder, p => p.SiteAreasCreated);
             ApplyCreatedByUser(builder, p => p.SiteInspectionsCreated);
+            ApplyCreatedByUser(builder, p => p.UserSettingsCreated);
 
             // Tested
             var forClient = builder

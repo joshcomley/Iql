@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
@@ -20,6 +20,8 @@
     </When>
   </Choose>
   <ItemGroup>
+    <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10101-1-Debug" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.10.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170628-02" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
     <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
@@ -33,6 +35,7 @@
     <ProjectReference Include="..\..\Core\Iql.Parsing\Iql.Parsing.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
     <ProjectReference Include="..\..\Core\Iql\Iql.csproj" />
+    <ProjectReference Include="..\..\Extensions\Iql.Server.OData.Net\Iql.Server.OData.Net.csproj" />
     <ProjectReference Include="..\..\Extensions\Iql.Server\Iql.Server.csproj" />
     <ProjectReference Include="..\Iql.Tests.Data\Iql.Tests.Data.csproj" />
   </ItemGroup>

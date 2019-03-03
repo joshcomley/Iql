@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using IqlSampleApp.Data.Entities;
 
 namespace IqlSampleApp.Data.Controllers.Api.Entities

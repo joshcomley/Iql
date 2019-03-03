@@ -322,6 +322,22 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ApplicationUser_SiteInspectionsCreated = _ApplicationUser_SiteInspectionsCreated ?? FindPropertyByName<ApplicationUser>("SiteInspectionsCreated");
             }
         }
+        private IProperty _ApplicationUser_UserSettingsCreated = null;
+        public IProperty ApplicationUser_UserSettingsCreated
+        {
+            get
+            {
+                return _ApplicationUser_UserSettingsCreated = _ApplicationUser_UserSettingsCreated ?? FindPropertyByName<ApplicationUser>("UserSettingsCreated");
+            }
+        }
+        private IProperty _ApplicationUser_UserSettings = null;
+        public IProperty ApplicationUser_UserSettings
+        {
+            get
+            {
+                return _ApplicationUser_UserSettings = _ApplicationUser_UserSettings ?? FindPropertyByName<ApplicationUser>("UserSettings");
+            }
+        }
         private IProperty _ApplicationUser_Sites = null;
         public IProperty ApplicationUser_Sites
         {
@@ -2689,6 +2705,111 @@ namespace IqlSampleApp.ApiContext.Base
             get
             {
                 return _SiteInspection_CreatedByUser = _SiteInspection_CreatedByUser ?? FindPropertyByName<SiteInspection>("CreatedByUser");
+            }
+        }
+        public Type TypeOfUserSetting => typeof(UserSetting);
+        private IProperty _UserSetting_CreatedByUserId = null;
+        public IProperty UserSetting_CreatedByUserId
+        {
+            get
+            {
+                return _UserSetting_CreatedByUserId = _UserSetting_CreatedByUserId ?? FindPropertyByName<UserSetting>("CreatedByUserId");
+            }
+        }
+        private IProperty _UserSetting_Key1 = null;
+        public IProperty UserSetting_Key1
+        {
+            get
+            {
+                return _UserSetting_Key1 = _UserSetting_Key1 ?? FindPropertyByName<UserSetting>("Key1");
+            }
+        }
+        private IProperty _UserSetting_Id = null;
+        public IProperty UserSetting_Id
+        {
+            get
+            {
+                return _UserSetting_Id = _UserSetting_Id ?? FindPropertyByName<UserSetting>("Id");
+            }
+        }
+        private IProperty _UserSetting_UserId = null;
+        public IProperty UserSetting_UserId
+        {
+            get
+            {
+                return _UserSetting_UserId = _UserSetting_UserId ?? FindPropertyByName<UserSetting>("UserId");
+            }
+        }
+        private IProperty _UserSetting_Key2 = null;
+        public IProperty UserSetting_Key2
+        {
+            get
+            {
+                return _UserSetting_Key2 = _UserSetting_Key2 ?? FindPropertyByName<UserSetting>("Key2");
+            }
+        }
+        private IProperty _UserSetting_Key3 = null;
+        public IProperty UserSetting_Key3
+        {
+            get
+            {
+                return _UserSetting_Key3 = _UserSetting_Key3 ?? FindPropertyByName<UserSetting>("Key3");
+            }
+        }
+        private IProperty _UserSetting_Key4 = null;
+        public IProperty UserSetting_Key4
+        {
+            get
+            {
+                return _UserSetting_Key4 = _UserSetting_Key4 ?? FindPropertyByName<UserSetting>("Key4");
+            }
+        }
+        private IProperty _UserSetting_Value = null;
+        public IProperty UserSetting_Value
+        {
+            get
+            {
+                return _UserSetting_Value = _UserSetting_Value ?? FindPropertyByName<UserSetting>("Value");
+            }
+        }
+        private IProperty _UserSetting_CreatedDate = null;
+        public IProperty UserSetting_CreatedDate
+        {
+            get
+            {
+                return _UserSetting_CreatedDate = _UserSetting_CreatedDate ?? FindPropertyByName<UserSetting>("CreatedDate");
+            }
+        }
+        private IProperty _UserSetting_RevisionKey = null;
+        public IProperty UserSetting_RevisionKey
+        {
+            get
+            {
+                return _UserSetting_RevisionKey = _UserSetting_RevisionKey ?? FindPropertyByName<UserSetting>("RevisionKey");
+            }
+        }
+        private IProperty _UserSetting_PersistenceKey = null;
+        public IProperty UserSetting_PersistenceKey
+        {
+            get
+            {
+                return _UserSetting_PersistenceKey = _UserSetting_PersistenceKey ?? FindPropertyByName<UserSetting>("PersistenceKey");
+            }
+        }
+        private IProperty _UserSetting_CreatedByUser = null;
+        public IProperty UserSetting_CreatedByUser
+        {
+            get
+            {
+                return _UserSetting_CreatedByUser = _UserSetting_CreatedByUser ?? FindPropertyByName<UserSetting>("CreatedByUser");
+            }
+        }
+        private IProperty _UserSetting_User = null;
+        public IProperty UserSetting_User
+        {
+            get
+            {
+                return _UserSetting_User = _UserSetting_User ?? FindPropertyByName<UserSetting>("User");
             }
         }
         public Type TypeOfUserSite => typeof(UserSite);

@@ -178,7 +178,13 @@ namespace Iql.Data.IqlToIql.Parsers
                     {
                         parser.ResolveSpecialTypeMap(specialTypeMap =>
                         {
-                            iqlRootReferenceExpression.EntityTypeName = specialTypeMap.EntityConfiguration.Type.Name;
+                            if (specialTypeMap.EntityConfiguration.Type.Name ==
+                                iqlRootReferenceExpression.EntityTypeName ||
+                                specialTypeMap.InternalType.Name ==
+                                iqlRootReferenceExpression.EntityTypeName)
+                            {
+                                iqlRootReferenceExpression.EntityTypeName = specialTypeMap.EntityConfiguration.Type.Name;
+                            }
                         });
                     }
                 }

@@ -6,6 +6,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Iql.Conversion;
+using Iql.Data;
+using Iql.Data.Evaluation;
+using Iql.Data.Extensions;
+using Iql.Entities;
+using Iql.Entities.InferredValues;
+using Iql.Server.OData.Net;
 using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

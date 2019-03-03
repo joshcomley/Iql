@@ -4,6 +4,7 @@ using IqlSampleApp.ApiContext.Base;
 using IqlSampleApp.Data.Entities;
 using Iql.OData;
 using Iql.Data.Context;
+using Iql.Entities.SpecialTypes;
 using Iql.Data.DataStores;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,7 @@ namespace IqlSampleApp.ApiContext.Base
             this.Sites = this.AsCustomDbSet<Site, int, SiteSet>();
             this.SiteAreas = this.AsCustomDbSet<SiteArea, int, SiteAreaSet>();
             this.SiteInspections = this.AsCustomDbSet<SiteInspection, int, SiteInspectionSet>();
+            this.UserSettings = this.AsCustomDbSet<UserSetting, Guid, UserSettingSet>();
             this.UserSites = this.AsCustomDbSet<UserSite, CompositeKey, UserSiteSet>();
             this.ODataConfiguration.RegisterEntitySet<ApplicationUser>(nameof(Users));
             this.ODataConfiguration.RegisterEntitySet<ApplicationLog>(nameof(ApplicationLogs));
@@ -74,6 +76,7 @@ namespace IqlSampleApp.ApiContext.Base
             this.ODataConfiguration.RegisterEntitySet<Site>(nameof(Sites));
             this.ODataConfiguration.RegisterEntitySet<SiteArea>(nameof(SiteAreas));
             this.ODataConfiguration.RegisterEntitySet<SiteInspection>(nameof(SiteInspections));
+            this.ODataConfiguration.RegisterEntitySet<UserSetting>(nameof(UserSettings));
             this.ODataConfiguration.RegisterEntitySet<UserSite>(nameof(UserSites));
             this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
         }
@@ -395,6 +398,22 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteInspectionsCreated";
                 p.Title = "SiteInspectionsCreated";
                 p.FriendlyName = "Site Inspections Created";
+            }).DefineCollectionProperty(p => p.UserSettingsCreated, p => p.UserSettingsCreatedCount).ConfigureProperty(p => p.UserSettingsCreated, p => {
+                p.PropertyName = "UserSettingsCreated";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "UserSettingsCreated";
+                p.Title = "UserSettingsCreated";
+                p.FriendlyName = "User Settings Created";
+            }).DefineCollectionProperty(p => p.UserSettings, p => p.UserSettingsCount).ConfigureProperty(p => p.UserSettings, p => {
+                p.PropertyName = "UserSettings";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "UserSettings";
+                p.Title = "UserSettings";
+                p.FriendlyName = "User Settings";
             }).DefineCollectionProperty(p => p.Sites, p => p.SitesCount).ConfigureProperty(p => p.Sites, p => {
                 p.PropertyName = "Sites";
                 p.Nullable = false;
@@ -5680,6 +5699,257 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "SiteInspection";
                 p.FriendlyName = "Site Inspection";
             });
+            builder.EntityType<UserSetting>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
+                p.PropertyName = "CreatedByUserId";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.Always,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<UserSetting>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
+                p.MarkedReadOnly = true;
+                p.Kind = PropertyKind.RelationshipKey;
+                p.Name = "CreatedByUserId";
+                p.Title = "CreatedByUserId";
+                p.FriendlyName = "Created By User Id";
+            }).DefineProperty(p => p.Key1, false, IqlType.String).ConfigureProperty(p => p.Key1, p => {
+                p.SearchKind = PropertySearchKind.Secondary;
+                p.PropertyName = "Key1";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Key1";
+                p.Title = "Key1";
+                p.FriendlyName = "Key 1";
+            }).DefineConvertedProperty(p => p.Id, "Guid", false, IqlType.String).ConfigureProperty(p => p.Id, p => {
+                p.PropertyName = "Id";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.MarkedReadOnly = true;
+                p.Kind = PropertyKind.Key;
+                p.Name = "Id";
+                p.Title = "Id";
+                p.FriendlyName = "Id";
+            }).DefineProperty(p => p.UserId, true, IqlType.String).ConfigureProperty(p => p.UserId, p => {
+                p.PropertyName = "UserId";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.Always,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlCurrentUserIdExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.CurrentUserId,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<UserSetting>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
+                p.Kind = PropertyKind.RelationshipKey;
+                p.Name = "UserId";
+                p.Title = "UserId";
+                p.FriendlyName = "User Id";
+            }).DefineProperty(p => p.Key2, true, IqlType.String).ConfigureProperty(p => p.Key2, p => {
+                p.SearchKind = PropertySearchKind.Secondary;
+                p.PropertyName = "Key2";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Key2";
+                p.Title = "Key2";
+                p.FriendlyName = "Key 2";
+            }).DefineProperty(p => p.Key3, true, IqlType.String).ConfigureProperty(p => p.Key3, p => {
+                p.SearchKind = PropertySearchKind.Secondary;
+                p.PropertyName = "Key3";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Key3";
+                p.Title = "Key3";
+                p.FriendlyName = "Key 3";
+            }).DefineProperty(p => p.Key4, true, IqlType.String).ConfigureProperty(p => p.Key4, p => {
+                p.SearchKind = PropertySearchKind.Secondary;
+                p.PropertyName = "Key4";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Key4";
+                p.Title = "Key4";
+                p.FriendlyName = "Key 4";
+            }).DefineProperty(p => p.Value, true, IqlType.String).ConfigureProperty(p => p.Value, p => {
+                p.SearchKind = PropertySearchKind.Secondary;
+                p.PropertyName = "Value";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Value";
+                p.Title = "Value";
+                p.FriendlyName = "Value";
+            }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
+                p.PropertyName = "CreatedDate";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Mode = InferredValueMode.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<UserSetting>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
+                p.MarkedReadOnly = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "CreatedDate";
+                p.Title = "CreatedDate";
+                p.FriendlyName = "Created Date";
+            }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
+                p.SearchKind = PropertySearchKind.Secondary;
+                p.PropertyName = "RevisionKey";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.ReadKind = PropertyReadKind.Hidden;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "RevisionKey";
+                p.Title = "RevisionKey";
+                p.FriendlyName = "Revision Key";
+                p.Hints = new List<string>(new[]
+                {
+                    "Iql:Version"
+                });
+            }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
+                p.PropertyName = "PersistenceKey";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.ReadKind = PropertyReadKind.Hidden;
+                p.EditKind = PropertyEditKind.Hidden;
+                p.MarkedReadOnly = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "PersistenceKey";
+                p.Title = "PersistenceKey";
+                p.FriendlyName = "Persistence Key";
+            }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
+                p.PropertyName = "CreatedByUser";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.MarkedReadOnly = true;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "CreatedByUser";
+                p.Title = "CreatedByUser";
+                p.FriendlyName = "Created By User";
+            }).DefineProperty(p => p.User, false, IqlType.Unknown).ConfigureProperty(p => p.User, p => {
+                p.PropertyName = "User";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "User";
+                p.Title = "User";
+                p.FriendlyName = "User";
+            });
+            builder.EntityType<UserSetting>().HasOne(p => p.CreatedByUser).WithMany(p => p.UserSettingsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.EntityType<UserSetting>().HasOne(p => p.User).WithMany(p => p.UserSettings).WithConstraint(p => p.UserId, p => p.Id);
+            builder.EntityType<UserSetting>().Configure(p => {
+                p.TitlePropertyName = "Key1";
+                p.SetFriendlyName = "User Settings";
+                p.SetName = "UserSettings";
+                p.DefaultSortExpression = "CreatedDate";
+                p.DefaultSortDescending = true;
+                p.Name = "UserSetting";
+                p.Title = "UserSetting";
+                p.FriendlyName = "User Setting";
+            });
             builder.EntityType<UserSite>().HasCompositeKey(false, p => p.SiteId, p => p.UserId).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
                 p.PropertyName = "SiteId";
                 p.Nullable = false;
@@ -5946,6 +6216,18 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Name = "SiteInspectionsCreated";
                     rel_cnf.Title = "Site Inspections Created";
                     rel_cnf.FriendlyName = "Site Inspections Created";
+                });
+                rel.FindCollectionRelationship(rel_p => rel_p.UserSettingsCreated).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "UserSettingsCreated";
+                    rel_cnf.Title = "User Settings Created";
+                    rel_cnf.FriendlyName = "User Settings Created";
+                });
+                rel.FindCollectionRelationship(rel_p => rel_p.UserSettings).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "UserSettings";
+                    rel_cnf.Title = "User Settings";
+                    rel_cnf.FriendlyName = "User Settings";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Sites).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
@@ -6493,6 +6775,20 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Type";
                 });
             });
+            builder.EntityType<UserSetting>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "CreatedByUser";
+                    rel_cnf.Title = "Created By User";
+                    rel_cnf.FriendlyName = "Created By User";
+                });
+                rel.FindRelationship(rel_p => rel_p.User).Configure(rel_cnf => {
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "User";
+                    rel_cnf.Title = "User";
+                    rel_cnf.FriendlyName = "User";
+                });
+            });
             builder.EntityType<UserSite>().Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.User).Configure(rel_cnf => {
                     rel_cnf.EditKind = PropertyEditKind.Edit;
@@ -6519,6 +6815,7 @@ namespace IqlSampleApp.ApiContext.Base
                     });
                 }), _ => _.FindPropertyByExpression(_1 => _1.Parent), _ => _.FindPropertyByExpression(_1 => _1.Key), _ => _.FindPropertyByExpression(_1 => _1.Location));
             });
+            builder.UserSettingsDefinition = UserSettingsDefinition.Define(builder.EntityType<UserSetting>(), _ => _.Id, _ => _.UserId, _ => _.Key1, _ => _.Key2, _ => _.Key3, _ => _.Key4, _ => _.Value);
         }
         public ApplicationUserSet Users
         {
@@ -6646,6 +6943,11 @@ namespace IqlSampleApp.ApiContext.Base
             set;
         }
         public SiteInspectionSet SiteInspections
+        {
+            get;
+            set;
+        }
+        public UserSettingSet UserSettings
         {
             get;
             set;
