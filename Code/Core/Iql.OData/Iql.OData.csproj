@@ -6,7 +6,7 @@
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;ABC;TypeScript;TS;TYPESCRIPT DEBUG;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Iql.Data\Iql.Data.csproj" />

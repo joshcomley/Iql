@@ -9,7 +9,7 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
@@ -19,7 +19,7 @@
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0037-1-Debug" />
+        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0045-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>
