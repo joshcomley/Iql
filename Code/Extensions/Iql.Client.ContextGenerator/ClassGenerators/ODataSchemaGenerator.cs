@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Iql.OData.TypeScript.Generator.DataContext;
 using Iql.OData.TypeScript.Generator.Extensions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
+using GeneratedFile = Iql.OData.TypeScript.Generator.Models.GeneratedFile;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
@@ -18,14 +20,14 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             _schema = schema;
         }
 
-        public List<GeneratedFile> Generate(OutputType outputType)
+        public async Task<List<GeneratedFile>> GenerateAsync(OutputKind outputKind)
         {
             var files = new List<GeneratedFile>();
             if (Settings.GenerateEntities)
             {
                 foreach (var type in _schema.AllTypes())
                 {
-                    files.Add(new EntityTypeToClassGenerator(_schema, type.Namespace, null, type, outputType, Settings).Generate());
+                    files.Add(new EntityTypeToClassGenerator(_schema, type.Namespace, null, type, outputKind, Settings).Generate());
                 }
             }
             //		foreach (var entitySet in _schema.EntitySets)
@@ -34,7 +36,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             //		}
             //files.Add(new EntitySetQueryableTypeScriptClassGenerator(_schema).Generate());
             //files.Add(new EntitySetTypeScriptBaseClassGenerator(_schema).Generate());
-            files.AddRange(new EntitySetAccessorTypeScriptClassesGenerator(_schema, Settings).Generate(outputType));
+            files.AddRange(await new EntitySetAccessorTypeScriptClassesGenerator(_schema, Settings).GenerateAsync(outputKind));
             return files;
         }
     }

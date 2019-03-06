@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.DotNet;
 using Iql.OData.TypeScript.Generator.Definitions;
+using Iql.OData.TypeScript.Generator.Extensions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
 
@@ -23,19 +25,26 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         protected override IExpressionConverter Converter { get; }
         public override char Quote => '"';
 
-        private void Namespace(string @namespace, Action action)
+        private async Task NamespaceAsync(string @namespace, Func<Task> action)
         {
             AppendLine($"namespace {Settings.Namespace ?? @namespace}");
             AppendLine("{");
-            Indent(action);
+            await IndentAsync(action);
             AppendLine("}");
         }
 
-        public override void Class(
+        private void Namespace(string @namespace, Action action)
+        {
+#pragma warning disable 4014
+            NamespaceAsync(@namespace, action.AsAsync());
+#pragma warning restore 4014
+        }
+
+        public override async Task ClassAsync(
             string @class,
             string @namespace,
             string genericParameters,
-            Action action,
+            Func<Task> action,
             string baseClass = null,
             IEnumerable<string> interfaces = null)
         {
@@ -54,27 +63,34 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     str += $"{(string.IsNullOrWhiteSpace(baseClass) ? " :" : ",")} " + string.Join(", ", interfacesArr);
                 }
             }
-            Namespace(@namespace, () =>
+            await NamespaceAsync(@namespace, async () =>
             {
-                Scope(str, action);
+                await ScopeAsync(str, action);
             });
         }
 
-        public void Field(IVariable field, Action instantiate = null)
+        public async Task FieldAsync(IVariable field, Func<Task> instantiate = null)
         {
             AppendLine();
             Append(string.Format($"protected {field.TypeInfo.ResolvedType ?? TypeResolver.ResolveTypeNameFromODataName(field.TypeInfo).Name} {field.Name}"));
             if (instantiate != null)
             {
                 Append(" = ");
-                instantiate();
+                await instantiate();
             }
             CloseLine();
             AppendLine();
         }
 
-        public override void Property(string privacy, string name, ITypeInfo type,
-            Action instantiator,
+        public void Field(IVariable field, Action instantiate = null)
+        {
+#pragma warning disable 4014
+            FieldAsync(field, instantiate.AsAsync());
+#pragma warning restore 4014
+        }
+
+        public override async Task PropertyAsync(string privacy, string name, ITypeInfo type,
+            Func<Task> instantiator,
             bool instantiate,
             GetterSetter getterSetter = null,
             params string[] instantiationParameters)
@@ -88,9 +104,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             var typeName = string.IsNullOrWhiteSpace(type.ResolvedType)
                 ? TypeResolver.ResolveTypeNameFromODataName(type).Name
                 : type.ResolvedType;
-            var backingName = $"_{name}";
-            backingName = backingName.Substring(0, 2).ToLower() + backingName.Substring(2);
-
+            var backingName = $"_{name.FirstCharToLower()}";
             var set = getterSetter?.Set;
             var afterSet = getterSetter?.AfterSet;
             var beforeSet = getterSetter?.BeforeSet;
@@ -101,9 +115,9 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 getterSetter.BackingFieldName = backingName;
                 getterSetter.NewValueName = "value";
-                UseTempStringBuilder(sb, () =>
+                await UseTempStringBuilderAsync(sb, async () =>
                 {
-                    Field(
+                    await FieldAsync(
                         new EntityFunctionParameterDefinition(backingName, type), instantiator);
                 });
             }
@@ -197,11 +211,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 sb.Append(" { get; set; }");
                 if (instantiate)
                 {
-                    UseTempStringBuilder(sb, () =>
+                    await UseTempStringBuilderAsync(sb, async () =>
                     {
                         if (instantiator != null)
                         {
-                            AppendInstantiate(instantiator);
+                            await AppendInstantiateAsync(instantiator);
                         }
                         else
                         {
@@ -215,8 +229,13 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
 
         void AppendInstantiate(Action instantiator)
         {
+            AppendInstantiateAsync(instantiator.AsAsync());
+        }
+
+        async Task AppendInstantiateAsync(Func<Task> instantiator)
+        {
             Append(" = ");
-            instantiator();
+            await instantiator();
             CloseLine();
         }
 
@@ -233,7 +252,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return $"{left} ?? {right}";
         }
 
-        public void Method(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Action action, string privacy = null, bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
+        public async Task MethodAsync(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Func<Task> action, string privacy = null,
+            bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
         {
             var returnTypeResolved = "";
             var modifiers = "";
@@ -274,7 +294,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 }
             }
 
-            Scope(
+            await ScopeAsync(
                 string.Format(
                     "{0}{1}{2}({3}){4}",
                     privacy,
@@ -286,6 +306,21 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         : ""
                 ),
                 action);
+        }
+
+        public void Method(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Action action, string privacy = null, bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
+        {
+#pragma warning disable 4014
+            MethodAsync(
+#pragma warning restore 4014
+                name,
+                parameters,
+                returnType,
+                action.AsAsync(),
+                privacy,
+                async,
+                resolveTypeName,
+                modifier);
         }
 
         public string TypeOfExpression(ITypeInfo type)

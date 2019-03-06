@@ -10,6 +10,7 @@ using Iql.OData.TypeScript.Generator.Definitions;
 using Iql.OData.TypeScript.Generator.Extensions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
+using GeneratedFile = Iql.OData.TypeScript.Generator.Models.GeneratedFile;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
@@ -22,9 +23,9 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             string fileName,
             string @namespace,
             ODataTypeDefinition entityType, 
-            OutputType outputType,  
+            OutputKind outputKind,  
             GeneratorSettings settings)
-            : base(fileName, @namespace, schema, outputType, settings)
+            : base(fileName, @namespace, schema, outputKind, settings)
         {
             _entityType = entityType;
             _entityType.OriginalName = _entityType.Name;
@@ -75,7 +76,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 () =>
                                 {
                                     var typeName = property.TypeInfo.EdmType.ToLower();
-                                    if (OutputType == OutputType.TypeScript && typeName.Contains("edm:datetime"))
+                                    if (OutputKind == OutputKind.TypeScript && typeName.Contains("edm:datetime"))
                                     {
                                         AppendLine($"({oldValue.Name} != null && {value.Name} != null) ? {oldValue.Name}.getTime() !== {value.Name}.getTime() : {oldValue.Name} !== {value.Name};");
                                     }
@@ -139,7 +140,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 var args = new List<string>();
                                 args.Add("this");
                                 args.Add(NameOf(property.Name));
-                                if (OutputType == OutputType.TypeScript)
+                                if (OutputKind == OutputKind.TypeScript)
                                 {
                                     args.Add("null");
                                     args.Add(entityTypeName);

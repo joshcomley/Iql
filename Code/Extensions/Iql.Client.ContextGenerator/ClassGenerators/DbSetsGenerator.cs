@@ -12,6 +12,7 @@ using Iql.OData.TypeScript.Generator.Extensions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
 using Iql.Parsing;
+using GeneratedFile = Iql.OData.TypeScript.Generator.Models.GeneratedFile;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
@@ -23,14 +24,14 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             string fileName,
             string @namespace,
             IEnumerable<EntitySetDefinition> entitySetDefinitions,
-            OutputType outputType,
+            OutputKind outputKind,
             GeneratorSettings settings
 
             ) : base(
             fileName,
             @namespace,
             schema,
-            outputType,
+            outputKind,
             settings)
         {
             _entitySetDefinitions = entitySetDefinitions;
@@ -57,7 +58,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                             new EntityFunctionParameterDefinition("dataContext", TypeResolver.TranslateType(typeof(IDataContext)), hasDefaultValue: true, defaultValue: null),
                         };
                         var baseParameters = constructorParameters.ToList();
-                        if (OutputType == OutputType.TypeScript)
+                        if (OutputKind == OutputKind.TypeScript)
                         {
                             baseParameters.Add(new EntityFunctionParameterDefinition(entitySetDefinition.Type.Name, new TypeInfo(entitySetDefinition.Type.Name)));
                         }

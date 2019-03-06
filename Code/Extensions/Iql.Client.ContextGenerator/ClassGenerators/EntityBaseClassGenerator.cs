@@ -7,6 +7,7 @@ using Iql.OData.TypeScript.Generator.Definitions;
 using Iql.OData.TypeScript.Generator.Extensions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
+using GeneratedFile = Iql.OData.TypeScript.Generator.Models.GeneratedFile;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
@@ -16,12 +17,12 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             string fileName,
             string @namespace,
             ODataSchema schema, 
-            OutputType outputType, 
+            OutputKind outputKind, 
             GeneratorSettings settings) : base(
             fileName,
             @namespace,
             schema, 
-            outputType, 
+            outputKind, 
             settings)
         {
         }

@@ -8,6 +8,7 @@ using Iql.OData.TypeScript.Generator.DataContext;
 using Iql.OData.TypeScript.Generator.Definitions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
+using GeneratedFile = Iql.OData.TypeScript.Generator.Models.GeneratedFile;
 
 namespace Iql.Client.ContextGenerator.ClassGenerators
 {
@@ -22,8 +23,8 @@ namespace Iql.Client.ContextGenerator.ClassGenerators
             string fileName,
             string className,
             IEnumerable<EntitySetDefinition> entitySetDefinitions,
-            OutputType outputType,
-            GeneratorSettings settings) : base(fileName, @namespace, schema, outputType, settings)
+            OutputKind outputKind,
+            GeneratorSettings settings) : base(fileName, @namespace, schema, outputKind, settings)
         {
             _entitySetDefinitions = entitySetDefinitions;
             _className = className;

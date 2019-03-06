@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Iql.Client.ContextGenerator.ClassGenerators;
 using Iql.Entities;
 using Iql.OData.TypeScript.Generator.DataContext;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
+using GeneratedFile = Iql.OData.TypeScript.Generator.Models.GeneratedFile;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
 {
@@ -20,7 +22,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             _schema = schema;
         }
 
-        public List<GeneratedFile> Generate(OutputType outputType)
+        public async Task<List<GeneratedFile>> GenerateAsync(OutputKind outputKind)
         {
             var files = new List<GeneratedFile>();
             var setGroups = _schema.EntitySets.GroupBy(es => es.Namespace);
@@ -37,9 +39,9 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         dbSetsPath,
                         @"",
                         setGroup.Select(s => s),
-                        outputType,
+                        outputKind,
                         Settings);
-                    files.Add(dataContextGenerator.Generate());
+                    files.Add(await dataContextGenerator.GenerateAsync());
                 }
 
                 var propertyServiceGenerator = new EntityTypeServiceGenerator(
@@ -48,7 +50,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     $"{setGroup.Key}.{nameof(EntityTypeService)}Base",
                     $"{setGroup.Key}{nameof(EntityTypeService)}Base",
                     setGroup.Select(s => s),
-                    outputType,
+                    outputKind,
                     Settings);
                 files.Add(propertyServiceGenerator.Generate());
 
@@ -59,7 +61,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         dbSetsPath,
                         dbSetsPath,
                         setGroup.Select(s => s),
-                        outputType,
+                        outputKind,
                         Settings);
                     files.Add(dbSetsGenerator.Generate());
                 }

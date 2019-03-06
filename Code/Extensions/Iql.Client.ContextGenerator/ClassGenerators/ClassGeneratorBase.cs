@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.OData.TypeScript.Generator.Definitions;
+using Iql.OData.TypeScript.Generator.Extensions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
 
@@ -39,26 +41,47 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             Settings = settings;
         }
 
-        public virtual void Scope(string line, Action action)
+        public virtual async Task ScopeAsync(string line, Func<Task> action)
         {
             AppendLine(line);
-            Scope(action);
+            await ScopeAsync(action);
         }
 
-        public virtual void Scope(Action action)
+        public virtual void Scope(string line, Action action)
+        {
+#pragma warning disable 4014
+            ScopeAsync(line, action.AsAsync());
+#pragma warning restore 4014
+        }
+
+        public virtual async Task ScopeAsync(Func<Task> action)
         {
             AppendLine("{");
-            Indent(action);
+            await IndentAsync(action);
             AppendLine();
             Append("}");
             AppendLine();
         }
 
-        public virtual void Indent(Action action)
+        public virtual void Scope(Action action)
+        {
+#pragma warning disable 4014
+            ScopeAsync(action.AsAsync());
+#pragma warning restore 4014
+        }
+
+        public async Task IndentAsync(Func<Task> action)
         {
             _indent++;
-            action();
+            await action();
             _indent--;
+        }
+
+        public virtual void Indent(Action action)
+        {
+#pragma warning disable 4014
+            IndentAsync(action.AsAsync());
+#pragma warning restore 4014
         }
 
         public virtual void AppendLineFormat(string line, params string[] args)
@@ -93,12 +116,17 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             _indentNextAppend = false;
         }
 
-        public virtual void UseTempStringBuilder(StringBuilder temp, Action action)
+        public virtual async Task UseTempStringBuilderAsync(StringBuilder temp, Func<Task> action)
         {
             var old = _sb;
             _sb = temp;
-            action();
+            await action();
             _sb = old;
+        }
+
+        public virtual void UseTempStringBuilder(StringBuilder temp, Action action)
+        {
+            UseTempStringBuilderAsync(temp, action.AsAsync());
         }
 
         public virtual string IndentText(string text, int? amount = null)
@@ -181,13 +209,24 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 interfaces);
         }
 
-        public abstract void Class(
+        public abstract Task ClassAsync(
+            string @class,
+            string @namespace,
+            string genericParameters,
+            Func<Task> action,
+            string baseClass = null,
+            IEnumerable<string> interfaces = null);
+
+        public void Class(
             string @class,
             string @namespace,
             string genericParameters,
             Action action,
             string baseClass = null,
-            IEnumerable<string> interfaces = null);
+            IEnumerable<string> interfaces = null)
+        {
+            ClassAsync(@class, @namespace, genericParameters, action.AsAsync(), baseClass, interfaces);
+        }
 
         public virtual void Property(PropertyInfo property)
         {
@@ -211,7 +250,24 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 getterSetter);
         }
 
-        public abstract void Property(string privacy, string name, ITypeInfo type, Action instantiator, bool instantiate,
+        public void Property(
+            string privacy,
+            string name,
+            ITypeInfo type,
+            Action instantiator,
+            bool instantiate,
+            GetterSetter getterSetter = null,
+            params string[] instantiationParameters)
+        {
+            PropertyAsync(privacy, name, type, instantiator.AsAsync(), instantiate, getterSetter, instantiationParameters);
+        }
+
+        public abstract Task PropertyAsync(
+            string privacy,
+            string name,
+            ITypeInfo type,
+            Func<Task> instantiator,
+            bool instantiate,
             GetterSetter getterSetter = null,
             params string[] instantiationParameters);
 
@@ -306,7 +362,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             Append($"{(property.IsLocal ? "" : "this.")}{property.Name}");
         }
 
-        public virtual void VariableAccessor(IVariable property, Action action = null)
+        public async Task VariableAccessorAsync(IVariable property, Func<Task> action = null)
         {
             if (!property.IsLocal)
             {
@@ -316,8 +372,15 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             if (action != null)
             {
                 Append(".");
-                action();
+                await action();
             }
+        }
+
+        public virtual void VariableAccessor(IVariable property, Action action = null)
+        {
+#pragma warning disable 4014
+            VariableAccessorAsync(property, action.AsAsync());
+#pragma warning restore 4014
         }
 
         public virtual EntityTypeReference TryAddReference(ITypeInfo type)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Iql.Data.DataStores;
 using Iql.Data.Lists;
 using Iql.Entities;
@@ -12,6 +13,7 @@ using Iql.OData.TypeScript.Generator.Definitions;
 using Iql.OData.TypeScript.Generator.Extensions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
+using GeneratedFile = Iql.OData.TypeScript.Generator.Models.GeneratedFile;
 using TypeInfo = Iql.OData.TypeScript.Generator.Definitions.TypeInfo;
 
 namespace Iql.OData.TypeScript.Generator.ClassGenerators
@@ -19,7 +21,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
     public class ClassGenerator : IClassGenerator
     {
         private Func<string, string> _nameMapper;
-        public OutputType OutputType { get; }
+        public OutputKind OutputKind { get; }
         public GeneratorSettings Settings { get; }
 
         public Func<string, string> NameMapper
@@ -31,14 +33,13 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         public ClassGenerator(
             string fileName,
             string @namespace,
-            ODataSchema schema, OutputType outputType, GeneratorSettings settings)
+            ODataSchema schema, 
+            OutputKind outputKind, 
+            GeneratorSettings settings)
         {
-            OutputType = outputType;
+            OutputKind = outputKind;
             Settings = settings;
-            Generator =
-                OutputType == OutputType.TypeScript
-                ? (IClassGenerator)new TypeScriptClassGenerator(schema, settings)
-                : new CSharpClassGenerator(schema, settings);
+            Generator = new CSharpClassGenerator(schema, settings);
             if (!string.IsNullOrWhiteSpace(fileName))
             {
                 FileName = fileName;
@@ -117,9 +118,21 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             Generator.Class(@class, @namespace, genericParameters, action, baseClass, interfaces);
         }
 
+        public Task ClassAsync(string @class, string @namespace,
+            string genericParameters, Func<Task> action, string baseClass = null,
+            IEnumerable<string> interfaces = null)
+        {
+            return Generator.ClassAsync(@class, @namespace, genericParameters, action, baseClass, interfaces);
+        }
+
         public void Field(IVariable field, Action instantiate = null)
         {
             Generator.Field(field, instantiate);
+        }
+
+        public Task FieldAsync(IVariable field, Func<Task> instantiate = null)
+        {
+            return Generator.FieldAsync(field, instantiate);
         }
 
         public void Property(PropertyInfo property)
@@ -143,6 +156,12 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
         {
             Generator.Method(name, parameters, returnType, action, privacy, async, resolveTypeName, modifier);
+        }
+
+        public Task MethodAsync(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Func<Task> action, string privacy = null,
+            bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
+        {
+            return Generator.MethodAsync(name, parameters, returnType, action, privacy, async, resolveTypeName, modifier);
         }
 
         public string TypeOfExpression(ITypeInfo type)
@@ -255,6 +274,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             Generator.VariableAccessor(property, action);
         }
 
+        public Task VariableAccessorAsync(IVariable property, Func<Task> action = null)
+        {
+            return Generator.VariableAccessorAsync(property, action);
+        }
+
         public void Class(string @class, string @namespace, ODataTypeDefinition extends, Action action)
         {
             Generator.Class(@class, @namespace, extends, action);
@@ -303,6 +327,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         public void Indent(Action action)
         {
             Generator.Indent(action);
+        }
+
+        public Task IndentAsync(Func<Task> action)
+        {
+            return Generator.IndentAsync(action);
         }
 
         public void AppendLineFormat(string line, params string[] args)
@@ -425,21 +454,21 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 returnType.Name;
             var typeScriptReturnTypeParameter =
                 returnType.Name;
-            if (OutputType == OutputType.TypeScript && returnType.IsCollection)
+            if (OutputKind == OutputKind.TypeScript && returnType.IsCollection)
             {
                 typeScriptReturnTypeParameter = "Array";
             }
 
             if (string.IsNullOrWhiteSpace(typeScriptReturnType))
             {
-                if (OutputType == OutputType.TypeScript)
+                if (OutputKind == OutputKind.TypeScript)
                 {
                     typeScriptReturnType = "void";
                     typeScriptReturnTypeParameter = "null";
                 }
             }
 
-            if (OutputType == OutputType.TypeScript)
+            if (OutputKind == OutputKind.TypeScript)
             {
                 typeScriptReturnTypeParameter = typeScriptReturnTypeParameter.AsTypeScriptTypeParameter();
             }
@@ -523,7 +552,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 : TypeOfExpression(returnType.Name.AsTypeScriptTypeParameter())
                             : null;
                     Return(
-                        $"({Cast(nameof(ODataDataStore))}this{scope}.{nameof(DataStore)}).{dataStoreMethod}{(hasDataResponse ? typeScriptReturnType : "")}({newLine}parameters,{newLine}{nameof(ODataMethodType)}.{(method.Type == EntityFunctionDefinitionType.Action ? nameof(ODataMethodType.Action) : nameof(ODataMethodType.Function))},{newLine}{nameof(ODataMethodScope)}.{method.Scope},{newLine}{String(method.Namespace)},{newLine}{String(method.Name)},{newLine}{entityType}{(hasDataResponse ? $",{newLine}{responseElementType}" : "")}{(OutputType == OutputType.TypeScript && hasDataResponse ? $",{newLine}{typeScriptReturnTypeParameter}" : "")})");
+                        $"({Cast(nameof(ODataDataStore))}this{scope}.{nameof(DataStore)}).{dataStoreMethod}{(hasDataResponse ? typeScriptReturnType : "")}({newLine}parameters,{newLine}{nameof(ODataMethodType)}.{(method.Type == EntityFunctionDefinitionType.Action ? nameof(ODataMethodType.Action) : nameof(ODataMethodType.Function))},{newLine}{nameof(ODataMethodScope)}.{method.Scope},{newLine}{String(method.Namespace)},{newLine}{String(method.Name)},{newLine}{entityType}{(hasDataResponse ? $",{newLine}{responseElementType}" : "")}{(OutputKind == OutputKind.TypeScript && hasDataResponse ? $",{newLine}{typeScriptReturnTypeParameter}" : "")})");
                 },
                 async: false,
                 resolveTypeName: false,

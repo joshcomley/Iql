@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Iql.OData.TypeScript.Generator.Definitions;
 using Iql.OData.TypeScript.Generator.Models;
 using Iql.OData.TypeScript.Generator.Parsers;
@@ -36,7 +37,16 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             string baseClass = null,
             IEnumerable<string> interfaces = null);
 
+        Task ClassAsync(
+            string @class,
+            string @namespace,
+            string genericParameters,
+            Func<Task> action,
+            string baseClass = null,
+            IEnumerable<string> interfaces = null);
+
         void Field(IVariable field, Action instantiate = null);
+        Task FieldAsync(IVariable field, Func<Task> instantiate = null);
         void Property(PropertyInfo property);
         void Property(IVariable property, bool instantiate, GetterSetter getterSetter = null);
 
@@ -47,6 +57,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             params string[] instantiationParameters);
 
         void Method(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Action action, string privacy = null, bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None);
+        Task MethodAsync(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Func<Task> action, string privacy = null, bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None);
         string TypeOfExpression(ITypeInfo type);
         string TypeOfExpression(string type);
         void MethodCall(string name, bool fromObject, params IVariable[] parameters);
@@ -70,6 +81,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         void AssignProperty(IVariable property, Action value);
         void PropertyAccessor(IVariable property);
         void VariableAccessor(IVariable property, Action action = null);
+        Task VariableAccessorAsync(IVariable property, Func<Task> action = null);
         void Class(string @class, string @namespace, ODataTypeDefinition extends, Action action);
         void AddReference(ODataTypeDefinition definition);
         void If(string expression, Action action);
@@ -80,6 +92,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         void Scope(string line, Action action);
         void Scope(Action action);
         void Indent(Action action);
+        Task IndentAsync(Func<Task> action);
         void AppendLineFormat(string line, params string[] args);
         void AppendLine();
         void AppendLine(string line);
