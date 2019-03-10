@@ -5,17 +5,12 @@ using System.Threading.Tasks;
 
 namespace Iql.Events
 {
-    public class AsyncEventEmitter<TEvent> : IAsyncEventManager<TEvent>
+    public class AsyncEventEmitter<TEvent> : EventEmitterBase<TEvent, Func<TEvent, Task>>, IAsyncEventManager<TEvent>
     {
-        private int _subscriptionId;
-
-        private Dictionary<int, Func<TEvent, Task>> _subscriptions;
-
-        public AsyncEventEmitter()
+        public AsyncEventEmitter(BackfireMode backfireMode = BackfireMode.None) : base(backfireMode)
         {
-
+            
         }
-
         EventSubscription IAsyncEventSubscriberBase.SubscribeAsync(Func<object, Task> action)
         {
             return SubscribeAsync(async e =>
@@ -24,54 +19,59 @@ namespace Iql.Events
             });
         }
 
-        public void Unsubscribe(int subscription)
-        {
-            if (_subscriptions == null)
-            {
-                return;
-            }
-            _subscriptions.Remove(subscription);
-        }
-
-        public void UnsubscribeAll()
-        {
-            _subscriptions = new Dictionary<int, Func<TEvent, Task>>();
-            SubscriptionActions = new List<Func<TEvent, Task>>();
-        }
-
         public EventSubscription SubscribeAsync(Func<TEvent, Task> action)
         {
-            if (_subscriptions == null)
+            var sub = SubscribeInternal(action);
+            switch (BackfireMode)
             {
-                _subscriptions = new Dictionary<int, Func<TEvent, Task>>();
+                case BackfireMode.All:
+                    foreach (var ev in EventHistory)
+                    {
+#pragma warning disable 4014
+                        EmitToSubscriptionsAsync(() => ev, null, new[] { action }.ToList());
+#pragma warning restore 4014
+                    }
+                    break;
+                case BackfireMode.Last:
+                    if (EventHistory.Any())
+                    {
+                        var last = EventHistory.LastOrDefault();
+#pragma warning disable 4014
+                        EmitToSubscriptionsAsync(() => last, null, new[] { action }.ToList());
+#pragma warning restore 4014
+                    }
+                    break;
             }
-            var id = ++_subscriptionId;
-            _subscriptions.Add(id, action);
-            SubscriptionActions = _subscriptions.Values.ToList();
-            return new EventSubscription(this, id);
+            return sub;
         }
-
-        private List<Func<TEvent, Task>> SubscriptionActions { get; set; }
 
         public async Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent = null)
         {
-            if (SubscriptionActions != null && SubscriptionActions.Count > 0)
+            var subscriptionActions = SubscriptionActions;
+            return await EmitToSubscriptionsAsync(eventObjectFactory, afterEvent, subscriptionActions);
+        }
+
+        private async Task<TEvent> EmitToSubscriptionsAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent, List<Func<TEvent, Task>> subscriptionActions)
+        {
+            eventObjectFactory = BuildEventObjectFactory(eventObjectFactory);
+            if (subscriptionActions != null && subscriptionActions.Count > 0)
             {
-                var ev = eventObjectFactory == null ? (TEvent)(object)null : eventObjectFactory();
-                for (var i = 0; i < SubscriptionActions.Count; i++)
+                var ev = eventObjectFactory();
+                for (var i = 0; i < subscriptionActions.Count; i++)
                 {
                     try
                     {
-                        await SubscriptionActions[i](ev);
+                        await subscriptionActions[i](ev);
                     }
                     catch (Exception e)
                     {
-                        if(EventEmitterExceptions.ShouldBeThrown(e))
+                        if (EventEmitterExceptions.ShouldBeThrown(e))
                         {
                             throw e;
                         }
                     }
                 }
+
                 if (afterEvent != null)
                 {
                     try
@@ -91,11 +91,6 @@ namespace Iql.Events
             }
 
             return default(TEvent);
-        }
-
-        public void Dispose()
-        {
-            UnsubscribeAll();
         }
     }
 }

@@ -4,15 +4,11 @@ using System.Linq;
 
 namespace Iql.Events
 {
-    public class EventEmitter<TEvent> : IEventManager<TEvent>
+    public class EventEmitter<TEvent> : EventEmitterBase<TEvent, Action<TEvent>>, IEventManager<TEvent>
     {
-        private int _subscriptionId;
-
-        private Dictionary<int, Action<TEvent>> _subscriptions;
-
-        public EventEmitter()
+        public EventEmitter(BackfireMode backfireMode = BackfireMode.None) : base(backfireMode)
         {
-            
+
         }
 
         EventSubscription IEventSubscriberBase.Subscribe(Action<object> action)
@@ -23,45 +19,52 @@ namespace Iql.Events
             });
         }
 
-        public void Unsubscribe(int subscription)
-        {
-            if (_subscriptions == null)
-            {
-                return;
-            }
-            _subscriptions.Remove(subscription);
-        }
-
         public EventSubscription Subscribe(Action<TEvent> action)
         {
-            if (_subscriptions == null)
+            var sub = SubscribeInternal(action);
+            switch (BackfireMode)
             {
-                _subscriptions = new Dictionary<int, Action<TEvent>>();
+                case BackfireMode.All:
+                    var history = EventHistory.ToArray();
+                    foreach (var ev in history)
+                    {
+                        EmitToSubscriptions(() => ev, null, new[] {action}.ToList());
+                    }
+                    break;
+                case BackfireMode.Last:
+                    if (EventHistory.Any())
+                    {
+                        var last = EventHistory.LastOrDefault();
+                        EmitToSubscriptions(() => last, null, new[] { action }.ToList());
+                    }
+                    break;
             }
-            var id = ++_subscriptionId;
-            _subscriptions.Add(id, action);
-            SubscriptionActions = _subscriptions.Values.ToList();
-            return new EventSubscription(this, id);
+            return sub;
         }
-
-        private List<Action<TEvent>> SubscriptionActions { get; set; }
 
         public TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null)
         {
-            if (SubscriptionActions != null && SubscriptionActions.Count > 0)
+            return EmitToSubscriptions(eventObjectFactory, afterEvent, SubscriptionActions);
+        }
+
+        private TEvent EmitToSubscriptions(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent, List<Action<TEvent>> subscriptionActions)
+        {
+            eventObjectFactory = BuildEventObjectFactory(eventObjectFactory);
+            if (subscriptionActions != null && subscriptionActions.Count > 0)
             {
-                var ev = eventObjectFactory == null ? (TEvent)(object)null : eventObjectFactory();
-                for (var i = 0; i < SubscriptionActions.Count; i++)
+                var ev = eventObjectFactory();
+                for (var i = 0; i < subscriptionActions.Count; i++)
                 {
                     try
                     {
-                        SubscriptionActions[i](ev);
+                        subscriptionActions[i](ev);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         ValidateException(e);
                     }
                 }
+
                 if (afterEvent != null)
                 {
                     try
@@ -92,17 +95,6 @@ namespace Iql.Events
                 ValidateException(e.InnerException);
 #endif
             }
-        }
-
-        public void UnsubscribeAll()
-        {
-            _subscriptions = new Dictionary<int, Action<TEvent>>();
-            SubscriptionActions = new List<Action<TEvent>>();
-        }
-
-        public void Dispose()
-        {
-            UnsubscribeAll();
         }
     }
 }

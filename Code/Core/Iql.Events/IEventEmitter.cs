@@ -24,7 +24,7 @@ namespace Iql.Events
 
     public interface IEventManager<TEvent> : IEventEmitter<TEvent>, IEventSubscriber<TEvent>
     {
-        
+        BackfireMode BackfireMode { get; set; }
     }
     public interface IEventEmitter<TEvent>
     {
