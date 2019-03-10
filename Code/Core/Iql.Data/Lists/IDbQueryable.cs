@@ -22,6 +22,17 @@ namespace Iql.Data.Lists
     {
         void DeleteEntity(object entity);
         IEntityStateBase Add(object entity);
+        Task<IDbList> ToListAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IDbList> AllPagesToListAsync(ProgressNotifier progressNotifier = null,
+            LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
         Task<IGetDataResult> ToListWithResponseAsync(LambdaExpression expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null

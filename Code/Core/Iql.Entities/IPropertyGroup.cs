@@ -13,14 +13,4 @@ namespace Iql.Entities
         IRuleCollection<IBinaryRule> ValidationRules { get; set; }
         IRuleCollection<IDisplayRule> DisplayRules { get; set; }
     }
-
-    public interface IPropertyContainer : IMetadata, IEntityConfigurationItem
-    {
-        IPropertyGroup[] GetGroupProperties();
-    }
-
-    //public interface IPropertyGrouping
-    //{
-    //    IProperty[] GetProperties();
-    //}
 }

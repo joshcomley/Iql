@@ -9,6 +9,7 @@ using Iql.Data.Events;
 using Iql.Data.Exceptions;
 using Iql.Entities;
 using Iql.Entities.Events;
+using Iql.Events;
 using Iql.Parsing;
 using Iql.Queryable;
 using Iql.Queryable.Operations;

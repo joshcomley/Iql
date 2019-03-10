@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Iql.Data.Events;
 using Iql.Data.Extensions;
 using Iql.Entities;
-using Iql.Entities.Events;
 using Iql.Entities.Lists.Events;
+using Iql.Events;
 
 namespace Iql.Data.Lists
 {

@@ -27,6 +27,10 @@ namespace Iql.Entities.Extensions
         public static IqlPropertyPath[] ResolveUniqueTextSearchablePaths(this IEntityDisplayTextFormatter displayFormatter,
             IEntityConfiguration entityConfiguration)
         {
+            if (displayFormatter == null)
+            {
+                return ResolveAutoTextSearchablePaths(entityConfiguration);
+            }
             var uniquePaths = displayFormatter.ResolveUniquePaths(entityConfiguration);
             var result = new List<IqlPropertyPath>();
             foreach (var path in uniquePaths)
@@ -41,7 +45,14 @@ namespace Iql.Entities.Extensions
                         break;
                 }
             }
-            return result.ToArray();
+            var paths = result.ToArray();
+            return paths.Length == 0 ? ResolveAutoTextSearchablePaths(entityConfiguration) : paths;
+        }
+
+        private static IqlPropertyPath[] ResolveAutoTextSearchablePaths(IEntityConfiguration entityConfiguration)
+        {
+            return entityConfiguration.DisplayFormatting.ResolveAutoProperties().Properties
+                .Select(_ => IqlPropertyPath.FromProperty(_)).ToArray();
         }
 
         public static IqlPropertyPath[] ResolveUniquePaths(this IEntityDisplayTextFormatter displayFormatter, IEntityConfiguration entityConfiguration)

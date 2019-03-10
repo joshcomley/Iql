@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Iql.Entities.Events;
 using Iql.Entities.Lists.Events;
+using Iql.Events;
 
 namespace Iql.Entities.Lists
 {

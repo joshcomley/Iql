@@ -5,9 +5,4 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj" />
-    <ProjectReference Include="..\Iql.Events\Iql.Events.csproj" />
-    <ProjectReference Include="..\Iql\Iql.csproj" />
-  </ItemGroup>
 </Project>

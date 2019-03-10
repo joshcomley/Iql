@@ -10,6 +10,7 @@ using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.ValueResolvers;
+using Iql.Events;
 
 namespace Iql.Entities
 {

@@ -1,4 +1,5 @@
 using Iql.Entities.Events;
+using Iql.Events;
 
 namespace Iql.Entities
 {

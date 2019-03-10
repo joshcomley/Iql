@@ -615,6 +615,19 @@ namespace Iql.Data.Context
             return result?.Data;
         }
 
+        async Task<IDbList> IDbQueryable.ToListAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await ToListAsync((Expression<Func<T, bool>>) expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
+
         public override async Task<DbList<T>> AllPagesToListAsync(ProgressNotifier progressNotifier = null,
             Expression<Func<T, bool>> expression = null
 #if TypeScript
@@ -628,6 +641,20 @@ namespace Iql.Data.Context
 #endif
             );
             return result?.Data;
+        }
+
+        async Task<IDbList> IDbQueryable.AllPagesToListAsync(ProgressNotifier progressNotifier = null,
+            LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await AllPagesToListAsync(progressNotifier, (Expression<Func<T, bool>>) expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
         }
 
         public async Task<AggregatedGetDataResult<T>> AllPagesToListWithResponseAsync(ProgressNotifier progressNotifier = null,

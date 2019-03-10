@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Iql.Entities.Events
+namespace Iql.Events
 {
     public interface IEventEmitterBase
     {

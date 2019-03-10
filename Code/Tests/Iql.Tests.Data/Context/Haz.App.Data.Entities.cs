@@ -5,6 +5,7 @@ using Iql.Data;
 using Iql.Data.Events;
 using Iql.Data.Lists;
 using Iql.Entities.Events;
+using Iql.Events;
 
 
 namespace Haz.App.Data.Entities

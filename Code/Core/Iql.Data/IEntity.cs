@@ -1,5 +1,6 @@
 using Iql.Data.Events;
 using Iql.Entities.Events;
+using Iql.Events;
 
 namespace Iql.Data
 {

@@ -11,6 +11,12 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
         {
             All = new List<IEntityDisplayTextFormatter>();
         }
+
+        public AutoFormattingResult ResolveAutoProperties()
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<IEntityDisplayTextFormatter> All { get; set; }
         public IEntityDisplayTextFormatter Default { get; set; }
         public IEntityDisplayTextFormatter Get(string key)

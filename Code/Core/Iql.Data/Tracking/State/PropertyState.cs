@@ -6,6 +6,7 @@ using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Entities.PropertyChangers;
+using Iql.Events;
 using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking.State

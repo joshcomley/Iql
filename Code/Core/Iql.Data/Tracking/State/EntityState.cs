@@ -9,9 +9,9 @@ using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
 using Iql.Data.Extensions;
 using Iql.Entities;
-using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
+using Iql.Events;
 using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking.State

@@ -6,6 +6,7 @@ namespace Iql.Entities.DisplayFormatting
 {
     public interface IDisplayFormatting
     {
+        AutoFormattingResult ResolveAutoProperties();
         IEnumerable<IEntityDisplayTextFormatter> All { get; }
         IEntityDisplayTextFormatter Default { get; }
         IEntityDisplayTextFormatter Get(string key);

@@ -3,6 +3,7 @@ using Iql.Conversion.State;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
+using Iql.Events;
 
 namespace Iql.Data.Crud.Operations
 {

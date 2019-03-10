@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Entities.Events;
+using Iql.Events;
 
 namespace Iql.Forms.Geography
 {
-    public class GeographicCoordinates
+    public class IqlGeographicCoordinates
     {
         private float _latitude;
 
         private float _longitude;
 
-        public EventEmitter<GeographicCoordinatesChangedEvent> Changed =
-            new EventEmitter<GeographicCoordinatesChangedEvent>();
+        public EventEmitter<IqlGeographicCoordinatesChangedEvent> Changed =
+            new EventEmitter<IqlGeographicCoordinatesChangedEvent>();
 
         public object Entity;
         public string LatitudeDegrees;
         public string LongitudeDegrees;
 
-        public GeographicCoordinates(float? latitude = null, float? longitude = null, object entity = null)
+        public IqlGeographicCoordinates(float? latitude = null, float? longitude = null, object entity = null)
         {
             Latitude = latitude ?? 0;
             Longitude = longitude ?? 0;
@@ -51,7 +51,7 @@ namespace Iql.Forms.Geography
         public bool HasLatitude => ValueHasValue(Latitude);
         public bool HasLongitude => ValueHasValue(Longitude);
 
-        public static bool AreEquivalent(GeographicCoordinates[] left, GeographicCoordinates[] right)
+        public static bool AreEquivalent(IqlGeographicCoordinates[] left, IqlGeographicCoordinates[] right)
         {
             var areDifferent = left == null && right != null ||
                                left != null && right == null;
@@ -82,18 +82,18 @@ namespace Iql.Forms.Geography
             return !areDifferent;
         }
 
-        private static GeographicCoordinates[] NormalizeCoordinates(GeographicCoordinates[] coordinates)
+        private static IqlGeographicCoordinates[] NormalizeCoordinates(IqlGeographicCoordinates[] coordinates)
         {
             if (coordinates == null)
             {
-                return new GeographicCoordinates[] { };
+                return new IqlGeographicCoordinates[] { };
             }
 
             // Technically a length of less than four is invalid but for our purposes of checking
             // the status this is fine
             if (coordinates.Length < 2)
             {
-                return new GeographicCoordinates[] { };
+                return new IqlGeographicCoordinates[] { };
             }
 
             var first = coordinates[0];
@@ -108,7 +108,7 @@ namespace Iql.Forms.Geography
             return coordinates;
         }
 
-        public static IqlRingExpression ToIqlRing(GeographicCoordinates[] coordinates)
+        public static IqlRingExpression ToIqlRing(IqlGeographicCoordinates[] coordinates)
         {
             var ring = new IqlRingExpression();
             ring.Points = new List<IqlPointExpression>();
@@ -125,7 +125,7 @@ namespace Iql.Forms.Geography
             return ring;
         }
 
-        public static IqlPolygonExpression ToIqlPolygon(GeographicCoordinates[] coordinates)
+        public static IqlPolygonExpression ToIqlPolygon(IqlGeographicCoordinates[] coordinates)
         {
             var polygon = new IqlPolygonExpression(
                 ToIqlRing(coordinates)
@@ -142,7 +142,7 @@ namespace Iql.Forms.Geography
         {
             if (oldLatitude != null || oldLongitude != null)
             {
-                Changed.Emit(() => new GeographicCoordinatesChangedEvent(
+                Changed.Emit(() => new IqlGeographicCoordinatesChangedEvent(
                     oldLatitude ?? Latitude,
                     oldLongitude ?? Longitude,
                     Latitude,
@@ -167,7 +167,7 @@ namespace Iql.Forms.Geography
                 $"{Math.Truncate(lon)}° {Math.Truncate(lonMinPart)}' {Math.Truncate(lonSecPart)}\" {lonDir}";
         }
 
-        public void UpdateWith(GeographicCoordinates coordinates)
+        public void UpdateWith(IqlGeographicCoordinates coordinates)
         {
             UpdateTo(coordinates.Latitude, coordinates.Longitude);
         }

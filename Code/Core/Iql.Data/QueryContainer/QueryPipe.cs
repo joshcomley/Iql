@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Lists;
-using Iql.Entities.Events;
+using Iql.Events;
 using Newtonsoft.Json;
 
 namespace Iql.Data.QueryContainer

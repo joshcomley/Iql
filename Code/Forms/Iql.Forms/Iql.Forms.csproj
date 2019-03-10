@@ -9,6 +9,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />
+    <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
   </ItemGroup>
 </Project>

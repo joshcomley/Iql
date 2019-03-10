@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Iql.Entities.Exceptions;
+using System.Threading.Tasks;
 
-namespace Iql.Entities.Events
+namespace Iql.Events
 {
-    public class EventEmitter<TEvent> : IEventManager<TEvent>
+    public class AsyncEventEmitter<TEvent> : IAsyncEventManager<TEvent>
     {
         private int _subscriptionId;
 
-        private Dictionary<int, Action<TEvent>> _subscriptions;
+        private Dictionary<int, Func<TEvent, Task>> _subscriptions;
 
-        public EventEmitter()
+        public AsyncEventEmitter()
         {
-            
+
         }
 
-        EventSubscription IEventSubscriberBase.Subscribe(Action<object> action)
+        EventSubscription IAsyncEventSubscriberBase.SubscribeAsync(Func<object, Task> action)
         {
-            return Subscribe(e =>
+            return SubscribeAsync(async e =>
             {
-                action(e);
+                await action(e);
             });
         }
 
@@ -33,11 +33,17 @@ namespace Iql.Entities.Events
             _subscriptions.Remove(subscription);
         }
 
-        public EventSubscription Subscribe(Action<TEvent> action)
+        public void UnsubscribeAll()
+        {
+            _subscriptions = new Dictionary<int, Func<TEvent, Task>>();
+            SubscriptionActions = new List<Func<TEvent, Task>>();
+        }
+
+        public EventSubscription SubscribeAsync(Func<TEvent, Task> action)
         {
             if (_subscriptions == null)
             {
-                _subscriptions = new Dictionary<int, Action<TEvent>>();
+                _subscriptions = new Dictionary<int, Func<TEvent, Task>>();
             }
             var id = ++_subscriptionId;
             _subscriptions.Add(id, action);
@@ -45,9 +51,9 @@ namespace Iql.Entities.Events
             return new EventSubscription(this, id);
         }
 
-        private List<Action<TEvent>> SubscriptionActions { get; set; }
+        private List<Func<TEvent, Task>> SubscriptionActions { get; set; }
 
-        public TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null)
+        public async Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent = null)
         {
             if (SubscriptionActions != null && SubscriptionActions.Count > 0)
             {
@@ -56,22 +62,28 @@ namespace Iql.Entities.Events
                 {
                     try
                     {
-                        SubscriptionActions[i](ev);
+                        await SubscriptionActions[i](ev);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                        ValidateException(e);
+                        if(EventEmitterExceptions.ShouldBeThrown(e))
+                        {
+                            throw e;
+                        }
                     }
                 }
                 if (afterEvent != null)
                 {
                     try
                     {
-                        afterEvent(ev);
+                        await afterEvent(ev);
                     }
                     catch (Exception e)
                     {
-                        ValidateException(e);
+                        if (EventEmitterExceptions.ShouldBeThrown(e))
+                        {
+                            throw e;
+                        }
                     }
                 }
 
@@ -79,27 +91,6 @@ namespace Iql.Entities.Events
             }
 
             return default(TEvent);
-        }
-
-        private static void ValidateException(Exception e)
-        {
-            if (e != null)
-            {
-                if (e is AttemptingToAssignRemotelyGeneratedKeyException ||
-                    e is DuplicateKeyException)
-                {
-                    throw e;
-                }
-#if !TypeScript
-                ValidateException(e.InnerException);
-#endif
-            }
-        }
-
-        public void UnsubscribeAll()
-        {
-            _subscriptions = new Dictionary<int, Action<TEvent>>();
-            SubscriptionActions = new List<Action<TEvent>>();
         }
 
         public void Dispose()

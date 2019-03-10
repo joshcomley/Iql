@@ -2,9 +2,10 @@
 
 namespace Iql.Forms.Geography
 {
-    public class CurrentLocation
+    public class IqlCurrentLocation
     {
-        public GeographicCoordinates Coordinates { get; }
+        public bool Success { get; }
+        public IqlGeographicCoordinates Coordinates { get; }
         public float? Altitude { get; }
         public float? Speed { get; }
         public float? Direction { get; }
@@ -12,9 +13,16 @@ namespace Iql.Forms.Geography
         public IqlLocationAccuracy? VerticalAccuracy { get; }
         public DateTimeOffset Time { get; }
 
-        public CurrentLocation(GeographicCoordinates coordinates, float? altitude, float? speed, float? direction, IqlLocationAccuracy? horizontalAccuracy, IqlLocationAccuracy? verticalAccuracy)
+        public IqlCurrentLocation(IqlGeographicCoordinates coordinates, 
+            bool success = true,
+            float? altitude = null, 
+            float? speed = null, 
+            float? direction = null, 
+            IqlLocationAccuracy? horizontalAccuracy = null, 
+            IqlLocationAccuracy? verticalAccuracy = null)
         {
             Coordinates = coordinates;
+            Success = success;
             Altitude = altitude;
             Speed = speed;
             Direction = direction;

@@ -5,8 +5,8 @@ using Iql.Conversion.State;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
 using Iql.Entities;
-using Iql.Entities.Events;
 using Iql.Entities.Relationships;
+using Iql.Events;
 
 namespace Iql.Data.Tracking.State
 {

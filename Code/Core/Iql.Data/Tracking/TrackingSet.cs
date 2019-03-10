@@ -15,6 +15,7 @@ using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Exceptions;
 using Iql.Entities.Extensions;
+using Iql.Events;
 using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking

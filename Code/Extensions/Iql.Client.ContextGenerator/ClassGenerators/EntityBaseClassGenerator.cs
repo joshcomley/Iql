@@ -2,6 +2,7 @@
 using Iql.Data;
 using Iql.Data.Events;
 using Iql.Entities.Events;
+using Iql.Events;
 using Iql.OData.TypeScript.Generator.DataContext;
 using Iql.OData.TypeScript.Generator.Definitions;
 using Iql.OData.TypeScript.Generator.Extensions;

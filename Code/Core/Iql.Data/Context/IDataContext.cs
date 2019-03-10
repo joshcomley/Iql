@@ -15,12 +15,14 @@ using Iql.Entities;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
 using Iql.Entities.Validation.Validation;
+using Iql.Events;
 using Iql.Parsing;
 
 namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider
     {
+        EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged { get; }
         bool EnableOffline { get; set; }
         bool SupportsOffline { get; }
         IOfflineDataStore OfflineDataStore { get; set; }

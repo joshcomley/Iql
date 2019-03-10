@@ -4,7 +4,7 @@ using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores.NestedSets;
 using Iql.Entities;
-using Iql.Entities.Events;
+using Iql.Events;
 
 namespace Iql.Data.DataStores
 {

@@ -11,6 +11,7 @@ using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
+using Iql.Events;
 using Iql.Extensions;
 using Iql.Queryable.Extensions;
 

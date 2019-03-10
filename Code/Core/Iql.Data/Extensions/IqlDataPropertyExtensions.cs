@@ -4,9 +4,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Evaluation;
+using Iql.Data.Rendering;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.InferredValues;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Parsing.Evaluation;
@@ -14,15 +16,88 @@ using Iql.Entities.Services;
 
 namespace Iql.Data.Extensions
 {
-    public static class PropertyExtensions
+    public static class IqlDataPropertyExtensions
     {
         private static MethodInfo NewInferredValueContextTypedMethod { get; }
 
-        static PropertyExtensions()
+        static IqlDataPropertyExtensions()
         {
             NewInferredValueContextTypedMethod =
-                typeof(PropertyExtensions).GetMethod(nameof(NewInferredValueContextTyped),
+                typeof(IqlDataPropertyExtensions).GetMethod(nameof(NewInferredValueContextTyped),
                     BindingFlags.NonPublic | BindingFlags.Static);
+        }
+
+        public static string ResolveKind(this IPropertyContainer property)
+        {
+            var kind = PropertyRenderingKind.Unknown;
+            var prop = property as PropertyBase;
+            var rel = property as RelationshipDetailBase;
+            if (prop != null)
+            {
+                switch (prop.TypeDefinition.Kind)
+                {
+                    case IqlType.Enum:
+                        kind = PropertyRenderingKind.Enum;
+                        break;
+                    case IqlType.Guid:
+                        kind = PropertyRenderingKind.Guid;
+                        break;
+                    case IqlType.String:
+                        kind = PropertyRenderingKind.String;
+                        break;
+                    case IqlType.TimeSpan:
+                        kind = PropertyRenderingKind.TimeSpan;
+                        break;
+                    case IqlType.Date:
+                        kind = PropertyRenderingKind.Date;
+                        break;
+                    case IqlType.Boolean:
+                        kind = PropertyRenderingKind.Boolean;
+                        break;
+                    case IqlType.Integer:
+                    case IqlType.Decimal:
+                        kind = PropertyRenderingKind.Number;
+                        break;
+                    case IqlType.GeometryPolygon:
+                    case IqlType.GeographyPolygon:
+                        kind = PropertyRenderingKind.GeoPolygon;
+                        break;
+                    case IqlType.GeometryPoint:
+                    case IqlType.GeographyPoint:
+                        kind = PropertyRenderingKind.GeoPoint;
+                        break;
+                }
+                //if (prop.Kind.HasFlag(PropertyKind.Key))
+                //{
+                //    kind = PropertyRenderingKind.Key;
+                //}
+                //else if (prop.Kind.HasFlag(PropertyKind.RelationshipKey))
+                //{
+                //    kind = PropertyRenderingKind.RelationshipKey;
+                //}
+                //else if (prop.Kind == PropertyKind.Relationship)
+                //{
+                //    kind = PropertyRenderingKind.Relationship;
+                //}
+            }
+            else if (rel != null && rel.RelationshipSide == RelationshipSide.Target)
+            {
+                kind = PropertyRenderingKind.RelationshipTarget;
+            }
+            else if (rel != null && rel.RelationshipSide == RelationshipSide.Source)
+            {
+                kind = PropertyRenderingKind.RelationshipSource;
+            }
+            else if (property is IFile)
+            {
+                kind = PropertyRenderingKind.File;
+            }
+            else
+            {
+                kind = PropertyRenderingKind.Group;
+            }
+
+            return kind;
         }
 
         public static async Task<bool> IsReadOnlyAsync(
@@ -70,7 +145,7 @@ namespace Iql.Data.Extensions
                         }
 
                         var conditionResult = await inferredValueConfiguration.InferredWithConditionIql.EvaluateIqlAsync(
-                            PropertyExtensions.NewInferredValueContext(owner, owner, property.EntityConfiguration.Type),
+                            IqlDataPropertyExtensions.NewInferredValueContext(owner, owner, property.EntityConfiguration.Type),
                             dataContext);
 
                         if (conditionResult.Success && Equals(conditionResult.Result, true))

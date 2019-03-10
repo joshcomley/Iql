@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Entities;
-using Iql.Entities.Events;
+using Iql.Events;
 
 namespace Iql.Data.Relationships
 {

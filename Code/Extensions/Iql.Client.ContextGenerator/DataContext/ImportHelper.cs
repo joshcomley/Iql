@@ -22,6 +22,7 @@ using Iql.Entities.Relationships;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.SpecialTypes;
 using Iql.Entities.Validation.Validation;
+using Iql.Events;
 using Iql.OData.Json;
 using Iql.OData.Methods;
 using Iql.Parsing;

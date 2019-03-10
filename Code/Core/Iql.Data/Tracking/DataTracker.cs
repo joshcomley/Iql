@@ -13,7 +13,6 @@ using Iql.Data.Extensions;
 using Iql.Data.Relationships;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
-using Iql.Entities.Events;
 using Iql.Extensions;
 using Newtonsoft.Json;
 

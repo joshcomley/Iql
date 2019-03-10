@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Data;
 using Iql.Data.Lists;
-using Iql.Entities.Events;
 using Iql.Entities.PropertyChangers;
 using Iql.OData.TypeScript.Generator.DataContext;
 using Iql.OData.TypeScript.Generator.Definitions;
