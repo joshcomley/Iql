@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Iql.Events
 {
-    public class EventEmitterBase<TEvent, TSubscription> : IEventUnsubcriber
+    public class EventEmitterBase<TEvent, TSubscriptionAction> : IEventUnsubscriber
     {
         public EventEmitterBase(BackfireMode backfireMode = BackfireMode.None)
         {
@@ -15,8 +15,40 @@ namespace Iql.Events
         private EventEmitter<EventSubscription> _onSubscribe;
         private EventEmitter<EventSubscription> _onUnsubscribe;
         private int _subscriptionId;
-        private Dictionary<int, TSubscription> _subscriptions;
-        protected List<TSubscription> SubscriptionActions { get; set; }
+        private Dictionary<int, TSubscriptionAction> _subscriptionActions;
+
+        protected List<TSubscriptionAction> ResolveSubscriptionActions(IEnumerable<EventSubscription> subscriptions)
+        {
+            List<TSubscriptionAction> subscriptionActions;
+            if (subscriptions == null)
+            {
+                subscriptionActions = SubscriptionActions;
+            }
+            else
+            {
+                subscriptionActions = new List<TSubscriptionAction>();
+                foreach (var eventSubscription in subscriptions)
+                {
+                    var match = FindSubscription(eventSubscription.Id);
+                    if (match != null && match.Subscription == eventSubscription && eventSubscription.EventSubscriber == this)
+                    {
+                        subscriptionActions.Add(match.Action);
+                    }
+                }
+            }
+            return subscriptionActions;
+        }
+
+        protected SubscriptionMatch<TSubscriptionAction> FindSubscription(int id)
+        {
+            if (_subscriptionActions.ContainsKey(id) && SubscriptionsLookup.ContainsKey(id))
+            {
+                return new SubscriptionMatch<TSubscriptionAction>(SubscriptionsLookup[id], _subscriptionActions[id]);
+            }
+            return null;
+        }
+
+        protected List<TSubscriptionAction> SubscriptionActions { get; set; }
 
         public EventEmitter<EventSubscription> OnSubscribe =>
             _onSubscribe = _onSubscribe ?? new EventEmitter<EventSubscription>();
@@ -30,6 +62,14 @@ namespace Iql.Events
         protected Dictionary<int, EventSubscription> SubscriptionsLookup { get; } =
             new Dictionary<int, EventSubscription>();
 
+        public void ClearBackfires()
+        {
+            Backfires.Clear();
+        }
+
+        public bool HasBackfires => Backfires.Any();
+        public int BackfireCount => Backfires.Count;
+
         public BackfireMode BackfireMode
         {
             get => _backfireMode;
@@ -38,18 +78,18 @@ namespace Iql.Events
                 var old = _backfireMode;
                 if (old != BackfireMode.None && value == BackfireMode.None)
                 {
-                    EventHistory.Clear();
+                    Backfires.Clear();
                 }
 
                 _backfireMode = value;
             }
         }
 
-        protected List<TEvent> EventHistory { get; } = new List<TEvent>();
+        public List<TEvent> Backfires { get; } = new List<TEvent>();
 
         public void Unsubscribe(int subscription)
         {
-            if (_subscriptions == null)
+            if (_subscriptionActions == null)
             {
                 return;
             }
@@ -62,7 +102,7 @@ namespace Iql.Events
             }
 
             SubscriptionsLookup.Remove(subscription);
-            _subscriptions.Remove(subscription);
+            _subscriptionActions.Remove(subscription);
         }
 
         public void UnsubscribeAll()
@@ -74,8 +114,8 @@ namespace Iql.Events
 
             SubscriptionsLookup.Clear();
             Subscriptions.Clear();
-            _subscriptions = new Dictionary<int, TSubscription>();
-            SubscriptionActions = new List<TSubscription>();
+            _subscriptionActions = new Dictionary<int, TSubscriptionAction>();
+            SubscriptionActions = new List<TSubscriptionAction>();
         }
 
         public void Dispose()
@@ -102,31 +142,32 @@ namespace Iql.Events
             switch (BackfireMode)
             {
                 case BackfireMode.All:
-                    EventHistory.Add(CreateEvent());
+                    Backfires.Add(CreateEvent());
                     break;
                 case BackfireMode.Last:
-                    EventHistory.Clear();
-                    EventHistory.Add(CreateEvent());
+                    Backfires.Clear();
+                    Backfires.Add(CreateEvent());
                     break;
                 case BackfireMode.None:
-                    EventHistory.Clear();
+                    Backfires.Clear();
                     break;
             }
 
             return () => { return CreateEvent(); };
         }
 
-        protected EventSubscription SubscribeInternal(TSubscription action)
+        protected EventSubscription SubscribeInternal(TSubscriptionAction action)
         {
-            if (_subscriptions == null)
+            if (_subscriptionActions == null)
             {
-                _subscriptions = new Dictionary<int, TSubscription>();
+                _subscriptionActions = new Dictionary<int, TSubscriptionAction>();
             }
 
             var id = ++_subscriptionId;
-            _subscriptions.Add(id, action);
-            SubscriptionActions = _subscriptions.Values.ToList();
+            _subscriptionActions.Add(id, action);
+            SubscriptionActions = _subscriptionActions.Values.ToList();
             var sub = new EventSubscription(this, id);
+            SubscriptionsLookup.Add(id, sub);
             OnSubscribe.Emit(() => sub);
             return sub;
         }

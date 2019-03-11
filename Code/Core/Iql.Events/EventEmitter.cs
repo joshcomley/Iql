@@ -25,16 +25,16 @@ namespace Iql.Events
             switch (BackfireMode)
             {
                 case BackfireMode.All:
-                    var history = EventHistory.ToArray();
+                    var history = Backfires.ToArray();
                     foreach (var ev in history)
                     {
-                        EmitToSubscriptions(() => ev, null, new[] {action}.ToList());
+                        EmitToSubscriptions(() => ev, null, new[] { action }.ToList());
                     }
                     break;
                 case BackfireMode.Last:
-                    if (EventHistory.Any())
+                    if (Backfires.Any())
                     {
-                        var last = EventHistory.LastOrDefault();
+                        var last = Backfires.LastOrDefault();
                         EmitToSubscriptions(() => last, null, new[] { action }.ToList());
                     }
                     break;
@@ -42,9 +42,9 @@ namespace Iql.Events
             return sub;
         }
 
-        public TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null)
+        public TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null)
         {
-            return EmitToSubscriptions(eventObjectFactory, afterEvent, SubscriptionActions);
+            return EmitToSubscriptions(eventObjectFactory, afterEvent, ResolveSubscriptionActions(subscriptions));
         }
 
         private TEvent EmitToSubscriptions(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent, List<Action<TEvent>> subscriptionActions)

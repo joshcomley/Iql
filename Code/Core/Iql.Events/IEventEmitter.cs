@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Iql.Events
@@ -7,9 +8,9 @@ namespace Iql.Events
     {
 
     }
-    public interface IAsyncEventEmitter<TEvent>
+    public interface IAsyncEventEmitter<TEvent> : IEventEmitterCommon<TEvent>
     {
-        Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEventAsync = null);
+        Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEventAsync = null, IEnumerable<EventSubscription> subscriptions = null);
     }
 
     public interface IAsyncEventSubscriber<out TEvent> : IAsyncEventSubscriberBase
@@ -17,7 +18,7 @@ namespace Iql.Events
         EventSubscription SubscribeAsync(Func<TEvent, Task> action);
     }
 
-    public interface IAsyncEventSubscriberBase: IEventUnsubcriber
+    public interface IAsyncEventSubscriberBase : IEventUnsubscriber
     {
         EventSubscription SubscribeAsync(Func<object, Task> propertyChangeEvent);
     }
@@ -26,9 +27,15 @@ namespace Iql.Events
     {
         BackfireMode BackfireMode { get; set; }
     }
-    public interface IEventEmitter<TEvent>
+
+    public interface IEventEmitterCommon<TEvent>
     {
-        TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null);
+        List<TEvent> Backfires { get; }
+    }
+
+    public interface IEventEmitter<TEvent> : IEventEmitterCommon<TEvent>
+    {
+        TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null);
     }
 
     public interface IEventSubscriber<out TEvent> : IEventSubscriberBase
@@ -36,13 +43,16 @@ namespace Iql.Events
         EventSubscription Subscribe(Action<TEvent> action);
     }
 
-    public interface IEventSubscriberBase: IEventUnsubcriber
+    public interface IEventSubscriberBase : IEventUnsubscriber
     {
         EventSubscription Subscribe(Action<object> propertyChangeEvent);
     }
 
-    public interface IEventUnsubcriber : IDisposable
+    public interface IEventUnsubscriber : IDisposable
     {
+        void ClearBackfires();
+        bool HasBackfires { get; }
+        int BackfireCount { get; }
         void Unsubscribe(int subscription);
         void UnsubscribeAll();
     }

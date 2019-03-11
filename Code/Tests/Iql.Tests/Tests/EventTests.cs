@@ -7,45 +7,105 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class EventTests
     {
-        public EventEmitter<int> _emitter = new EventEmitter<int>(BackfireMode.Last);
-        public EventEmitter<int> _emitterAll = new EventEmitter<int>(BackfireMode.All);
-        public EventEmitter<int> _emitterNone = new EventEmitter<int>();
+        [TestMethod]
+        public void OnSubscribe()
+        {
+            var counter = 0;
+            var emitter = new EventEmitter<int>();
+            emitter.OnSubscribe.Subscribe(_ => { counter++; });
+            emitter.Emit(() => 1);
+            emitter.Emit(() => 2);
+            emitter.Emit(() => 3);
+            Assert.AreEqual(0, counter);
+            emitter.Subscribe(_ => { });
+            Assert.AreEqual(1, counter);
+            emitter.Subscribe(_ => { });
+            emitter.Subscribe(_ => { });
+            Assert.AreEqual(3, counter);
+        }
+
+        [TestMethod]
+        public void OnSubscribeInstantEvent()
+        {
+            var counter1 = 0;
+            var counter2 = 0;
+            var counter3 = 0;
+            var otherEmitter = new EventEmitter<int>();
+            var otherSub = otherEmitter.Subscribe(_ => { counter3++; });
+            var emitter = new EventEmitter<int>();
+            emitter.Subscribe(_ => counter1++);
+            emitter.OnSubscribe.Subscribe(_ => { emitter.Emit(() => 999, null, new[]{ _, otherSub }); });
+            emitter.Subscribe(_ => counter2++);
+            Assert.AreEqual(0, counter1);
+            Assert.AreEqual(1, counter2);
+            Assert.AreEqual(0, counter3);
+        }
 
         [TestMethod]
         public void BackfireNone()
         {
-            _emitterNone.Emit(() => 1);
-            _emitterNone.Emit(() => 2);
-            _emitterNone.Emit(() => 3);
+            var emitter = new EventEmitter<int>();
+            emitter.Emit(() => 1);
+            emitter.Emit(() => 2);
+            emitter.Emit(() => 3);
             var list = new List<int>();
-            _emitterNone.Subscribe(_ => { list.Add(_); });
+            emitter.Subscribe(_ => { list.Add(_); });
             Assert.AreEqual(0, list.Count);
         }
 
         [TestMethod]
         public void BackfireLast()
         {
-            _emitter.Emit(() => 1);
-            _emitter.Emit(() => 2);
-            _emitter.Emit(() => 3);
+            var emitter = new EventEmitter<int>(BackfireMode.Last);
+            emitter.Emit(() => 1);
+            emitter.Emit(() => 2);
+            emitter.Emit(() => 3);
             var list = new List<int>();
-            _emitter.Subscribe(_ => { list.Add(_); });
+            emitter.Subscribe(_ => { list.Add(_); });
             Assert.AreEqual(1, list.Count);
             Assert.AreEqual(3, list[0]);
         }
 
         [TestMethod]
+        public void BackfireLastCleared()
+        {
+            var emitter = new EventEmitter<int>(BackfireMode.Last);
+            emitter.Emit(() => 1);
+            emitter.Emit(() => 2);
+            emitter.Emit(() => 3);
+            var list = new List<int>();
+            emitter.ClearBackfires();
+            emitter.Subscribe(_ => { list.Add(_); });
+            Assert.AreEqual(0, list.Count);
+        }
+
+        [TestMethod]
         public void BackfireAll()
         {
-            _emitterAll.Emit(() => 1);
-            _emitterAll.Emit(() => 2);
-            _emitterAll.Emit(() => 3);
+            var emitter = new EventEmitter<int>(BackfireMode.All);
+            emitter.Emit(() => 1);
+            emitter.Emit(() => 2);
+            emitter.Emit(() => 3);
             var list = new List<int>();
-            _emitterAll.Subscribe(_ => { list.Add(_); });
+            emitter.Subscribe(_ => { list.Add(_); });
             Assert.AreEqual(3, list.Count);
             Assert.AreEqual(1, list[0]);
             Assert.AreEqual(2, list[1]);
             Assert.AreEqual(3, list[2]);
+        }
+
+
+        [TestMethod]
+        public void BackfireAllCleared()
+        {
+            var emitter = new EventEmitter<int>(BackfireMode.All);
+            emitter.Emit(() => 1);
+            emitter.Emit(() => 2);
+            emitter.Emit(() => 3);
+            var list = new List<int>();
+            emitter.ClearBackfires();
+            emitter.Subscribe(_ => { list.Add(_); });
+            Assert.AreEqual(0, list.Count);
         }
     }
 }

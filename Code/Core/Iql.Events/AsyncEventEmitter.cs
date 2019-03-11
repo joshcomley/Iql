@@ -25,7 +25,7 @@ namespace Iql.Events
             switch (BackfireMode)
             {
                 case BackfireMode.All:
-                    foreach (var ev in EventHistory)
+                    foreach (var ev in Backfires)
                     {
 #pragma warning disable 4014
                         EmitToSubscriptionsAsync(() => ev, null, new[] { action }.ToList());
@@ -33,9 +33,9 @@ namespace Iql.Events
                     }
                     break;
                 case BackfireMode.Last:
-                    if (EventHistory.Any())
+                    if (Backfires.Any())
                     {
-                        var last = EventHistory.LastOrDefault();
+                        var last = Backfires.LastOrDefault();
 #pragma warning disable 4014
                         EmitToSubscriptionsAsync(() => last, null, new[] { action }.ToList());
 #pragma warning restore 4014
@@ -45,10 +45,9 @@ namespace Iql.Events
             return sub;
         }
 
-        public async Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent = null)
+        public async Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null)
         {
-            var subscriptionActions = SubscriptionActions;
-            return await EmitToSubscriptionsAsync(eventObjectFactory, afterEvent, subscriptionActions);
+            return await EmitToSubscriptionsAsync(eventObjectFactory, afterEvent, ResolveSubscriptionActions(subscriptions));
         }
 
         private async Task<TEvent> EmitToSubscriptionsAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent, List<Func<TEvent, Task>> subscriptionActions)
