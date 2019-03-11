@@ -32,7 +32,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             {
                 case "todoot":
                     await GenerateWebAndMobile(
-                        "http://localhost:62000/odata/$metadata",
+                        "http://localhost:47000/odata/$metadata",
                         @"D:\Code\Apps\todoot\Code\Web\ClientApp\app\generated\DataContext",
                         @"D:\Code\Apps\todoot\Code\Mobile\todoot\src\app\generated\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);

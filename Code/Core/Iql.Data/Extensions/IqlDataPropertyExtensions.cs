@@ -209,9 +209,7 @@ namespace Iql.Data.Extensions
                     var inferredWith = property.InferredValueConfigurations[i];
                     if (inferredWith.HasCondition)
                     {
-                        IqlObjectEvaluationResult conditionResult = null;
-
-                        conditionResult = await inferredWith
+                        var conditionResult = await inferredWith
                             .InferredWithConditionIql
                             .EvaluateIqlCustomAsync(
                                 property.EntityConfiguration.Builder,
@@ -263,13 +261,17 @@ namespace Iql.Data.Extensions
                         value = value.ToString();
                     }
 
-                    changes.Add(getPropertyChange(property, value));
+                    var inferredValueChange = getPropertyChange(property, value);
+                    changes.Add(inferredValueChange);
                     if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
                     {
                         if (value != null)
                         {
+                            var entityClone = entity.Clone(property.EntityConfiguration.Builder,
+                                property.Relationship.ThisEnd.Type);
+                            inferredValueChange.ApplyChange(entityClone);
                             var compositeKey = property.Relationship.ThisEnd.GetCompositeKey(
-                                entity,
+                                entityClone,
                                 true);
                             var relatedEntity = await customEvaluator.GetEntityByKeyAsync(
                                 property.Relationship.OtherEnd.EntityConfiguration,

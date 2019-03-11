@@ -30,7 +30,7 @@ namespace Iql.Data
         }
 
         public static object Clone(this object obj, IEntityConfigurationBuilder entityConfigurationBuilder, Type entityType,
-            RelationshipCloneMode cloneRelationships, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
+            RelationshipCloneMode cloneRelationships = RelationshipCloneMode.DoNotClone, Dictionary<object, object> cloneMap = null, Dictionary<object, object> mergeMap = null)
         {
             var clonedObjects = cloneMap ?? new Dictionary<object, object>();
             return obj.CloneInternal(entityConfigurationBuilder, entityType, cloneRelationships, clonedObjects, mergeMap);

@@ -13,6 +13,45 @@ namespace Iql.Tests.Tests.Properties
     public class InferredWithValueTests : TestsBase
     {
         [TestMethod]
+        public async Task InferRelationshipByKey()
+        {
+            Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
+            var applicationUsersInMemory = Db.InMemoryDataStore.DataSet<ApplicationUser>();
+            var applicationUserInMemory = new ApplicationUser
+            {
+                Id = TestCurrentUserResolver.TestCurrentUserId,
+                FullName = "Mr Test"
+            };
+            applicationUsersInMemory.Add(applicationUserInMemory);
+            var client = new Client();
+            Db.Clients.Add(client);
+            await Db.TrySetInferredValuesAsync(client);
+            Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserId, client.CreatedByUserId, "Relationship key not inferred");
+            Assert.IsNotNull(client.CreatedByUser, "Relationship object not inferred");
+            Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserId, client.CreatedByUser.Id, "Relationship object incorrectly inferred");
+            applicationUsersInMemory.Remove(applicationUserInMemory);
+        }
+
+        [TestMethod]
+        public async Task InferRelationshipByKeyUnattached()
+        {
+            Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
+            var applicationUsersInMemory = Db.InMemoryDataStore.DataSet<ApplicationUser>();
+            var applicationUserInMemory = new ApplicationUser
+            {
+                Id = TestCurrentUserResolver.TestCurrentUserId,
+                FullName = "Mr Test"
+            };
+            applicationUsersInMemory.Add(applicationUserInMemory);
+            var client = new Client();
+            await Db.TrySetInferredValuesAsync(client);
+            Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserId, client.CreatedByUserId, "Relationship key not inferred");
+            Assert.IsNotNull(client.CreatedByUser, "Relationship object not inferred");
+            Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserId, client.CreatedByUser.Id, "Relationship object incorrectly inferred");
+            applicationUsersInMemory.Remove(applicationUserInMemory);
+        }
+
+        [TestMethod]
         public async Task InferredWithOnAddUsingOldValuesShouldHaveNoEffectTest()
         {
             Db.ServiceProvider.Clear();

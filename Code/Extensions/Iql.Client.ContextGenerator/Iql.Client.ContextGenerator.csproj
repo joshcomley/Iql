@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />
     <ProjectReference Include="..\..\Core\Iql.OData\Iql.OData.csproj" />
+    <ProjectReference Include="..\..\Forms\Iql.Forms\Iql.Forms.csproj" />
     <ProjectReference Include="..\Iql.Server\Iql.Server.csproj" />
   </ItemGroup>
 
