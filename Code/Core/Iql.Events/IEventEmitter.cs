@@ -43,13 +43,19 @@ namespace Iql.Events
         EventSubscription Subscribe(Action<TEvent> action);
     }
 
-    public interface IEventSubscriberBase : IEventUnsubscriber
+    public interface IEventSubscriberSubscriber
+    {
+        EventEmitter<EventSubscription> OnSubscribe { get; }
+    }
+
+    public interface IEventSubscriberBase : IEventUnsubscriber, IEventSubscriberSubscriber
     {
         EventSubscription Subscribe(Action<object> propertyChangeEvent);
     }
 
     public interface IEventUnsubscriber : IDisposable
     {
+        EventEmitter<EventSubscription> OnUnsubscribe { get; }
         void ClearBackfires();
         bool HasBackfires { get; }
         int BackfireCount { get; }

@@ -191,6 +191,8 @@ namespace Iql.Entities
                         return entityConfiguration.Value;
                     }
                 }
+
+                return null;
             }
             return _entities[type];
         }

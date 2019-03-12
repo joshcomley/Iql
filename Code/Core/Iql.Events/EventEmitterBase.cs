@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Iql.Events
 {
-    public class EventEmitterBase<TEvent, TSubscriptionAction> : IEventUnsubscriber
+    public class EventEmitterBase<TEvent, TSubscriptionAction> : IEventUnsubscriber, IEventSubscriberSubscriber
     {
         public EventEmitterBase(BackfireMode backfireMode = BackfireMode.None)
         {
@@ -98,7 +98,10 @@ namespace Iql.Events
             if (sub != null)
             {
                 Subscriptions.Remove(sub);
-                OnUnsubscribe.Emit(() => sub);
+                if (_onUnsubscribe != null)
+                {
+                    OnUnsubscribe.Emit(() => sub);
+                }
             }
 
             SubscriptionsLookup.Remove(subscription);
@@ -107,9 +110,12 @@ namespace Iql.Events
 
         public void UnsubscribeAll()
         {
-            foreach (var sub in Subscriptions)
+            if (_onUnsubscribe != null)
             {
-                OnUnsubscribe.Emit(() => sub.Key);
+                foreach (var sub in Subscriptions)
+                {
+                    OnUnsubscribe.Emit(() => sub.Key);
+                }
             }
 
             SubscriptionsLookup.Clear();
@@ -168,7 +174,10 @@ namespace Iql.Events
             SubscriptionActions = _subscriptionActions.Values.ToList();
             var sub = new EventSubscription(this, id);
             SubscriptionsLookup.Add(id, sub);
-            OnSubscribe.Emit(() => sub);
+            if (_onSubscribe != null)
+            {
+                OnSubscribe.Emit(() => sub);
+            }
             return sub;
         }
     }

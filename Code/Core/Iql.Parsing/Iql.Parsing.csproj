@@ -8,7 +8,7 @@
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
       <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0037-0-Release" />
+        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0045-0-Release" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)' == 'Debug' or '$(Configuration)' == 'TypeScript Debug'">

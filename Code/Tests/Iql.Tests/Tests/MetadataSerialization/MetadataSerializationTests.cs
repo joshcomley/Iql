@@ -16,8 +16,12 @@ namespace Iql.Tests.Tests.MetadataSerialization
         [TestMethod]
         public void TestSerializeDeserialize()
         {
-            return;
             var db = new AppDbContext();
+            var json2 =
+                false
+                    // For speedy debugging
+                    ? MetadataSerializationJsonCache.Json
+                    : db.EntityConfigurationContext.ToJson();
             var clientConfig = db.EntityConfigurationContext.EntityType<Client>();
             var sitesConfig = db.EntityConfigurationContext.EntityType<Site>();
             sitesConfig.FindRelationship(_ => _.Client)
@@ -83,7 +87,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                 // For speedy debugging
                 ? MetadataSerializationJsonCache.Json
                 : db.EntityConfigurationContext.ToJson();
-
+            return;
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
             var siteContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Site));

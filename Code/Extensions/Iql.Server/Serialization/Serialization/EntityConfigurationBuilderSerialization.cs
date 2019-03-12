@@ -1,4 +1,5 @@
-﻿using Iql.Entities;
+﻿using System;
+using Iql.Entities;
 using Iql.Server.Serialization.Serialization.Converters;
 using Iql.Server.Serialization.Serialization.Resolvers;
 using Newtonsoft.Json;
@@ -21,12 +22,19 @@ namespace Iql.Server.Serialization.Serialization
             settings.Converters.Add(new IPropertyConverter());
             settings.Converters.Add(new TypeConverter());
             settings.Formatting = Formatting.Indented;
+            try
+            {
+                var serialized = JsonConvert.SerializeObject(
+                    ToSerializableDocument(entityConfigurationBuilder),
+                    settings);
 
-            var serialized = JsonConvert.SerializeObject(
-                ToSerializableDocument(entityConfigurationBuilder),
-                settings);
-
-            return serialized;
+                return serialized;
+            }
+            catch (Exception e)
+            {
+                int a = 0;
+            }
+            return null;
         }
 
         private static EntityConfigurationDocument ToSerializableDocument(

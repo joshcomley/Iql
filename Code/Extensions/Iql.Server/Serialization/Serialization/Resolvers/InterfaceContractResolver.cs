@@ -13,6 +13,7 @@ using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
 using Iql.Entities.SpecialTypes;
+using Iql.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -22,6 +23,28 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
+            if (typeof(IEventUnsubscriber).IsAssignableFrom(type) &&
+                typeof(IEventSubscriberSubscriber).IsAssignableFrom(type))
+            {
+                return base.CreateProperties(type, memberSerialization)
+                    .Where(p => !new string[] { nameof(IEventUnsubscriber.OnUnsubscribe), nameof(IEventSubscriberSubscriber.OnSubscribe) }.Contains(p.PropertyName))
+                    .ToList();
+            }
+
+            if (typeof(IEventUnsubscriber).IsAssignableFrom(type))
+            {
+                return base.CreateProperties(type, memberSerialization)
+                    .Where(p => !new string[] { nameof(IEventUnsubscriber.OnUnsubscribe) }.Contains(p.PropertyName))
+                    .ToList();
+            }
+
+            if (typeof(IEventSubscriberSubscriber).IsAssignableFrom(type))
+            {
+                return base.CreateProperties(type, memberSerialization)
+                    .Where(p => !new string[] { nameof(IEventSubscriberSubscriber.OnSubscribe) }.Contains(p.PropertyName))
+                    .ToList();
+            }
+
             if (typeof(SpecialTypeDefinition).IsAssignableFrom(type))
             {
                 return base.CreateProperties(type, memberSerialization)
