@@ -1,6 +1,6 @@
 namespace Iql.Data.Crud.Operations
 {
-    public enum OperationType
+    public enum IqlOperationKind
     {
         Get,
         Add,

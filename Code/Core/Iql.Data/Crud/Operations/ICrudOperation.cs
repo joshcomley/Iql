@@ -4,7 +4,7 @@ namespace Iql.Data.Crud.Operations
 {
     public interface ICrudOperation
     {
-        OperationType Type { get; }
+        IqlOperationKind Kind { get; }
         IDataContext DataContext { get; }
     }
 }

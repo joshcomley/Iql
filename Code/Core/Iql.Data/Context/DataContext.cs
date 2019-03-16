@@ -1081,9 +1081,25 @@ namespace Iql.Data.Context
             return TemporalDataTracker.GetChanges(this, entities, properties).ToArray();
         }
 
-        public IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
+        public IQueuedAddEntityOperation[] GetAdditions(object[] entities = null)
         {
-            return TemporalDataTracker.GetChanges(this, entities, properties).Where(op => op.Kind == QueuedOperationKind.Update).ToArray();
+            return TemporalDataTracker.GetChanges(this, entities).Where(op => op.Kind == QueuedOperationKind.Add)
+                .Select(_ => _ as IQueuedAddEntityOperation)
+                .ToArray();
+        }
+
+        public IQueuedUpdateEntityOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
+        {
+            return TemporalDataTracker.GetChanges(this, entities, properties).Where(op => op.Kind == QueuedOperationKind.Update)
+                .Select(_ => _ as IQueuedUpdateEntityOperation)
+                .ToArray();
+        }
+
+        public IQueuedDeleteEntityOperation[] GetDeletions(object[] entities = null)
+        {
+            return TemporalDataTracker.GetChanges(this, entities).Where(op => op.Kind == QueuedOperationKind.Delete)
+                .Select(_ => _ as IQueuedDeleteEntityOperation)
+                .ToArray();
         }
 
         public List<T> AttachEntities<T>(IEnumerable<T> entities, bool? cloneIfAttachedElsewhere = null)

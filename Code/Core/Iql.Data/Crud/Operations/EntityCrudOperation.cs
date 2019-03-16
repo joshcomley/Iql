@@ -4,8 +4,8 @@ namespace Iql.Data.Crud.Operations
 {
     public class EntityCrudOperation<T> : EntitySetCrudOperation<T>, IEntityCrudOperation<T>
     {
-        public EntityCrudOperation(OperationType type, T entity, IDataContext dataContext)
-            : base(type, dataContext)
+        public EntityCrudOperation(IqlOperationKind kind, T entity, IDataContext dataContext)
+            : base(kind, dataContext)
         {
             Entity = entity;
         }

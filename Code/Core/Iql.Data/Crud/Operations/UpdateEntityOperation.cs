@@ -15,7 +15,7 @@ namespace Iql.Data.Crud.Operations
         }
 
         public UpdateEntityOperation(T entity, IDataContext dataContext, IEntityStateBase entityState = null, IProperty[] properties = null)
-            : base(OperationType.Update, entity, dataContext)
+            : base(IqlOperationKind.Update, entity, dataContext)
         {
             Properties = properties;
             EntityState = entityState ?? dataContext.GetEntityState(entity

@@ -5,8 +5,8 @@ namespace Iql.Data.Crud.Operations
 {
     public class EntitySetCrudOperation<T> : CrudOperation, IEntitySetCrudOperationBase
     {
-        public EntitySetCrudOperation(OperationType type, IDataContext dataContext)
-            : base(type, dataContext)
+        public EntitySetCrudOperation(IqlOperationKind kind, IDataContext dataContext)
+            : base(kind, dataContext)
         {
             EntityType = typeof(T);
         }

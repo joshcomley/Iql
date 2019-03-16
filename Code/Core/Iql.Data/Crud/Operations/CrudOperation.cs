@@ -4,13 +4,13 @@ namespace Iql.Data.Crud.Operations
 {
     public class CrudOperation : ICrudOperation
     {
-        public CrudOperation(OperationType type, IDataContext dataContext)
+        public CrudOperation(IqlOperationKind kind, IDataContext dataContext)
         {
-            Type = type;
+            Kind = kind;
             DataContext = dataContext;
         }
 
-        public OperationType Type { get; }
+        public IqlOperationKind Kind { get; }
         public IDataContext DataContext { get; }
     }
 }

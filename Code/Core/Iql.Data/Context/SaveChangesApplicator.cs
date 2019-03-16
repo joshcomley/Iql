@@ -72,9 +72,9 @@ namespace Iql.Data.Context
             }
 
             InferredValuesResult inferredValuesResult = null;
-            switch (operation.Operation.Type)
+            switch (operation.Operation.Kind)
             {
-                case OperationType.Add:
+                case IqlOperationKind.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
                     var addEntityValidationResult = await DataContext.ValidateEntityAsync<TEntity>(addEntityOperation.Operation.Entity);
                     if (!isOfflineResync && addEntityValidationResult.HasValidationFailures())
@@ -180,7 +180,7 @@ namespace Iql.Data.Context
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     }
                     break;
-                case OperationType.Update:
+                case IqlOperationKind.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
                     var isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.Entity
 #if TypeScript
@@ -307,7 +307,7 @@ namespace Iql.Data.Context
                     }
 
                     break;
-                case OperationType.Delete:
+                case IqlOperationKind.Delete:
                     var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;
                     var entity = deleteEntityOperation.Operation.Entity;
                     bool? entityNew = null;

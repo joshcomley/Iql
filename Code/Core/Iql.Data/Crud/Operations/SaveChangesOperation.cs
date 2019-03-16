@@ -11,7 +11,7 @@ namespace Iql.Data.Crud.Operations
         public SaveChangesOperation(
             IDataContext dataContext,
             object[] entities = null,
-            IProperty[] properties = null) : base(OperationType.SaveChanges, dataContext)
+            IProperty[] properties = null) : base(IqlOperationKind.SaveChanges, dataContext)
         {
             Entities = entities;
             Properties = properties;

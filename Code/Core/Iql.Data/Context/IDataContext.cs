@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
@@ -38,7 +39,9 @@ namespace Iql.Data.Context
         Task<bool> RestoreOfflineStateAsync();
         IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
         IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null);
-        IQueuedOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);
+        IQueuedUpdateEntityOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);
+        IQueuedDeleteEntityOperation[] GetDeletions(object[] entities = null);
+        IQueuedAddEntityOperation[] GetAdditions(object[] entities = null);
 
         T AttachEntity<T>(T entity, bool? cloneIfAttachedElsewhere = null)
             where T : class;

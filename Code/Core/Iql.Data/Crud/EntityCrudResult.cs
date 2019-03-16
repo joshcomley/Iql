@@ -9,7 +9,7 @@ namespace Iql.Data.Crud
     {
         public T LocalEntity { get; }
         public Dictionary<object, IEntityValidationResult> EntityValidationResults { get; set; } = new Dictionary<object, IEntityValidationResult>();
-        public OperationType Type => Operation.Type;
+        public IqlOperationKind Kind => Operation.Kind;
         object IEntityCrudResult.LocalEntity => LocalEntity;
         public EntityValidationResult<T> RootEntityValidationResult { get; set; }
 

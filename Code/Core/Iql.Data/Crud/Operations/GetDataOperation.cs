@@ -8,7 +8,7 @@ namespace Iql.Data.Crud.Operations
     {
         private global::Iql.Queryable.IQueryable<T> _queryable;
         public bool IsSingleResult { get; private set; }
-        public GetDataOperation(global::Iql.Queryable.IQueryable<T> queryable, IDataContext dataContext) : base(OperationType.Get,
+        public GetDataOperation(global::Iql.Queryable.IQueryable<T> queryable, IDataContext dataContext) : base(IqlOperationKind.Get,
             dataContext)
         {
             Queryable = queryable;
