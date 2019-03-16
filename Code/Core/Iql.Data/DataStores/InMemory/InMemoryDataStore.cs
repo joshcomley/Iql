@@ -277,6 +277,7 @@ namespace Iql.Data.DataStores.InMemory
                     }
                 });
             data.Add(clone);
+            rootTrackingSet.GetEntityState(clone).HardReset();
             operation.Result.Success = true;
             operation.Result.RemoteEntity = clone;
             return Task.FromResult(operation.Result);
@@ -297,7 +298,9 @@ namespace Iql.Data.DataStores.InMemory
             var index = FindEntityIndexFromOperation(operation.Operation);
             if (index != -1)
             {
+                var rootTrackingSet = InMemoryDataTracker.TrackingSet<TEntity>();
                 var entity = DataSet<TEntity>()[index];
+                rootTrackingSet.GetEntityState(entity)?.HardReset();
                 new SimplePropertyMerger(EntityConfigurationBuilder.EntityType<TEntity>())
                     .MergeAllProperties(
                         entity,

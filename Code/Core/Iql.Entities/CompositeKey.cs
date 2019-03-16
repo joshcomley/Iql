@@ -10,6 +10,31 @@ namespace Iql.Entities
     [DebuggerDisplay("{KeyString}")]
     public class CompositeKey : IJsonSerializable
     {
+        public static bool IsValid(IEntityConfiguration entityConfiguration, object entity, bool isNew)
+        {
+            if ((entityConfiguration.Key.Properties.All(p => p.IsReadOnly) || !entityConfiguration.Key.Editable) &&
+                !isNew)
+            {
+                return true;
+            }
+
+            for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
+            {
+                var property = entityConfiguration.Key.Properties[i];
+                if (property.IsReadOnly)
+                {
+                    continue;
+                }
+
+                if (property.GetValue(entity).IsDefaultValue(
+                    property.TypeDefinition))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
         public object TryGetValue(string name)
         {
             var pair = Keys.SingleOrDefault(k => k.Name == name);

@@ -271,28 +271,7 @@ namespace Iql.Data.Tracking.State
 
         public bool HasValidKey()
         {
-            if (EntityConfiguration.Key.Properties.All(p => p.IsReadOnly) &&
-                !IsNew)
-            {
-                return true;
-            }
-
-            for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
-            {
-                var property = EntityConfiguration.Key.Properties[i];
-                if (property.IsReadOnly)
-                {
-                    continue;
-                }
-
-                if (property.GetValue(Entity).IsDefaultValue(
-                    property.TypeDefinition))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return CompositeKey.IsValid(EntityConfiguration, Entity, IsNew);
         }
 
         public string SerializeToJson()

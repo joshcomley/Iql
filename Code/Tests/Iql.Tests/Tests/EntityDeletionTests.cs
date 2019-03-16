@@ -44,12 +44,12 @@ namespace Iql.Tests.Tests
             Db.People.Add(person1);
             Db.People.Add(person2);
             await Db.SaveChangesAsync();
-
             var people = await Db.People.ToListAsync();
             var people2 = await Db.People.Where(p => p.Id == 1).ToListAsync();
             Assert.AreEqual(2, people.Count);
             Assert.AreEqual(1, people2.Count);
             Db.People.Delete(person1);
+            var state = Db.GetEntityState(person1);
             Assert.AreEqual(2, people.Count);
             Assert.AreEqual(1, people2.Count);
             await Db.SaveChangesAsync();
