@@ -1,6 +1,6 @@
 namespace Iql.Entities
 {
-    public interface IPropertyContainer : IMetadata, IEntityConfigurationItem
+    public interface IPropertyContainer : IConfiguration, IEntityConfigurationItem
     {
         IPropertyGroup[] GetGroupProperties();
     }
