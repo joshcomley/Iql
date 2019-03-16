@@ -646,7 +646,7 @@ namespace Iql.Tests.Tests
             person.Types.Remove(typeMap);
             var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
-            Assert.AreEqual(QueuedOperationKind.Delete, changes[0].Kind, "Expecting a delete operation");
+            Assert.AreEqual(QueuedOperationKind.Delete, changes.AllChanges[0].Kind, "Expecting a delete operation");
 
             Assert.AreEqual(0, person.Types.Count);
             var newEquivalentTypeMap = new PersonTypeMap
@@ -686,7 +686,7 @@ namespace Iql.Tests.Tests
             person.Types.Remove(typeMap);
             var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
-            Assert.AreEqual(QueuedOperationKind.Delete, changes[0].Kind, "Expecting a delete operation");
+            Assert.AreEqual(QueuedOperationKind.Delete, changes.AllChanges[0].Kind, "Expecting a delete operation");
             var result = await Db.SaveChangesAsync();
             changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Length);
@@ -793,7 +793,7 @@ namespace Iql.Tests.Tests
             person.Types.Remove(typeMap);
             var changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length, "Expecting a delete operation");
-            Assert.AreEqual(QueuedOperationKind.Delete, changes[0].Kind, "Expecting a delete operation");
+            Assert.AreEqual(QueuedOperationKind.Delete, changes.AllChanges[0].Kind, "Expecting a delete operation");
 
             Assert.AreEqual(0, person.Types.Count);
             var newEquivalentTypeMap = new PersonTypeMap
@@ -807,8 +807,8 @@ namespace Iql.Tests.Tests
             changes = Db.GetChanges();
             Assert.AreEqual(2, changes.Length);
             Assert.AreEqual(2, changes.Length);
-            Assert.AreEqual(QueuedOperationKind.Delete, changes[0].Kind);
-            Assert.AreEqual(QueuedOperationKind.Add, changes[1].Kind);
+            Assert.AreEqual(QueuedOperationKind.Delete, changes.AllChanges[0].Kind);
+            Assert.AreEqual(QueuedOperationKind.Add, changes.AllChanges[1].Kind);
             return newEquivalentTypeMap;
         }
 
@@ -1208,12 +1208,12 @@ namespace Iql.Tests.Tests
             riskAssessment.SiteInspection = siteInspection;
             var user = new ApplicationUser();
             riskAssessment.SiteInspection.CreatedByUser = user;
-            var operations = Db.TemporalDataTracker.GetChanges().ToList();
-            Assert.AreEqual(3, operations.Count);
+            var operations = Db.TemporalDataTracker.GetChanges();
+            Assert.AreEqual(3, operations.Length);
             var order = new object[] { user, siteInspection, riskAssessment };
-            for (var i = 0; i < operations.Count; i++)
+            for (var i = 0; i < operations.Length; i++)
             {
-                var operation = operations[i];
+                var operation = operations.AllChanges[i];
                 Assert.AreEqual(order[i], (operation.Operation as IEntityCrudOperationBase).Entity);
             }
         }

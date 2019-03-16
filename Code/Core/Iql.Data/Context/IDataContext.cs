@@ -37,8 +37,8 @@ namespace Iql.Data.Context
         Task<bool> ClearOfflineStateAsync();
         Task<bool> SaveOfflineStateAsync();
         Task<bool> RestoreOfflineStateAsync();
-        IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
-        IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null);
+        IqlDataChanges GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
+        IqlDataChanges GetChanges(object[] entities = null, IProperty[] properties = null);
         IQueuedUpdateEntityOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);
         IQueuedDeleteEntityOperation[] GetDeletions(object[] entities = null);
         IQueuedAddEntityOperation[] GetAdditions(object[] entities = null);

@@ -384,7 +384,7 @@ namespace Iql.Data.Context
                 return new SaveChangesResult(SaveChangeKind.NoAction);
             }
 
-            return await CommitQueueInternalAsync(changes, true);
+            return await CommitQueueInternalAsync(changes.AllChanges, true);
         }
 
         public bool HasOfflineChanges()
@@ -751,7 +751,7 @@ namespace Iql.Data.Context
             // Sets could be added to whilst detecting changes
             // so get a copy now
             //var observable = this.Observable<SaveChangesResult>();
-            return CommitQueueAsync(GetChanges(operation.Entities, operation.Properties));
+            return CommitQueueAsync(GetChanges(operation.Entities, operation.Properties).AllChanges);
         }
 
         public virtual async Task<SaveChangesResult> CommitQueueAsync(IEnumerable<IQueuedOperation> queue)
@@ -1066,40 +1066,29 @@ namespace Iql.Data.Context
             return success;
         }
 
-        public IQueuedOperation[] GetOfflineChanges(object[] entities = null, IProperty[] properties = null)
+        public IqlDataChanges GetOfflineChanges(object[] entities = null, IProperty[] properties = null)
         {
-            if (OfflineDataTracker != null)
-            {
-                return OfflineDataTracker.GetChanges(this, entities, properties).ToArray();
-            }
-
-            return new IQueuedOperation[] { };
+            return OfflineDataTracker?.GetChanges(this, entities, properties) ?? new IqlDataChanges(null);
         }
 
-        public IQueuedOperation[] GetChanges(object[] entities = null, IProperty[] properties = null)
+        public IqlDataChanges GetChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return TemporalDataTracker.GetChanges(this, entities, properties).ToArray();
+            return TemporalDataTracker.GetChanges(this, entities, properties);
         }
 
         public IQueuedAddEntityOperation[] GetAdditions(object[] entities = null)
         {
-            return TemporalDataTracker.GetChanges(this, entities).Where(op => op.Kind == QueuedOperationKind.Add)
-                .Select(_ => _ as IQueuedAddEntityOperation)
-                .ToArray();
+            return GetChanges(entities).Additions;
         }
 
         public IQueuedUpdateEntityOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
-            return TemporalDataTracker.GetChanges(this, entities, properties).Where(op => op.Kind == QueuedOperationKind.Update)
-                .Select(_ => _ as IQueuedUpdateEntityOperation)
-                .ToArray();
+            return GetChanges(entities).Updates;
         }
 
         public IQueuedDeleteEntityOperation[] GetDeletions(object[] entities = null)
         {
-            return TemporalDataTracker.GetChanges(this, entities).Where(op => op.Kind == QueuedOperationKind.Delete)
-                .Select(_ => _ as IQueuedDeleteEntityOperation)
-                .ToArray();
+            return GetChanges(entities).Deletions;
         }
 
         public List<T> AttachEntities<T>(IEnumerable<T> entities, bool? cloneIfAttachedElsewhere = null)

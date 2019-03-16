@@ -358,7 +358,7 @@ namespace Iql.Data.Tracking
 
         public bool HasChanges()
         {
-            return GetChanges().Any();
+            return GetChanges().HasChanges;
         }
         
         public void RemoveEntityByKeyAndType(CompositeKey key, Type entityType)
@@ -491,16 +491,16 @@ namespace Iql.Data.Tracking
             EmitStateChangedEvent();
         }
 
-        public IQueuedOperation[] GetChanges(IDataContext dataContext = null, object[] entities = null, IProperty[] properties = null)
+        public IqlDataChanges GetChanges(IDataContext dataContext = null, object[] entities = null, IProperty[] properties = null)
         {
-            return this.GetQueuedChanges(dataContext, entities, properties).OrderBy(_ =>
+            return new IqlDataChanges(this.GetQueuedChanges(dataContext, entities, properties).OrderBy(_ =>
             {
                 if (_.Operation is IEntityCrudOperationBase op)
                 {
                     return GetPendingDependencyCount(op.Entity, op.EntityType);
                 }
                 return 0;
-            }).ToArray();
+            }).ToArray());
         }
 
         private class TrackCollectionResult

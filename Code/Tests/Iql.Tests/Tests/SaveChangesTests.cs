@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Tests.Context;
@@ -69,12 +70,12 @@ namespace Iql.Tests.Tests
 
             var clients = await Db.Clients.ToListAsync();
             var client1 = clients.Single(c => c.Id == 1);
-            List<IQueuedOperation> queue;
+            IqlDataChanges queue;
             void AssertQueue(string newName)
             {
-                queue = Db.GetChanges().ToList();
-                Assert.AreEqual(1, queue.Count);
-                var update = queue[0] as QueuedUpdateEntityOperation<Client>;
+                queue = Db.GetChanges();
+                Assert.AreEqual(1, queue.Length);
+                var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Client>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(client1, update.Operation.Entity);
                 var propertyChanges = update.Operation.EntityState.GetChangedProperties();
@@ -87,8 +88,8 @@ namespace Iql.Tests.Tests
 
             void AssertQueueEmpty()
             {
-                queue = Db.GetChanges().ToList();
-                Assert.AreEqual(0, queue.Count);
+                queue = Db.GetChanges();
+                Assert.AreEqual(0, queue.Length);
             }
 
             // Should be no changes so far
@@ -132,9 +133,9 @@ namespace Iql.Tests.Tests
 
             void AssertDescriptionOnlyQueued(string newDescription)
             {
-                var queue = Db.GetChanges().ToList();
-                Assert.AreEqual(1, queue.Count);
-                var update = queue[0] as QueuedUpdateEntityOperation<Client>;
+                var queue = Db.GetChanges();
+                Assert.AreEqual(1, queue.Length);
+                var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Client>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(client1, update.Operation.Entity);
                 var propertyChanges = update.Operation.EntityState.GetChangedProperties();
@@ -147,9 +148,9 @@ namespace Iql.Tests.Tests
 
             void AssertBothChangesQueued(string newName, string newDescription)
             {
-                var queue = Db.GetChanges().ToList();
-                Assert.AreEqual(1, queue.Count);
-                var update = queue[0] as QueuedUpdateEntityOperation<Client>;
+                var queue = Db.GetChanges();
+                Assert.AreEqual(1, queue.Length);
+                var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Client>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(client1, update.Operation.Entity);
                 var propertyChanges = update.Operation.EntityState.GetChangedProperties();
@@ -197,8 +198,8 @@ namespace Iql.Tests.Tests
 
         public void AssertQueueEmpty()
         {
-            var queue = Db.GetChanges().ToList();
-            Assert.AreEqual(0, queue.Count);
+            var queue = Db.GetChanges();
+            Assert.AreEqual(0, queue.Length);
         }
 
         [TestMethod]
@@ -217,10 +218,10 @@ namespace Iql.Tests.Tests
             site1.Name = "Site 1 - changed";
             client1.Name = "Client 1 - changed";
 
-            var queue = Db.GetChanges().ToList();
-            Assert.AreEqual(2, queue.Count);
+            var queue = Db.GetChanges();
+            Assert.AreEqual(2, queue.Length);
 
-            var siteChange = queue.Single(
+            var siteChange = queue.AllChanges.Single(
                     q =>
                         q.Operation is UpdateEntityOperation<Site> &&
                         (q.Operation as UpdateEntityOperation<Site>).Entity == site1)
@@ -229,7 +230,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, siteChange.EntityState.GetChangedProperties().Length);
             Assert.AreEqual(nameof(Site.Name), siteChange.EntityState.GetChangedProperties()[0].Property.Name);
 
-            var clientChange = queue.Single(
+            var clientChange = queue.AllChanges.Single(
                     q =>
                         q.Operation is UpdateEntityOperation<Client> &&
                         (q.Operation as UpdateEntityOperation<Client>).Entity == client1)
@@ -262,9 +263,9 @@ namespace Iql.Tests.Tests
 
             void AssertNameOnlyQueued(string newDescription)
             {
-                var queue = Db.GetChanges().ToList();
-                Assert.AreEqual(1, queue.Count);
-                var update = queue[0] as QueuedUpdateEntityOperation<Client>;
+                var queue = Db.GetChanges();
+                Assert.AreEqual(1, queue.Length);
+                var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Client>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(site.Client, update.Operation.Entity);
                 var propertyChanges = update.Operation.EntityState.GetChangedProperties();
@@ -302,9 +303,9 @@ namespace Iql.Tests.Tests
 
             void AssertQueue()
             {
-                var queue = Db.GetChanges().ToList();
-                Assert.AreEqual(1, queue.Count);
-                var update = queue[0] as QueuedUpdateEntityOperation<Site>;
+                var queue = Db.GetChanges();
+                Assert.AreEqual(1, queue.Length);
+                var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Site>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(site, update.Operation.Entity);
 

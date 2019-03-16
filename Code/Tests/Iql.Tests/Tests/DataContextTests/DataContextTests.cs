@@ -21,12 +21,12 @@ namespace Iql.Tests.Tests.DataContextTests
                 Name = "abc",
                 TypeId = 7
             };
-            Assert.AreEqual(0, Db.GetChanges().Length);
+            Assert.AreEqual(0, Db.GetChanges().AllChanges.Length);
             client.Name = "def";
-            Assert.AreEqual(0, Db.GetChanges().Length);
+            Assert.AreEqual(0, Db.GetChanges().AllChanges.Length);
             client = Db.AttachEntity(client);
             client.Name = "abc";
-            Assert.AreEqual(1, Db.GetChanges().Length);
+            Assert.AreEqual(1, Db.GetChanges().AllChanges.Length);
         }
 
         [TestMethod]
@@ -179,11 +179,11 @@ namespace Iql.Tests.Tests.DataContextTests
             AppDbContext.InMemoryDb.Clients.Remove(clientRemote);
             client.Name = "def";
             var changes = Db.GetChanges();
-            Assert.AreEqual(1, changes.Length);
+            Assert.AreEqual(1, changes.AllChanges.Length);
             await Db.SaveChangesAsync();
             Assert.IsFalse(Db.IsTracked(client));
             changes = Db.GetChanges();
-            Assert.AreEqual(0, changes.Length);
+            Assert.AreEqual(0, changes.AllChanges.Length);
         }
 
         [TestMethod]
@@ -202,11 +202,11 @@ namespace Iql.Tests.Tests.DataContextTests
             AppDbContext.InMemoryDb.Clients.Remove(clientRemote);
             Db.DeleteEntity(client);
             var changes = Db.GetChanges();
-            Assert.AreEqual(1, changes.Length);
+            Assert.AreEqual(1, changes.AllChanges.Length);
             await Db.SaveChangesAsync();
             Assert.IsFalse(Db.IsTracked(client));
             changes = Db.GetChanges();
-            Assert.AreEqual(0, changes.Length);
+            Assert.AreEqual(0, changes.AllChanges.Length);
         }
 
         [TestMethod]

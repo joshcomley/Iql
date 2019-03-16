@@ -337,8 +337,8 @@ namespace Iql.Tests.Tests.Offline
             {
                 var changes = Db.GetChanges();
                 Assert.AreEqual(2, changes.Length);
-                var clientChange = changes.FirstOrDefault(_ => _.Operation.EntityType == typeof(Client));
-                var clientTypeChange = changes.FirstOrDefault(_ => _.Operation.EntityType == typeof(ClientType));
+                var clientChange = changes.AllChanges.FirstOrDefault(_ => _.Operation.EntityType == typeof(Client));
+                var clientTypeChange = changes.AllChanges.FirstOrDefault(_ => _.Operation.EntityType == typeof(ClientType));
                 Assert.IsNotNull(clientChange);
                 Assert.IsNotNull(clientTypeChange);
 
@@ -702,7 +702,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.IsTrue(Db.HasOfflineChanges());
             var offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Length);
-            Assert.IsTrue(offlineChanges[0].Kind == QueuedOperationKind.Add);
+            Assert.IsTrue(offlineChanges.AllChanges[0].Kind == QueuedOperationKind.Add);
 
             Assert.IsTrue(result.Success);
 
@@ -800,8 +800,8 @@ namespace Iql.Tests.Tests.Offline
             Db.ClientTypes.Add(clientType);
             client.Type = clientType;
             var changes = Db.GetChanges();
-            Assert.AreEqual(changes[0].Kind, QueuedOperationKind.Add, "Add operation should come first");
-            Assert.AreEqual(changes[1].Kind, QueuedOperationKind.Update, "Update operation should come second");
+            Assert.AreEqual(changes.AllChanges[0].Kind, QueuedOperationKind.Add, "Add operation should come first");
+            Assert.AreEqual(changes.AllChanges[1].Kind, QueuedOperationKind.Update, "Update operation should come second");
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             Assert.AreEqual(-1, clientType.Id);
@@ -809,8 +809,8 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(-1, offlineClient.TypeId);
             Db.IsOffline = false;
             changes = Db.GetOfflineChanges();
-            Assert.AreEqual(changes[0].Kind, QueuedOperationKind.Add, "Add operation should come first");
-            Assert.AreEqual(changes[1].Kind, QueuedOperationKind.Update, "Update operation should come second");
+            Assert.AreEqual(changes.AllChanges[0].Kind, QueuedOperationKind.Add, "Add operation should come first");
+            Assert.AreEqual(changes.AllChanges[1].Kind, QueuedOperationKind.Update, "Update operation should come second");
             result = await Db.SaveOfflineChangesAsync();
             Assert.IsTrue(result.Success);
             Assert.AreEqual(3, clientType.Id);
@@ -862,7 +862,7 @@ namespace Iql.Tests.Tests.Offline
             // Should be one change queued in the data context
             changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length);
-            AssertChangedProperties(changes, firstClient, nameof(Client.Name));
+            AssertChangedProperties(changes.AllChanges, firstClient, nameof(Client.Name));
 
             // Should be no changes in the offline context
             offlineChanges = Db.GetOfflineChanges();
@@ -899,7 +899,7 @@ namespace Iql.Tests.Tests.Offline
             // "Name" change should be propagated to the offline tracker
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Length);
-            AssertChangedProperties(offlineChanges, firstClient, nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.Name));
             Assert.AreEqual(firstClientNewName, offlineFirstClient.Name);
 
             // Make another change
@@ -909,12 +909,12 @@ namespace Iql.Tests.Tests.Offline
             // Latest change should still be temporal
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Length);
-            AssertChangedProperties(offlineChanges, firstClient, nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.Name));
 
             // "TypeId" change should be in the temporal changes
             changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length);
-            AssertChangedProperties(changes, firstClient, nameof(Client.TypeId));
+            AssertChangedProperties(changes.AllChanges, firstClient, nameof(Client.TypeId));
 
             // Still offline, "TypeId" change should persist to offline
             result = await Db.SaveChangesAsync();
@@ -927,7 +927,7 @@ namespace Iql.Tests.Tests.Offline
             // Offline should now contain both "TypeId" and "Name" change
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Length);
-            AssertChangedProperties(offlineChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
 
             // The online client's "Name" and "TypeId" should remain the same
             Assert.AreEqual(OfflineAppDbContext.Client1Name, onlineFirstClient.Name);
@@ -943,7 +943,7 @@ namespace Iql.Tests.Tests.Offline
             // There should be no new offline changes
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Length);
-            AssertChangedProperties(offlineChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
 
             // The online client's "Name" and "TypeId" should remain the same
             Assert.AreEqual(OfflineAppDbContext.Client1Name, onlineFirstClient.Name);
@@ -964,12 +964,12 @@ namespace Iql.Tests.Tests.Offline
             // There should be one new temporal changes
             changes = Db.GetChanges();
             Assert.AreEqual(1, changes.Length);
-            AssertChangedProperties(changes, secondClient, nameof(Client.Name));
+            AssertChangedProperties(changes.AllChanges, secondClient, nameof(Client.Name));
 
             // There should be no new offline changes
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Length);
-            AssertChangedProperties(offlineChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
 
             result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
@@ -982,8 +982,8 @@ namespace Iql.Tests.Tests.Offline
             // There should be one new offline change
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(2, offlineChanges.Length);
-            AssertChangedProperties(offlineChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
-            AssertChangedProperties(offlineChanges, secondClient, nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, secondClient, nameof(Client.Name));
 
             Assert.AreEqual(OfflineAppDbContext.Client2Name, onlineSecondClient.Name);
 
