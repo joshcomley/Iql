@@ -30,20 +30,20 @@ namespace Iql.Tests.Tests.OData
                 client.Description = "Some new description";
                 result = await db.SaveChangesAsync(null, new[]{ nameProperty });
                 Assert.IsTrue(result.Success);
-                var request = log.Patches.Pop().Single();
+                var request = log.Patches.Pop();
                 Assert.AreEqual(@"{
-  ""Name"": ""Some new name"",
-  ""Id"": 0
+  ""Id"": 0,
+  ""Name"": ""Some new name""
 }".NormalizeJson(), request.Body.Body.NormalizeJson());
                 Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", request.Uri);
                 client.Name = "Some new name 2";
                 client.Description = "Some new description 2";
                 result = await db.SaveChangesAsync(null, new[] { descriptionProperty });
                 Assert.IsTrue(result.Success);
-                request = log.Patches.Pop().Single();
+                request = log.Patches.Pop();
                 Assert.AreEqual(@"{
-  ""Description"": ""Some new description 2"",
-  ""Id"": 0
+  ""Id"": 0,
+  ""Description"": ""Some new description 2""
 }".NormalizeJson(), request.Body.Body.NormalizeJson());
                 Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", request.Uri);
             });
@@ -62,10 +62,10 @@ namespace Iql.Tests.Tests.OData
                 Assert.IsTrue(result.Success);
                 client.Name = "Some new name";
                 result = await db.SaveChangesAsync();
-                var request = log.Patches.Pop().Single();
+                var request = log.Patches.Pop();
                 Assert.AreEqual(@"{
-  ""Name"": ""Some new name"",
-  ""Id"": 0
+  ""Id"": 0,
+  ""Name"": ""Some new name""
 }".NormalizeJson(), request.Body.Body.NormalizeJson());
                 Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", request.Uri);
             });
@@ -91,7 +91,7 @@ namespace Iql.Tests.Tests.OData
                 Assert.IsTrue(result.Success);
                 map.PersonId = 2;
                 result = await db.SaveChangesAsync();
-                var request = log.Patches.Pop().Single();
+                var request = log.Patches.Pop();
                 Assert.AreEqual(@"http://localhost:28000/odata/PersonTypesMap(PersonId=1,TypeId=1)", request.Uri);
                 Assert.AreEqual(@"{
   ""PersonId"": 2,

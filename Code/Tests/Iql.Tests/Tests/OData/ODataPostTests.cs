@@ -58,7 +58,7 @@ namespace Iql.Tests.Tests.OData
                 client.Name = "New client 123";
                 var result = await db.SaveChangesAsync();
                 Assert.AreEqual(true, result.Success);
-                var request = log.Posts.Pop().Single();
+                var request = log.Posts.Pop();
                 var changes = db.TemporalDataTracker.GetUpdates();
                 Assert.AreEqual(0, changes.Count);
                 Assert.AreEqual("http://localhost:58000/odata/Clients", request.Uri);
@@ -94,7 +94,7 @@ namespace Iql.Tests.Tests.OData
                 db.People.Add(person);
                 var result = await db.SaveChangesAsync();
                 Assert.AreEqual(true, result.Success);
-                var request = log.Posts.Pop().Single();
+                var request = log.Posts.Pop();
                 var changes = db.TemporalDataTracker.GetUpdates();
                 Assert.AreEqual(0, changes.Count);
                 Assert.AreEqual("http://localhost:28000/odata/People", request.Uri);
@@ -133,7 +133,7 @@ namespace Iql.Tests.Tests.OData
                 db.Sites.Add(site);
                 var result = await db.SaveChangesAsync();
                 Assert.AreEqual(true, result.Success);
-                var request = log.Posts.Pop().Single();
+                var request = log.Posts.Pop();
                 var changes = db.TemporalDataTracker.GetUpdates();
                 Assert.AreEqual(0, changes.Count);
                 Assert.AreEqual("http://localhost:28000/odata/Sites", request.Uri);

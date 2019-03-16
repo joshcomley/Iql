@@ -44,7 +44,7 @@ namespace Iql.Tests.Tests.OData
         {
             db.Clients.Delete(client);
             await db.SaveChangesAsync();
-            var deleteRequest = log.Deletes.Pop().Single();
+            var deleteRequest = log.Deletes.Pop();
             log.AssertEmpty();
             Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", deleteRequest.Uri);
             Assert.IsNull(deleteRequest.Body);
@@ -54,11 +54,11 @@ namespace Iql.Tests.Tests.OData
         {
             client.Name = "Some new name";
             await db.SaveChangesAsync();
-            var patch = log.Patches.Pop().Single();
+            var patch = log.Patches.Pop();
             log.AssertEmpty();
             Assert.AreEqual(@"{
-  ""Name"": ""Some new name"",
-  ""Id"": 0
+  ""Id"": 0,
+  ""Name"": ""Some new name""
 }".NormalizeJson(), patch.Body.Body.NormalizeJson());
             Assert.AreEqual(@"http://localhost:58000/odata/Clients(0)", patch.Uri);
         }
@@ -68,7 +68,7 @@ namespace Iql.Tests.Tests.OData
             db.Clients.Add(client);
             client.Name = "New client 123";
             await db.SaveChangesAsync();
-            var request = log.Posts.Pop().Single();
+            var request = log.Posts.Pop();
             log.AssertEmpty();
             var changes = db.TemporalDataTracker.GetUpdates();
             Assert.AreEqual(0, changes.Count);

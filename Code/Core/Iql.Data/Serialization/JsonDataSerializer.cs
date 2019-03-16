@@ -123,12 +123,13 @@ namespace Iql.Data.Serialization
         public static List<JObject> PrepareCollectionForSerialization(IEnumerable entities,
             IEntityConfiguration entityConfiguration,
             bool areNew,
+            bool allowAllKeys,
             params IPropertyState[] properties)
         {
             var all = new List<JObject>();
             foreach (var entity in entities)
             {
-                all.Add(SerializeInternal(entityConfiguration, entity, areNew, properties));
+                all.Add(SerializeInternal(entityConfiguration, entity, areNew, allowAllKeys, properties));
             }
             return all;
         }
@@ -136,18 +137,20 @@ namespace Iql.Data.Serialization
         public static JObject PrepareEntityForSerialization(object entity,
             IEntityConfiguration entityConfiguration,
             bool isNew,
+            bool allowAllKeys,
             params IPropertyState[] properties)
         {
-            var obj = SerializeInternal(entityConfiguration, entity, isNew, properties);
+            var obj = SerializeInternal(entityConfiguration, entity, isNew, allowAllKeys, properties);
             return obj;
         }
 
         public static string SerializeEntityToJson(object entity,
             IEntityConfiguration entityConfigurationBuilder,
             bool isNew,
+            bool allowAllKeys,
             params IPropertyState[] properties)
         {
-            return PrepareEntityForSerialization(entity, entityConfigurationBuilder, isNew, properties).ToString();
+            return PrepareEntityForSerialization(entity, entityConfigurationBuilder, isNew, allowAllKeys, properties).ToString();
         }
 
         public static DeserializeCollectionResult<T> DeserializeCollection<T>(string json,
@@ -243,6 +246,7 @@ namespace Iql.Data.Serialization
             IEntityConfiguration entityConfiguration, 
             object entity, 
             bool isNew,
+            bool allowAllKeys,
             IEnumerable<IPropertyState> properties)
         {
             var obj = new JObject();
@@ -259,13 +263,38 @@ namespace Iql.Data.Serialization
                     propertyChanges = entityConfiguration.Builder.EntityNonNullProperties(entity).ToArray();
                 }
             }
-            foreach (var property in propertyChanges)
+
+            bool CanSendKey(IProperty keyProperty)
             {
-                if (property.Property.Kind.HasFlag(PropertyKind.Key) && isNew &&
-                    !property.Property.EntityConfiguration.Key.Editable)
+                if (allowAllKeys)
+                {
+                    return true;
+                }
+                var invalid = (isNew && !keyProperty.EntityConfiguration.Key.Editable) ||
+                    keyProperty.GetValue(entity) == null;
+                return !invalid;
+            }
+            foreach (var key in entityConfiguration.Key.Properties)
+            {
+                if (!CanSendKey(key))
                 {
                     continue;
                 }
+                obj[key.Name] = new JValue(entity.GetPropertyValueByName(key.Name));
+            }
+            foreach (var property in propertyChanges)
+            {
+                if (property.Property.EntityConfiguration.Key.Properties.Any(p => p == property.Property))
+                {
+                    // Main keys are dealt with above
+                    continue;
+                }
+
+                if (property.Property.Kind.HasFlag(PropertyKind.Key) && !CanSendKey(property.Property))
+                {
+                    continue;
+                }
+
                 var propertyValue = property.Property.GetValue(entity);
                 if (property.Property.Kind.HasFlag(PropertyKind.Count) || property.Property.Kind.HasFlag(PropertyKind.Relationship))
                 {
@@ -351,14 +380,6 @@ namespace Iql.Data.Serialization
                         obj[property.Property.Name] = new JValue(propertyValue);
                     }
                 }
-            }
-            foreach (var key in entityConfiguration.Key.Properties)
-            {
-                if (propertyChanges.Any(p => p.Property.Name == key.Name))
-                {
-                    continue;
-                }
-                obj[key.Name] = new JValue(entity.GetPropertyValueByName(key.Name));
             }
             return obj;
         }
