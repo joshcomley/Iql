@@ -132,7 +132,7 @@ namespace Iql.Tests.Tests
             Db.RiskAssessments.Add(riskAssessment2);
             await Db.SaveChangesAsync();
             var queuedOperations = Db.GetChanges();
-            Assert.AreEqual(0, queuedOperations.Length);
+            Assert.AreEqual(0, queuedOperations.Count);
             Assert.IsNull(riskAssessment1.SiteInspection);
             Assert.IsNull(riskAssessment2.SiteInspection);
             var changes = Db.GetUpdates().ToList();
@@ -161,7 +161,7 @@ namespace Iql.Tests.Tests
             changes = Db.GetUpdates().ToList();
             Assert.AreEqual(0, changes.Count);
             queuedOperations = Db.GetChanges();
-            Assert.AreEqual(0, queuedOperations.Length);
+            Assert.AreEqual(0, queuedOperations.Count);
             Assert.AreEqual(siteInspection.RiskAssessments[0].Id, 9);
             Assert.AreEqual(siteInspection.RiskAssessments[0].SiteInspectionId, siteInspection.Id);
             Assert.AreEqual(siteInspection.RiskAssessments[0].SiteInspection, siteInspection);

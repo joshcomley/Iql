@@ -74,7 +74,7 @@ namespace Iql.Tests.Tests
             void AssertQueue(string newName)
             {
                 queue = Db.GetChanges();
-                Assert.AreEqual(1, queue.Length);
+                Assert.AreEqual(1, queue.Count);
                 var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Client>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(client1, update.Operation.Entity);
@@ -89,7 +89,7 @@ namespace Iql.Tests.Tests
             void AssertQueueEmpty()
             {
                 queue = Db.GetChanges();
-                Assert.AreEqual(0, queue.Length);
+                Assert.AreEqual(0, queue.Count);
             }
 
             // Should be no changes so far
@@ -134,7 +134,7 @@ namespace Iql.Tests.Tests
             void AssertDescriptionOnlyQueued(string newDescription)
             {
                 var queue = Db.GetChanges();
-                Assert.AreEqual(1, queue.Length);
+                Assert.AreEqual(1, queue.Count);
                 var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Client>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(client1, update.Operation.Entity);
@@ -149,7 +149,7 @@ namespace Iql.Tests.Tests
             void AssertBothChangesQueued(string newName, string newDescription)
             {
                 var queue = Db.GetChanges();
-                Assert.AreEqual(1, queue.Length);
+                Assert.AreEqual(1, queue.Count);
                 var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Client>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(client1, update.Operation.Entity);
@@ -199,7 +199,7 @@ namespace Iql.Tests.Tests
         public void AssertQueueEmpty()
         {
             var queue = Db.GetChanges();
-            Assert.AreEqual(0, queue.Length);
+            Assert.AreEqual(0, queue.Count);
         }
 
         [TestMethod]
@@ -219,7 +219,7 @@ namespace Iql.Tests.Tests
             client1.Name = "Client 1 - changed";
 
             var queue = Db.GetChanges();
-            Assert.AreEqual(2, queue.Length);
+            Assert.AreEqual(2, queue.Count);
 
             var siteChange = queue.AllChanges.Single(
                     q =>
@@ -264,7 +264,7 @@ namespace Iql.Tests.Tests
             void AssertNameOnlyQueued(string newDescription)
             {
                 var queue = Db.GetChanges();
-                Assert.AreEqual(1, queue.Length);
+                Assert.AreEqual(1, queue.Count);
                 var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Client>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(site.Client, update.Operation.Entity);
@@ -304,7 +304,7 @@ namespace Iql.Tests.Tests
             void AssertQueue()
             {
                 var queue = Db.GetChanges();
-                Assert.AreEqual(1, queue.Length);
+                Assert.AreEqual(1, queue.Count);
                 var update = queue.AllChanges[0] as QueuedUpdateEntityOperation<Site>;
                 Assert.IsNotNull(update);
                 Assert.AreEqual(site, update.Operation.Entity);

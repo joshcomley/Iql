@@ -11,7 +11,7 @@ namespace Iql.Data.Context
         private IQueuedUpdateEntityOperation[] _updates;
         private IQueuedDeleteEntityOperation[] _deletions;
 
-        public int Length => AllChanges.Length;
+        public int Count => AllChanges.Length;
         public bool HasChanges => AllChanges.Length > 0;
 
         public IqlDataChanges(IQueuedOperation[] allChanges)

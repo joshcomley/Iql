@@ -205,10 +205,10 @@ namespace Iql.Tests.Tests
 #endif
                 );
             Assert.IsTrue(entityState.IsNew);
-            Assert.AreEqual(1, Db.GetChanges().Length);
+            Assert.AreEqual(1, Db.GetChanges().Count);
             await Db.SaveChangesAsync();
             Assert.IsFalse(entityState.IsNew);
-            Assert.AreEqual(0, Db.GetChanges().Length);
+            Assert.AreEqual(0, Db.GetChanges().Count);
             Assert.AreEqual(1, AppDbContext.InMemoryDb.ClientTypes.Count);
         }
 
@@ -619,7 +619,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(clientType1Clients, clientType1.Clients);
             var clientType1NewClient = new Client();
             clientType1NewClient.Name = "abc";
-            Assert.AreEqual(0, Db.GetChanges().Length);
+            Assert.AreEqual(0, Db.GetChanges().Count);
             Assert.AreEqual(1, clientType1.Clients.Count);
 
             void AssertCheck()
@@ -628,7 +628,7 @@ namespace Iql.Tests.Tests
                 Assert.AreEqual(clientType1.Id, clientType1NewClient.TypeId);
                 Assert.AreEqual(clientType1, clientType1NewClient.Type);
                 var queuedOperations = Db.GetChanges();
-                Assert.AreEqual(1, queuedOperations.Length);
+                Assert.AreEqual(1, queuedOperations.Count);
                 var addOperation = queuedOperations.AllChanges.First() as QueuedAddEntityOperation<Client>;
                 Assert.IsNotNull(addOperation);
                 Assert.AreEqual(clientType1NewClient, addOperation.Operation.Entity);
@@ -645,7 +645,7 @@ namespace Iql.Tests.Tests
             clientType1.Clients.Remove(clientType1NewClient);
             Assert.AreEqual(1, clientType1.Clients.Count);
             var operations = Db.GetChanges();
-            Assert.AreEqual(0, operations.Length);
+            Assert.AreEqual(0, operations.Count);
         }
 
         [TestMethod]
@@ -874,7 +874,7 @@ namespace Iql.Tests.Tests
             Db.Clients.Delete(clientToDelete);
             Assert.AreEqual(0, clientTypes.ClientType1.Clients.Count);
             queuedOperations = Db.GetChanges();
-            Assert.AreEqual(1, queuedOperations.Length);
+            Assert.AreEqual(1, queuedOperations.Count);
             var deleteOperation = queuedOperations.AllChanges.First() as QueuedDeleteEntityOperation<Client>;
             Assert.IsNotNull(deleteOperation);
             Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);

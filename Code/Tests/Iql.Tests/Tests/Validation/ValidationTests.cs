@@ -97,7 +97,7 @@ namespace Iql.Tests.Tests.Validation
             var saveChangesResult = await db.SaveChangesAsync();
             Assert.IsFalse(saveChangesResult.Success);
             changes = db.GetChanges();
-            Assert.AreEqual(1, changes.Length);
+            Assert.AreEqual(1, changes.Count);
             AssertPropertyValidationFailures(
                 saveChangesResult,
                 new ExpectedPropertyValidationFailure(nameof(PersonTypeMap.Person),

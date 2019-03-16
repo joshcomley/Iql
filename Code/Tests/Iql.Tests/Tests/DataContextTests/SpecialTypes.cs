@@ -87,11 +87,11 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual("abc", firstLocal.Name);
             firstLocal.Name = "abc2";
             var changes = Db.GetChanges();
-            Assert.AreEqual(1, changes.Length);
+            Assert.AreEqual(1, changes.Count);
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             changes = Db.GetChanges();
-            Assert.AreEqual(0, changes.Length);
+            Assert.AreEqual(0, changes.Count);
             Assert.AreEqual("abc2", firstRemote.MyName);
             Db.CustomReportsManager.Set.Delete(firstLocal);
             var deleteResult = await Db.SaveChangesAsync();

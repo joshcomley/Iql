@@ -379,7 +379,7 @@ namespace Iql.Data.Context
             }
 
             var changes = OfflineDataTracker.GetChanges(this);
-            if (changes == null || changes.Length == 0)
+            if (changes == null || changes.Count == 0)
             {
                 return new SaveChangesResult(SaveChangeKind.NoAction);
             }
