@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
-using Iql.Data.Search;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Search;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -67,9 +67,9 @@ namespace Iql.Data.Lists
         IDbQueryable Search(string search, PropertySearchKind searchKind, bool? splitIntoTerms = null);
         IDbQueryable SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null, bool? splitIntoTerms = null);
         IDbQueryable SearchProperties(string search, IEnumerable<IProperty> properties, bool? splitIntoTerms = null);
-        IDbQueryable SearchWithTerms(IEnumerable<SearchTerm> searchTerms, PropertySearchKind searchKind);
-        IDbQueryable SearchForDisplayFormatterWithTerms(IEnumerable<SearchTerm> searchTerms, IEntityDisplayTextFormatter formatter = null);
-        IDbQueryable SearchPropertiesWithTerms(IEnumerable<SearchTerm> searchTerms, IEnumerable<IProperty> properties);
+        IDbQueryable SearchWithTerms(IqlSearchText searchTerms, PropertySearchKind searchKind);
+        IDbQueryable SearchForDisplayFormatterWithTerms(IqlSearchText searchTerms, IEntityDisplayTextFormatter formatter = null);
+        IDbQueryable SearchPropertiesWithTerms(IqlSearchText searchTerms, IEnumerable<IProperty> properties);
         DataTracker DataTracker { get; }
         Func<IDataStore> DataStoreGetter { get; set; }
         IDataContext DataContext { get; set; }

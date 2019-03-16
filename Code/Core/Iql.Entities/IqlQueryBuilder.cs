@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Iql.Data.Search;
 using Iql.Entities;
+using Iql.Entities.Search;
 using Iql.Extensions;
 
 namespace Iql.Data.Queryable
@@ -86,13 +86,7 @@ namespace Iql.Data.Queryable
             {
                 return null;
             }
-            return BuildSearchQueryForPropertyExpressionsWithTerms(
-                splitIntoTerms
-                    ? new SearchTermExtractor().ExtrapolateSearchTerms(search)
-                    : new SearchTerm[]
-                    {
-                        new SearchTerm(search),
-                    },
+            return BuildSearchQueryForPropertyExpressionsWithTerms(new IqlSearchText(search, splitIntoTerms),
                 propertyExpressions
                 );
         }
@@ -127,7 +121,7 @@ namespace Iql.Data.Queryable
 
         public static IqlExpression BuildSearchQueryWithTerms(
             this IEntityConfiguration entityConfiguration,
-            IEnumerable<SearchTerm> terms,
+            IqlSearchText terms,
             PropertySearchKind searchKind = PropertySearchKind.Secondary)
         {
             return BuildSearchQueryForPropertiesWithTerms(
@@ -136,7 +130,7 @@ namespace Iql.Data.Queryable
         }
 
         public static IqlExpression BuildSearchQueryForPropertiesWithTerms(
-            IEnumerable<SearchTerm> terms,
+            IqlSearchText terms,
             IEnumerable<IProperty> searchFields)
         {
             var root = new IqlRootReferenceExpression("root", "");
@@ -147,7 +141,7 @@ namespace Iql.Data.Queryable
         }
 
         public static IqlExpression BuildSearchQueryForPropertyPathsWithTerms(
-            IEnumerable<SearchTerm> terms,
+            IqlSearchText terms,
             IEnumerable<IqlPropertyPath> searchFields)
         {
             var propertyExpressions = searchFields.Select(_ => _.Expression);
@@ -155,11 +149,11 @@ namespace Iql.Data.Queryable
         }
 
         public static IqlExpression BuildSearchQueryForPropertyExpressionsWithTerms(
-            IEnumerable<SearchTerm> terms,
+            IqlSearchText terms,
             IEnumerable<IqlPropertyExpression> propertyExpressions)
         {
             var queries = new List<IqlExpression>();
-            foreach (var term in terms)
+            foreach (var term in terms.Terms)
             {
                 var searchFieldsArray = propertyExpressions.ToArray();
                 var expressions = new List<IqlExpression>();

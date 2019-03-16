@@ -14,7 +14,6 @@ using Iql.Data.IqlToIql;
 using Iql.Data.Lists;
 using Iql.Data.Operations;
 using Iql.Data.Queryable;
-using Iql.Data.Search;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
@@ -22,6 +21,7 @@ using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules.Relationship;
+using Iql.Entities.Search;
 using Iql.Entities.SpecialTypes;
 using Iql.Extensions;
 using Iql.Parsing;
@@ -285,17 +285,17 @@ namespace Iql.Data.Context
         }
 
 
-        public DbQueryable<T> SearchWithTerms(IEnumerable<SearchTerm> searchTerms, PropertySearchKind searchKind = PropertySearchKind.Primary)
+        public DbQueryable<T> SearchWithTerms(IqlSearchText searchTerms, PropertySearchKind searchKind = PropertySearchKind.Primary)
         {
             return WhereEquals(EntityConfiguration.BuildSearchQueryWithTerms(searchTerms, searchKind));
         }
 
-        IDbQueryable IDbQueryable.SearchWithTerms(IEnumerable<SearchTerm> searchTerms, PropertySearchKind searchKind)
+        IDbQueryable IDbQueryable.SearchWithTerms(IqlSearchText searchTerms, PropertySearchKind searchKind)
         {
             return SearchWithTerms(searchTerms, searchKind);
         }
 
-        public DbQueryable<T> SearchForDisplayFormatterWithTerms(IEnumerable<SearchTerm> searchTerms, IEntityDisplayTextFormatter displayFormatter = null)
+        public DbQueryable<T> SearchForDisplayFormatterWithTerms(IqlSearchText searchTerms, IEntityDisplayTextFormatter displayFormatter = null)
         {
             var paths =
                 (displayFormatter ?? EntityConfiguration.DisplayFormatting.Default).ResolveUniqueTextSearchablePaths(
@@ -303,17 +303,17 @@ namespace Iql.Data.Context
             return WhereEquals(IqlQueryBuilder.BuildSearchQueryForPropertyPathsWithTerms(searchTerms, paths));
         }
 
-        IDbQueryable IDbQueryable.SearchForDisplayFormatterWithTerms(IEnumerable<SearchTerm> searchTerms, IEntityDisplayTextFormatter formatter = null)
+        IDbQueryable IDbQueryable.SearchForDisplayFormatterWithTerms(IqlSearchText searchTerms, IEntityDisplayTextFormatter formatter = null)
         {
             return SearchForDisplayFormatterWithTerms(searchTerms, formatter);
         }
 
-        public DbQueryable<T> SearchPropertiesWithTerms(IEnumerable<SearchTerm> searchTerms, IEnumerable<IProperty> searchFields)
+        public DbQueryable<T> SearchPropertiesWithTerms(IqlSearchText searchTerms, IEnumerable<IProperty> searchFields)
         {
             return WhereEquals(IqlQueryBuilder.BuildSearchQueryForPropertiesWithTerms(searchTerms, searchFields));
         }
 
-        IDbQueryable IDbQueryable.SearchPropertiesWithTerms(IEnumerable<SearchTerm> searchTerms, IEnumerable<IProperty> properties)
+        IDbQueryable IDbQueryable.SearchPropertiesWithTerms(IqlSearchText searchTerms, IEnumerable<IProperty> properties)
         {
             return SearchPropertiesWithTerms(searchTerms, properties);
         }
