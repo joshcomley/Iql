@@ -16,7 +16,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             //applicationPath = @"D:\code\i-site\Code\Web\i-site-web\src\app";
             //applicationPath = @"C:\Users\joshc\Source\Repos\Angular5Hackathon\JStarter\ClientApp\app";
             //var outputSubFolder = @"External\DataContext";
-            //var outputType = OutputType.TypeScript;
+            //var outputType = OutputType.TypeScript;n
 
             //applicationPath = @"D:\Code\Iql\Code\TestBed\Iql.TestBed\Context";
             //outputSubFolder = "";
@@ -28,7 +28,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             var isiteUrl = "http://localhost:48000/odata/$metadata";
             var iqlUrl = "http://localhost:28000/odata/$metadata";
             var hazceptionUrl = "http://localhost:58000/odata/$metadata";
-            switch ("todoot")
+            switch ("iql")
             {
                 case "todoot":
                     await GenerateWebAndMobile(

@@ -16,9 +16,10 @@ namespace Iql.Entities
         private IRuleCollection<IBinaryRule> _validationRules;
         private IRuleCollection<IDisplayRule> _displayRules;
         public string Key { get; set; }
-        public string GroupName => this.ResolveGroupName();
+        public string GroupKey => this.ResolveGroupKey();
 
         public abstract PropertyKind Kind { get; set; }
+        public abstract IqlPropertyGroupKind GroupKind { get; }
 
         public virtual IEntityConfiguration EntityConfiguration => _entityConfiguration = _entityConfiguration ?? GetGroupProperties().Where(p => p != null).Select(p => p.EntityConfiguration).FirstOrDefault();
         public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules

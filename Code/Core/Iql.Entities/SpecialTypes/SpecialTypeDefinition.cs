@@ -52,6 +52,8 @@ namespace Iql.Entities.SpecialTypes
             return all.ToArray();
         }
 
+        public IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.SpecialType;
+
         public abstract IPropertyGroup[] GetSpecialTypeProperties();
     }
 }

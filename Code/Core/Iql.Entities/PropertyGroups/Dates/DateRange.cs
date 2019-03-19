@@ -15,6 +15,8 @@ namespace Iql.Entities.PropertyGroups.Dates
 
         public IProperty StartDateProperty { get; set; }
         public IProperty EndDateProperty { get; set; }
+        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.DateRange;
+
         public override IEntityConfiguration EntityConfiguration =>
             (StartDateProperty ?? EndDateProperty)?.EntityConfiguration;
 

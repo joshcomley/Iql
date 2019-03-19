@@ -26,11 +26,15 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.CurrentEntityState.Category == PersonCategory.AutoDescription); });
             model.ConfigureProperty(_ => _.Location, p =>
             {
-                p.IsInferredWith(_ => new IqlCurrentLocationExpression(), false, InferredValueMode.IfNull, true);
+                p.IsInferredWith(_ => new IqlCurrentLocationExpression(), false, InferredValueKind.IfNull, true);
+            });
+            model.ConfigureProperty(_ => _.Category, p =>
+            {
+                p.IsInferredWith(_ => PersonCategory.Conventional, true, InferredValueKind.InitializeOnly, true);
             });
             model.ConfigureProperty(_ => _.InferredWhenKeyChanges, p =>
             {
-                p.IsInferredWith(_ => (_.OldEntityState == null || _.OldEntityState.Key == "ABC") && _.CurrentEntityState.Key == "DEF" ? "alphabet!" : _.CurrentEntityState.InferredWhenKeyChanges, false, InferredValueMode.Always, false, nameof(Person.Key));
+                p.IsInferredWith(_ => (_.OldEntityState == null || _.OldEntityState.Key == "ABC") && _.CurrentEntityState.Key == "DEF" ? "alphabet!" : _.CurrentEntityState.InferredWhenKeyChanges, false, InferredValueKind.Always, false, nameof(Person.Key));
             });
             model.DefineRelationshipFilterRule(
                 _ => _.Site,

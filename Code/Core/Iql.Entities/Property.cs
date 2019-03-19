@@ -153,6 +153,7 @@ namespace Iql.Entities
             set => throw new NotImplementedException();
         }
 
+        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.Primitive;
         public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules => (RelationshipRuleCollection<TOwner, TElementType>)base.RelationshipFilterRules;
 
         IRuleCollection<IRelationshipRule> IPropertyGroup.RelationshipFilterRules
@@ -200,9 +201,9 @@ namespace Iql.Entities
             return UseFunctionDefaultValue(async owner => (TElementType)await resolver(owner));
         }
 
-        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<InferredValueContext<TOwner>, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onPropertyChanges)
+        public Property<TOwner, TProperty, TElementType> IsInferredWith(Expression<Func<InferredValueContext<TOwner>, object>> expression, bool onlyIfNew = false, InferredValueKind kind = InferredValueKind.Always, bool canOverride = false, params string[] onPropertyChanges)
         {
-            SetInferredWithExpression(expression, onlyIfNew, mode, canOverride, onPropertyChanges);
+            SetInferredWithExpression(expression, onlyIfNew, kind, canOverride, onPropertyChanges);
             return this;
         }
 
@@ -222,9 +223,9 @@ namespace Iql.Entities
             return this;
         }
 
-        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<InferredValueContext<TOwner>, object>> expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onPropertyChanges)
+        IEntityProperty<TOwner> IEntityProperty<TOwner>.IsInferredWith(Expression<Func<InferredValueContext<TOwner>, object>> expression, bool onlyIfNew = false, InferredValueKind kind = InferredValueKind.Always, bool canOverride = false, params string[] onPropertyChanges)
         {
-            return IsInferredWith(expression, onlyIfNew, mode, canOverride, onPropertyChanges);
+            return IsInferredWith(expression, onlyIfNew, kind, canOverride, onPropertyChanges);
         }
 
         IEntityProperty<TOwner> IEntityProperty<TOwner>.IsConditionallyInferredWith(Expression<Func<InferredValueContext<TOwner>, object>> expression, Expression<Func<InferredValueContext<TOwner>, bool>> condition)
@@ -232,9 +233,9 @@ namespace Iql.Entities
             return IsConditionallyInferredWith(expression, condition);
         }
 
-        IProperty IProperty.IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false)
+        IProperty IProperty.IsInferredWithExpression(LambdaExpression expression, bool onlyIfNew = false, InferredValueKind kind = InferredValueKind.Always, bool canOverride = false)
         {
-            SetInferredWithExpression(expression, onlyIfNew, mode, canOverride);
+            SetInferredWithExpression(expression, onlyIfNew, kind, canOverride);
             return this;
         }
 

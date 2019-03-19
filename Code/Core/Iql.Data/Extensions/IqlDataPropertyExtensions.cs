@@ -162,12 +162,14 @@ namespace Iql.Data.Extensions
             this IProperty property,
             object oldEntity,
             object entity,
+            bool isInitialize,
             IDataContext dataContext,
             IServiceProviderProvider serviceProviderProvider = null)
         {
             var changes = await property.TryGetInferredValueCustomAsync(
                 oldEntity,
-                entity, 
+                entity,
+                isInitialize,
                 new DefaultEvaluator(dataContext),
                 serviceProviderProvider);
             changes.ApplyChanges();
@@ -178,6 +180,7 @@ namespace Iql.Data.Extensions
             this IProperty property, 
             object oldEntity,
             object entity, 
+            bool isInitialize,
             IIqlCustomEvaluator customEvaluator,
             IServiceProviderProvider serviceProviderProvider = null)
         {
@@ -224,17 +227,22 @@ namespace Iql.Data.Extensions
                         }
                     }
 
+                    if (inferredWith.Kind == InferredValueKind.InitializeOnly && !isInitialize)
+                    {
+                        return noChangeResult(true);
+                    }
+
                     if (inferredWith.ForNewOnly && customEvaluator.IsEntityNew(property.EntityConfiguration, entity) == false)
                     {
                         return noChangeResult(true);
                     }
 
-                    if (inferredWith.Mode == InferredValueMode.IfNull && property.GetValue(entity) != null)
+                    if (inferredWith.Kind == InferredValueKind.IfNull && property.GetValue(entity) != null)
                     {
                         return noChangeResult(true);
                     }
 
-                    if (inferredWith.Mode == InferredValueMode.IfNullOrEmpty &&
+                    if (inferredWith.Kind == InferredValueKind.IfNullOrEmpty &&
                         property.GetValue(entity) != null &&
                         !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
                     {

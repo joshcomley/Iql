@@ -111,10 +111,10 @@ namespace Iql.Entities
             }
         }
 
-        public void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges)
+        public void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueKind kind = InferredValueKind.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges)
         {
             InferredValueConfigurations.Add(new InferredValueConfiguration(this)
-                .SetInferredWithExpression(value, onlyIfNew, mode, canOverride, onlyWhenPropertyChanges));
+                .SetInferredWithExpression(value, onlyIfNew, kind, canOverride, onlyWhenPropertyChanges));
         }
 
         public void SetConditionallyInferredWithExpression(

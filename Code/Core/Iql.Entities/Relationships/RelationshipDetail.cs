@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
+using Iql.Entities.Extensions;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
@@ -11,7 +12,8 @@ namespace Iql.Entities.Relationships
 {
     public class RelationshipDetail<T, TProperty> :
         RelationshipDetailTypedBase<T, TProperty,
-        RelationshipDetail<T, TProperty>>
+        RelationshipDetail<T, TProperty>>,
+        ISourceRelationshipDetail
         where T : class
     {
         public RelationshipDetail(
@@ -62,6 +64,8 @@ namespace Iql.Entities.Relationships
             mapping.Expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type).Expression as IqlLambdaExpression;
             return this;
         }
+
+        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.RelationshipSource;
 
         protected override IRuleCollection<IRelationshipRule> NewRelationshipFilterRulesCollection()
         {

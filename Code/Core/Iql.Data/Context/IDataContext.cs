@@ -88,7 +88,6 @@ namespace Iql.Data.Context
         Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null);
         Task<SaveChangesResult> SaveOfflineChangesAsync();
         bool TrackEntities { get; set; }
-        bool AllowOffline { get; set; }
         string SynchronicityKey { get; set; }
         string OfflineSynchronicityKey { get; set; }
         EvaluateContext EvaluateContext { get; set; }

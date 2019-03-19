@@ -29,6 +29,8 @@ namespace Iql.Entities.PropertyGroups.Files
             set => MediaKeyInternal = value;
         }
         protected IMediaKey MediaKeyInternal { get; set; }
+        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.File;
+
         public override IEntityConfiguration EntityConfiguration =>
             EntityConfigurationInternal;
 

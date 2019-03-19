@@ -284,8 +284,9 @@ namespace Iql.Tests.Tests.Properties
                 Name = "My client"
             });
 
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person, true)).Success);
             Assert.IsTrue(person.CreatedDate > DateTimeOffset.Now.AddSeconds(-10));
+            Assert.AreEqual(PersonCategory.Conventional, person.Category);
             Assert.AreEqual(null, person.CreatedByUserId);
             Assert.AreEqual(null, person.Description);
             Assert.AreEqual(107, person.ClientId);

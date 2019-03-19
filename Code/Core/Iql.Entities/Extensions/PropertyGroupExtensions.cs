@@ -29,7 +29,7 @@ namespace Iql.Entities.Extensions
         //    }
         //}
 
-        public static string ResolveGroupName(this IPropertyGroup propertyGroup)
+        public static string ResolveGroupKey(this IPropertyGroup propertyGroup)
         {
             return $"__{string.Join("_", propertyGroup.GetGroupProperties().Select(_ => _.Name))}__";
         }

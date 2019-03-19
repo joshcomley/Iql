@@ -90,7 +90,7 @@ namespace Iql.Server
                 config.ConfigureProperty(p => p.CreatedDate, p =>
                 {
                     p.SetReadOnly();
-                    p.IsInferredWith(_ => new IqlNowExpression(), true, InferredValueMode.IfNullOrEmpty);
+                    p.IsInferredWith(_ => new IqlNowExpression(), true, InferredValueKind.IfNullOrEmpty);
                 });
                 config.DefaultSortExpression = nameof(ICreatedDate.CreatedDate);
                 config.DefaultSortDescending = true;

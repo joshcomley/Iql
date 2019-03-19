@@ -5,7 +5,8 @@ using System.Linq.Expressions;
 namespace Iql.Entities.Relationships
 {
     public class CollectionRelationshipDetail<T, TProperty>
-        : RelationshipDetailTypedBase<T, IEnumerable<TProperty>, CollectionRelationshipDetail<T, TProperty>>
+        : RelationshipDetailTypedBase<T, IEnumerable<TProperty>, CollectionRelationshipDetail<T, TProperty>>,
+            ITargetRelationshipSourceDetail
         where T : class
     {
         public CollectionRelationshipDetail(
@@ -16,5 +17,7 @@ namespace Iql.Entities.Relationships
             Type elementType) : base(relationship, relationshipSide, configuration, expression, elementType)
         {
         }
+
+        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.RelationshipTarget;
     }
 }

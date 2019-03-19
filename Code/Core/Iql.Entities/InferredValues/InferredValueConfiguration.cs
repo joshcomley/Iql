@@ -11,7 +11,7 @@ namespace Iql.Entities.InferredValues
         }
         public IPropertyMetadata Property { get; set; }
         public string Key { get; set; }
-        public InferredValueMode Mode { get; set; } = InferredValueMode.Always;
+        public InferredValueKind Kind { get; set; } = InferredValueKind.Always;
         public bool CanOverride { get; set; }
         public bool ForNewOnly { get; set; }
 
@@ -61,12 +61,12 @@ namespace Iql.Entities.InferredValues
         }
 
         public IInferredValueConfiguration SetInferredWithExpression(
-            LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges)
+            LambdaExpression value, bool onlyIfNew = false, InferredValueKind kind = InferredValueKind.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges)
         {
             // This expression is lazy converted to IQL on demand
             _inferredWithExpression = value;
             ForNewOnly = onlyIfNew;
-            Mode = mode;
+            Kind = kind;
             CanOverride = canOverride;
             OnPropertyChanges = onlyWhenPropertyChanges;
             return this;

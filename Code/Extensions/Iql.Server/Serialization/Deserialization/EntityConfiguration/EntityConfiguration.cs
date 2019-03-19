@@ -122,5 +122,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
             : base(configurationContainer)
         {
         }
+
+        public IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.EntityConfiguration;
     }
 }

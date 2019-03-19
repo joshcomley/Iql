@@ -86,7 +86,7 @@ namespace Iql.Data.Context
                     else if (CheckPendingDependencies(isOfflineResync, addEntityOperation.Operation, addEntityOperation.Result) &&
                              (isOfflineResync || await CheckNotAlreadyExistsAsync(addEntityOperation)))
                     {
-                        inferredValuesResult = await DataContext.TrySetInferredValuesAsync(addEntityOperation.Operation.Entity);
+                        inferredValuesResult = await DataContext.TrySetInferredValuesAsync(addEntityOperation.Operation.Entity, false);
                         var localEntity = addEntityOperation.Operation.Entity;
 
                         var specialTypeMap = EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
@@ -103,7 +103,7 @@ namespace Iql.Data.Context
                             {
                                 // Magic happens here...
                                 isOffline = true;
-                                if (offlineDataStore != null)
+                                if (DataContext.SupportsOffline && offlineDataStore != null)
                                 {
                                     result = await offlineDataStore.PerformAddAsync(addEntityOperation);
                                     result.Success = true;
@@ -118,7 +118,7 @@ namespace Iql.Data.Context
                             {
                                 // Magic happens here...
                                 isOffline = true;
-                                if (offlineDataStore != null)
+                                if (DataContext.SupportsOffline && offlineDataStore != null)
                                 {
                                     result = await offlineDataStore.PerformAddAsync(addEntityOperation);
                                     result.Success = true;
@@ -144,7 +144,10 @@ namespace Iql.Data.Context
                                 .FindMatchingEntityState(localEntity)?.Entity;
                             if (!isOfflineResync)
                             {
-                                DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
+                                if (DataContext.SupportsOffline)
+                                {
+                                    DataContext.OfflineDataTracker?.ApplyAdd(addEntityOperation, isOffline);
+                                }
                                 DataContext.TemporalDataTracker.TrackingSet<TEntity>()
                                     .Synchronise(remoteEntity, true, true, temporalEntity);
                             }
@@ -152,8 +155,11 @@ namespace Iql.Data.Context
                             {
                                 DataContext.TemporalDataTracker.TrackingSet<TEntity>()
                                     .Synchronise(remoteEntity, true, true, temporalEntity);
-                                DataContext.OfflineDataTracker.TrackingSet<TEntity>()
-                                    .Synchronise(remoteEntity, true, true, localEntity);
+                                if (DataContext.SupportsOffline)
+                                {
+                                    DataContext.OfflineDataTracker.TrackingSet<TEntity>()
+                                        .Synchronise(remoteEntity, true, true, localEntity);
+                                }
                                 var temporalEntityState = DataContext.TemporalDataTracker.TrackingSet<TEntity>()
                                     .FindMatchingEntityState(localEntity);
                                 localEntity = (TEntity)(temporalEntityState?.Entity ??
@@ -196,7 +202,7 @@ namespace Iql.Data.Context
                     }
                     else if (CheckPendingDependencies(isOfflineResync, updateEntityOperation.Operation, updateEntityOperation.Result))
                     {
-                        inferredValuesResult = await DataContext.TrySetInferredValuesAsync(updateEntityOperation.Operation.Entity);
+                        inferredValuesResult = await DataContext.TrySetInferredValuesAsync(updateEntityOperation.Operation.Entity, false);
                         var updateEntityValidationResult = await DataContext.ValidateEntityAsync(updateEntityOperation.Operation.Entity);
                         if (!isOfflineResync && updateEntityValidationResult.HasValidationFailures())
                         {
@@ -225,7 +231,7 @@ namespace Iql.Data.Context
                                 {
                                     isOffline = true;
                                     // Magic happens here...
-                                    if (offlineDataStore != null)
+                                    if (DataContext.SupportsOffline && offlineDataStore != null)
                                     {
                                         result = await offlineDataStore.PerformUpdateAsync(updateEntityOperation);
                                     }
@@ -238,7 +244,7 @@ namespace Iql.Data.Context
                                 {
                                     isOffline = true;
                                     // Magic happens here...
-                                    if (offlineDataStore != null)
+                                    if (DataContext.SupportsOffline && offlineDataStore != null)
                                     {
                                         result = await offlineDataStore.PerformUpdateAsync(updateEntityOperation);
                                     }
@@ -253,7 +259,10 @@ namespace Iql.Data.Context
                             }
                             if (result.Success)
                             {
-                                DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation, isOffline);
+                                if (DataContext.SupportsOffline)
+                                {
+                                    DataContext.OfflineDataTracker?.ApplyUpdate(updateEntityOperation, isOffline);
+                                }
                                 if (isOffline)
                                 {
                                     DataContext.TemporalDataTracker?.ApplyUpdate(updateEntityOperation, false);
@@ -269,7 +278,7 @@ namespace Iql.Data.Context
                                                     updateEntityOperation.Operation.Entity,
                                                     true,
                                                     true);
-                                            if (dataContext.OfflineDataTracker != null)
+                                            if (dataContext.SupportsOffline && dataContext.OfflineDataTracker != null)
                                             {
                                                 dataContext.OfflineDataTracker.TrackingSet<TEntity>()
                                                     .Merge(
@@ -341,7 +350,7 @@ namespace Iql.Data.Context
                             {
                                 isOffline = true;
                                 // Magic happens here...
-                                if (offlineDataStore != null)
+                                if (DataContext.SupportsOffline && offlineDataStore != null)
                                 {
                                     result = await offlineDataStore.PerformDeleteAsync(deleteEntityOperation);
                                     result.Success = true;
@@ -356,7 +365,7 @@ namespace Iql.Data.Context
                             {
                                 isOffline = true;
                                 // Magic happens here...
-                                if (offlineDataStore != null)
+                                if (DataContext.SupportsOffline && offlineDataStore != null)
                                 {
                                     result = await offlineDataStore.PerformDeleteAsync(deleteEntityOperation);
                                     result.Success = true;
@@ -365,7 +374,10 @@ namespace Iql.Data.Context
                         }
                         if (result.Success)
                         {
-                            DataContext.OfflineDataTracker?.ApplyDelete(deleteEntityOperation, isOffline);
+                            if (DataContext.SupportsOffline)
+                            {
+                                DataContext.OfflineDataTracker?.ApplyDelete(deleteEntityOperation, isOffline);
+                            }
                             RemoveEntityByKeyAndType(
                                 deleteEntityOperation.Operation.Key,
                                 typeof(TEntity),
@@ -390,7 +402,11 @@ namespace Iql.Data.Context
             {
                 saveChangesResult.Results.Add(entityCrudResult);
             }
-            await DataContext.SaveOfflineStateAsync();
+
+            if (DataContext.SupportsOffline)
+            {
+                await DataContext.SaveOfflineStateAsync();
+            }
         }
 
         private async Task<AddEntityResult<TEntity>> PerformMappedAddAsync<TEntity, TMap>(

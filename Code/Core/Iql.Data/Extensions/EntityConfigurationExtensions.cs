@@ -18,16 +18,22 @@ namespace Iql.Data.Extensions
             this IEntityConfiguration config,
             object oldEntity,
             object entity,
+            bool isInitialize,
             IIqlCustomEvaluator customEvaluator,
             IServiceProviderProvider serviceProviderProvider = null)
         {
-            var result = await TryGetInferredValuesAsync(config, oldEntity, entity, customEvaluator, serviceProviderProvider);
+            var result = await TryGetInferredValuesAsync(config, oldEntity, entity, isInitialize, customEvaluator, serviceProviderProvider);
             result.ApplyChanges();
             return result;
         }
 
-        public static async Task<InferredValuesResult> TryGetInferredValuesAsync(this IEntityConfiguration config, object oldEntity, object entity,
-            IIqlCustomEvaluator customEvaluator, IServiceProviderProvider serviceProviderProvider)
+        public static async Task<InferredValuesResult> TryGetInferredValuesAsync(
+            this IEntityConfiguration config, 
+            object oldEntity, 
+            object entity,
+            bool isInitialize,
+            IIqlCustomEvaluator customEvaluator, 
+            IServiceProviderProvider serviceProviderProvider)
         {
             serviceProviderProvider = serviceProviderProvider ?? config.Builder;
             var changes = new List<InferredValueChanges>();
@@ -37,6 +43,7 @@ namespace Iql.Data.Extensions
                 var inferredValueChanges = await propety.TryGetInferredValueCustomAsync(
                     oldEntity,
                     entity,
+                    isInitialize,
                     customEvaluator,
                     serviceProviderProvider);
                 changes.Add(inferredValueChanges);

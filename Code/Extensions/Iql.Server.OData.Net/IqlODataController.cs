@@ -309,6 +309,7 @@ namespace Iql.Server.OData.Net
             await EntityConfiguration.TrySetInferredValuesAsync(
                 clone,
                 dbObject,
+                false,
                 serverEvaluator,
                 ResolveServiceProviderProvider());
             ClearNestedEntities(dbObject);
@@ -320,6 +321,7 @@ namespace Iql.Server.OData.Net
             await EntityConfiguration.TrySetInferredValuesAsync(
                 null,
                 currentEntity,
+                true,
                 serverEvaluator,
                 ResolveServiceProviderProvider());
             ClearNestedEntities(currentEntity);

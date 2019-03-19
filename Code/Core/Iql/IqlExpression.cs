@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Entities.InferredValues;
 
 namespace Iql
 {
@@ -87,6 +88,14 @@ namespace Iql
             while (parent != null)
             {
                 ancestors.Add(parent);
+                if (parent.Parent is IqlRootReferenceExpression rootReferenceExpression)
+                {
+                    if (rootReferenceExpression.EntityTypeName ==
+                        $"{nameof(InferredValueContext<object>)}<{rootEntityType.Name}>")
+                    {
+                        break;
+                    }
+                }
                 parent = parent.Parent;
             }
 

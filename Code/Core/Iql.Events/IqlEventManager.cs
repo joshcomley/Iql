@@ -10,6 +10,12 @@ namespace Iql.Events
 
         public void Dispose()
         {
+            UnsubscribeAll();
+
+        }
+
+        public void UnsubscribeAll()
+        {
             for (var i = 0; i < _subscriptions.Count; i++)
             {
                 _subscriptions[i].Unsubscribe();

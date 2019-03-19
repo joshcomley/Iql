@@ -54,8 +54,12 @@ namespace Iql.Serialization
                 return value;
             }
 
-            var underlyingType = Nullable.GetUnderlyingType(type);
-            return Convert.ChangeType(value, underlyingType ?? type);
+            var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
+            if (underlyingType.IsEnum)
+            {
+                return Enum.ToObject(underlyingType, value);
+            }
+            return Convert.ChangeType(value, underlyingType);
 #else
             if (type == typeof(String) && !(value is String))
             {

@@ -1,8 +1,14 @@
-using System;
-using System.Linq.Expressions;
-
 namespace Iql.Entities.Relationships
 {
+    public interface ITargetRelationshipSourceDetail : IRelationshipDetail
+    {
+
+    }
+    public interface ISourceRelationshipDetail : IRelationshipDetail
+    {
+
+    }
+
     public interface IRelationshipDetail : IRelationshipDetailMetadata, IConfigurable<IRelationshipDetail>
     {
         IRelationshipDetail OtherSide { get; }

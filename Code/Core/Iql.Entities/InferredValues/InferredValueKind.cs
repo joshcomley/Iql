@@ -1,9 +1,10 @@
 ﻿namespace Iql.Entities.InferredValues
 {
-    public enum InferredValueMode
+    public enum InferredValueKind
     {
         Always,
         IfNull,
-        IfNullOrEmpty
+        IfNullOrEmpty,
+        InitializeOnly
     }
 }

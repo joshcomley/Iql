@@ -861,5 +861,7 @@ namespace Iql.Entities
             }
             return this;
         }
+
+        public IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.EntityConfiguration;
     }
 }

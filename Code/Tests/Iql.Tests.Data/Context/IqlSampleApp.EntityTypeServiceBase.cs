@@ -1,15 +1,17 @@
-using System;
+using Iql.Entities;
 using IqlSampleApp.Sets;
 using IqlSampleApp.ApiContext.Base;
 using IqlSampleApp.Data.Entities;
-using Iql.Entities;
+using System;
 namespace IqlSampleApp.ApiContext.Base
 {
     public class IqlSampleAppEntityTypeServiceBase: EntityTypeService
     {
         public IqlSampleAppEntityTypeServiceBase(IEntityConfigurationBuilder builder) : base(builder)
         {}
-        public Type TypeOfApplicationUser => typeof(ApplicationUser);
+        public Type TypeOf_ApplicationUser => typeof(ApplicationUser);
+        private EntityConfiguration<ApplicationUser>_configurationFor_ApplicationUser = null;
+        public EntityConfiguration<ApplicationUser>ConfigurationFor_ApplicationUser => _configurationFor_ApplicationUser = _configurationFor_ApplicationUser ?? Builder.EntityType<ApplicationUser>();
         private IProperty _ApplicationUser_IsLockedOut = null;
         public IProperty ApplicationUser_IsLockedOut
         {
@@ -346,7 +348,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ApplicationUser_Sites = _ApplicationUser_Sites ?? FindPropertyByName<ApplicationUser>("Sites");
             }
         }
-        public Type TypeOfApplicationLog => typeof(ApplicationLog);
+        public Type TypeOf_ApplicationLog => typeof(ApplicationLog);
+        private EntityConfiguration<ApplicationLog>_configurationFor_ApplicationLog = null;
+        public EntityConfiguration<ApplicationLog>ConfigurationFor_ApplicationLog => _configurationFor_ApplicationLog = _configurationFor_ApplicationLog ?? Builder.EntityType<ApplicationLog>();
         private IProperty _ApplicationLog_Id = null;
         public IProperty ApplicationLog_Id
         {
@@ -387,7 +391,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ApplicationLog_Kind = _ApplicationLog_Kind ?? FindPropertyByName<ApplicationLog>("Kind");
             }
         }
-        public Type TypeOfClient => typeof(Client);
+        public Type TypeOf_Client => typeof(Client);
+        private EntityConfiguration<Client>_configurationFor_Client = null;
+        public EntityConfiguration<Client>ConfigurationFor_Client => _configurationFor_Client = _configurationFor_Client ?? Builder.EntityType<Client>();
         private IProperty _Client_TypeId = null;
         public IProperty Client_TypeId
         {
@@ -532,7 +538,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Client_Sites = _Client_Sites ?? FindPropertyByName<Client>("Sites");
             }
         }
-        public Type TypeOfClientType => typeof(ClientType);
+        public Type TypeOf_ClientType => typeof(ClientType);
+        private EntityConfiguration<ClientType>_configurationFor_ClientType = null;
+        public EntityConfiguration<ClientType>ConfigurationFor_ClientType => _configurationFor_ClientType = _configurationFor_ClientType ?? Builder.EntityType<ClientType>();
         private IProperty _ClientType_Id = null;
         public IProperty ClientType_Id
         {
@@ -557,7 +565,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ClientType_Clients = _ClientType_Clients ?? FindPropertyByName<ClientType>("Clients");
             }
         }
-        public Type TypeOfDocumentCategory => typeof(DocumentCategory);
+        public Type TypeOf_DocumentCategory => typeof(DocumentCategory);
+        private EntityConfiguration<DocumentCategory>_configurationFor_DocumentCategory = null;
+        public EntityConfiguration<DocumentCategory>ConfigurationFor_DocumentCategory => _configurationFor_DocumentCategory = _configurationFor_DocumentCategory ?? Builder.EntityType<DocumentCategory>();
         private IProperty _DocumentCategory_Id = null;
         public IProperty DocumentCategory_Id
         {
@@ -630,7 +640,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _DocumentCategory_Documents = _DocumentCategory_Documents ?? FindPropertyByName<DocumentCategory>("Documents");
             }
         }
-        public Type TypeOfSiteDocument => typeof(SiteDocument);
+        public Type TypeOf_SiteDocument => typeof(SiteDocument);
+        private EntityConfiguration<SiteDocument>_configurationFor_SiteDocument = null;
+        public EntityConfiguration<SiteDocument>ConfigurationFor_SiteDocument => _configurationFor_SiteDocument = _configurationFor_SiteDocument ?? Builder.EntityType<SiteDocument>();
         private IProperty _SiteDocument_CategoryId = null;
         public IProperty SiteDocument_CategoryId
         {
@@ -727,7 +739,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _SiteDocument_CreatedByUser = _SiteDocument_CreatedByUser ?? FindPropertyByName<SiteDocument>("CreatedByUser");
             }
         }
-        public Type TypeOfReportActionsTaken => typeof(ReportActionsTaken);
+        public Type TypeOf_ReportActionsTaken => typeof(ReportActionsTaken);
+        private EntityConfiguration<ReportActionsTaken>_configurationFor_ReportActionsTaken = null;
+        public EntityConfiguration<ReportActionsTaken>ConfigurationFor_ReportActionsTaken => _configurationFor_ReportActionsTaken = _configurationFor_ReportActionsTaken ?? Builder.EntityType<ReportActionsTaken>();
         private IProperty _ReportActionsTaken_FaultReportId = null;
         public IProperty ReportActionsTaken_FaultReportId
         {
@@ -808,7 +822,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ReportActionsTaken_CreatedByUser = _ReportActionsTaken_CreatedByUser ?? FindPropertyByName<ReportActionsTaken>("CreatedByUser");
             }
         }
-        public Type TypeOfReportCategory => typeof(ReportCategory);
+        public Type TypeOf_ReportCategory => typeof(ReportCategory);
+        private EntityConfiguration<ReportCategory>_configurationFor_ReportCategory = null;
+        public EntityConfiguration<ReportCategory>ConfigurationFor_ReportCategory => _configurationFor_ReportCategory = _configurationFor_ReportCategory ?? Builder.EntityType<ReportCategory>();
         private IProperty _ReportCategory_Id = null;
         public IProperty ReportCategory_Id
         {
@@ -881,7 +897,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ReportCategory_ReportTypes = _ReportCategory_ReportTypes ?? FindPropertyByName<ReportCategory>("ReportTypes");
             }
         }
-        public Type TypeOfReportDefaultRecommendation => typeof(ReportDefaultRecommendation);
+        public Type TypeOf_ReportDefaultRecommendation => typeof(ReportDefaultRecommendation);
+        private EntityConfiguration<ReportDefaultRecommendation>_configurationFor_ReportDefaultRecommendation = null;
+        public EntityConfiguration<ReportDefaultRecommendation>ConfigurationFor_ReportDefaultRecommendation => _configurationFor_ReportDefaultRecommendation = _configurationFor_ReportDefaultRecommendation ?? Builder.EntityType<ReportDefaultRecommendation>();
         private IProperty _ReportDefaultRecommendation_Id = null;
         public IProperty ReportDefaultRecommendation_Id
         {
@@ -962,7 +980,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ReportDefaultRecommendation_Recommendations = _ReportDefaultRecommendation_Recommendations ?? FindPropertyByName<ReportDefaultRecommendation>("Recommendations");
             }
         }
-        public Type TypeOfReportRecommendation => typeof(ReportRecommendation);
+        public Type TypeOf_ReportRecommendation => typeof(ReportRecommendation);
+        private EntityConfiguration<ReportRecommendation>_configurationFor_ReportRecommendation = null;
+        public EntityConfiguration<ReportRecommendation>ConfigurationFor_ReportRecommendation => _configurationFor_ReportRecommendation = _configurationFor_ReportRecommendation ?? Builder.EntityType<ReportRecommendation>();
         private IProperty _ReportRecommendation_ReportId = null;
         public IProperty ReportRecommendation_ReportId
         {
@@ -1059,7 +1079,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ReportRecommendation_CreatedByUser = _ReportRecommendation_CreatedByUser ?? FindPropertyByName<ReportRecommendation>("CreatedByUser");
             }
         }
-        public Type TypeOfReportType => typeof(ReportType);
+        public Type TypeOf_ReportType => typeof(ReportType);
+        private EntityConfiguration<ReportType>_configurationFor_ReportType = null;
+        public EntityConfiguration<ReportType>ConfigurationFor_ReportType => _configurationFor_ReportType = _configurationFor_ReportType ?? Builder.EntityType<ReportType>();
         private IProperty _ReportType_Id = null;
         public IProperty ReportType_Id
         {
@@ -1148,7 +1170,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ReportType_FaultReports = _ReportType_FaultReports ?? FindPropertyByName<ReportType>("FaultReports");
             }
         }
-        public Type TypeOfProject => typeof(Project);
+        public Type TypeOf_Project => typeof(Project);
+        private EntityConfiguration<Project>_configurationFor_Project = null;
+        public EntityConfiguration<Project>ConfigurationFor_Project => _configurationFor_Project = _configurationFor_Project ?? Builder.EntityType<Project>();
         private IProperty _Project_CreatedByUserId = null;
         public IProperty Project_CreatedByUserId
         {
@@ -1221,7 +1245,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Project_CreatedByUser = _Project_CreatedByUser ?? FindPropertyByName<Project>("CreatedByUser");
             }
         }
-        public Type TypeOfReportReceiverEmailAddress => typeof(ReportReceiverEmailAddress);
+        public Type TypeOf_ReportReceiverEmailAddress => typeof(ReportReceiverEmailAddress);
+        private EntityConfiguration<ReportReceiverEmailAddress>_configurationFor_ReportReceiverEmailAddress = null;
+        public EntityConfiguration<ReportReceiverEmailAddress>ConfigurationFor_ReportReceiverEmailAddress => _configurationFor_ReportReceiverEmailAddress = _configurationFor_ReportReceiverEmailAddress ?? Builder.EntityType<ReportReceiverEmailAddress>();
         private IProperty _ReportReceiverEmailAddress_SiteId = null;
         public IProperty ReportReceiverEmailAddress_SiteId
         {
@@ -1302,7 +1328,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _ReportReceiverEmailAddress_CreatedByUser = _ReportReceiverEmailAddress_CreatedByUser ?? FindPropertyByName<ReportReceiverEmailAddress>("CreatedByUser");
             }
         }
-        public Type TypeOfRiskAssessment => typeof(RiskAssessment);
+        public Type TypeOf_RiskAssessment => typeof(RiskAssessment);
+        private EntityConfiguration<RiskAssessment>_configurationFor_RiskAssessment = null;
+        public EntityConfiguration<RiskAssessment>ConfigurationFor_RiskAssessment => _configurationFor_RiskAssessment = _configurationFor_RiskAssessment ?? Builder.EntityType<RiskAssessment>();
         private IProperty _RiskAssessment_SiteInspectionId = null;
         public IProperty RiskAssessment_SiteInspectionId
         {
@@ -1383,7 +1411,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _RiskAssessment_RiskAssessmentSolution = _RiskAssessment_RiskAssessmentSolution ?? FindPropertyByName<RiskAssessment>("RiskAssessmentSolution");
             }
         }
-        public Type TypeOfRiskAssessmentSolution => typeof(RiskAssessmentSolution);
+        public Type TypeOf_RiskAssessmentSolution => typeof(RiskAssessmentSolution);
+        private EntityConfiguration<RiskAssessmentSolution>_configurationFor_RiskAssessmentSolution = null;
+        public EntityConfiguration<RiskAssessmentSolution>ConfigurationFor_RiskAssessmentSolution => _configurationFor_RiskAssessmentSolution = _configurationFor_RiskAssessmentSolution ?? Builder.EntityType<RiskAssessmentSolution>();
         private IProperty _RiskAssessmentSolution_RiskAssessmentId = null;
         public IProperty RiskAssessmentSolution_RiskAssessmentId
         {
@@ -1456,7 +1486,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _RiskAssessmentSolution_CreatedByUser = _RiskAssessmentSolution_CreatedByUser ?? FindPropertyByName<RiskAssessmentSolution>("CreatedByUser");
             }
         }
-        public Type TypeOfRiskAssessmentAnswer => typeof(RiskAssessmentAnswer);
+        public Type TypeOf_RiskAssessmentAnswer => typeof(RiskAssessmentAnswer);
+        private EntityConfiguration<RiskAssessmentAnswer>_configurationFor_RiskAssessmentAnswer = null;
+        public EntityConfiguration<RiskAssessmentAnswer>ConfigurationFor_RiskAssessmentAnswer => _configurationFor_RiskAssessmentAnswer = _configurationFor_RiskAssessmentAnswer ?? Builder.EntityType<RiskAssessmentAnswer>();
         private IProperty _RiskAssessmentAnswer_QuestionId = null;
         public IProperty RiskAssessmentAnswer_QuestionId
         {
@@ -1545,7 +1577,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _RiskAssessmentAnswer_CreatedByUser = _RiskAssessmentAnswer_CreatedByUser ?? FindPropertyByName<RiskAssessmentAnswer>("CreatedByUser");
             }
         }
-        public Type TypeOfRiskAssessmentQuestion => typeof(RiskAssessmentQuestion);
+        public Type TypeOf_RiskAssessmentQuestion => typeof(RiskAssessmentQuestion);
+        private EntityConfiguration<RiskAssessmentQuestion>_configurationFor_RiskAssessmentQuestion = null;
+        public EntityConfiguration<RiskAssessmentQuestion>ConfigurationFor_RiskAssessmentQuestion => _configurationFor_RiskAssessmentQuestion = _configurationFor_RiskAssessmentQuestion ?? Builder.EntityType<RiskAssessmentQuestion>();
         private IProperty _RiskAssessmentQuestion_Id = null;
         public IProperty RiskAssessmentQuestion_Id
         {
@@ -1618,7 +1652,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _RiskAssessmentQuestion_CreatedByUser = _RiskAssessmentQuestion_CreatedByUser ?? FindPropertyByName<RiskAssessmentQuestion>("CreatedByUser");
             }
         }
-        public Type TypeOfPerson => typeof(Person);
+        public Type TypeOf_Person => typeof(Person);
+        private EntityConfiguration<Person>_configurationFor_Person = null;
+        public EntityConfiguration<Person>ConfigurationFor_Person => _configurationFor_Person = _configurationFor_Person ?? Builder.EntityType<Person>();
         private IProperty _Person_Location = null;
         public IProperty Person_Location
         {
@@ -1681,6 +1717,14 @@ namespace IqlSampleApp.ApiContext.Base
             get
             {
                 return _Person_CreatedByUserId = _Person_CreatedByUserId ?? FindPropertyByName<Person>("CreatedByUserId");
+            }
+        }
+        private IProperty _Person_Birthday = null;
+        public IProperty Person_Birthday
+        {
+            get
+            {
+                return _Person_Birthday = _Person_Birthday ?? FindPropertyByName<Person>("Birthday");
             }
         }
         private IProperty _Person_Key = null;
@@ -1827,7 +1871,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Person_Reports = _Person_Reports ?? FindPropertyByName<Person>("Reports");
             }
         }
-        public Type TypeOfPersonInspection => typeof(PersonInspection);
+        public Type TypeOf_PersonInspection => typeof(PersonInspection);
+        private EntityConfiguration<PersonInspection>_configurationFor_PersonInspection = null;
+        public EntityConfiguration<PersonInspection>ConfigurationFor_PersonInspection => _configurationFor_PersonInspection = _configurationFor_PersonInspection ?? Builder.EntityType<PersonInspection>();
         private IProperty _PersonInspection_SiteInspectionId = null;
         public IProperty PersonInspection_SiteInspectionId
         {
@@ -1956,7 +2002,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _PersonInspection_CreatedByUser = _PersonInspection_CreatedByUser ?? FindPropertyByName<PersonInspection>("CreatedByUser");
             }
         }
-        public Type TypeOfPersonLoading => typeof(PersonLoading);
+        public Type TypeOf_PersonLoading => typeof(PersonLoading);
+        private EntityConfiguration<PersonLoading>_configurationFor_PersonLoading = null;
+        public EntityConfiguration<PersonLoading>ConfigurationFor_PersonLoading => _configurationFor_PersonLoading = _configurationFor_PersonLoading ?? Builder.EntityType<PersonLoading>();
         private IProperty _PersonLoading_Id = null;
         public IProperty PersonLoading_Id
         {
@@ -2029,7 +2077,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _PersonLoading_CreatedByUser = _PersonLoading_CreatedByUser ?? FindPropertyByName<PersonLoading>("CreatedByUser");
             }
         }
-        public Type TypeOfPersonType => typeof(PersonType);
+        public Type TypeOf_PersonType => typeof(PersonType);
+        private EntityConfiguration<PersonType>_configurationFor_PersonType = null;
+        public EntityConfiguration<PersonType>ConfigurationFor_PersonType => _configurationFor_PersonType = _configurationFor_PersonType ?? Builder.EntityType<PersonType>();
         private IProperty _PersonType_Id = null;
         public IProperty PersonType_Id
         {
@@ -2110,7 +2160,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _PersonType_PeopleMap = _PersonType_PeopleMap ?? FindPropertyByName<PersonType>("PeopleMap");
             }
         }
-        public Type TypeOfPersonTypeMap => typeof(PersonTypeMap);
+        public Type TypeOf_PersonTypeMap => typeof(PersonTypeMap);
+        private EntityConfiguration<PersonTypeMap>_configurationFor_PersonTypeMap = null;
+        public EntityConfiguration<PersonTypeMap>ConfigurationFor_PersonTypeMap => _configurationFor_PersonTypeMap = _configurationFor_PersonTypeMap ?? Builder.EntityType<PersonTypeMap>();
         private IProperty _PersonTypeMap_PersonId = null;
         public IProperty PersonTypeMap_PersonId
         {
@@ -2175,7 +2227,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _PersonTypeMap_Type = _PersonTypeMap_Type ?? FindPropertyByName<PersonTypeMap>("Type");
             }
         }
-        public Type TypeOfPersonReport => typeof(PersonReport);
+        public Type TypeOf_PersonReport => typeof(PersonReport);
+        private EntityConfiguration<PersonReport>_configurationFor_PersonReport = null;
+        public EntityConfiguration<PersonReport>ConfigurationFor_PersonReport => _configurationFor_PersonReport = _configurationFor_PersonReport ?? Builder.EntityType<PersonReport>();
         private IProperty _PersonReport_PersonId = null;
         public IProperty PersonReport_PersonId
         {
@@ -2296,7 +2350,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _PersonReport_CreatedByUser = _PersonReport_CreatedByUser ?? FindPropertyByName<PersonReport>("CreatedByUser");
             }
         }
-        public Type TypeOfSite => typeof(Site);
+        public Type TypeOf_Site => typeof(Site);
+        private EntityConfiguration<Site>_configurationFor_Site = null;
+        public EntityConfiguration<Site>ConfigurationFor_Site => _configurationFor_Site = _configurationFor_Site ?? Builder.EntityType<Site>();
         private IProperty _Site_Id = null;
         public IProperty Site_Id
         {
@@ -2521,7 +2577,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Site_Users = _Site_Users ?? FindPropertyByName<Site>("Users");
             }
         }
-        public Type TypeOfSiteArea => typeof(SiteArea);
+        public Type TypeOf_SiteArea => typeof(SiteArea);
+        private EntityConfiguration<SiteArea>_configurationFor_SiteArea = null;
+        public EntityConfiguration<SiteArea>ConfigurationFor_SiteArea => _configurationFor_SiteArea = _configurationFor_SiteArea ?? Builder.EntityType<SiteArea>();
         private IProperty _SiteArea_Id = null;
         public IProperty SiteArea_Id
         {
@@ -2602,7 +2660,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _SiteArea_CreatedByUser = _SiteArea_CreatedByUser ?? FindPropertyByName<SiteArea>("CreatedByUser");
             }
         }
-        public Type TypeOfSiteInspection => typeof(SiteInspection);
+        public Type TypeOf_SiteInspection => typeof(SiteInspection);
+        private EntityConfiguration<SiteInspection>_configurationFor_SiteInspection = null;
+        public EntityConfiguration<SiteInspection>ConfigurationFor_SiteInspection => _configurationFor_SiteInspection = _configurationFor_SiteInspection ?? Builder.EntityType<SiteInspection>();
         private IProperty _SiteInspection_Id = null;
         public IProperty SiteInspection_Id
         {
@@ -2707,7 +2767,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _SiteInspection_CreatedByUser = _SiteInspection_CreatedByUser ?? FindPropertyByName<SiteInspection>("CreatedByUser");
             }
         }
-        public Type TypeOfUserSetting => typeof(UserSetting);
+        public Type TypeOf_UserSetting => typeof(UserSetting);
+        private EntityConfiguration<UserSetting>_configurationFor_UserSetting = null;
+        public EntityConfiguration<UserSetting>ConfigurationFor_UserSetting => _configurationFor_UserSetting = _configurationFor_UserSetting ?? Builder.EntityType<UserSetting>();
         private IProperty _UserSetting_CreatedByUserId = null;
         public IProperty UserSetting_CreatedByUserId
         {
@@ -2812,7 +2874,9 @@ namespace IqlSampleApp.ApiContext.Base
                 return _UserSetting_User = _UserSetting_User ?? FindPropertyByName<UserSetting>("User");
             }
         }
-        public Type TypeOfUserSite => typeof(UserSite);
+        public Type TypeOf_UserSite => typeof(UserSite);
+        private EntityConfiguration<UserSite>_configurationFor_UserSite = null;
+        public EntityConfiguration<UserSite>ConfigurationFor_UserSite => _configurationFor_UserSite = _configurationFor_UserSite ?? Builder.EntityType<UserSite>();
         private IProperty _UserSite_SiteId = null;
         public IProperty UserSite_SiteId
         {

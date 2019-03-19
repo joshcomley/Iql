@@ -393,7 +393,6 @@ namespace Iql.Data.Context
         }
 
         public bool TrackEntities { get; set; } = true;
-        public bool AllowOffline { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
         public string OfflineSynchronicityKey { get; set; } = "offline";
         public EvaluateContext EvaluateContext { get; set; }

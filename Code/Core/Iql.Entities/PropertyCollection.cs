@@ -20,6 +20,7 @@ namespace Iql.Entities
 
         protected ISimpleProperty _property;
         public override PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
+        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.PropertyPath;
         public string Path { get; set; }
 
         public ISimpleProperty Property => _property;
@@ -54,6 +55,8 @@ namespace Iql.Entities
             get => PropertyKind.GroupCollection;
             set { }
         }
+
+        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.PropertyCollection;
         public List<IPropertyGroup> Properties { get; }
         public override IPropertyGroup[] GetGroupProperties()
         {

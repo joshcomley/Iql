@@ -14,6 +14,9 @@ namespace Iql.Entities.NestedSets
             get => PropertyKind.SimpleCollection;
             set { }
         }
+
+        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.NestedSet;
+
         public override IEntityConfiguration EntityConfiguration =>
             (LeftProperty ?? RightProperty ?? LeftOfProperty ?? RightOfProperty ?? KeyProperty ?? LevelProperty ?? ParentIdProperty ?? ParentProperty ?? IdProperty)?.EntityConfiguration;
         public string SetKey { get; set; }

@@ -4,9 +4,9 @@ using Iql.Entities.Rules.Relationship;
 
 namespace Iql.Entities
 {
-    public interface IPropertyGroup : IConfiguration, IPropertyContainer
+    public interface IPropertyGroup : IPropertyContainer
     {
-        string GroupName { get; }
+        string GroupKey { get; }
         string Key { get; set; }
         PropertyKind Kind { get; set; }
         IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }

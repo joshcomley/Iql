@@ -5,10 +5,9 @@ using Iql.Entities.PropertyChangers;
 using Iql.Data.Lists;
 using Iql;
 using System;
+using Iql.Events;
 using Iql.Data.Events;
 using Iql.Entities.Events;
-using Iql.Events;
-
 namespace IqlSampleApp.Data.Entities
 {
     public class UserSiteBase: IEntity
@@ -2721,6 +2720,15 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
+            }
+        }
+        protected DateTimeOffset ? _birthday;
+        public DateTimeOffset ? Birthday
+        {
+            get => _birthday;
+            set
+            {
+                DatePropertyChanger.Instance.ChangeProperty(this, "Birthday", _birthday, value, _propertyChanging, _propertyChanged, newValue => this._birthday = newValue);
             }
         }
         protected string _key;

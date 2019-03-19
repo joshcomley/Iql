@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Iql.Events
 {
@@ -50,9 +51,11 @@ namespace Iql.Events
 
         protected List<TSubscriptionAction> SubscriptionActions { get; set; }
 
+        [JsonIgnore]
         public EventEmitter<EventSubscription> OnSubscribe =>
             _onSubscribe = _onSubscribe ?? new EventEmitter<EventSubscription>();
 
+        [JsonIgnore]
         public EventEmitter<EventSubscription> OnUnsubscribe =>
             _onUnsubscribe = _onUnsubscribe ?? new EventEmitter<EventSubscription>();
 

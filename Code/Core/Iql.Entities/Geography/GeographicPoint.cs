@@ -14,6 +14,8 @@ namespace Iql.Entities.Geography
             get => PropertyKind.SimpleCollection;
             set { }
         }
+
+        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.GeographicPoint;
         public override IEntityConfiguration EntityConfiguration => (LongitudeProperty ?? LatitudeProperty)?.EntityConfiguration;
         public IProperty LongitudeProperty { get; set; }
         public IProperty LatitudeProperty { get; set; }

@@ -5,4 +5,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
 </Project>

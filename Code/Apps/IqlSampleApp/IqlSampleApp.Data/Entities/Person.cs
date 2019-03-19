@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using IqlSampleApp.Data.Entities.Bases;
@@ -15,6 +16,7 @@ namespace IqlSampleApp.Data.Entities
     /// </summary>
     public class Person : DbObject
     {
+        public DateTimeOffset? Birthday { get; set; }
         public Site Site { get; set; }
         public int? SiteId { get; set; }
         public SiteArea SiteArea { get; set; }

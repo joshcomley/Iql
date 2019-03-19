@@ -26,8 +26,18 @@ namespace Iql.Server.OData.Net
                     constraint.Name,
                     constraint.Value));
             }
-            var entity = CrudManager.FindEntity(dic, entityConfiguration.Type);
-            return Task.FromResult(entity);
+
+            try
+            {
+                var entity = CrudManager.FindEntity(dic, entityConfiguration.Type);
+                return Task.FromResult(entity);
+            }
+            catch
+            {
+
+            }
+
+            return Task.FromResult<object>(null);
         }
 
         public bool IsEntityNew(IEntityConfiguration entityConfiguration, object entity)

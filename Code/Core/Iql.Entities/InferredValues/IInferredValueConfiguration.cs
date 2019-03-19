@@ -11,9 +11,9 @@ namespace Iql.Entities.InferredValues
         IqlExpression InferredWithConditionIql { get; set; }
         bool CanOverride { get; set; }
         bool ForNewOnly { get; set; }
-        InferredValueMode Mode { get; set; }
+        InferredValueKind Kind { get; set; }
         bool HasCondition { get; }
-        IInferredValueConfiguration SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueMode mode = InferredValueMode.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges);
+        IInferredValueConfiguration SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueKind kind = InferredValueKind.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges);
         IInferredValueConfiguration SetConditionallyInferredWithExpression(LambdaExpression expression, LambdaExpression condition);
     }
 }
