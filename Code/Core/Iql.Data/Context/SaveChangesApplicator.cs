@@ -76,7 +76,7 @@ namespace Iql.Data.Context
             {
                 case IqlOperationKind.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
-                    var addEntityValidationResult = await DataContext.ValidateEntityAsync<TEntity>(addEntityOperation.Operation.Entity);
+                    var addEntityValidationResult = await DataContext.ValidateEntityAsync<TEntity>(addEntityOperation.Operation.Entity, true);
                     if (!isOfflineResync && addEntityValidationResult.HasValidationFailures())
                     {
                         addEntityOperation.Result.Success = false;
@@ -203,7 +203,7 @@ namespace Iql.Data.Context
                     else if (CheckPendingDependencies(isOfflineResync, updateEntityOperation.Operation, updateEntityOperation.Result))
                     {
                         inferredValuesResult = await DataContext.TrySetInferredValuesAsync(updateEntityOperation.Operation.Entity, false);
-                        var updateEntityValidationResult = await DataContext.ValidateEntityAsync(updateEntityOperation.Operation.Entity);
+                        var updateEntityValidationResult = await DataContext.ValidateEntityAsync(updateEntityOperation.Operation.Entity, true);
                         if (!isOfflineResync && updateEntityValidationResult.HasValidationFailures())
                         {
                             updateEntityOperation.Result.Success = false;

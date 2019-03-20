@@ -62,16 +62,16 @@ namespace Iql.Data.Context
         /// <param name="right">Right entity or composite key.</param>
         /// <returns>Whether the two objects represent database equivalency.</returns>
         bool AreEquivalent(object left, object right);
-        Task<IEntityValidationResult> ValidateEntityBaseAsync(object entity);
-        Task<EntityValidationResult<T>> ValidateEntityAsync<T>(T entity)
+        Task<IEntityValidationResult> ValidateEntityBaseAsync(object entity, bool? sanitizeValues = null);
+        Task<EntityValidationResult<T>> ValidateEntityAsync<T>(T entity, bool? sanitizeValues = null)
             where T : class
             ;
         Task<IPropertyValidationResult> ValidateEntityPropertyByExpressionAsync<T, TProperty>(object entity,
-            Expression<Func<object, TProperty>> property)
+            Expression<Func<object, TProperty>> property, bool? sanitizeValue = null)
             where T : class
             ;
-        Task<IPropertyValidationResult> ValidateEntityPropertyByNameAsync(object entity, string property);
-        Task<IPropertyValidationResult> ValidateEntityPropertyAsync(object entity, IProperty property);
+        Task<IPropertyValidationResult> ValidateEntityPropertyByNameAsync(object entity, string property, bool? sanitizeValue = null);
+        Task<IPropertyValidationResult> ValidateEntityPropertyAsync(object entity, IProperty property, bool? sanitizeValue = null);
         bool IsTracked(object entity);
         UsersManager UsersManager { get; }
         CustomReportsManager CustomReportsManager { get; }

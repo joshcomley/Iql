@@ -160,11 +160,13 @@ namespace Iql.Data.Tracking.State
             }
         }
 
+        private bool _localValueSet = false;
         public object LocalValue
         {
             get => _localValue;
             set
             {
+                _localValueSet = true;
                 var oldValue = _localValue;
                 _localValue = value;
                 UpdateHasChanged();
@@ -178,7 +180,7 @@ namespace Iql.Data.Tracking.State
         private void UpdateHasChanged()
         {
             var oldValue = _hasChanged;
-            _hasChanged = !PropertyChanger.AreEquivalent(RemoteValue, LocalValue);
+            _hasChanged = _localValueSet && !PropertyChanger.AreEquivalent(RemoteValue, LocalValue);
             if (oldValue != _hasChanged)
             {
                 HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
@@ -195,6 +197,7 @@ namespace Iql.Data.Tracking.State
         {
             var newValue = Property.GetValue(EntityState.Entity);
             _originalValueSet = false;
+            _localValueSet = false;
             EnsureOldValue();
             LocalValue = newValue;
         }

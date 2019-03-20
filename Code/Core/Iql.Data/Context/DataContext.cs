@@ -1198,52 +1198,52 @@ namespace Iql.Data.Context
         }
 
         async Task<IPropertyValidationResult> IDataContext.ValidateEntityPropertyByExpressionAsync<T, TProperty>(object entity,
-            Expression<Func<object, TProperty>> expression)
+            Expression<Func<object, TProperty>> expression, bool? sanitizeValue = null)
         {
             var entityConfiguration = EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType());
             var property = entityConfiguration.FindPropertyByLambdaExpression(expression);
             var task = (Task<IPropertyValidationResult>)ValidateEntityPropertyInternalAsyncMethod.InvokeGeneric(this,
-                new object[] { entity, property, false },
+                new object[] { entity, property, sanitizeValue },
                 entity.GetType());
             var result = await task;
             return result;
         }
 
-        async Task<IPropertyValidationResult> IDataContext.ValidateEntityPropertyByNameAsync(object entity, string property)
+        async Task<IPropertyValidationResult> IDataContext.ValidateEntityPropertyByNameAsync(object entity, string property, bool? sanitizeValue = null)
         {
             var entityConfiguration = EntityConfigurationContext.GetEntityByType(entity.GetType());
             var task = (Task<IPropertyValidationResult>)ValidateEntityPropertyInternalAsyncMethod.InvokeGeneric(this,
-                new object[] { entity, entityConfiguration.FindProperty(property), false },
+                new object[] { entity, entityConfiguration.FindProperty(property), sanitizeValue },
                 entity.GetType());
             var result = await task;
             return result;
         }
 
-        async Task<IPropertyValidationResult> IDataContext.ValidateEntityPropertyAsync(object entity, IProperty property)
+        async Task<IPropertyValidationResult> IDataContext.ValidateEntityPropertyAsync(object entity, IProperty property, bool? sanitizeValue = null)
         {
             var task = (Task<IPropertyValidationResult>)ValidateEntityPropertyInternalAsyncMethod.InvokeGeneric(this,
-                new object[] { entity, property, false },
+                new object[] { entity, property, sanitizeValue },
                 entity.GetType());
             var result = await task;
             return result;
         }
 
-        public async Task<EntityValidationResult<T>> ValidateEntityAsync<T>(T entity)
+        public async Task<EntityValidationResult<T>> ValidateEntityAsync<T>(T entity, bool? sanitizeValues = false)
             where T : class
         {
-            return (EntityValidationResult<T>)(await ValidateEntityInternalAsync(entity));
+            return (EntityValidationResult<T>)(await ValidateEntityInternalAsync(entity, sanitizeValues));
         }
 
-        async Task<IEntityValidationResult> IDataContext.ValidateEntityBaseAsync(object entity)
+        async Task<IEntityValidationResult> IDataContext.ValidateEntityBaseAsync(object entity, bool? sanitizeValues = null)
         {
             var task = (Task<IEntityValidationResult>)ValidateEntityInternalAsyncMethod.InvokeGeneric(this,
-                new object[] { entity },
+                new object[] { entity, sanitizeValues },
                 entity.GetType());
             var result = await task;
             return result;
         }
 
-        private async Task<IEntityValidationResult> ValidateEntityInternalAsync<T>(T entity) where T : class
+        private async Task<IEntityValidationResult> ValidateEntityInternalAsync<T>(T entity, bool? sanitizeValues = null) where T : class
         {
             var entityConfiguration = EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType());
             var validationResult = new EntityValidationResult<T>(entity);
@@ -1260,7 +1260,7 @@ namespace Iql.Data.Context
             for (var index = 0; index < properties.Length; index++)
             {
                 var property = properties[index];
-                var result = await ValidateEntityPropertyAsync(entity, property);
+                var result = await ValidateEntityPropertyAsync(entity, property, sanitizeValues);
                 if (result.HasValidationFailures())
                 {
                     validationResult.AddPropertyValidationResult(result);
@@ -1270,40 +1270,41 @@ namespace Iql.Data.Context
             return validationResult;
         }
 
-        public async Task<PropertyValidationResult<T>> ValidateEntityPropertyByExpressionAsync<T, TProperty>(T entity, Expression<Func<T, TProperty>> property)
+        public async Task<PropertyValidationResult<T>> ValidateEntityPropertyByExpressionAsync<T, TProperty>(T entity, Expression<Func<T, TProperty>> property, bool? sanitizeValue = null)
             where T : class
         {
-            return (PropertyValidationResult<T>)(await ValidateEntityPropertyByExpressionInternalAsync(entity, property));
+            return (PropertyValidationResult<T>)(await ValidateEntityPropertyByExpressionInternalAsync(entity, property, sanitizeValue));
         }
 
-        private Task<IPropertyValidationResult> ValidateEntityPropertyByExpressionInternalAsync<T, TProperty>(T entity, Expression<Func<T, TProperty>> property)
+        private Task<IPropertyValidationResult> ValidateEntityPropertyByExpressionInternalAsync<T, TProperty>(T entity, Expression<Func<T, TProperty>> property, bool? sanitizeValue = null)
             where T : class
         {
             var entityConfiguration = EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType());
-            return ValidateEntityPropertyInternalAsync(entity, entityConfiguration.FindPropertyByLambdaExpression(property), false);
+            return ValidateEntityPropertyInternalAsync(entity, entityConfiguration.FindPropertyByLambdaExpression(property), sanitizeValue);
         }
 
-        public async Task<PropertyValidationResult<T>> ValidateEntityPropertyByNameAsync<T>(T entity, string property)
+        public async Task<PropertyValidationResult<T>> ValidateEntityPropertyByNameAsync<T>(T entity, string property, bool? sanitizeValue = null)
             where T : class
         {
-            return (PropertyValidationResult<T>)(await ValidateEntityPropertyByNameInternalAsync(entity, property));
+            return (PropertyValidationResult<T>)(await ValidateEntityPropertyByNameInternalAsync(entity, property, sanitizeValue));
         }
 
-        private Task<IPropertyValidationResult> ValidateEntityPropertyByNameInternalAsync<T>(T entity, string property) where T : class
+        private Task<IPropertyValidationResult> ValidateEntityPropertyByNameInternalAsync<T>(T entity, string property, bool? sanitizeValues = null) where T : class
         {
             var entityConfiguration = EntityConfigurationContext.GetEntityByType(typeof(T) ?? entity.GetType());
-            return ValidateEntityPropertyInternalAsync(entity, entityConfiguration.FindProperty(property), false);
+            return ValidateEntityPropertyInternalAsync(entity, entityConfiguration.FindProperty(property), sanitizeValues);
         }
 
-        public async Task<PropertyValidationResult<T>> ValidateEntityPropertyAsync<T>(T entity, IProperty property)
+        public async Task<PropertyValidationResult<T>> ValidateEntityPropertyAsync<T>(T entity, IProperty property, bool? sanitizeValue = null)
             where T : class
         {
-            return (PropertyValidationResult<T>)(await ValidateEntityPropertyInternalAsync(entity, property, false));
+            return (PropertyValidationResult<T>)(await ValidateEntityPropertyInternalAsync(entity, property, sanitizeValue));
         }
 
-        private async Task<IPropertyValidationResult> ValidateEntityPropertyInternalAsync<T>(T entity, IProperty property, bool hasSetDefaultValue)
+        private async Task<IPropertyValidationResult> ValidateEntityPropertyInternalAsync<T>(T entity, IProperty property, bool? sanitizeValue = null)
             where T : class
         {
+            var sanitizeValueResolved = sanitizeValue == null ? false : sanitizeValue.Value;
             var validationResult = new PropertyValidationResult<T>(entity, property);
             var oldEntity = GetEntityState(entity)?.EntityBeforeChanges();
             if (property.HasInferredWith)
@@ -1350,7 +1351,7 @@ namespace Iql.Data.Context
                 PropertyValueIsIllegallyEmpty(property, entity, propertyValue)
             )
                 {
-                    if (!hasSetDefaultValue)
+                    if (sanitizeValueResolved)
                     {
                         // Mimic default values for 
                         object newValue = DefaultValuePlaceholderInstance;
@@ -1363,7 +1364,7 @@ namespace Iql.Data.Context
                         if (!Equals(newValue, DefaultValuePlaceholderInstance))
                         {
                             property.SetValue(entity, newValue);
-                            return await ValidateEntityPropertyInternalAsync(entity, property, true);
+                            return await ValidateEntityPropertyInternalAsync(entity, property, false);
                         }
                     }
                     validationResult.AddFailure(
