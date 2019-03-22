@@ -5,21 +5,6 @@ using Iql.Entities.Relationships;
 
 namespace Iql.Entities
 {
-    public enum PropertyReadKind
-    {
-        Display = 1,
-        Hidden
-    }
-
-    public enum PropertyEditKind
-    {
-        Edit = 1,
-        New,
-        NewAndPromptForEdit,
-        Display,
-        Hidden
-    }
-
     public interface IPropertyMetadata : ISimpleProperty
     {
         IEnumerable<IRelationship> Relationships { get; }

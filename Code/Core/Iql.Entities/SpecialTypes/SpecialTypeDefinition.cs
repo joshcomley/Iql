@@ -53,6 +53,7 @@ namespace Iql.Entities.SpecialTypes
         }
 
         public IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.SpecialType;
+        public abstract PropertyGroupMetadata[] GetPropertyGroupMetadata();
 
         public abstract IPropertyGroup[] GetSpecialTypeProperties();
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Brandless.Data.Contracts;
 using Brandless.Data.Entities;
+using Iql.Data.Contracts;
 using Iql.Entities;
 using Iql.Entities.InferredValues;
 using Microsoft.AspNetCore.Identity;
@@ -68,6 +69,11 @@ namespace Iql.Server
                         property.SetReadOnly();
                     }
                 }
+
+                if (entityConfiguration.PersistenceKeyProperty != null)
+                {
+                    ConfigurePersistenceKeyBase(entityConfiguration.PersistenceKeyProperty);
+                }
             }
         }
 
@@ -79,6 +85,45 @@ namespace Iql.Server
             {
                 config.ConfigureProperty(p => p.Description, p => p.SetHint(KnownHints.BigText));
             });
+        }
+
+        [ConfigureEntity]
+        public void ConfigureIHasPersistenceKey<T>(IEntityConfigurationBuilder builder)
+            where T : class, IHasPersistenceKey
+        {
+            builder.EntityType<T>().Configure(config =>
+            {
+                config.ConfigureProperty(p => p.PersistenceKey, ConfigureAsPersistenceKey);
+            });
+        }
+
+        [ConfigureEntity]
+        public void ConfigureIPersistenceKey<T>(IEntityConfigurationBuilder builder)
+            where T : class, IPersistenceKey
+        {
+            builder.EntityType<T>().Configure(config =>
+            {
+                config.ConfigureProperty(p => p.PersistenceKey, ConfigureAsPersistenceKey);
+            });
+        }
+
+        private static void ConfigureAsPersistenceKey<T>(IEntityProperty<T> p) where T : class
+        {
+            p.EntityConfiguration.PersistenceKeyProperty = p;
+        }
+
+        private static void ConfigurePersistenceKeyBase(IProperty p)
+        {
+            typeof(AllConfigurator<TService>)
+                .GetMethod(nameof(ConfigurePersistenceKey), BindingFlags.Static | BindingFlags.NonPublic)
+                .MakeGenericMethod(p.EntityConfiguration.Type)
+                .Invoke(null, new object[] {p});
+        }
+
+        private static void ConfigurePersistenceKey<T>(IEntityProperty<T> p) where T : class
+        {
+            p.EntityConfiguration.PersistenceKeyProperty = p;
+            p.IsInferredWith(_ => new IqlNewGuidExpression(), false, InferredValueKind.IfNullOrEmpty);
         }
 
         [ConfigureEntity]
@@ -195,7 +240,11 @@ namespace Iql.Server
         {
             builder.EntityType<T>().Configure(config =>
             {
-                config.ConfigureProperty(p => p.Guid, p => p.SetReadOnlyAndHidden());
+                config.ConfigureProperty(p => p.Guid, p =>
+                {
+                    p.SetReadOnlyAndHidden();
+                    p.IsInferredWith(_ => new IqlNewGuidExpression(), false, InferredValueKind.IfNullOrEmpty);
+                });
             });
         }
 

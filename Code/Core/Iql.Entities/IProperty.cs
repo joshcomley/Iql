@@ -14,6 +14,7 @@ namespace Iql.Entities
 {
     public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>
     {
+        bool IsPersistenceKey { get; }
         bool HasInferredWith { get; }
         bool HasInferredWithCondition { get; }
         ISimpleProperty PropertyGroup { get; }

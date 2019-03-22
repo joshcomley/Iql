@@ -74,11 +74,11 @@ namespace Iql.Data.Tracking.State
 
         private void EnsureOldValue()
         {
-            if (EntityState != null && 
-                _originalValueSet && 
-                _remoteValue == null && 
-                _localValue != null && 
-                Property.Relationship != null && 
+            if (EntityState != null &&
+                _originalValueSet &&
+                _remoteValue == null &&
+                _localValue != null &&
+                Property.Relationship != null &&
                 !Property.Relationship.ThisIsTarget &&
                 Property == Property.Relationship.ThisEnd.Property)
             {
@@ -161,9 +161,10 @@ namespace Iql.Data.Tracking.State
         }
 
         private bool _localValueSet = false;
+        public bool LocalValueSet => _localValueSet;
         public object LocalValue
         {
-            get => _localValue;
+            get => _localValueSet ? _localValue : RemoteValue;
             set
             {
                 _localValueSet = true;

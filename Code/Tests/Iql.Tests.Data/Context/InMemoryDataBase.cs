@@ -11,6 +11,7 @@ namespace Iql.Tests.Data.Context
         public IList<MyCustomReport> MyCustomReports { get; set; } = new List<MyCustomReport>();
         public IList<ClientType> ClientTypes { get; set; } = new List<ClientType>();
         public IList<Client> Clients { get; set; } = new List<Client>();
+        public IList<Project> Projects { get; set; } = new List<Project>();
         public IList<Site> Sites { get; set; } = new List<Site>();
         public IList<SiteInspection> SiteInspections { get; set; } = new List<SiteInspection>();
         public IList<Person> People { get; set; } = new List<Person>();

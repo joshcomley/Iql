@@ -46,5 +46,15 @@ namespace Iql.Entities.SpecialTypes
         {
             return new[] { NameProperty };
         }
+
+
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]
+            {
+                new PropertyGroupMetadata(IdProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(NameProperty, PropertySearchKind.Primary),
+            };
+        }
     }
 }

@@ -212,6 +212,7 @@ namespace Iql.Tests.Tests.Offline
             await Db.OfflineInMemoryDataStore.ResetAsync();
             await Db.OfflinableDataStore.ResetAsync();
             PersistenceKeyGenerator.New = () => new Guid("dec281fe-96fd-4117-8e4e-2eb575d3b5a2");
+            IqlNewGuidExpression.NewGuid = () => new Guid("ff3948f6-2e86-47da-9588-3128b07090a1");
             var state = Db.OfflineInMemoryDataStore.SerializeStateToJson();
             Assert.AreEqual("[]", state);
             var client = new Client();
@@ -221,14 +222,16 @@ namespace Iql.Tests.Tests.Offline
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             state = Db.OfflineInMemoryDataStore.SerializeStateToJson().NormalizeJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""ff3948f6-2e86-47da-9588-3128b07090a1"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
             client.Name = "Newly added client2";
             result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             state = Db.OfflineInMemoryDataStore.SerializeStateToJson().NormalizeJson();
-            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""00000000-0000-0000-0000-000000000000"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
+            Assert.AreEqual(@"[{""Type"":""Client"",""Entities"":[{""Id"":1,""TypeId"":1,""Name"":""Newly added client2"",""AverageSales"":0,""AverageIncome"":0,""Category"":0,""Discount"":0,""Guid"":""ff3948f6-2e86-47da-9588-3128b07090a1"",""CreatedDate"":""0001-01-01T00:00:00.0+00:00"",""PersistenceKey"":""dec281fe-96fd-4117-8e4e-2eb575d3b5a2""}]}]",
                 state);
+            IqlNewGuidExpression.NewGuid = () => Guid.NewGuid();
+            PersistenceKeyGenerator.New = () => Guid.NewGuid();
         }
 
         [TestMethod]
@@ -899,7 +902,7 @@ namespace Iql.Tests.Tests.Offline
             // "Name" change should be propagated to the offline tracker
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Count);
-            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.Name), nameof(Client.Guid));
             Assert.AreEqual(firstClientNewName, offlineFirstClient.Name);
 
             // Make another change
@@ -909,7 +912,7 @@ namespace Iql.Tests.Tests.Offline
             // Latest change should still be temporal
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Count);
-            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.Name), nameof(Client.Guid));
 
             // "TypeId" change should be in the temporal changes
             changes = Db.GetChanges();
@@ -927,7 +930,7 @@ namespace Iql.Tests.Tests.Offline
             // Offline should now contain both "TypeId" and "Name" change
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Count);
-            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name), nameof(Client.Guid));
 
             // The online client's "Name" and "TypeId" should remain the same
             Assert.AreEqual(OfflineAppDbContext.Client1Name, onlineFirstClient.Name);
@@ -943,7 +946,7 @@ namespace Iql.Tests.Tests.Offline
             // There should be no new offline changes
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Count);
-            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name), nameof(Client.Guid));
 
             // The online client's "Name" and "TypeId" should remain the same
             Assert.AreEqual(OfflineAppDbContext.Client1Name, onlineFirstClient.Name);
@@ -969,7 +972,7 @@ namespace Iql.Tests.Tests.Offline
             // There should be no new offline changes
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Count);
-            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name), nameof(Client.Guid));
 
             result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
@@ -982,8 +985,8 @@ namespace Iql.Tests.Tests.Offline
             // There should be one new offline change
             offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(2, offlineChanges.Count);
-            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name));
-            AssertChangedProperties(offlineChanges.AllChanges, secondClient, nameof(Client.Name));
+            AssertChangedProperties(offlineChanges.AllChanges, firstClient, nameof(Client.TypeId), nameof(Client.Name), nameof(Client.Guid));
+            AssertChangedProperties(offlineChanges.AllChanges, secondClient, nameof(Client.Name), nameof(Client.Guid), nameof(Client.PersistenceKey));
 
             Assert.AreEqual(OfflineAppDbContext.Client2Name, onlineSecondClient.Name);
 

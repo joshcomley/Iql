@@ -25,6 +25,7 @@ namespace Iql.Entities
         private string _titlePropertyName;
         private string _previewPropertyName;
         public IList<IProperty> Properties { get; set; }
+        public IProperty PersistenceKeyProperty { get; set; }
 
         public IList<IRelationship> Relationships => _relationships;
 
@@ -152,7 +153,11 @@ namespace Iql.Entities
                     continue;
                 }
 
-                final.Add(property.PropertyGroup ?? property);
+                var resolved = property.PropertyGroup ?? property;
+                if (!final.Contains(resolved))
+                {
+                    final.Add(resolved);
+                }
             }
 
             return new DisplayConfiguration(kind, final);
@@ -205,6 +210,10 @@ namespace Iql.Entities
         public virtual IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration,
             bool appendMissingProperties = true)
         {
+            if (this.Type.Name == "Person")
+            {
+                int a = 0;
+            }
             if (configuration == null || !configuration.Properties.Any())
             {
                 return GetGroupProperties();

@@ -1719,6 +1719,22 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Person_CreatedByUserId = _Person_CreatedByUserId ?? FindPropertyByName<Person>("CreatedByUserId");
             }
         }
+        private IProperty _Person_PhotoUrl = null;
+        public IProperty Person_PhotoUrl
+        {
+            get
+            {
+                return _Person_PhotoUrl = _Person_PhotoUrl ?? FindPropertyByName<Person>("PhotoUrl");
+            }
+        }
+        private IProperty _Person_PhotoRevisionKey = null;
+        public IProperty Person_PhotoRevisionKey
+        {
+            get
+            {
+                return _Person_PhotoRevisionKey = _Person_PhotoRevisionKey ?? FindPropertyByName<Person>("PhotoRevisionKey");
+            }
+        }
         private IProperty _Person_Birthday = null;
         public IProperty Person_Birthday
         {
@@ -1741,6 +1757,22 @@ namespace IqlSampleApp.ApiContext.Base
             get
             {
                 return _Person_InferredWhenKeyChanges = _Person_InferredWhenKeyChanges ?? FindPropertyByName<Person>("InferredWhenKeyChanges");
+            }
+        }
+        private IProperty _Person_IsComplete = null;
+        public IProperty Person_IsComplete
+        {
+            get
+            {
+                return _Person_IsComplete = _Person_IsComplete ?? FindPropertyByName<Person>("IsComplete");
+            }
+        }
+        private IProperty _Person_HasPaid = null;
+        public IProperty Person_HasPaid
+        {
+            get
+            {
+                return _Person_HasPaid = _Person_HasPaid ?? FindPropertyByName<Person>("HasPaid");
             }
         }
         private IProperty _Person_Title = null;

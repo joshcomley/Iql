@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using Brandless.AspNetCore.OData.Extensions.Binding;
@@ -315,9 +317,66 @@ namespace Iql.Server.OData.Net
             ClearNestedEntities(dbObject);
         }
 
+        private static bool IsGuid(string expression)
+        {
+            if (expression != null)
+            {
+                Regex guidRegEx = new Regex(@"^(\{{0,1}([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}\}{0,1})$");
+
+                return guidRegEx.IsMatch(expression);
+            }
+            return false;
+        }
+
         protected override async Task OnBeforePostAsync(T currentEntity)
         {
             var serverEvaluator = new IqlServerEvaluator(CrudManager, true);
+            if (EntityConfiguration.PersistenceKeyProperty != null)
+            {
+                var value = EntityConfiguration.PersistenceKeyProperty.GetValue(currentEntity);
+                while (true)
+                {
+                    if (Equals(null, value))
+                    {
+                        value = Guid.NewGuid();
+                    }
+
+                    var str = value.ToString();
+                    if (string.IsNullOrWhiteSpace(str))
+                    {
+                        value = Guid.NewGuid();
+                    }
+
+                    str = value.ToString();
+                    if (EntityConfiguration.PersistenceKeyProperty.PropertyInfo.PropertyType == typeof(Guid))
+                    {
+                        if (str == new Guid().ToString() || !IsGuid(str))
+                        {
+                            value = Guid.NewGuid();
+                        }
+                    }
+                    if (EntityConfiguration.PersistenceKeyProperty.PropertyInfo.PropertyType == typeof(string))
+                    {
+                        value = value.ToString();
+                    }
+                    var param = Expression.Parameter(typeof(T));
+                    var pred = Expression.Lambda(
+                        Expression.Equal(
+                            Expression.Property(param, EntityConfiguration.PersistenceKeyProperty.PropertyName),
+                            Expression.Constant(value)
+                        ),
+                        param
+                    );
+                    var compiled = (Func<T, bool>)pred.Compile();
+                    var result = CrudManager.DbSet<T>().Where(compiled).SingleOrDefault();
+                    if (result == null)
+                    {
+                        break;
+                    }
+                }
+
+                EntityConfiguration.PersistenceKeyProperty.SetValue(currentEntity, value);
+            }
             await EntityConfiguration.TrySetInferredValuesAsync(
                 null,
                 currentEntity,

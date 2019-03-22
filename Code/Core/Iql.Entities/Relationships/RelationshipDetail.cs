@@ -67,6 +67,11 @@ namespace Iql.Entities.Relationships
 
         public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.RelationshipSource;
 
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]{};
+        }
+
         protected override IRuleCollection<IRelationshipRule> NewRelationshipFilterRulesCollection()
         {
             return new RelationshipRuleCollection<T, TProperty>();

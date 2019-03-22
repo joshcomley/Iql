@@ -1031,6 +1031,15 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                         assignIsAssign = false;
                         dealtWith = true;
                     }
+                    else if (!isProperty && entityMetadata != null && metadataProperty.Name == nameof(IEntityMetadata.PersistenceKeyProperty))
+                    {
+                        if (entityMetadata.PersistenceKeyProperty != null)
+                        {
+                            sb.Append(
+                                $"{lambdaKey}.{nameof(IEntityMetadata.PersistenceKeyProperty)} = {lambdaKey}.{nameof(IEntityConfiguration.FindProperty)}(\"{entityMetadata.PersistenceKeyProperty.PropertyName}\");");
+                        }
+                        dealtWith = true;
+                    }
                     else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumerableType())
                     {
                         var enumerable = value as IEnumerable;

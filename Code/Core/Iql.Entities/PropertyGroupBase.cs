@@ -20,6 +20,7 @@ namespace Iql.Entities
 
         public abstract PropertyKind Kind { get; set; }
         public abstract IqlPropertyGroupKind GroupKind { get; }
+        public abstract PropertyGroupMetadata[] GetPropertyGroupMetadata();
 
         public virtual IEntityConfiguration EntityConfiguration => _entityConfiguration = _entityConfiguration ?? GetGroupProperties().Where(p => p != null).Select(p => p.EntityConfiguration).FirstOrDefault();
         public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules

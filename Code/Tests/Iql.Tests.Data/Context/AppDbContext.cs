@@ -60,6 +60,7 @@ namespace Iql.Tests.Context
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Sites);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Projects);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.People);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PeopleTypes);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PeopleTypeMap);

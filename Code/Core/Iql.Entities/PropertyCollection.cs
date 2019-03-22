@@ -11,41 +11,6 @@ namespace Iql.Entities
         IqlPropertyPath BuildPropertyPath();
     }
 
-    public class PropertyPath : SimplePropertyGroupBase<IPropertyPath>, IPropertyPath
-    {
-        public override ISimpleProperty ResolvePrimaryProperty()
-        {
-            return Property;
-        }
-
-        protected ISimpleProperty _property;
-        public override PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
-        public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.PropertyPath;
-        public string Path { get; set; }
-
-        public ISimpleProperty Property => _property;
-
-        public PropertyPath(IEntityConfiguration configuration, string path, string key = null)
-            : base(configuration, key)
-        {
-            Path = path;
-            if (configuration != null)
-            {
-                _property = configuration.FindNestedProperty(path);
-            }
-        }
-
-        public override IPropertyGroup[] GetGroupProperties()
-        {
-            return new[] { Property };
-        }
-
-        public IqlPropertyPath BuildPropertyPath()
-        {
-            return IqlPropertyPath.FromString(Path, EntityConfiguration);
-        }
-    }
-
     public class PropertyCollection : PropertyGroupBase<IPropertyCollection>, IPropertyCollection
     {
         public bool Enclose { get; set; } = true;
@@ -69,6 +34,11 @@ namespace Iql.Entities
                 }
                 return p;
             }).ToArray();
+        }
+
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return Properties.Select(_ => new PropertyGroupMetadata(_, null)).ToArray();
         }
 
         public PropertyCollection(IEntityConfiguration entityConfiguration, string key = null) : base(entityConfiguration, null)

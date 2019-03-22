@@ -601,7 +601,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Client>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -675,7 +713,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Client>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -733,6 +809,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "Clients";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "Client";
                 p.Title = "Client";
                 p.FriendlyName = "Client";
@@ -839,7 +916,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<DocumentCategory>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -913,7 +1028,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<DocumentCategory>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -946,6 +1099,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "DocumentCategories";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "DocumentCategory";
                 p.Title = "DocumentCategory";
                 p.FriendlyName = "Document Category";
@@ -1025,7 +1179,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<SiteDocument>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1108,7 +1300,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<SiteDocument>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1151,6 +1381,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "SiteDocuments";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "SiteDocument";
                 p.Title = "SiteDocument";
                 p.FriendlyName = "Site Document";
@@ -1222,7 +1453,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportActionsTaken>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1305,7 +1574,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportActionsTaken>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1339,6 +1646,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "ReportActionsTaken";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportActionsTaken";
                 p.Title = "ReportActionsTaken";
                 p.FriendlyName = "Report Actions Taken";
@@ -1411,7 +1719,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportCategory>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1485,7 +1831,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportCategory>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1518,6 +1902,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "ReportCategories";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportCategory";
                 p.Title = "ReportCategory";
                 p.FriendlyName = "Report Category";
@@ -1599,7 +1984,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportDefaultRecommendation>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1673,7 +2096,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportDefaultRecommendation>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1706,6 +2167,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "ReportDefaultRecommendations";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportDefaultRecommendation";
                 p.Title = "ReportDefaultRecommendation";
                 p.FriendlyName = "Report Default Recommendation";
@@ -1785,7 +2247,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportRecommendation>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1868,7 +2368,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportRecommendation>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -1911,6 +2449,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "ReportRecommendations";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportRecommendation";
                 p.Title = "ReportRecommendation";
                 p.FriendlyName = "Report Recommendation";
@@ -1991,7 +2530,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportType>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2065,7 +2642,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportType>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2107,6 +2722,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "ReportTypes";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportType";
                 p.Title = "ReportType";
                 p.FriendlyName = "Report Type";
@@ -2179,7 +2795,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Project>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2262,7 +2916,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Project>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2287,6 +2979,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "Projects";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "Project";
                 p.Title = "Project";
                 p.FriendlyName = "Project";
@@ -2358,7 +3051,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportReceiverEmailAddress>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2441,7 +3172,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<ReportReceiverEmailAddress>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2475,6 +3244,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "ReportReceiverEmailAddresses";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportReceiverEmailAddress";
                 p.Title = "ReportReceiverEmailAddress";
                 p.FriendlyName = "Report Receiver Email Address";
@@ -2546,7 +3316,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<RiskAssessment>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2620,7 +3428,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<RiskAssessment>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2662,6 +3508,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "RiskAssessments";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "RiskAssessment";
                 p.Title = "RiskAssessment";
                 p.FriendlyName = "Risk Assessment";
@@ -2724,7 +3571,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentSolution>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2807,7 +3692,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentSolution>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -2841,6 +3764,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "RiskAssessmentSolutions";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "RiskAssessmentSolution";
                 p.Title = "RiskAssessmentSolution";
                 p.FriendlyName = "Risk Assessment Solution";
@@ -2921,7 +3845,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentAnswer>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -3004,7 +3966,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentAnswer>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -3038,6 +4038,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "RiskAssessmentAnswers";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "RiskAssessmentAnswer";
                 p.Title = "RiskAssessmentAnswer";
                 p.FriendlyName = "Risk Assessment Answer";
@@ -3110,7 +4111,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentQuestion>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -3184,7 +4223,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<RiskAssessmentQuestion>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -3217,6 +4294,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "RiskAssessmentQuestions";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "RiskAssessmentQuestion";
                 p.Title = "RiskAssessmentQuestion";
                 p.FriendlyName = "Risk Assessment Question";
@@ -3363,6 +4441,22 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
+            }).DefineProperty(p => p.PhotoUrl, true, IqlType.String).ConfigureProperty(p => p.PhotoUrl, p => {
+                p.PropertyName = "PhotoUrl";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "PhotoUrl";
+                p.Title = "PhotoUrl";
+                p.FriendlyName = "Photo Url";
+            }).DefineProperty(p => p.PhotoRevisionKey, true, IqlType.String).ConfigureProperty(p => p.PhotoRevisionKey, p => {
+                p.PropertyName = "PhotoRevisionKey";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "PhotoRevisionKey";
+                p.Title = "PhotoRevisionKey";
+                p.FriendlyName = "Photo Revision Key";
             }).DefineProperty(p => p.Birthday, true, IqlType.Date).ConfigureProperty(p => p.Birthday, p => {
                 p.PropertyName = "Birthday";
                 p.Nullable = true;
@@ -3548,6 +4642,23 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "InferredWhenKeyChanges";
                 p.Title = "InferredWhenKeyChanges";
                 p.FriendlyName = "Inferred When Key Changes";
+            }).DefineProperty(p => p.IsComplete, false, IqlType.Boolean).ConfigureProperty(p => p.IsComplete, p => {
+                p.PropertyName = "IsComplete";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.ForceDecision = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "IsComplete";
+                p.Title = "IsComplete";
+                p.FriendlyName = "Is Complete";
+            }).DefineProperty(p => p.HasPaid, true, IqlType.Boolean).ConfigureProperty(p => p.HasPaid, p => {
+                p.PropertyName = "HasPaid";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "HasPaid";
+                p.Title = "HasPaid";
+                p.FriendlyName = "Has Paid";
             }).DefineProperty(p => p.Title, true, IqlType.String).ConfigureProperty(p => p.Title, p => {
                 p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Title";
@@ -3707,7 +4818,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Person>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -3781,7 +4930,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Person>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -3914,11 +5101,19 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Person>().HasOne(p => p.Loading).WithMany(p => p.People).WithConstraint(p => p.LoadingId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.CreatedByUser).WithMany(p => p.PeopleCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<Person>().Configure(p => {
-                p.TitlePropertyName = "Key";
+                p.TitlePropertyName = "PhotoUrl";
                 p.SetFriendlyName = "People";
                 p.SetName = "People";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
+                p.HasFile(p_f => p_f.PhotoUrl, p_f => {
+                    p_f.VersionProperty = p.FindProperty("PhotoRevisionKey");
+                    p_f.Name = "Photo";
+                    p_f.Title = "Photo";
+                    p_f.FriendlyName = "Photo";
+                    p_f.UrlProperty = p.FindProperty("PhotoUrl");
+                });
                 p.Name = "Person";
                 p.Title = "Person";
                 p.FriendlyName = "Person";
@@ -4038,7 +5233,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<PersonInspection>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -4121,7 +5354,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<PersonInspection>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -4155,6 +5426,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "PersonInspections";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "PersonInspection";
                 p.Title = "PersonInspection";
                 p.FriendlyName = "Person Inspection";
@@ -4227,7 +5499,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<PersonLoading>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -4301,7 +5611,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<PersonLoading>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -4334,6 +5682,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "PersonLoadings";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "PersonLoading";
                 p.Title = "PersonLoading";
                 p.FriendlyName = "Person Loading";
@@ -4406,7 +5755,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<PersonType>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -4480,7 +5867,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<PersonType>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -4521,6 +5946,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "PersonTypes";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "PersonType";
                 p.Title = "PersonType";
                 p.FriendlyName = "Person Type";
@@ -4562,7 +5988,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<PersonTypeMap>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -4738,7 +6202,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<PersonReport>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -4812,7 +6314,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<PersonReport>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -4871,6 +6411,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "PersonReports";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "PersonReport";
                 p.Title = "PersonReport";
                 p.FriendlyName = "Person Report";
@@ -5164,7 +6705,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Site>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -5238,7 +6817,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Site>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -5338,6 +6955,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "Sites";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "Site";
                 p.Title = "Site";
                 p.FriendlyName = "Site";
@@ -5409,7 +7027,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<SiteArea>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -5483,7 +7139,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<SiteArea>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -5525,6 +7219,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "SiteAreas";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "SiteArea";
                 p.Title = "SiteArea";
                 p.FriendlyName = "Site Area";
@@ -5612,7 +7307,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<SiteInspection>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -5686,7 +7419,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<SiteInspection>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -5736,6 +7507,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "SiteInspections";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "SiteInspection";
                 p.Title = "SiteInspection";
                 p.FriendlyName = "Site Inspection";
@@ -5953,7 +7725,45 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
                 p.PropertyName = "PersistenceKey";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNewGuidExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.NewGuid,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<UserSetting>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
                 p.MarkedReadOnly = true;
@@ -5987,6 +7797,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.SetName = "UserSettings";
                 p.DefaultSortExpression = "CreatedDate";
                 p.DefaultSortDescending = true;
+                p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "UserSetting";
                 p.Title = "UserSetting";
                 p.FriendlyName = "User Setting";

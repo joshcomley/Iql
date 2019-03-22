@@ -27,9 +27,10 @@ namespace Iql.Entities
                     currentConfig = child.Relationship.OtherEnd.Property.EntityConfiguration;
                     relationshipParts.Add(child.Name);
                 }
-                return IqlPropertyPath.FromString(string.Join("/", relationshipParts), config);
-            }
 
+                var path = string.Join("/", relationshipParts);
+                return string.IsNullOrWhiteSpace(path) ? null : IqlPropertyPath.FromString(path, config);
+            }
             return null;
         }
     }

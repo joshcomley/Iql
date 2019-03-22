@@ -1304,14 +1304,14 @@ namespace Iql.Data.Context
         private async Task<IPropertyValidationResult> ValidateEntityPropertyInternalAsync<T>(T entity, IProperty property, bool? sanitizeValue = null)
             where T : class
         {
-            var sanitizeValueResolved = sanitizeValue == null ? false : sanitizeValue.Value;
+            var sanitizeValueResolved = sanitizeValue ?? false;
             var validationResult = new PropertyValidationResult<T>(entity, property);
-            var oldEntity = GetEntityState(entity)?.EntityBeforeChanges();
             if (property.HasInferredWith)
             {
                 var inferredWithIgnored = false;
                 if (property.HasInferredWithCondition)
                 {
+                    var oldEntity = GetEntityState(entity)?.EntityBeforeChanges();
                     for (var i = 0; i < property.InferredValueConfigurations.Count; i++)
                     {
                         var inferredWith = property.InferredValueConfigurations[i];
@@ -1328,7 +1328,6 @@ namespace Iql.Data.Context
                             }
                         }
                     }
-
                 }
                 if (!inferredWithIgnored && EntityConfigurationContext.ValidateInferredWithClientSide == false)
                 {

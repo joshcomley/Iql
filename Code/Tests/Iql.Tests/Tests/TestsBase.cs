@@ -52,6 +52,11 @@ namespace Iql.Tests.Tests
         public virtual void TestCleanUp()
         {
             TestsBlock.TestCleanUp();
+            PostTestCleanUp();
+        }
+
+        protected virtual void PostTestCleanUp()
+        {
         }
 
         public virtual void ShouldThrowException<TException>(Action action)

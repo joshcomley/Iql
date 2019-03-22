@@ -71,6 +71,7 @@ namespace Iql
         GeoRing = 67,
         CurrentUser = 68,
         CurrentUserId = 69,
-        CurrentLocation = 70
+        CurrentLocation = 70,
+        NewGuid = 71
     }
 }

@@ -31,6 +31,16 @@ namespace Iql.Entities.Geography
         {
         }
 #endif
+
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]
+            {
+                new PropertyGroupMetadata(LongitudeProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(LatitudeProperty, PropertySearchKind.None),
+            };
+        }
+
         public override IPropertyGroup[] GetGroupProperties()
         {
             return new[] { LongitudeProperty, LatitudeProperty }.Where(_ => _ != null).ToArray();

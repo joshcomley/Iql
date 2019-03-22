@@ -27,6 +27,7 @@ namespace Iql.Entities
         bool DefaultSortDescending { get; set; }
         IList<DisplayConfiguration> DisplayConfigurations { get; set; }
         IList<IProperty> Properties { get; set; }
+        IProperty PersistenceKeyProperty { get; set; }
         IList<IRelationship> Relationships { get; }
         IList<IFile> Files { get; }
         IPropertyGroup[] AllPropertyGroups();

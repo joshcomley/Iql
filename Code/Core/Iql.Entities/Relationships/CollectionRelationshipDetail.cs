@@ -19,5 +19,9 @@ namespace Iql.Entities.Relationships
         }
 
         public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.RelationshipTarget;
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]{};
+        }
     }
 }

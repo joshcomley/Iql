@@ -31,6 +31,17 @@ namespace Iql.Entities.PropertyGroups.Files
         protected IMediaKey MediaKeyInternal { get; set; }
         public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.File;
 
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]
+            {
+                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.Primary), 
+                new PropertyGroupMetadata(KindProperty, PropertySearchKind.Secondary), 
+                new PropertyGroupMetadata(VersionProperty, PropertySearchKind.None), 
+                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.None), 
+            };
+        }
+
         public override IEntityConfiguration EntityConfiguration =>
             EntityConfigurationInternal;
 

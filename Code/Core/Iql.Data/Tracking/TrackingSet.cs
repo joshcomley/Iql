@@ -42,7 +42,6 @@ namespace Iql.Data.Tracking
             EntitiesByObject = new Dictionary<object, IEntityStateBase>();
             EntitiesByKey = new Dictionary<string, IEntityStateBase>();
             EntitiesByRemoteKey = new Dictionary<string, RemoteKeyMap>();
-            PersistenceKey = EntityConfiguration.Properties.SingleOrDefault(p => p.Name == "PersistenceKey");
         }
 
         public IEntityState<T> AddEntity(T entity)
@@ -217,7 +216,7 @@ namespace Iql.Data.Tracking
         private Dictionary<string, RemoteKeyMap> EntitiesByRemoteKey { get; }
         private Dictionary<string, IEntityStateBase> EntitiesByKey { get; }
 
-        protected IProperty PersistenceKey { get; set; }
+        protected IProperty PersistenceKey => EntityConfiguration.PersistenceKeyProperty;
         //public IDataContext DataContext => DataTracker.DataContext;
 
         bool ITrackingSet.DifferentEntityWithSameKeyIsTracked(object entity)

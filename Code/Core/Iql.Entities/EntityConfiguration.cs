@@ -863,5 +863,9 @@ namespace Iql.Entities
         }
 
         public IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.EntityConfiguration;
+        public PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]{};
+        }
     }
 }

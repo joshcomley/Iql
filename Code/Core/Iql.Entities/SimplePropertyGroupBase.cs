@@ -8,6 +8,7 @@ namespace Iql.Entities
     {
         public bool MarkedReadOnly { get; set; }
         public virtual bool IsInternal => false;
+        public bool ForceDecision { get; set; }
         public virtual bool IsReadOnly => HasReadOnly;
         public virtual bool IsHiddenFromEdit =>
             IsInternal || EditKind == PropertyEditKind.Hidden;

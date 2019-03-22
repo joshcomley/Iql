@@ -67,7 +67,6 @@ namespace Iql.Entities
             ? EntityConfiguration.Geographics.FirstOrDefault(g =>
                 Equals(g.LatitudeProperty, this) || Equals(g.LongitudeProperty, this))
             : null;
-
         public IFile File => EntityConfiguration?.Files.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != FilePropertyKind.None);
         public IDateRange DateRange => EntityConfiguration?.DateRanges.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != DateRangePropertyKind.None);
         public INestedSet NestedSet => EntityConfiguration?.NestedSets.FirstOrDefault(ns => ns.GetPropertyKind(this as IProperty) != NestedSetPropertyKind.None);
@@ -198,12 +197,20 @@ namespace Iql.Entities
                 if (!_searchKindSet)
                 {
                     _searchKindSet = true;
-                    _searchKind = Kind.HasFlag(PropertyKind.Primitive) &&
+                    var searchKind = Kind.HasFlag(PropertyKind.Primitive) &&
                                   !Kind.HasFlag(PropertyKind.RelationshipKey) &&
                                   !Kind.HasFlag(PropertyKind.Key) &&
                                   TypeDefinition.Type == typeof(string) && string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType)
                         ? PropertySearchKind.Secondary
                         : PropertySearchKind.None;
+                    // TOOD: Add getter for all special property types this belongs to
+                    // TODO: Move this logic into each special property group
+                    var specialPropertyMetadata = PropertyGroup?.GetPropertyGroupMetadata().FirstOrDefault(_ => _.Property == this);
+                    if (specialPropertyMetadata != null && specialPropertyMetadata.Kind != null)
+                    {
+                        searchKind = PropertySearchKind.None;
+                    }
+                    _searchKind = searchKind;
                 }
 
                 return _searchKind;
@@ -214,6 +221,8 @@ namespace Iql.Entities
                 _searchKindSet = true;
             }
         }
+
+        public bool IsPersistenceKey => EntityConfiguration.PersistenceKeyProperty == this;
 
         internal IProperty CountRelationship { get; set; }
 

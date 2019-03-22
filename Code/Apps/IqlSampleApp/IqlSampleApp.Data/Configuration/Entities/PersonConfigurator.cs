@@ -17,6 +17,13 @@ namespace IqlSampleApp.Data.Configuration.Entities
         {
             //model.ModelConfiguration();
             var model = builder.EntityType<Person>();
+            model.HasFile(s => s.PhotoUrl, f =>
+            {
+                f.SetVersionProperty(_ => _.PhotoRevisionKey);
+                //f.SetHint(KnownHints.Image);
+                //f.SetHint(KnownHints.Video);
+                f.FriendlyName = "Photo";
+            });
             model.ConfigureProperty(_ => _.Client, p =>
             {
                 p.IsInferredWith(_ => _.CurrentEntityState.Site.Client);
@@ -28,6 +35,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             {
                 p.IsInferredWith(_ => new IqlCurrentLocationExpression(), false, InferredValueKind.IfNull, true);
             });
+            model.ConfigureProperty(_ => _.IsComplete, p => { p.ForceDecision = true; });
             model.ConfigureProperty(_ => _.Category, p =>
             {
                 p.IsInferredWith(_ => PersonCategory.Conventional, true, InferredValueKind.InitializeOnly, true);

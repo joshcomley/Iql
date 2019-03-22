@@ -203,14 +203,17 @@ namespace Iql.Tests.Tests.Properties
             var instance = await detail.GetSnapshotAsync(person, Db, displayConfiguration);
             // Currently just check no infinite loop is created
             Assert.IsNotNull(instance);
-            Assert.AreEqual(21, instance.ChildProperties.Length);
+            Assert.AreEqual(24, instance.ChildProperties.Length);
             var xxx = GetAsserts<Person>(instance);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Person.Id), false);
             AssertProperty(expectedIndex++, instance, nameof(Person.Location), true);
+            AssertProperty(expectedIndex++, instance, "Photo", true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Birthday), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Key), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.InferredWhenKeyChanges), false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.IsComplete), true);
+            AssertProperty(expectedIndex++, instance, nameof(Person.HasPaid), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Title), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Description), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Skills), true);

@@ -32,6 +32,15 @@ namespace Iql.Entities.PropertyGroups.Dates
         }
 #endif
 
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]
+            {
+                new PropertyGroupMetadata(StartDateProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(EndDateProperty, PropertySearchKind.None),
+            };
+        }
+
         public override PropertyKind Kind
         {
             get => PropertyKind.SimpleCollection;

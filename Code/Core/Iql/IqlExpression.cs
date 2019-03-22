@@ -294,6 +294,8 @@ namespace Iql
                     return typeof(IqlCurrentUserIdExpression);
                 case IqlExpressionKind.CurrentLocation:
                     return typeof(IqlCurrentLocationExpression);
+                case IqlExpressionKind.NewGuid:
+                    return typeof(IqlNewGuidExpression);
             }
             throw new NotSupportedException($"Unable to resolve type for expression kind {kind.ToString()}");
         }

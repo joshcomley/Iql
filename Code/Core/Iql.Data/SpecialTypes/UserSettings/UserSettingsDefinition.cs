@@ -65,6 +65,21 @@ namespace Iql.Entities.SpecialTypes
                     new PropertyMap(EntityConfiguration, nameof(IqlUserSetting.Value), ValueProperty),
                 };
 
+
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]
+            {
+                new PropertyGroupMetadata(IdProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(UserIdProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(Key1Property, PropertySearchKind.Secondary),
+                new PropertyGroupMetadata(Key2Property, PropertySearchKind.Secondary),
+                new PropertyGroupMetadata(Key3Property, PropertySearchKind.Secondary),
+                new PropertyGroupMetadata(Key4Property, PropertySearchKind.Secondary),
+                new PropertyGroupMetadata(ValueProperty, PropertySearchKind.None),
+            };
+        }
+
         public override IPropertyGroup[] GetSpecialTypeProperties()
         {
             return new[] { UserIdProperty, Key1Property, Key2Property, Key3Property, Key4Property, ValueProperty };

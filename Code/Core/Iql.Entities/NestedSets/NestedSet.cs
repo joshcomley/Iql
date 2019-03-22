@@ -29,6 +29,23 @@ namespace Iql.Entities.NestedSets
         public IProperty ParentIdProperty { get; set; }
         public IProperty ParentProperty { get; set; }
         public IProperty IdProperty { get; set; }
+
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]
+            {
+                new PropertyGroupMetadata(IdProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(LeftProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(RightProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(LeftOfProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(RightOfProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(KeyProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(LevelProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(ParentIdProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(ParentProperty, PropertySearchKind.None),
+            };
+        }
+
         public NestedSetPropertyKind GetPropertyKind(IProperty property)
         {
             if (LeftProperty == property) { return NestedSetPropertyKind.Left; }

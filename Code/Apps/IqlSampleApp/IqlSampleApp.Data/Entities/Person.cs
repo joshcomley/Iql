@@ -16,6 +16,8 @@ namespace IqlSampleApp.Data.Entities
     /// </summary>
     public class Person : DbObject
     {
+        public string PhotoUrl { get; set; }
+        public string PhotoRevisionKey { get; set; }
         public DateTimeOffset? Birthday { get; set; }
         public Site Site { get; set; }
         public int? SiteId { get; set; }
@@ -26,6 +28,8 @@ namespace IqlSampleApp.Data.Entities
         //public string Location { get; set; }
 
         //[Required(ErrorMessage = "Please enter a title")]
+        public bool IsComplete { get; set; }
+        public bool? HasPaid { get; set; }
         public string Title { get; set; }
 
         public string Description { get; set; }

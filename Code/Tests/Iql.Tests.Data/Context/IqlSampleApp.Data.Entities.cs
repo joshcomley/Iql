@@ -2722,6 +2722,24 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
+        protected string _photoUrl;
+        public string PhotoUrl
+        {
+            get => _photoUrl;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PhotoUrl", _photoUrl, value, _propertyChanging, _propertyChanged, newValue => this._photoUrl = newValue);
+            }
+        }
+        protected string _photoRevisionKey;
+        public string PhotoRevisionKey
+        {
+            get => _photoRevisionKey;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PhotoRevisionKey", _photoRevisionKey, value, _propertyChanging, _propertyChanged, newValue => this._photoRevisionKey = newValue);
+            }
+        }
         protected DateTimeOffset ? _birthday;
         public DateTimeOffset ? Birthday
         {
@@ -2747,6 +2765,24 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "InferredWhenKeyChanges", _inferredWhenKeyChanges, value, _propertyChanging, _propertyChanged, newValue => this._inferredWhenKeyChanges = newValue);
+            }
+        }
+        protected bool _isComplete;
+        public bool IsComplete
+        {
+            get => _isComplete;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "IsComplete", _isComplete, value, _propertyChanging, _propertyChanged, newValue => this._isComplete = newValue);
+            }
+        }
+        protected bool ? _hasPaid;
+        public bool ? HasPaid
+        {
+            get => _hasPaid;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "HasPaid", _hasPaid, value, _propertyChanging, _propertyChanged, newValue => this._hasPaid = newValue);
             }
         }
         protected string _title;

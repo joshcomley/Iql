@@ -9,6 +9,7 @@ namespace Iql.Entities
         EventEmitter<ValueChangedEvent<PropertyReadKind>> ReadKindChanged { get; }
         PropertyReadKind ReadKind { get; set; }
         PropertyEditKind EditKind { get; set; }
+        bool ForceDecision { get; set; }
         bool IsReadOnly { get; }
         bool MarkedReadOnly { get; set; }
         bool HasReadOnly { get; }
@@ -23,5 +24,6 @@ namespace Iql.Entities
         ISimpleProperty SetReadOnly();
         ISimpleProperty SetHidden();
         ISimpleProperty ResolvePrimaryProperty();
+
     }
 }

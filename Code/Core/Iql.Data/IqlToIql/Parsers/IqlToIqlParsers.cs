@@ -115,6 +115,8 @@ namespace Iql.Data.IqlToIql.Parsers
                         }
                         return new IqlLiteralExpression(currentUser);
                     }
+                case IqlExpressionKind.NewGuid:
+                    return new IqlLiteralExpression(IqlNewGuidExpression.NewGuid());
             }
 
             return action;

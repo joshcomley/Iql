@@ -4,5 +4,6 @@ namespace Iql.Entities
     {
         IPropertyGroup[] GetGroupProperties();
         IqlPropertyGroupKind GroupKind { get; }
+        PropertyGroupMetadata[] GetPropertyGroupMetadata();
     }
 }

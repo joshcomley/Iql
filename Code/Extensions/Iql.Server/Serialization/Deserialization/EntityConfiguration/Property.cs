@@ -20,5 +20,9 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
         }
 
         public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.Primitive;
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

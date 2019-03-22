@@ -4,15 +4,17 @@ using IqlSampleApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
 namespace DCodeBrandlessIqlCodeAppsIqlSampleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190320021815_AddedBooleanFieldsToPerson")]
+    partial class AddedBooleanFieldsToPerson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,10 +223,6 @@ namespace DCodeBrandlessIqlCodeAppsIqlSampleApp.Migrations
                     b.Property<Point>("Location");
 
                     b.Property<Guid>("PersistenceKey");
-
-                    b.Property<string>("PhotoRevisionKey");
-
-                    b.Property<string>("PhotoUrl");
 
                     b.Property<string>("RevisionKey");
 

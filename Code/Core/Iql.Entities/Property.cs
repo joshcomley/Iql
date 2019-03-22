@@ -154,6 +154,11 @@ namespace Iql.Entities
         }
 
         public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.Primitive;
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]{};
+        }
+
         public new RelationshipRuleCollection<TOwner, TElementType> RelationshipFilterRules => (RelationshipRuleCollection<TOwner, TElementType>)base.RelationshipFilterRules;
 
         IRuleCollection<IRelationshipRule> IPropertyGroup.RelationshipFilterRules

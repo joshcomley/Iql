@@ -14,6 +14,7 @@ namespace Iql.Data.Crud.Operations
         EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; }
         IEntityStateBase EntityState { get; }
         bool HasChanged { get; }
+        bool LocalValueSet { get; }
         object LocalValue { get; set; }
         object RemoteValue { get; set; }
         IProperty Property { get; }
