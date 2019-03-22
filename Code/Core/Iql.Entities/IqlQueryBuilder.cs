@@ -64,7 +64,7 @@ namespace Iql.Data.Queryable
         public static IqlExpression BuildSearchQuery(
             this IEntityConfiguration entityConfiguration, 
             string search, 
-            PropertySearchKind searchKind = PropertySearchKind.Secondary, 
+            IqlSearchKind searchKind = IqlSearchKind.Secondary, 
             bool splitIntoTerms = false)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -122,7 +122,7 @@ namespace Iql.Data.Queryable
         public static IqlExpression BuildSearchQueryWithTerms(
             this IEntityConfiguration entityConfiguration,
             IqlSearchText terms,
-            PropertySearchKind searchKind = PropertySearchKind.Secondary)
+            IqlSearchKind searchKind = IqlSearchKind.Secondary)
         {
             return BuildSearchQueryForPropertiesWithTerms(
                 terms,

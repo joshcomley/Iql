@@ -29,7 +29,7 @@ namespace Iql.Entities
         string GetDisplayText(object entity, string key = null);
         IEntityConfiguration SetDefaultSortExpression(string expression);
         IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration, bool appendMissingProperties = true);
-        IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary);
+        IProperty[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary);
         IProperty[] FindPropertiesByHint(string hint);
         IProperty FindPropertyByLambdaExpression(LambdaExpression property);
         IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression);

@@ -221,7 +221,20 @@ namespace Iql.Tests.Tests.EntityConfiguration
         public void GetSecondarySearchProperties()
         {
             var searchProperties = Db.EntityConfigurationContext.EntityType<Person>()
-                .ResolveSearchProperties(PropertySearchKind.Secondary);
+                .ResolveSearchProperties(IqlSearchKind.Secondary);
+            Assert.AreEqual(5, searchProperties.Length);
+            Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Key)));
+            Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.InferredWhenKeyChanges)));
+            Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Title)));
+            Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Description)));
+            Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.RevisionKey)));
+        }
+
+        [TestMethod]
+        public void GetAllSearchProperties()
+        {
+            var searchProperties = Db.EntityConfigurationContext.EntityType<Person>()
+                .ResolveSearchProperties(IqlSearchKind.Primary | IqlSearchKind.Secondary);
             Assert.AreEqual(5, searchProperties.Length);
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Key)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.InferredWhenKeyChanges)));

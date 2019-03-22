@@ -104,7 +104,7 @@ namespace Iql.Data.Lists
             return (DbSet<T, TKey>)base.OrderByDefault(descending);
         }
 
-        public new DbSet<T, TKey> Search(string search, PropertySearchKind searchKind = PropertySearchKind.Primary)
+        public new DbSet<T, TKey> Search(string search, IqlSearchKind searchKind = IqlSearchKind.Primary)
         {
             return (DbSet<T, TKey>)base.Search(search, searchKind);
         }

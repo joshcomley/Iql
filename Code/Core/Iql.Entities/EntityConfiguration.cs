@@ -127,20 +127,24 @@ namespace Iql.Entities
             return this;
         }
 
-        public IProperty[] ResolveSearchProperties(PropertySearchKind searchKind = PropertySearchKind.Primary)
+        public IProperty[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary)
         {
             var result = new List<IProperty>();
             foreach (var property in Properties)
             {
-                if (property.SearchKind != PropertySearchKind.None && property.SearchKind == searchKind)
+                if (searchKind.HasFlag(IqlSearchKind.Primary) && property.SearchKind == PropertySearchKind.Primary)
+                {
+                    result.Add(property);
+                }
+                if (searchKind.HasFlag(IqlSearchKind.Secondary) && property.SearchKind == PropertySearchKind.Secondary)
                 {
                     result.Add(property);
                 }
             }
 
-            if (!result.Any() && searchKind == PropertySearchKind.Primary)
+            if (!result.Any() && searchKind == IqlSearchKind.Primary)
             {
-                var secondarySearchFields = ResolveSearchProperties(PropertySearchKind.Secondary);
+                var secondarySearchFields = ResolveSearchProperties(IqlSearchKind.Secondary);
                 if (secondarySearchFields.Any())
                 {
                     var priorityFields = new[] { "FullName", "Name", "Title" };

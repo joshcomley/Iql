@@ -560,12 +560,12 @@ namespace Iql.Data.Tracking
                 typeof(T),
                 EntityConfiguration);
             EntitiesByObject.Add(entity, entityState);
-            if (!entityState.CurrentKey.HasDefaultValue())
+            var hasKey = !entityState.CurrentKey.HasDefaultValue();
+            if (hasKey)
             {
                 EntitiesByKey.Add(entityState.CurrentKey.AsKeyString(), entityState);
             }
-
-            if (PersistenceKey != null)
+            else if (PersistenceKey != null)
             {
                 var persistenceKey = EnsurePersistenceKey(entity).Value;
                 EntitiesByPersistenceKey.Add(persistenceKey, entityState);

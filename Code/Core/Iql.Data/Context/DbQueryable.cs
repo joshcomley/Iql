@@ -251,12 +251,12 @@ namespace Iql.Data.Context
             return WhereEquals(EntityConfiguration.BuildSearchKeyQuery(keys));
         }
 
-        public DbQueryable<T> Search(string search, PropertySearchKind searchKind = PropertySearchKind.Primary, bool? splitIntoTerms = null)
+        public DbQueryable<T> Search(string search, IqlSearchKind searchKind = IqlSearchKind.Primary, bool? splitIntoTerms = null)
         {
             return WhereEquals(EntityConfiguration.BuildSearchQuery(search, searchKind, splitIntoTerms ?? false));
         }
 
-        IDbQueryable IDbQueryable.Search(string search, PropertySearchKind searchKind, bool? splitIntoTerms = null)
+        IDbQueryable IDbQueryable.Search(string search, IqlSearchKind searchKind, bool? splitIntoTerms = null)
         {
             return Search(search, searchKind, splitIntoTerms ?? false);
         }
@@ -285,12 +285,12 @@ namespace Iql.Data.Context
         }
 
 
-        public DbQueryable<T> SearchWithTerms(IqlSearchText searchTerms, PropertySearchKind searchKind = PropertySearchKind.Primary)
+        public DbQueryable<T> SearchWithTerms(IqlSearchText searchTerms, IqlSearchKind searchKind = IqlSearchKind.Primary)
         {
             return WhereEquals(EntityConfiguration.BuildSearchQueryWithTerms(searchTerms, searchKind));
         }
 
-        IDbQueryable IDbQueryable.SearchWithTerms(IqlSearchText searchTerms, PropertySearchKind searchKind)
+        IDbQueryable IDbQueryable.SearchWithTerms(IqlSearchText searchTerms, IqlSearchKind searchKind)
         {
             return SearchWithTerms(searchTerms, searchKind);
         }
