@@ -109,6 +109,7 @@ namespace Iql.Server
 
         private static void ConfigureAsPersistenceKey<T>(IEntityProperty<T> p) where T : class
         {
+            p.SetReadOnlyAndHidden();
             p.EntityConfiguration.PersistenceKeyProperty = p;
         }
 

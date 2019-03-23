@@ -92,6 +92,11 @@ namespace Iql.Data.Rendering
             )
         {
             var canEdit = !IsSimpleProperty || !await PropertyAsSimpleProperty.IsReadOnlyAsync(entity, dataContext);
+            if (Property.Name == "Parent")
+            {
+                var canShow2 = CanShow(entity, dataContext, configuration);
+                int a = 0;
+            }
             var canShow = CanShow(entity, dataContext, configuration);
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
@@ -212,6 +217,10 @@ namespace Iql.Data.Rendering
             IDataContext dataContext,
             DisplayConfiguration displayConfiguration)
         {
+            if (Property.Name == "Parent")
+            {
+                int a = 0;
+            }
             if (IsCoreProperty)
             {
                 var hidden = displayConfiguration?.Kind == DisplayConfigurationKind.Edit

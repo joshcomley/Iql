@@ -21,14 +21,15 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKeys.Default), SnapshotOrdering.Standard);
             Assert.AreEqual(25, instance.ChildProperties.Length);
             var expectedIndex = 0;
+            // N.B. "Parent" should be in here twice, as it is specified twice in the configuration
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
-            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
-            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.AdditionalSendReportsTo), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.People), false);
@@ -121,7 +122,7 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
-            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.AdditionalSendReportsTo), false);
@@ -134,9 +135,9 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Line), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Left), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Right), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
-            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
         }
 
         [TestMethod]
@@ -153,7 +154,7 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
-            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.AdditionalSendReportsTo), false);
@@ -161,9 +162,9 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Children), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.SiteInspections), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Users), false);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
-            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
@@ -218,10 +219,10 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Person.Description), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Skills), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Category), true);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Guid), false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Guid), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Person.CreatedDate), false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.RevisionKey), false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.PersistenceKey), false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.RevisionKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.PersistenceKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Person.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Site), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.SiteArea), true);
@@ -251,12 +252,13 @@ namespace Iql.Tests.Tests.Properties
             //AssertProperty(expectedIndex++, instance, nameof(Person.PersistenceKey), false);
         }
 
-        static void AssertProperty(int expectedIndex, EntityPropertySnapshot snapshot, string name, bool canEdit)
+        static void AssertProperty(int expectedIndex, EntityPropertySnapshot snapshot, string name, bool canEdit, bool canShow = true)
         {
             var prop = snapshot.ChildProperties[expectedIndex];
             Assert.IsNotNull(prop);
             Assert.AreEqual(name, prop.PropertyName);
             Assert.AreEqual(canEdit, prop.CanEdit);
+            Assert.AreEqual(canShow, prop.CanShow);
         }
     }
 }

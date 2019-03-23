@@ -3,7 +3,7 @@ using Iql.Entities;
 
 namespace Iql.Data.Rendering
 {
-    [DebuggerDisplay("{Property.Name}, can edit: {CanEdit}")]
+    [DebuggerDisplay("{Property.Name}, can edit: {CanEdit}, can show: {CanShow}")]
     public class EntityPropertySnapshot
     {
         public PropertyDetail Detail { get; set; }

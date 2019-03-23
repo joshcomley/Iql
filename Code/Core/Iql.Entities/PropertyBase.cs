@@ -25,7 +25,7 @@ namespace Iql.Entities
             return propertyGroup;
         }
 
-        public override bool IsInternal => PropertyGroup != null;
+        public override bool IsInternal => false;
 
         public ISimpleProperty PropertyGroup
         {
