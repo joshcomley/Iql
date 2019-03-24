@@ -57,10 +57,6 @@ namespace Iql.Entities
             {
                 var oldValue = _readKind;
                 _readKind = value;
-                if (value == PropertyReadKind.Hidden && (EntityConfiguration.Name == "Site" || EntityConfiguration.Name == "Sites"))
-                {
-                    int a = 0;
-                }
                 if (oldValue != value && _readKindChanged != null)
                 {
                     ReadKindChanged.Emit(() => new ValueChangedEvent<PropertyReadKind>(oldValue, value));
