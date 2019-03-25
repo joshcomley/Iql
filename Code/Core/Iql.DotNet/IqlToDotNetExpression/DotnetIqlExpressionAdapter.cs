@@ -28,6 +28,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
             Registry.Register(typeof(IqlStringSubStringExpression), () => new DotNetStringSubStringExpressionParser());
             Registry.Register(typeof(IqlStringLengthExpression), () => new DotNetStringLengthExpressionParser());
             Registry.Register(typeof(IqlBinaryExpression), () => new DotNetBinaryActionParser());
+            Registry.Register(typeof(IqlOrderByExpression), () => new DotNetOrderByActionParser());
             Registry.Register(typeof(IqlCountExpression), () => new DotNetCountActionParser());
             Registry.Register(typeof(IqlConditionExpression), () => new DotNetConditionActionParser());
             Registry.Register(typeof(IqlAnyAllExpression), () => new DotNetAnyAllActionParser());

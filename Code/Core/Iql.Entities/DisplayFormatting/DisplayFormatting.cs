@@ -59,44 +59,49 @@ namespace Iql.Entities.DisplayFormatting
 
         public AutoFormattingResult ResolveAutoProperties()
         {
-            var titleProperties = EntityConfiguration.GetGroupProperties().SelectMany(p => p.FlattenToValueProperties())
+            return AutoFormatting(EntityConfiguration);
+        }
+
+        public static AutoFormattingResult AutoFormatting(IEntityConfiguration entityConfiguration)
+        {
+            var titleProperties = entityConfiguration.GetGroupProperties().SelectMany(p => p.FlattenToValueProperties())
                 .Where(p => p.HasHint(KnownHints.Title)).ToArray();
             if (titleProperties.Any())
             {
                 return new AutoFormattingResult(AutoFormattingKind.Title, titleProperties);
             }
 
-            var firstSearchProperty = EntityConfiguration.Properties.FirstOrDefault(p => p.SearchKind == PropertySearchKind.Primary);
+            var firstSearchProperty = entityConfiguration.Properties.FirstOrDefault(p => p.SearchKind == PropertySearchKind.Primary);
             if (firstSearchProperty != null)
             {
                 return new AutoFormattingResult(AutoFormattingKind.FirstSearchProperty, new IProperty[] { firstSearchProperty });
             }
 
             var firstNameProperty =
-                TryFindProperty("FirstName", "ForeName", "ChristianName");
+                entityConfiguration.TryMatchProperty("FirstName", "ForeName", "ChristianName");
             var lastNameProperty =
-                TryFindProperty("LastName", "Surname");
+                entityConfiguration.TryMatchProperty("LastName", "Surname");
 
             if (firstNameProperty != null && lastNameProperty != null)
             {
-                return new AutoFormattingResult(AutoFormattingKind.FirstNameLastName, new IProperty[] { firstNameProperty, lastNameProperty });
+                return new AutoFormattingResult(AutoFormattingKind.FirstNameLastName, new IProperty[] { firstNameProperty[0], lastNameProperty[0] });
             }
 
             var nameProperty =
-                    TryFindProperty("Name", "FullName", "Title")
+                    entityConfiguration.TryMatchProperty("Name", "FullName", "Title")
                 ;
             if (nameProperty != null)
             {
-                return new AutoFormattingResult(AutoFormattingKind.Name, new IProperty[] { nameProperty });
+                return new AutoFormattingResult(AutoFormattingKind.Name, new IProperty[] { nameProperty[0] });
             }
             var idProperty =
-                    TryFindProperty("Id", "Key")
+                    entityConfiguration.TryMatchProperty("Id", "Key")
                 ;
             if (idProperty != null)
             {
-                return new AutoFormattingResult(AutoFormattingKind.Id, new IProperty[] { idProperty });
+                return new AutoFormattingResult(AutoFormattingKind.Id, new IProperty[] { idProperty[0] });
             }
-            return new AutoFormattingResult(AutoFormattingKind.NoneFound, new IProperty[] { idProperty });
+            return new AutoFormattingResult(AutoFormattingKind.NoneFound, new IProperty[] { idProperty[0] });
         }
 
         public string TryFormat(TEntity entity, string key = null)
@@ -137,20 +142,6 @@ namespace Iql.Entities.DisplayFormatting
                 return "";
             }
             return formatter.Format(entity);
-        }
-
-        private IProperty TryFindProperty(params string[] names)
-        {
-            foreach (var name in names)
-            {
-                var property = EntityConfiguration.Properties.FirstOrDefault(p => p.Name.ToLower() == name.ToLower());
-                if (property != null && property.TypeDefinition.ToIqlType() == IqlType.String)
-                {
-                    return property;
-                }
-            }
-
-            return null;
         }
 
         IEntityDisplayTextFormatter IDisplayFormatting.Default => Default;

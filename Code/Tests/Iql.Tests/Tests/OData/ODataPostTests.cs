@@ -102,6 +102,7 @@ namespace Iql.Tests.Tests.OData
                 var body = request.Body.Body;
                 var compressed = body.NormalizeJson();
                 Assert.AreEqual(@"{
+  ""Birthday"": ""0001-01-01T00:00:00.0+00:00"",
   ""IsComplete"": false,
   ""Title"": ""Dummy"",
   ""Description"":""I'm \\ \""auto\"""",

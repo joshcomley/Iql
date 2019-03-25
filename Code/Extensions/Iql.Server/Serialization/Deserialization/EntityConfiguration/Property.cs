@@ -24,5 +24,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
         {
             throw new NotImplementedException();
         }
+
+        public override PropertySearchKind SearchKind { get; set; }
     }
 }

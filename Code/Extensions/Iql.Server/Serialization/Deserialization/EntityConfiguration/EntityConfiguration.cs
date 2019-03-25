@@ -29,6 +29,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
             throw new NotImplementedException();
         }
 
+        public override string TitlePropertyName { get; set; }
         public SpecialTypeDefinition SpecialTypeDefinition { get; set; }
 
         public IEntityConfiguration SetManageKind(EntityManageKind manageKind)

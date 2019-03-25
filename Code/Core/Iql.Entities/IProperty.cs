@@ -17,7 +17,6 @@ namespace Iql.Entities
         bool IsPersistenceKey { get; }
         bool HasInferredWith { get; }
         bool HasInferredWithCondition { get; }
-        ISimpleProperty PropertyGroup { get; }
         IDateRange DateRange { get; }
         INestedSet NestedSet { get; }
         IGeographicPoint GeographicPoint { get; }

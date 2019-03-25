@@ -54,12 +54,26 @@ namespace Iql.Tests.Context
             if (InMemoryDataStoreConfiguration == null)
             {
                 InMemoryDataStoreConfiguration = new InMemoryDataStoreConfiguration(EntityConfigurationContext);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.UserSites);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.UserSettings);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ApplicationLogs);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.SiteDocuments);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PersonReports);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ReportDefaultRecommendations);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ReportRecommendations);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ReportReceiverEmailAddresses);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ReportTypes);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessmentAnswers);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.RiskAssessmentQuestions);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ReportActionsTaken);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Users);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.DocumentCategories);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.MyCustomReports);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Sites);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.SiteAreas);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PersonLoadings);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Projects);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.People);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.PeopleTypes);

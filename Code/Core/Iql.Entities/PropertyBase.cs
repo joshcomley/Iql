@@ -15,7 +15,7 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : SimplePropertyGroupBase<IProperty>, IPropertyMetadata
     {
-        public override ISimpleProperty ResolvePrimaryProperty()
+        public override IPropertyGroup ResolvePrimaryProperty()
         {
             var propertyGroup = PropertyGroup;
             if (propertyGroup == null)
@@ -25,9 +25,7 @@ namespace Iql.Entities
             return propertyGroup;
         }
 
-        public override bool IsInternal => false;
-
-        public ISimpleProperty PropertyGroup
+        public override IPropertyGroup PropertyGroup
         {
             get
             {
@@ -185,22 +183,78 @@ namespace Iql.Entities
 
         public override PropertyKind Kind { get; set; }
 
-        private bool _searchKindSet;
         private bool? _readOnly;
         private EntityRelationship _relationship;
         private IList<IInferredValueConfiguration> _inferredValueConfigurations = new List<IInferredValueConfiguration>();
 
-        public PropertySearchKind SearchKind
+        private bool IsSearchableType => TypeDefinition != null && (TypeDefinition.Type == typeof(string) &&
+                                                                    string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType));
+
+        private PropertySearchKind? GetGroupSearchKind(IPropertyContainer groupDefinition)
+        {
+            var match = groupDefinition.GetPropertyGroupMetadata()
+                .FirstOrDefault(_ => _.Property == this);
+            if (match != null && match.Kind != null)
+            {
+                return match.Kind;
+            }
+            return null;
+        }
+
+        public bool AutoSearchKind { get; set; } = true;
+
+        public virtual PropertySearchKind SearchKind
         {
             get
             {
-                if (!_searchKindSet)
+                if (AutoSearchKind)
                 {
-                    _searchKindSet = true;
+                    if (!IsSearchableType || ReadKind == PropertyReadKind.Hidden)
+                    {
+                        return PropertySearchKind.None;
+                    }
+
+                    if (EntityConfiguration.SpecialTypeDefinition != null)
+                    {
+                        var groupSearchKind = GetGroupSearchKind(EntityConfiguration.SpecialTypeDefinition);
+                        if (groupSearchKind != null)
+                        {
+                            return groupSearchKind.Value;
+                        }
+                    }
+
+                    var groups = EntityConfiguration.AllPropertyGroups();
+                    var groupMatches = new List<PropertySearchKind>();
+                    for (var i = 0; i < groups.Length; i++)
+                    {
+                        var groupSearchKind = GetGroupSearchKind(groups[i]);
+                        if (groupSearchKind != null)
+                        {
+                            groupMatches.Add(groupSearchKind.Value);
+                        }
+                    }
+                    if (groupMatches.Any(_ => _ == PropertySearchKind.Primary))
+                    {
+                        return PropertySearchKind.Primary;
+                    }
+                    if (groupMatches.Any(_ => _ == PropertySearchKind.Secondary))
+                    {
+                        return PropertySearchKind.Primary;
+                    }
+                    if (groupMatches.Any())
+                    {
+                        return PropertySearchKind.None;
+                    }
+
+                    if (EntityConfiguration.TitleProperty == this || EntityConfiguration.PreviewProperty == this ||
+                        Matches("name", "fullname", "title", "firstname", "lastname", "christianname", "forename", "surname"))
+                    {
+                        return PropertySearchKind.Primary;
+                    }
+
                     var searchKind = Kind.HasFlag(PropertyKind.Primitive) &&
                                   !Kind.HasFlag(PropertyKind.RelationshipKey) &&
-                                  !Kind.HasFlag(PropertyKind.Key) &&
-                                  TypeDefinition.Type == typeof(string) && string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType)
+                                  !Kind.HasFlag(PropertyKind.Key)
                         ? PropertySearchKind.Secondary
                         : PropertySearchKind.None;
                     // TOOD: Add getter for all special property types this belongs to
@@ -218,7 +272,7 @@ namespace Iql.Entities
             set
             {
                 _searchKind = value;
-                _searchKindSet = true;
+                AutoSearchKind = false;
             }
         }
 

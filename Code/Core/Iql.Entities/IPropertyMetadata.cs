@@ -9,6 +9,7 @@ namespace Iql.Entities
     {
         IEnumerable<IRelationship> Relationships { get; }
         ITypeDefinition TypeDefinition { get; set; }
+        bool AutoSearchKind { get; set; }
         PropertySearchKind SearchKind { get; set; }
         string PropertyName { get; set; }
         bool Searchable { get; set; }

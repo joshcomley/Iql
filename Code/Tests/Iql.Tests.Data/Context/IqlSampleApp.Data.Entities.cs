@@ -4339,15 +4339,6 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
-        protected string _name;
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
-            }
-        }
         protected double _averageSales;
         public double AverageSales
         {
@@ -4391,6 +4382,15 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "Discount", _discount, value, _propertyChanging, _propertyChanged, newValue => this._discount = newValue);
+            }
+        }
+        protected string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
         protected Guid _guid;

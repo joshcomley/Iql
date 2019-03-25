@@ -10,6 +10,7 @@ using Iql.Entities.Rules;
 using Iql.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
@@ -20,7 +21,6 @@ namespace Iql.Entities
     {
         protected virtual IEntityConfigurationContainer ConfigurationContainer { get; }
         protected readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
-        private IProperty _titleProperty;
         private IProperty _previewProperty;
         private string _titlePropertyName;
         private string _previewPropertyName;
@@ -28,6 +28,23 @@ namespace Iql.Entities
         public IProperty PersistenceKeyProperty { get; set; }
 
         public IList<IRelationship> Relationships => _relationships;
+
+        public IProperty[] TryMatchProperty(params string[] names)
+        {
+            List<IProperty> properties = null;
+            // TODO: Convert name to lower case and remove all non-alpha characters (including numbers)
+            for (var i = 0; i < names.Length; i++)
+            {
+                var name = names[i];
+                var property = Properties.FirstOrDefault(p => p.Matches(name));
+                if (property != null && property.TypeDefinition.ToIqlType() == IqlType.String)
+                {
+                    properties = properties ?? new List<IProperty>();
+                    properties.Add(property);
+                }
+            }
+            return properties?.ToArray();
+        }
 
         protected EntityConfigurationBase(IEntityConfigurationContainer configurationContainer)
         {
@@ -109,7 +126,8 @@ namespace Iql.Entities
             all.AddRange(AllPropertyGroups());
             all.AddRange(Properties.Where(p =>
                 p.PropertyGroup == null));
-            return all.PrioritizeForReading().ToArray();
+            var ordered = all.PrioritizeForReading().Where(_ => !_.IsHiddenFromRead).ToArray();
+            return ordered;
         }
 
         public IList<DisplayConfiguration> DisplayConfigurations { get; set; } = new List<DisplayConfiguration>();
@@ -146,7 +164,7 @@ namespace Iql.Entities
             var properties = BuildDisplayConfiguration(null, true);
             for (int i = 0; i < properties.Length; i++)
             {
-                var property = Properties[i];
+                var property = properties[i];
                 if (property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
                     (kind == DisplayConfigurationKind.Edit && property.Kind.HasFlag(PropertyKind.Count)))
                 {
@@ -160,7 +178,7 @@ namespace Iql.Entities
                 }
             }
 
-            return new DisplayConfiguration(kind, final);
+            return new DisplayConfiguration(kind, final, null, true);
         }
 
         public DisplayConfiguration GetDisplayConfiguration(DisplayConfigurationKind kind, params string[] keys)
@@ -207,19 +225,28 @@ namespace Iql.Entities
             return config;
         }
 
+        [DebuggerDisplay("{Property.Name} - {Order}")]
+        class OrderedProperty
+        {
+            public IPropertyGroup Property { get; }
+            public int Order { get; }
+
+            public OrderedProperty(IPropertyGroup property, int order)
+            {
+                Property = property;
+                Order = order;
+            }
+        }
+
         public virtual IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration,
             bool appendMissingProperties = true)
         {
-            if (this.Type.Name == "Person")
-            {
-                int a = 0;
-            }
             if (configuration == null || !configuration.Properties.Any())
             {
                 return GetGroupProperties();
             }
 
-            var ordered = configuration.Properties.ToList();
+            var properties = configuration.Properties.ToList();
             if (appendMissingProperties)
             {
                 var flattened = configuration.Properties.FlattenAllToSimpleProperties().ToList();
@@ -227,39 +254,27 @@ namespace Iql.Entities
                 for (var i = 0; i < groupProperties.Count; i++)
                 {
                     var property = groupProperties[i];
-                    if (!flattened.Contains(property) && !ordered.Contains(property))
+                    if (!flattened.Contains(property) && !properties.Contains(property))
                     {
-                        ordered.Add(property);
+                        properties.Add(property);
                     }
                 }
             }
 
-            return ordered.ToArray();
+            return properties.ToArray();
         }
 
+        public bool SupportsCascadeDelete { get; set; }
         public IList<IGeographicPoint> Geographics { get; set; } = new List<IGeographicPoint>();
         public IList<INestedSet> NestedSets { get; set; } = new List<INestedSet>();
         public IList<IDateRange> DateRanges { get; set; } = new List<IDateRange>();
         public IList<IFile> Files { get; set; } = new List<IFile>();
         public IDisplayFormatting DisplayFormatting { get; set; }
         public IRuleCollection<IBinaryRule> EntityValidation { get; set; }
-
-        public IEntityKey Key
-        {
-            get => _key;
-            set
-            {
-                if (value == null)
-                {
-                    int a = 0;
-                }
-                _key = value;
-            }
-        }
+        public IEntityKey Key { get; set; }
 
         public Type Type { get; set; }
 
-        private bool _titlePropertyNameChanged = false;
         private bool _previewPropertyNameChanged = false;
         private string _setFriendlyName;
 
@@ -267,13 +282,12 @@ namespace Iql.Entities
         {
             get
             {
-                if (_titlePropertyNameChanged)
+                var name = TitlePropertyName;
+                if (!string.IsNullOrWhiteSpace(name))
                 {
-                    _titlePropertyNameChanged = false;
-                    _titleProperty = Properties.SingleOrDefault(p => p.Name == TitlePropertyName);
+                    return Properties.SingleOrDefault(p => p.Name == TitlePropertyName);
                 }
-
-                return _titleProperty;
+                return null;
             }
         }
 
@@ -291,18 +305,86 @@ namespace Iql.Entities
             }
         }
 
-        public string TitlePropertyName
+        public bool AutoTitleProperty { get; set; } = true;
+        public bool AutoTitlePropertyResolved { get; set; } = false;
+        private string _autoTitlePropertyName = null;
+        public virtual string TitlePropertyName
         {
             get
             {
-                if (_titlePropertyName == null && Properties != null)
+                if (AutoTitleProperty)
                 {
-                    _titlePropertyName = Properties.Where(p =>
-                            p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(PropertyKind.Primitive))
-                        .OrderBy(p =>
-                            p.HasHint(KnownHints.EmailAddress) || p.Kind.HasFlag(PropertyKind.RelationshipKey) ||
-                            p.Kind.HasFlag(PropertyKind.Key))
-                        .FirstOrDefault()?.PropertyName;
+                    if (AutoTitlePropertyResolved)
+                    {
+                        return _autoTitlePropertyName;
+                    }
+
+                    if (Properties != null)
+                    {
+                        AutoTitlePropertyResolved = true;
+                        double GetOrder(IProperty p, double d)
+                        {
+                            if (
+                                p.HasHint(KnownHints.EmailAddress) ||
+                                p.Kind.HasFlag(PropertyKind.RelationshipKey) ||
+                                p.Kind.HasFlag(PropertyKind.Key))
+                            {
+                                return d + 1000;
+                            }
+
+                            if (p.SearchKind == PropertySearchKind.Primary)
+                            {
+                                if (p.Matches("name", "title"))
+                                {
+                                    return d + 10;
+                                }
+
+                                return d + 20;
+                            }
+
+                            if (p.SearchKind == PropertySearchKind.Secondary)
+                            {
+                                if (p.Matches("description"))
+                                {
+                                    return d + 30;
+                                }
+
+                                return d + 40;
+                            }
+
+                            return 100;
+                        }
+
+                        var increment = 0.0001;
+                        var index = increment;
+                        //var titlePropertyCandidates = Properties.Where(p =>
+                        //        p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(PropertyKind.Primitive))
+                        //    .Select(p =>
+                        //    {
+                        //        index += increment;
+                        //        return new
+                        //        {
+                        //            Order = GetOrder(p, index),
+                        //            Property = p,
+                        //            Name = p.Name
+                        //        };
+                        //    }).ToArray();
+                        _autoTitlePropertyName = Properties.Where(p =>
+                                 p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(PropertyKind.Primitive))
+                            .OrderBy(p =>
+                            {
+                                index += increment;
+                                return GetOrder(p, index);
+                            })
+                            .FirstOrDefault()?.PropertyName;
+                        return _autoTitlePropertyName;
+                    }
+
+                    return null;
+                    //if (_titlePropertyName == "Description")
+                    //{
+                    //    int a = 0;
+                    //}
                 }
 
                 return _titlePropertyName;
@@ -310,7 +392,7 @@ namespace Iql.Entities
             set
             {
                 _titlePropertyName = value;
-                _titlePropertyNameChanged = true;
+                AutoTitleProperty = false;
             }
         }
 
@@ -388,7 +470,6 @@ namespace Iql.Entities
 
 
         private List<EntityRelationship> _allRelationships = new List<EntityRelationship>();
-        private IEntityKey _key;
 
         public List<EntityRelationship> AllRelationships()
         {

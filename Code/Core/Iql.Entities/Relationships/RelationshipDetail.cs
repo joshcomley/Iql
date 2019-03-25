@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
@@ -10,6 +11,7 @@ using Iql.Entities.Validation;
 
 namespace Iql.Entities.Relationships
 {
+    [DebuggerDisplay("{Property.Name} - Relationship")]
     public class RelationshipDetail<T, TProperty> :
         RelationshipDetailTypedBase<T, TProperty,
         RelationshipDetail<T, TProperty>>,
@@ -23,6 +25,7 @@ namespace Iql.Entities.Relationships
             LambdaExpression expression,
             Type elementType) : base(relationship, relationshipSide, configuration, expression, elementType)
         {
+            
         }
 
         public RelationshipDetail<T, TProperty> CreateWithRelationshipValue<TRelationship>(

@@ -72,9 +72,10 @@ namespace Iql.Tests.Tests.EntityConfiguration
             var clientProperty = site.FindProperty(nameof(Site.Client));
             Assert.AreEqual(0, clientProperty.DisplayRules.All.Count());
             Assert.AreEqual(0, clientProperty.Relationship.ThisEnd.DisplayRules.All.Count());
-            site.DefinePropertyDisplayRule(p => p.Client, _ => _.Id == 17);
+            site.DefinePropertyDisplayRule(p => p.Client, _ => _.Id == 17, "temp");
             Assert.AreEqual(1, clientProperty.DisplayRules.All.Count());
             Assert.AreEqual(1, clientProperty.Relationship.ThisEnd.DisplayRules.All.Count());
+            site.RemovePropertyDisplayRule(p => p.Client, "temp");
         }
 
         [TestMethod]
@@ -222,12 +223,10 @@ namespace Iql.Tests.Tests.EntityConfiguration
         {
             var searchProperties = Db.EntityConfigurationContext.EntityType<Person>()
                 .ResolveSearchProperties(IqlSearchKind.Secondary);
-            Assert.AreEqual(5, searchProperties.Length);
+            Assert.AreEqual(3, searchProperties.Length);
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Key)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.InferredWhenKeyChanges)));
-            Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Title)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Description)));
-            Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.RevisionKey)));
         }
 
         [TestMethod]
@@ -235,12 +234,11 @@ namespace Iql.Tests.Tests.EntityConfiguration
         {
             var searchProperties = Db.EntityConfigurationContext.EntityType<Person>()
                 .ResolveSearchProperties(IqlSearchKind.Primary | IqlSearchKind.Secondary);
-            Assert.AreEqual(5, searchProperties.Length);
+            Assert.AreEqual(4, searchProperties.Length);
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Key)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.InferredWhenKeyChanges)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Title)));
             Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.Description)));
-            Assert.IsNotNull(searchProperties.SingleOrDefault(p => p.Name == nameof(Person.RevisionKey)));
         }
 
         [TestMethod]

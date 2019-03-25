@@ -11,6 +11,8 @@ namespace Iql.Entities
 {
     public interface IEntityMetadata : IMetadata
     {
+        bool AutoTitleProperty { get; set; }
+        bool SupportsCascadeDelete { get; set; }
         IList<IGeographicPoint> Geographics { get; set; }
         IList<INestedSet> NestedSets { get; set; }
         IList<IDateRange> DateRanges { get; set; }

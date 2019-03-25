@@ -34,47 +34,47 @@ namespace Iql.Entities.Extensions
             return $"__{string.Join("_", propertyGroup.GetGroupProperties().Select(_ => _.Name))}__";
         }
 
-        public static IEnumerable<IPropertyGroup> PrioritizeForEditing(this IEnumerable<IPropertyGroup> properties)
-        {
-            if (properties == null)
-            {
-                return properties;
-            }
-            var propertiesArray = properties as IPropertyGroup[] ?? properties.ToArray();
+        //public static IEnumerable<IPropertyGroup> PrioritizeForEditing(this IEnumerable<IPropertyGroup> properties)
+        //{
+        //    if (properties == null)
+        //    {
+        //        return properties;
+        //    }
+        //    var propertiesArray = properties as IPropertyGroup[] ?? properties.ToArray();
 
-            return propertiesArray.OrderBy(property =>
-            {
-                if (property is IProperty)
-                {
-                    var simpleProperty = property as IProperty;
-                    if (simpleProperty.Kind.HasFlag(PropertyKind.Key))
-                    {
-                        return 0;
-                    }
-                    if (simpleProperty.SearchKind == PropertySearchKind.Primary)
-                    {
-                        return 10;
-                    }
-                    if (simpleProperty.SearchKind == PropertySearchKind.Secondary)
-                    {
-                        return 20;
-                    }
-                }
+        //    return propertiesArray.OrderBy(property =>
+        //    {
+        //        if (property is IProperty)
+        //        {
+        //            var simpleProperty = property as IProperty;
+        //            if (simpleProperty.Kind.HasFlag(PropertyKind.Key))
+        //            {
+        //                return 0;
+        //            }
+        //            if (simpleProperty.SearchKind == PropertySearchKind.Primary)
+        //            {
+        //                return 10;
+        //            }
+        //            if (simpleProperty.SearchKind == PropertySearchKind.Secondary)
+        //            {
+        //                return 20;
+        //            }
+        //        }
 
-                if (property is RelationshipDetailBase)
-                {
-                    var relationship = property as RelationshipDetailBase;
-                    if (relationship.IsCollection)
-                    {
-                        return 50;
-                    }
+        //        if (property is RelationshipDetailBase)
+        //        {
+        //            var relationship = property as RelationshipDetailBase;
+        //            if (relationship.IsCollection)
+        //            {
+        //                return 50;
+        //            }
 
-                    return 40;
-                }
+        //            return 40;
+        //        }
 
-                return 30;
-            });
-        }
+        //        return 30;
+        //    });
+        //}
 
         public static IEnumerable<IPropertyGroup> PrioritizeForReading(this IEnumerable<IPropertyGroup> properties)
         {
@@ -82,47 +82,138 @@ namespace Iql.Entities.Extensions
             {
                 return properties;
             }
+
             var propertiesArray = properties as IPropertyGroup[] ?? properties.ToArray();
-
-            return propertiesArray.OrderBy(property =>
+            double increment = 0.0001;
+            //var aaaa = propertiesArray.Select(property =>
+            //{
+            //    index += increment;
+            //    var order = ResolveOrder(property) + index;
+            //    return new
+            //    {
+            //        Order = order,
+            //        Property = property,
+            //        Name = property.Name
+            //    };
+            //}).OrderBy(_ => _.Order).ToArray();
+            return propertiesArray.OrderByWithIndex((property, i) =>
             {
-                if (property is IGeographicPoint)
+                double index = (i + 1) * increment;
+                var order = ResolveOrder(property) + index;
+                return order;
+            });
+        }
+
+        private static int ResolveOrder(IPropertyGroup property)
+        {
+            if (property is IGeographicPoint)
+            {
+                return 0;
+            }
+
+            if (property is IFile)
+            {
+                return 1;
+            }
+
+            if (property is IProperty simpleProperty)
+            {
+                if (simpleProperty.Kind.HasFlag(PropertyKind.Key))
                 {
-                    return 0;
+                    return 2;
                 }
 
-                if (property is IFile)
+                if (simpleProperty.EntityConfiguration.PreviewProperty == property)
                 {
-                    return 1;
+                    return 3;
                 }
-                if (property is IProperty)
+
+                if (simpleProperty.EntityConfiguration.TitleProperty == property)
                 {
-                    var simpleProperty = property as IProperty;
-                    if (simpleProperty.Kind.HasFlag(PropertyKind.Key))
-                    {
-                        return 2;
-                    }
-                    if (simpleProperty.SearchKind == PropertySearchKind.Primary)
+                    return 4;
+                }
+
+                if (simpleProperty.SearchKind == PropertySearchKind.Primary)
+                {
+                    if (simpleProperty.Matches("title", "name"))
                     {
                         return 30;
                     }
-                    if (simpleProperty.SearchKind == PropertySearchKind.Secondary)
+
+                    return 35;
+                }
+
+                if (simpleProperty.SearchKind == PropertySearchKind.Secondary)
+                {
+                    if (simpleProperty.Matches("firstname", "forename"))
                     {
                         return 40;
                     }
-                }
-                if (property is RelationshipDetailBase)
-                {
-                    var relationship = property as RelationshipDetailBase;
-                    if (relationship.IsCollection)
+
+                    if (simpleProperty.Matches("lastname", "surname"))
                     {
-                        return 60;
+                        return 41;
                     }
-                    return 50;
+
+                    return 45;
                 }
-                return 100;
-            });
+            }
+
+            if (property is RelationshipDetailBase)
+            {
+                var relationship = property as RelationshipDetailBase;
+                if (relationship.IsCollection)
+                {
+                    return 60;
+                }
+
+                return 50;
+            }
+
+            return 100;
         }
+        //    var index = 0;
+        //    int GetOrder(IPropertyGroup property)
+        //    {
+        //        if (property.EntityConfiguration.Key.Properties.Any(p => p == property))
+        //        {
+        //            return -1;
+        //        }
+        //        if (property is IProperty simpleProperty)
+        //        {
+        //            switch (simpleProperty.SearchKind)
+        //            {
+        //                case PropertySearchKind.Primary:
+        //                    if (simpleProperty.Matches("title", "name"))
+        //                    {
+        //                        return 9;
+        //                    }
+        //                    return 10;
+        //                case PropertySearchKind.Secondary:
+        //                    if (simpleProperty.Matches("firstname", "forename"))
+        //                    {
+        //                        return 20;
+        //                    }
+        //                    if (simpleProperty.Matches("lastname", "surname"))
+        //                    {
+        //                        return 21;
+        //                    }
+        //                    return 22;
+        //            }
+        //        }
+        //        return index + 10000;
+
+        //    }
+
+        //    var ordered = properties.Select(property =>
+        //        {
+        //            index++;
+        //            return new OrderedProperty(property, GetOrder(property));
+        //        })
+        //        .OrderBy(_ => _.Order);
+        //    return ordered.Select(_ => _.Property)
+        //        .ToArray(); ;
+        //}
         public static ISimpleProperty[] FlattenAllToSimpleProperties(this IEnumerable<IPropertyGroup> propertyGroup)
         {
             var list = new List<ISimpleProperty>();

@@ -110,7 +110,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Id";
                 p.FriendlyName = "Id";
             }).DefineProperty(p => p.Email, true, IqlType.String).ConfigureProperty(p => p.Email, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Email";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -139,7 +138,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "UserType";
                 p.FriendlyName = "User Type";
             }).DefineProperty(p => p.FullName, false, IqlType.String).ConfigureProperty(p => p.FullName, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "FullName";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -148,7 +146,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "FullName";
                 p.FriendlyName = "Full Name";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -157,7 +154,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.UserName, true, IqlType.String).ConfigureProperty(p => p.UserName, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "UserName";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -174,7 +170,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "EmailConfirmed";
                 p.FriendlyName = "Email Confirmed";
             }).DefineProperty(p => p.PhoneNumber, true, IqlType.String).ConfigureProperty(p => p.PhoneNumber, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "PhoneNumber";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -425,7 +420,6 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ApplicationUser>().HasOne(p => p.Client).WithMany(p => p.Users).WithConstraint(p => p.ClientId, p => p.Id);
             builder.EntityType<ApplicationUser>().Configure(p => {
-                p.TitlePropertyName = "FullName";
                 p.SetFriendlyName = "Users";
                 p.SetName = "Users";
                 p.Name = "ApplicationUser";
@@ -449,7 +443,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.Module, true, IqlType.String).ConfigureProperty(p => p.Module, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Module";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -458,7 +451,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Module";
                 p.FriendlyName = "Module";
             }).DefineProperty(p => p.Message, true, IqlType.String).ConfigureProperty(p => p.Message, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Message";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -467,7 +459,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Message";
                 p.FriendlyName = "Message";
             }).DefineProperty(p => p.Kind, true, IqlType.String).ConfigureProperty(p => p.Kind, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Kind";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -477,7 +468,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.FriendlyName = "Kind";
             });
             builder.EntityType<ApplicationLog>().Configure(p => {
-                p.TitlePropertyName = "Module";
                 p.SetFriendlyName = "Application Logs";
                 p.SetName = "ApplicationLogs";
                 p.Name = "ApplicationLog";
@@ -548,15 +538,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
-            }).DefineProperty(p => p.Name, false, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
-                p.PropertyName = "Name";
-                p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.Kind = PropertyKind.Primitive;
-                p.Name = "Name";
-                p.Title = "Name";
-                p.FriendlyName = "Name";
             }).DefineProperty(p => p.AverageSales, false, IqlType.Decimal).ConfigureProperty(p => p.AverageSales, p => {
                 p.PropertyName = "AverageSales";
                 p.Nullable = false;
@@ -582,7 +563,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Category";
                 p.FriendlyName = "Category";
             }).DefineProperty(p => p.Description, true, IqlType.String).ConfigureProperty(p => p.Description, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Description";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -598,6 +578,14 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Discount";
                 p.Title = "Discount";
                 p.FriendlyName = "Discount";
+            }).DefineProperty(p => p.Name, false, IqlType.String).ConfigureProperty(p => p.Name, p => {
+                p.PropertyName = "Name";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Name";
+                p.Title = "Name";
+                p.FriendlyName = "Name";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
                 p.PropertyName = "Guid";
                 p.Nullable = false;
@@ -695,7 +683,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -804,7 +791,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Client>().HasOne(p => p.Type).WithMany(p => p.Clients).WithConstraint(p => p.TypeId, p => p.Id);
             builder.EntityType<Client>().HasOne(p => p.CreatedByUser).WithMany(p => p.ClientsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<Client>().Configure(p => {
-                p.TitlePropertyName = "Name";
                 p.SetFriendlyName = "Clients";
                 p.SetName = "Clients";
                 p.DefaultSortExpression = "CreatedDate";
@@ -823,7 +809,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Id";
                 p.FriendlyName = "Id";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -841,7 +826,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.FriendlyName = "Clients";
             });
             builder.EntityType<ClientType>().Configure(p => {
-                p.TitlePropertyName = "Name";
                 p.SetFriendlyName = "Client Types";
                 p.SetName = "ClientTypes";
                 p.Name = "ClientType";
@@ -905,7 +889,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1010,7 +993,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1094,7 +1076,6 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<DocumentCategory>().HasOne(p => p.CreatedByUser).WithMany(p => p.DocumentCategoriesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<DocumentCategory>().Configure(p => {
-                p.TitlePropertyName = "Name";
                 p.SetFriendlyName = "Document Categories";
                 p.SetName = "DocumentCategories";
                 p.DefaultSortExpression = "CreatedDate";
@@ -1168,7 +1149,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Title, true, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Title";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1282,7 +1262,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1376,7 +1355,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<SiteDocument>().HasOne(p => p.Site).WithMany(p => p.Documents).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<SiteDocument>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteDocumentsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<SiteDocument>().Configure(p => {
-                p.TitlePropertyName = "Title";
                 p.SetFriendlyName = "Site Documents";
                 p.SetName = "SiteDocuments";
                 p.DefaultSortExpression = "CreatedDate";
@@ -1442,7 +1420,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Notes, true, IqlType.String).ConfigureProperty(p => p.Notes, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Notes";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1556,7 +1533,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1641,7 +1617,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportActionsTaken>().HasOne(p => p.PersonReport).WithMany(p => p.ActionsTaken).WithConstraint(p => p.FaultReportId, p => p.Id);
             builder.EntityType<ReportActionsTaken>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultActionsTakenCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<ReportActionsTaken>().Configure(p => {
-                p.TitlePropertyName = "Notes";
                 p.SetFriendlyName = "Report Actions Taken";
                 p.SetName = "ReportActionsTaken";
                 p.DefaultSortExpression = "CreatedDate";
@@ -1708,7 +1683,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1813,7 +1787,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1897,7 +1870,6 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ReportCategory>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultCategoriesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<ReportCategory>().Configure(p => {
-                p.TitlePropertyName = "Name";
                 p.SetFriendlyName = "Report Categories";
                 p.SetName = "ReportCategories";
                 p.DefaultSortExpression = "CreatedDate";
@@ -1964,7 +1936,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1973,7 +1944,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Name";
                 p.FriendlyName = "Name";
             }).DefineProperty(p => p.Text, true, IqlType.String).ConfigureProperty(p => p.Text, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Text";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2078,7 +2048,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2162,7 +2131,6 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<ReportDefaultRecommendation>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultDefaultRecommendationsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<ReportDefaultRecommendation>().Configure(p => {
-                p.TitlePropertyName = "Name";
                 p.SetFriendlyName = "Report Default Recommendations";
                 p.SetName = "ReportDefaultRecommendations";
                 p.DefaultSortExpression = "CreatedDate";
@@ -2236,7 +2204,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Notes, true, IqlType.String).ConfigureProperty(p => p.Notes, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Notes";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2350,7 +2317,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2444,7 +2410,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportRecommendation>().HasOne(p => p.Recommendation).WithMany(p => p.Recommendations).WithConstraint(p => p.RecommendationId, p => p.Id);
             builder.EntityType<ReportRecommendation>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultRecommendationsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<ReportRecommendation>().Configure(p => {
-                p.TitlePropertyName = "Notes";
                 p.SetFriendlyName = "Report Recommendations";
                 p.SetName = "ReportRecommendations";
                 p.DefaultSortExpression = "CreatedDate";
@@ -2519,7 +2484,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2624,7 +2588,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2717,7 +2680,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportType>().HasOne(p => p.Category).WithMany(p => p.ReportTypes).WithConstraint(p => p.CategoryId, p => p.Id);
             builder.EntityType<ReportType>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultTypesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<ReportType>().Configure(p => {
-                p.TitlePropertyName = "Name";
                 p.SetFriendlyName = "Report Types";
                 p.SetName = "ReportTypes";
                 p.DefaultSortExpression = "CreatedDate";
@@ -2775,7 +2737,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Title, false, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Title";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2784,7 +2745,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Title";
                 p.FriendlyName = "Title";
             }).DefineProperty(p => p.Description, true, IqlType.String).ConfigureProperty(p => p.Description, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Description";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2898,7 +2858,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2974,7 +2933,6 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<Project>().HasOne(p => p.CreatedByUser).WithMany(p => p.ProjectCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<Project>().Configure(p => {
-                p.TitlePropertyName = "Title";
                 p.SetFriendlyName = "Projects";
                 p.SetName = "Projects";
                 p.DefaultSortExpression = "CreatedDate";
@@ -3040,7 +2998,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.EmailAddress, true, IqlType.String).ConfigureProperty(p => p.EmailAddress, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "EmailAddress";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3154,7 +3111,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3239,7 +3195,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportReceiverEmailAddress>().HasOne(p => p.Site).WithMany(p => p.AdditionalSendReportsTo).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<ReportReceiverEmailAddress>().HasOne(p => p.CreatedByUser).WithMany(p => p.ReportReceiverEmailAddressesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<ReportReceiverEmailAddress>().Configure(p => {
-                p.TitlePropertyName = "EmailAddress";
                 p.SetFriendlyName = "Report Receiver Email Addresses";
                 p.SetName = "ReportReceiverEmailAddresses";
                 p.DefaultSortExpression = "CreatedDate";
@@ -3410,7 +3365,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3503,7 +3457,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<RiskAssessment>().HasOne(p => p.SiteInspection).WithMany(p => p.RiskAssessments).WithConstraint(p => p.SiteInspectionId, p => p.Id);
             builder.EntityType<RiskAssessment>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<RiskAssessment>().Configure(p => {
-                p.TitlePropertyName = "RevisionKey";
                 p.SetFriendlyName = "Risk Assessments";
                 p.SetName = "RiskAssessments";
                 p.DefaultSortExpression = "CreatedDate";
@@ -3674,7 +3627,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3759,7 +3711,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<RiskAssessmentSolution>().HasOne(p => p.RiskAssessment).WithOne(p => p.RiskAssessmentSolution).WithConstraint(p => p.RiskAssessmentId, p => p.Id);
             builder.EntityType<RiskAssessmentSolution>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentSolutionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<RiskAssessmentSolution>().Configure(p => {
-                p.TitlePropertyName = "RevisionKey";
                 p.SetFriendlyName = "Risk Assessment Solutions";
                 p.SetName = "RiskAssessmentSolutions";
                 p.DefaultSortExpression = "CreatedDate";
@@ -3825,7 +3776,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.SpecificHazard, true, IqlType.String).ConfigureProperty(p => p.SpecificHazard, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "SpecificHazard";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3834,7 +3784,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "SpecificHazard";
                 p.FriendlyName = "Specific Hazard";
             }).DefineProperty(p => p.PrecautionsToControlHazard, true, IqlType.String).ConfigureProperty(p => p.PrecautionsToControlHazard, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "PrecautionsToControlHazard";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3948,7 +3897,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4033,7 +3981,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<RiskAssessmentAnswer>().HasOne(p => p.Question).WithMany(p => p.Answers).WithConstraint(p => p.QuestionId, p => p.Id);
             builder.EntityType<RiskAssessmentAnswer>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentAnswersCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<RiskAssessmentAnswer>().Configure(p => {
-                p.TitlePropertyName = "SpecificHazard";
                 p.SetFriendlyName = "Risk Assessment Answers";
                 p.SetName = "RiskAssessmentAnswers";
                 p.DefaultSortExpression = "CreatedDate";
@@ -4100,7 +4047,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4205,7 +4151,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4289,7 +4234,6 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<RiskAssessmentQuestion>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentQuestionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<RiskAssessmentQuestion>().Configure(p => {
-                p.TitlePropertyName = "Name";
                 p.SetFriendlyName = "Risk Assessment Questions";
                 p.SetName = "RiskAssessmentQuestions";
                 p.DefaultSortExpression = "CreatedDate";
@@ -4460,13 +4404,173 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Birthday, true, IqlType.Date).ConfigureProperty(p => p.Birthday, p => {
                 p.PropertyName = "Birthday";
                 p.Nullable = true;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.Always,
+                        CanOverride = false,
+                        ForNewOnly = false,
+                        InferredWithConditionIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlAndExpression
+                            {
+                                Left = new IqlOrExpression
+                                {
+                                    Left = new IqlIsEqualToExpression
+                                    {
+                                        Left = new IqlPropertyExpression
+                                        {
+                                            PropertyName = "OldEntityState",
+                                            Kind = IqlExpressionKind.Property,
+                                            ReturnType = IqlType.Unknown,
+                                            Parent = new IqlRootReferenceExpression
+                                            {
+                                                EntityTypeName = "InferredValueContext<Person>",
+                                                VariableName = "_",
+                                                InferredReturnType = IqlType.Unknown,
+                                                Kind = IqlExpressionKind.RootReference,
+                                                ReturnType = IqlType.Unknown
+                                            }
+                                        },
+                                        Right = new IqlLiteralExpression
+                                        {
+                                            InferredReturnType = IqlType.Unknown,
+                                            Kind = IqlExpressionKind.Literal,
+                                            ReturnType = IqlType.Unknown
+                                        },
+                                        Kind = IqlExpressionKind.IsEqualTo,
+                                        ReturnType = IqlType.Unknown
+                                    },
+                                    Right = new IqlIsNotEqualToExpression
+                                    {
+                                        Left = new IqlPropertyExpression
+                                        {
+                                            PropertyName = "Category",
+                                            Kind = IqlExpressionKind.Property,
+                                            ReturnType = IqlType.Unknown,
+                                            Parent = new IqlPropertyExpression
+                                            {
+                                                PropertyName = "OldEntityState",
+                                                Kind = IqlExpressionKind.Property,
+                                                ReturnType = IqlType.Unknown,
+                                                Parent = new IqlRootReferenceExpression
+                                                {
+                                                    EntityTypeName = "InferredValueContext<Person>",
+                                                    VariableName = "_",
+                                                    InferredReturnType = IqlType.Unknown,
+                                                    Kind = IqlExpressionKind.RootReference,
+                                                    ReturnType = IqlType.Unknown
+                                                }
+                                            }
+                                        },
+                                        Right = new IqlLiteralExpression
+                                        {
+                                            Value = 1,
+                                            InferredReturnType = IqlType.Integer,
+                                            Kind = IqlExpressionKind.Literal,
+                                            ReturnType = IqlType.Integer
+                                        },
+                                        Kind = IqlExpressionKind.IsNotEqualTo,
+                                        ReturnType = IqlType.Unknown
+                                    },
+                                    Kind = IqlExpressionKind.Or,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                Right = new IqlIsEqualToExpression
+                                {
+                                    Left = new IqlPropertyExpression
+                                    {
+                                        PropertyName = "Category",
+                                        Kind = IqlExpressionKind.Property,
+                                        ReturnType = IqlType.Unknown,
+                                        Parent = new IqlPropertyExpression
+                                        {
+                                            PropertyName = "CurrentEntityState",
+                                            Kind = IqlExpressionKind.Property,
+                                            ReturnType = IqlType.Unknown,
+                                            Parent = new IqlRootReferenceExpression
+                                            {
+                                                EntityTypeName = "InferredValueContext<Person>",
+                                                VariableName = "_",
+                                                InferredReturnType = IqlType.Unknown,
+                                                Kind = IqlExpressionKind.RootReference,
+                                                ReturnType = IqlType.Unknown
+                                            }
+                                        }
+                                    },
+                                    Right = new IqlEnumLiteralExpression
+                                    {
+                                        Value = new IqlEnumValueExpression[]
+                                        {
+                                            new IqlEnumValueExpression
+                                            {
+                                                Name = "",
+                                                Value = 2L,
+                                                InferredReturnType = IqlType.Integer,
+                                                Kind = IqlExpressionKind.EnumValue,
+                                                ReturnType = IqlType.EnumValue
+                                            }
+                                        },
+                                        InferredReturnType = IqlType.Collection,
+                                        Kind = IqlExpressionKind.EnumLiteral,
+                                        ReturnType = IqlType.Enum
+                                    },
+                                    Kind = IqlExpressionKind.IsEqualTo,
+                                    ReturnType = IqlType.Unknown
+                                },
+                                Kind = IqlExpressionKind.And,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Person>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = new IqlNowExpression
+                                {
+                                    CanFail = false,
+                                    Kind = IqlExpressionKind.Now,
+                                    ReturnType = IqlType.Date
+                                },
+                                InferredReturnType = IqlType.Unknown,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Person>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        }
+                    }
+                };
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Birthday";
                 p.Title = "Birthday";
                 p.FriendlyName = "Birthday";
             }).DefineProperty(p => p.Key, true, IqlType.String).ConfigureProperty(p => p.Key, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Key";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4475,7 +4579,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Key";
                 p.FriendlyName = "Key";
             }).DefineProperty(p => p.InferredWhenKeyChanges, true, IqlType.String).ConfigureProperty(p => p.InferredWhenKeyChanges, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "InferredWhenKeyChanges";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
@@ -4660,7 +4763,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "HasPaid";
                 p.FriendlyName = "Has Paid";
             }).DefineProperty(p => p.Title, true, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Title";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4669,7 +4771,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Title";
                 p.FriendlyName = "Title";
             }).DefineProperty(p => p.Description, true, IqlType.String).ConfigureProperty(p => p.Description, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Description";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
@@ -4769,7 +4870,40 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefineProperty(p => p.Skills, false, IqlType.Enum).ConfigureProperty(p => p.Skills, p => {
                 p.PropertyName = "Skills";
                 p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.IfNullOrEmpty,
+                        CanOverride = true,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlLiteralExpression
+                            {
+                                Value = 2L,
+                                InferredReturnType = IqlType.Integer,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Person>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Skills";
                 p.Title = "Skills";
@@ -4912,7 +5046,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5101,7 +5234,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Person>().HasOne(p => p.Loading).WithMany(p => p.People).WithConstraint(p => p.LoadingId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.CreatedByUser).WithMany(p => p.PeopleCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<Person>().Configure(p => {
-                p.TitlePropertyName = "PhotoUrl";
                 p.SetFriendlyName = "People";
                 p.SetName = "People";
                 p.DefaultSortExpression = "CreatedDate";
@@ -5222,7 +5354,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "IsDesignRequired";
                 p.FriendlyName = "Is Design Required";
             }).DefineProperty(p => p.DrawingNumber, true, IqlType.String).ConfigureProperty(p => p.DrawingNumber, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "DrawingNumber";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5336,7 +5467,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5421,7 +5551,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonInspection>().HasOne(p => p.SiteInspection).WithMany(p => p.PersonInspections).WithConstraint(p => p.SiteInspectionId, p => p.Id);
             builder.EntityType<PersonInspection>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonInspectionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<PersonInspection>().Configure(p => {
-                p.TitlePropertyName = "DrawingNumber";
                 p.SetFriendlyName = "Person Inspections";
                 p.SetName = "PersonInspections";
                 p.DefaultSortExpression = "CreatedDate";
@@ -5488,7 +5617,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5593,7 +5721,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5677,7 +5804,6 @@ namespace IqlSampleApp.ApiContext.Base
             }).DefinePropertyValidation(p => p.Name, entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()))), "Please enter a loading name", "3");
             builder.EntityType<PersonLoading>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonLoadingsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<PersonLoading>().Configure(p => {
-                p.TitlePropertyName = "Name";
                 p.SetFriendlyName = "Person Loadings";
                 p.SetName = "PersonLoadings";
                 p.DefaultSortExpression = "CreatedDate";
@@ -5744,7 +5870,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Title, false, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Title";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5849,7 +5974,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5941,7 +6065,6 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<PersonType>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonTypesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<PersonType>().Configure(p => {
-                p.TitlePropertyName = "Title";
                 p.SetFriendlyName = "Person Types";
                 p.SetName = "PersonTypes";
                 p.DefaultSortExpression = "CreatedDate";
@@ -5968,7 +6091,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "TypeId";
                 p.FriendlyName = "Type Id";
             }).DefineProperty(p => p.Notes, true, IqlType.String).ConfigureProperty(p => p.Notes, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Notes";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5977,7 +6099,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Notes";
                 p.FriendlyName = "Notes";
             }).DefineProperty(p => p.Description, true, IqlType.String).ConfigureProperty(p => p.Description, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Description";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6101,7 +6222,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonTypeMap>().HasOne(p => p.Person).WithMany(p => p.Types).WithConstraint(p => p.PersonId, p => p.Id);
             builder.EntityType<PersonTypeMap>().HasOne(p => p.Type).WithMany(p => p.PeopleMap).WithConstraint(p => p.TypeId, p => p.Id);
             builder.EntityType<PersonTypeMap>().Configure(p => {
-                p.TitlePropertyName = "Notes";
                 p.SetFriendlyName = "Person Types Map";
                 p.SetName = "PersonTypesMap";
                 p.DefaultSortExpression = "CreatedDate";
@@ -6183,7 +6303,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Title, true, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Title";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6296,7 +6415,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6406,7 +6524,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonReport>().HasOne(p => p.Type).WithMany(p => p.FaultReports).WithConstraint(p => p.TypeId, p => p.Id);
             builder.EntityType<PersonReport>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultReportsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<PersonReport>().Configure(p => {
-                p.TitlePropertyName = "Title";
                 p.SetFriendlyName = "Person Reports";
                 p.SetName = "PersonReports";
                 p.DefaultSortExpression = "CreatedDate";
@@ -6513,7 +6630,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.FullAddress, true, IqlType.String).ConfigureProperty(p => p.FullAddress, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "FullAddress";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
@@ -6605,7 +6721,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "FullAddress";
                 p.FriendlyName = "Full Address";
             }).DefineProperty(p => p.Address, true, IqlType.String).ConfigureProperty(p => p.Address, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Address";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6614,7 +6729,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Address";
                 p.FriendlyName = "Address";
             }).DefineProperty(p => p.PostCode, true, IqlType.String).ConfigureProperty(p => p.PostCode, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "PostCode";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6623,7 +6737,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "PostCode";
                 p.FriendlyName = "Post Code";
             }).DefineProperty(p => p.Key, true, IqlType.String).ConfigureProperty(p => p.Key, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Key";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
@@ -6678,7 +6791,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Key";
                 p.FriendlyName = "Key";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6799,7 +6911,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6950,7 +7061,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Site>().HasOne(p => p.Client).WithMany(p => p.Sites).WithConstraint(p => p.ClientId, p => p.Id);
             builder.EntityType<Site>().HasOne(p => p.CreatedByUser).WithMany(p => p.SitesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<Site>().Configure(p => {
-                p.TitlePropertyName = "FullAddress";
                 p.SetFriendlyName = "Sites";
                 p.SetName = "Sites";
                 p.DefaultSortExpression = "CreatedDate";
@@ -7121,7 +7231,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -7214,7 +7323,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<SiteArea>().HasOne(p => p.Site).WithMany(p => p.Areas).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<SiteArea>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteAreasCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<SiteArea>().Configure(p => {
-                p.TitlePropertyName = "RevisionKey";
                 p.SetFriendlyName = "Site Areas";
                 p.SetName = "SiteAreas";
                 p.DefaultSortExpression = "CreatedDate";
@@ -7401,7 +7509,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -7502,7 +7609,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<SiteInspection>().HasOne(p => p.Site).WithMany(p => p.SiteInspections).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<SiteInspection>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteInspectionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<SiteInspection>().Configure(p => {
-                p.TitlePropertyName = "RevisionKey";
                 p.SetFriendlyName = "Site Inspections";
                 p.SetName = "SiteInspections";
                 p.DefaultSortExpression = "CreatedDate";
@@ -7560,7 +7666,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedByUserId";
                 p.FriendlyName = "Created By User Id";
             }).DefineProperty(p => p.Key1, false, IqlType.String).ConfigureProperty(p => p.Key1, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Key1";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -7624,7 +7729,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "UserId";
                 p.FriendlyName = "User Id";
             }).DefineProperty(p => p.Key2, true, IqlType.String).ConfigureProperty(p => p.Key2, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Key2";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -7633,7 +7737,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Key2";
                 p.FriendlyName = "Key 2";
             }).DefineProperty(p => p.Key3, true, IqlType.String).ConfigureProperty(p => p.Key3, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Key3";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -7642,7 +7745,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Key3";
                 p.FriendlyName = "Key 3";
             }).DefineProperty(p => p.Key4, true, IqlType.String).ConfigureProperty(p => p.Key4, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Key4";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -7651,7 +7753,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Key4";
                 p.FriendlyName = "Key 4";
             }).DefineProperty(p => p.Value, true, IqlType.String).ConfigureProperty(p => p.Value, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "Value";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -7707,7 +7808,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.SearchKind = PropertySearchKind.Secondary;
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -7792,7 +7892,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<UserSetting>().HasOne(p => p.CreatedByUser).WithMany(p => p.UserSettingsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<UserSetting>().HasOne(p => p.User).WithMany(p => p.UserSettings).WithConstraint(p => p.UserId, p => p.Id);
             builder.EntityType<UserSetting>().Configure(p => {
-                p.TitlePropertyName = "Key1";
                 p.SetFriendlyName = "User Settings";
                 p.SetName = "UserSettings";
                 p.DefaultSortExpression = "CreatedDate";
@@ -7838,7 +7937,6 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<UserSite>().HasOne(p => p.User).WithMany(p => p.Sites).WithConstraint(p => p.UserId, p => p.Id);
             builder.EntityType<UserSite>().HasOne(p => p.Site).WithMany(p => p.Users).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<UserSite>().Configure(p => {
-                p.TitlePropertyName = "UserId";
                 p.SetFriendlyName = "User Sites";
                 p.SetName = "UserSites";
                 p.Name = "UserSite";

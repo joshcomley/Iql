@@ -588,12 +588,19 @@ namespace Iql.Data.Context
 
         public override DbQueryable<T> OrderByDefault(bool? descending = null)
         {
-            var defaultSort = EntityConfiguration.DefaultSortExpression;
-            if (string.IsNullOrWhiteSpace(defaultSort))
+            var resolvedSort = EntityConfiguration.DefaultSortExpression;
+            if (string.IsNullOrWhiteSpace(resolvedSort))
             {
-                defaultSort = EntityConfiguration.ResolveSearchProperties().First().Name;
+                var sortProperty = (EntityConfiguration.ResolveSearchProperties().FirstOrDefault() ??
+                                    EntityConfiguration.Key.Properties.FirstOrDefault() ??
+                                    EntityConfiguration.Properties.FirstOrDefault());
+                resolvedSort = sortProperty?.Name;
             }
-            return this.OrderByProperty(defaultSort, EntityConfiguration.DefaultSortDescending);
+            if (string.IsNullOrWhiteSpace(resolvedSort))
+            {
+                return this;
+            }
+            return this.OrderByProperty(resolvedSort, EntityConfiguration.DefaultSortDescending);
         }
 
         public override IqlPropertyExpression PropertyExpression(string propertyName, string rootReferenceName = null)

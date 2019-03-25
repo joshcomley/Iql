@@ -832,122 +832,126 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             }
                         }
                     }
-
-                    if (metadata is IRelationshipDetailMetadata &&
-                        metadataProperty.Name == nameof(IRelationshipDetail.ValueMappings))
+                    if (metadata is IProperty property1 &&
+                        metadataProperty.Name == nameof(IPropertyMetadata.SearchKind))
                     {
-                        PrintMapping<ValueMapping, IProperty>(_ => _.Name);
-                        dealtWith = true;
-                    }
-                    else if (metadata is IRelationshipDetailMetadata &&
-                        metadataProperty.Name == nameof(IRelationshipDetail.RelationshipMappings))
-                    {
-                        PrintMapping<RelationshipMapping, IRelationshipDetail>(_ => _.Property.Name, $".{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)}");
-                        dealtWith = true;
-                    }
-                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.DisplayConfigurations))
-                    {
-                        dealtWith = true;
-                        // We will do this at the end when we're sure all relationships and other
-                        // property groups are configured
-                    }
-                    //if (metadata is IProperty &&
-                    //    metadataProperty.Name == nameof(IPropertyMetadata.GetInferredWithExpression()))
-                    //{
-                    //    dealtWith = true;
-                    //    var property = metadata as Property;
-                    //    if (property.InferredWithIql != null)
-                    //    {
-                    //        sb.AppendLine();
-                    //        var path = IqlPropertyPath.FromPropertyExpression(sourceEntityConfiguration as IEntityConfiguration,
-                    //            (property.InferredWithIql as IqlLambdaExpression).Body as IqlPropertyExpression);
-                    //        sb.AppendLine(
-                    //            $"{lambdaKey}.{nameof(IEntityProperty<object>.IsInferredWith)}({lambdaKey}_inf => {lambdaKey}_inf.{path.GetPathToHere(".")});");
-                    //    }
-                    //}
-                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Geographics))
-                    {
-                        dealtWith = true;
-                        if (entityMetadata.Geographics?.Any() == true)
+                        if (property1.AutoSearchKind)
                         {
-                            foreach (var geographic in entityMetadata.Geographics)
-                            {
-                                sb.AppendLine();
-                                sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasGeographic)}(");
-                                sb.Append($"{lambdaKey}_g => {lambdaKey}_g.{geographic.LongitudeProperty.Name}, {lambdaKey}_g => {lambdaKey}_g.{geographic.LatitudeProperty.Name}");
-                                sb.Append($@", {String(geographic.Key)}");
-                                sb.Append($@", {await ConfigureMetadataAsync(geographic, null, "geo", false)}");
-                                sb.Append(");");
-                            }
+                            dealtWith = true;
                         }
                     }
-                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.DateRanges))
+                    if (metadata is IEntityConfiguration ec &&
+                        metadataProperty.Name == nameof(IEntityConfiguration.TitlePropertyName))
                     {
-                        dealtWith = true;
-                        if (entityMetadata.DateRanges?.Any() == true)
+                        if (ec.AutoTitleProperty)
                         {
-                            foreach (var dateRange in entityMetadata.DateRanges)
+                            dealtWith = true;
+                        }
+                    }
+
+                    if (!dealtWith)
+                    {
+                        if (metadata is IRelationshipDetailMetadata &&
+                            metadataProperty.Name == nameof(IRelationshipDetail.ValueMappings))
+                        {
+                            PrintMapping<ValueMapping, IProperty>(_ => _.Name);
+                            dealtWith = true;
+                        }
+                        else if (metadata is IRelationshipDetailMetadata &&
+                            metadataProperty.Name == nameof(IRelationshipDetail.RelationshipMappings))
+                        {
+                            PrintMapping<RelationshipMapping, IRelationshipDetail>(_ => _.Property.Name, $".{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)}");
+                            dealtWith = true;
+                        }
+                        else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.DisplayConfigurations))
+                        {
+                            dealtWith = true;
+                            // We will do this at the end when we're sure all relationships and other
+                            // property groups are configured
+                        }
+                        else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Geographics))
+                        {
+                            dealtWith = true;
+                            if (entityMetadata.Geographics?.Any() == true)
                             {
-                                sb.AppendLine();
-                                sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasDateRange)}(");
-                                var parameters = new[]
+                                foreach (var geographic in entityMetadata.Geographics)
                                 {
+                                    sb.AppendLine();
+                                    sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasGeographic)}(");
+                                    sb.Append($"{lambdaKey}_g => {lambdaKey}_g.{geographic.LongitudeProperty.Name}, {lambdaKey}_g => {lambdaKey}_g.{geographic.LatitudeProperty.Name}");
+                                    sb.Append($@", {String(geographic.Key)}");
+                                    sb.Append($@", {await ConfigureMetadataAsync(geographic, null, "geo", false)}");
+                                    sb.Append(");");
+                                }
+                            }
+                        }
+                        else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.DateRanges))
+                        {
+                            dealtWith = true;
+                            if (entityMetadata.DateRanges?.Any() == true)
+                            {
+                                foreach (var dateRange in entityMetadata.DateRanges)
+                                {
+                                    sb.AppendLine();
+                                    sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasDateRange)}(");
+                                    var parameters = new[]
+                                    {
                                     dateRange.StartDateProperty,
                                     dateRange.EndDateProperty
                                 };
-                                var parameterStrings =
-                                    parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
-                                        .ToList();
-                                parameterStrings.Add(String(dateRange.Key));
-                                parameterStrings.Add(await ConfigureMetadataAsync(dateRange, null, $"{lambdaKey}_ns", false));
-                                sb.Append(string.Join(", ", parameterStrings));
-                                sb.Append(");");
+                                    var parameterStrings =
+                                        parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
+                                            .ToList();
+                                    parameterStrings.Add(String(dateRange.Key));
+                                    parameterStrings.Add(await ConfigureMetadataAsync(dateRange, null, $"{lambdaKey}_ns", false));
+                                    sb.Append(string.Join(", ", parameterStrings));
+                                    sb.Append(");");
+                                }
                             }
                         }
-                    }
-                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Files))
-                    {
-                        dealtWith = true;
-                        if (entityMetadata.Files?.Any() == true)
+                        else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.Files))
                         {
-                            foreach (var file in entityMetadata.Files)
+                            dealtWith = true;
+                            if (entityMetadata.Files?.Any() == true)
                             {
-                                sb.AppendLine();
-                                sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasFile)}(");
-                                var parameters = new[]
+                                foreach (var file in entityMetadata.Files)
                                 {
+                                    sb.AppendLine();
+                                    sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasFile)}(");
+                                    var parameters = new[]
+                                    {
                                     file.UrlProperty
                                 };
-                                var subLambda = $"{lambdaKey}_f";
-                                var parameterStrings =
-                                    parameters.Select(p => p == null ? "null" : $"{subLambda} => {subLambda}.{p.Name}")
-                                        .ToList();
-                                var config = await ConfigureMetadataAsync(file, null, subLambda, false);
-                                if (string.IsNullOrWhiteSpace(config))
-                                {
-                                    config = $"{subLambda} => {{}}";
-                                }
-                                var allParams = new[]
-                                {
+                                    var subLambda = $"{lambdaKey}_f";
+                                    var parameterStrings =
+                                        parameters.Select(p => p == null ? "null" : $"{subLambda} => {subLambda}.{p.Name}")
+                                            .ToList();
+                                    var config = await ConfigureMetadataAsync(file, null, subLambda, false);
+                                    if (string.IsNullOrWhiteSpace(config))
+                                    {
+                                        config = $"{subLambda} => {{}}";
+                                    }
+                                    var allParams = new[]
+                                    {
                                     parameterStrings[0],
                                     config
                                 };
-                                sb.Append(string.Join(", ", allParams));
-                                sb.Append(");");
+                                    sb.Append(string.Join(", ", allParams));
+                                    sb.Append(");");
+                                }
                             }
                         }
-                    }
-                    else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.NestedSets))
-                    {
-                        dealtWith = true;
-                        if (entityMetadata.NestedSets?.Any() == true)
+                        else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.NestedSets))
                         {
-                            foreach (var nestedSet in entityMetadata.NestedSets)
+                            dealtWith = true;
+                            if (entityMetadata.NestedSets?.Any() == true)
                             {
-                                sb.AppendLine();
-                                sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasNestedSet)}(");
-                                var parameters = new[]
+                                foreach (var nestedSet in entityMetadata.NestedSets)
                                 {
+                                    sb.AppendLine();
+                                    sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasNestedSet)}(");
+                                    var parameters = new[]
+                                    {
                                     nestedSet.LeftProperty,
                                     nestedSet.RightProperty,
                                     nestedSet.LeftOfProperty,
@@ -958,97 +962,219 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                     nestedSet.ParentProperty,
                                     nestedSet.IdProperty
                                 };
-                                var parameterStrings =
-                                    parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
-                                        .ToList();
-                                parameterStrings.Add(String(nestedSet.SetKey));
-                                parameterStrings.Add(String(nestedSet.Key));
-                                parameterStrings.Add(await ConfigureMetadataAsync(nestedSet, null, $"{lambdaKey}_ns", false));
-                                sb.Append(string.Join(", ", parameterStrings));
-                                sb.Append(");");
+                                    var parameterStrings =
+                                        parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
+                                            .ToList();
+                                    parameterStrings.Add(String(nestedSet.SetKey));
+                                    parameterStrings.Add(String(nestedSet.Key));
+                                    parameterStrings.Add(await ConfigureMetadataAsync(nestedSet, null, $"{lambdaKey}_ns", false));
+                                    sb.Append(string.Join(", ", parameterStrings));
+                                    sb.Append(");");
+                                }
                             }
                         }
-                    }
-                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(string))
-                    {
-                        if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
-                        {
-                            assign = String(value as string);
-                        }
-                        dealtWith = true;
-                    }
-                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool))
-                    {
-                        if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
-                        {
-                            assign = value.ToString().ToLower();
-                        }
-                        dealtWith = true;
-                    }
-                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool?))
-                    {
-                        if (Equals(value, true))
-                        {
-                            assign = "true";
-                        }
-                        else if (Equals(value, false))
-                        {
-                            assign = "false";
-                        }
-                        dealtWith = true;
-                    }
-                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumOrNullableEnum())
-                    {
-                        if (EnumExtensions.IsValidEnumValue(value))
+                        else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(string))
                         {
                             if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
                             {
-                                assign = value.ToEnumCodeString();
+                                assign = String(value as string);
                             }
+                            dealtWith = true;
                         }
-                        dealtWith = true;
-                    }
-                    else if (metadataProperty.Name == nameof(IPropertyMetadata.InferredValueConfigurations))
-                    {
-                        var output = CSharpObjectSerializer.Serialize(value);
-                        sb.Append($"{lambdaKey}.{metadataProperty.Name} = {output.Initialiser};");
-                        dealtWith = true;
-                    }
-                    else if (typeof(IFile).IsAssignableFrom(metadataProperty.DeclaringType) && metadataProperty.Name == nameof(IFile.Previews))
-                    {
-                        var filePreviews = value as IList<IFilePreview>;
-                        if (filePreviews != null && filePreviews.Any())
+                        else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool))
                         {
-                            var sbFilePreviews = new StringBuilder();
-                            foreach (var filePreview in filePreviews)
+                            if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
                             {
-                                sbFilePreviews.Append($"{lambdaKey}.{nameof(File<object>.AddPreview)}(fp => fp.{filePreview.UrlProperty.PropertyName}, {(filePreview.MaxWidth == null ? "null" : filePreview.MaxWidth.Value.ToString())}, {(filePreview.MaxHeight == null ? "null" : filePreview.MaxHeight.Value.ToString())}, {String(filePreview.Key)}, {await ConfigureMetadataAsync(filePreview, null, "fp", false)});");
+                                assign = value.ToString().ToLower();
+                            }
+                            dealtWith = true;
+                        }
+                        else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool?))
+                        {
+                            if (Equals(value, true))
+                            {
+                                assign = "true";
+                            }
+                            else if (Equals(value, false))
+                            {
+                                assign = "false";
+                            }
+                            dealtWith = true;
+                        }
+                        else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumOrNullableEnum())
+                        {
+                            if (EnumExtensions.IsValidEnumValue(value))
+                            {
+                                if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
+                                {
+                                    assign = value.ToEnumCodeString();
+                                }
+                            }
+                            dealtWith = true;
+                        }
+                        else if (metadataProperty.Name == nameof(IPropertyMetadata.InferredValueConfigurations))
+                        {
+                            var output = CSharpObjectSerializer.Serialize(value);
+                            sb.Append($"{lambdaKey}.{metadataProperty.Name} = {output.Initialiser};");
+                            dealtWith = true;
+                        }
+                        else if (typeof(IFile).IsAssignableFrom(metadataProperty.DeclaringType) && metadataProperty.Name == nameof(IFile.Previews))
+                        {
+                            var filePreviews = value as IList<IFilePreview>;
+                            if (filePreviews != null && filePreviews.Any())
+                            {
+                                var sbFilePreviews = new StringBuilder();
+                                foreach (var filePreview in filePreviews)
+                                {
+                                    sbFilePreviews.Append($"{lambdaKey}.{nameof(File<object>.AddPreview)}(fp => fp.{filePreview.UrlProperty.PropertyName}, {(filePreview.MaxWidth == null ? "null" : filePreview.MaxWidth.Value.ToString())}, {(filePreview.MaxHeight == null ? "null" : filePreview.MaxHeight.Value.ToString())}, {String(filePreview.Key)}, {await ConfigureMetadataAsync(filePreview, null, "fp", false)});");
+                                }
+
+                                assign = sbFilePreviews.ToString();
                             }
 
-                            assign = sbFilePreviews.ToString();
+                            assignIsAssign = false;
+                            dealtWith = true;
                         }
-
-                        assignIsAssign = false;
-                        dealtWith = true;
-                    }
-                    else if (!isProperty && entityMetadata != null && metadataProperty.Name == nameof(IEntityMetadata.PersistenceKeyProperty))
-                    {
-                        if (entityMetadata.PersistenceKeyProperty != null)
+                        else if (!isProperty && entityMetadata != null && metadataProperty.Name == nameof(IEntityMetadata.PersistenceKeyProperty))
                         {
-                            sb.Append(
-                                $"{lambdaKey}.{nameof(IEntityMetadata.PersistenceKeyProperty)} = {lambdaKey}.{nameof(IEntityConfiguration.FindProperty)}(\"{entityMetadata.PersistenceKeyProperty.PropertyName}\");");
-                        }
-                        dealtWith = true;
-                    }
-                    else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumerableType())
-                    {
-                        var enumerable = value as IEnumerable;
-                        if (enumerable != null && enumerable.Cast<object>().Any())
-                        {
-                            var elementType = metadataProperty.PropertyType.GetGenericArguments()[0];
-                            if (elementType.IsClass && elementType != typeof(string))
+                            if (entityMetadata.PersistenceKeyProperty != null)
                             {
-                                var serialized = CSharpObjectSerializer.Serialize(enumerable);
+                                sb.Append(
+                                    $"{lambdaKey}.{nameof(IEntityMetadata.PersistenceKeyProperty)} = {lambdaKey}.{nameof(IEntityConfiguration.FindProperty)}(\"{entityMetadata.PersistenceKeyProperty.PropertyName}\");");
+                            }
+                            dealtWith = true;
+                        }
+                        else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumerableType())
+                        {
+                            var enumerable = value as IEnumerable;
+                            if (enumerable != null && enumerable.Cast<object>().Any())
+                            {
+                                var elementType = metadataProperty.PropertyType.GetGenericArguments()[0];
+                                if (elementType.IsClass && elementType != typeof(string))
+                                {
+                                    var serialized = CSharpObjectSerializer.Serialize(enumerable);
+                                    // HACK ALERT
+                                    if (OutputKind == OutputKind.CSharp)
+                                    {
+                                        assign = serialized.Initialiser;
+                                    }
+                                    else
+                                    {
+                                        var typeScript = await ConvertToTypeScriptAsync(serialized.Class);
+                                        var trimmed = typeScript.Substring(0, typeScript.LastIndexOf("return instance;"));
+                                        var init = "let instance = ";
+                                        trimmed = trimmed.Substring(trimmed.IndexOf(init) + init.Length);
+                                        assign = trimmed;
+                                    }
+                                }
+                                else
+                                {
+                                    if (elementType == typeof(string))
+                                    {
+                                        var arr = enumerable.Cast<string>().ToArray();
+                                        if (arr.Any())
+                                        {
+                                            switch (OutputKind)
+                                            {
+                                                case OutputKind.CSharp:
+                                                    assign =
+                                                        $"new List<string>(new [] {{ {string.Join(", ", arr.Select(String))} }})";
+                                                    break;
+                                                case OutputKind.TypeScript:
+                                                    assign =
+                                                        $"[{string.Join(", ", arr.Select(String))}]";
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            dealtWith = true;
+                        }
+                        else if (typeof(IMediaKey).IsAssignableFrom(metadataProperty.PropertyType))
+                        {
+                            // Special case
+                            dealtWith = true;
+                            var mediaKey = metadata.GetPropertyValueByNameAs<IMediaKey>(nameof(IFile.MediaKey));
+                            if (mediaKey?.Groups?.Any() == true)
+                            {
+                                sb.AppendLine($"{lambdaKey}.{nameof(IFile.MediaKey)}");
+                                foreach (var group in mediaKey.Groups)
+                                {
+                                    if (group.Parts != null && group.Parts.Any())
+                                    {
+                                        sb.AppendLine($".{nameof(MediaKey<object>.AddGroup)}({lambdaKey}_g => {lambdaKey}_g");
+                                        foreach (var part in group.Parts)
+                                        {
+                                            sb.AppendLine(
+                                                part.IsPropertyPath
+                                                    ? $".{nameof(MediaKeyGroup<object>.AddPropertyPath)}({lambdaKey}_g_ => {lambdaKey}_g_.{part.Key.Replace("/", ".")})"
+                                                    : $@".{nameof(MediaKeyGroup<object>.AddString)}(""{part.Key}"")");
+                                        }
+
+                                        sb.Append(")");
+                                    }
+                                }
+
+                                sb.Append(";");
+                            }
+                        }
+                        else if (metadataProperty.Name == nameof(IMetadata.Metadata))
+                        {
+                            dealtWith = true;
+                            if (metadata.Metadata != null && metadata.Metadata.All.Any())
+                            {
+                                sb.AppendLine();
+                                sb.Append($"{lambdaKey}.{nameof(IMetadata.Metadata)}.");
+                                var items = new List<string>();
+                                foreach (var item in metadata.Metadata.All)
+                                {
+                                    var os = new CSharpObjectSerializer();
+                                    var serialized = os.Serialize(item.Value);
+                                    items.Add($"{nameof(IMetadataCollection.Set)}({String(item.Key)}, {serialized.Initialiser})");
+                                }
+                                sb.Append($"{string.Join(".", items)};");
+                            }
+                        }
+                        else if (metadata is IFileUrlBase &&
+                                 typeof(IProperty).IsAssignableFrom(metadataProperty.PropertyType))
+                        {
+                            dealtWith = true;
+                            var property = (IProperty)metadataProperty.GetValue(metadata);
+                            if (property != null)
+                            {
+                                sb.AppendLine($"{lambdaKey}.{metadataProperty.Name} = {DefaultLambdaKey}.{nameof(EntityConfiguration<object>.FindProperty)}({String(property.Name)});");
+                            }
+                        }
+                        else if (metadataProperty.CanWrite && (metadataProperty.PropertyType.IsClass || metadataProperty.PropertyType.IsInterface) && metadataProperty.PropertyType != typeof(string))
+                        {
+                            var skip = false;
+                            if (!isProperty)
+                            {
+                                switch (metadataProperty.Name)
+                                {
+                                    case nameof(IEntityConfiguration.EntityValidation):
+                                    case nameof(IEntityConfiguration.DisplayFormatting):
+                                        skip = true;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                switch (metadataProperty.Name)
+                                {
+                                    case nameof(IPropertyMetadata.TypeDefinition):
+                                    case nameof(IPropertyMetadata.ValidationRules):
+                                    case nameof(IPropertyMetadata.DisplayRules):
+                                    case nameof(IPropertyMetadata.RelationshipFilterRules):
+                                        skip = true;
+                                        break;
+                                }
+                            }
+                            dealtWith = true;
+                            if (!skip && value != null)
+                            {
+                                var serialized = CSharpObjectSerializer.Serialize(value);
                                 // HACK ALERT
                                 if (OutputKind == OutputKind.CSharp)
                                 {
@@ -1057,132 +1183,11 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 else
                                 {
                                     var typeScript = await ConvertToTypeScriptAsync(serialized.Class);
-                                    var trimmed = typeScript.Substring(0, typeScript.LastIndexOf("return instance;"));
+                                    var trimmed = typeScript.Substring(0, typeScript.LastIndexOf("return "));
                                     var init = "let instance = ";
                                     trimmed = trimmed.Substring(trimmed.IndexOf(init) + init.Length);
                                     assign = trimmed;
                                 }
-                            }
-                            else
-                            {
-                                if (elementType == typeof(string))
-                                {
-                                    var arr = enumerable.Cast<string>().ToArray();
-                                    if (arr.Any())
-                                    {
-                                        switch (OutputKind)
-                                        {
-                                            case OutputKind.CSharp:
-                                                assign =
-                                                    $"new List<string>(new [] {{ {string.Join(", ", arr.Select(String))} }})";
-                                                break;
-                                            case OutputKind.TypeScript:
-                                                assign =
-                                                    $"[{string.Join(", ", arr.Select(String))}]";
-                                                break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        dealtWith = true;
-                    }
-                    else if (typeof(IMediaKey).IsAssignableFrom(metadataProperty.PropertyType))
-                    {
-                        // Special case
-                        dealtWith = true;
-                        var mediaKey = metadata.GetPropertyValueByNameAs<IMediaKey>(nameof(IFile.MediaKey));
-                        if (mediaKey?.Groups?.Any() == true)
-                        {
-                            sb.AppendLine($"{lambdaKey}.{nameof(IFile.MediaKey)}");
-                            foreach (var group in mediaKey.Groups)
-                            {
-                                if (group.Parts != null && group.Parts.Any())
-                                {
-                                    sb.AppendLine($".{nameof(MediaKey<object>.AddGroup)}({lambdaKey}_g => {lambdaKey}_g");
-                                    foreach (var part in group.Parts)
-                                    {
-                                        sb.AppendLine(
-                                            part.IsPropertyPath
-                                                ? $".{nameof(MediaKeyGroup<object>.AddPropertyPath)}({lambdaKey}_g_ => {lambdaKey}_g_.{part.Key.Replace("/", ".")})"
-                                                : $@".{nameof(MediaKeyGroup<object>.AddString)}(""{part.Key}"")");
-                                    }
-
-                                    sb.Append(")");
-                                }
-                            }
-
-                            sb.Append(";");
-                        }
-                    }
-                    else if (metadataProperty.Name == nameof(IMetadata.Metadata))
-                    {
-                        dealtWith = true;
-                        if (metadata.Metadata != null && metadata.Metadata.All.Any())
-                        {
-                            sb.AppendLine();
-                            sb.Append($"{lambdaKey}.{nameof(IMetadata.Metadata)}.");
-                            var items = new List<string>();
-                            foreach (var item in metadata.Metadata.All)
-                            {
-                                var os = new CSharpObjectSerializer();
-                                var serialized = os.Serialize(item.Value);
-                                items.Add($"{nameof(IMetadataCollection.Set)}({String(item.Key)}, {serialized.Initialiser})");
-                            }
-                            sb.Append($"{string.Join(".", items)};");
-                        }
-                    }
-                    else if (metadata is IFileUrlBase &&
-                             typeof(IProperty).IsAssignableFrom(metadataProperty.PropertyType))
-                    {
-                        dealtWith = true;
-                        var property = (IProperty)metadataProperty.GetValue(metadata);
-                        if (property != null)
-                        {
-                            sb.AppendLine($"{lambdaKey}.{metadataProperty.Name} = {DefaultLambdaKey}.{nameof(EntityConfiguration<object>.FindProperty)}({String(property.Name)});");
-                        }
-                    }
-                    else if (metadataProperty.CanWrite && (metadataProperty.PropertyType.IsClass || metadataProperty.PropertyType.IsInterface) && metadataProperty.PropertyType != typeof(string))
-                    {
-                        var skip = false;
-                        if (!isProperty)
-                        {
-                            switch (metadataProperty.Name)
-                            {
-                                case nameof(IEntityConfiguration.EntityValidation):
-                                case nameof(IEntityConfiguration.DisplayFormatting):
-                                    skip = true;
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            switch (metadataProperty.Name)
-                            {
-                                case nameof(IPropertyMetadata.TypeDefinition):
-                                case nameof(IPropertyMetadata.ValidationRules):
-                                case nameof(IPropertyMetadata.DisplayRules):
-                                case nameof(IPropertyMetadata.RelationshipFilterRules):
-                                    skip = true;
-                                    break;
-                            }
-                        }
-                        dealtWith = true;
-                        if (!skip && value != null)
-                        {
-                            var serialized = CSharpObjectSerializer.Serialize(value);
-                            // HACK ALERT
-                            if (OutputKind == OutputKind.CSharp)
-                            {
-                                assign = serialized.Initialiser;
-                            }
-                            else
-                            {
-                                var typeScript = await ConvertToTypeScriptAsync(serialized.Class);
-                                var trimmed = typeScript.Substring(0, typeScript.LastIndexOf("return "));
-                                var init = "let instance = ";
-                                trimmed = trimmed.Substring(trimmed.IndexOf(init) + init.Length);
-                                assign = trimmed;
                             }
                         }
                     }

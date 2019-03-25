@@ -28,6 +28,22 @@ namespace IqlSampleApp.Data.Configuration.Entities
             {
                 p.IsInferredWith(_ => _.CurrentEntityState.Site.Client);
             });
+
+            model.ConfigureProperty(p => p.Skills, p =>
+            {
+                p.IsInferredWith(_ => PersonSkills.Coder,
+                    true,
+                    InferredValueKind.IfNullOrEmpty,
+                    true);
+            });
+            model.ConfigureProperty(p => p.Birthday, p =>
+            {
+                p.IsConditionallyInferredWith(
+                    _ => new IqlNowExpression(),
+                    _ => (_.OldEntityState == null || _.OldEntityState.Category != PersonCategory.Conventional) &&
+                         _.CurrentEntityState.Category == PersonCategory.AutoDescription
+                );
+            });
             model.FindCollectionRelationship(_ => _.Reports).AllowInlineEditing = true;
             model.ConfigureProperty(_ => _.Description,
                 p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.CurrentEntityState.Category == PersonCategory.AutoDescription); });

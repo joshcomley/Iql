@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Data.Context;
@@ -192,12 +193,6 @@ namespace Iql.Data.Extensions
             //    entity,
             //    property.GetValue(entity), 
             //    property.GetValue(entity));
-            Func<bool, InferredValueChanges> noChangeResult = success => new InferredValueChanges(
-                success, 
-                oldEntity, 
-                entity, 
-                property, 
-                null);
             Func<IProperty, object, InferredValueChange> getPropertyChange = (prop, newValue) =>
                 new InferredValueChange(true, true, prop, oldEntity, entity, prop.GetValue(entity), newValue);
             var changes = new List<InferredValueChange>();
@@ -223,30 +218,31 @@ namespace Iql.Data.Extensions
 
                         if (!Equals(conditionResult.Result, true))
                         {
-                            return noChangeResult(true);
+                            continue;
                         }
                     }
 
                     if (inferredWith.Kind == InferredValueKind.InitializeOnly && !isInitialize)
                     {
-                        return noChangeResult(true);
+                        continue;
                     }
 
                     if (inferredWith.ForNewOnly && customEvaluator.IsEntityNew(property.EntityConfiguration, entity) == false)
                     {
-                        return noChangeResult(true);
+                        continue;
                     }
 
-                    if (inferredWith.Kind == InferredValueKind.IfNull && property.GetValue(entity) != null)
+                    var originalValue = property.GetValue(entity);
+                    if (inferredWith.Kind == InferredValueKind.IfNull && originalValue != null)
                     {
-                        return noChangeResult(true);
+                        continue;
                     }
 
                     if (inferredWith.Kind == InferredValueKind.IfNullOrEmpty &&
-                        property.GetValue(entity) != null &&
-                        !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
+                        originalValue != null &&
+                        !originalValue.IsDefaultValue(property.TypeDefinition))
                     {
-                        return noChangeResult(true);
+                        continue;
                     }
 
                     var inferredWithIql = inferredWith.InferredWithIql;
@@ -259,7 +255,15 @@ namespace Iql.Data.Extensions
 
                     if (!result.Success)
                     {
-                        return noChangeResult(false);
+                        changes.Add(new InferredValueChange(
+                            false,
+                            false,
+                            property,
+                            oldEntity,
+                            entity,
+                            originalValue,
+                            property.GetValue(entity)));
+                        continue;
                     }
 
                     var value = result.Result;
@@ -306,7 +310,7 @@ namespace Iql.Data.Extensions
                 }
             }
 
-            return new InferredValueChanges(true, oldEntity, entity, property, changes.ToArray());
+            return new InferredValueChanges(oldEntity, entity, property, changes.ToArray());
         }
 
         private static object NewInferredValueContext(object oldEntity, object entity, Type entityType)

@@ -463,14 +463,20 @@ namespace Iql.Data.Context
             var set = GetDbSetByEntityType(entityType);
             if (set != null)
             {
-                return _dbSetsByEntityType[entityType].Name;
+                return _dbSetsByEntityType[set.ItemType].Name;
             }
             return null;
         }
 
         private readonly Dictionary<Type, PropertyInfo> _dbSetsByEntityType = new Dictionary<Type, PropertyInfo>();
+
         public IDbQueryable GetDbSetByEntityType(Type entityType)
         {
+            var map = EntityConfigurationContext.GetEntityByType(entityType).SpecialTypeDefinition;
+            if (map != null && entityType == map.InternalType)
+            {
+                return GetDbSetByEntityType(map.EntityConfiguration.Type);
+            }
             if (!_dbSetsByEntityType.ContainsKey(entityType))
             {
                 foreach (var property in GetType().GetRuntimeProperties())

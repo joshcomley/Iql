@@ -80,5 +80,16 @@ namespace Iql.Entities.PropertyGroups.Files
         }
 
         public new File<T> RootFile => (File<T>) RootFileInternal;
+
+        public override PropertyGroupMetadata[] GetPropertyGroupMetadata()
+        {
+            return new PropertyGroupMetadata[]
+            {
+                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(KindProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(NameProperty, PropertySearchKind.Primary),
+                new PropertyGroupMetadata(VersionProperty, PropertySearchKind.None),
+            };
+        }
     }
 }

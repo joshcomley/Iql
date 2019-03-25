@@ -305,8 +305,7 @@ namespace Iql.Server.OData.Net
         protected override async Task OnPatchAsync(Delta<T> patch, T dbObject)
         {
             var serverEvaluator = new IqlServerEvaluator(CrudManager, false);
-            var clone = (T)dbObject.Clone(Builder, EntityConfiguration.Type,
-                RelationshipCloneMode.DoNotClone);
+            var clone = (T)dbObject.Clone(Builder, EntityConfiguration.Type);
             await base.OnPatchAsync(patch, dbObject);
             await EntityConfiguration.TrySetInferredValuesAsync(
                 clone,
@@ -408,9 +407,9 @@ namespace Iql.Server.OData.Net
             await base.OnBeforePostAndPatchAsync(currentEntity, patch);
         }
 
-        private void ClearNestedEntities(T currentEntity)
+        protected virtual void ClearNestedEntities(T currentEntity)
         {
-// Clear any nested entities
+            // Clear any nested entities
             foreach (var property in EntityConfiguration.Properties)
             {
                 property.Relationship?.ThisEnd.Property.SetValue(currentEntity, null);

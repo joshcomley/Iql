@@ -37,11 +37,11 @@ namespace Iql.Data.DataStores.InMemory
             if (!_sources.ContainsKey(name))
             {
                 var map = Builder.GetSpecialTypeMap(name);
-                if (map != null)
+                if (map != null && map.EntityConfiguration.Type.Name != name)
                 {
                     return GetSourceByType(map.EntityConfiguration.Type);
                 }
-                throw new Exception($"Unable to find data source with name \"{name}\"");
+                throw new Exception($"Unable to find data source with type name \"{name}\"");
             }
             return _sources[name].Compile().DynamicInvoke() as IList;
         }

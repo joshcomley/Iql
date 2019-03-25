@@ -36,21 +36,6 @@ namespace Iql.Tests.Server
         public async Task InferValuesForPersonWithBirthdayNotSet()
         {
             var controller = ControllerContext<Person>(true);
-            controller.EntityConfiguration.ConfigureProperty(p => p.Skills, p =>
-            {
-                p.IsInferredWith(_ => PersonSkills.Coder,
-                    true,
-                    InferredValueKind.IfNullOrEmpty,
-                    true);
-            });
-            controller.EntityConfiguration.ConfigureProperty(p => p.Birthday, p =>
-            {
-                p.IsConditionallyInferredWith(
-                    _ => new IqlNowExpression(),
-                    _ => (_.OldEntityState == null || _.OldEntityState.Category != PersonCategory.Conventional) &&
-                         _.CurrentEntityState.Category == PersonCategory.AutoDescription
-                );
-            });
             var dbObject = new Person();
             Assert.AreEqual(default(DateTimeOffset), dbObject.CreatedDate);
             Assert.AreEqual(null, dbObject.Birthday);
@@ -83,26 +68,47 @@ namespace Iql.Tests.Server
             {
                 p.IsConditionallyInferredWith(
                     _ => new IqlNowExpression(),
-                    _ => (_.OldEntityState == null || _.OldEntityState.Category != PersonCategory.Conventional) &&
+                    _ => (_.OldEntityState == null || _.OldEntityState.Category != PersonCategory.AutoDescription) &&
                          _.CurrentEntityState.Category == PersonCategory.AutoDescription
                 );
+                p.IsConditionallyInferredWith(
+                    _ => null,
+                    _ => (_.OldEntityState != null && _.OldEntityState.Category == PersonCategory.AutoDescription) &&
+                         _.CurrentEntityState.Category == PersonCategory.Conventional
+                );
             });
-            var dbObject = new Person();
-            dbObject.Category = PersonCategory.AutoDescription;
-            Assert.AreEqual(default(DateTimeOffset), dbObject.CreatedDate);
-            Assert.AreEqual(null, dbObject.Birthday);
-            Assert.AreNotEqual(PersonCategory.Conventional, dbObject.Category);
-            Assert.AreNotEqual(PersonSkills.Coder, dbObject.Skills);
+            var dbObjectInitialize = new Person();
+            dbObjectInitialize.Category = PersonCategory.AutoDescription;
+            Assert.AreEqual(default(DateTimeOffset), dbObjectInitialize.CreatedDate);
+            Assert.AreEqual(null, dbObjectInitialize.Birthday);
+            Assert.AreNotEqual(PersonCategory.Conventional, dbObjectInitialize.Category);
+            Assert.AreNotEqual(PersonSkills.Coder, dbObjectInitialize.Skills);
             var inferredValuesResult = await controller.EntityConfiguration.TrySetInferredValuesAsync(
                 null,
-                dbObject,
+                dbObjectInitialize,
                 true,
                 controller.ServerEvaluator,
                 ResolveServiceProviderProvider());
-            Assert.AreNotEqual(default(DateTimeOffset), dbObject.CreatedDate);
-            Assert.IsNotNull(dbObject.Birthday);
-            Assert.AreEqual(PersonSkills.Coder, dbObject.Skills);
-            Assert.AreEqual(PersonCategory.Conventional, dbObject.Category);
+            Assert.AreNotEqual(default(DateTimeOffset), dbObjectInitialize.CreatedDate);
+            Assert.IsNotNull(dbObjectInitialize.Birthday);
+            Assert.AreEqual(PersonSkills.Coder, dbObjectInitialize.Skills);
+            Assert.AreEqual(PersonCategory.Conventional, dbObjectInitialize.Category);
+
+            var dbObjectNoInitialize = new Person();
+            dbObjectNoInitialize.Category = PersonCategory.AutoDescription;
+            Assert.AreEqual(default(DateTimeOffset), dbObjectNoInitialize.CreatedDate);
+            Assert.AreEqual(null, dbObjectNoInitialize.Birthday);
+            Assert.AreNotEqual(PersonCategory.Conventional, dbObjectNoInitialize.Category);
+            Assert.AreNotEqual(PersonSkills.Coder, dbObjectNoInitialize.Skills);
+            inferredValuesResult = await controller.EntityConfiguration.TrySetInferredValuesAsync(
+                null,
+                dbObjectNoInitialize,
+                false,
+                controller.ServerEvaluator,
+                ResolveServiceProviderProvider());
+            Assert.AreNotEqual(default(DateTimeOffset), dbObjectNoInitialize.CreatedDate);
+            Assert.IsNotNull(dbObjectNoInitialize.Birthday);
+            Assert.AreEqual(PersonSkills.Coder, dbObjectNoInitialize.Skills);
         }
     }
 }

@@ -418,14 +418,6 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Client_CreatedByUserId = _Client_CreatedByUserId ?? FindPropertyByName<Client>("CreatedByUserId");
             }
         }
-        private IProperty _Client_Name = null;
-        public IProperty Client_Name
-        {
-            get
-            {
-                return _Client_Name = _Client_Name ?? FindPropertyByName<Client>("Name");
-            }
-        }
         private IProperty _Client_AverageSales = null;
         public IProperty Client_AverageSales
         {
@@ -464,6 +456,14 @@ namespace IqlSampleApp.ApiContext.Base
             get
             {
                 return _Client_Discount = _Client_Discount ?? FindPropertyByName<Client>("Discount");
+            }
+        }
+        private IProperty _Client_Name = null;
+        public IProperty Client_Name
+        {
+            get
+            {
+                return _Client_Name = _Client_Name ?? FindPropertyByName<Client>("Name");
             }
         }
         private IProperty _Client_Guid = null;

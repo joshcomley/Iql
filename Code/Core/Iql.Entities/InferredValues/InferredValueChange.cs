@@ -14,19 +14,17 @@ namespace Iql.Entities.InferredValues
         public object NewValue { get; }
         public void ApplyChange(object entity = null)
         {
-            entity = entity ?? CurrentEntity;
             if (Success)
             {
-                Property.SetValue(entity, NewValue);
+                Property.SetValue(entity ?? CurrentEntity, NewValue);
             }
         }
 
         public void UndoChange(object entity = null)
         {
-            entity = entity ?? CurrentEntity;
             if (Success)
             {
-                Property.SetValue(entity, OldValue);
+                Property.SetValue(entity ?? CurrentEntity, OldValue);
             }
         }
 

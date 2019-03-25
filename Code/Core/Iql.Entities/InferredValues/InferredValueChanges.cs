@@ -1,4 +1,6 @@
-﻿namespace Iql.Entities.InferredValues
+﻿using System.Linq;
+
+namespace Iql.Entities.InferredValues
 {
     public class InferredValueChanges
     {
@@ -6,13 +8,13 @@
         public IEntityConfiguration EntityConfiguration => SourceProperty.EntityConfiguration;
         public InferredValueChange[] Changes { get; }
         public IProperty SourceProperty { get; }
-        public InferredValueChanges(bool success, object oldEntity, object currentEntity, IProperty sourceProperty, InferredValueChange[] changes)
+        public InferredValueChanges( object oldEntity, object currentEntity, IProperty sourceProperty, InferredValueChange[] changes)
         {
-            Success = success;
             OldEntity = oldEntity;
             CurrentEntity = currentEntity;
             SourceProperty = sourceProperty;
             Changes = changes ?? new InferredValueChange[] { };
+            Success = Changes.Length == 0 || Changes.All(_ => _.Success);
         }
 
         public void ApplyChanges(object entity = null)

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Iql.Entities.Relationships
 {
+    [DebuggerDisplay("{Property.Name} - Relationship Collection")]
     public class CollectionRelationshipDetail<T, TProperty>
         : RelationshipDetailTypedBase<T, IEnumerable<TProperty>, CollectionRelationshipDetail<T, TProperty>>,
             ITargetRelationshipSourceDetail
@@ -16,6 +18,7 @@ namespace Iql.Entities.Relationships
             LambdaExpression expression,
             Type elementType) : base(relationship, relationshipSide, configuration, expression, elementType)
         {
+            
         }
 
         public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.RelationshipTarget;
