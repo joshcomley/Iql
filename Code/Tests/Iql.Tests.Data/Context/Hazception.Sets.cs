@@ -99,19 +99,12 @@ namespace Hazception.Sets
 				typeof(string));
 		}
 		public virtual ODataDataMethodRequest<string> SendPasswordResetEmail(HazApplicationUser bindingParameter)
-		{
-			var parameters = new List<ODataParameter>();
-			
-			parameters.Add(new ODataParameter(bindingParameter, typeof(HazApplicationUser), "bindingParameter", true));
-			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
-				parameters,
-				ODataMethodType.Action,
-				ODataMethodScope.Entity,
-				"Hazception",
-				"SendPasswordResetEmail",
-				typeof(HazApplicationUser),
-				typeof(string));
-		}
+        {
+            return ((ODataDataStore) this.DataContext.DataStore).IqlMethodWithResponse<string>(
+                EntityConfiguration.FindMethod("SendPasswordResetEmail"),
+                typeof(string),
+                new[] {bindingParameter});
+        }
 		public virtual ODataDataMethodRequest<string> AccountConfirm(HazApplicationUser bindingParameter)
 		{
 			var parameters = new List<ODataParameter>();

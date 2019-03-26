@@ -13,7 +13,7 @@ using Iql.Parsing;
 
 namespace Iql.Data.Lists
 {
-    public interface IDbSetOperations<T, TKey> where T : class
+    public interface IDbSetOperations<T, TKey> : IDbSet where T : class
     {
         EntityState<T> Add(T entity);
         EntityState<T> Delete(T entity);

@@ -1,6 +1,7 @@
 using System.Linq;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql.Entities;
+using Iql.Entities.Functions;
 using Iql.Entities.Permissions;
 using Iql.Server;
 using IqlSampleApp.Data.Contracts;
@@ -14,13 +15,18 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(IEntityConfigurationBuilder builder)
         {
-            var entityConfiguration = builder.EntityType<Client>();
+            EntityConfiguration<Client> entityConfiguration = builder.EntityType<Client>();
+            entityConfiguration.FindMethod(nameof(ClientsController.IncrementVersion), true, method =>
+                {
+                    method.NameSpace = "Abc";
+                });
             entityConfiguration
+                .Permissions
                 .DefineUserPermission<ApplicationUser>(context =>
                     context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read);
             entityConfiguration.ConfigureProperty(_ => _.AverageIncome, property =>
                 {
-                    property.DefineUserPermission<ApplicationUser>(context =>
+                    property.Permissions.DefineUserPermission<ApplicationUser>(context =>
                         context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read);
                 });
         }

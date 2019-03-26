@@ -72,13 +72,6 @@ namespace Iql.Entities
             return await _geographyResolver.ResolveAsync(entity);
         }
 
-        public EntityConfiguration<T> DefineUserPermission<TUser>(
-            Expression<Func<IqlUserPermissionContext<TUser>, IqlUserPermission>> rule)
-            where TUser : class
-        {
-            return this;
-        }
-
         Task<Geography.Geography> IEntityConfiguration.ResolveGeographyAsync(object entity)
         {
             return ResolveGeographyAsync((T)entity);

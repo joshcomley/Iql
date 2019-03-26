@@ -1,6 +1,7 @@
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
@@ -16,6 +17,10 @@ namespace Iql.Entities
     public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>
         where T : IConfigurable<T>
     {
+        private UserPermissionsManager _permissions;
+        public List<IqlUserPermissionRule> PermissionRules { get; } = new List<IqlUserPermissionRule>();
+        public UserPermissionsManager Permissions => _permissions = _permissions ?? new UserPermissionsManager(this, EntityConfiguration);
+
         public bool Matches(params string[] names)
         {
             var prop = this as IProperty;

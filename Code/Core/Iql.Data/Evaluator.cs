@@ -225,7 +225,6 @@ namespace Iql.Data
                 if (relationshipFilterContext != null)
                 {
                     e = relationshipFilterContext.Owner;
-                    entityType = relationshipFilterContext.EntityType;
                 }
                 else if (inferredValueContext != null)
                 {
@@ -243,7 +242,7 @@ namespace Iql.Data
                         }
                     }
                     entityType = inferredValueContext.EntityType;
-                    item = IqlPropertyPath.FromString(path.PathAfter(1, false), builder.GetEntityByType(entityType), null, path.PathParts[0]);
+                    item = IqlPropertyPath.FromString(path.PathAfter(1), builder.GetEntityByType(entityType), null, path.PathParts[0]);
                 }
                 item = item ?? keys[i];
                 var evaluationResult = await item.EvaluateCustomAsync(

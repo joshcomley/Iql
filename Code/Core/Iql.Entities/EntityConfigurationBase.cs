@@ -14,11 +14,51 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
+using Iql.Entities.Functions;
 
 namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
+        private UserPermissionsManager _permissions;
+        public List<IqlUserPermissionRule> PermissionRules { get; } = new List<IqlUserPermissionRule>();
+        public UserPermissionsManager Permissions => _permissions = _permissions ?? new UserPermissionsManager(this, (IEntityConfiguration)this);
+        public List<IqlMethod> Methods { get; set; } = new List<IqlMethod>();
+
+        public IEntityConfiguration AddMethod(IqlMethod method)
+        {
+            if (!Methods.Contains(method))
+            {
+                Methods.Add(method);
+            }
+
+            return (IEntityConfiguration)this;
+        }
+        public IEntityConfiguration ConfigureMethod(IqlMethod method)
+        {
+            if (!Methods.Contains(method))
+            {
+                Methods.Add(method);
+            }
+
+            return (IEntityConfiguration)this;
+        }
+
+        public IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null)
+        {
+            Methods = Methods ?? new List<IqlMethod>();
+            var result = Methods.FirstOrDefault(_=>_.Name == name);
+            if (result == null && ensure != null && ensure == true)
+            {
+                result = new IqlMethod(name, null, null, (IEntityConfiguration)this);
+                if (configure != null)
+                {
+                    configure(result);
+                }
+                Methods.Add(result);
+            }
+            return result;
+        }
         protected virtual IEntityConfigurationContainer ConfigurationContainer { get; }
         protected readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
         private IProperty _previewProperty;

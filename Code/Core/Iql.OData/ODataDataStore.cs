@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.Data.Serialization;
+using Iql.Entities.Functions;
 
 namespace Iql.OData
 {
@@ -81,6 +82,35 @@ namespace Iql.OData
                     return dataMethodResult;
                 });
             return request;
+        }
+
+        public virtual ODataMethodRequest IqlMethod(IqlMethod method, object[] arguments)
+        {
+            var parameters = new List<ODataParameter>();
+            for (var i = 0; i < method.Parameters.Count; i++)
+            {
+                var p = method.Parameters[i];
+                parameters.Add(new ODataParameter(arguments[i], p.Type.Type, p.Name, p.IsBindingParameter));
+            }
+            return Method(parameters, ODataMethodType.Action, ODataMethodScope.Entity, method.NameSpace, method.Name, method.EntityConfiguration?.Type);
+        }
+
+        public virtual ODataDataMethodRequest<TResult> IqlMethodWithResponse<TResult>(IqlMethod method, Type responseElementType ,object[] arguments)
+        {
+            var parameters = new List<ODataParameter>();
+            for (var i = 0; i < method.Parameters.Count; i++)
+            {
+                var p = method.Parameters[i];
+                parameters.Add(new ODataParameter(arguments[i], p.Type.Type, p.Name, p.IsBindingParameter));
+            }
+            return MethodWithResponse<TResult>(
+                parameters, 
+                ODataMethodType.Action, 
+                ODataMethodScope.Entity,
+                method.NameSpace, 
+                method.Name, 
+                method.EntityConfiguration?.Type,
+                responseElementType);
         }
 
         public virtual ODataMethodRequest Method(

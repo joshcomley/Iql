@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Functions;
 using Iql.Entities.Geography;
 using Iql.Entities.InferredValues;
 using Iql.Entities.NestedSets;
@@ -25,32 +26,36 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
         {
             //return base.CreateProperties(type, memberSerialization)
             var ignoreProperties = new List<string>();
+            Type resolvedType = type;
             if (typeof(IEventUnsubscriber).IsAssignableFrom(type) &&
                 typeof(IEventSubscriberSubscriber).IsAssignableFrom(type))
             {
                 ignoreProperties.AddRange(new [] { nameof(IEventUnsubscriber.OnUnsubscribe), nameof(IEventSubscriberSubscriber.OnSubscribe) });
             }
-
             if (typeof(IEventUnsubscriber).IsAssignableFrom(type))
             {
                 ignoreProperties.AddRange(new [] { nameof(IEventUnsubscriber.OnUnsubscribe) });
             }
-
             if (typeof(IEventSubscriberSubscriber).IsAssignableFrom(type))
             {
                 ignoreProperties.AddRange(new [] { nameof(IEventSubscriberSubscriber.OnSubscribe) });
             }
-
             if (typeof(SpecialTypeDefinition).IsAssignableFrom(type))
             {
                 ignoreProperties.AddRange(new [] { nameof(SpecialTypeDefinition.InternalType), nameof(SpecialTypeDefinition.EntityConfiguration) });
             }
-
             if (typeof(PropertyMap).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(PropertyMap.EntityConfiguration) });
+                ignoreProperties.AddRange(new[] { nameof(PropertyMap.EntityConfiguration) });
             }
-
+            if (typeof(IqlMethod).IsAssignableFrom(type))
+            {
+                ignoreProperties.AddRange(new[] { nameof(IqlMethod.EntityConfiguration) });
+            }
+            if (typeof(IUserPermission).IsAssignableFrom(type))
+            {
+                ignoreProperties.AddRange(new[] {nameof(IUserPermission.Permissions)});
+            }
             if (typeof(RelationshipMapping).IsAssignableFrom(type) ||
                 typeof(ValueMapping).IsAssignableFrom(type))
             {
@@ -58,7 +63,7 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             }
             if (typeof(IEntityConfiguration).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IEntityMetadata), memberSerialization);
+                resolvedType = typeof(IEntityMetadata);
             }
             if (typeof(IInferredValueConfiguration).IsAssignableFrom(type))
             {
@@ -66,25 +71,25 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             }
             if (typeof(IProperty).IsAssignableFrom(type))
             {
-                type = typeof(IPropertyMetadata);
+                resolvedType = typeof(IPropertyMetadata);
                 ignoreProperties.AddRange(new [] { nameof(IProperty.EntityConfiguration) });
             }
             if (typeof(ITypeDefinition).IsAssignableFrom(type))
             {
-                type = typeof(ITypeConfiguration);
+                resolvedType = typeof(ITypeConfiguration);
             }
             if (typeof(IRelationship).IsAssignableFrom(type))
             {
-                type = typeof(IRelationship);
+                resolvedType = typeof(IRelationship);
             }
             if (typeof(IRelationshipDetail).IsAssignableFrom(type))
             {
-                type = typeof(IRelationshipDetailMetadata);
+                resolvedType = typeof(IRelationshipDetailMetadata);
                 ignoreProperties.AddRange(new [] { nameof(IRelationshipDetailMetadata.EntityConfiguration) });
             }
             if (typeof(IDisplayFormatting).IsAssignableFrom(type))
             {
-                type = typeof(IDisplayFormatting);
+                resolvedType = typeof(IDisplayFormatting);
             }
             if (typeof(IEntityDisplayTextFormatter).IsAssignableFrom(type))
             {
@@ -148,7 +153,7 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             }
 
             ignoreProperties = ignoreProperties.Distinct().ToList();
-            //if (type == typeof(IRuleCollection<IBinaryRule>))
+            //if (resolvedType == typeof(IRuleCollection<IBinaryRule>))
             //{
             //    return base.CreateProperties(typeof(IRuleCollection<IBinaryRule>), memberSerialization);
             //}
@@ -161,12 +166,12 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             //    int a = 0;
             //}
 
-            //if (type == typeof(IBinaryRule))
+            //if (resolvedType == typeof(IBinaryRule))
             //{
             //    int a = 0;
             //}
             //IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-            return base.CreateProperties(type, memberSerialization)
+            return base.CreateProperties(resolvedType, memberSerialization)
                 .Where(p => !ignoreProperties.Contains(p.PropertyName))
                 .ToArray();
         }

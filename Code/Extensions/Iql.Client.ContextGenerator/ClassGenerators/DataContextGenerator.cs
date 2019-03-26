@@ -23,6 +23,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Iql.Entities.Functions;
 using Iql.Entities.InferredValues;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.SpecialTypes;
@@ -35,6 +36,7 @@ using GeneratedFile = Iql.OData.TypeScript.Generator.Models.GeneratedFile;
 using IEntityConfiguration = Iql.Entities.IEntityConfiguration;
 using IPropertyCollection = Iql.Entities.IPropertyCollection;
 using IPropertyGroup = Iql.Entities.IPropertyGroup;
+using IqlMethodParameter = Iql.Entities.Functions.IqlMethodParameter;
 using IRelationshipDetail = Iql.Entities.Relationships.IRelationshipDetail;
 using PropertyCollection = Iql.Entities.PropertyCollection;
 using RelationshipDetail = Iql.Server.Serialization.Deserialization.EntityConfiguration.RelationshipDetail;
@@ -150,6 +152,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         },
                         "protected",
                         modifier: Modifier.Override);
+
                     if (Settings.ConfigureOData)
                     {
                         var odataConfigurationBackingFieldName = AsBackingFieldName(odataConfigurationPropertyName);
@@ -590,6 +593,16 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                       .defineProperty(Number, p => p.schoolId)
                                       .defineProperty(Certificate, p => p.certificate)
                               */
+                              //if (entityDefinition.Functions?.Any())
+                              //{
+                              //    new IqlMethod(
+                              //        "MyMethod",
+                              //        new IqlMethodParameter[] { },
+                              //        (context, args) => { },
+                              //        null,
+                              //        "ns",
+                              //        false);
+                              //}
                           }
                           Append(await ConfigureRelationshipsAsync(builder));
                           Append(await ConfigurePropertyOrdersAsync(builder));

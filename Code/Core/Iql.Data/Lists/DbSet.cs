@@ -7,6 +7,7 @@ using Iql.Data.Context;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Entities;
+using Iql.Entities.Functions;
 using Iql.Entities.Relationships;
 using Iql.Parsing;
 using Iql.Queryable.Expressions;

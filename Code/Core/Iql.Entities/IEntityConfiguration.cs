@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Entities.Functions;
 using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfiguration : IEntityMetadata, IConfiguration, IPropertyContainer
+    public interface IEntityConfiguration : IEntityMetadata, IPropertyContainer
     {
+        IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null);
+        IEntityConfiguration AddMethod(IqlMethod method);
         IProperty[] TryMatchProperty(params string[] names);
         IEnumerable<DisplayConfiguration> DisplayConfigurationsFor(DisplayConfigurationKind kind);
         DisplayConfiguration GetFullDisplayConfiguration(DisplayConfigurationKind? kind = null);

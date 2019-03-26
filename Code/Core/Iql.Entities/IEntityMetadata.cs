@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
+using Iql.Entities.Functions;
 
 namespace Iql.Entities
 {
-    public interface IEntityMetadata : IMetadata
+    public interface IEntityMetadata : IMetadata, IUserPermission
     {
+        List<IqlMethod> Methods { get; set; }
         bool AutoTitleProperty { get; set; }
         bool SupportsCascadeDelete { get; set; }
         IList<IGeographicPoint> Geographics { get; set; }
