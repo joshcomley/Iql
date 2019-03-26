@@ -170,12 +170,18 @@ namespace Iql.Entities
                 }
                 else
                 {
+                    var canWrite = CanWriteInternal;
+                    var canWriteSet = CanWriteSet;
                     _relationship = value;
                     if (_relationship != null && _relationship.ThisEnd.Property == this)
                     {
                         _relationship.ThisEnd.ValidationRules = ValidationRules;
                         _relationship.ThisEnd.DisplayRules = DisplayRules;
                         _relationship.ThisEnd.RelationshipFilterRules = RelationshipFilterRules;
+                        if (canWriteSet && canWrite.HasValue)
+                        {
+                            _relationship.ThisEnd.CanWrite = canWrite.Value;
+                        }
                     }
                 }
             }
@@ -183,7 +189,6 @@ namespace Iql.Entities
 
         public override PropertyKind Kind { get; set; }
 
-        private bool? _readOnly;
         private EntityRelationship _relationship;
         private IList<IInferredValueConfiguration> _inferredValueConfigurations = new List<IInferredValueConfiguration>();
 
@@ -291,19 +296,6 @@ namespace Iql.Entities
         {
             Nullable = nullable;
             return (IProperty)this;
-        }
-
-        public override bool IsReadOnly
-        {
-            get
-            {
-                if (Relationship != null)
-                {
-                    return Relationship.ThisEnd.IsReadOnly;
-                }
-
-                return HasReadOnly;
-            }
         }
 
         protected PropertyBase() : base(null, null)

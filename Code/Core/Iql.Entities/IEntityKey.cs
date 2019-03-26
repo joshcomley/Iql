@@ -7,7 +7,7 @@ namespace Iql.Entities
         Type KeyType { get; set; }
         Type Type { get; set; }
         bool HasRelationshipKeys { get; }
-        bool Editable { get; set; }
+        bool CanWrite { get; set; }
         IProperty[] Properties { get; }
         void AddProperty(IProperty property);
         bool IsPivot();

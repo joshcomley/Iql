@@ -91,7 +91,7 @@ namespace Iql.Data.Extensions
             {
                 var propertyValue = entity.GetPropertyValue(property);
                 if (propertyValue != null || !property.TypeDefinition.Nullable && !property.Kind.HasFlag(PropertyKind.Relationship) &&
-                    (!property.Kind.HasFlag(PropertyKind.Key) || property.EntityConfiguration.Key.Editable || includeNonEditableKey))
+                    (!property.Kind.HasFlag(PropertyKind.Key) || property.EntityConfiguration.Key.CanWrite || includeNonEditableKey))
                 {
                     var state = new PropertyState(property, null);
                     properties.Add(state);

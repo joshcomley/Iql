@@ -12,7 +12,7 @@ namespace Iql.Entities
     {
         public static bool IsValid(IEntityConfiguration entityConfiguration, object entity, bool isNew)
         {
-            if ((entityConfiguration.Key.Properties.All(p => p.IsReadOnly) || !entityConfiguration.Key.Editable) &&
+            if ((entityConfiguration.Key.Properties.All(p => !p.CanWrite) || !entityConfiguration.Key.CanWrite) &&
                 !isNew)
             {
                 return true;
@@ -21,7 +21,7 @@ namespace Iql.Entities
             for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
             {
                 var property = entityConfiguration.Key.Properties[i];
-                if (property.IsReadOnly)
+                if (!property.CanWrite)
                 {
                     continue;
                 }

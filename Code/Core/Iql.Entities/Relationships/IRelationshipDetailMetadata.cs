@@ -8,7 +8,6 @@ namespace Iql.Entities.Relationships
     {
         List<ValueMapping> ValueMappings { get; set; }
         List<RelationshipMapping> RelationshipMappings { get; set; }
-        bool AllowInlineEditing { get; set; }
         RelationshipSide RelationshipSide { get; }
         Type Type { get; }
         bool IsCollection { get; }

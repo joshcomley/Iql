@@ -11,6 +11,8 @@ namespace Iql.Entities.Relationships
             ITargetRelationshipSourceDetail
         where T : class
     {
+        protected override bool CanWriteDefaultValue { get; } = false;
+
         public CollectionRelationshipDetail(
             IRelationship relationship,
             RelationshipSide relationshipSide,

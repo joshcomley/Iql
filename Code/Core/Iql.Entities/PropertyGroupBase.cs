@@ -40,50 +40,74 @@ namespace Iql.Entities
 
         public bool ForceDecision { get; set; }
 
-        public bool SupportsInlineEditing { get; set; } = true;
-        public bool PromptBeforeEdit { get; set; } = false;
-        public string Placeholder { get; set; }
-        public bool Sortable { get; set; } = true;
-        public bool MarkedReadOnly { get; set; }
-        public virtual bool IsReadOnly => HasReadOnly;
-        public virtual bool IsHiddenFromEdit =>
-            EditKind == PropertyEditKind.Hidden;
+        public virtual bool CanWriteSet => CanWriteHasBeenSet;
 
-        public virtual bool IsHiddenFromRead =>
-            ReadKind == PropertyReadKind.Hidden;
-
-        public virtual bool HasReadOnly
+        public bool CanWrite
         {
             get
             {
-                if (MarkedReadOnly)
+                if (this is IProperty property)
                 {
-                    return true;
+                    if (property.Relationship != null)
+                    {
+                        return property.Relationship.ThisEnd.CanWrite;
+                    }
                 }
-
-                if (Kind.HasFlag(PropertyKind.Key) && !Kind.HasFlag(PropertyKind.RelationshipKey))
+                if (EntityConfiguration.Key != null && EntityConfiguration.Key.Properties.Any(_ => _ == this))
                 {
-                    return true;
+                    return EntityConfiguration.Key.CanWrite;
                 }
-
-                return false;
+                return CanWriteInternal ?? CanWriteDefaultValue;
+            }
+            set
+            {
+                CanWriteHasBeenSet = true;
+                if (this is IProperty property)
+                {
+                    if (property.Relationship != null)
+                    {
+                        property.Relationship.ThisEnd.CanWrite = value;
+                    }
+                    else
+                    {
+                        CanWriteInternal = value;
+                    }
+                }
+                else
+                {
+                    CanWriteInternal = value;
+                }
             }
         }
+
+        public bool PromptBeforeEdit { get; set; } = false;
+        public string Placeholder { get; set; }
+        public bool Sortable { get; set; } = true;
+        public virtual bool IsHiddenFromEdit =>
+            EditKind == PropertyEditKind.Hidden;
+        public virtual bool IsHiddenFromRead =>
+            ReadKind == PropertyReadKind.Hidden;
 
         public virtual IPropertyGroup ResolvePrimaryProperty()
         {
             return this;
         }
 
-        public IPropertyGroup SetReadOnlyAndHidden()
+        public virtual IPropertyGroup SetReadOnlyAndHidden()
         {
-            SetReadOnly().SetHidden();
-            return this;
+            return SetReadOnly().SetHidden();
         }
 
         public virtual IPropertyGroup SetReadOnly()
         {
-            MarkedReadOnly = true;
+            CanWrite = false;
+            return this;
+        }
+
+        public virtual IPropertyGroup SetEditorReadOnly()
+        {
+            EditKind = PropertyEditKind.Display;
+            ReadKind = PropertyReadKind.Display;
             return this;
         }
 
@@ -139,6 +163,9 @@ namespace Iql.Entities
         private IRuleCollection<IRelationshipRule> _relationshipFilterRules;
         private IRuleCollection<IBinaryRule> _validationRules;
         private IRuleCollection<IDisplayRule> _displayRules;
+        protected virtual bool CanWriteDefaultValue { get; } = true;
+        protected bool? CanWriteInternal { get; set; }
+        protected bool CanWriteHasBeenSet { get; set; }
         public string Key { get; set; }
         public string GroupKey => this.ResolveGroupKey();
 

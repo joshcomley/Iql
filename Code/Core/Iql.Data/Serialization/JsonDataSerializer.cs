@@ -270,7 +270,7 @@ namespace Iql.Data.Serialization
                 {
                     return true;
                 }
-                var invalid = (isNew && !keyProperty.EntityConfiguration.Key.Editable) ||
+                var invalid = (isNew && !keyProperty.EntityConfiguration.Key.CanWrite) ||
                     keyProperty.GetValue(entity) == null;
                 return !invalid;
             }

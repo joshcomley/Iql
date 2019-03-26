@@ -9,21 +9,6 @@ namespace Iql.Entities.Relationships
 {
     public abstract class RelationshipDetailBase : SimplePropertyGroupBase<IRelationshipDetail>, IRelationshipDetail
     {
-        public override bool IsReadOnly 
-        {
-            get
-            {
-                var isReadOnly = HasReadOnly ||
-                                 Property?.HasReadOnly == true ||
-                                 Constraints?.Any(_ => _.HasReadOnly) == true;
-                if (RelationshipSide == RelationshipSide.Source)
-                {
-                    return isReadOnly;
-                }
-                return !AllowInlineEditing && isReadOnly;
-            }
-        }
-
         private IProperty[] _constraints;
 
         private bool _readKindSet;
@@ -79,7 +64,6 @@ namespace Iql.Entities.Relationships
 
         public List<ValueMapping> ValueMappings { get; set; } = new List<ValueMapping>();
         public List<RelationshipMapping> RelationshipMappings { get; set; } = new List<RelationshipMapping>();
-        public bool AllowInlineEditing { get; set; }
         public IRelationshipDetail OtherSide =>
             RelationshipSide == RelationshipSide.Source ? Relationship?.Target : Relationship?.Source;
         public RelationshipSide RelationshipSide { get; }

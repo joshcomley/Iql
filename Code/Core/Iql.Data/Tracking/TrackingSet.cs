@@ -122,7 +122,7 @@ namespace Iql.Data.Tracking
                     {
                         var property = EntityConfiguration.Key.Properties[i];
                         if (!DataTracker.AllowLocalKeyGeneration &&
-                            property.IsReadOnly &&
+                            !property.CanWrite &&
                             !property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
                         {
                             throw new AttemptingToAssignRemotelyGeneratedKeyException();
@@ -813,7 +813,7 @@ namespace Iql.Data.Tracking
                 }
 
                 var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-                if (property.Kind.HasFlag(PropertyKind.Key) && property.IsReadOnly)
+                if (property.Kind.HasFlag(PropertyKind.Key) && !property.CanWrite)
                 {
                     DataTracker.RelationshipObserver.RunIfNotIgnored(() =>
                         {

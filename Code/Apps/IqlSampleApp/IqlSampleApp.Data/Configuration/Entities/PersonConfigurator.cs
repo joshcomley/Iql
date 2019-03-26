@@ -44,7 +44,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                          _.CurrentEntityState.Category == PersonCategory.AutoDescription
                 );
             });
-            model.FindCollectionRelationship(_ => _.Reports).AllowInlineEditing = true;
+            model.FindCollectionRelationship(_ => _.Reports).CanWrite = true;
             model.ConfigureProperty(_ => _.Description,
                 p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.CurrentEntityState.Category == PersonCategory.AutoDescription); });
             model.ConfigureProperty(_ => _.Location, p =>

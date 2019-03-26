@@ -104,7 +104,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -486,7 +486,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -533,7 +533,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -630,7 +630,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -677,7 +677,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -688,7 +688,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -741,7 +741,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -766,7 +766,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -836,7 +836,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -883,7 +883,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -940,7 +940,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -987,7 +987,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -998,7 +998,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1051,7 +1051,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1060,7 +1060,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1143,7 +1143,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1200,7 +1200,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1209,7 +1209,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1256,7 +1256,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1267,7 +1267,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1320,7 +1320,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1345,7 +1345,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1414,7 +1414,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1471,7 +1471,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1480,7 +1480,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1527,7 +1527,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1538,7 +1538,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1591,7 +1591,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1608,7 +1608,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1630,7 +1630,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1677,7 +1677,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1734,7 +1734,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -1781,7 +1781,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -1792,7 +1792,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -1845,7 +1845,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -1854,7 +1854,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -1883,7 +1883,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -1930,7 +1930,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -1995,7 +1995,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2042,7 +2042,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2053,7 +2053,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2106,7 +2106,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2115,7 +2115,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2198,7 +2198,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -2255,7 +2255,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2264,7 +2264,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -2311,7 +2311,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2322,7 +2322,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2375,7 +2375,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2400,7 +2400,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2423,7 +2423,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -2478,7 +2478,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -2535,7 +2535,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2582,7 +2582,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2593,7 +2593,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2646,7 +2646,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2663,7 +2663,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2731,7 +2731,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -2796,7 +2796,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -2805,7 +2805,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -2852,7 +2852,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -2863,7 +2863,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -2916,7 +2916,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -2925,7 +2925,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -2992,7 +2992,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -3049,7 +3049,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -3058,7 +3058,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -3105,7 +3105,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -3116,7 +3116,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -3169,7 +3169,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -3186,7 +3186,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -3216,7 +3216,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -3263,7 +3263,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -3312,7 +3312,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -3359,7 +3359,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -3370,7 +3370,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -3423,7 +3423,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -3440,7 +3440,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -3516,7 +3516,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -3565,7 +3565,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -3574,7 +3574,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -3621,7 +3621,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -3632,7 +3632,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -3685,7 +3685,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -3702,7 +3702,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -3770,7 +3770,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -3835,7 +3835,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -3844,7 +3844,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -3891,7 +3891,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -3902,7 +3902,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -3955,7 +3955,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -3972,7 +3972,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -3994,7 +3994,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -4041,7 +4041,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -4098,7 +4098,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -4145,7 +4145,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -4156,7 +4156,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -4209,7 +4209,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -4226,7 +4226,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -4333,7 +4333,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -4380,7 +4380,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -4993,7 +4993,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -5040,7 +5040,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -5051,7 +5051,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -5104,7 +5104,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -5205,7 +5205,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -5300,7 +5300,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -5405,7 +5405,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -5414,7 +5414,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -5461,7 +5461,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -5472,7 +5472,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -5525,7 +5525,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -5542,7 +5542,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -5564,7 +5564,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -5611,7 +5611,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -5668,7 +5668,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -5715,7 +5715,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -5726,7 +5726,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -5779,7 +5779,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -5796,7 +5796,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -5817,7 +5817,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -5864,7 +5864,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -5921,7 +5921,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -5968,7 +5968,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -5979,7 +5979,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -6032,7 +6032,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -6049,7 +6049,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -6150,7 +6150,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -6197,7 +6197,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -6250,7 +6250,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -6297,7 +6297,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -6362,7 +6362,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -6409,7 +6409,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -6420,7 +6420,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -6473,7 +6473,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -6514,7 +6514,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -6537,7 +6537,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -6624,7 +6624,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -6858,7 +6858,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -6905,7 +6905,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -6916,7 +6916,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -6969,7 +6969,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -7018,7 +7018,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Client";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.EditKind = PropertyEditKind.New;
+                p.EditKind = PropertyEditKind.Edit;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "Client";
                 p.Title = "Client";
@@ -7027,7 +7027,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -7074,7 +7074,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -7129,7 +7129,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -7178,7 +7178,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -7225,7 +7225,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -7236,7 +7236,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -7289,7 +7289,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -7314,7 +7314,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -7336,7 +7336,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -7391,7 +7391,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -7456,7 +7456,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Guid";
                 p.Title = "Guid";
@@ -7503,7 +7503,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -7514,7 +7514,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -7567,7 +7567,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -7600,7 +7600,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -7660,7 +7660,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
@@ -7677,7 +7677,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Key;
                 p.Name = "Id";
                 p.Title = "Id";
@@ -7802,7 +7802,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
@@ -7813,7 +7813,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
@@ -7866,7 +7866,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
                 p.ReadKind = PropertyReadKind.Hidden;
                 p.EditKind = PropertyEditKind.Hidden;
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
@@ -7875,7 +7875,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.MarkedReadOnly = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
@@ -8268,7 +8268,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Created By User";
                 });
                 rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
-                    rel_cnf.EditKind = PropertyEditKind.New;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Client";
                     rel_cnf.Title = "Client";
                     rel_cnf.FriendlyName = "Client";
@@ -8304,7 +8304,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Children";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Areas).Configure(rel_cnf => {
-                    rel_cnf.AllowInlineEditing = true;
+                    rel_cnf.CanWrite = true;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Areas";
                     rel_cnf.Title = "Areas";
@@ -8555,7 +8555,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Site";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Reports).Configure(rel_cnf => {
-                    rel_cnf.AllowInlineEditing = true;
+                    rel_cnf.CanWrite = true;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Reports";
                     rel_cnf.Title = "Reports";

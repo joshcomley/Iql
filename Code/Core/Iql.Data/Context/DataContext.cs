@@ -1382,7 +1382,7 @@ namespace Iql.Data.Context
 
         private static bool PropertyValueIsIllegallyEmpty(IProperty property, object entity, object propertyValue)
         {
-            if (property.IsReadOnly)
+            if (!property.CanWrite)
             {
                 return false;
             }

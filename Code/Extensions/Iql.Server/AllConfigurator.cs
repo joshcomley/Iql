@@ -172,11 +172,10 @@ namespace Iql.Server
         {
             builder.EntityType<T>().Configure(config =>
             {
-                if (typeof(T).Name == "UserSetting")
+                config.ConfigureProperty(p => p.CreatedByUser, p =>
                 {
-                    int a = 0;
-                }
-                config.ConfigureProperty(p => p.CreatedByUser, p => p.SetReadOnly());
+                    p.SetReadOnly();
+                });
                 config.ConfigureProperty(
                     p => p.CreatedByUserId,
                     p =>

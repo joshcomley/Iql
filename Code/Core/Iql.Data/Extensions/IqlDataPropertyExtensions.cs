@@ -102,30 +102,14 @@ namespace Iql.Data.Extensions
         }
 
         public static async Task<bool> IsReadOnlyAsync(
-            this ISimpleProperty property,
-            object owner,
+            this IPropertyGroup property,
+            object entity,
             IDataContext dataContext)
         {
-            if (property.IsReadOnly)
+            if (!property.CanWrite || property.EditKind != PropertyEditKind.Edit)
             {
                 return true;
             }
-
-            if (property is RelationshipDetailBase relationshipDetailBase)
-            {
-                if (relationshipDetailBase.IsReadOnly)
-                {
-                    return true;
-                }
-            }
-
-            //if (simpleProperty != null &&
-            //    simpleProperty.Relationship != null &&
-            //    simpleProperty.Relationship.ThisIsTarget &&
-            //    await simpleProperty.Relationship.OtherEnd.Property.IsReadOnlyAsync(entity, dataContext))
-            //{
-            //    continue;
-            //}
             
             if (property is IProperty)
             {
@@ -146,7 +130,7 @@ namespace Iql.Data.Extensions
                         }
 
                         var conditionResult = await inferredValueConfiguration.InferredWithConditionIql.EvaluateIqlAsync(
-                            IqlDataPropertyExtensions.NewInferredValueContext(owner, owner, property.EntityConfiguration.Type),
+                            IqlDataPropertyExtensions.NewInferredValueContext(entity, entity, property.EntityConfiguration.Type),
                             dataContext);
 
                         if (conditionResult.Success && Equals(conditionResult.Result, true))

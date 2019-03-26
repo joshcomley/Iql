@@ -67,7 +67,7 @@ namespace Iql.Entities
             PropertyName = name;
             if (readOnly.HasValue)
             {
-                SetReadOnly();
+                SetEditorReadOnly();
             }
             CountRelationship = countRelationship;
             if (countRelationship != null)

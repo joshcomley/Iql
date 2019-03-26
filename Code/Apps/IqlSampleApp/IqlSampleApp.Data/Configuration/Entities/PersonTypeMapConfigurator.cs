@@ -10,7 +10,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(IEntityConfigurationBuilder builder)
         {
-            builder.EntityType<PersonTypeMap>().Key.Editable = true;
+            builder.EntityType<PersonTypeMap>().Key.CanWrite = true;
         }
     }
 

@@ -292,7 +292,7 @@ namespace Iql.Entities
         {
             var definedProperty = DefineAndGetProperty(property, null, false, iqlType);
             Key = new EntityKey<T, TKey>();
-            Key.Editable = editable;
+            Key.CanWrite = editable;
             var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
             iql.ReturnType = iqlType ?? typeof(TKey).ToIqlType();
             Key.AddProperty(definedProperty);
@@ -319,7 +319,7 @@ namespace Iql.Entities
         )
         {
             Key = new EntityKey<T, CompositeKey>();
-            Key.Editable = editable;
+            Key.CanWrite = editable;
             foreach (var property in properties)
             {
                 var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;

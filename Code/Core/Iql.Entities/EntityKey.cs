@@ -29,7 +29,7 @@ namespace Iql.Entities
         public bool HasRelationshipKeys => Properties.Any(p =>
             p.Relationship != null && !p.Relationship.ThisIsTarget);
 
-        public bool Editable { get; set; }
+        public bool CanWrite { get; set; } = false;
 
         public IProperty[] Properties
         {
@@ -57,6 +57,7 @@ namespace Iql.Entities
                 property.ReadKind = readKind;
             }
         }
+
         public void SetEditKind(PropertyEditKind editKind)
         {
             for (var i = 0; i < Properties.Length; i++)
@@ -69,7 +70,8 @@ namespace Iql.Entities
         public Type Type { get; set; }
         public Type KeyType { get; set; }
     }
-    public class EntityKey<T, TKey> : EntityKeyBase, IEntityKey
+
+    public class EntityKey<T, TKey> : EntityKeyBase
     {
         public EntityKey()
         {

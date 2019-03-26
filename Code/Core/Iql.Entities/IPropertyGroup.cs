@@ -8,19 +8,18 @@ namespace Iql.Entities
 {
     public interface IPropertyGroup : IPropertyContainer
     {
+        bool CanWriteSet { get; }
+        bool CanWrite { get; set; }
         bool ForceDecision { get; set; }
-        bool SupportsInlineEditing { get; set; }
         bool PromptBeforeEdit { get; set; }
         string Placeholder { get; set; }
         bool Sortable { get; set; }
         bool Matches(params string[] names);
-        bool IsReadOnly { get; }
-        bool MarkedReadOnly { get; set; }
-        bool HasReadOnly { get; }
         EventEmitter<ValueChangedEvent<PropertyEditKind>> EditKindChanged { get; }
         EventEmitter<ValueChangedEvent<PropertyReadKind>> ReadKindChanged { get; }
         IPropertyGroup SetReadOnlyAndHidden();
         IPropertyGroup SetReadOnly();
+        IPropertyGroup SetEditorReadOnly();
         IPropertyGroup SetHidden();
         bool IsHiddenFromRead { get; }
         bool IsHiddenFromEdit { get; }
