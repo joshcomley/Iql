@@ -234,8 +234,8 @@ namespace Iql.Data
                     {
                         switch (path.PathParts[0])
                         {
-                            case nameof(IInferredValueContext.OldEntityState):
-                                e = inferredValueContext.OldEntityState;
+                            case nameof(IInferredValueContext.PreviousEntityState):
+                                e = inferredValueContext.PreviousEntityState;
                                 break;
                             case nameof(IInferredValueContext.CurrentEntityState):
                                 e = inferredValueContext.CurrentEntityState;

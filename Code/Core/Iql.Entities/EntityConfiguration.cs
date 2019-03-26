@@ -16,6 +16,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Iql.Entities.Permissions;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.SpecialTypes;
@@ -69,6 +70,13 @@ namespace Iql.Entities
             }
 
             return await _geographyResolver.ResolveAsync(entity);
+        }
+
+        public EntityConfiguration<T> DefineUserPermission<TUser>(
+            Expression<Func<IqlUserPermissionContext<TUser>, IqlUserPermission>> rule)
+            where TUser : class
+        {
+            return this;
         }
 
         Task<Geography.Geography> IEntityConfiguration.ResolveGeographyAsync(object entity)

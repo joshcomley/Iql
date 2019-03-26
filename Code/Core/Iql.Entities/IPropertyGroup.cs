@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using Iql.Entities.Events;
+using Iql.Entities.Permissions;
 using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
@@ -8,6 +10,7 @@ namespace Iql.Entities
 {
     public interface IPropertyGroup : IPropertyContainer
     {
+        Task<IqlUserPermission> GetUserPermissionAsync(object entity = null);
         bool CanWriteSet { get; }
         bool CanWrite { get; set; }
         bool ForceDecision { get; set; }

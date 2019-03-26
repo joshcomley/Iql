@@ -97,7 +97,7 @@ namespace Iql.Entities.Relationships
                 {
                     if (RelationshipSide == RelationshipSide.Target)
                     {
-                        return property.CountRelationship;
+                        return property.CountRelationshipProperty;
                     }
                     return OtherSide?.CountProperty;
                 }

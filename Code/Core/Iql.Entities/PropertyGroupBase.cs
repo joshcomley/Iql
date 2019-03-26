@@ -2,9 +2,12 @@ using Iql.Entities.Rules;
 using Iql.Entities.Rules.Display;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
+using Iql.Entities.Permissions;
 using Iql.Entities.Rules.Relationship;
 using Iql.Events;
 
@@ -40,7 +43,32 @@ namespace Iql.Entities
 
         public bool ForceDecision { get; set; }
 
-        public virtual bool CanWriteSet => CanWriteHasBeenSet;
+        public Task<IqlUserPermission> GetUserPermissionAsync(object entity = null)
+        {
+            return Task.FromResult(IqlUserPermission.ReadAndEdit);
+        }
+
+        public virtual bool CanWriteSet
+        {
+            get
+            {
+                if (CanWriteHasBeenSet)
+                {
+                    return true;
+                }
+                if (this is IProperty property)
+                {
+                    if (property.Relationship != null)
+                    {
+                        if (property.Relationship.ThisEnd.CanWriteSet)
+                        {
+                            CanWriteHasBeenSet = true;
+                        }
+                    }
+                }
+                return CanWriteHasBeenSet;
+            }
+        }
 
         public bool CanWrite
         {
@@ -53,7 +81,7 @@ namespace Iql.Entities
                         return property.Relationship.ThisEnd.CanWrite;
                     }
                 }
-                if (EntityConfiguration.Key != null && EntityConfiguration.Key.Properties.Any(_ => _ == this))
+                if (EntityConfiguration?.Key != null && EntityConfiguration.Key.Properties.Any(_ => _ == this))
                 {
                     return EntityConfiguration.Key.CanWrite;
                 }

@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Entities.InferredValues;
+using Iql.Entities.Permissions;
 using Iql.Entities.ValueResolvers;
 using Iql.Extensions;
 
@@ -48,6 +49,13 @@ namespace Iql.Entities
                 propertyGetterExpression);
         }
 
+        public IEntityProperty<TOwner> DefineUserPermission<TUser>(
+            Expression<Func<IqlEntityUserPermissionContext<TOwner, TUser>, IqlUserPermission>> rule)
+            where TUser : class
+        {
+            return this;
+        }
+
         internal void ConfigureProperty(
             IEntityConfiguration entityConfiguration,
             string name,
@@ -69,10 +77,10 @@ namespace Iql.Entities
             {
                 SetEditorReadOnly();
             }
-            CountRelationship = countRelationship;
+            CountRelationshipProperty = countRelationship;
             if (countRelationship != null)
             {
-                ((PropertyBase)countRelationship).CountRelationship = this;
+                ((PropertyBase)countRelationship).CountRelationshipProperty = this;
             }
             Kind = 0;
             TypeDefinition = new TypeDetail(

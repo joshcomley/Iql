@@ -23,48 +23,38 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
+            //return base.CreateProperties(type, memberSerialization)
+            var ignoreProperties = new List<string>();
             if (typeof(IEventUnsubscriber).IsAssignableFrom(type) &&
                 typeof(IEventSubscriberSubscriber).IsAssignableFrom(type))
             {
-                return base.CreateProperties(type, memberSerialization)
-                    .Where(p => !new string[] { nameof(IEventUnsubscriber.OnUnsubscribe), nameof(IEventSubscriberSubscriber.OnSubscribe) }.Contains(p.PropertyName))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IEventUnsubscriber.OnUnsubscribe), nameof(IEventSubscriberSubscriber.OnSubscribe) });
             }
 
             if (typeof(IEventUnsubscriber).IsAssignableFrom(type))
             {
-                return base.CreateProperties(type, memberSerialization)
-                    .Where(p => !new string[] { nameof(IEventUnsubscriber.OnUnsubscribe) }.Contains(p.PropertyName))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IEventUnsubscriber.OnUnsubscribe) });
             }
 
             if (typeof(IEventSubscriberSubscriber).IsAssignableFrom(type))
             {
-                return base.CreateProperties(type, memberSerialization)
-                    .Where(p => !new string[] { nameof(IEventSubscriberSubscriber.OnSubscribe) }.Contains(p.PropertyName))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IEventSubscriberSubscriber.OnSubscribe) });
             }
 
             if (typeof(SpecialTypeDefinition).IsAssignableFrom(type))
             {
-                return base.CreateProperties(type, memberSerialization)
-                    .Where(p => !new string[] { nameof(SpecialTypeDefinition.InternalType), nameof(SpecialTypeDefinition.EntityConfiguration) }.Contains(p.PropertyName))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(SpecialTypeDefinition.InternalType), nameof(SpecialTypeDefinition.EntityConfiguration) });
             }
 
             if (typeof(PropertyMap).IsAssignableFrom(type))
             {
-                return base.CreateProperties(type, memberSerialization)
-                    .Where(p => !new string[] { nameof(PropertyMap.EntityConfiguration) }.Contains(p.PropertyName))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(PropertyMap.EntityConfiguration) });
             }
 
             if (typeof(RelationshipMapping).IsAssignableFrom(type) ||
                 typeof(ValueMapping).IsAssignableFrom(type))
             {
-                return base.CreateProperties(type, memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IMapping<object>.Container))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IMapping<object>.Container) });
             }
             if (typeof(IEntityConfiguration).IsAssignableFrom(type))
             {
@@ -72,128 +62,92 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             }
             if (typeof(IInferredValueConfiguration).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IInferredValueConfiguration), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IInferredValueConfiguration.Property))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IInferredValueConfiguration.Property) });
             }
             if (typeof(IProperty).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IPropertyMetadata), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IProperty.EntityConfiguration))
-                    .ToList();
+                type = typeof(IPropertyMetadata);
+                ignoreProperties.AddRange(new [] { nameof(IProperty.EntityConfiguration) });
             }
             if (typeof(ITypeDefinition).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(ITypeConfiguration), memberSerialization);
+                type = typeof(ITypeConfiguration);
             }
             if (typeof(IRelationship).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IRelationship), memberSerialization);
+                type = typeof(IRelationship);
             }
             if (typeof(IRelationshipDetail).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IRelationshipDetailMetadata), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IRelationshipDetailMetadata.EntityConfiguration))
-                    .ToList();
+                type = typeof(IRelationshipDetailMetadata);
+                ignoreProperties.AddRange(new [] { nameof(IRelationshipDetailMetadata.EntityConfiguration) });
             }
             if (typeof(IDisplayFormatting).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IDisplayFormatting), memberSerialization);
+                type = typeof(IDisplayFormatting);
             }
             if (typeof(IEntityDisplayTextFormatter).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IEntityDisplayTextFormatter), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IEntityDisplayTextFormatter.Format))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IEntityDisplayTextFormatter.Format) });
             }
             if (typeof(IDisplayRule).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IDisplayRule), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IRuleBase<string>.Run) });
             }
             if (typeof(IGeographicPoint).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IGeographicPoint), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IGeographicPoint.EntityConfiguration))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IGeographicPoint.EntityConfiguration) });
             }
             if (typeof(IDateRange).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IDateRange), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IDateRange.EntityConfiguration))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IDateRange.EntityConfiguration) });
             }
             if (typeof(IFile).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IFile), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IFile.EntityConfiguration) && p.PropertyName != nameof(IFile.RootFile))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IFile.EntityConfiguration), nameof(IFile.RootFile) });
             }
             if (typeof(IFilePreview).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IFilePreview), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IFilePreview.EntityConfiguration) &&
-                                p.PropertyName != nameof(IFilePreview.File) &&
-                                p.PropertyName != nameof(IFilePreview.RootFile))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IFile.EntityConfiguration), nameof(IFilePreview.File), nameof(IFilePreview.RootFile) });
             }
             if (typeof(INestedSet).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(INestedSet), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(INestedSet.EntityConfiguration))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(INestedSet.EntityConfiguration) });
             }
             if (typeof(IMediaKey).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IMediaKey), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IMediaKey.File))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IMediaKey.File) });
             }
             if (typeof(IMediaKeyGroup).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IMediaKeyGroup), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IMediaKeyGroup.MediaKey))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IMediaKeyGroup.MediaKey) });
             }
             if (typeof(IMediaKeyPart).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IMediaKeyPart), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IMediaKeyPart.MediaKey))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IMediaKeyPart.MediaKey) });
             }
             if (typeof(IEntityKey).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IEntityKey), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IEntityKey.Type) &&
-                                p.PropertyName != nameof(IEntityKey.KeyType))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IEntityKey.Type), nameof(IEntityKey.KeyType) });
             }
             if (typeof(IRelationshipRule).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IRelationshipRule), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IRuleBase<string>.Run) });
             }
             if (typeof(IBinaryRule).IsAssignableFrom(type))
             {
-                return base.CreateProperties(typeof(IBinaryRule), memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IRuleBase<string>.Run) });
             }
             if (typeof(IPropertyPath).IsAssignableFrom(type))
             {
-                return base.CreateProperties(type, memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IPropertyPath.Property))
-                    .Where(p => p.PropertyName != nameof(IPropertyPath.EntityConfiguration))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IPropertyPath.Property), nameof(IPropertyPath.EntityConfiguration) });
             }
             if (typeof(IPropertyGroup).IsAssignableFrom(type))
             {
-                return base.CreateProperties(type, memberSerialization)
-                    .Where(p => p.PropertyName != nameof(IProperty.EntityConfiguration))
-                    .ToList();
+                ignoreProperties.AddRange(new [] { nameof(IPropertyPath.PropertyGroup), nameof(IPropertyPath.EntityConfiguration) });
             }
+
+            ignoreProperties = ignoreProperties.Distinct().ToList();
             //if (type == typeof(IRuleCollection<IBinaryRule>))
             //{
             //    return base.CreateProperties(typeof(IRuleCollection<IBinaryRule>), memberSerialization);
@@ -212,7 +166,9 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             //    int a = 0;
             //}
             //IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-            return base.CreateProperties(type, memberSerialization);
+            return base.CreateProperties(type, memberSerialization)
+                .Where(p => !ignoreProperties.Contains(p.PropertyName))
+                .ToArray();
         }
     }
 }

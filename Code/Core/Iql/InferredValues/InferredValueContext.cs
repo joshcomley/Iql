@@ -9,7 +9,7 @@ namespace Iql.Entities.InferredValues
 
         public T OldEntityState { get; set; }
 
-        object IInferredValueContext.OldEntityState
+        object IInferredValueContext.PreviousEntityState
         {
             get => OldEntityState; set => OldEntityState = (T)value;
         }

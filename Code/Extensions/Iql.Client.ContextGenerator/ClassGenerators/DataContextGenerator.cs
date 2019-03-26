@@ -840,6 +840,16 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             dealtWith = true;
                         }
                     }
+                    var useAutoResolve = true;
+                    if (metadata is IPropertyGroup propertyGroup &&
+                        metadataProperty.Name == nameof(IPropertyGroup.CanWrite))
+                    {
+                        useAutoResolve = false;
+                        if (!propertyGroup.CanWriteSet)
+                        {
+                            dealtWith = true;
+                        }
+                    }
                     if (metadata is IEntityConfiguration ec &&
                         metadataProperty.Name == nameof(IEntityConfiguration.TitlePropertyName))
                     {
@@ -896,9 +906,9 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                     sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasDateRange)}(");
                                     var parameters = new[]
                                     {
-                                    dateRange.StartDateProperty,
-                                    dateRange.EndDateProperty
-                                };
+                                        dateRange.StartDateProperty,
+                                        dateRange.EndDateProperty
+                                    };
                                     var parameterStrings =
                                         parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
                                             .ToList();
@@ -975,7 +985,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                         }
                         else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(string))
                         {
-                            if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
+                            if (!useAutoResolve || !IsDefaultValue(metadataProperty, value, metadataSolidType))
                             {
                                 assign = String(value as string);
                             }
@@ -983,7 +993,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                         }
                         else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool))
                         {
-                            if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
+                            if (!useAutoResolve || !IsDefaultValue(metadataProperty, value, metadataSolidType))
                             {
                                 assign = value.ToString().ToLower();
                             }
@@ -1005,7 +1015,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                         {
                             if (EnumExtensions.IsValidEnumValue(value))
                             {
-                                if (!IsDefaultValue(metadataProperty, value, metadataSolidType))
+                                if (!useAutoResolve || !IsDefaultValue(metadataProperty, value, metadataSolidType))
                                 {
                                     assign = value.ToEnumCodeString();
                                 }

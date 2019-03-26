@@ -31,6 +31,7 @@ namespace Iql.Entities
         PropertyInfo PropertyInfo { get; set; }
 #endif
         EntityRelationship Relationship { get; set; }
+        EntityRelationship RelationshipDirect { get; }
         List<EntityRelationship> RelationshipSources { get; set; }
         //IProperty CountRelationship { get; }
         List<object> Helpers { get; set; }

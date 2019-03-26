@@ -149,6 +149,9 @@ namespace Iql.Entities
 #if !TypeScript
         public PropertyInfo PropertyInfo { get; set; }
 #endif
+
+        public EntityRelationship RelationshipDirect => _relationship;
+
         public EntityRelationship Relationship
         {
             get
@@ -157,7 +160,8 @@ namespace Iql.Entities
                 {
                     return _relationship;
                 }
-                return CountRelationship?.Relationship;
+
+                return CountRelationshipProperty?.RelationshipDirect;
             }
             set
             {
@@ -189,7 +193,7 @@ namespace Iql.Entities
 
         public override PropertyKind Kind { get; set; }
 
-        private EntityRelationship _relationship;
+        protected EntityRelationship _relationship;
         private IList<IInferredValueConfiguration> _inferredValueConfigurations = new List<IInferredValueConfiguration>();
 
         private bool IsSearchableType => TypeDefinition != null && (TypeDefinition.Type == typeof(string) &&
@@ -283,7 +287,7 @@ namespace Iql.Entities
 
         public bool IsPersistenceKey => EntityConfiguration.PersistenceKeyProperty == this;
 
-        internal IProperty CountRelationship { get; set; }
+        internal IProperty CountRelationshipProperty { get; set; }
 
         public string PropertyName { get; set; }
 

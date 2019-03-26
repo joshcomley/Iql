@@ -5,7 +5,7 @@ namespace Iql.Entities.InferredValues
 {
     public interface IInferredValueContext : IEntityType
     {
-        object OldEntityState { get; set; }
+        object PreviousEntityState { get; set; }
         object CurrentEntityState { get; set; }
     }
 }
