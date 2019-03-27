@@ -77,38 +77,37 @@ namespace Iql.OData
                             var oDataGetResult = await GetODataSingleResultAsync<TResult>(httpResult);
                             dataMethodResult.Data = oDataGetResult;
                         }
-
                     }
                     return dataMethodResult;
                 });
             return request;
         }
 
-        public virtual ODataMethodRequest IqlMethod(IqlMethod method, object[] arguments)
+        public virtual ODataMethodRequest IqlMethod(IqlMethod method, object[] args)
         {
             var parameters = new List<ODataParameter>();
             for (var i = 0; i < method.Parameters.Count; i++)
             {
                 var p = method.Parameters[i];
-                parameters.Add(new ODataParameter(arguments[i], p.Type.Type, p.Name, p.IsBindingParameter));
+                parameters.Add(new ODataParameter(args[i], p.Type.Type, p.Name, p.IsBindingParameter));
             }
             return Method(parameters, ODataMethodType.Action, ODataMethodScope.Entity, method.NameSpace, method.Name, method.EntityConfiguration?.Type);
         }
 
-        public virtual ODataDataMethodRequest<TResult> IqlMethodWithResponse<TResult>(IqlMethod method, Type responseElementType ,object[] arguments)
+        public virtual ODataDataMethodRequest<TResult> IqlMethodWithResponse<TResult>(IqlMethod method, Type responseElementType, object[] args)
         {
             var parameters = new List<ODataParameter>();
             for (var i = 0; i < method.Parameters.Count; i++)
             {
                 var p = method.Parameters[i];
-                parameters.Add(new ODataParameter(arguments[i], p.Type.Type, p.Name, p.IsBindingParameter));
+                parameters.Add(new ODataParameter(args[i], p.Type.Type, p.Name, p.IsBindingParameter));
             }
             return MethodWithResponse<TResult>(
-                parameters, 
-                ODataMethodType.Action, 
+                parameters,
+                ODataMethodType.Action,
                 ODataMethodScope.Entity,
-                method.NameSpace, 
-                method.Name, 
+                method.NameSpace,
+                method.Name,
                 method.EntityConfiguration?.Type,
                 responseElementType);
         }
@@ -311,7 +310,7 @@ namespace Iql.OData
             var isValueResult = EntityConfigurationBuilder.GetEntityByType(typeof(TResult)) == null;
             var json = await httpResult.GetResponseTextAsync();
             var result = JsonDataSerializer.DeserializeEntity<TResult>(
-                json, 
+                json,
                 EntityConfigurationBuilder.GetEntityByType(typeof(TResult)));
             var value = isValueResult ? result.Root["value"] : result.Root;
             var oDataGetResult = value.ToObject<TResult>();

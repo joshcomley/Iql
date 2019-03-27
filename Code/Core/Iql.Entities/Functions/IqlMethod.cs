@@ -21,10 +21,10 @@ namespace Iql.Entities.Functions
         public List<IqlMethodParameter> Parameters { get; set; }
 
         public IqlMethod(
-            string name, 
-            IEnumerable<IqlMethodParameter> parameters,
-            Func<object, object[], Task<object>> runAsync,
-            IEntityConfiguration entityConfiguration,
+            string name = null, 
+            IEnumerable<IqlMethodParameter> parameters = null,
+            Func<object, object[], Task<object>> runAsync = null,
+            IEntityConfiguration entityConfiguration = null,
             string nameSpace = null,
             bool supportsOffline = false,
             string dataStoreRequired = null)
@@ -41,6 +41,7 @@ namespace Iql.Entities.Functions
         public IqlMethod()
         {
             
+
         }
     }
 }

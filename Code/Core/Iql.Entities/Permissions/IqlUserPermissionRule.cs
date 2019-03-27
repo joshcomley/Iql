@@ -9,7 +9,7 @@ namespace Iql.Entities
         public IqlLambdaExpression Rule { get; set; }
         public bool AcceptsEntity { get; set; }
 
-        public IqlUserPermissionRule(string key, IqlLambdaExpression rule, bool acceptsEntity)
+        public IqlUserPermissionRule(string key = null, IqlLambdaExpression rule = null, bool acceptsEntity = false)
         {
             Key = key;
             Rule = rule;

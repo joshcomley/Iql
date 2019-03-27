@@ -6,7 +6,7 @@
         public bool IsBindingParameter { get; set; }
         public ITypeDefinition Type { get; set; }
 
-        public IqlMethodParameter(string name, bool isBindingParameter, ITypeDefinition type)
+        public IqlMethodParameter(string name = null, bool isBindingParameter = false, ITypeDefinition type = null)
         {
             Name = name;
             IsBindingParameter = isBindingParameter;
