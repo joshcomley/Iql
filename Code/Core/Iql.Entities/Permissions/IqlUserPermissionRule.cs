@@ -17,7 +17,15 @@ namespace Iql.Entities
                 BindingFlags.Static | BindingFlags.NonPublic);
             ConvertIqlToLambdaMethod = typeof(IqlUserPermissionRule).GetMethod(nameof(ConvertIqlToLambda),
                 BindingFlags.Static | BindingFlags.NonPublic);
+            RunGenericMethod = typeof(IqlUserPermissionRule).GetMethod(nameof(RunGeneric),
+                BindingFlags.Instance | BindingFlags.Public);
+            RunGenericWithEntityMethod = typeof(IqlUserPermissionRule).GetMethod(nameof(RunGenericWithEntity),
+                BindingFlags.Instance | BindingFlags.Public);
         }
+
+        public static MethodInfo RunGenericWithEntityMethod { get; set; }
+
+        public static MethodInfo RunGenericMethod { get; set; }
 
         public static MethodInfo ConvertIqlToLambdaMethod { get; set; }
 
@@ -84,6 +92,38 @@ namespace Iql.Entities
         public IEntityConfiguration EntityType => EntityConfigurationBuilder.GetEntityByTypeName(EntityTypeName);
 
         public bool AcceptsEntity => EntityTypeName != null;
+
+        public IqlUserPermission Run(object user, object entity = null)
+        {
+            if (AcceptsEntity)
+            {
+                if (entity == null)
+                {
+                    throw new ArgumentException($"Parameter '{nameof(entity)}' must have a value if the permission rule accepts an entity.");
+                }
+                return (IqlUserPermission)RunGenericWithEntityMethod.InvokeGeneric(this, new object[]{ user, entity }, entity.GetType(), user.GetType());
+            }
+            return (IqlUserPermission)RunGenericMethod.InvokeGeneric(this, new object[] { user }, user.GetType());
+        }
+
+        public IqlUserPermission RunGenericWithEntity<TEntity, TUser>(TUser user, TEntity entity)
+            where TEntity : class
+            where TUser : class
+        {
+            var lambda = Expression.Compile();
+            var result =
+                lambda.DynamicInvoke(new IqlEntityUserPermissionContext<TEntity, TUser>(true, null, user, entity));
+            return (IqlUserPermission)result;
+        }
+
+        public IqlUserPermission RunGeneric<TUser>(TUser user)
+            where TUser : class
+        {
+            var lambda = Expression.Compile();
+            var result =
+                lambda.DynamicInvoke(new IqlUserPermissionContext<TUser>(true, null, user));
+            return (IqlUserPermission)result;
+        }
 
         public IqlUserPermissionRule(IEntityConfigurationBuilder entityConfigurationBuilder = null, string key = null, IqlLambdaExpression iqlExpression = null, string userTypeName = null, string entityTypeName = null)
         {
