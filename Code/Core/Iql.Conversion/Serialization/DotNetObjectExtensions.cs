@@ -1,3 +1,4 @@
+#if !TypeScript
 using System;
 using System.IO;
 using System.Linq;
@@ -39,3 +40,4 @@ namespace Iql.DotNet.Serialization
         }
     }
 }
+#endif

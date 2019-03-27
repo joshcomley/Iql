@@ -5,7 +5,7 @@ using Iql.Entities.Relationships;
 
 namespace Iql.Entities
 {
-    public interface IPropertyMetadata : ISimpleProperty
+    public interface IPropertyMetadata : ISimpleProperty, IUserPermission
     {
         IEnumerable<IRelationship> Relationships { get; }
         ITypeDefinition TypeDefinition { get; set; }

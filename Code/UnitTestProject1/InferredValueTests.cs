@@ -68,12 +68,12 @@ namespace Iql.Tests.Server
             {
                 p.IsConditionallyInferredWith(
                     _ => new IqlNowExpression(),
-                    _ => (_.OldEntityState == null || _.OldEntityState.Category != PersonCategory.AutoDescription) &&
+                    _ => (_.PreviousEntityState == null || _.PreviousEntityState.Category != PersonCategory.AutoDescription) &&
                          _.CurrentEntityState.Category == PersonCategory.AutoDescription
                 );
                 p.IsConditionallyInferredWith(
                     _ => null,
-                    _ => (_.OldEntityState != null && _.OldEntityState.Category == PersonCategory.AutoDescription) &&
+                    _ => (_.PreviousEntityState != null && _.PreviousEntityState.Category == PersonCategory.AutoDescription) &&
                          _.CurrentEntityState.Category == PersonCategory.Conventional
                 );
             });

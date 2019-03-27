@@ -14,7 +14,7 @@ using Iql.Events;
 
 namespace Iql.Entities
 {
-    public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>
+    public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>, IUserPermission
         where T : IConfigurable<T>
     {
         private UserPermissionsManager _permissions;

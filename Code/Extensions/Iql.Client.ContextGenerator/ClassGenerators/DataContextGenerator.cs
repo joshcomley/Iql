@@ -23,6 +23,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Iql.Conversion;
 using Iql.Entities.Functions;
 using Iql.Entities.InferredValues;
 using Iql.Entities.PropertyGroups.Files;
@@ -305,7 +306,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                       {
                                           foreach (var validation in entityConfiguration.EntityValidation.All)
                                           {
-                                              var expression = validation.GetPropertyValueByNameAs<IqlExpression>("ExpressionIql");
+                                              var expression = validation.GetPropertyValueByNameAs<IqlExpression>(nameof(RuleBase.ExpressionIql));
                                               AppendLine();
                                               Dot();
                                               MethodCall(nameof(EntityConfiguration<object>.DefineEntityValidation),
@@ -325,7 +326,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                       {
                                           foreach (var formatter in entityConfiguration.DisplayFormatting.All)
                                           {
-                                              var expression = formatter.GetPropertyValueByNameAs<IqlExpression>("FormatterExpressionIql");
+                                              var expression = formatter.GetPropertyValueByNameAs<IqlExpression>(nameof(DisplayFormatter.FormatterExpressionIql));
                                               AppendLine();
                                               Dot();
                                               MethodCall(nameof(EntityConfiguration<object>.DefineDisplayFormatter),
@@ -345,11 +346,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                           {
                                               foreach (var validation in property.ValidationRules.All)
                                               {
-                                                  if (property.PropertyName == "System")
-                                                  {
-
-                                                  }
-                                                  var expression = validation.GetPropertyValueByNameAs<IqlExpression>("ExpressionIql");
+                                                  var expression = validation.GetPropertyValueByNameAs<IqlExpression>(nameof(RuleBase.ExpressionIql));
                                                   var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
                                                   var iqlRootReference = new IqlRootReferenceExpression("e", "");
                                                   propertyExpression.Parent = iqlRootReference;
@@ -574,6 +571,34 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                   //    }
                                   //}
                               });
+
+                              if (entityDefinition.Functions?.Any() == true && entityConfiguration.Methods?.Any() == true)
+                              {
+                                  // TODO: Define methods
+                              }
+
+                              foreach (var property in entityConfiguration.Properties)
+                              {
+                                  if (property.PermissionRules?.Any() == true)
+                                  {
+                                      foreach (var rule in property.PermissionRules)
+                                      {
+                                          var iql = rule.Rule;
+                                          AppendLine();
+                                          VariableAccessor(builder, () =>
+                                          {
+                                              MethodCall(
+                                                  defineEntityName,
+                                                  false,
+                                                  defineEntityParameters
+                                              );
+                                          });
+                                          AppendLine();
+                                          Dot();
+                                          AppendLine($"{nameof(IUserPermission.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
+                                      }
+                                  }
+                              }
 
                               if (entityDefinition != _entitySetDefinitions.Last())
                               {

@@ -40,7 +40,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             {
                 p.IsConditionallyInferredWith(
                     _ => new IqlNowExpression(),
-                    _ => (_.OldEntityState == null || _.OldEntityState.Category != PersonCategory.Conventional) &&
+                    _ => (_.PreviousEntityState == null || _.PreviousEntityState.Category != PersonCategory.Conventional) &&
                          _.CurrentEntityState.Category == PersonCategory.AutoDescription
                 );
             });
@@ -58,7 +58,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             });
             model.ConfigureProperty(_ => _.InferredWhenKeyChanges, p =>
             {
-                p.IsInferredWith(_ => (_.OldEntityState == null || _.OldEntityState.Key == "ABC") && _.CurrentEntityState.Key == "DEF" ? "alphabet!" : _.CurrentEntityState.InferredWhenKeyChanges, false, InferredValueKind.Always, false, nameof(Person.Key));
+                p.IsInferredWith(_ => (_.PreviousEntityState == null || _.PreviousEntityState.Key == "ABC") && _.CurrentEntityState.Key == "DEF" ? "alphabet!" : _.CurrentEntityState.InferredWhenKeyChanges, false, InferredValueKind.Always, false, nameof(Person.Key));
             });
             model.DefineRelationshipFilterRule(
                 _ => _.Site,

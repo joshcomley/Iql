@@ -5,13 +5,13 @@ namespace Iql.Entities.InferredValues
     public class InferredValueContext<T> : IInferredValueContext
         where T : class
     {
-        public Type EntityType => typeof(T) ?? OldEntityState?.GetType() ?? CurrentEntityState?.GetType();
+        public Type EntityType => typeof(T) ?? PreviousEntityState?.GetType() ?? CurrentEntityState?.GetType();
 
-        public T OldEntityState { get; set; }
+        public T PreviousEntityState { get; set; }
 
         object IInferredValueContext.PreviousEntityState
         {
-            get => OldEntityState; set => OldEntityState = (T)value;
+            get => PreviousEntityState; set => PreviousEntityState = (T)value;
         }
         public T CurrentEntityState { get; set; }
         object IInferredValueContext.CurrentEntityState
@@ -19,9 +19,9 @@ namespace Iql.Entities.InferredValues
             get => CurrentEntityState; set => CurrentEntityState = (T)value;
         }
 
-        public InferredValueContext(T oldEntityState, T currentEntityState)
+        public InferredValueContext(T previousEntityState, T currentEntityState)
         {
-            OldEntityState = oldEntityState;
+            PreviousEntityState = previousEntityState;
             CurrentEntityState = currentEntityState;
         }
     }

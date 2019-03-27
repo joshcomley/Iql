@@ -37,5 +37,10 @@ namespace Iql.Entities.Functions
             SupportsOffline = supportsOffline;
             DataStoreRequired = dataStoreRequired;
         }
+
+        public IqlMethod()
+        {
+            
+        }
     }
 }

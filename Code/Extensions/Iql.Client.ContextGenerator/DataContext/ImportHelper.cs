@@ -15,6 +15,7 @@ using Iql.Data.Lists;
 using Iql.Data.Methods;
 using Iql.Entities;
 using Iql.Entities.Events;
+using Iql.Entities.Functions;
 using Iql.Entities.InferredValues;
 using Iql.Entities.Metadata;
 using Iql.Entities.PropertyChangers;
@@ -94,6 +95,9 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             typeof(PointPropertyChanger),
             typeof(PolygonPropertyChanger),
             typeof(EntityTypeService),
+            typeof(IqlMethod),
+            typeof(IqlUserPermissionRule),
+
         };
 
         private static Dictionary<string, Type> _importLookup = null;

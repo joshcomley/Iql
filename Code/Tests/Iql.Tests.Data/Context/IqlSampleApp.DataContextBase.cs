@@ -14,6 +14,7 @@ using Iql;
 using Iql.Entities.InferredValues;
 using Iql.Entities.Metadata;
 using Iql.Entities.Relationships;
+using Iql.Entities.Functions;
 namespace IqlSampleApp.ApiContext.Base
 {
     public class IqlSampleAppDataContextBase: DataContext
@@ -847,6 +848,16 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Client>().HasOne(p => p.Type).WithMany(p => p.Clients).WithConstraint(p => p.TypeId, p => p.Id);
             builder.EntityType<Client>().HasOne(p => p.CreatedByUser).WithMany(p => p.ClientsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<Client>().Configure(p => {
+                p.Methods = new List<IqlMethod>
+                {
+                    new IqlMethod
+                    {
+                        Name = "IncrementVersion",
+                        SupportsOffline = false,
+                        NameSpace = "Abc",
+                        Parameters = new List<IqlMethodParameter>()
+                    }
+                };
                 p.SetFriendlyName = "Clients";
                 p.SetName = "Clients";
                 p.DefaultSortExpression = "CreatedDate";
@@ -855,6 +866,76 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Client";
                 p.Title = "Client";
                 p.FriendlyName = "Client";
+            });
+            builder.EntityType<Client>().PermissionRules.Add(new IqlUserPermissionRule
+            {
+                Rule = new IqlLambdaExpression
+                {
+                    Body = new IqlConditionExpression
+                    {
+                        Test = new IqlIsEqualToExpression
+                        {
+                            Left = new IqlPropertyExpression
+                            {
+                                PropertyName = "ClientId",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlPropertyExpression
+                                {
+                                    PropertyName = "User",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                                        VariableName = "context",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                }
+                            },
+                            Right = new IqlLiteralExpression
+                            {
+                                InferredReturnType = IqlType.Integer,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Integer
+                            },
+                            Kind = IqlExpressionKind.IsEqualTo,
+                            ReturnType = IqlType.Unknown
+                        },
+                        IfTrue = new IqlLiteralExpression
+                        {
+                            Value = 2L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        IfFalse = new IqlLiteralExpression
+                        {
+                            Value = 1L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        Kind = IqlExpressionKind.Condition,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                            VariableName = "context",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                },
+                AcceptsEntity = false
             });
             builder.EntityType<ClientType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
@@ -4528,7 +4609,7 @@ namespace IqlSampleApp.ApiContext.Base
                                     {
                                         Left = new IqlPropertyExpression
                                         {
-                                            PropertyName = "OldEntityState",
+                                            PropertyName = "PreviousEntityState",
                                             Kind = IqlExpressionKind.Property,
                                             ReturnType = IqlType.Unknown,
                                             Parent = new IqlRootReferenceExpression
@@ -4558,7 +4639,7 @@ namespace IqlSampleApp.ApiContext.Base
                                             ReturnType = IqlType.Unknown,
                                             Parent = new IqlPropertyExpression
                                             {
-                                                PropertyName = "OldEntityState",
+                                                PropertyName = "PreviousEntityState",
                                                 Kind = IqlExpressionKind.Property,
                                                 ReturnType = IqlType.Unknown,
                                                 Parent = new IqlRootReferenceExpression
@@ -4709,7 +4790,7 @@ namespace IqlSampleApp.ApiContext.Base
                                         {
                                             Left = new IqlPropertyExpression
                                             {
-                                                PropertyName = "OldEntityState",
+                                                PropertyName = "PreviousEntityState",
                                                 Kind = IqlExpressionKind.Property,
                                                 ReturnType = IqlType.Unknown,
                                                 Parent = new IqlRootReferenceExpression
@@ -4739,7 +4820,7 @@ namespace IqlSampleApp.ApiContext.Base
                                                 ReturnType = IqlType.Unknown,
                                                 Parent = new IqlPropertyExpression
                                                 {
-                                                    PropertyName = "OldEntityState",
+                                                    PropertyName = "PreviousEntityState",
                                                     Kind = IqlExpressionKind.Property,
                                                     ReturnType = IqlType.Unknown,
                                                     Parent = new IqlRootReferenceExpression

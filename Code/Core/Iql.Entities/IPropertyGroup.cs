@@ -6,7 +6,7 @@ using Iql.Events;
 
 namespace Iql.Entities
 {
-    public interface IPropertyGroup : IPropertyContainer, IUserPermission
+    public interface IPropertyGroup : IPropertyContainer
     {
         bool CanWriteSet { get; }
         bool CanWrite { get; set; }
