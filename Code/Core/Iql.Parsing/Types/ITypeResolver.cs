@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace Iql.Parsing.Types
+﻿namespace Iql.Parsing.Types
 {
     public interface ITypeResolver
     {
-        Type ResolveTypeFromTypeName(string typeName);
+        ResolvedType ResolveTypeFromTypeName(string typeName);
     }
 }

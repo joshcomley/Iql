@@ -4,7 +4,7 @@ namespace Iql.Parsing.Types
 {
     internal class EmptyTypeResolver : ITypeResolver
     {
-        public Type ResolveTypeFromTypeName(string typeName)
+        public ResolvedType ResolveTypeFromTypeName(string typeName)
         {
             return null;
         }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Iql.Entities;
 using Iql.Entities.InferredValues;
+using Iql.Entities.Permissions;
 using Iql.Entities.Rules.Relationship;
 using Iql.Parsing.Types;
 
@@ -9,11 +11,33 @@ namespace Iql.Data.Types
 {
     public class TypeResolver : ITypeResolver
     {
-        public Type ResolveTypeFromTypeName(string fullTypeName)
+        private static Dictionary<string, Type> KnownTypes { get; set; }
+
+        static TypeResolver()
+        {
+            KnownTypes = new Dictionary<string, Type>();
+            RegisterKnownType(typeof(RelationshipFilterContext<>));
+            RegisterKnownType(typeof(InferredValueContext<>));
+            RegisterKnownType(typeof(IqlEntityUserPermissionContext<,>));
+            RegisterKnownType(typeof(IqlUserPermissionContext<>));
+        }
+
+        public static void RegisterKnownType(Type type)
+        {
+            var typeName = type.Name;
+            var graveIndex = typeName.IndexOf("`");
+            if (graveIndex != -1)
+            {
+                typeName = typeName.Substring(0, graveIndex);
+            }
+            KnownTypes.Add(typeName, type);
+        }
+
+        public ResolvedType ResolveTypeFromTypeName(string fullTypeName)
         {
             var typeName = fullTypeName;
             var index = typeName.IndexOf("<");
-            Type[] subTypes = null;
+            ResolvedType[] subTypes = null;
             if (index != -1)
             {
                 typeName = typeName.Substring(0, index);
@@ -22,33 +46,14 @@ namespace Iql.Data.Types
                 var subTypeNames = subTypeName.Split(',');
                 subTypes = subTypeNames.Select(s => s.Trim()).Select(s => ResolveTypeFromTypeName(s)).ToArray();
             }
-            var entityType = EntityConfigurationBuilder.FindConfigurationForEntityTypeName(typeName);
-            if (entityType != null)
+
+            var resolvedType = EntityConfigurationBuilder.FindConfigurationForEntityTypeName(typeName)?.Type
+                               ?? (KnownTypes.ContainsKey(typeName) ? KnownTypes[typeName] : null);
+            if (subTypes != null && subTypes.Any())
             {
-                return entityType.Type;
+                resolvedType = resolvedType.MakeGenericType(subTypes.Select(_ => _.Type).ToArray());
             }
-
-            Type resolvedType = null;
-
-            if (typeName.StartsWith(nameof(RelationshipFilterContext<int>)))
-            {
-                resolvedType = typeof(RelationshipFilterContext<>);
-                if (subTypes != null && subTypes.Any())
-                {
-                    resolvedType = resolvedType.MakeGenericType(subTypes);
-                }
-            }
-
-            if (typeName.StartsWith(nameof(InferredValueContext<object>)))
-            {
-                resolvedType = typeof(InferredValueContext<>);
-                if (subTypes != null && subTypes.Any())
-                {
-                    resolvedType = resolvedType.MakeGenericType(subTypes);
-                }
-            }
-
-            return resolvedType;
+            return new ResolvedType(resolvedType, subTypes);
         }
     }
 }

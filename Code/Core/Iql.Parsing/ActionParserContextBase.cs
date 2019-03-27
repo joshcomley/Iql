@@ -136,7 +136,7 @@ namespace Iql.Parsing
 
         protected Type ResolveTypeFromTypeName(string typeName)
         {
-            return TypeResolver.ResolveTypeFromTypeName(typeName);
+            return TypeResolver.ResolveTypeFromTypeName(typeName).Type;
         }
 
         public string ResolveParameterTypeName(string name)

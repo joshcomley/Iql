@@ -21,8 +21,10 @@ namespace Iql.Entities
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
         private UserPermissionsManager _permissions;
-        public List<IqlUserPermissionRule> PermissionRules { get; } = new List<IqlUserPermissionRule>();
-        public UserPermissionsManager Permissions => _permissions = _permissions ?? new UserPermissionsManager(this, (IEntityConfiguration)this);
+
+        private readonly List<IqlUserPermissionRule> _permissionRules = new List<IqlUserPermissionRule>();
+        public List<IqlUserPermissionRule> PermissionRules => _permissionRules.EnsureHasBuilder(((IEntityConfiguration)this).Builder);
+        public UserPermissionsManager Permissions => _permissions = _permissions ?? new UserPermissionsManager(this, ((IEntityConfiguration)this).Builder);
         public List<IqlMethod> Methods { get; set; } = new List<IqlMethod>();
 
         public IEntityConfiguration AddMethod(IqlMethod method)

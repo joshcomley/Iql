@@ -67,7 +67,11 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             }
             if (typeof(IInferredValueConfiguration).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IInferredValueConfiguration.Property) });
+                ignoreProperties.AddRange(new[] { nameof(IInferredValueConfiguration.Property) });
+            }
+            if (typeof(IqlUserPermissionRule).IsAssignableFrom(type))
+            {
+                ignoreProperties.AddRange(new[] { nameof(IqlUserPermissionRule.EntityConfigurationBuilder), nameof(IqlUserPermissionRule.EntityType), nameof(IqlUserPermissionRule.UserType), nameof(IqlUserPermissionRule.Expression) });
             }
             if (typeof(IProperty).IsAssignableFrom(type))
             {

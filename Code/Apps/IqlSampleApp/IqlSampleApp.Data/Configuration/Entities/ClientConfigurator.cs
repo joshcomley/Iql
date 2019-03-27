@@ -22,11 +22,11 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 });
             entityConfiguration
                 .Permissions
-                .DefineUserPermission<ApplicationUser>(context =>
+                .DefineUserPermissionRule<ApplicationUser>(context =>
                     context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read);
             entityConfiguration.ConfigureProperty(_ => _.AverageIncome, property =>
                 {
-                    property.Permissions.DefineUserPermission<ApplicationUser>(context =>
+                    property.Permissions.DefineUserPermissionRule<ApplicationUser>(context =>
                         context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read);
                 });
         }

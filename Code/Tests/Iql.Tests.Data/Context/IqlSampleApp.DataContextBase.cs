@@ -869,7 +869,7 @@ namespace IqlSampleApp.ApiContext.Base
             });
             builder.EntityType<Client>().PermissionRules.Add(new IqlUserPermissionRule
             {
-                Rule = new IqlLambdaExpression
+                IqlExpression = new IqlLambdaExpression
                 {
                     Body = new IqlConditionExpression
                     {
@@ -935,7 +935,7 @@ namespace IqlSampleApp.ApiContext.Base
                     Kind = IqlExpressionKind.Lambda,
                     ReturnType = IqlType.Unknown
                 },
-                AcceptsEntity = false
+                UserTypeName = "ApplicationUser"
             });
             builder.EntityType<ClientType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";

@@ -583,7 +583,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                   {
                                       foreach (var rule in property.PermissionRules)
                                       {
-                                          var iql = rule.Rule;
+                                          var iql = rule.IqlExpression;
                                           AppendLine();
                                           VariableAccessor(builder, () =>
                                           {

@@ -18,8 +18,9 @@ namespace Iql.Entities
         where T : IConfigurable<T>
     {
         private UserPermissionsManager _permissions;
-        public List<IqlUserPermissionRule> PermissionRules { get; } = new List<IqlUserPermissionRule>();
-        public UserPermissionsManager Permissions => _permissions = _permissions ?? new UserPermissionsManager(this, EntityConfiguration);
+        private readonly List<IqlUserPermissionRule> _permissionRules = new List<IqlUserPermissionRule>();
+        public List<IqlUserPermissionRule> PermissionRules => _permissionRules.EnsureHasBuilder(EntityConfiguration?.Builder);
+        public UserPermissionsManager Permissions => _permissions = _permissions ?? new UserPermissionsManager(this, EntityConfiguration?.Builder);
 
         public bool Matches(params string[] names)
         {
