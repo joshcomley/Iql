@@ -143,6 +143,7 @@ namespace Iql.Data.DataStores.InMemory
             {
                 var iqlPropertyExpression = topLevelPropertyExpressions[i].Expression as IqlPropertyExpression;
                 var path = IqlPropertyPath.FromPropertyExpression(
+                    entityConfiguration.Builder,
                     entityConfiguration.TypeMetadata,
                     iqlPropertyExpression);
                 if (path != null && path.RelationshipPath != null)
@@ -160,6 +161,7 @@ namespace Iql.Data.DataStores.InMemory
                 var rootEntityConfiguration = entityConfiguration;
                 var iqlPropertyExpression = (IqlPropertyExpression)anyAll.Parent;
                 var path = IqlPropertyPath.FromPropertyExpression(
+                    entityConfiguration.Builder,
                     rootEntityConfiguration.TypeMetadata,
                     iqlPropertyExpression);
                 expand(path, path.Property.EntityProperty().Relationship.Relationship);
@@ -169,6 +171,7 @@ namespace Iql.Data.DataStores.InMemory
         public InMemoryContext<TEntity> Expand(IqlExpandExpression expandExpression)
         {
             var path = IqlPropertyPath.FromPropertyExpression(
+                DataStore.EntityConfigurationBuilder,
                 DataStore.EntityConfigurationBuilder.EntityType<TEntity>().TypeMetadata,
                 expandExpression.NavigationProperty);
             var otherSideType = path.Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration.Type;

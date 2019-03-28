@@ -36,7 +36,7 @@ namespace Iql.Entities
 
         public IqlPropertyPath BuildPropertyPath()
         {
-            return IqlPropertyPath.FromString(Path, EntityConfiguration.TypeMetadata);
+            return IqlPropertyPath.FromString(EntityConfiguration.Builder, Path, EntityConfiguration.TypeMetadata);
         }
     }
 }

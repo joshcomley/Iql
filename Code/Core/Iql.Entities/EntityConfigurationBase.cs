@@ -619,6 +619,7 @@ namespace Iql.Entities
         public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
         {
             return IqlPropertyPath.FromPropertyExpression(
+                (this as IEntityConfiguration).Builder, 
                 (this as IEntityConfiguration).TypeMetadata, 
                 propertyExpression)
                 .Property.EntityProperty();

@@ -48,6 +48,10 @@ namespace Iql.Entities
 
         public IEntityConfiguration GetEntityByTypeName(string typeName)
         {
+            if (string.IsNullOrWhiteSpace(typeName))
+            {
+                return null;
+            }
             if (_entitiesByTypeName.ContainsKey(typeName))
             {
                 return _entitiesByTypeName[typeName];

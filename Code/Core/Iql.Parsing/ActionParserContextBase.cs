@@ -187,6 +187,7 @@ namespace Iql.Parsing
             {
                 case IqlExpressionKind.Count:
                     var path = IqlPropertyPath.FromPropertyExpression(
+                            TypeResolver,
                             TypeResolver.FindTypeByType(CurrentEntityType),
                             (IqlPropertyExpression)((IqlCountExpression)expression).Parent,
                             false)

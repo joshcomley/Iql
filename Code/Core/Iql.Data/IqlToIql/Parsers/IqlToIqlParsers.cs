@@ -432,6 +432,7 @@ namespace Iql.Data.IqlToIql.Parsers
             if (action.Query != null)
             {
                 var path = IqlPropertyPath.FromPropertyExpression(
+                    parser.Adapter.TypeResolver,
                     parser.Adapter.TypeResolver.FindType<TEntity>(),
                     action.NavigationProperty);
                 var processed = await action.Query.ProcessAsync(

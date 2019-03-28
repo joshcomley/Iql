@@ -263,7 +263,12 @@ namespace Iql.Data
                         }
                     }
                     contextType = inferredValueContext.EntityType;
-                    item = IqlPropertyPath.FromString(path.PathAfter(1), typeResolver.FindTypeByType(contextType), null, path.PathParts[0]);
+                    item = IqlPropertyPath.FromString(
+                        typeResolver,
+                        path.PathAfter(1),
+                        typeResolver.FindTypeByType(contextType), 
+                        null,
+                        path.PathParts[0]);
                 }
                 item = item ?? keys[i];
                 var evaluationResult = await item.EvaluateCustomAsync(
@@ -358,11 +363,13 @@ namespace Iql.Data
                 {
                     var propertyExpression = propertyExpressions[i];
                     var path = IqlPropertyPath.FromPropertyExpression(
+                        typeResolver,
                         resolvedType,
                         propertyExpression.Expression as IqlPropertyExpression);
                     if (path == null)
                     {
                         path = IqlPropertyPath.FromPropertyExpression(
+                            typeResolver,
                             resolvedType,
                             propertyExpression.Expression as IqlPropertyExpression);
                     }

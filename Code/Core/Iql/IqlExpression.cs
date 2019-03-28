@@ -312,10 +312,23 @@ namespace Iql
         }
         internal abstract IqlExpression ReplaceExpressions(ReplaceContext context);
 
+        public IqlExpression RootExpression()
+        {
+            var parent = this;
+            while (parent.Parent != null)
+            {
+                parent = parent.Parent;
+            }
+            return parent;
+        }
+
         public IqlFlattenedExpression[] TopLevelPropertyExpressions()
         {
             var expressions = Flatten()
-                .Where(_ => _.Expression.Kind == IqlExpressionKind.Property)
+                .Where(_ =>
+                    {
+                        return _.Expression.Kind == IqlExpressionKind.Property;
+                    })
                 .ToArray();
             return expressions.Where(_ =>
             {

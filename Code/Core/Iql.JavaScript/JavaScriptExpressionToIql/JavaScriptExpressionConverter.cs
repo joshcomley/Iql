@@ -101,7 +101,10 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                     var propertyExpression = expression as IqlPropertyExpression;
                     if (propertyExpression.IsOrHasRootEntity())
                     {
-                        var path = IqlPropertyPath.FromPropertyExpression(entityConfig, propertyExpression);
+                        var path = IqlPropertyPath.FromPropertyExpression(
+                            typeResolver,
+                            entityConfig, 
+                            propertyExpression);
                         if (path != null && path.Property != null)
                         {
                             propertyExpression.ReturnType = path.Property.ToIqlType();

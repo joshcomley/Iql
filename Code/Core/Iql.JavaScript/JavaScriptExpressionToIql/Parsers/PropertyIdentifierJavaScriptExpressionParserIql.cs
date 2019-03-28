@@ -63,7 +63,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                         ITypeProperty configuredProperty = null;
                         if (parent is IqlPropertyExpression)
                         {
-                            var path = IqlPropertyPath.FromPropertyExpression(resolvedType, parent as IqlPropertyExpression, false);
+                            var path = IqlPropertyPath.FromPropertyExpression(
+                                context.TypeResolver,
+                                resolvedType,
+                                parent as IqlPropertyExpression,
+                                false);
                             if (path != null && path.Property != null)
                             {
                                 configuredProperty = path.Property;

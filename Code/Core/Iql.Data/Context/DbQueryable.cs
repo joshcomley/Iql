@@ -605,7 +605,7 @@ namespace Iql.Data.Context
 
         public override IqlPropertyExpression PropertyExpression(string propertyName, string rootReferenceName = null)
         {
-            return IqlPropertyPath.FromString(propertyName, this.EntityConfiguration.TypeMetadata, null, rootReferenceName).Expression;
+            return IqlPropertyPath.FromString(EntityConfiguration.Builder, propertyName, this.EntityConfiguration.TypeMetadata, null, rootReferenceName).Expression;
         }
 
         public override async Task<DbList<T>> ToListAsync(Expression<Func<T, bool>> expression = null
@@ -1320,7 +1320,7 @@ namespace Iql.Data.Context
                     queryExpression.Expands = queryExpression.Expands ?? new List<IqlExpandExpression>();
                     var iqlExpandExpression = new IqlExpandExpression();
                     iqlExpandExpression.NavigationProperty = iql.TryGetPropertyExpression();
-                    var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration.TypeMetadata, iqlExpandExpression.NavigationProperty);
+                    var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration.Builder, EntityConfiguration.TypeMetadata, iqlExpandExpression.NavigationProperty);
                     var expressionQueryOperatiton = operation as IExpressionQueryOperation;
                     var expandQueryExpression = expressionQueryOperatiton.QueryExpression as IExpandQueryExpression;
                     var property = propertytPath.Property.EntityProperty();

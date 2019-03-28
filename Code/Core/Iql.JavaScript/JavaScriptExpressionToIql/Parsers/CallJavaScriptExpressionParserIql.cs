@@ -124,6 +124,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                                         if (currentRootEntityConfiguration != null)
                                         {
                                             var path = IqlPropertyPath.FromPropertyExpression(
+                                                context.TypeResolver,
                                                 currentRootEntityConfiguration,
                                                 calleeIql.Value as IqlPropertyExpression);
                                             if (path != null)

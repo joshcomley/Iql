@@ -6,6 +6,7 @@ using Iql.Conversion;
 using Iql.Entities.Extensions;
 using Iql.Extensions;
 using Iql.Parsing.Types;
+using Iql.Serialization;
 
 namespace Iql.Entities
 {
@@ -13,8 +14,9 @@ namespace Iql.Entities
     {
         public bool IsEmpty => string.IsNullOrWhiteSpace(PathToHere);
 
-        public IqlPropertyPath(ITypeProperty property, IqlPropertyExpression expression, IqlPropertyPath parent)
+        private IqlPropertyPath(ITypeResolver typeResolver, ITypeProperty property, IqlPropertyExpression expression, IqlPropertyPath parent)
         {
+            TypeResolver = typeResolver;
             Property = property;
             Expression = expression;
             Parent = parent;
@@ -110,6 +112,7 @@ namespace Iql.Entities
 
         public IqlPropertyPath Parent { get; }
         public string PropertyName => Property?.PropertyName;
+        public ITypeResolver TypeResolver { get; }
         public ITypeProperty Property { get; }
         public IqlPropertyExpression Expression { get; }
 
@@ -158,7 +161,7 @@ namespace Iql.Entities
             ITypeResolver typeResolver) where T : class
         {
             var propertyExpression = IqlExpressionConversion.DefaultExpressionConverter().ConvertPropertyLambdaToIql(field, typeResolver).Expression;
-            return FromPropertyExpression(typeResolver.FindType<T>(), propertyExpression);
+            return FromPropertyExpression(typeResolver, typeResolver.FindType<T>(), propertyExpression);
         }
 
         public static IqlPropertyPath FromLambdaExpression(LambdaExpression field,
@@ -167,7 +170,7 @@ namespace Iql.Entities
         {
             var propertyExpression = IqlExpressionConversion.DefaultExpressionConverter()
                 .ConvertLambdaExpressionToIqlByType(field, typeResolver, entityConfigurationContext.Type).Expression as IqlLambdaExpression;
-            return FromPropertyExpression(entityConfigurationContext, propertyExpression.Body as IqlPropertyExpression);
+            return FromPropertyExpression(typeResolver, entityConfigurationContext, propertyExpression.Body as IqlPropertyExpression);
         }
 
         public static IqlPropertyPath FromExpression<T>(Expression<Func<T, object>> expression,
@@ -176,7 +179,9 @@ namespace Iql.Entities
             return FromLambdaExpression(expression, typeResolver, typeResolver.FindType<T>());
         }
 
-        public static IqlPropertyPath FromString(string path,
+        public static IqlPropertyPath FromString(
+            ITypeResolver typeResolver,
+            string path,
             IIqlTypeMetadata entityConfigurationContext,
             IqlPropertyExpression parent = null,
             string rootReferenceName = null)
@@ -186,15 +191,16 @@ namespace Iql.Entities
             {
                 propertyExpression.Parent = parent;
             }
-            return FromPropertyExpression(entityConfigurationContext, propertyExpression);
+            return FromPropertyExpression(typeResolver, entityConfigurationContext, propertyExpression);
         }
 
         public static IqlPropertyPath FromProperty(IProperty property)
         {
-            return FromString(property.Name, property.EntityConfiguration.TypeMetadata);
+            return FromString(property.EntityConfiguration.Builder, property.Name, property.EntityConfiguration.TypeMetadata);
         }
 
         public static IqlPropertyPath FromPropertyExpression(
+            ITypeResolver typeResolver,
             IIqlTypeMetadata entityConfigurationContext,
             IqlPropertyExpression propertyExpression,
             bool traverseNestedRootReferences = true)
@@ -203,12 +209,12 @@ namespace Iql.Entities
             var list = new List<IqlPropertyExpression>();
             list.Add(propertyExpression);
             var parent = propertyExpression.Parent;
-            IqlRootReferenceExpression lastRootReference = null;
-            while (parent is IqlPropertyExpression || parent is IqlRootReferenceExpression)
+            IqlVariableExpression lastRootReference = null;
+            while (parent != null && (parent.Kind == IqlExpressionKind.Property || parent.Kind == IqlExpressionKind.RootReference || parent.Kind == IqlExpressionKind.Variable))
             {
-                if (parent is IqlRootReferenceExpression)
+                if (parent.Kind == IqlExpressionKind.RootReference)
                 {
-                    var rootReference = parent as IqlRootReferenceExpression;
+                    var rootReference = (IqlRootReferenceExpression)parent;
                     lastRootReference = rootReference;
                     if (rootReference.Parent != null && traverseNestedRootReferences)
                     {
@@ -219,47 +225,62 @@ namespace Iql.Entities
                         break;
                     }
                 }
+                else if (parent.Kind == IqlExpressionKind.Variable)
+                {
+                    var variableExpression = (IqlVariableExpression)parent;
+                    var resolvedType = typeResolver.ResolveTypeFromTypeName(variableExpression.EntityTypeName);
+                    if (resolvedType != null)
+                    {
+                        lastRootReference = variableExpression;
+                    }
+                    break;
+                }
                 else
                 {
-                    list.Add(parent as IqlPropertyExpression);
+                    list.Add((IqlPropertyExpression)parent);
                     parent = parent.Parent;
                 }
             }
 
             var entityConfig = entityConfigurationContext;
-            for (var i = list.Count - 1; i >= 0; i--)
+
+            if (lastRootReference != null)
             {
-                var property = entityConfig.FindProperty(list[i].PropertyName);
-
-                // We might be trying to get a path from a method on a property, like:
-                // t.Description.ToString()
-                if (property == null)
+                for (var i = list.Count - 1; i >= 0; i--)
                 {
-                    continue;
-                }
-                propertyPath = new IqlPropertyPath(
-                    property,
-                    list[i],
-                    propertyPath);
-                propertyPath.EntityConfiguration = entityConfig;
+                    var property = entityConfig.FindProperty(list[i].PropertyName);
 
-                if (i == 0)
-                {
-                    break;
-                }
+                    // We might be trying to get a path from a method on a property, like:
+                    // t.Description.ToString()
+                    if (property == null)
+                    {
+                        continue;
+                    }
+                    propertyPath = new IqlPropertyPath(
+                        typeResolver,
+                        property,
+                        list[i],
+                        propertyPath);
+                    propertyPath.EntityConfiguration = entityConfig;
 
-                var entityProperty = property.EntityProperty();
-                if (entityProperty == null || entityProperty.Relationship == null)
-                {
-                    continue;
-                }
+                    if (i == 0)
+                    {
+                        break;
+                    }
 
-                entityConfig = entityProperty.Relationship.OtherEnd.Property.EntityConfiguration.TypeMetadata;
+                    var entityProperty = property.EntityProperty();
+                    if (entityProperty == null || entityProperty.Relationship == null)
+                    {
+                        continue;
+                    }
+
+                    entityConfig = entityProperty.Relationship.OtherEnd.Property.EntityConfiguration.TypeMetadata;
+                }
             }
 
             if (propertyPath == null && lastRootReference != null)
             {
-                return new IqlPropertyPath(null, propertyExpression, null);
+                return new IqlPropertyPath(typeResolver, null, propertyExpression, null);
             }
             return propertyPath;
         }
@@ -277,7 +298,7 @@ namespace Iql.Entities
                 top = top.Child;
                 ourTop = ourTop.Child;
             }
-            return FromString(ourTop.Child.PathFromHere, ourTop.Child.EntityConfiguration);
+            return FromString(TypeResolver, ourTop.Child.PathFromHere, ourTop.Child.EntityConfiguration);
         }
 
         public object Evaluate(object entity)

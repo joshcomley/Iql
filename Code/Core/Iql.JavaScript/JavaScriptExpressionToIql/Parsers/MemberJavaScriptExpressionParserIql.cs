@@ -29,7 +29,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             var entityConfiguration = context.TypeResolver.FindTypeByType(context.CurrentRootEntity.Type);
             if (entityConfiguration != null && property.Kind == IqlExpressionKind.Property)
             {
-                var path = IqlPropertyPath.FromPropertyExpression(entityConfiguration,
+                var path = IqlPropertyPath.FromPropertyExpression(
+                    context.TypeResolver,
+                    entityConfiguration,
                     property as IqlPropertyExpression);
                 if (path != null && path.Property != null)
                 {

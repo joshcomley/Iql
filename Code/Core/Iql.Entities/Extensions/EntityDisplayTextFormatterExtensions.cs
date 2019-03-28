@@ -64,7 +64,10 @@ namespace Iql.Entities.Extensions
                 var propertyPaths = new List<IqlPropertyPath>();
                 for (var i = 0; i < propertyExpressions.Length; i++)
                 {
-                    var path = IqlPropertyPath.FromPropertyExpression(entityConfiguration.TypeMetadata, propertyExpressions[i].Expression as IqlPropertyExpression);
+                    var path = IqlPropertyPath.FromPropertyExpression(
+                        entityConfiguration.Builder, 
+                        entityConfiguration.TypeMetadata, 
+                        propertyExpressions[i].Expression as IqlPropertyExpression);
                     propertyPaths.Add(path);
                 }
 

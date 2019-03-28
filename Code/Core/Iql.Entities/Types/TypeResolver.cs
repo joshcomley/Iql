@@ -38,6 +38,10 @@ namespace Iql.Data.Types
 
         protected static string CleanTypeName(string typeName)
         {
+            if (typeName == null)
+            {
+                return typeName;
+            }
             var graveIndex = typeName.IndexOf("`");
             if (graveIndex != -1)
             {
@@ -60,6 +64,10 @@ namespace Iql.Data.Types
         public virtual IIqlTypeMetadata ResolveTypeFromTypeName(string fullTypeName)
         {
             var typeName = CleanTypeName(fullTypeName);
+            if (string.IsNullOrWhiteSpace(typeName))
+            {
+                return null;
+            }
             var index = typeName.IndexOf("<");
             IIqlTypeMetadata[] subTypes = null;
             if (index != -1)
@@ -71,7 +79,7 @@ namespace Iql.Data.Types
                 subTypes = subTypeNames.Select(s => s.Trim()).Select(s => ResolveTypeFromTypeName(s)).ToArray();
             }
             var resolvedType = KnownTypes.ContainsKey(typeName) ? KnownTypes[typeName] : null;
-            return new ResolvedType(resolvedType, subTypes);
+            return resolvedType == null ? null : new ResolvedType(resolvedType, subTypes);
         }
     }
 

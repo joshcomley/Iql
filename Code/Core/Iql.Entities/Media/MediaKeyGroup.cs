@@ -23,7 +23,10 @@ namespace Iql.Entities
             {
                 if (keyPart.IsPropertyPath)
                 {
-                    var propertyPath = IqlPropertyPath.FromString(keyPart.Key, MediaKey.File.EntityConfiguration.TypeMetadata);
+                    var propertyPath = IqlPropertyPath.FromString(
+                        MediaKey.File.EntityConfiguration.Builder,
+                        keyPart.Key, 
+                        MediaKey.File.EntityConfiguration.TypeMetadata);
                     parts.Add((propertyPath.Evaluate(entity) ?? "").ToString());
                 }
                 else

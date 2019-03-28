@@ -74,6 +74,7 @@ namespace Iql.Entities.Relationships
             }
 
             var path = IqlPropertyPath.FromPropertyExpression(
+                mapping.Container.EntityConfiguration.Builder,
                 mapping.Container.EntityConfiguration.Builder.GetEntityByType(pathType).TypeMetadata,
                 propertyExpression);
             var equalityExpessions = new List<IqlExpression>();
