@@ -6,6 +6,7 @@ using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
+using Iql.Parsing.Types;
 using Iql.Server.Serialization.Serialization.Resolvers;
 using Newtonsoft.Json;
 
@@ -13,11 +14,13 @@ namespace Iql.Server.Serialization.Serialization.Converters
 {
     public class IPropertyConverter : JsonConverter
     {
+        public ITypeResolver TypeResolver { get; }
         public bool IsNested { get; }
         public bool SkipFirst { get; }
         private bool _hasSkippedFirst = false;
-        public IPropertyConverter(bool isNested = false, bool skipFirst = false)
+        public IPropertyConverter(ITypeResolver typeResolver, bool isNested = false, bool skipFirst = false)
         {
+            TypeResolver = typeResolver;
             IsNested = isNested;
             SkipFirst = skipFirst;
         }
@@ -37,7 +40,7 @@ namespace Iql.Server.Serialization.Serialization.Converters
                     if (writer.Path == nameof(IRelationship.Source) ||
                         writer.Path == nameof(IRelationship.Target))
                     {
-                        WritePropertyGroupDirect(writer, value, true, true);
+                        WritePropertyGroupDirect(TypeResolver, writer, value, true, true);
                     }
                     else
                     {
@@ -58,7 +61,7 @@ namespace Iql.Server.Serialization.Serialization.Converters
                     if (JsonPathHelper.IsEntityConfigurationProperty(writer.Path, false, $"({directConversion})"))
                     {
                         // All properties below here must be references
-                        WritePropertyGroupDirect(writer, value);
+                        WritePropertyGroupDirect(TypeResolver, writer, value);
                     }
                     else //if (value is IPropertyGroup)
                     {
@@ -76,6 +79,7 @@ namespace Iql.Server.Serialization.Serialization.Converters
         }
 
         private static void WritePropertyGroupDirect(
+            ITypeResolver typeResolver,
             JsonWriter writer, 
             object value, 
             bool allowAnyPropertyConversion = true,
@@ -88,11 +92,11 @@ namespace Iql.Server.Serialization.Serialization.Converters
             };
             if (!rootIsRelationship)
             {
-                settings.Converters.Add(new RelationshipConverter(true));
+                settings.Converters.Add(new RelationshipConverter(typeResolver, true));
             }
-            settings.Converters.Add(new ExpressionJsonConverter());
+            settings.Converters.Add(new ExpressionJsonConverter(typeResolver));
             settings.Converters.Add(new TypeConverter());
-            settings.Converters.Add(new IPropertyConverter(true, allowAnyPropertyConversion));
+            settings.Converters.Add(new IPropertyConverter(typeResolver, true, allowAnyPropertyConversion));
             //settings.Converters.Add(new IPropertyConverter());
             var ppp = writer.Path;
             var serialized = JsonConvert.SerializeObject(value, value.GetType(), indented, settings);

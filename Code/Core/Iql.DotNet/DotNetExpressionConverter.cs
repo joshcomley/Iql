@@ -74,7 +74,7 @@ namespace Iql.DotNet
         )
         {
             var adapter = new DotNetStringIqlExpressionAdapter("entity");
-            var parser = new DotNetStringIqlParserContext(adapter, this);
+            var parser = new DotNetStringIqlParserContext(adapter, this, typeResolver);
             var dotNetExpression = parser.Parse(iql
 #if TypeScript
                 , evaluateContext

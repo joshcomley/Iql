@@ -3,12 +3,13 @@ using System.Linq;
 using Iql.Data.Types;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.Parsing;
+using Iql.Parsing.Types;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptIqlParserContext : ActionParserContext<JavaScriptIqlData, JavaScriptIqlExpressionAdapter, string, JavaScriptOutput, JavaScriptExpressionConverter>
     {
-        public JavaScriptIqlParserContext(JavaScriptIqlExpressionAdapter adapter, Type currentEntityType, JavaScriptExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
+        public JavaScriptIqlParserContext(JavaScriptIqlExpressionAdapter adapter, Type currentEntityType, JavaScriptExpressionConverter expressionConverter, ITypeResolver typeResolver) : base(adapter, currentEntityType, expressionConverter, typeResolver)
         {
         }
 

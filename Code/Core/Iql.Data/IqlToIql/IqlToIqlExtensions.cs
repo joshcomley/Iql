@@ -12,7 +12,7 @@ namespace Iql.Data.IqlToIql
             this IqlExpression expression, 
             IIqlTypeMetadata resolvedType,
             ITypeResolver typeResolver,
-            IServiceProviderProvider serviceProvider = null)
+            IServiceProviderProvider serviceProvider)
         {
             var sp = serviceProvider?.ServiceProvider;
             var parser = new IqlToIqlParserContext(

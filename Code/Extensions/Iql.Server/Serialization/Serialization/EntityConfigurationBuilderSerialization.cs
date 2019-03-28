@@ -17,9 +17,9 @@ namespace Iql.Server.Serialization.Serialization
                 ContractResolver = new InterfaceContractResolver(),
                 //PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
-            settings.Converters.Add(new RelationshipConverter(false));
-            settings.Converters.Add(new ExpressionJsonConverter());
-            settings.Converters.Add(new IPropertyConverter());
+            settings.Converters.Add(new RelationshipConverter(entityConfigurationBuilder, false));
+            settings.Converters.Add(new ExpressionJsonConverter(entityConfigurationBuilder));
+            settings.Converters.Add(new IPropertyConverter(entityConfigurationBuilder));
             settings.Converters.Add(new TypeConverter());
             settings.Formatting = Formatting.Indented;
             try

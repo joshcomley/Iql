@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Conversion;
 using Iql.Entities.Permissions;
+using Iql.Parsing.Types;
 
 namespace Iql.DotNet.Serialization
 {
@@ -26,17 +27,17 @@ namespace Iql.DotNet.Serialization
             IqlTypes = allTypes.ToArray();
         }
 
-        public static string SerializeToXml<TEntity, TOut>(Expression<Func<TEntity, TOut>> expression)
+        public static string SerializeToXml<TEntity, TOut>(Expression<Func<TEntity, TOut>> expression, ITypeResolver typeResolver)
         {
-            return SerializeToXml((LambdaExpression)expression);
+            return SerializeToXml((LambdaExpression)expression, typeResolver);
         }
 
-        public static string SerializeToXml(LambdaExpression expression)
+        public static string SerializeToXml(LambdaExpression expression, ITypeResolver typeResolver)
         {
             var parameter = expression.Parameters.First();
             var parser = Activator.CreateInstance(IqlConverter.Instance.GetType());
             var method = parser.GetType().GetMethod(nameof(IExpressionConverter.ConvertLambdaExpressionToIqlByType));
-            var expressionResult = (ExpressionResult<IqlExpression>)method.Invoke(parser, new object[] { expression, parameter.Type });
+            var expressionResult = (ExpressionResult<IqlExpression>)method.Invoke(parser, new object[] { expression, typeResolver, parameter.Type });
             return SerializeToXml(expressionResult.Expression);
             //return SerializeToXml(IqlConverter.Instance.ConvertLambdaExpressionToIql<>().Parse(expression));
         }

@@ -24,11 +24,11 @@ namespace Iql.Tests.Tests.Serialization
 
         private static void AssertCode(Expression<Func<Client, bool>> expression, string expected)
         {
+            var typeResolver = new AppDbContext().EntityConfigurationContext;
             IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
-            var xml = IqlXmlSerializer.SerializeToXml(
-                expression);
+            var xml = IqlXmlSerializer.SerializeToXml(expression, typeResolver);
             var iqlExpression = IqlXmlSerializer.DeserializeFromXml(xml);
-            var code = IqlConverter.Instance.ConvertIqlToExpressionStringAs<Client>(iqlExpression, new AppDbContext().EntityConfigurationContext);
+            var code = IqlConverter.Instance.ConvertIqlToExpressionStringAs<Client>(iqlExpression, typeResolver);
             Assert.AreEqual(
                 expected,
                 code

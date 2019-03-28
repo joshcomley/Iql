@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Data.Types;
 using Iql.Parsing;
+using Iql.Parsing.Types;
 
 namespace Iql.OData.IqlToODataExpression
 {
     public class ODataIqlParserContext : ActionParserContext<ODataIqlData, ODataIqlExpressionAdapter, string, ODataOutput, ODataExpressionConverter>
     {
         private List<string> _validRootReferenceVariables = new List<string>();
-        public ODataIqlParserContext(ODataIqlExpressionAdapter adapter, Type currentEntityType, ODataExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
+        public ODataIqlParserContext(ODataIqlExpressionAdapter adapter, Type currentEntityType, ODataExpressionConverter expressionConverter, ITypeResolver typeResolver) : base(adapter, currentEntityType, expressionConverter, typeResolver)
         {
         }
 

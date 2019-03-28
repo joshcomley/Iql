@@ -10,14 +10,14 @@ namespace Iql.Parsing.Types
         public object UnderlyingObject => TypeMetadata.UnderlyingObject;
         public IIqlTypeMetadata TypeMetadata { get; }
 
-        public ResolvedType(IIqlTypeMetadata typeMetadata, ResolvedType[] genericTypeParameters = null)
+        public ResolvedType(IIqlTypeMetadata typeMetadata, IIqlTypeMetadata[] genericTypeParameters = null)
         {
             TypeMetadata = typeMetadata;
             GenericTypeParameters = genericTypeParameters ?? new ResolvedType[] { };
             var type = TypeMetadata.Type;
             if (GenericTypeParameters.Any())
             {
-                type = type.MakeGenericType(genericTypeParameters.Select(_ => _.TypeMetadata.Type).ToArray());
+                type = type.MakeGenericType(genericTypeParameters.Select(_ => _.Type).ToArray());
             }
             Type = type;
         }

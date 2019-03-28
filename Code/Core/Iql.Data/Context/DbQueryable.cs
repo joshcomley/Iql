@@ -1378,7 +1378,7 @@ namespace Iql.Data.Context
                 )
                 .ReduceStaticContent(queryExpression);
 
-            await result.ProcessAsync(EntityConfiguration.TypeMetadata, EntityConfigurationBuilder);
+            await result.ProcessAsync(EntityConfiguration.TypeMetadata, EntityConfigurationBuilder, DataContext);
             return result;
         }
     }

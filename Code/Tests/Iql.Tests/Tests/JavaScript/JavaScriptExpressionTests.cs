@@ -47,7 +47,6 @@ namespace Iql.Tests.Tests.JavaScript
             var converter = new JavaScriptExpressionConverter();
             var expression = converter.ConvertIqlToExpressionString(instance, TypeResolver);
             Assert.AreEqual(@"function(entity) { return function(entity2) { return (entity2.ClientId == entity.Owner.ClientId); }; }",
-                TypeResolver,
                 expression);
         }
 
@@ -313,7 +312,7 @@ namespace Iql.Tests.Tests.JavaScript
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Client>(
                 "function(t) { return t.Sites.filter(s => s.AdditionalSendReportsTo.length > 22).length > 3; }", TypeResolver);
             var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<Client>(iql.Expression, TypeResolver);
-            Assert.AreEqual(@"(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)", TypeResolver, odataFilter);
+            Assert.AreEqual(@"(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)", odataFilter);
         }
 
         [TestMethod]
@@ -426,7 +425,6 @@ namespace Iql.Tests.Tests.JavaScript
                 "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == p.Title).length > 0))", TypeResolver);
             Assert.AreEqual(
                 @"function(entity) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) == 'TEST') || (((entity || {}).Types.filter(function(entity2) { return (((entity2 || {}).TypeId == 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) == (((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()))); }).length) > 0)); }",
-                TypeResolver,
                 js);
             //var iql3 = new DotNetExpressionConverter().ConvertLambdaToIql<Person>(p =>
             //    p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle"));
@@ -461,7 +459,7 @@ namespace Iql.Tests.Tests.JavaScript
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Site>(
                 "function(n){return 0==n.CreatedByUser.EmailConfirmed}", TypeResolver);
             var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iql.Expression, TypeResolver, typeof(Client));
-            Assert.AreEqual(@"function(entity) { return (false == ((entity || {}).CreatedByUser || {}).EmailConfirmed); }", TypeResolver, js);
+            Assert.AreEqual(@"function(entity) { return (false == ((entity || {}).CreatedByUser || {}).EmailConfirmed); }", js);
             var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<Client>(iql.Expression, TypeResolver);
             Assert.AreEqual(@"(false eq $it/CreatedByUser/EmailConfirmed)", odataFilter);
         }

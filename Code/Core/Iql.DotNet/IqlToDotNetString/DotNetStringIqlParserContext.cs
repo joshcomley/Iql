@@ -1,11 +1,16 @@
 using Iql.Data.Types;
 using Iql.Parsing;
+using Iql.Parsing.Types;
 
 namespace Iql.DotNet.IqlToDotNetString
 {
     public class DotNetStringIqlParserContext : ActionParserContext<DotNetStringIqlData, DotNetStringIqlExpressionAdapter, string, DotNetStringOutput, DotNetExpressionConverter>
     {
-        public DotNetStringIqlParserContext(DotNetStringIqlExpressionAdapter adapter, DotNetExpressionConverter expressionConverter) : base(adapter, null, expressionConverter, new TypeResolver())
+        public DotNetStringIqlParserContext(DotNetStringIqlExpressionAdapter adapter, DotNetExpressionConverter expressionConverter, ITypeResolver typeResolver) : base(
+            adapter, 
+            null, 
+            expressionConverter, 
+            typeResolver)
         {
             RootVariableName = adapter.RootVariableName;
         }

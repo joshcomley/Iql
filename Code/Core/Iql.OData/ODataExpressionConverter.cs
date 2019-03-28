@@ -67,7 +67,7 @@ namespace Iql.OData
         )
         {
             var adapter = new ODataIqlExpressionAdapter();
-            var parser = new ODataIqlParserContext(adapter, rootEnityType, this);
+            var parser = new ODataIqlParserContext(adapter, rootEnityType, this, typeResolver);
             var result = parser.Parse(
                 expression
 #if TypeScript

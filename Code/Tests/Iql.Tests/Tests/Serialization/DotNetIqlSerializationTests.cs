@@ -80,7 +80,7 @@ namespace Iql.Tests.Tests.Serialization
             var db = new AppDbContext();
             Expression<Func<RelationshipFilterContext<Person>, Expression<Func<PersonLoading, bool>>>> filterExpression
                 = context => loading => loading.Name == context.Owner.Title;
-            var iqlXml = IqlXmlSerializer.SerializeToXml(filterExpression);
+            var iqlXml = IqlXmlSerializer.SerializeToXml(filterExpression, db.EntityConfigurationContext);
             var iql = IqlXmlSerializer.DeserializeFromXml(iqlXml);
             var exp = new DotNetExpressionConverter().ConvertIqlToExpression<RelationshipFilterContext<Person>>(iql, Db.EntityConfigurationContext);
             var expCast
@@ -151,7 +151,7 @@ namespace Iql.Tests.Tests.Serialization
         [TestMethod]
         public void TestSerializeSinglePropertyToXml()
         {
-            var xml = IqlXmlSerializer.SerializeToXml<Client, string>(client => client.Name);
+            var xml = IqlXmlSerializer.SerializeToXml<Client, string>(client => client.Name, Db.EntityConfigurationContext);
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Lambda</Kind>
@@ -185,7 +185,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             Expression<Func<Client, string>> exp = client => client.Name;
             LambdaExpression lambda = exp;
-            var xml = IqlXmlSerializer.SerializeToXml(lambda);
+            var xml = IqlXmlSerializer.SerializeToXml(lambda, Db.EntityConfigurationContext);
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Lambda</Kind>
@@ -217,7 +217,7 @@ namespace Iql.Tests.Tests.Serialization
         [TestMethod]
         public void TestSerializePropertyStringConcatenationToXml()
         {
-            var xml = IqlXmlSerializer.SerializeToXml<Client, string>(client => client.Name + " (" + client.Description + ")");
+            var xml = IqlXmlSerializer.SerializeToXml<Client, string>(client => client.Name + " (" + client.Description + ")", Db.EntityConfigurationContext);
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Lambda</Kind>
@@ -286,7 +286,7 @@ namespace Iql.Tests.Tests.Serialization
         public void TestDeserializeStringConcatenationFromXmlAndApply()
         {
             IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
-            var xml = IqlXmlSerializer.SerializeToXml<Client, string>(c => c.Name + " (" + c.Description + ")" + " - " + c.Id);
+            var xml = IqlXmlSerializer.SerializeToXml<Client, string>(c => c.Name + " (" + c.Description + ")" + " - " + c.Id, Db.EntityConfigurationContext);
             var expression = IqlXmlSerializer.DeserializeFromXml(xml);
             var query = IqlConverter.Instance.ConvertIqlToFunction<Client, string>(expression, Db.EntityConfigurationContext);
 
@@ -363,8 +363,7 @@ namespace Iql.Tests.Tests.Serialization
         private static void AssertCode(Expression<Func<Client, bool>> expression, string expected)
         {
             IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
-            var xml = IqlXmlSerializer.SerializeToXml(
-                expression);
+            var xml = IqlXmlSerializer.SerializeToXml(expression, Db.EntityConfigurationContext);
             var iqlExpression = IqlXmlSerializer.DeserializeFromXml(xml);
             var query = IqlConverter.Instance.ConvertIqlToFunction<Client, bool>(iqlExpression, Db.EntityConfigurationContext);
             var code = query.ToCSharpString();

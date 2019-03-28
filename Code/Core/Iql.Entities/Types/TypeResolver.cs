@@ -61,14 +61,14 @@ namespace Iql.Data.Types
         {
             var typeName = CleanTypeName(fullTypeName);
             var index = typeName.IndexOf("<");
-            ResolvedType[] subTypes = null;
+            IIqlTypeMetadata[] subTypes = null;
             if (index != -1)
             {
                 typeName = typeName.Substring(0, index);
                 var subTypeName = fullTypeName.Substring(index + 1);
                 subTypeName = subTypeName.Substring(0, subTypeName.Length - 1);
                 var subTypeNames = subTypeName.Split(',');
-                subTypes = subTypeNames.Select(s => s.Trim()).Select(s => (ResolvedType)ResolveTypeFromTypeName(s)).ToArray();
+                subTypes = subTypeNames.Select(s => s.Trim()).Select(s => ResolveTypeFromTypeName(s)).ToArray();
             }
             var resolvedType = KnownTypes.ContainsKey(typeName) ? KnownTypes[typeName] : null;
             return new ResolvedType(resolvedType, subTypes);
