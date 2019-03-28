@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Iql.Conversion;
 using Iql.Data.IqlToIql;
+using Iql.Data.Types;
 using Iql.Entities;
 using Iql.Extensions;
 using Iql.JavaScript.IqlToJavaScriptExpression;
@@ -14,6 +15,7 @@ using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Parsing.Expressions;
 using Iql.Parsing.Reduction;
+using Iql.Parsing.Types;
 
 #if TypeScript
 using Iql.Parsing;
@@ -24,12 +26,14 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
     public class JavaScriptExpressionConverter : ExpressionConverterBase
     {
         protected override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlInternal<TEntity>(LambdaExpression lambda
+            , ITypeResolver typeResolver
 #if TypeScript
                 , EvaluateContext evaluateContext = null
 #endif
             )
         {
             return ConvertJavaScriptStringToIql<TEntity>(lambda.ToString()
+                , typeResolver
 #if TypeScript
             , evaluateContext
 #endif
@@ -37,13 +41,14 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         }
 
         public string ConvertJavaScriptStringToJavaScriptString<TEntity>(string code
+            , ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         ) where TEntity : class
         {
-            var iql = ConvertJavaScriptStringToIql<TEntity>(code);
-            var javascript = ConvertIqlToExpressionStringByType(iql.Expression, typeof(TEntity)
+            var iql = ConvertJavaScriptStringToIql<TEntity>(code, typeResolver);
+            var javascript = ConvertIqlToExpressionStringByType(iql.Expression, typeResolver, typeof(TEntity)
 #if TypeScript
             , evaluateContext
 #endif
@@ -53,6 +58,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
 
         public ExpressionResult<IqlExpression> ConvertJavaScriptStringToIql<TEntity>(string code
+            , ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -64,6 +70,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
             var instance =
                 new JavaScriptExpressionNodeParseContext<TEntity>(
+                    new TypeResolver(),
                     this,
 #if TypeScript
                     evaluateContext,
@@ -83,26 +90,21 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             expressionResult.Expression = expression2(null);
             
             // Now try to correct any property types
-            
-            var entityConfigurationBuilder = EntityConfigurationBuilder.FindConfigurationBuilderForEntityType(typeof(TEntity));
-            if (entityConfigurationBuilder != null)
+            var entityConfig = typeResolver.FindType<TEntity>();
+            var reducer = new IqlReducer();
+            var flattened = reducer.Traverse(expressionResult.Expression);
+            for (var i = 0; i < flattened.Length; i++)
             {
-                var entityConfig = entityConfigurationBuilder.EntityType<TEntity>();
-                var reducer = new IqlReducer();
-                var flattened = reducer.Traverse(expressionResult.Expression);
-                for (var i = 0; i < flattened.Length; i++)
+                var expression = flattened[i];
+                if (expression is IqlPropertyExpression)
                 {
-                    var expression = flattened[i];
-                    if (expression is IqlPropertyExpression)
+                    var propertyExpression = expression as IqlPropertyExpression;
+                    if (propertyExpression.IsOrHasRootEntity())
                     {
-                        var propertyExpression = expression as IqlPropertyExpression;
-                        if (propertyExpression.IsOrHasRootEntity())
+                        var path = IqlPropertyPath.FromPropertyExpression(entityConfig, propertyExpression);
+                        if (path != null && path.Property != null)
                         {
-                            var path = IqlPropertyPath.FromPropertyExpression(entityConfig, propertyExpression);
-                            if (path != null && path.Property != null && path.Property.TypeDefinition != null)
-                            {
-                                propertyExpression.ReturnType = path.Property.TypeDefinition.Type.ToIqlType();
-                            }
+                            propertyExpression.ReturnType = path.Property.ToIqlType();
                         }
                     }
                 }
@@ -181,6 +183,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         }
 
         public string ConvertLambdaToJavaScript<TEntity>(Expression<Func<TEntity, object>> lambdaExpression
+            , ITypeResolver typeResolver
 #if TypeScript
 , EvaluateContext evaluateContext = null
 #endif
@@ -188,34 +191,38 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         {
             var iql = IqlConverter.Instance
                 .ConvertLambdaToIql(lambdaExpression
+                    , typeResolver
 #if TypeScript
             , null
 #endif
                 );
-            var js = ConvertIqlToTypeScriptExpressionString(iql.Expression);
+            var js = ConvertIqlToTypeScriptExpressionString(iql.Expression, typeResolver, typeof(TEntity));
             return js;
         }
 
         public override LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression expression
+            , ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            return ConvertIql(expression, typeof(TEntity)
+            return ConvertIql(expression, typeResolver, typeof(TEntity)
 #if TypeScript
             , evaluateContext
 #endif
             );
         }
 
-        public LambdaExpression ConvertIql(IqlExpression expression, Type type = null
+        public LambdaExpression ConvertIql(IqlExpression expression
+            , ITypeResolver typeResolver
+            , Type type = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            var exp = ConvertIqlToJavaScript(expression, type
+            var exp = ConvertIqlToJavaScript(expression, typeResolver, type
 #if TypeScript
                 , evaluateContext            
 #endif
@@ -229,25 +236,28 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             return result;
         }
         public override LambdaExpression ConvertIqlToLambdaExpression(IqlExpression expression
+            , ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            return ConvertIql(expression, null
+            return ConvertIql(expression, typeResolver, null
 #if TypeScript
             , evaluateContext
 #endif
                 );
         }
 
-        public override string ConvertIqlToExpressionStringByType(IqlExpression expression, Type rootEntityType
+        public override string ConvertIqlToExpressionStringByType(IqlExpression expression
+            , ITypeResolver typeResolver
+            , Type rootEntityType
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            var javascript = ConvertIqlToJavaScript(expression, rootEntityType
+            var javascript = ConvertIqlToJavaScript(expression, typeResolver, rootEntityType
 #if TypeScript
             , evaluateContext
 #endif
@@ -255,14 +265,15 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             return javascript.AsFunction();
         }
 
-        public string ConvertIqlToTypeScriptExpressionString(IqlExpression expression,
-            Type rootEntityType = null
+        public string ConvertIqlToTypeScriptExpressionString(IqlExpression expression
+            , ITypeResolver typeResolver
+            , Type rootEntityType = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            var javascript = ConvertIqlToJavaScript(expression, rootEntityType
+            var javascript = ConvertIqlToJavaScript(expression, typeResolver, rootEntityType
 #if TypeScript
             , evaluateContext
 #endif
@@ -270,8 +281,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             return javascript.AsFunction(true);
         }
 
-        private JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression,
-            Type rootEntityType = null
+        private JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression
+            , ITypeResolver typeResolver
+            , Type rootEntityType = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

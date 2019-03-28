@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using Iql.Entities.Enums;
 using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
+using Iql.Parsing.Types;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfigurationBuilder : IEntityConfigurationContainer, IServiceProviderProvider
+    public interface IEntityConfigurationBuilder : IEntityConfigurationContainer, IServiceProviderProvider, ITypeResolver
     {
         bool ValidateInferredWithClientSide { get; set; }
         SpecialTypeDefinition GetSpecialTypeMap(string name);

@@ -6,6 +6,7 @@ using Iql.Data.DataStores.InMemory;
 using Iql.Data.Types;
 using Iql.Parsing;
 using Iql.Parsing.Reduction;
+using Iql.Parsing.Types;
 
 namespace Iql.DotNet.IqlToDotNetExpression
 {
@@ -33,7 +34,16 @@ namespace Iql.DotNet.IqlToDotNetExpression
     }
     public class DotNetIqlParserContext : ActionParserContext<DotNetIqlData, DotNetIqlExpressionAdapter, Expression, DotNetOutput, DotNetExpressionConverter>
     {
-        public DotNetIqlParserContext(DotNetIqlExpressionAdapter adapter, Type currentEntityType, DotNetExpressionConverter expressionConverter) : base(adapter, currentEntityType, expressionConverter, new TypeResolver())
+        public DotNetIqlParserContext(
+            ITypeResolver typeResolver,
+            DotNetIqlExpressionAdapter adapter,
+            Type currentEntityType,
+            DotNetExpressionConverter expressionConverter) : base(
+            adapter,
+            currentEntityType,
+            expressionConverter,
+            typeResolver
+        )
         {
         }
 

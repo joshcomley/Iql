@@ -7,6 +7,7 @@ using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.Parsing;
 using Iql.Parsing.Expressions.QueryExpressions;
 using Iql.Parsing.Reduction;
+using Iql.Parsing.Types;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
@@ -19,6 +20,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         public JavaScriptExpressionNode Expression { get; set; }
 
         public JavaScriptExpressionNodeParseContext(
+            ITypeResolver typeResolver,
             JavaScriptExpressionConverter converter,
 #if TypeScript
             EvaluateContext evaluateContext,
@@ -27,6 +29,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             string rootEntityVariableName
         )
         {
+            TypeResolver = typeResolver;
             Converter = converter;
             Adapter = new JavaScriptQueryExpressionAdapterIql<TEntity>();
             Data = Adapter.NewData();
@@ -58,6 +61,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public IqlReducer Reducer { get; set; }
 
+        public ITypeResolver TypeResolver { get; }
         public JavaScriptExpressionConverter Converter { get; set; }
         public JavaScriptQueryExpressionAdapterIql<TEntity> Adapter { get; set; }
         public JavaScriptToIqlExpressionData Data { get; set; }
@@ -112,7 +116,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public IqlExpression ParseSubTree(WhereQueryExpression where)
         {
-            return Converter.ConvertQueryExpressionToIql<IqlExpression>(where).Expression;
+            return Converter.ConvertQueryExpressionToIql<IqlExpression>(where, TypeResolver).Expression;
         }
 
         //public T ExpressionAs<T>()

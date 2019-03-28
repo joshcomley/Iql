@@ -22,15 +22,17 @@ namespace Iql.Tests.Tests.Serialization
         [ClassInitialize]
         public static void SetUp(TestContext textContext)
         {
-            var db = new AppDbContext();
+            Db = new AppDbContext();
         }
+
+        public static AppDbContext Db { get; set; }
 
         [TestMethod]
         public void TestGetPropertyName()
         {
             Expression<Func<Site, object>> exp = s => s.CreatedByUser;
             var converter = new DotNetExpressionConverter();
-            var name = converter.GetPropertyName(exp);
+            var name = converter.GetPropertyName(exp, Db.EntityConfigurationContext);
             Assert.AreEqual(nameof(Site.CreatedByUser), name);
         }
 
@@ -39,7 +41,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             var instance = RelationshipFilterContextExpressions.Get();
             var converter = new DotNetExpressionConverter();
-            var expression = converter.ConvertIqlToExpressionString(instance);
+            var expression = converter.ConvertIqlToExpressionString(instance, Db.EntityConfigurationContext);
             Assert.AreEqual(@"entity => entity2 => (entity2.ClientId == entity.Owner.ClientId)",
                 expression);
         }
@@ -49,7 +51,7 @@ namespace Iql.Tests.Tests.Serialization
         {
             var instance = RelationshipFilterContextExpressions.Get();
             var converter = new DotNetExpressionConverter();
-            var expression = converter.ConvertIqlToLambdaExpression(instance);
+            var expression = converter.ConvertIqlToLambdaExpression(instance, Db.EntityConfigurationContext);
         }
 
         [TestMethod]
@@ -58,7 +60,7 @@ namespace Iql.Tests.Tests.Serialization
             var db = new AppDbContext();
             var query = db.Clients.Where(c => c.Name == "a").Where(d => d.Name == "b");
             var iql = await query.ToIqlAsync();
-            var dotNetQuery = new DotNetExpressionConverter().ConvertIqlToExpression<Client>(iql);
+            var dotNetQuery = new DotNetExpressionConverter().ConvertIqlToExpression<Client>(iql, Db.EntityConfigurationContext);
         }
 
         [TestMethod]
@@ -67,8 +69,8 @@ namespace Iql.Tests.Tests.Serialization
             var db = new AppDbContext();
             Expression<Func<Client, bool>> exp = c => c.Name == "abc";
             var converter = new DotNetExpressionConverter();
-            var iql = converter.ConvertLambdaExpressionToIql<Client>(exp);
-            var fnString = converter.ConvertIqlToExpressionStringAs<object>(iql.Expression);
+            var iql = converter.ConvertLambdaExpressionToIql<Client>(exp, Db.EntityConfigurationContext);
+            var fnString = converter.ConvertIqlToExpressionStringAs<object>(iql.Expression, Db.EntityConfigurationContext);
             Assert.AreEqual(@"entity => ((entity.Name == null ? null : entity.Name.ToUpper()) == (""abc"" == null ? null : ""abc"".ToUpper()))", fnString);
         }
 
@@ -80,7 +82,7 @@ namespace Iql.Tests.Tests.Serialization
                 = context => loading => loading.Name == context.Owner.Title;
             var iqlXml = IqlXmlSerializer.SerializeToXml(filterExpression);
             var iql = IqlXmlSerializer.DeserializeFromXml(iqlXml);
-            var exp = new DotNetExpressionConverter().ConvertIqlToExpression<RelationshipFilterContext<Person>>(iql);
+            var exp = new DotNetExpressionConverter().ConvertIqlToExpression<RelationshipFilterContext<Person>>(iql, Db.EntityConfigurationContext);
             var expCast
                 = (Expression<Func<RelationshipFilterContext<Person>, Expression<Func<PersonLoading, bool>>>>)exp;
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -286,7 +288,7 @@ namespace Iql.Tests.Tests.Serialization
             IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();
             var xml = IqlXmlSerializer.SerializeToXml<Client, string>(c => c.Name + " (" + c.Description + ")" + " - " + c.Id);
             var expression = IqlXmlSerializer.DeserializeFromXml(xml);
-            var query = IqlConverter.Instance.ConvertIqlToFunction<Client, string>(expression);
+            var query = IqlConverter.Instance.ConvertIqlToFunction<Client, string>(expression, Db.EntityConfigurationContext);
 
             var client = new Client();
             client.Name = "Brandless";
@@ -364,7 +366,7 @@ namespace Iql.Tests.Tests.Serialization
             var xml = IqlXmlSerializer.SerializeToXml(
                 expression);
             var iqlExpression = IqlXmlSerializer.DeserializeFromXml(xml);
-            var query = IqlConverter.Instance.ConvertIqlToFunction<Client, bool>(iqlExpression);
+            var query = IqlConverter.Instance.ConvertIqlToFunction<Client, bool>(iqlExpression, Db.EntityConfigurationContext);
             var code = query.ToCSharpString();
             Assert.AreEqual(
                 expected,

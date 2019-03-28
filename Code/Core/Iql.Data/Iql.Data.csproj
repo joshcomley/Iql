@@ -15,4 +15,7 @@
     <ProjectReference Include="..\Iql.Parsing\Iql.Parsing.csproj" />
     <ProjectReference Include="..\Iql.Queryable\Iql.Queryable.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Types\" />
+  </ItemGroup>
 </Project>

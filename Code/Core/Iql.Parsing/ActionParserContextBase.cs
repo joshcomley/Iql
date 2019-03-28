@@ -187,7 +187,7 @@ namespace Iql.Parsing
             {
                 case IqlExpressionKind.Count:
                     var path = IqlPropertyPath.FromPropertyExpression(
-                            EntityConfigurationBuilder.FindConfigurationForEntityType(CurrentEntityType),
+                            TypeResolver.FindTypeByType(CurrentEntityType),
                             (IqlPropertyExpression)((IqlCountExpression)expression).Parent,
                             false)
                         ;
@@ -200,7 +200,8 @@ namespace Iql.Parsing
                 case IqlExpressionKind.Lambda:
                     break;
                 case IqlExpressionKind.DataSetQuery:
-                    SetEntityType(((IqlDataSetQueryExpression)expression).ResolveEntityConfiguration().Type);
+                    var typeName = ((IqlDataSetQueryExpression)expression).Parameters.First().EntityTypeName;
+                    SetEntityType(TypeResolver.ResolveTypeFromTypeName(typeName).Type);
                     break;
             }
         }

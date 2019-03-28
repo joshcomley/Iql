@@ -60,7 +60,7 @@ namespace Iql.Data.Extensions
             var entityConfiguration = dataContext
                 .EntityConfigurationContext
                 .GetEntityByType(entityType);
-            var path = IqlPropertyPath.FromString(propertyPath, entityConfiguration).Top;
+            var path = IqlPropertyPath.FromString(propertyPath, entityConfiguration.TypeMetadata).Top;
 
             var expandOperation = new ExpandOperation();
             var returnOperation = expandOperation;

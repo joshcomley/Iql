@@ -17,8 +17,19 @@ namespace Iql.Extensions
             var list = (parameters ?? new object[] { }).ToList();
             list.AddRange(types);
             parameters = list.ToArray();
+#else
+            //for (var i = 0; i < types.Length; i++)
+            //{
+            //    var type = types[i];
+            //    if (type.ContainsGenericParameters)
+            //    {
+            //        types[i] = type.GetGenericTypeDefinition();
+            //    }
+            //}
+            //method = method.GetGenericMethodDefinition();
 #endif
-            return method.MakeGenericMethod(types)
+            method = method.MakeGenericMethod(types);
+            return method
                 .Invoke(
                     context,
                     parameters

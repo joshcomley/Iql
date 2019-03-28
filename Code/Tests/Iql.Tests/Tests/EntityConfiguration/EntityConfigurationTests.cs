@@ -187,13 +187,6 @@ namespace Iql.Tests.Tests.EntityConfiguration
         }
 
         [TestMethod]
-        public void ResolveTypeFromTypeName()
-        {
-            var type = EntityConfigurationBuilder.GetEntityTypeFromName(nameof(ApplicationUser));
-            Assert.AreEqual(typeof(ApplicationUser), type);
-        }
-
-        [TestMethod]
         public void GetDeepPropertyFromString()
         {
             var propertyPath = string.Join("/", new[]

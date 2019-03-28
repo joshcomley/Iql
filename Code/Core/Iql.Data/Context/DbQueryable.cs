@@ -605,7 +605,7 @@ namespace Iql.Data.Context
 
         public override IqlPropertyExpression PropertyExpression(string propertyName, string rootReferenceName = null)
         {
-            return IqlPropertyPath.FromString(propertyName, this.EntityConfiguration, null, rootReferenceName).Expression;
+            return IqlPropertyPath.FromString(propertyName, this.EntityConfiguration.TypeMetadata, null, rootReferenceName).Expression;
         }
 
         public override async Task<DbList<T>> ToListAsync(Expression<Func<T, bool>> expression = null
@@ -1288,7 +1288,9 @@ namespace Iql.Data.Context
                     iql =
                         expressionQueryOperation.Expression ??
                             expressionConverter
-                                .ConvertQueryExpressionToIql<T>(expressionQueryOperation.QueryExpression
+                                .ConvertQueryExpressionToIql<T>(
+                                    expressionQueryOperation.QueryExpression,
+                                    EntityConfiguration.Builder
 #if TypeScript
                                     , operation.EvaluateContext ?? EvaluateContext ?? DataContext.EvaluateContext
 #endif
@@ -1318,10 +1320,10 @@ namespace Iql.Data.Context
                     queryExpression.Expands = queryExpression.Expands ?? new List<IqlExpandExpression>();
                     var iqlExpandExpression = new IqlExpandExpression();
                     iqlExpandExpression.NavigationProperty = iql.TryGetPropertyExpression();
-                    var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration, iqlExpandExpression.NavigationProperty);
+                    var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration.TypeMetadata, iqlExpandExpression.NavigationProperty);
                     var expressionQueryOperatiton = operation as IExpressionQueryOperation;
                     var expandQueryExpression = expressionQueryOperatiton.QueryExpression as IExpandQueryExpression;
-                    var property = propertytPath.Property;
+                    var property = propertytPath.Property.EntityProperty();
                     if (property.Kind.HasFlag(PropertyKind.Count))
                     {
                         iqlExpandExpression.Count = true;
@@ -1376,7 +1378,7 @@ namespace Iql.Data.Context
                 )
                 .ReduceStaticContent(queryExpression);
 
-            await result.ProcessAsync(EntityConfiguration, DataContext);
+            await result.ProcessAsync(EntityConfiguration.TypeMetadata, EntityConfigurationBuilder);
             return result;
         }
     }

@@ -23,7 +23,7 @@ namespace Iql.Entities
             {
                 if (keyPart.IsPropertyPath)
                 {
-                    var propertyPath = IqlPropertyPath.FromString(keyPart.Key, MediaKey.File.EntityConfiguration);
+                    var propertyPath = IqlPropertyPath.FromString(keyPart.Key, MediaKey.File.EntityConfiguration.TypeMetadata);
                     parts.Add((propertyPath.Evaluate(entity) ?? "").ToString());
                 }
                 else
@@ -44,7 +44,7 @@ namespace Iql.Entities
 
         public MediaKeyGroup<T> AddPropertyPath(Expression<Func<T, object>> property)
         {
-            var path = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(property, typeof(T));
+            var path = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(property, MediaKey.File.EntityConfiguration.Builder, typeof(T));
             //IqlPropertyPath.FromLambda(property, (EntityConfiguration<T>)Property.EntityConfiguration);
             var propertyPath = new List<string>();
             var lambda = path.Expression as IqlLambdaExpression;

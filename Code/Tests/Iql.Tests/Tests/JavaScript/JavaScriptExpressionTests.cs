@@ -31,11 +31,11 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestConditionalExpression()
         {
             var converter = new JavaScriptExpressionConverter();
-            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function (c) { return 1 > 2 ? 3 : 4; }");
+            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function (c) { return 1 > 2 ? 3 : 4; }", TypeResolver);
             var lambda = expression.Expression as IqlLambdaExpression;
             Assert.IsTrue(lambda.Body is IqlConditionExpression);
             var javascript =
-                converter.ConvertIqlToExpressionStringByType(expression.Expression, typeof(ApplicationUser));
+                converter.ConvertIqlToExpressionStringByType(expression.Expression, TypeResolver, typeof(ApplicationUser));
             Assert.AreEqual(@"function(entity) { return ((1 > 2)?3:4); }",
                 javascript);
         }
@@ -45,8 +45,9 @@ namespace Iql.Tests.Tests.JavaScript
         {
             var instance = RelationshipFilterContextExpressions.Get();
             var converter = new JavaScriptExpressionConverter();
-            var expression = converter.ConvertIqlToExpressionString(instance);
+            var expression = converter.ConvertIqlToExpressionString(instance, TypeResolver);
             Assert.AreEqual(@"function(entity) { return function(entity2) { return (entity2.ClientId == entity.Owner.ClientId); }; }",
+                TypeResolver,
                 expression);
         }
 
@@ -54,9 +55,9 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestLambda()
         {
             var converter = new JavaScriptExpressionConverter();
-            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function(entity2) { return (entity2.ClientId == 1); }");
+            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function(entity2) { return (entity2.ClientId == 1); }", TypeResolver);
             var javascript =
-                converter.ConvertIqlToExpressionStringByType(expression.Expression, typeof(ApplicationUser));
+                converter.ConvertIqlToExpressionStringByType(expression.Expression, TypeResolver, typeof(ApplicationUser));
             Assert.AreEqual(@"function(entity) { return ((entity || {}).ClientId == 1); }",
                 javascript);
         }
@@ -120,7 +121,7 @@ namespace Iql.Tests.Tests.JavaScript
                 ReturnType = IqlType.Class
             };
             var javascript =
-                converter.ConvertIqlToExpressionStringAs<MyCustomReport>(expression);
+                converter.ConvertIqlToExpressionStringAs<MyCustomReport>(expression, TypeResolver);
             Assert.AreEqual(@"function(context) { return context.Where(function(entity) { return ((entity || {}).MyId == '9cac910f-6b7c-46b8-9de6-d4373a0063d8'); }); }",
                 javascript);
         }
@@ -130,7 +131,7 @@ namespace Iql.Tests.Tests.JavaScript
         {
             var javaScriptExpressionConverter = new JavaScriptExpressionConverter();
             var result = javaScriptExpressionConverter.ConvertJavaScriptStringToIql<ApplicationUser>(
-                $"p => p.{nameof(ApplicationUser.Id)}");
+                $"p => p.{nameof(ApplicationUser.Id)}", TypeResolver);
             Assert.AreEqual(typeof(IqlLambdaExpression), result.Expression.GetType());
         }
 
@@ -257,6 +258,7 @@ namespace Iql.Tests.Tests.JavaScript
             };
             var javaScript = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(
                 iql,
+                TypeResolver,
                 typeof(Client));
 
 #if !TypeScript
@@ -286,6 +288,7 @@ namespace Iql.Tests.Tests.JavaScript
             var iql = await query.ToIqlAsync();
             var javaScript = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(
                 iql,
+                TypeResolver,
                 typeof(Client));
 
 #if !TypeScript
@@ -308,9 +311,9 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestFilterOnChildCollectionToOData()
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Client>(
-                "function(t) { return t.Sites.filter(s => s.AdditionalSendReportsTo.length > 22).length > 3; }");
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<Client>(iql.Expression);
-            Assert.AreEqual(@"(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)", odataFilter);
+                "function(t) { return t.Sites.filter(s => s.AdditionalSendReportsTo.length > 22).length > 3; }", TypeResolver);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<Client>(iql.Expression, TypeResolver);
+            Assert.AreEqual(@"(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)", TypeResolver, odataFilter);
         }
 
         [TestMethod]
@@ -322,6 +325,7 @@ namespace Iql.Tests.Tests.JavaScript
             var iql = await query.ToIqlAsync();
             var javaScript = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(
                 iql,
+                TypeResolver,
                 typeof(Client));
             Assert.AreEqual(
                 @"function(context) { return context.Where(function(entity) { return ((entity || {}).Id == 7); }); }",
@@ -337,6 +341,7 @@ namespace Iql.Tests.Tests.JavaScript
             var iql = await query.ToIqlAsync();
             var javaScript = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(
                 iql,
+                TypeResolver,
                 typeof(Client));
             Assert.AreEqual(
                 @"function(context) { return context.OrderBy(function(entity) { return (entity || {}).Name; }, false); }",
@@ -366,7 +371,7 @@ namespace Iql.Tests.Tests.JavaScript
                         }
                     }
                 ;
-            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql);
+            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql, TypeResolver);
             Assert.AreEqual(@"entity => ((entity || {}).Piano || {}).NumberOfKeys", js);
         }
 
@@ -374,8 +379,8 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestMinifiedLambda()
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
-                "function(t) { return 1 == t.IsLockedOut }");
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression
+                "function(t) { return 1 == t.IsLockedOut }", TypeResolver);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression, TypeResolver
 #if TypeScript
             , null
 #endif
@@ -387,8 +392,8 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestEqualsEqualsEquals()
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
-                "function(t) { return t.IsLockedOut === true }");
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression);
+                "function(t) { return t.IsLockedOut === true }", TypeResolver);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression, TypeResolver);
             Assert.AreEqual(@"($it/IsLockedOut eq true)", odataFilter);
         }
 
@@ -396,8 +401,8 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestUnaryNot()
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
-                "function(t) { return !t.IsLockedOut }");
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression);
+                "function(t) { return !t.IsLockedOut }", TypeResolver);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression, TypeResolver);
             Assert.AreEqual(@"($it/IsLockedOut eq false)", odataFilter);
         }
 
@@ -405,8 +410,8 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestUnarySequenceOfNots()
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<ApplicationUser>(
-                "function(t) { return !!!!!t.IsLockedOut }");
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression);
+                "function(t) { return !!!!!t.IsLockedOut }", TypeResolver);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<ApplicationUser>(iql.Expression, TypeResolver);
             Assert.AreEqual(@"((((($it/IsLockedOut eq false) eq false) eq false) eq false) eq false)", odataFilter);
         }
 
@@ -418,9 +423,10 @@ namespace Iql.Tests.Tests.JavaScript
             //var iql2 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
             //    "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == `Kettle`).length > 0))");
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
-                "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == p.Title).length > 0))");
+                "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == p.Title).length > 0))", TypeResolver);
             Assert.AreEqual(
                 @"function(entity) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) == 'TEST') || (((entity || {}).Types.filter(function(entity2) { return (((entity2 || {}).TypeId == 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) == (((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()))); }).length) > 0)); }",
+                TypeResolver,
                 js);
             //var iql3 = new DotNetExpressionConverter().ConvertLambdaToIql<Person>(p =>
             //    p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle"));
@@ -431,7 +437,7 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestCompressedJavaScript()
         {
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Client>(
-                "function(n){return n.Sites.filter(function(n){return n.UsersCount>0}).length>0}");
+                "function(n){return n.Sites.filter(function(n){return n.UsersCount>0}).length>0}", TypeResolver);
             Assert.AreEqual(
                 @"function(entity) { return (((entity || {}).Sites.filter(function(entity) { return ((entity || {}).UsersCount > 0); }).length) > 0); }",
                 js);
@@ -442,7 +448,7 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestCompressedCompoundJavaScript()
         {
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Client>(
-                "function(n){return n.Sites.filter(function(n){return!n.CreatedByUser.EmailConfirmed}).length>0}");
+                "function(n){return n.Sites.filter(function(n){return!n.CreatedByUser.EmailConfirmed}).length>0}", TypeResolver);
             Assert.AreEqual(
                 @"function(entity) { return (((entity || {}).Sites.filter(function(entity) { return (((entity || {}).CreatedByUser || {}).EmailConfirmed == false); }).length) > 0); }",
                 js);
@@ -453,10 +459,10 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestConvertingCompressedBooleanAsDigitExpression()
         {
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Site>(
-                "function(n){return 0==n.CreatedByUser.EmailConfirmed}");
-            var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iql.Expression, typeof(Client));
-            Assert.AreEqual(@"function(entity) { return (false == ((entity || {}).CreatedByUser || {}).EmailConfirmed); }", js);
-            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<Client>(iql.Expression);
+                "function(n){return 0==n.CreatedByUser.EmailConfirmed}", TypeResolver);
+            var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iql.Expression, TypeResolver, typeof(Client));
+            Assert.AreEqual(@"function(entity) { return (false == ((entity || {}).CreatedByUser || {}).EmailConfirmed); }", TypeResolver, js);
+            var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<Client>(iql.Expression, TypeResolver);
             Assert.AreEqual(@"(false eq $it/CreatedByUser/EmailConfirmed)", odataFilter);
         }
 
@@ -465,8 +471,7 @@ namespace Iql.Tests.Tests.JavaScript
         {
             var db = Db;
             var js = @"c => c.Types.length > 2";
-            var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(
-                js).Expression;
+            var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Person>(js, TypeResolver).Expression;
             Assert.IsTrue(iql is IqlLambdaExpression);
             var body = (iql as IqlLambdaExpression).Body;
             Assert.IsTrue(body is IqlIsGreaterThanExpression);
@@ -487,8 +492,7 @@ namespace Iql.Tests.Tests.JavaScript
             //Assert.AreEqual(@"{""Left"":{""Left"":{""PropertyName"":""Title"",""Type"":29,""ReturnType"":4,""Parent"":{""Value"":null,""VariableName"":""p"",""Type"":27,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""Test"",""InferredReturnType"":4,""Type"":25,""ReturnType"":4,""Parent"":null},""Type"":9,""ReturnType"":1,""Parent"":null},""Right"":{""Left"":{""RootVariableName"":""t"",""Value"":{""Left"":{""Left"":{""PropertyName"":""TypeId"",""Type"":29,""ReturnType"":5,""Parent"":{""Value"":null,""VariableName"":""t"",""Type"":27,""ReturnType"":1,""Parent"":{""PropertyName"":""Types"",""Type"":29,""ReturnType"":2,""Parent"":{""Value"":null,""VariableName"":""p"",""Type"":27,""ReturnType"":1,""Parent"":null}}}},""Right"":{""Value"":4.0,""InferredReturnType"":6,""Type"":25,""ReturnType"":6,""Parent"":null},""Type"":9,""ReturnType"":1,""Parent"":null},""Right"":{""Left"":{""PropertyName"":""Description"",""Type"":29,""ReturnType"":4,""Parent"":{""Value"":null,""VariableName"":""t"",""Type"":27,""ReturnType"":1,""Parent"":{""PropertyName"":""Types"",""Type"":29,""ReturnType"":2,""Parent"":{""Value"":null,""VariableName"":""p"",""Type"":27,""ReturnType"":1,""Parent"":null}}}},""Right"":{""Value"":""Kettle"",""InferredReturnType"":4,""Type"":25,""ReturnType"":4,""Parent"":null},""Type"":9,""ReturnType"":1,""Parent"":null},""Type"":3,""ReturnType"":1,""Parent"":null},""Type"":45,""ReturnType"":5,""Parent"":{""PropertyName"":""Types"",""Type"":29,""ReturnType"":2,""Parent"":{""Value"":null,""VariableName"":""p"",""Type"":27,""ReturnType"":1,""Parent"":null}}},""Right"":{""Value"":0.0,""InferredReturnType"":6,""Type"":25,""ReturnType"":6,""Parent"":null},""Type"":4,""ReturnType"":1,""Parent"":null},""Type"":3,""ReturnType"":1,""Parent"":null}",
             //    iqlJson);
             //var xml = IqlSerializer.SerializeToXml(iql.Expression);
-            var js1 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
-                jsString);
+            var js1 = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(jsString, TypeResolver);
 
             //            var js = new JavaScriptExpressionConverter().ConvertLambdaToJavaScript<Person>(
             //                p => p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle")
@@ -507,13 +511,14 @@ namespace Iql.Tests.Tests.JavaScript
         {
             ConverterConfig.Init();
             var iql = IqlConverter.Instance
-                .ConvertLambdaToIql<Person>(p => p.Type.CreatedByUser.Client.Name
+                .ConvertLambdaToIql<Person>(p => p.Type.CreatedByUser.Client.Name,
+                    TypeResolver
 #if TypeScript
             , null
 #endif
                 )
                 .Expression;
-            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql);
+            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql, TypeResolver);
             Assert.AreEqual(@"entity => ((((entity || {}).Type || {}).CreatedByUser || {}).Client || {}).Name", js);
         }
 
@@ -533,7 +538,7 @@ namespace Iql.Tests.Tests.JavaScript
             var iqlExpression = new IqlIsEqualToExpression(
                 IqlExpression.GetPropertyExpression(nameof(ApplicationUser.Id)),
                 new IqlLiteralExpression("a"));
-            var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iqlExpression, typeof(ApplicationUser));
+            var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iqlExpression, TypeResolver, typeof(ApplicationUser));
             Assert.AreEqual(@"function(entity) { return ((entity || {}).Id == 'a'); }", js);
         }
 
@@ -544,7 +549,8 @@ namespace Iql.Tests.Tests.JavaScript
         {
             ConverterConfig.Init();
             var iql = IqlConverter.Instance
-               .ConvertLambdaToIql<Person>(p => string.IsNullOrWhiteSpace(p.CreatedByUserId) && p.CreatedByUser == null
+               .ConvertLambdaToIql<Person>(p => string.IsNullOrWhiteSpace(p.CreatedByUserId) && p.CreatedByUser == null,
+                   TypeResolver
 #if TypeScript
                     , 
                     new EvaluateContext
@@ -555,7 +561,7 @@ namespace Iql.Tests.Tests.JavaScript
 #endif
                                                  )
                .Expression;
-            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql);
+            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql, TypeResolver);
             Assert.AreEqual(@"entity => ((((entity || {}).CreatedByUserId == null) || (((entity || {}).CreatedByUserId || '').trim() == '')) && ((entity || {}).CreatedByUser == null))", js);
         }
 
@@ -564,7 +570,8 @@ namespace Iql.Tests.Tests.JavaScript
         {
             ConverterConfig.Init();
             var iql = IqlConverter.Instance
-                .ConvertLambdaToIql<Person>(p => string.IsNullOrWhiteSpace(p.CreatedByUserId)
+                .ConvertLambdaToIql<Person>(p => string.IsNullOrWhiteSpace(p.CreatedByUserId),
+                    TypeResolver
 #if TypeScript
                     , 
                     new EvaluateContext
@@ -575,7 +582,7 @@ namespace Iql.Tests.Tests.JavaScript
 #endif
                 )
                 .Expression;
-            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql);
+            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql, TypeResolver);
             Assert.AreEqual(@"entity => (((entity || {}).CreatedByUserId == null) || (((entity || {}).CreatedByUserId || '').trim() == ''))", js);
         }
 #endif
@@ -585,13 +592,14 @@ namespace Iql.Tests.Tests.JavaScript
         {
             ConverterConfig.Init();
             var iql = IqlConverter.Instance
-                .ConvertLambdaToIql<Person>(p => p.CreatedByUser == null
+                .ConvertLambdaToIql<Person>(p => p.CreatedByUser == null,
+                    TypeResolver
 #if TypeScript
                     , null
 #endif
                                                  )
                 .Expression;
-            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql);
+            var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql, TypeResolver);
             Assert.AreEqual(@"entity => ((entity || {}).CreatedByUser == null)", js);
         }
     }

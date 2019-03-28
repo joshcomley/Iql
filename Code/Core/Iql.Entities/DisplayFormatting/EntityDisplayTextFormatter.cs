@@ -11,6 +11,7 @@ namespace Iql.Entities.DisplayFormatting
         private Func<TEntity, string> _formatFunction;
         private Func<FormatterContext<TEntity>, string> _formatAndInterceptFunction;
         private Dictionary<string, IqlExpression> _expressionLookup;
+        protected IEntityConfiguration EntityConfiguration { get; }
         public Expression<Func<TEntity, string>> FormatterExpression { get; }
         public string Key { get; }
 
@@ -35,7 +36,9 @@ namespace Iql.Entities.DisplayFormatting
         {
             if (_formatAndInterceptFunction == null)
             {
-                var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(FormatterExpression,
+                var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
+                    FormatterExpression,
+                    EntityConfiguration.Builder,
                     typeof(TEntity)).Expression as IqlLambdaExpression;
                 var body = iql.Body;
                 var rootReferenceRoots = new List<IqlExpression>();
@@ -94,7 +97,7 @@ namespace Iql.Entities.DisplayFormatting
                     return expression;
                 });
                 iql = new IqlLambdaExpression(IqlType.String, body).AddParameter();
-                var lambda = IqlConverter.Instance.ConvertIqlToExpression<FormatterContext<TEntity>>(iql);
+                var lambda = IqlConverter.Instance.ConvertIqlToExpression<FormatterContext<TEntity>>(iql, EntityConfiguration.Builder);
                 var finalExpression = (Func<FormatterContext<TEntity>, string>)lambda
                     .Compile();
                 _formatAndInterceptFunction = finalExpression;
@@ -110,8 +113,9 @@ namespace Iql.Entities.DisplayFormatting
             return FormatAndInterceptWith((FormatterContext<TEntity>) context);
         }
 
-        public EntityDisplayTextFormatter(Expression<Func<TEntity, string>> formatterExpression, string key)
+        public EntityDisplayTextFormatter(IEntityConfiguration entityConfiguration, Expression<Func<TEntity, string>> formatterExpression, string key)
         {
+            EntityConfiguration = entityConfiguration;
             FormatterExpression = formatterExpression;
             Key = key;
         }

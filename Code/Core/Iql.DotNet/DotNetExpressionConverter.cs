@@ -4,6 +4,7 @@ using Iql.Conversion;
 using Iql.DotNet.DotNetExpressionToIql;
 using Iql.DotNet.IqlToDotNetExpression;
 using Iql.DotNet.IqlToDotNetString;
+using Iql.Parsing.Types;
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -18,6 +19,7 @@ namespace Iql.DotNet
         }
 
         protected override ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlInternal<TEntity>(LambdaExpression lambda
+            , ITypeResolver typeResolver
 #if TypeScript
 , EvaluateContext evaluateContext
 #endif
@@ -32,18 +34,19 @@ namespace Iql.DotNet
         }
 
         public override LambdaExpression ConvertIqlToExpression<TEntity>(IqlExpression iql
+            , ITypeResolver typeResolver
 #if TypeScript
                 , EvaluateContext evaluateContext
 #endif
         )
         {
-            return ConvertIql(iql, typeof(TEntity));
+            return ConvertIql(iql, typeResolver, typeof(TEntity));
         }
 
-        public LambdaExpression ConvertIql(IqlExpression expression, Type type = null)
+        public LambdaExpression ConvertIql(IqlExpression expression, ITypeResolver typeResolver, Type type = null)
         {
             var adapter = new DotNetIqlExpressionAdapter("entity");
-            var parser = new DotNetIqlParserContext(adapter, type, this);
+            var parser = new DotNetIqlParserContext(typeResolver, adapter, type, this);
             var dotNetExpression = parser.Parse(expression
 #if TypeScript
                 , null
@@ -53,15 +56,18 @@ namespace Iql.DotNet
         }
 
         public override LambdaExpression ConvertIqlToLambdaExpression(IqlExpression expression
+            , ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            return ConvertIql(expression);
+            return ConvertIql(expression, typeResolver);
         }
 
-        public override string ConvertIqlToExpressionStringByType(IqlExpression iql, Type rootEntityType
+        public override string ConvertIqlToExpressionStringByType(IqlExpression iql
+            , ITypeResolver typeResolver
+            , Type rootEntityType
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif

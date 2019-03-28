@@ -4,6 +4,7 @@ using Iql.Parsing;
 #endif
 using Iql.Parsing.Expressions;
 using Iql.Parsing.Expressions.QueryExpressions;
+using Iql.Parsing.Types;
 
 namespace Iql.Data.Extensions
 {
@@ -11,7 +12,8 @@ namespace Iql.Data.Extensions
     {
         public static ExpressionResult<IqlExpression> ConvertQueryExpressionToIql<TEntity>(
             this IExpressionToIqlConverter converter,
-            QueryExpression filter
+            QueryExpression filter,
+            ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -20,7 +22,8 @@ namespace Iql.Data.Extensions
             var whereQueryExpression = filter.TryFlatten<TEntity>() as ExpressionQueryExpressionBase;
             var lambdaExpression = whereQueryExpression.GetExpression();
             return converter.ConvertLambdaExpressionToIql<TEntity>(
-                lambdaExpression
+                lambdaExpression,
+                typeResolver
 #if TypeScript
                     , filter.EvaluateContext ?? evaluateContext
 #endif

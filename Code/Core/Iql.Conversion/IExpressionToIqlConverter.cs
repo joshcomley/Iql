@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using Iql.Parsing.Types;
 
 #if TypeScript
 using Iql.Parsing;
@@ -16,30 +17,35 @@ namespace Iql.Conversion
 //        )
 //            where TEntity : class;
         ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression expression
+            , ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
             where TEntity : class;
-        ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression expression,
-            Type entityType = null
+        ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression expression
+            , ITypeResolver typeResolver
+            , Type entityType = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
         ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> expression
+            , ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
             where TEntity : class;
         ExpressionResult<IqlPropertyExpression> ConvertPropertyLambdaToIql<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> expression
+            , ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
             where TEntity : class;
         ExpressionResult<IqlPropertyExpression> ConvertPropertyLambdaExpressionToIql<TEntity>(LambdaExpression expression
+            , ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

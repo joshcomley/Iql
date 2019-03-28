@@ -43,7 +43,7 @@ namespace Iql.Entities.Relationships
                 RelationshipMappings.Add(mapping);
             }
             mapping.Property = container;
-            var expressionResult = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(RelationshipFilterContext<T>));
+            var expressionResult = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, EntityConfiguration.Builder, typeof(RelationshipFilterContext<T>));
             mapping.UseForFiltering = useForFiltering;
             mapping.Expression = expressionResult.Expression as IqlLambdaExpression;
             return this;
@@ -64,7 +64,7 @@ namespace Iql.Entities.Relationships
             }
             mapping.Property = container;
             mapping.UseForFiltering = useForFiltering;
-            mapping.Expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Type).Expression as IqlLambdaExpression;
+            mapping.Expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, EntityConfiguration.Builder, Type).Expression as IqlLambdaExpression;
             return this;
         }
 

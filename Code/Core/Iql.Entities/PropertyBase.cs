@@ -13,7 +13,7 @@ using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Entities
 {
-    public abstract class PropertyBase : SimplePropertyGroupBase<IProperty>, IPropertyMetadata
+    public abstract class PropertyBase : SimplePropertyGroupBase<IProperty>, IPropertyMetadata, IPropertyMetadataProvider
     {
         public override IPropertyGroup ResolvePrimaryProperty()
         {
@@ -195,7 +195,6 @@ namespace Iql.Entities
 
         protected EntityRelationship _relationship;
         private IList<IInferredValueConfiguration> _inferredValueConfigurations = new List<IInferredValueConfiguration>();
-
         private bool IsSearchableType => TypeDefinition != null && (TypeDefinition.Type == typeof(string) &&
                                                                     string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType));
 
@@ -290,7 +289,6 @@ namespace Iql.Entities
         internal IProperty CountRelationshipProperty { get; set; }
 
         public string PropertyName { get; set; }
-
         public abstract Func<object, object> GetValue { get; set; }
         public abstract Func<object, object, object> SetValue { get; set; }
 
@@ -305,5 +303,8 @@ namespace Iql.Entities
         protected PropertyBase() : base(null, null)
         {
         }
+
+        private ITypeProperty _propertyMetadata = null;
+        public ITypeProperty PropertyMetadata => _propertyMetadata = _propertyMetadata ?? new PropertyMetadataProvider(EntityConfiguration.TypeMetadata, this);
     }
 }

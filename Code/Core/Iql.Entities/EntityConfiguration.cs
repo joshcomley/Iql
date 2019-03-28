@@ -222,7 +222,7 @@ namespace Iql.Entities
 
         public PropertyPath PropertyPath(Expression<Func<T, object>> expression, string key = null)
         {
-            var p = IqlPropertyPath.FromLambda(expression, this);
+            var p = IqlPropertyPath.FromLambda(expression, Builder);
             return new PropertyPath(this, p.PathToHere, key);
         }
 
@@ -294,7 +294,7 @@ namespace Iql.Entities
             var definedProperty = DefineAndGetProperty(property, null, false, iqlType);
             Key = new EntityKey<T, TKey>();
             Key.CanWrite = editable;
-            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
+            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property, Builder).Expression;
             iql.ReturnType = iqlType ?? typeof(TKey).ToIqlType();
             Key.AddProperty(definedProperty);
             TrySetKey(iql.PropertyName);
@@ -323,7 +323,7 @@ namespace Iql.Entities
             Key.CanWrite = editable;
             foreach (var property in properties)
             {
-                var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
+                var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property, Builder).Expression;
                 var propertyType = typeof(T).GetProperty(iql.PropertyName).PropertyType;
                 //iql.ReturnType = typeof(T).getpro.ToIqlType();
                 Key.AddProperty(FindOrDefinePropertyInternal(iql.PropertyName, propertyType, propertyType, null));
@@ -362,7 +362,7 @@ namespace Iql.Entities
             string convertedFromType, bool nullable = true,
             IqlType? iqlType = null)
         {
-            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
+            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property, Builder).Expression;
             var name = iql.PropertyName;
             return DefineAndGetPropertyInternal(name, property, convertedFromType, nullable, iqlType);
         }
@@ -521,7 +521,7 @@ namespace Iql.Entities
 
         private IqlPropertyExpression ResolvePropertyIql(LambdaExpression property)
         {
-            return IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(property).Expression;
+            return IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(property, Builder).Expression;
         }
 
         public EntityConfiguration<T> DefineProperty<TProperty>(
@@ -538,7 +538,7 @@ namespace Iql.Entities
             Expression<Func<T, long?>> countProperty = null
             )
         {
-            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property).Expression;
+            var iql = IqlConverter.Instance.ConvertPropertyLambdaToIql(property, Builder).Expression;
             var propertyInfo = typeof(T).GetProperty(iql.PropertyName);
             var propertyRuntimeType = propertyInfo.PropertyType;
             var propertyName = iql.PropertyName;
@@ -591,7 +591,7 @@ namespace Iql.Entities
             IProperty countDefinition = null;
             if (countProperty != null)
             {
-                var countPropertyIql = IqlConverter.Instance.ConvertPropertyLambdaToIql(countProperty).Expression;
+                var countPropertyIql = IqlConverter.Instance.ConvertPropertyLambdaToIql(countProperty, Builder).Expression;
                 var countPropertyDefinition = typeof(T).GetProperty(countPropertyIql.PropertyName);
                 if (Nullable.GetUnderlyingType(countPropertyDefinition.PropertyType) != null)
                 {

@@ -25,6 +25,7 @@ namespace Iql.Entities
         {
             var result = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
                 rule, 
+                EntityConfigurationBuilder,
                 typeof(IqlUserPermissionContext<TUser>)
 #if TypeScript
             , evaluateContext
@@ -52,6 +53,7 @@ namespace Iql.Entities
         {
             var result = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
                 rule, 
+                EntityConfigurationBuilder,
                 typeof(IqlEntityUserPermissionContext<TEntity, TUser>)
 #if TypeScript
             , evaluateContext

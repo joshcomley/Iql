@@ -1,6 +1,7 @@
 ﻿using System;
 using Iql.Conversion;
 using Iql.Data.DataStores.InMemory;
+using Iql.Parsing.Types;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
@@ -25,6 +26,7 @@ namespace Iql.Tests.Tests
             new HazceptionDataStore().GetData();
         }
         public static AppDbContext Db => TestsBlock.Db;
+        public static ITypeResolver TypeResolver => Db.EntityConfigurationContext;
 
         [ClassInitialize]
         public static void SetUp(TestContext textContext)

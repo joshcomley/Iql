@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules.Relationship;
 using Iql.Extensions;
@@ -52,10 +53,14 @@ namespace Iql.Data.Extensions
                     if (result.Paths.Length == 1)
                     {
                         var last = result.Paths[0];
-                        if (last.Success && last.Value == null && last.Parent != null &&
-                            last.Source.Property.Relationship != null)
+                        var entityProperty = last.Source.Property.EntityProperty();
+                        if (last.Success && 
+                            last.Value == null && 
+                            last.Parent != null &&
+                            entityProperty != null &&
+                            entityProperty.Relationship != null)
                         {
-                            var parentConstraints = last.Source.Property.Relationship.ThisEnd.GetCompositeKey(last.Parent);
+                            var parentConstraints = entityProperty.Relationship.ThisEnd.GetCompositeKey(last.Parent);
                             var ourConstraints = (mapping.Property as IRelationshipDetail).Constraints;
                             for (var j = 0; j < parentConstraints.Keys.Length; j++)
                             {

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
+using Iql.Entities.Extensions;
 using Iql.Extensions;
+using Iql.Parsing.Types;
 
 namespace Iql.Entities
 {
@@ -11,7 +13,7 @@ namespace Iql.Entities
     {
         public bool IsEmpty => string.IsNullOrWhiteSpace(PathToHere);
 
-        public IqlPropertyPath(IProperty property, IqlPropertyExpression expression, IqlPropertyPath parent)
+        public IqlPropertyPath(ITypeProperty property, IqlPropertyExpression expression, IqlPropertyPath parent)
         {
             Property = property;
             Expression = expression;
@@ -60,7 +62,7 @@ namespace Iql.Entities
 
         public string GetPathToHere(string separator)
         {
-            return string.Join(separator, PropertyPath.Select(p => p.Property.Name));
+            return string.Join(separator, PropertyPath.Select(p => p.Property.PropertyName));
         }
 
         public string RelationshipPathToHere => GetRelationshipPathToHere(Separator);
@@ -68,7 +70,7 @@ namespace Iql.Entities
         {
             return string.Join(separator,
                 PropertyPath.Where(p => p.Property.Kind.HasFlag(PropertyKind.Relationship))
-                    .Select(p => p.Property.Name));
+                    .Select(p => p.Property.PropertyName));
         }
 
         public string PathFromHere => GetPathFromHere(Separator);
@@ -108,15 +110,15 @@ namespace Iql.Entities
 
         public IqlPropertyPath Parent { get; }
         public string PropertyName => Property?.PropertyName;
-        public IProperty Property { get; }
+        public ITypeProperty Property { get; }
         public IqlPropertyExpression Expression { get; }
 
         public IqlPropertyPath[] PropertyPath { get; }
 
-        public IEntityConfiguration EntityConfiguration { get; set; }
+        public IIqlTypeMetadata EntityConfiguration { get; set; }
 
-        public IEntityConfiguration PropertyEntityConfiguration =>
-            Property == null ? null : Property.Relationship.OtherEnd.EntityConfiguration;
+        public IIqlTypeMetadata PropertyEntityConfiguration =>
+            Property == null || Property.EntityProperty() == null ? null : Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration.TypeMetadata;
 
         public object GetValue(object entity)
         {
@@ -153,32 +155,29 @@ namespace Iql.Entities
         }
 
         public static IqlPropertyPath FromLambda<T>(Expression<Func<T, object>> field,
-            EntityConfiguration<T> entityConfigurationContext = null) where T : class
+            ITypeResolver typeResolver) where T : class
         {
-            var propertyExpression = IqlExpressionConversion.DefaultExpressionConverter().ConvertPropertyLambdaToIql(field).Expression;
-            if (entityConfigurationContext == null)
-            {
-                entityConfigurationContext = EntityConfigurationBuilder.FindConfigurationForEntityTypeTyped<T>();
-            }
-            return FromPropertyExpression(entityConfigurationContext, propertyExpression);
+            var propertyExpression = IqlExpressionConversion.DefaultExpressionConverter().ConvertPropertyLambdaToIql(field, typeResolver).Expression;
+            return FromPropertyExpression(typeResolver.FindType<T>(), propertyExpression);
         }
 
         public static IqlPropertyPath FromLambdaExpression(LambdaExpression field,
-            IEntityConfiguration entityConfigurationContext)
+            ITypeResolver typeResolver,
+            IIqlTypeMetadata entityConfigurationContext)
         {
             var propertyExpression = IqlExpressionConversion.DefaultExpressionConverter()
-                .ConvertLambdaExpressionToIqlByType(field, entityConfigurationContext.Type).Expression as IqlLambdaExpression;
+                .ConvertLambdaExpressionToIqlByType(field, typeResolver, entityConfigurationContext.Type).Expression as IqlLambdaExpression;
             return FromPropertyExpression(entityConfigurationContext, propertyExpression.Body as IqlPropertyExpression);
         }
 
         public static IqlPropertyPath FromExpression<T>(Expression<Func<T, object>> expression,
-            IEntityConfiguration entityConfigurationContext)
+            ITypeResolver typeResolver)
         {
-            return FromLambdaExpression(expression, entityConfigurationContext);
+            return FromLambdaExpression(expression, typeResolver, typeResolver.FindType<T>());
         }
 
         public static IqlPropertyPath FromString(string path,
-            IEntityConfiguration entityConfigurationContext,
+            IIqlTypeMetadata entityConfigurationContext,
             IqlPropertyExpression parent = null,
             string rootReferenceName = null)
         {
@@ -192,11 +191,11 @@ namespace Iql.Entities
 
         public static IqlPropertyPath FromProperty(IProperty property)
         {
-            return FromString(property.Name, property.EntityConfiguration);
+            return FromString(property.Name, property.EntityConfiguration.TypeMetadata);
         }
 
         public static IqlPropertyPath FromPropertyExpression(
-            IEntityConfiguration entityConfigurationContext,
+            IIqlTypeMetadata entityConfigurationContext,
             IqlPropertyExpression propertyExpression,
             bool traverseNestedRootReferences = true)
         {
@@ -249,12 +248,13 @@ namespace Iql.Entities
                     break;
                 }
 
-                if (property.Relationship == null)
+                var entityProperty = property.EntityProperty();
+                if (entityProperty == null || entityProperty.Relationship == null)
                 {
                     continue;
                 }
 
-                entityConfig = property.Relationship.OtherEnd.Property.EntityConfiguration;
+                entityConfig = entityProperty.Relationship.OtherEnd.Property.EntityConfiguration.TypeMetadata;
             }
 
             if (propertyPath == null && lastRootReference != null)

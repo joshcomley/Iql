@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Conversion;
 using Iql.Data.Queryable;
+using Iql.Entities.Extensions;
 using Iql.Entities.Rules.Relationship;
 using Iql.Extensions;
 
@@ -73,13 +74,13 @@ namespace Iql.Entities.Relationships
             }
 
             var path = IqlPropertyPath.FromPropertyExpression(
-                mapping.Container.EntityConfiguration.Builder.GetEntityByType(pathType),
+                mapping.Container.EntityConfiguration.Builder.GetEntityByType(pathType).TypeMetadata,
                 propertyExpression);
             var equalityExpessions = new List<IqlExpression>();
             for (var i = 0; i < mapping.Property.Constraints.Length; i++)
             {
                 var thisEndConstraint = mapping.Property.Constraints[i];
-                var otherEndConstraint = path.Property.Relationship.ThisEnd.Constraints[i];
+                var otherEndConstraint = path.Property.EntityProperty().Relationship.ThisEnd.Constraints[i];
                 var p = propertyExpression.Clone() as IqlPropertyExpression;
                 p.Parent = rootRefBackup ?? p.Parent;
                 p.PropertyName = otherEndConstraint.PropertyName;
@@ -108,7 +109,7 @@ namespace Iql.Entities.Relationships
                 }
                 return expression;
             });
-            var expression1 = IqlConverter.Instance.ConvertIqlToExpression<RelationshipFilterContext<TEntity>>(iql);
+            var expression1 = IqlConverter.Instance.ConvertIqlToExpression<RelationshipFilterContext<TEntity>>(iql, mapping.Container.EntityConfiguration.Builder);
             var rule = new RelationshipFilterRule<TEntity, TRelationship>((Expression<Func<RelationshipFilterContext<TEntity>, Expression<Func<TRelationship, bool>>>>)expression1, null, null);
             return rule;
         }

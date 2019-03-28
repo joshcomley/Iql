@@ -14,12 +14,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
+using Iql.Data.Types;
 using Iql.Entities.Functions;
+using Iql.Parsing.Types;
 
 namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
+        private IIqlTypeMetadata _typeMetadata = null;
+        public IIqlTypeMetadata TypeMetadata => _typeMetadata = _typeMetadata ?? new EntityConfigurationTypeProvider((IEntityConfiguration)this);
+
         private UserPermissionsManager _permissions;
 
         private readonly List<IqlUserPermissionRule> _permissionRules = new List<IqlUserPermissionRule>();
@@ -613,7 +618,10 @@ namespace Iql.Entities
 
         public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
         {
-            return IqlPropertyPath.FromPropertyExpression(this as IEntityConfiguration, propertyExpression).Property;
+            return IqlPropertyPath.FromPropertyExpression(
+                (this as IEntityConfiguration).TypeMetadata, 
+                propertyExpression)
+                .Property.EntityProperty();
         }
 
         public IProperty FindNestedProperty(string name)
@@ -660,7 +668,7 @@ namespace Iql.Entities
                 return null;
             }
 
-            var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(property, Type).Expression;
+            var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(property, (this as IEntityConfiguration).Builder, Type).Expression;
             return FindNestedPropertyByIqlExpression((iql as IqlLambdaExpression).Body as IqlPropertyExpression);
         }
     }

@@ -8,6 +8,7 @@ using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Relationships;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Parsing.Reduction;
@@ -94,10 +95,11 @@ namespace Iql.Data.DataStores.InMemory
                     {
                         while (true)
                         {
+                            var entityProperty = path.Property.EntityProperty();
                             var matches = relationshipExpander.FindMatches(
-                                ResolveSource(path.Property.Relationship.Relationship.Source.Type).ToList(path.Property.Relationship.Relationship.Source.Type),
-                                ResolveSource(path.Property.Relationship.Relationship.Target.Type).ToList(path.Property.Relationship.Relationship.Target.Type),
-                                path.Property.Relationship.Relationship,
+                                ResolveSource(entityProperty.Relationship.Relationship.Source.Type).ToList(entityProperty.Relationship.Relationship.Source.Type),
+                                ResolveSource(entityProperty.Relationship.Relationship.Target.Type).ToList(entityProperty.Relationship.Relationship.Target.Type),
+                                entityProperty.Relationship.Relationship,
                                 true);
                             if (matches != null)
                             {
@@ -141,11 +143,11 @@ namespace Iql.Data.DataStores.InMemory
             {
                 var iqlPropertyExpression = topLevelPropertyExpressions[i].Expression as IqlPropertyExpression;
                 var path = IqlPropertyPath.FromPropertyExpression(
-                    entityConfiguration,
+                    entityConfiguration.TypeMetadata,
                     iqlPropertyExpression);
                 if (path != null && path.RelationshipPath != null)
                 {
-                    expand(path.RelationshipPath, path.RelationshipPath.Property.Relationship.Relationship);
+                    expand(path.RelationshipPath, path.RelationshipPath.Property.EntityProperty().Relationship.Relationship);
                 }
             }
 
@@ -158,18 +160,18 @@ namespace Iql.Data.DataStores.InMemory
                 var rootEntityConfiguration = entityConfiguration;
                 var iqlPropertyExpression = (IqlPropertyExpression)anyAll.Parent;
                 var path = IqlPropertyPath.FromPropertyExpression(
-                    rootEntityConfiguration,
+                    rootEntityConfiguration.TypeMetadata,
                     iqlPropertyExpression);
-                expand(path, path.Property.Relationship.Relationship);
+                expand(path, path.Property.EntityProperty().Relationship.Relationship);
             }
         }
 
         public InMemoryContext<TEntity> Expand(IqlExpandExpression expandExpression)
         {
             var path = IqlPropertyPath.FromPropertyExpression(
-                DataStore.EntityConfigurationBuilder.EntityType<TEntity>(),
+                DataStore.EntityConfigurationBuilder.EntityType<TEntity>().TypeMetadata,
                 expandExpression.NavigationProperty);
-            var otherSideType = path.Property.Relationship.OtherEnd.EntityConfiguration.Type;
+            var otherSideType = path.Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration.Type;
             return (InMemoryContext<TEntity>)ExpandInternalMethod.InvokeGeneric(
                 this,
                 new object[] { expandExpression, path },
@@ -186,17 +188,18 @@ namespace Iql.Data.DataStores.InMemory
             IqlExpandExpression expandExpression,
             IqlPropertyPath path) where TTarget : class
         {
-            var relationship = path.Property.Relationship.Relationship;
+            var relationship = path.Property.EntityProperty().Relationship.Relationship;
             var source = ResolveSource(relationship.Source.Type);
             var target = ResolveSource(relationship.Target.Type);
             var expression = IqlExpressionConversion.DefaultExpressionConverter().ConvertIqlToExpression<TTarget>(
-                expandExpression.Query);
+                expandExpression.Query,
+                relationship.Source.EntityConfiguration.Builder);
             var expandContext = (InMemoryContext<TTarget>)typeof(InMemoryContext<>).ActivateGeneric(
                 new object[] { DataStore, this },
                 typeof(TTarget));
             var func = expression.Compile();
             expandContext = (InMemoryContext<TTarget>)func.DynamicInvoke(expandContext);
-            if (path.Property.Relationship.ThisIsTarget)
+            if (path.Property.EntityProperty().Relationship.ThisIsTarget)
             {
                 source = expandContext.SourceList;
             }

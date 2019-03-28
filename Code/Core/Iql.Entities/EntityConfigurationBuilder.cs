@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Data.Types;
 using Iql.Entities.Enums;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
@@ -23,17 +24,16 @@ namespace Iql.Entities
         public EntityConfigurationBuilder()
         {
             EntityConfigurationBuilders.Add(this);
+            InternalTypeResolver = new EntityConfigurationTypeResolver(this);
         }
 
-        public static Type GetEntityTypeFromName(string entityTypeName)
-        {
-            return FindConfigurationForEntityTypeName(entityTypeName)?.Type;
-        }
+        public TypeResolver InternalTypeResolver { get; }
 
         public static IEntityConfiguration FindConfigurationForEntityTypeName(string entityTypeName)
         {
-            foreach (var builder in EntityConfigurationBuilders)
+            for (var i = 0; i < EntityConfigurationBuilders.Count; i++)
             {
+                var builder = EntityConfigurationBuilders[i];
                 foreach (var config in builder._entities)
                 {
                     if (config.Key.Name == entityTypeName)
@@ -44,41 +44,6 @@ namespace Iql.Entities
             }
 
             return null;
-        }
-
-        public static IEntityConfiguration FindConfigurationForEntity(object entity)
-        {
-            return entity == null 
-                ? null 
-                : FindConfigurationForEntityType(entity.GetType());
-        }
-
-        public static IEntityConfiguration FindConfigurationForEntityType(Type entityType)
-        {
-            foreach (var builder in EntityConfigurationBuilders)
-            {
-                foreach (var config in builder._entities)
-                {
-                    if (config.Key == entityType)
-                    {
-                        return config.Value;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public static EntityConfiguration<T> FindConfigurationForEntityTypeTyped<T>()
-            where T : class
-        {
-            return (EntityConfiguration<T>) FindConfigurationForEntityType(typeof(T));
-        }
-
-        public static EntityConfigurationBuilder FindConfigurationBuilderForEntityType(Type entityType)
-        {
-            var config = FindConfigurationForEntityType(entityType);
-            return config?.Builder;
         }
 
         public IEntityConfiguration GetEntityByTypeName(string typeName)
@@ -147,6 +112,11 @@ namespace Iql.Entities
             }
             else
             {
+                //var existingType = EntityConfigurationBuilder.FindConfigurationForEntityType(typeof(T));
+                //if (existingType != null && existingType.Builder != this)
+                //{
+                //    throw new Exception("Attempting to assign an entity type to multiple configurations.");
+                //}
                 entityConfiguration = new EntityConfiguration<T>(this);
                 CacheEntityConfigurationByType(entityType, entityConfiguration);
             }
@@ -245,5 +215,20 @@ namespace Iql.Entities
         //{
         //    return this.FlattenDependencyGraphsInternal(entityType, entities);
         //}
+
+        public IIqlTypeMetadata FindType<T>()
+        {
+            return InternalTypeResolver.FindType<T>();
+        }
+
+        public IIqlTypeMetadata FindTypeByType(Type type)
+        {
+            return InternalTypeResolver.FindTypeByType(type);
+        }
+
+        public IIqlTypeMetadata ResolveTypeFromTypeName(string typeName)
+        {
+            return InternalTypeResolver.ResolveTypeFromTypeName(typeName);
+        }
     }
 }

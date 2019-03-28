@@ -234,7 +234,7 @@ namespace Iql.OData
         public override async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
-            var fullQueryUri = await operation.Operation.Queryable.ResolveODataUriFromQueryAsync(Configuration);
+            var fullQueryUri = await operation.Operation.Queryable.ResolveODataUriFromQueryAsync(EntityConfigurationBuilder, Configuration);
             return await PerformGetInternalAsync(operation, fullQueryUri);
         }
 

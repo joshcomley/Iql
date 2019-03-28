@@ -57,26 +57,26 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
 
                 if (propertyType == null)
                 {
-                    var entityConfig = EntityConfigurationBuilder.FindConfigurationForEntityType(rootEntityType);
-                    if (entityConfig != null)
+                    var resolvedType = context.TypeResolver.FindTypeByType(rootEntityType);
+                    if (resolvedType != null)
                     {
-                        IProperty configuredProperty = null;
+                        ITypeProperty configuredProperty = null;
                         if (parent is IqlPropertyExpression)
                         {
-                            var path = IqlPropertyPath.FromPropertyExpression(entityConfig, parent as IqlPropertyExpression, false);
-                            if (path != null && path.Property != null && path.Property.TypeDefinition != null)
+                            var path = IqlPropertyPath.FromPropertyExpression(resolvedType, parent as IqlPropertyExpression, false);
+                            if (path != null && path.Property != null)
                             {
                                 configuredProperty = path.Property;
                             }
                         }
                         else if (parent is IqlRootReferenceExpression)
                         {
-                            configuredProperty = entityConfig.FindProperty(expression.Name);
+                            configuredProperty = resolvedType.FindProperty(expression.Name);
                         }
                         if (configuredProperty != null)
                         {
-                            propertyType = configuredProperty.TypeDefinition.Type;
-                            if (configuredProperty.TypeDefinition.IsCollection)
+                            propertyType = configuredProperty.Type;
+                            if (configuredProperty.IsCollection)
                             {
                                 propertyType = typeof(IEnumerable);
                             }

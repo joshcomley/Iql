@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
@@ -23,7 +24,7 @@ namespace Iql.Tests.Tests
             person.Client = new Client();
             person.Client.CreatedByUser = new ApplicationUser();
             person.Client.CreatedByUser.ClientId = 7;
-            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
+            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db.EntityConfigurationContext, Db.EntityConfigurationContext);
             Assert.AreEqual("Person Description - 7", result.Result);
         }
 
@@ -33,7 +34,7 @@ namespace Iql.Tests.Tests
             var person = new Person();
             person.Description = "Person Description";
             person.Client = new Client();
-            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person);
+            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db.EntityConfigurationContext, Db.EntityConfigurationContext);
             Assert.AreEqual("Person Description - ", result.Result);
         }
 
@@ -86,7 +87,7 @@ namespace Iql.Tests.Tests
         public void TopLevelPropertyExpressionsTest()
         {
             Expression<Func<Person, string>> expression = _ => _.Description + " - " + _.Client.CreatedByUser.ClientId;
-            var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(Person)).Expression;
+            var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, Db.EntityConfigurationContext, typeof(Person)).Expression;
             var propertyExpressions = iql.TopLevelPropertyExpressions();
             Assert.AreEqual(2, propertyExpressions.Length);
             Assert.AreEqual(nameof(Person.Description), (propertyExpressions[0].Expression as IqlPropertyExpression).PropertyName);
@@ -179,11 +180,11 @@ namespace Iql.Tests.Tests
         public void RebasePropertyPath()
         {
             var personConfiguration = Db.EntityConfigurationContext.EntityType<Person>();
-            var pathBase = IqlPropertyPath.FromLambda(u => u.Type.CreatedByUser,
-                personConfiguration);
+            var pathBase = IqlPropertyPath.FromLambda<Person>(u => u.Type.CreatedByUser,
+                Db.EntityConfigurationContext);
             Assert.AreEqual($"{nameof(Person.Type)}/{nameof(PersonType.CreatedByUser)}", pathBase.PathToHere);
-            var path = IqlPropertyPath.FromLambda(u => u.Type.CreatedByUser.Client.AverageSales,
-                personConfiguration);
+            var path = IqlPropertyPath.FromLambda<Person>(u => u.Type.CreatedByUser.Client.AverageSales,
+                Db.EntityConfigurationContext);
             Assert.AreEqual($"{nameof(Person.Type)}/{nameof(PersonType.CreatedByUser)}/{nameof(ApplicationUser.Client)}/{nameof(Client.AverageSales)}", path.PathToHere);
             var subPath = path.RebaseFrom(pathBase);
             Assert.AreEqual($"{nameof(ApplicationUser.Client)}/{nameof(Client.AverageSales)}", subPath.PathToHere);
@@ -196,9 +197,9 @@ namespace Iql.Tests.Tests
             var userConfiguration = Db.EntityConfigurationContext.EntityType<ApplicationUser>();
             var personTypeConfiguration = Db.EntityConfigurationContext.EntityType<PersonType>();
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
-            var path = IqlPropertyPath.FromLambda(u => u.Type.CreatedByUser.Client.AverageSales,
-                personConfiguration);
-            Assert.AreEqual(path.Property, clientConfiguration.FindProperty(nameof(Client.AverageSales)));
+            var path = IqlPropertyPath.FromLambda<Person>(u => u.Type.CreatedByUser.Client.AverageSales,
+                Db.EntityConfigurationContext);
+            Assert.AreEqual(path.Property.EntityProperty(), clientConfiguration.FindProperty(nameof(Client.AverageSales)));
             var client = new Client();
             client.AverageSales = 12.3f;
             var person = new Person
@@ -227,7 +228,7 @@ namespace Iql.Tests.Tests
                 {
                     var expectedProperty = pathPartsExpected[i];
                     var pathPath = path.PropertyPath[i];
-                    Assert.AreEqual(expectedProperty, pathPath.Property);
+                    Assert.AreEqual(expectedProperty, pathPath.Property.EntityProperty());
                 }
 
                 path = path.Parent;

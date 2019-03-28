@@ -48,8 +48,10 @@ namespace Iql.Tests.Tests.DotNet
         public void TestEnumComparisonParsers()
         {
             var iql = IqlConverter.Instance.ConvertLambdaToIql<PersonReport>(_ =>
-                _.Status == FaultReportStatus.PassWithObservations);
-            var csharp = IqlConverter.Instance.ConvertIqlToExpressionString(iql.Expression);
+                _.Status == FaultReportStatus.PassWithObservations,
+                TypeResolver);
+            var csharp = IqlConverter.Instance.ConvertIqlToExpressionString(iql.Expression,
+                TypeResolver);
             Assert.AreEqual($"entity => ((int)entity.Status == 1)", csharp);
         }
 

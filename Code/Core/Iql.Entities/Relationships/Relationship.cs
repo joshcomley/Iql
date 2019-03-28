@@ -32,8 +32,8 @@ namespace Iql.Entities.Relationships
             Expression<Func<TTarget, TKey>> targetKeyProperty)
         {
             var expressionConverter = IqlExpressionConversion.DefaultExpressionConverter();
-            var sourceIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(sourceKeyProperty).Expression;
-            var targetIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(targetKeyProperty).Expression;
+            var sourceIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(sourceKeyProperty, Builder).Expression;
+            var targetIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(targetKeyProperty, Builder).Expression;
             var sourceProperty = Source.EntityConfiguration.FindOrDefinePropertyByName(sourceIqlProperty.PropertyName, typeof(TKey));
             if (sourceProperty != null && sourceProperty.Kind.HasFlag(PropertyKind.Primitive))
             {

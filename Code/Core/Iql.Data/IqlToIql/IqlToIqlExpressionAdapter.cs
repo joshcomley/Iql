@@ -2,21 +2,15 @@ using System;
 using Iql.Data.IqlToIql.Parsers;
 using Iql.Entities;
 using Iql.Parsing;
+using Iql.Parsing.Types;
 
 namespace Iql.Data.IqlToIql
 {
     public class IqlToIqlExpressionAdapter : AsyncIqlExpressionAdapter<IqlToIqlIqlData>
     {
-        public IEntityConfigurationBuilder EntityConfigurationContext { get; }
-
-        public IEntityConfiguration ResolveEntityConfiguration(Type entityType)
+        public IqlToIqlExpressionAdapter(ITypeResolver typeResolver)
         {
-            return EntityConfigurationContext.GetEntityByType(entityType);
-        }
-
-        public IqlToIqlExpressionAdapter(IEntityConfigurationBuilder entityConfigurationContext)
-        {
-            EntityConfigurationContext = entityConfigurationContext;
+            TypeResolver = typeResolver;
             //Registry.Register(typeof(IqlExpression), () => new JavaScriptActionParser());
             Registry.Register(typeof(IqlLiteralExpression), () => new IqlToIqlLiteralParser());
             //Registry.Register(typeof(IqlDistanceExpression), () => new IqlToIqlDistanceParser());
@@ -38,6 +32,8 @@ namespace Iql.Data.IqlToIql
             Registry.Register(typeof(IqlStringSubStringExpression), () => new IqlToIqlStringSubStringParser());
             Registry.Register(typeof(IqlWithKeyExpression), () => new IqlToIqlWithKeyParser());
         }
+
+        public ITypeResolver TypeResolver { get; set; }
 
         public override IqlToIqlIqlData NewData()
         {

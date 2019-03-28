@@ -5,6 +5,7 @@ using System.Reflection;
 using Iql.Conversion;
 using Iql.Entities.Permissions;
 using Iql.Extensions;
+using Iql.Parsing.Types;
 using Newtonsoft.Json;
 
 namespace Iql.Entities
@@ -56,7 +57,7 @@ namespace Iql.Entities
                     {
                         _iqlConvertedExpression = (LambdaExpression) ConvertEntityIqlToLambdaMethod.InvokeGeneric(
                             null,
-                            new object[] {IqlExpression},
+                            new object[] { IqlExpression, EntityConfigurationBuilder },
                             EntityType.Type,
                             UserType.Type
                         );
@@ -65,7 +66,7 @@ namespace Iql.Entities
                     {
                         _iqlConvertedExpression = (LambdaExpression)ConvertIqlToLambdaMethod.InvokeGeneric(
                             null,
-                            new object[] { IqlExpression },
+                            new object[] { IqlExpression, EntityConfigurationBuilder },
                             UserType.Type
                         );
                     }
@@ -75,17 +76,17 @@ namespace Iql.Entities
             }
         }
 
-        private static LambdaExpression ConvertEntityIqlToLambda<TEntity, TUser>(IqlExpression expression)
+        private static LambdaExpression ConvertEntityIqlToLambda<TEntity, TUser>(IqlExpression expression, ITypeResolver typeResolver)
             where TEntity : class
             where TUser : class
         {
-            return IqlConverter.Instance.ConvertIqlToExpression<IqlEntityUserPermissionContext<TEntity, TUser>>(expression);
+            return IqlConverter.Instance.ConvertIqlToExpression<IqlEntityUserPermissionContext<TEntity, TUser>>(expression, typeResolver);
         }
 
-        private static LambdaExpression ConvertIqlToLambda<TUser>(IqlExpression expression)
+        private static LambdaExpression ConvertIqlToLambda<TUser>(IqlExpression expression, ITypeResolver typeResolver)
             where TUser : class
         {
-            return IqlConverter.Instance.ConvertIqlToExpression<IqlUserPermissionContext<TUser>>(expression);
+            return IqlConverter.Instance.ConvertIqlToExpression<IqlUserPermissionContext<TUser>>(expression, typeResolver);
         }
 
         public IEntityConfiguration UserType => EntityConfigurationBuilder.GetEntityByTypeName(UserTypeName);

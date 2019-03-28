@@ -44,7 +44,7 @@ namespace Iql.Entities.DisplayFormatting
             {
                 key = "Default";
             }
-            var formatter = new EntityDisplayTextFormatter<TEntity>(expression, key);
+            var formatter = new EntityDisplayTextFormatter<TEntity>(EntityConfiguration, expression, key);
             if (_formatters.ContainsKey(key))
             {
                 _formatters[key] = formatter;

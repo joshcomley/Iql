@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data.Types;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
 using Iql.Parsing;
+using Iql.Parsing.Types;
 
 namespace Iql.Data.IqlToIql
 {
@@ -15,8 +17,8 @@ namespace Iql.Data.IqlToIql
         public bool Success { get; set; } = true;
         public IqlServiceProvider ServiceProvider { get; }
 
-        public IqlToIqlParserContext(IEntityConfiguration entityConfiguration, IqlServiceProvider serviceProvider) : base(
-            new IqlToIqlExpressionAdapter(entityConfiguration.Builder), entityConfiguration.Type, null, new TypeResolver())
+        public IqlToIqlParserContext(IIqlTypeMetadata resolvedType, ITypeResolver resolver, IqlServiceProvider serviceProvider) : base(
+            new IqlToIqlExpressionAdapter(resolver), resolvedType.Type, null, resolver)
         {
             ServiceProvider = serviceProvider;
         }
@@ -44,7 +46,7 @@ namespace Iql.Data.IqlToIql
         public SpecialTypeDefinition ResolveSpecialTypeMap(Action<SpecialTypeDefinition> action = null)
         {
             var definition =
-                Adapter.EntityConfigurationContext.GetEntityByType(CurrentEntityType).SpecialTypeDefinition;
+                Adapter.TypeResolver.FindTypeByType(CurrentEntityType).EntityConfiguration()?.SpecialTypeDefinition;
             if(definition  != null && action != null)
             {
                 action(definition);

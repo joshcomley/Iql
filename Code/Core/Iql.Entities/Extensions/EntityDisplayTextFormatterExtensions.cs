@@ -35,7 +35,7 @@ namespace Iql.Entities.Extensions
             var result = new List<IqlPropertyPath>();
             foreach (var path in uniquePaths)
             {
-                var type = path.Property.TypeDefinition.ToIqlType();
+                var type = path.Property.ToIqlType();
                 switch (type)
                 {
                     case IqlType.String:
@@ -59,12 +59,12 @@ namespace Iql.Entities.Extensions
         {
             if (displayFormatter != null)
             {
-                var expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(displayFormatter.FormatterExpression, entityConfiguration.Type);
+                var expression = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(displayFormatter.FormatterExpression, entityConfiguration.Builder, entityConfiguration.Type);
                 var propertyExpressions = expression.Expression.TopLevelPropertyExpressions().ToArray();
                 var propertyPaths = new List<IqlPropertyPath>();
                 for (var i = 0; i < propertyExpressions.Length; i++)
                 {
-                    var path = IqlPropertyPath.FromPropertyExpression(entityConfiguration, propertyExpressions[i].Expression as IqlPropertyExpression);
+                    var path = IqlPropertyPath.FromPropertyExpression(entityConfiguration.TypeMetadata, propertyExpressions[i].Expression as IqlPropertyExpression);
                     propertyPaths.Add(path);
                 }
 

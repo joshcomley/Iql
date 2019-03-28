@@ -200,11 +200,11 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlPropertyExpression action, IqlToIqlParserContext parser)
         {
-            var property = parser.Adapter.EntityConfigurationContext.EntityType<TEntity>()
+            var property = parser.Adapter.TypeResolver.FindType<TEntity>()
                 .FindProperty(action.PropertyName);
             if (property != null && property.Kind.HasFlag(PropertyKind.Count))
             {
-                action.PropertyName = property.Relationship.ThisEnd.Property.Name;
+                action.PropertyName = property.EntityProperty().Relationship.ThisEnd.Property.Name;
                 return new IqlCountExpression(null, action, null);
             }
             parser.ResolveSpecialTypeMap(specialTypeMap =>
@@ -432,10 +432,12 @@ namespace Iql.Data.IqlToIql.Parsers
             if (action.Query != null)
             {
                 var path = IqlPropertyPath.FromPropertyExpression(
-                    parser.Adapter.EntityConfigurationContext.EntityType<TEntity>(),
+                    parser.Adapter.TypeResolver.FindType<TEntity>(),
                     action.NavigationProperty);
-                var processed = await action.Query.ProcessAsync(parser.Adapter.EntityConfigurationContext.GetEntityByType(
-                    path.Property.TypeDefinition.ElementType), parser);
+                var processed = await action.Query.ProcessAsync(
+                    parser.Adapter.TypeResolver.FindTypeByType(path.Property.ElementType), 
+                    parser.TypeResolver,
+                    parser);
                 action.Query = (IqlCollectitonQueryExpression)processed.Result;
             }
 

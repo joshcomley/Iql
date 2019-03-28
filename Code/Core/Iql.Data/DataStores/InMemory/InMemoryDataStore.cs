@@ -286,6 +286,7 @@ namespace Iql.Data.DataStores.InMemory
         private int FindEntityIndexFromOperation<TEntity>(EntityCrudOperation<TEntity> operation) where TEntity : class
         {
             return FindEntityIndex(
+                operation.DataContext.EntityConfigurationContext,
                 operation.EntityType,
                 operation.Entity,
                 DataSet<TEntity>()
@@ -340,7 +341,7 @@ namespace Iql.Data.DataStores.InMemory
         public override async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
         {
             var iql = await operation.Operation.Queryable.ToIqlAsync();
-            var expression = IqlExpressionConversion.DefaultExpressionConverter().ConvertIqlToExpression<TEntity>(iql);
+            var expression = IqlExpressionConversion.DefaultExpressionConverter().ConvertIqlToExpression<TEntity>(iql, operation.Operation.DataContext.EntityConfigurationContext);
             var func = (Func<InMemoryContext<TEntity>, InMemoryContext<TEntity>>)expression.Compile();
             var inMemoryContext = new InMemoryContext<TEntity>(this);
             var result = func(inMemoryContext);

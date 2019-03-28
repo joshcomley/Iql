@@ -7,7 +7,7 @@ using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfiguration : IEntityMetadata, IPropertyContainer
+    public interface IEntityConfiguration : IEntityMetadata, IPropertyContainer, IIqlTypeMetadataProvider
     {
         IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null);
         IEntityConfiguration AddMethod(IqlMethod method);

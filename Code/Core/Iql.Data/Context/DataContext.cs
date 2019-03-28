@@ -262,7 +262,6 @@ namespace Iql.Data.Context
             void midSetup()
             {
                 DataStore = dataStore;
-                int a = 0;
             }
             var thisType = GetType();
             if (!EntityConfigurationsBuilders.ContainsKey(thisType))

@@ -11,8 +11,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
 
         public IEntityConfigurationBuilder ResolveEntityConfigurationBuilder(Type entityType)
         {
-            return EntityConfigurationContext ??
-                   EntityConfigurationBuilder.FindConfigurationBuilderForEntityType(entityType);
+            return EntityConfigurationContext;
         }
 
         public JavaScriptIqlExpressionAdapter(IEntityConfigurationBuilder entityConfigurationContext = null)

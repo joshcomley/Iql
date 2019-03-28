@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Evaluation;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Extensions;
 
 namespace Iql.Data.Extensions
@@ -69,8 +70,8 @@ namespace Iql.Data.Extensions
                         //else
                         //{
                         //}
-                        var key = part.Property.Relationship.ThisEnd.GetCompositeKey(parent, true);
-                        result = await customEvaluator.GetEntityByKeyAsync(part.Property.Relationship.OtherEnd.EntityConfiguration,
+                        var key = part.Property.EntityProperty().Relationship.ThisEnd.GetCompositeKey(parent, true);
+                        result = await customEvaluator.GetEntityByKeyAsync(part.Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration,
                             key);
                         if (part.Property.GetValue(parent) != result)
                         {

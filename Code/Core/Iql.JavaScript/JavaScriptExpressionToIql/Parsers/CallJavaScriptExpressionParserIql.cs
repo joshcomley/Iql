@@ -119,9 +119,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                                     Type newRootEntityType = null;
                                     if (currentRootEntityType != null && calleeIql.Value is IqlPropertyExpression)
                                     {
-                                        var currentRootEntityConfiguration = 
-                                            EntityConfigurationBuilder
-                                            .FindConfigurationForEntityType(currentRootEntityType);
+                                        var currentRootEntityConfiguration =
+                                            context.TypeResolver.FindTypeByType(currentRootEntityType);
                                         if (currentRootEntityConfiguration != null)
                                         {
                                             var path = IqlPropertyPath.FromPropertyExpression(
@@ -129,7 +128,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                                                 calleeIql.Value as IqlPropertyExpression);
                                             if (path != null)
                                             {
-                                                newRootEntityType = path.Property.TypeDefinition.ElementType;
+                                                newRootEntityType = path.Property.ElementType;
                                             }
                                         }
                                     }

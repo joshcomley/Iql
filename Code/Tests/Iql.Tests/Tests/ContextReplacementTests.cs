@@ -37,7 +37,7 @@ namespace Iql.Tests.Tests
             {
                 Entity = client
             };
-            var lambda = IqlConverter.Instance.ConvertIqlToExpression<MyContext<Client>>(iql);
+            var lambda = IqlConverter.Instance.ConvertIqlToExpression<MyContext<Client>>(iql, TypeResolver);
             var fn = (Func<MyContext<Client>, string>)lambda.Compile();
             var result = fn(context);
             Assert.AreEqual(result, "My client");
@@ -61,7 +61,7 @@ namespace Iql.Tests.Tests
             {
                 Entity = client
             };
-            var lambda = IqlConverter.Instance.ConvertIqlToExpression<MyContext<Client>>(iql);
+            var lambda = IqlConverter.Instance.ConvertIqlToExpression<MyContext<Client>>(iql, TypeResolver);
             var fn = (Func<MyContext<Client>, string>)lambda.Compile();
             var result = fn(context);
             Assert.AreEqual(result, "hello back");

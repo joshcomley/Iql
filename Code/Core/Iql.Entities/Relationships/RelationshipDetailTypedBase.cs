@@ -25,7 +25,7 @@ namespace Iql.Entities.Relationships
             relationshipSide)
         {
             var entityConfiguration = configuration.EntityType<T>();
-            var property = IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(expression).Expression;
+            var property = IqlConverter.Instance.ConvertPropertyLambdaExpressionToIql<T>(expression, configuration).Expression;
             Property = entityConfiguration.FindOrDefineProperty<TProperty>(property.PropertyName, elementType, elementType.ToIqlType());
         }
 

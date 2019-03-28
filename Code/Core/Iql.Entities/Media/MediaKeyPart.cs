@@ -29,7 +29,7 @@ namespace Iql.Entities
                 }
 
                 var path = string.Join("/", relationshipParts);
-                return string.IsNullOrWhiteSpace(path) ? null : IqlPropertyPath.FromString(path, config);
+                return string.IsNullOrWhiteSpace(path) ? null : IqlPropertyPath.FromString(path, config.TypeMetadata);
             }
             return null;
         }

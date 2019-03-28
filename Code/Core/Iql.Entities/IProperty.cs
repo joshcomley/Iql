@@ -12,7 +12,7 @@ using Iql.Entities.ValueResolvers;
 
 namespace Iql.Entities
 {
-    public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>
+    public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>, IPropertyMetadataProvider
     {
         bool IsPersistenceKey { get; }
         bool HasInferredWith { get; }

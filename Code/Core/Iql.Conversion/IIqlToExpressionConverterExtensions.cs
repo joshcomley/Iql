@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using Iql.Conversion;
+using Iql.Parsing.Types;
 
 #if TypeScript
 using Iql.Parsing;
@@ -12,13 +13,15 @@ namespace Iql.Queryable.Extensions
     {
         public static Expression<Func<TEntity, TOut>> ConvertIqlToFunction<TEntity, TOut>(
             this IIqlToExpressionConverter expressionConverter,
-            IqlExpression expression
+            IqlExpression expression,
+            ITypeResolver typeResolver
 #if TypeScript
             , EvaluateContext evaluateContext
 #endif
             ) where TEntity : class
         {
-            return (Expression<Func<TEntity, TOut>>) expressionConverter.ConvertIqlToExpression<TEntity>(expression
+            return (Expression<Func<TEntity, TOut>>) expressionConverter.ConvertIqlToExpression<TEntity>(expression,
+                typeResolver
 #if TypeScript
                 , evaluateContext
 #endif

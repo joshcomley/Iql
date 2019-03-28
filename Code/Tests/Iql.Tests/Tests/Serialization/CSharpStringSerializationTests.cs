@@ -5,6 +5,7 @@ using Iql.Conversion;
 using Iql.DotNet;
 using Iql.DotNet.Serialization;
 using Iql.Queryable;
+using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
 
@@ -27,7 +28,7 @@ namespace Iql.Tests.Tests.Serialization
             var xml = IqlXmlSerializer.SerializeToXml(
                 expression);
             var iqlExpression = IqlXmlSerializer.DeserializeFromXml(xml);
-            var code = IqlConverter.Instance.ConvertIqlToExpressionStringAs<Client>(iqlExpression);
+            var code = IqlConverter.Instance.ConvertIqlToExpressionStringAs<Client>(iqlExpression, new AppDbContext().EntityConfigurationContext);
             Assert.AreEqual(
                 expected,
                 code

@@ -60,11 +60,13 @@ namespace Iql.Data.DataStores
         }
 
         protected int FindEntityIndex<TEntity>(
+            IEntityConfigurationBuilder builder,
             Type entityType,
             TEntity clone,
             IList<TEntity> data) where TEntity : class
         {
             return Entity.FindIndexOfEntityInSetByEntity(
+                builder,
                 clone,
                 data
             );

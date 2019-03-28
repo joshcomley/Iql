@@ -427,7 +427,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
 
         public virtual string GetExpressionString(IqlExpression iql)
         {
-            var code = Converter.ConvertIqlToExpressionString(iql);
+            var code = Converter.ConvertIqlToExpressionString(iql, null);
             return code;
         }
 

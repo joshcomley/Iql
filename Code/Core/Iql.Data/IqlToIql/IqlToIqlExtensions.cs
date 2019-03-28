@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
+using Iql.Data.Types;
 using Iql.Entities;
 using Iql.Entities.Services;
+using Iql.Parsing.Types;
 
 namespace Iql.Data.IqlToIql
 {
@@ -8,12 +10,15 @@ namespace Iql.Data.IqlToIql
     {
         public static async Task<IqlExpessionResult> ProcessAsync(
             this IqlExpression expression, 
-            IEntityConfiguration entityConfiguration,
+            IIqlTypeMetadata resolvedType,
+            ITypeResolver typeResolver,
             IServiceProviderProvider serviceProvider = null)
         {
+            var sp = serviceProvider?.ServiceProvider;
             var parser = new IqlToIqlParserContext(
-                entityConfiguration,
-                serviceProvider != null ? serviceProvider.ServiceProvider : entityConfiguration.Builder.ServiceProvider);
+                resolvedType,
+                typeResolver,
+                sp);
             var result = await parser.ParseAsync(expression);
             return new IqlExpessionResult(parser.Success, result.Expression);
         }

@@ -30,8 +30,10 @@ namespace Iql.Tests.Tests.Properties
                 Id = 77,
                 Name = "My Client Type 11"
             });
-            var path = IqlPropertyPath.FromExpression<Person>(p => p.Client.Type,
-                Db.EntityConfigurationContext.EntityType<Person>());
+            var path = IqlPropertyPath.FromExpression<Person>(
+                p => p.Client.Type,
+                Db.EntityConfigurationContext
+                );
             var result = await path.EvaluateAsync(person, Db);
             Assert.AreEqual((result.Value as ClientType).Name, "My Client Type 11");
         }
@@ -40,7 +42,7 @@ namespace Iql.Tests.Tests.Properties
         public void RelationshipPropertyPath()
         {
             Expression<Func<ApplicationUser, object>> exp = c => c.Client.Type.Name;
-            var path = IqlPropertyPath.FromLambdaExpression(exp, Db.EntityConfigurationContext.EntityType<ApplicationUser>());
+            var path = IqlPropertyPath.FromLambdaExpression(exp, Db.EntityConfigurationContext, Db.EntityConfigurationContext.EntityType<ApplicationUser>().TypeMetadata);
             path.Separator = ".";
             Assert.AreEqual("Client.Type", path.RelationshipPathToHere);
         }
@@ -55,7 +57,7 @@ namespace Iql.Tests.Tests.Properties
             client.Type = type;
             type.Name = "Old name";
             Assert.AreEqual("Old name", type.Name);
-            var path = IqlPropertyPath.FromLambda(u => u.Client.Type.Name, Db.EntityConfigurationContext.EntityType<ApplicationUser>());
+            var path = IqlPropertyPath.FromLambda<ApplicationUser>(u => u.Client.Type.Name, Db.EntityConfigurationContext);
             path.SetValue(user, "Hello");
             Assert.AreEqual("Hello", type.Name);
         }

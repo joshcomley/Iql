@@ -26,14 +26,14 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             var property = context.ParseWith(expression.Property, owner).Value;
             property.Parent = owner;
             // We need to determine the type of the property, if possible, using IqlPropertyPath
-            var entityConfiguration = EntityConfigurationBuilder.FindConfigurationForEntityType(context.CurrentRootEntity.Type);
+            var entityConfiguration = context.TypeResolver.FindTypeByType(context.CurrentRootEntity.Type);
             if (entityConfiguration != null && property.Kind == IqlExpressionKind.Property)
             {
                 var path = IqlPropertyPath.FromPropertyExpression(entityConfiguration,
                     property as IqlPropertyExpression);
                 if (path != null && path.Property != null)
                 {
-                    property.ReturnType = path.Property.TypeDefinition.Kind;
+                    property.ReturnType = path.Property.ToIqlType();
                 }
             }
             return new IqlParseResult(property);

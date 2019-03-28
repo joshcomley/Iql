@@ -194,10 +194,10 @@ namespace Iql.Data.Extensions
                         var conditionResult = await inferredWith
                             .InferredWithConditionIql
                             .EvaluateIqlCustomAsync(
-                                property.EntityConfiguration.Builder,
                                 serviceProviderProvider,
                                 NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
                                 customEvaluator,
+                                property.EntityConfiguration.Builder,
                                 property.EntityConfiguration.Type);
 
                         if (!Equals(conditionResult.Result, true))
@@ -231,10 +231,10 @@ namespace Iql.Data.Extensions
 
                     var inferredWithIql = inferredWith.InferredWithIql;
                     var result = await inferredWithIql.EvaluateIqlCustomAsync(
-                        property.EntityConfiguration.Builder,
                         serviceProviderProvider,
                         NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type), 
                         customEvaluator,
+                        property.EntityConfiguration.Builder,
                         property.EntityConfiguration.Type);
 
                     if (!result.Success)

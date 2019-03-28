@@ -1,17 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Iql.Data.Crud;
+using Iql.Data.Types;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Entities.Validation.Validation;
+using Iql.Parsing.Types;
 
 namespace Iql.Data.Logging
 {
     public class ValidationLogger
     {
+        public ITypeResolver TypeResolver { get; }
         private StringBuilder _sb;
 
-        public ValidationLogger()
+        public ValidationLogger(ITypeResolver typeResolver)
         {
+            TypeResolver = typeResolver;
             _sb = new StringBuilder();
         }
 
@@ -36,10 +41,9 @@ namespace Iql.Data.Logging
 
         public void ParseValidationResult(IEntityCrudResult validationResult)
         {
-            var config = EntityConfigurationBuilder.FindConfigurationForEntityType(
-                validationResult.LocalEntity.GetType());
-            _sb.AppendLine($"{config.FriendlyName}:");
-            _sb.AppendLine($"Key: {config.GetCompositeKeyString(validationResult.LocalEntity)}");
+            var config = TypeResolver.FindTypeByType(validationResult.LocalEntity.GetType());
+            _sb.AppendLine($"{config.EntityConfiguration().FriendlyName}:");
+            _sb.AppendLine($"Key: {config.EntityConfiguration().GetCompositeKeyString(validationResult.LocalEntity)}");
             for (var i = 0; i < validationResult.EntityValidationResults.Count; i++)
             {
                 ParseEntityValidationResult(validationResult.EntityValidationResults[i]);
