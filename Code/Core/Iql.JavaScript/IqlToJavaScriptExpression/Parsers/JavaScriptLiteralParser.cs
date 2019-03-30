@@ -20,6 +20,10 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
         public override IqlExpression ToQueryString(IqlLiteralExpression action,
             JavaScriptIqlParserContext parser)
         {
+            if (action != null && action.Value != null && action.Value is IqlLiteralExpression literal)
+            {
+                action = literal;
+            }
             if (action.Value != null && action.Value is IqlExpression)
             {
                 var exp = action.Value as IqlExpression;

@@ -168,10 +168,11 @@ namespace Iql.Data
         }
 
         public static async Task<IqlUserPermission> EvaluateEntityRuleAsync<TEntity, TUser>(this IqlUserPermissionRule rule, TUser user, TEntity entity, IDataContext dataContext)
-        where TEntity : class
-        where TUser : class
+            where TEntity : class
+            where TUser : class
         {
-            var context = new IqlEntityUserPermissionContext<TEntity, TUser>(false, null, user, entity);
+            var isEntityNew = dataContext.IsEntityNew(entity);
+            var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew == null || isEntityNew == true, null, user, entity);
             var result = await rule.IqlExpression.EvaluateIqlAsync(context, dataContext ?? DataContext.FindDataContextForEntity(entity),
                 typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
             var permission = (IqlUserPermission)result.Result;

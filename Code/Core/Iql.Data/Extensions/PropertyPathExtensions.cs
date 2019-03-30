@@ -56,50 +56,26 @@ namespace Iql.Data.Extensions
                 var part = propertyPath.PropertyPath[i];
                 var parent = result;
                 result = part.PropertyName == null ? result : result.GetPropertyValueByName(part.PropertyName);
-                if (result == null)
+                if (part.Property != null && part.Property.Kind.HasFlag(PropertyKind.Relationship))
                 {
-                    if (part.Property.Kind.HasFlag(PropertyKind.Relationship))
+                    var key = part.Property.EntityProperty().Relationship.ThisEnd.GetCompositeKey(parent, true);
+                    result = await customEvaluator.GetEntityByKeyAsync(part.Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration,
+                        key);
+                    if (part.Property.GetValue(parent) != result)
                     {
-                        //if (dataContext.DataStore.Tracking.IsTracked(parent))
-                        //{
-                        //    await customEvaluator.FetchRelationshipPropertyAsync(
-                        //        part.Property,
-                        //        part.Property.BuildRelationshipCompositeKey(parent));
-                        //    result = parent.GetPropertyValueByName(part.PropertyName);
-                        //}
-                        //else
-                        //{
-                        //}
-                        var key = part.Property.EntityProperty().Relationship.ThisEnd.GetCompositeKey(parent, true);
-                        result = await customEvaluator.GetEntityByKeyAsync(part.Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration,
-                            key);
-                        if (part.Property.GetValue(parent) != result)
-                        {
-                            part.Property.SetValue(parent, result);
-                        }
-                        results.Add(new IqlPropertyPathEvaluated(
-                            evaluationResult,
-                            part,
-                            parent,
-                            result,
-                            propertyPath.PropertyPath.Length,
-                            i));
-
-                        if (result == null)
-                        {
-                            success = i == propertyPath.PropertyPath.Length - 1;
-                            break;
-                        }
+                        part.Property.SetValue(parent, result);
                     }
-                    else
+                    results.Add(new IqlPropertyPathEvaluated(
+                        evaluationResult,
+                        part,
+                        parent,
+                        result,
+                        propertyPath.PropertyPath.Length,
+                        i));
+
+                    if (result == null)
                     {
-                        results.Add(new IqlPropertyPathEvaluated(
-                            evaluationResult,
-                            part,
-                            parent,
-                            null,
-                            propertyPath.PropertyPath.Length,
-                            i));
+                        success = i == propertyPath.PropertyPath.Length - 1;
                         break;
                     }
                 }
