@@ -32,25 +32,25 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(IqlUserPermission.Read, permission);
         }
 
-//        [TestMethod]
-//        public async Task TestComplexPermissionRule()
-//        {
-//            var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
-//            var rule =
-//                clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-//                    context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None
-//#if TypeScript
-//            , null, new EvaluateContext(_ => Evaluator.Eval(_))
-//#endif
-//                );
-//            var user = new ApplicationUser();
-//            var client = new Client();
-//            var permission = await rule.EvaluateEntityRuleAsync(user, client, Db);
-//            Assert.AreEqual(IqlUserPermission.None, permission);
-//            user.FullName = "abc";
-//            permission = await rule.EvaluateEntityRuleAsync(user, client, Db);
-//            Assert.AreEqual(IqlUserPermission.Read, permission);
-//        }
+        [TestMethod]
+        public async Task TestComplexPermissionRule()
+        {
+            var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
+            var rule =
+                clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                    context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None
+#if TypeScript
+            , null, new EvaluateContext(_ => Evaluator.Eval(_))
+#endif
+                );
+            var user = new ApplicationUser();
+            var client = new Client();
+            var permission = await rule.EvaluateEntityRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.None, permission);
+            user.FullName = "abc";
+            permission = await rule.EvaluateEntityRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.Read, permission);
+        }
         //        [TestMethod]
         //        public async Task TestComplexPermissionRule()
         //        {

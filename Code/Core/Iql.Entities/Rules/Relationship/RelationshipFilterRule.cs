@@ -5,7 +5,11 @@ namespace Iql.Entities.Rules.Relationship
 {
     public class RelationshipFilterRule<TEntity, TRelationship> : Rule<RelationshipFilterContext<TEntity>, Expression<Func<TRelationship, bool>>>, IRelationshipRule
     {
-        public RelationshipFilterRule(Expression<Func<RelationshipFilterContext<TEntity>, Expression<Func<TRelationship, bool>>>> expression, string key, string message) : base(expression, key, message)
+        public RelationshipFilterRule(
+            Expression<Func<RelationshipFilterContext<TEntity>, Expression<Func<TRelationship, bool>>>> expression,
+            string key, 
+            string message) 
+            : base(expression, key, message)
         {
         }
 

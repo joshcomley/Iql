@@ -10,19 +10,19 @@ namespace Iql.Parsing.Types
         public object UnderlyingObject => TypeMetadata.UnderlyingObject;
         public IIqlTypeMetadata TypeMetadata { get; }
 
-        public ResolvedType(IIqlTypeMetadata typeMetadata, IIqlTypeMetadata[] genericTypeParameters = null)
+        public ResolvedType(IIqlTypeMetadata typeMetadata, IGenericTypeParameter[] genericTypeParameters = null)
         {
             TypeMetadata = typeMetadata;
-            GenericTypeParameters = genericTypeParameters ?? new ResolvedType[] { };
+            GenericTypeParameters = genericTypeParameters ?? new IGenericTypeParameter[] { };
             var type = TypeMetadata.Type;
             if (GenericTypeParameters.Any())
             {
-                type = type.MakeGenericType(genericTypeParameters.Select(_ => _.Type).ToArray());
+                type = type.MakeGenericType(genericTypeParameters.Select(_ => _.Type.Type).ToArray());
             }
             Type = type;
         }
 
-        public IIqlTypeMetadata[] GenericTypeParameters {get;}
+        public IGenericTypeParameter[] GenericTypeParameters {get;} = new IGenericTypeParameter[]{};
 
         public Type Type { get; }
 

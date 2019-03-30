@@ -34,7 +34,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 }
             }
             var query = string.Join("\n\t\t", queryParts);
-            return new IqlFinalExpression<string>($"function(context) {{ return context{query}; }}");
+            return new IqlFinalExpression<string>($"function(contextWrapper) {{ return contextWrapper{query}; }}");
         }
     }
 }

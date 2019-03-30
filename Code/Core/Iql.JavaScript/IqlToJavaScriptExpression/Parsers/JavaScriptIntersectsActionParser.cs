@@ -9,7 +9,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             var point = parser.Parse(action.Parent).ToCodeString();
             var polygon = parser.Parse(action.Polygon).ToCodeString();
             return new IqlFinalExpression<string>(
-                $"context.{nameof(IInMemoryContext.Intersects)}({point}, {polygon})");
+                $"(context||contextWrapper).{nameof(IInMemoryContext.Intersects)}({point}, {polygon})");
         }
     }
 }

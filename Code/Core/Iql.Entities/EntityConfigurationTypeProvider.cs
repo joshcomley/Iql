@@ -13,7 +13,7 @@ namespace Iql.Entities
             EntityConfiguration = entityConfiguration;
         }
 
-        public IIqlTypeMetadata[] GenericTypeParameters { get; } = new IIqlTypeMetadata[] { };
+        public IGenericTypeParameter[] GenericTypeParameters { get; } = new IGenericTypeParameter[] { };
         public Type Type => EntityConfiguration.Type;
 
         public ITypeProperty FindProperty(string name)

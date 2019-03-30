@@ -9,7 +9,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             var left = parser.Parse(action.Left).ToCodeString();
             var right = parser.Parse(action.Right).ToCodeString();
             return new IqlFinalExpression<string>(
-                $"context.{nameof(IInMemoryContext.DistanceBetween)}({left}, {right})");
+                $"(context||contextWrapper).{nameof(IInMemoryContext.DistanceBetween)}({left}, {right})");
         }
     }
 }

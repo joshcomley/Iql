@@ -269,12 +269,30 @@ namespace Iql.Entities
                     }
 
                     var entityProperty = property.EntityProperty();
-                    if (entityProperty == null || entityProperty.Relationship == null)
+                    if (entityProperty != null)
                     {
-                        continue;
+                        if (entityProperty.Relationship == null)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            entityConfig = entityProperty.Relationship.OtherEnd.Property.EntityConfiguration.TypeMetadata;
+                        }
                     }
-
-                    entityConfig = entityProperty.Relationship.OtherEnd.Property.EntityConfiguration.TypeMetadata;
+                    else
+                    {
+                        var type = property.Type;
+                        for (var j = 0; j < property.TypeMetadata.GenericTypeParameters.Length; j++)
+                        {
+                            if (type.Name == property.TypeMetadata.GenericTypeParameters[j].Name)
+                            {
+                                type = entityConfig.GenericTypeParameters[j].Type.Type;
+                                break;
+                            }
+                        }
+                        entityConfig = typeResolver.FindTypeByType(type);
+                    }
                 }
             }
 

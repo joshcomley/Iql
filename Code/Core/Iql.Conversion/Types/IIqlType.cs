@@ -7,10 +7,16 @@ namespace Iql.Entities
     {
         IIqlTypeMetadata TypeMetadata { get; }
     }
-    
+
+    public interface IGenericTypeParameter
+    {
+        string Name { get; }
+        IIqlTypeMetadata Type { get; }
+    }
+
     public interface IIqlTypeMetadata
     {
-        IIqlTypeMetadata[] GenericTypeParameters { get; }
+        IGenericTypeParameter[] GenericTypeParameters { get; }
         Type Type { get; }
         ITypeProperty FindProperty(string name);
         object UnderlyingObject { get; }

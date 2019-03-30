@@ -14,7 +14,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             }
 
             var key = $"_lookup_{action.VariableName}_{Guid.NewGuid()}";
-            var methodCall = $"context.GetVariable(\"{key}\")";
+            var methodCall = $"(context||contextWrapper).GetVariable(\"{key}\")";
             GlobalContext.GlobalVariables.Add(key, action.Value);
             return new IqlFinalExpression<string>(methodCall);
         }

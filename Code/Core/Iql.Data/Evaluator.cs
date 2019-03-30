@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data.Context;
+using Iql.Data.DataStores.InMemory;
 using Iql.Data.Evaluation;
 using Iql.Data.Extensions;
 using Iql.Data.IqlToIql;
@@ -228,8 +229,9 @@ namespace Iql.Data
             //{
             //    entityType = context.EntityType;
             //}
+            var clone = expression.Clone();
             var processResult = await ProcessIqlExpressionAsync(
-                expression.Clone(),
+                clone,
                 context,
                 contextType,
                 typeResolver,
@@ -352,6 +354,7 @@ namespace Iql.Data
             serviceProviderProvider = serviceProviderProvider ?? DataContext.FindBuilderForEntityType(entityType);
 
             var propertyExpressions = iql.TopLevelPropertyExpressions();
+            var finalPropertyPaths = new List<IqlFlattenedExpression>();
             var lookup = new Dictionary<IqlPropertyPath, object>();
             var success = true;
             var resolvedType = typeResolver.FindTypeByType(entityType);
@@ -366,21 +369,22 @@ namespace Iql.Data
                         typeResolver,
                         resolvedType,
                         propertyExpression.Expression as IqlPropertyExpression);
-                    if (path == null)
+                    if (path != null)
                     {
-                        path = IqlPropertyPath.FromPropertyExpression(
-                            typeResolver,
-                            resolvedType,
-                            propertyExpression.Expression as IqlPropertyExpression);
+                        lookup.Add(path, null);
+                        finalPropertyPaths.Add(propertyExpression);
                     }
-                    lookup.Add(path, null);
                 }
 
                 success = processResult.Success;
             }
+            else
+            {
+                finalPropertyPaths = propertyExpressions.ToList();
+            }
             return new ProcessExpressionResult(
                 success,
-                propertyExpressions,
+                finalPropertyPaths.ToArray(),
                 lookup,
                 iql);
         }
@@ -413,7 +417,11 @@ namespace Iql.Data
             });
             var processedLambda = IqlConverter.Instance.ConvertIqlToLambdaExpression(processedIql, typeResolver);
             var compiledLambda = processedLambda.Compile();
-            var result = compiledLambda.DynamicInvoke(new object[] { entity });
+            var result = compiledLambda.DynamicInvoke(entity
+#if TypeScript
+                , new InMemoryContext<object>(null)
+#endif
+                );
             if (result is IqlLiteralExpression)
             {
                 result = (result as IqlLiteralExpression).Value;

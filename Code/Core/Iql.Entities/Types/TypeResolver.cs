@@ -25,15 +25,15 @@ namespace Iql.Data.Types
         static TypeResolver()
         {
             KnownTypes = new Dictionary<string, IIqlTypeMetadata>();
-            RegisterKnownType(typeof(RelationshipFilterContext<>));
-            RegisterKnownType(typeof(InferredValueContext<>));
-            RegisterKnownType(typeof(IqlEntityUserPermissionContext<,>));
-            RegisterKnownType(typeof(IqlUserPermissionContext<>));
+            RegisterKnownType(typeof(RelationshipFilterContext<>), "TOwner");
+            RegisterKnownType(typeof(InferredValueContext<>), "T");
+            RegisterKnownType(typeof(IqlEntityUserPermissionContext<,>), "TEntity", "TUser");
+            RegisterKnownType(typeof(IqlUserPermissionContext<>), "TUser");
         }
 
-        public static void RegisterKnownType(Type type)
+        public static void RegisterKnownType(Type type, params string[] genericParameters)
         {
-            KnownTypes.Add(CleanTypeName(type.Name), new StandardTypeMetadata(type));
+            KnownTypes.Add(CleanTypeName(type.Name), new StandardTypeMetadata(type, type.GetTypeInfo().GenericTypeParameters.Select(gt => new GenericTypeParameter(gt.Name, null)).ToArray()));
         }
 
         protected static string CleanTypeName(string typeName)
@@ -68,30 +68,91 @@ namespace Iql.Data.Types
             {
                 return null;
             }
-            var index = typeName.IndexOf("<");
-            IIqlTypeMetadata[] subTypes = null;
-            if (index != -1)
+
+            var typeNameParsed = TypeName.Parse(typeName);
+            GenericTypeParameter[] subTypes = null;
+            if (typeNameParsed.Generics?.Any() == true)
             {
-                typeName = typeName.Substring(0, index);
-                var subTypeName = fullTypeName.Substring(index + 1);
-                subTypeName = subTypeName.Substring(0, subTypeName.Length - 1);
-                var subTypeNames = subTypeName.Split(',');
-                subTypes = subTypeNames.Select(s => s.Trim()).Select(s => ResolveTypeFromTypeName(s)).ToArray();
+                subTypes = typeNameParsed.Generics.Select(s => s.Trim()).Select(s => new GenericTypeParameter(s, ResolveTypeFromTypeName(s))).ToArray();
             }
-            var resolvedType = KnownTypes.ContainsKey(typeName) ? KnownTypes[typeName] : null;
+            var resolvedType = KnownTypes.ContainsKey(typeNameParsed.Name) ? KnownTypes[typeNameParsed.Name] : null;
             return resolvedType == null ? null : new ResolvedType(resolvedType, subTypes);
         }
     }
 
+    public class TypeName
+    {
+        public string Name { get; set; }
+        public string[] Generics { get; set; }
+
+        public static TypeName Parse(string fullName)
+        {
+            var type = new TypeName();
+            var isInBrackets = 0;
+            var part = "";
+            var genericParts = new List<string>();
+            for (var i = 0; i < fullName.Length; i++)
+            {
+                if (fullName[i] == '<')
+                {
+                    if (isInBrackets == 0)
+                    {
+                        type.Name = part;
+                        part = "";
+                        isInBrackets++;
+                        continue;
+                    }
+                    isInBrackets++;
+                }
+                else if (fullName[i] == '>')
+                {
+                    isInBrackets--;
+                    if (isInBrackets == 0)
+                    {
+                        genericParts.Add(part.Trim());
+                        part = "";
+                        continue;
+                    }
+                }
+                if (isInBrackets == 1 && fullName[i] == ',')
+                {
+                    genericParts.Add(part.Trim());
+                    part = "";
+                    continue;
+                }
+                part += fullName[i];
+            }
+            if (!string.IsNullOrWhiteSpace(part))
+            {
+                type.Name = part;
+            }
+            type.Generics = genericParts.ToArray();
+            return type;
+        }
+    }
+
+
+    public class GenericTypeParameter : IGenericTypeParameter
+    {
+        public string Name { get; }
+        public IIqlTypeMetadata Type { get; }
+
+        public GenericTypeParameter(string name, IIqlTypeMetadata type)
+        {
+            Name = name;
+            Type = type;
+        }
+    }
     public class StandardTypeMetadata : IIqlTypeMetadata
     {
         public object UnderlyingObject => Type;
-        public StandardTypeMetadata(Type type)
+        public StandardTypeMetadata(Type type, IGenericTypeParameter[] genericTypeParameters)
         {
             Type = type;
+            GenericTypeParameters = genericTypeParameters ?? new IGenericTypeParameter[] { };
         }
 
-        public IIqlTypeMetadata[] GenericTypeParameters { get; } = new IIqlTypeMetadata[] { };
+        public IGenericTypeParameter[] GenericTypeParameters { get; } = new IGenericTypeParameter[] { };
         public Type Type { get; }
         public ITypeProperty FindProperty(string name)
         {

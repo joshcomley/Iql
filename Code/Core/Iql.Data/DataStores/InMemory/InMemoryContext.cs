@@ -16,7 +16,6 @@ using Iql.Serialization;
 
 namespace Iql.Data.DataStores.InMemory
 {
-
     public class InMemoryContext<TEntity> : IInMemoryContext where TEntity : class
     {
         public Dictionary<string, object> Variables { get; }
@@ -69,7 +68,7 @@ namespace Iql.Data.DataStores.InMemory
         {
             DataStore = dataStore;
             Parent = parent;
-            SourceList = DataStore.DataSet<TEntity>();
+            SourceList = DataStore?.DataSet<TEntity>();
         }
 
 #if !TypeScript
