@@ -1728,7 +1728,7 @@ namespace Iql.Data.Context
             return dataContext?.GetEntityState(entity);
         }
 
-        public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key)
+        public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)
         {
             return GetDbSetByEntityType(entityConfiguration.Type)
                 .GetWithKeyAsync(key);

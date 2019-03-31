@@ -6,7 +6,7 @@ using Iql.Entities;
 
 namespace Iql.Server.OData.Net
 {
-    public class IqlServerEvaluator : IIqlCustomEvaluator
+    public class IqlServerEvaluator : IIqlDataEvaluator
     {
         private readonly bool _isEntityNew;
         public CrudManager CrudManager { get; set; }
@@ -17,7 +17,7 @@ namespace Iql.Server.OData.Net
             CrudManager = crudManager;
         }
 
-        public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key)
+        public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)
         {
             var dic = new List<KeyValuePair<string, object>>();
             foreach (var constraint in key.Keys)

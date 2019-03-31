@@ -181,7 +181,7 @@ namespace Iql.Data
 
         public static async Task<IqlUserPermission> GetUserPermissionAsync(
             this UserPermissionsManager permissionsManager,
-            IIqlCustomEvaluator evaluationContext,
+            IIqlDataEvaluator evaluationContext,
             object user,
             object entity = null,
             IServiceProviderProvider serviceProviderProvider = null,
@@ -228,7 +228,7 @@ namespace Iql.Data
             TUser user,
             TEntity entity,
             IServiceProviderProvider serviceProviderProvider,
-            IIqlCustomEvaluator evaluator,
+            IIqlDataEvaluator evaluator,
             ITypeResolver typeResolver,
             bool isEntityNew)
             where TEntity : class
@@ -261,7 +261,7 @@ namespace Iql.Data
             this IqlUserPermissionRule rule,
             TUser user,
             IServiceProviderProvider serviceProviderProvider,
-            IIqlCustomEvaluator evaluator,
+            IIqlDataEvaluator evaluator,
             ITypeResolver typeResolver)
             where TEntity : class
             where TUser : class
@@ -287,7 +287,7 @@ namespace Iql.Data
             return expression.EvaluateIqlCustomAsync(
                 (IServiceProviderProvider)dataContext ?? DataContext.FindBuilderForEntityType(contextType),
                 entity,
-                new DefaultEvaluator(dataContext),
+                dataContext,
                 typeResolver ?? dataContext.EntityConfigurationContext,
                 contextType);
         }
@@ -301,12 +301,11 @@ namespace Iql.Data
             bool populatePath = false
             )
         {
-            var evaluator = new DefaultEvaluator(dataContext);
             var value = await EvaluateIqlCustomAsync(
                 expression,
                 dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(contextType),
                 context,
-                evaluator,
+                dataContext,
                 typeResolver ?? dataContext.EntityConfigurationContext,
                 contextType,
                 populatePath);
@@ -319,7 +318,7 @@ namespace Iql.Data
             this IqlExpression expression,
             IServiceProviderProvider serviceProviderProvider,
             object context,
-            IIqlCustomEvaluator customEvaluator,
+            IIqlDataEvaluator dataEvaluator,
             ITypeResolver typeResolver,
             Type contextType = null,
             bool populatePath = false
@@ -378,7 +377,7 @@ namespace Iql.Data
                 item = item ?? keys[i];
                 var evaluationResult = await item.EvaluateCustomAsync(
                     e,
-                    customEvaluator,
+                    dataEvaluator,
                     populatePath);
                 paths.Add(evaluationResult);
                 var flattenedExpression = processResult.propertyExpressions.First(_ => _.Expression == iqlPropertyPaths[i].Expression);

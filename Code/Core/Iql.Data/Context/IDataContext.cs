@@ -22,7 +22,7 @@ using Iql.Parsing;
 
 namespace Iql.Data.Context
 {
-    public interface IDataContext : IServiceProviderProvider, IIqlCustomEvaluator
+    public interface IDataContext : IServiceProviderProvider, IIqlDataEvaluator
     {
         EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged { get; }
         bool EnableOffline { get; set; }

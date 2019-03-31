@@ -906,14 +906,14 @@ namespace IqlSampleApp.ApiContext.Base
                         },
                         IfTrue = new IqlLiteralExpression
                         {
-                            Value = 2L,
+                            Value = 3L,
                             InferredReturnType = IqlType.Integer,
                             Kind = IqlExpressionKind.Literal,
                             ReturnType = IqlType.Unknown
                         },
                         IfFalse = new IqlLiteralExpression
                         {
-                            Value = 1L,
+                            Value = 2L,
                             InferredReturnType = IqlType.Integer,
                             Kind = IqlExpressionKind.Literal,
                             ReturnType = IqlType.Unknown

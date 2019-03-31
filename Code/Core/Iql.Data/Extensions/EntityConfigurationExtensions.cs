@@ -19,10 +19,10 @@ namespace Iql.Data.Extensions
             object oldEntity,
             object entity,
             bool isInitialize,
-            IIqlCustomEvaluator customEvaluator,
+            IIqlDataEvaluator dataEvaluator,
             IServiceProviderProvider serviceProviderProvider = null)
         {
-            var result = await TryGetInferredValuesAsync(config, oldEntity, entity, isInitialize, customEvaluator, serviceProviderProvider);
+            var result = await TryGetInferredValuesAsync(config, oldEntity, entity, isInitialize, dataEvaluator, serviceProviderProvider);
             result.ApplyChanges();
             return result;
         }
@@ -32,7 +32,7 @@ namespace Iql.Data.Extensions
             object oldEntity, 
             object entity,
             bool isInitialize,
-            IIqlCustomEvaluator customEvaluator, 
+            IIqlDataEvaluator dataEvaluator, 
             IServiceProviderProvider serviceProviderProvider)
         {
             serviceProviderProvider = serviceProviderProvider ?? config.Builder;
@@ -44,7 +44,7 @@ namespace Iql.Data.Extensions
                     oldEntity,
                     entity,
                     isInitialize,
-                    customEvaluator,
+                    dataEvaluator,
                     serviceProviderProvider);
                 changes.Add(inferredValueChanges);
             }

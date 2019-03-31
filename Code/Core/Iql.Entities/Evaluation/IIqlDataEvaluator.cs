@@ -5,11 +5,12 @@ using Iql.Entities;
 
 namespace Iql.Data.Evaluation
 {
-    public interface IIqlCustomEvaluator
+    public interface IIqlDataEvaluator
     {
         Task<object> GetEntityByKeyAsync(
             IEntityConfiguration entityConfiguration,
-            CompositeKey key);
+            CompositeKey key,
+            string[] expandPaths);
 
         bool IsEntityNew(
             IEntityConfiguration entityConfiguration,

@@ -123,7 +123,7 @@ namespace Iql.Data.Extensions
                 oldEntity, 
                 entity,
                 isInitialize,
-                new DefaultEvaluator(dataContext), 
+                dataContext, 
                 dataContext);
         }
     }

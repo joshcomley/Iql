@@ -16,13 +16,13 @@ namespace Iql.Data.Extensions
             IDataContext dataContext,
             bool populate)
         {
-            return await EvaluateCustomAsync(propertyPath, entity, new DefaultEvaluator(dataContext), populate);
+            return await EvaluateCustomAsync(propertyPath, entity, dataContext, populate);
         }
 
         public static async Task<IqlPropertyPathEvaluationResult> EvaluateCustomAsync(
             this IqlPropertyPath propertyPath, 
             object entity, 
-            IIqlCustomEvaluator customEvaluator,
+            IIqlDataEvaluator dataEvaluator,
             bool populate)
         {
             var evaluationResult = new IqlPropertyPathEvaluationResult(
@@ -65,8 +65,10 @@ namespace Iql.Data.Extensions
                 if (part.Property != null && part.Property.Kind.HasFlag(PropertyKind.Relationship))
                 {
                     var key = part.Property.EntityProperty().Relationship.ThisEnd.GetCompositeKey(parent, true);
-                    result = await customEvaluator.GetEntityByKeyAsync(part.Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration,
-                        key);
+                    result = await dataEvaluator.GetEntityByKeyAsync(
+                        part.Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration,
+                        key,
+                        new string[]{});
                     if (populate && part.Property.GetValue(parent) != result)
                     {
                         part.Property.SetValue(parent, result);

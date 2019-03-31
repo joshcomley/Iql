@@ -155,7 +155,7 @@ namespace Iql.Data.Extensions
                 oldEntity,
                 entity,
                 isInitialize,
-                new DefaultEvaluator(dataContext),
+                dataContext,
                 serviceProviderProvider);
             changes.ApplyChanges();
             return changes.Success;
@@ -166,7 +166,7 @@ namespace Iql.Data.Extensions
             object oldEntity,
             object entity, 
             bool isInitialize,
-            IIqlCustomEvaluator customEvaluator,
+            IIqlDataEvaluator dataEvaluator,
             IServiceProviderProvider serviceProviderProvider = null)
         {
             //Func<InferredValueChanges> noChangeResult = () => new InferredValueChanges(
@@ -180,9 +180,9 @@ namespace Iql.Data.Extensions
             Func<IProperty, object, InferredValueChange> getPropertyChange = (prop, newValue) =>
                 new InferredValueChange(true, true, prop, oldEntity, entity, prop.GetValue(entity), newValue);
             var changes = new List<InferredValueChange>();
-            if (serviceProviderProvider == null && customEvaluator is DefaultEvaluator)
+            if (serviceProviderProvider == null && dataEvaluator is IServiceProviderProvider)
             {
-                serviceProviderProvider = (customEvaluator as DefaultEvaluator).DataContext;
+                serviceProviderProvider = dataEvaluator as IServiceProviderProvider;
             }
             if (property.HasInferredWith)
             {
@@ -196,7 +196,7 @@ namespace Iql.Data.Extensions
                             .EvaluateIqlCustomAsync(
                                 serviceProviderProvider,
                                 NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
-                                customEvaluator,
+                                dataEvaluator,
                                 property.EntityConfiguration.Builder,
                                 typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type));
 
@@ -211,7 +211,7 @@ namespace Iql.Data.Extensions
                         continue;
                     }
 
-                    if (inferredWith.ForNewOnly && customEvaluator.IsEntityNew(property.EntityConfiguration, entity) == false)
+                    if (inferredWith.ForNewOnly && dataEvaluator.IsEntityNew(property.EntityConfiguration, entity) == false)
                     {
                         continue;
                     }
@@ -233,7 +233,7 @@ namespace Iql.Data.Extensions
                     var result = await inferredWithIql.EvaluateIqlCustomAsync(
                         serviceProviderProvider,
                         NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type), 
-                        customEvaluator,
+                        dataEvaluator,
                         property.EntityConfiguration.Builder,
                         typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type));
 
@@ -269,9 +269,10 @@ namespace Iql.Data.Extensions
                             var compositeKey = property.Relationship.ThisEnd.GetCompositeKey(
                                 entityClone,
                                 true);
-                            var relatedEntity = await customEvaluator.GetEntityByKeyAsync(
+                            var relatedEntity = await dataEvaluator.GetEntityByKeyAsync(
                                 property.Relationship.OtherEnd.EntityConfiguration,
-                                compositeKey);
+                                compositeKey,
+                                new string[]{});
                             changes.Add(getPropertyChange(property.Relationship.ThisEnd.Property, relatedEntity));
                         }
                         else
