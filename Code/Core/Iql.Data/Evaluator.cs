@@ -211,7 +211,9 @@ namespace Iql.Data
                 {
                     result = evaluatedResult;
                 }
-                else if (result != IqlUserPermission.Unset && evaluatedResult != IqlUserPermission.Unset && evaluatedResult < result)
+                else if (result != IqlUserPermission.Unset && 
+                         evaluatedResult != IqlUserPermission.Unset && 
+                         (int)evaluatedResult < (int)result)
                 {
                     result = evaluatedResult;
                 }
