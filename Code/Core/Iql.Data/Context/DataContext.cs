@@ -1325,7 +1325,7 @@ namespace Iql.Data.Context
                             var result = await inferredWith.InferredWithConditionIql.EvaluateIqlAsync(
                                 new InferredValueContext<T>((T)oldEntity, entity),
                                 this,
-                                typeof(T));
+                                typeof(InferredValueContext<T>));
                             if (!Equals(result.Result, true))
                             {
                                 inferredWithIgnored = true;

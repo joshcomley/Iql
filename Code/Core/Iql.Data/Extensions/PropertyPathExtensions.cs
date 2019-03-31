@@ -57,6 +57,10 @@ namespace Iql.Data.Extensions
             {
                 var part = propertyPath.PropertyPath[i];
                 var parent = result;
+                if (result == null)
+                {
+                    break;
+                }
                 result = part.PropertyName == null ? result : result.GetPropertyValueByName(part.PropertyName);
                 if (part.Property != null && part.Property.Kind.HasFlag(PropertyKind.Relationship))
                 {

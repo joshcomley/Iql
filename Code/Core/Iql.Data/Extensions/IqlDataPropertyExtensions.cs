@@ -198,7 +198,7 @@ namespace Iql.Data.Extensions
                                 NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
                                 customEvaluator,
                                 property.EntityConfiguration.Builder,
-                                property.EntityConfiguration.Type);
+                                typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type));
 
                         if (!Equals(conditionResult.Result, true))
                         {
@@ -235,7 +235,7 @@ namespace Iql.Data.Extensions
                         NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type), 
                         customEvaluator,
                         property.EntityConfiguration.Builder,
-                        property.EntityConfiguration.Type);
+                        typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type));
 
                     if (!result.Success)
                     {

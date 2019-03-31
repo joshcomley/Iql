@@ -302,35 +302,35 @@ namespace Iql.Data
             {
                 IqlPropertyPath item = null;
                 var e = context;
-                var relationshipFilterContext = e as IRelationshipFilterContext;
-                var inferredValueContext = e as IInferredValueContext;
-                if (relationshipFilterContext != null)
-                {
-                    e = relationshipFilterContext.Owner;
-                }
-                else if (inferredValueContext != null)
-                {
-                    var path = iqlPropertyPaths[i].Expression.ToSimplePropertyPath();
-                    if (path.PathParts.Length > 0)
-                    {
-                        switch (path.PathParts[0])
-                        {
-                            case nameof(IInferredValueContext.PreviousEntityState):
-                                e = inferredValueContext.PreviousEntityState;
-                                break;
-                            case nameof(IInferredValueContext.CurrentEntityState):
-                                e = inferredValueContext.CurrentEntityState;
-                                break;
-                        }
-                    }
-                    contextType = inferredValueContext.EntityType;
-                    item = IqlPropertyPath.FromString(
-                        typeResolver,
-                        path.PathAfter(1),
-                        typeResolver.FindTypeByType(contextType), 
-                        null,
-                        path.PathParts[0]);
-                }
+                //var relationshipFilterContext = e as IRelationshipFilterContext;
+                //var inferredValueContext = e as IInferredValueContext;
+                //if (relationshipFilterContext != null)
+                //{
+                //    e = relationshipFilterContext.Owner;
+                //}
+                //else if (inferredValueContext != null)
+                //{
+                //    var path = iqlPropertyPaths[i].Expression.ToSimplePropertyPath();
+                //    if (path.PathParts.Length > 0)
+                //    {
+                //        switch (path.PathParts[0])
+                //        {
+                //            case nameof(IInferredValueContext.PreviousEntityState):
+                //                e = inferredValueContext.PreviousEntityState;
+                //                break;
+                //            case nameof(IInferredValueContext.CurrentEntityState):
+                //                e = inferredValueContext.CurrentEntityState;
+                //                break;
+                //        }
+                //    }
+                //    contextType = inferredValueContext.EntityType;
+                //    item = IqlPropertyPath.FromString(
+                //        typeResolver,
+                //        path.PathAfter(1),
+                //        typeResolver.FindTypeByType(contextType), 
+                //        null,
+                //        path.PathParts[0]);
+                //}
                 item = item ?? keys[i];
                 var evaluationResult = await item.EvaluateCustomAsync(
                     e,
@@ -407,10 +407,6 @@ namespace Iql.Data
             ITypeResolver typeResolver,
             IServiceProviderProvider serviceProviderProvider)
         {
-            if (parameter is IEntityType entityTypeClass)
-            {
-                entityType = entityTypeClass.EntityType;
-            }
             serviceProviderProvider = serviceProviderProvider ?? DataContext.FindBuilderForEntityType(entityType);
 
             var propertyExpressions = iql.TopLevelPropertyExpressions();

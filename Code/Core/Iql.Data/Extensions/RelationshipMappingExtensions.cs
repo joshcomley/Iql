@@ -54,13 +54,15 @@ namespace Iql.Data.Extensions
                     {
                         var last = result.Paths[0];
                         var entityProperty = last.Source.Property.EntityProperty();
+                        IRelationshipFilterContext relationshipFilterContext = last.Parent as IRelationshipFilterContext;
                         if (last.Success && 
-                            last.Value == null && 
-                            last.Parent != null &&
+                            last.Value == null &&
+                            relationshipFilterContext != null &&
+                            relationshipFilterContext.Owner != null &&
                             entityProperty != null &&
                             entityProperty.Relationship != null)
                         {
-                            var parentConstraints = entityProperty.Relationship.ThisEnd.GetCompositeKey(last.Parent);
+                            var parentConstraints = entityProperty.Relationship.ThisEnd.GetCompositeKey(relationshipFilterContext.Owner);
                             var ourConstraints = (mapping.Property as IRelationshipDetail).Constraints;
                             for (var j = 0; j < parentConstraints.Keys.Length; j++)
                             {
@@ -152,8 +154,8 @@ namespace Iql.Data.Extensions
             var result = await expression.EvaluateIqlPathAsync(
                 ctx,
                 dataContext,
-                typeof(T),
-                null,
+                typeof(RelationshipFilterContext<TParent>),
+                dataContext.EntityConfigurationContext,
                 true);
             if (result.Result is LambdaExpression)
             {
