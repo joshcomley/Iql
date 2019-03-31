@@ -1727,5 +1727,20 @@ namespace Iql.Data.Context
             var dataContext = FindDataContextForEntity(entity);
             return dataContext?.GetEntityState(entity);
         }
+
+        public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key)
+        {
+            return GetDbSetByEntityType(entityConfiguration.Type)
+                .GetWithKeyAsync(key);
+        }
+
+        public bool IsEntityNew(IEntityConfiguration entityConfiguration, object entity)
+        {
+            return IsEntityNew(entity
+#if TypeScript
+            , entityConfiguration.Type
+#endif
+                   ) != false;
+        }
     }
 }

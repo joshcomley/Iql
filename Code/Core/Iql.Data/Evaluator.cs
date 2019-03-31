@@ -179,6 +179,48 @@ namespace Iql.Data
             return permission;
         }
 
+        public static async Task<IqlUserPermission> GetUserPermissionAsync(
+            this UserPermissionsManager permissionsManager,
+            IIqlCustomEvaluator evaluationContext,
+            object user,
+            object entity = null,
+            IServiceProviderProvider serviceProviderProvider = null,
+            ITypeResolver typeResolver = null
+        )
+        {
+            typeResolver = typeResolver ?? permissionsManager.EntityConfigurationBuilder;
+            serviceProviderProvider = serviceProviderProvider ?? permissionsManager.EntityConfigurationBuilder;
+            IqlUserPermission result = IqlUserPermission.Unset;
+            for (var i = 0; i < permissionsManager.Container.PermissionRules.Count; i++)
+            {
+                var rule = permissionsManager.Container.PermissionRules[i];
+                var evaluatedResult = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+                    user, 
+                    entity, 
+                    serviceProviderProvider, evaluationContext,
+                    typeResolver,
+                    evaluationContext.IsEntityNew(
+                        permissionsManager.EntityConfigurationBuilder.GetEntityByType(entity.GetType()), 
+                        entity));
+                if (evaluatedResult == IqlUserPermission.None)
+                {
+                    return evaluatedResult;
+                }
+
+                if (result == IqlUserPermission.Unset && evaluatedResult != IqlUserPermission.Unset)
+                {
+                    result = evaluatedResult;
+                }
+                else if (result != IqlUserPermission.Unset && evaluatedResult != IqlUserPermission.Unset && evaluatedResult < result)
+                {
+                    result = evaluatedResult;
+                }
+            }
+            // TODO: Evaluate the permissions
+            return result;
+        }
+
+
         public static async Task<IqlUserPermission> EvaluateEntityPermissionsRuleCustomAsync<TEntity, TUser>(
             this IqlUserPermissionRule rule,
             TUser user,

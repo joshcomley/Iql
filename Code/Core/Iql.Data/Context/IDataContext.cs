@@ -8,6 +8,7 @@ using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.NestedSets;
+using Iql.Data.Evaluation;
 using Iql.Data.Lists;
 using Iql.Data.SpecialTypes;
 using Iql.Data.Tracking;
@@ -21,7 +22,7 @@ using Iql.Parsing;
 
 namespace Iql.Data.Context
 {
-    public interface IDataContext : IServiceProviderProvider
+    public interface IDataContext : IServiceProviderProvider, IIqlCustomEvaluator
     {
         EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged { get; }
         bool EnableOffline { get; set; }

@@ -2,7 +2,8 @@
 {
     public enum IqlUserPermission
     {
-        None = 0,
+        Unset = 0,
+        None = 1,
         Read,
         ReadAndEdit
     }

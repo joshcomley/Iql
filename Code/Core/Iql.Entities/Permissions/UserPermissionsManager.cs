@@ -3,7 +3,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Data.Evaluation;
 using Iql.Entities.Permissions;
+using Iql.Entities.Services;
+using Iql.Parsing.Types;
+
 #if TypeScript
 using Iql.Parsing;
 #endif
@@ -24,7 +28,7 @@ namespace Iql.Entities
             where TUser : class
         {
             var result = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
-                rule, 
+                rule,
                 EntityConfigurationBuilder,
                 typeof(IqlUserPermissionContext<TUser>)
 #if TypeScript
@@ -52,7 +56,7 @@ namespace Iql.Entities
             where TUser : class
         {
             var result = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
-                rule, 
+                rule,
                 EntityConfigurationBuilder,
                 typeof(IqlEntityUserPermissionContext<TEntity, TUser>)
 #if TypeScript
@@ -79,11 +83,6 @@ namespace Iql.Entities
             }
 
             return Container.PermissionRules.FirstOrDefault(_ => _.Key == key);
-        }
-
-        public Task<IqlUserPermission> GetUserPermissionAsync(object entity = null)
-        {
-            return Task.FromResult(IqlUserPermission.ReadAndEdit);
         }
 
         public UserPermissionsManager(IUserPermission container, IEntityConfigurationBuilder entityConfigurationBuilder)
