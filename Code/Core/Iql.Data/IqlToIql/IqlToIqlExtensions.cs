@@ -12,13 +12,14 @@ namespace Iql.Data.IqlToIql
             this IqlExpression expression, 
             IIqlTypeMetadata resolvedType,
             ITypeResolver typeResolver,
-            IServiceProviderProvider serviceProvider)
+            IServiceProviderProvider serviceProvider,
+            bool resolveSpecialValues = false)
         {
-            var sp = serviceProvider?.ServiceProvider;
             var parser = new IqlToIqlParserContext(
                 resolvedType,
                 typeResolver,
-                sp);
+                serviceProvider?.ServiceProvider,
+                resolveSpecialValues);
             var result = await parser.ParseAsync(expression);
             return new IqlExpessionResult(parser.Success, result.Expression);
         }

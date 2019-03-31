@@ -167,14 +167,68 @@ namespace Iql.Data
             return await EvaluateIqlAsync(iql, entity, dataContext, entityType);
         }
 
-        public static async Task<IqlUserPermission> EvaluateEntityRuleAsync<TEntity, TUser>(this IqlUserPermissionRule rule, TUser user, TEntity entity, IDataContext dataContext)
+        public static async Task<IqlUserPermission> EvaluateEntityPermissionsRuleAsync<TEntity, TUser>(this IqlUserPermissionRule rule, TUser user, TEntity entity, IDataContext dataContext)
             where TEntity : class
             where TUser : class
         {
             var isEntityNew = dataContext.IsEntityNew(entity);
-            var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew == null || isEntityNew == true, null, user, entity);
+            var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew == null || isEntityNew == true, user, entity);
             var result = await rule.IqlExpression.EvaluateIqlAsync(context, dataContext ?? DataContext.FindDataContextForEntity(entity),
                 typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
+            var permission = (IqlUserPermission)result.Result;
+            return permission;
+        }
+
+        public static async Task<IqlUserPermission> EvaluateEntityPermissionsRuleCustomAsync<TEntity, TUser>(
+            this IqlUserPermissionRule rule,
+            TUser user,
+            TEntity entity,
+            IServiceProviderProvider serviceProviderProvider,
+            IIqlCustomEvaluator evaluator,
+            ITypeResolver typeResolver,
+            bool isEntityNew)
+            where TEntity : class
+            where TUser : class
+        {
+            var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew, user, entity);
+            var result = await rule.IqlExpression.EvaluateIqlCustomAsync(
+                serviceProviderProvider,
+                context,
+                evaluator,
+                typeResolver,
+                typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
+            var permission = (IqlUserPermission)result.Result;
+            return permission;
+        }
+
+        public static async Task<IqlUserPermission> EvaluatePermissionsRuleAsync<TEntity, TUser>(this IqlUserPermissionRule rule, TUser user, TEntity entity, IDataContext dataContext)
+            where TEntity : class
+            where TUser : class
+        {
+            var isEntityNew = dataContext.IsEntityNew(entity);
+            var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew == null || isEntityNew == true, user, entity);
+            var result = await rule.IqlExpression.EvaluateIqlAsync(context, dataContext ?? DataContext.FindDataContextForEntity(entity),
+                typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
+            var permission = (IqlUserPermission)result.Result;
+            return permission;
+        }
+
+        public static async Task<IqlUserPermission> EvaluatePermissionsRuleCustomAsync<TEntity, TUser>(
+            this IqlUserPermissionRule rule,
+            TUser user,
+            IServiceProviderProvider serviceProviderProvider,
+            IIqlCustomEvaluator evaluator,
+            ITypeResolver typeResolver)
+            where TEntity : class
+            where TUser : class
+        {
+            var context = new IqlUserPermissionContext<TUser>(user);
+            var result = await rule.IqlExpression.EvaluateIqlCustomAsync(
+                serviceProviderProvider,
+                context,
+                evaluator,
+                typeResolver,
+                typeof(IqlUserPermissionContext<TUser>));
             var permission = (IqlUserPermission)result.Result;
             return permission;
         }
@@ -187,7 +241,7 @@ namespace Iql.Data
             ITypeResolver typeResolver = null)
         {
             return expression.EvaluateIqlCustomAsync(
-                dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(contextType),
+                (IServiceProviderProvider)dataContext ?? DataContext.FindBuilderForEntityType(contextType),
                 entity,
                 new DefaultEvaluator(dataContext),
                 typeResolver ?? dataContext.EntityConfigurationContext,
@@ -199,7 +253,9 @@ namespace Iql.Data
             object context,
             IDataContext dataContext,
             Type contextType,
-            ITypeResolver typeResolver = null)
+            ITypeResolver typeResolver = null,
+            bool populatePath = false
+            )
         {
             var evaluator = new DefaultEvaluator(dataContext);
             var value = await EvaluateIqlCustomAsync(
@@ -208,7 +264,8 @@ namespace Iql.Data
                 context,
                 evaluator,
                 typeResolver ?? dataContext.EntityConfigurationContext,
-                contextType);
+                contextType,
+                populatePath);
             value.Result = value.Result is IqlPropertyPathEvaluationResult
                 ? (value.Result as IqlPropertyPathEvaluationResult).Value
                 : value.Result;
@@ -220,7 +277,8 @@ namespace Iql.Data
             object context,
             IIqlCustomEvaluator customEvaluator,
             ITypeResolver typeResolver,
-            Type contextType = null
+            Type contextType = null,
+            bool populatePath = false
             )
         {
             var success = true;
@@ -276,7 +334,8 @@ namespace Iql.Data
                 item = item ?? keys[i];
                 var evaluationResult = await item.EvaluateCustomAsync(
                     e,
-                    customEvaluator);
+                    customEvaluator,
+                    populatePath);
                 paths.Add(evaluationResult);
                 var flattenedExpression = processResult.propertyExpressions.First(_ => _.Expression == iqlPropertyPaths[i].Expression);
                 var value = evaluationResult.Value ?? ResolveNull(item, flattenedExpression);
@@ -361,7 +420,7 @@ namespace Iql.Data
             var resolvedType = typeResolver.FindTypeByType(entityType);
             if (resolvedType != null)
             {
-                var processResult = await iql.ProcessAsync(resolvedType, typeResolver, serviceProviderProvider);
+                var processResult = await iql.ProcessAsync(resolvedType, typeResolver, serviceProviderProvider, true);
                 iql = processResult.Result;
                 for (var i = 0; i < propertyExpressions.Length; i++)
                 {

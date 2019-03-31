@@ -316,7 +316,7 @@ namespace Iql.Data.Serialization
                 }
                 else
                 {
-                    if (property.Property.TypeDefinition.Type == typeof(DateTimeOffset))
+                    if (property.Property.TypeDefinition.ToIqlType() == IqlType.Date)
                     {
                         if (propertyValue == null && !property.Property.TypeDefinition.Nullable)
                         {
@@ -324,7 +324,8 @@ namespace Iql.Data.Serialization
                         }
                         else
                         {
-                            obj[property.Property.Name] = new JValue(((DateTimeOffset)propertyValue).NormalizeDate());
+                            var normalizedDate = ((DateTimeOffset)propertyValue).NormalizeDate();
+                            obj[property.Property.Name] = new JValue(normalizedDate);
                         }
                     }
                     else if (property.Property.TypeDefinition.ConvertedFromType == KnownPrimitiveTypes.Guid && !property.Property.TypeDefinition.Nullable && propertyValue == null)

@@ -4,11 +4,13 @@
         where TEntity : class
         where TUser : class
     {
+        public bool IsEntityNew { get; set; }
         public TEntity Entity { get; set; }
 
-        public IqlEntityUserPermissionContext(bool isNew, IPropertyGroup propertyGroup, TUser user, TEntity entity) : base(isNew, propertyGroup, user)
+        public IqlEntityUserPermissionContext(bool isEntityNew, TUser user, TEntity entity) : base(user)
         {
             Entity = entity;
+            IsEntityNew = isEntityNew;
         }
     }
 }

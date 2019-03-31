@@ -16,11 +16,17 @@ namespace Iql.Data.IqlToIql
     {
         public bool Success { get; set; } = true;
         public IqlServiceProvider ServiceProvider { get; }
+        public bool ResolveSpecialValues { get; }
 
-        public IqlToIqlParserContext(IIqlTypeMetadata resolvedType, ITypeResolver resolver, IqlServiceProvider serviceProvider) : base(
+        public IqlToIqlParserContext(
+            IIqlTypeMetadata resolvedType, 
+            ITypeResolver resolver, 
+            IqlServiceProvider serviceProvider,
+            bool resolveSpecialValues = false) : base(
             new IqlToIqlExpressionAdapter(resolver), resolvedType.Type, null, resolver)
         {
             ServiceProvider = serviceProvider;
+            ResolveSpecialValues = resolveSpecialValues;
         }
 
         public override async Task<IqlToIqlIqlOutput> ParseExpressionAsync(IqlExpression expression

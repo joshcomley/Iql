@@ -116,7 +116,25 @@ namespace Iql.Data.IqlToIql.Parsers
                         return new IqlLiteralExpression(currentUser);
                     }
                 case IqlExpressionKind.NewGuid:
-                    return new IqlLiteralExpression(IqlNewGuidExpression.NewGuid());
+                    if (parser.ResolveSpecialValues)
+                    {
+                        var guid = await parser.ServiceProvider.ResolveNewGuidAsync(parser.ResolveSpecialValues);
+                        if (guid != null)
+                        {
+                            return new IqlLiteralExpression(guid);
+                        }
+                    }
+                    break;
+                case IqlExpressionKind.Now:
+                    if (parser.ResolveSpecialValues)
+                    {
+                        var currentDateTime = await parser.ServiceProvider.ResolveNowAsync(true);
+                        if (currentDateTime != null)
+                        {
+                            return new IqlLiteralExpression(currentDateTime);
+                        }
+                    }
+                    break;
             }
 
             return action;

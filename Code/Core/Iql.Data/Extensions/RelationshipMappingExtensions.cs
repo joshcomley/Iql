@@ -152,7 +152,9 @@ namespace Iql.Data.Extensions
             var result = await expression.EvaluateIqlPathAsync(
                 ctx,
                 dataContext,
-                typeof(T));
+                typeof(T),
+                null,
+                true);
             if (result.Result is LambdaExpression)
             {
                 var exp = result.Result as LambdaExpression;

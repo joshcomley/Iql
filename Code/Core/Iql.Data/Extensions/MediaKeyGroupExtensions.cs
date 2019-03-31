@@ -22,7 +22,7 @@ namespace Iql.Data.Extensions
                         keyPart.Key,
                         mediaGroup.MediaKey.File.EntityConfiguration.TypeMetadata
                     );
-                    var iqlPropertyPathEvaluationResult = await propertyPath.EvaluateAsync(entity, dataContext);    
+                    var iqlPropertyPathEvaluationResult = await propertyPath.EvaluateAsync(entity, dataContext, false);    
                     parts.Add((iqlPropertyPathEvaluationResult.Value ?? "").ToString());
                 }
                 else

@@ -15,6 +15,7 @@ using Brandless.ObjectSerializer;
 using Iql.DotNet.Serialization;
 #endif
 using Iql.Tests.Context;
+using Iql.Tests.Data.Services;
 using Iql.Tests.Tests.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
@@ -24,6 +25,18 @@ namespace Iql.Tests.Tests.OData
     [TestClass]
     public class ODataUriTests : TestsBase
     {
+        public override void TestInitialize()
+        {
+            base.TestInitialize();
+            Db.ServiceProvider.Unregister<TestNowService>();
+        }
+
+        public override void TestCleanUp()
+        {
+            base.TestCleanUp();
+            Db.ServiceProvider.Register<TestNowService>();
+        }
+
         [TestMethod]
         public async Task TestIntersectsWithEmptyPointsListShouldBeIgnored()
         {

@@ -102,14 +102,14 @@ namespace Iql.Tests.Tests.OData
                 var body = request.Body.Body;
                 var compressed = body.NormalizeJson();
                 Assert.AreEqual(@"{
-  ""Birthday"": ""0001-01-01T00:00:00.0+00:00"",
+  ""Birthday"": ""2019-01-02T03:04:05.0+00:00"",
   ""IsComplete"": false,
   ""Title"": ""Dummy"",
   ""Description"":""I'm \\ \""auto\"""",
   ""Skills"": ""5"",
   ""Category"": ""2"",
   ""Guid"": ""32cbb41e-3fb9-4375-86d7-9babefe021b3"",
-  ""CreatedDate"": ""0001-01-01T00:00:00.0+00:00"",
+  ""CreatedDate"": ""2019-01-02T03:04:05.0+00:00"",
   ""PersistenceKey"": ""eb6f72b5-ba5c-49c5-b34b-832bb172d353""
 }".NormalizeJson(), compressed);
                 await db.SaveChangesAsync();
@@ -196,7 +196,7 @@ namespace Iql.Tests.Tests.OData
   ""Left"": 0,
   ""Right"": 0,
   ""Guid"": ""f3a3a088-0740-4904-9588-6b4c4ba37656"",
-  ""CreatedDate"": ""0001-01-01T00:00:00.0+00:00"",
+  ""CreatedDate"": ""2019-01-02T03:04:05.0+00:00"",
   ""PersistenceKey"": ""90a702bd-9d2b-444e-ad3e-2ef15c31e016""
 }".NormalizeJson(), compressed);
                 await db.SaveChangesAsync();

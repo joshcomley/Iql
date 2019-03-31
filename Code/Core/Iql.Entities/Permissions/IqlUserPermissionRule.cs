@@ -55,7 +55,7 @@ namespace Iql.Entities
                     _iqlConvertedExpressionJson = json;
                     if (AcceptsEntity)
                     {
-                        _iqlConvertedExpression = (LambdaExpression) ConvertEntityIqlToLambdaMethod.InvokeGeneric(
+                        _iqlConvertedExpression = (LambdaExpression)ConvertEntityIqlToLambdaMethod.InvokeGeneric(
                             null,
                             new object[] { IqlExpression, EntityConfigurationBuilder },
                             EntityType.Type,
@@ -102,7 +102,7 @@ namespace Iql.Entities
                 {
                     throw new ArgumentException($"Parameter '{nameof(entity)}' must have a value if the permission rule accepts an entity.");
                 }
-                return (IqlUserPermission)RunGenericWithEntityMethod.InvokeGeneric(this, new object[]{ user, entity }, entity.GetType(), user.GetType());
+                return (IqlUserPermission)RunGenericWithEntityMethod.InvokeGeneric(this, new object[] { user, entity }, entity.GetType(), user.GetType());
             }
             return (IqlUserPermission)RunGenericMethod.InvokeGeneric(this, new object[] { user }, user.GetType());
         }
@@ -113,7 +113,7 @@ namespace Iql.Entities
         {
             var lambda = Expression.Compile();
             var result =
-                lambda.DynamicInvoke(new IqlEntityUserPermissionContext<TEntity, TUser>(true, null, user, entity));
+                lambda.DynamicInvoke(new IqlEntityUserPermissionContext<TEntity, TUser>(true, user, entity));
             return (IqlUserPermission)result;
         }
 
@@ -122,7 +122,7 @@ namespace Iql.Entities
         {
             var lambda = Expression.Compile();
             var result =
-                lambda.DynamicInvoke(new IqlUserPermissionContext<TUser>(true, null, user));
+                lambda.DynamicInvoke(new IqlUserPermissionContext<TUser>(user));
             return (IqlUserPermission)result;
         }
 
@@ -137,7 +137,7 @@ namespace Iql.Entities
 
         public IqlUserPermissionRule()
         {
-            
+
         }
     }
 }

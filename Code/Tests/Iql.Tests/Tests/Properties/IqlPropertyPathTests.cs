@@ -34,7 +34,7 @@ namespace Iql.Tests.Tests.Properties
                 p => p.Client.Type,
                 Db.EntityConfigurationContext
                 );
-            var result = await path.EvaluateAsync(person, Db);
+            var result = await path.EvaluateAsync(person, Db, false);
             Assert.AreEqual((result.Value as ClientType).Name, "My Client Type 11");
         }
 

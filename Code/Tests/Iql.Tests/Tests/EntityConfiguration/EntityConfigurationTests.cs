@@ -51,7 +51,7 @@ namespace Iql.Tests.Tests.EntityConfiguration
             person.Site.Name = "Test 123";
             var siteAreaRelationship = personConfig.FindRelationship(_ => _.SiteArea);
             var siteArea = (SiteArea)await siteAreaRelationship.CreateEntityForRelationshipAsync(Db, person);
-            Assert.AreEqual(siteArea.Site, person.Site);
+            Assert.AreEqual(person.Site, siteArea.Site);
         }
 
         [TestMethod]

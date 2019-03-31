@@ -285,7 +285,9 @@ namespace Iql.Tests.Tests.Properties
             });
 
             Assert.IsFalse((await Db.TrySetInferredValuesAsync(person, true)).Success);
-            Assert.IsTrue(person.CreatedDate > DateTimeOffset.Now.AddSeconds(-10));
+            Assert.IsTrue(person.CreatedDate.Year == 2019);
+            Assert.IsTrue(person.CreatedDate.Month == 1);
+            Assert.IsTrue(person.CreatedDate.Day == 2);
             Assert.AreEqual(PersonCategory.Conventional, person.Category);
             Assert.AreEqual(null, person.CreatedByUserId);
             Assert.AreEqual(null, person.Description);

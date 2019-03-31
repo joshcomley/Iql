@@ -13,15 +13,17 @@ namespace Iql.Data.Extensions
         public static async Task<IqlPropertyPathEvaluationResult> EvaluateAsync(
             this IqlPropertyPath propertyPath, 
             object entity,
-            IDataContext dataContext)
+            IDataContext dataContext,
+            bool populate)
         {
-            return await EvaluateCustomAsync(propertyPath, entity, new DefaultEvaluator(dataContext));
+            return await EvaluateCustomAsync(propertyPath, entity, new DefaultEvaluator(dataContext), populate);
         }
 
         public static async Task<IqlPropertyPathEvaluationResult> EvaluateCustomAsync(
             this IqlPropertyPath propertyPath, 
             object entity, 
-            IIqlCustomEvaluator customEvaluator)
+            IIqlCustomEvaluator customEvaluator,
+            bool populate)
         {
             var evaluationResult = new IqlPropertyPathEvaluationResult(
                 false,
@@ -61,7 +63,7 @@ namespace Iql.Data.Extensions
                     var key = part.Property.EntityProperty().Relationship.ThisEnd.GetCompositeKey(parent, true);
                     result = await customEvaluator.GetEntityByKeyAsync(part.Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration,
                         key);
-                    if (part.Property.GetValue(parent) != result)
+                    if (populate && part.Property.GetValue(parent) != result)
                     {
                         part.Property.SetValue(parent, result);
                     }
@@ -96,9 +98,9 @@ namespace Iql.Data.Extensions
             return evaluationResult;
         }
 
-        public static async Task<T> EvaluateAsAsync<T>(this IqlPropertyPath propertyPath, object entity, IDataContext dataContext)
+        public static async Task<T> EvaluateAsAsync<T>(this IqlPropertyPath propertyPath, object entity, IDataContext dataContext, bool populate)
         {
-            var result = await propertyPath.EvaluateAsync(entity, dataContext);
+            var result = await propertyPath.EvaluateAsync(entity, dataContext, populate);
             return (T)result.Value;
         }
     }

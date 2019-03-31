@@ -11,6 +11,7 @@ using Iql.Tests.Data.Context;
 using Iql.Tests.Data.Context.Custom;
 using Iql.Tests.Tests.OData;
 using IqlSampleApp.ApiContext.Base;
+using Iql.Tests.Data.Services;
 #if TypeScript
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
@@ -88,6 +89,8 @@ namespace Iql.Tests.Context
             {
                 (DataStore as InMemoryDataStore).Configuration = InMemoryDataStoreConfiguration;
             }
+
+            ServiceProvider.Register<TestNowService>();
             var defaultQueries = new EntityDefaultQueryConfiguration();
             defaultQueries.ConfigureDefaultGetOperations(() => ClientTypes.Expand(c => c.Clients));
             RegisterConfiguration(defaultQueries);
