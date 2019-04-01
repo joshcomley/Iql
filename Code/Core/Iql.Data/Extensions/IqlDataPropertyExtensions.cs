@@ -211,7 +211,9 @@ namespace Iql.Data.Extensions
                         continue;
                     }
 
-                    if (inferredWith.ForNewOnly && dataEvaluator.IsEntityNew(property.EntityConfiguration, entity) == false)
+                    if (inferredWith.ForNewOnly 
+                        && dataEvaluator.EntityStatus(property.EntityConfiguration, entity) == IqlEntityStatus.Existing
+                        )
                     {
                         continue;
                     }

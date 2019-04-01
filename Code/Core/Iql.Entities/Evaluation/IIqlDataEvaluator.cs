@@ -12,7 +12,7 @@ namespace Iql.Data.Evaluation
             CompositeKey key,
             string[] expandPaths);
 
-        bool IsEntityNew(
+        IqlEntityStatus EntityStatus(
             IEntityConfiguration entityConfiguration,
             object entity);
     }

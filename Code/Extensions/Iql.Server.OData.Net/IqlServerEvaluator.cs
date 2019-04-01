@@ -1,13 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using Brandless.Data.EntityFramework.Crud;
 using Iql.Data.Evaluation;
 using Iql.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Iql.Server.OData.Net
 {
     public class IqlServerEvaluator : IIqlDataEvaluator
     {
+        static IqlServerEvaluator()
+        {
+            GetEntityByKeyTypedAsyncMethod = typeof(IqlServerEvaluator).GetMethod(nameof(GetEntityByKeyTypedAsync),
+                BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+
+        private static MethodInfo GetEntityByKeyTypedAsyncMethod { get; set; }
+
         private readonly bool _isEntityNew;
         public CrudManager CrudManager { get; set; }
 
@@ -17,7 +27,11 @@ namespace Iql.Server.OData.Net
             CrudManager = crudManager;
         }
 
-        public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)
+        private async Task<object> GetEntityByKeyTypedAsync<TEntity>(
+            EntityConfiguration<TEntity> entityConfiguration,
+            CompositeKey key,
+            string[] expandPaths)
+            where TEntity : class
         {
             var dic = new List<KeyValuePair<string, object>>();
             foreach (var constraint in key.Keys)
@@ -29,20 +43,26 @@ namespace Iql.Server.OData.Net
 
             try
             {
-                var entity = CrudManager.FindEntity(dic, entityConfiguration.Type);
-                return Task.FromResult(entity);
+                var entityQuery = CrudManager.FindQuery<TEntity>(dic);
+                return await entityQuery.SingleOrDefaultAsync();
             }
             catch
             {
 
             }
 
-            return Task.FromResult<object>(null);
+            return null;
         }
 
-        public bool IsEntityNew(IEntityConfiguration entityConfiguration, object entity)
+        public async Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)
         {
-            return _isEntityNew;
+            return await (Task<object>)(GetEntityByKeyTypedAsyncMethod.MakeGenericMethod(entityConfiguration.Type)
+                .Invoke(this, new object[] { entityConfiguration, key, expandPaths }));
+        }
+
+        public IqlEntityStatus EntityStatus(IEntityConfiguration entityConfiguration, object entity)
+        {
+            return _isEntityNew ? IqlEntityStatus.New : IqlEntityStatus.Existing;
         }
     }
 }

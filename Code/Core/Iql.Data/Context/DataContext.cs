@@ -13,6 +13,7 @@ using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
 using Iql.Data.DataStores.InMemory;
 using Iql.Data.DataStores.NestedSets;
+using Iql.Data.Evaluation;
 using Iql.Data.Extensions;
 using Iql.Data.Lists;
 using Iql.Data.Operations;
@@ -1730,17 +1731,27 @@ namespace Iql.Data.Context
 
         public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)
         {
-            return GetDbSetByEntityType(entityConfiguration.Type)
-                .GetWithKeyAsync(key);
+            var set = GetDbSetByEntityType(entityConfiguration.Type);
+            for (var i = 0; i < expandPaths.Length; i++)
+            {
+                set.ExpandRelationship(expandPaths[i]);
+            }
+            return set.GetWithKeyAsync(key);
         }
 
-        public bool IsEntityNew(IEntityConfiguration entityConfiguration, object entity)
+        public IqlEntityStatus EntityStatus(IEntityConfiguration entityConfiguration, object entity)
         {
-            return IsEntityNew(entity
+            var result = IsEntityNew(entity
 #if TypeScript
             , entityConfiguration.Type
 #endif
-                   ) != false;
+            );
+            if (result == null)
+            {
+                return IqlEntityStatus.NotTracked;
+            }
+
+            return result.Value ? IqlEntityStatus.New : IqlEntityStatus.Existing;
         }
     }
 }

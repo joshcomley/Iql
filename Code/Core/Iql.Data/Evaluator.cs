@@ -199,9 +199,9 @@ namespace Iql.Data
                     entity, 
                     serviceProviderProvider, evaluationContext,
                     typeResolver,
-                    evaluationContext.IsEntityNew(
+                    evaluationContext.EntityStatus(
                         permissionsManager.EntityConfigurationBuilder.GetEntityByType(entity.GetType()), 
-                        entity));
+                        entity) != IqlEntityStatus.Existing);
                 if (evaluatedResult == IqlUserPermission.None)
                 {
                     return evaluatedResult;
