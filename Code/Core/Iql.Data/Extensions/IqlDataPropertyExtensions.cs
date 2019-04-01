@@ -212,7 +212,7 @@ namespace Iql.Data.Extensions
                     }
 
                     if (inferredWith.ForNewOnly 
-                        && dataEvaluator.EntityStatus(property.EntityConfiguration, entity) == IqlEntityStatus.Existing
+                        && dataEvaluator.EntityStatus(entity, property.EntityConfiguration) == IqlEntityStatus.Existing
                         )
                     {
                         continue;

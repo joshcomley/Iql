@@ -60,7 +60,7 @@ namespace Iql.Server.OData.Net
                 .Invoke(this, new object[] { entityConfiguration, key, expandPaths }));
         }
 
-        public IqlEntityStatus EntityStatus(IEntityConfiguration entityConfiguration, object entity)
+        public IqlEntityStatus EntityStatus(object entity, IEntityConfiguration entityConfiguration = null)
         {
             return _isEntityNew ? IqlEntityStatus.New : IqlEntityStatus.Existing;
         }

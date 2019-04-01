@@ -12,8 +12,6 @@ namespace Iql.Data.Evaluation
             CompositeKey key,
             string[] expandPaths);
 
-        IqlEntityStatus EntityStatus(
-            IEntityConfiguration entityConfiguration,
-            object entity);
+        IqlEntityStatus EntityStatus(object entity, IEntityConfiguration entityConfiguration = null);
     }
 }

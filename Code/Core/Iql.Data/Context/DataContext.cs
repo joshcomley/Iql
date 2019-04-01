@@ -1739,11 +1739,11 @@ namespace Iql.Data.Context
             return set.GetWithKeyAsync(key);
         }
 
-        public IqlEntityStatus EntityStatus(IEntityConfiguration entityConfiguration, object entity)
+        public IqlEntityStatus EntityStatus(object entity, IEntityConfiguration entityConfiguration = null)
         {
             var result = IsEntityNew(entity
 #if TypeScript
-            , entityConfiguration.Type
+            , entityConfiguration?.Type
 #endif
             );
             if (result == null)

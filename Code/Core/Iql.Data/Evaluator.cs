@@ -199,9 +199,7 @@ namespace Iql.Data
                     entity, 
                     serviceProviderProvider, evaluationContext,
                     typeResolver,
-                    evaluationContext.EntityStatus(
-                        permissionsManager.EntityConfigurationBuilder.GetEntityByType(entity.GetType()), 
-                        entity) != IqlEntityStatus.Existing);
+                    evaluationContext.EntityStatus(entity, permissionsManager.EntityConfigurationBuilder.GetEntityByType(entity.GetType())) != IqlEntityStatus.Existing);
                 if (evaluatedResult == IqlUserPermission.None)
                 {
                     return evaluatedResult;
@@ -245,16 +243,17 @@ namespace Iql.Data
             return permission;
         }
 
-        public static async Task<IqlUserPermission> EvaluatePermissionsRuleAsync<TEntity, TUser>(this IqlUserPermissionRule rule, TUser user, TEntity entity, IDataContext dataContext)
+        public static Task<IqlUserPermission> EvaluatePermissionsRuleAsync<TEntity, TUser>(this IqlUserPermissionRule rule, TUser user, TEntity entity, IDataContext dataContext)
             where TEntity : class
             where TUser : class
         {
-            var isEntityNew = dataContext.IsEntityNew(entity);
-            var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew == null || isEntityNew == true, user, entity);
-            var result = await rule.IqlExpression.EvaluateIqlAsync(context, dataContext ?? DataContext.FindDataContextForEntity(entity),
-                typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
-            var permission = (IqlUserPermission)result.Result;
-            return permission;
+            return rule.EvaluateEntityPermissionsRuleCustomAsync(
+                user, 
+                entity, 
+                dataContext, 
+                dataContext,
+                dataContext.EntityConfigurationContext,
+                dataContext.EntityStatus(entity, dataContext.EntityConfigurationContext.GetEntityByType(typeof(TEntity))) != IqlEntityStatus.Existing);
         }
 
         public static async Task<IqlUserPermission> EvaluatePermissionsRuleCustomAsync<TEntity, TUser>(
@@ -327,10 +326,6 @@ namespace Iql.Data
             var success = true;
             var paths = new List<IqlPropertyPathEvaluationResult>();
             contextType = contextType ?? context.GetType();
-            //if (parameter is IInferredValueContext context)
-            //{
-            //    entityType = context.EntityType;
-            //}
             var clone = expression.Clone();
             var processResult = await ProcessIqlExpressionAsync(
                 clone,
@@ -345,35 +340,6 @@ namespace Iql.Data
             {
                 IqlPropertyPath item = null;
                 var e = context;
-                //var relationshipFilterContext = e as IRelationshipFilterContext;
-                //var inferredValueContext = e as IInferredValueContext;
-                //if (relationshipFilterContext != null)
-                //{
-                //    e = relationshipFilterContext.Owner;
-                //}
-                //else if (inferredValueContext != null)
-                //{
-                //    var path = iqlPropertyPaths[i].Expression.ToSimplePropertyPath();
-                //    if (path.PathParts.Length > 0)
-                //    {
-                //        switch (path.PathParts[0])
-                //        {
-                //            case nameof(IInferredValueContext.PreviousEntityState):
-                //                e = inferredValueContext.PreviousEntityState;
-                //                break;
-                //            case nameof(IInferredValueContext.CurrentEntityState):
-                //                e = inferredValueContext.CurrentEntityState;
-                //                break;
-                //        }
-                //    }
-                //    contextType = inferredValueContext.EntityType;
-                //    item = IqlPropertyPath.FromString(
-                //        typeResolver,
-                //        path.PathAfter(1),
-                //        typeResolver.FindTypeByType(contextType), 
-                //        null,
-                //        path.PathParts[0]);
-                //}
                 item = item ?? keys[i];
                 var evaluationResult = await item.EvaluateCustomAsync(
                     e,
@@ -393,7 +359,6 @@ namespace Iql.Data
             var finalResult = Finalise(context, typeResolver, processResult.lookup, processResult.expression, processResult.propertyExpressions);
             return new IqlExpressonEvaluationResult(success, finalResult, paths);
         }
-
 
         public static object ResolveNull(IqlPropertyPath propertyPath, IqlFlattenedExpression flattenedExpression)
         {
