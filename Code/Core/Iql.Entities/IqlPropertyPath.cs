@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using Iql.Conversion;
 using Iql.Entities.Extensions;
 using Iql.Extensions;
 using Iql.Parsing.Types;
-using Iql.Serialization;
 
 namespace Iql.Entities
 {
+    [DebuggerDisplay("{PathToHere}")]
     public class IqlPropertyPath
     {
         public bool IsEmpty => string.IsNullOrWhiteSpace(PathToHere);
