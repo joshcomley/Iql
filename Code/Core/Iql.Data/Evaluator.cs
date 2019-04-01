@@ -313,6 +313,19 @@ namespace Iql.Data
                 : value.Result;
             return value;
         }
+
+        private class ExpandGroupDefinition
+        {
+            public IEntityConfiguration EntityConfiguration { get; }
+            public object Entity { get; }
+            public List<string> ExpandPaths { get; set; } = new List<string>();
+
+            public ExpandGroupDefinition(IEntityConfiguration entityConfiguration, object entity)
+            {
+                EntityConfiguration = entityConfiguration;
+                Entity = entity;
+            }
+        }
         public static async Task<IqlExpressonEvaluationResult> EvaluateIqlCustomAsync(
             this IqlExpression expression,
             IServiceProviderProvider serviceProviderProvider,
@@ -334,20 +347,71 @@ namespace Iql.Data
                 typeResolver,
                 serviceProviderProvider);
             success = processResult.Success;
-            var iqlPropertyPaths = processResult.propertyExpressions.ToArray();
+            var flattenedExpressions = processResult.propertyExpressions.ToArray();
+
             var keys = processResult.lookup.Keys.ToArray();
-            for (var i = 0; i < iqlPropertyPaths.Length; i++)
+            var expands = new Dictionary<object, ExpandGroupDefinition>();
+            for (var i = 0; i < flattenedExpressions.Length; i++)
             {
-                IqlPropertyPath item = null;
-                var e = context;
-                item = item ?? keys[i];
-                var evaluationResult = await item.EvaluateCustomAsync(
-                    e,
+                var propertyPath = keys[i];
+                if (propertyPath.HasRelationshipPathToHere)
+                {
+                    var path = propertyPath.RelationshipPathToHere;
+                    var root = propertyPath.RelationshipPathToHereRoot;
+                    object rootEntity = null;
+                    if (root != null)
+                    {
+                        rootEntity = (await root.EvaluateCustomAsync(
+                            context,
+                            dataEvaluator,
+                            populatePath)).Value;
+                    }
+                    else
+                    {
+                        rootEntity = context;
+                    }
+                    if (rootEntity != null)
+                    {
+                        if (!expands.ContainsKey(rootEntity))
+                        {
+                            var entityConfigurationTypeProvider = 
+                                (root == null ? (object)typeResolver : (object)root.Child.EntityConfiguration) as EntityConfigurationTypeProvider;
+                            if (entityConfigurationTypeProvider == null)
+                            {
+                                continue;
+                            }
+                            expands.Add(rootEntity, new ExpandGroupDefinition(entityConfigurationTypeProvider.EntityConfiguration, rootEntity));
+                        }
+                        expands[rootEntity].ExpandPaths.Add(path);
+                    }
+                }
+            }
+
+            foreach (var expandGroup in expands)
+            {
+                var entity = expandGroup.Key;
+                if (dataEvaluator.EntityStatus(entity, expandGroup.Value.EntityConfiguration) ==
+                    IqlEntityStatus.Existing)
+                {
+                    var expandPaths = expandGroup.Value.ExpandPaths.Distinct().ToArray();
+                    // Ensure the relationships are populated
+                    await dataEvaluator.GetEntityByKeyAsync(
+                        expandGroup.Value.EntityConfiguration,
+                        expandGroup.Value.EntityConfiguration.GetCompositeKey(entity),
+                        expandPaths);
+                }
+            }
+
+            for (var i = 0; i < flattenedExpressions.Length; i++)
+            {
+                var propertyPath = keys[i];
+                var evaluationResult = await propertyPath.EvaluateCustomAsync(
+                    context,
                     dataEvaluator,
                     populatePath);
                 paths.Add(evaluationResult);
-                var flattenedExpression = processResult.propertyExpressions.First(_ => _.Expression == iqlPropertyPaths[i].Expression);
-                var value = evaluationResult.Value ?? ResolveNull(item, flattenedExpression);
+                var flattenedExpression = processResult.propertyExpressions.First(_ => _.Expression == flattenedExpressions[i].Expression);
+                var value = evaluationResult.Value ?? ResolveNull(propertyPath, flattenedExpression);
                 var iqlEvaluationResult = new IqlObjectEvaluationResult(evaluationResult.Success, value);
                 processResult.lookup[keys[i]] = iqlEvaluationResult.Result;
                 if (!iqlEvaluationResult.Success)

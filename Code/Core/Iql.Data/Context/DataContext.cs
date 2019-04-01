@@ -1734,7 +1734,7 @@ namespace Iql.Data.Context
             var set = GetDbSetByEntityType(entityConfiguration.Type);
             for (var i = 0; i < expandPaths.Length; i++)
             {
-                set.ExpandRelationship(expandPaths[i]);
+                set = set.ExpandRelationship(expandPaths[i]);
             }
             return set.GetWithKeyAsync(key);
         }

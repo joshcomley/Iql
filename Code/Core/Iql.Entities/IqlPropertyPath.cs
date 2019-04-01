@@ -67,7 +67,26 @@ namespace Iql.Entities
             return string.Join(separator, PropertyPath.Select(p => p.Property.PropertyName));
         }
 
+        public bool HasRelationshipPathToHere => !string.IsNullOrWhiteSpace(RelationshipPathToHere);
         public string RelationshipPathToHere => GetRelationshipPathToHere(Separator);
+
+        public IqlPropertyPath RelationshipPathToHereRoot
+        {
+            get
+            {
+                if (!HasRelationshipPathToHere)
+                {
+                    return null;
+                }
+                var path = this;
+                while (path.Parent != null && path.Parent.HasRelationshipPathToHere)
+                {
+                    path = path.Parent;
+                }
+
+                return path?.Parent;
+            }
+        }
         public string GetRelationshipPathToHere(string separator)
         {
             return string.Join(separator,
