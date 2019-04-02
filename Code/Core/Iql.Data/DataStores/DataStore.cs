@@ -34,26 +34,33 @@ namespace Iql.Data.DataStores
             return (INestedSetsProvider<T>)NestedSetsProviderForType(typeof(T));
         }
 
-        public virtual async Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
+        public virtual Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(
             QueuedAddEntityOperation<TEntity> operation) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
-        public virtual async Task<UpdateEntityResult<TEntity>> PerformUpdateAsync<TEntity>(
+        public virtual Task<UpdateEntityResult<TEntity>> PerformUpdateAsync<TEntity>(
             QueuedUpdateEntityOperation<TEntity> operation) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
-        public virtual async Task<DeleteEntityResult<TEntity>> PerformDeleteAsync<TEntity>(
+        public virtual Task<DeleteEntityResult<TEntity>> PerformDeleteAsync<TEntity>(
             QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
-        public virtual async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
+        public virtual Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
+            where TEntity : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Task<FlattenedGetDataResult<TEntity>> PerformCountAsync<TEntity>(
+            QueuedGetDataOperation<TEntity> operation) 
             where TEntity : class
         {
             throw new NotImplementedException();

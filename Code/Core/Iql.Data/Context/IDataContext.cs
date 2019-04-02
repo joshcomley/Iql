@@ -163,6 +163,8 @@ namespace Iql.Data.Context
         //void MarkAsDeleted<TEntity>(TEntity entity) where TEntity : class;
         Task<GetDataResult<TEntity>> GetAsync<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class;
+        Task<CountDataResult<TEntity>> CountAsync<TEntity>(GetDataOperation<TEntity> operation)
+            where TEntity : class;
         Task<SaveChangesResult> ApplySaveChangesAsync(SaveChangesOperation operation);
     }
 }

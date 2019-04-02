@@ -8,7 +8,7 @@ namespace Iql.Data.Crud.Operations.Results
     public class AggregatedGetDataResult<T> : IAggregatedGetDataResult
         where T : class
     {
-        public int? TotalCount { get; set; }
+        public long? TotalCount { get; set; }
         public IList Root { get; set; }
         public GetDataResult<T>[] Results { get; }
         IGetDataResult[] IAggregatedGetDataResult.Results => Results.Select(_ => (IGetDataResult) _).ToArray();
@@ -28,6 +28,7 @@ namespace Iql.Data.Crud.Operations.Results
             Data.Success = results.All(_ => _.Success);
         }
     }
+
     public class GetDataResult<T> : DataResult<T, DbList<T>>, IGetDataResult
         where T : class
     {

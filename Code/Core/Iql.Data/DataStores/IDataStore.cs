@@ -32,6 +32,9 @@ namespace Iql.Data.DataStores
 
         Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
             where TEntity : class;
+
+        Task<FlattenedGetDataResult<TEntity>> PerformCountAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
+            where TEntity : class;
     }
 
     public class DataSetRetrievedEvent

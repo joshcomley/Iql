@@ -9,6 +9,7 @@ namespace Iql.Tests.Data.Context
         public RequestStack Posts { get; } = new RequestStack();
         public RequestStack Patches { get; } = new RequestStack();
         public RequestStack Deletes { get; } = new RequestStack();
+        public RequestStack Gets { get; } = new RequestStack();
 
         public async Task InterceptAsync(Func<HttpMethod, string, IHttpRequest, HttpResult> interceptor, Func<Task> action)
         {

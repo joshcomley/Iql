@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
+using Iql.Entities.Permissions;
 using Iql.Extensions;
 using Iql.Parsing.Extensions;
 
@@ -131,6 +132,14 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                     parent = context.Parse(node.Arguments[0], context) as IqlReferenceExpression;
                     var propertyExpression = new IqlPropertyExpression(node.Arguments[1].GetValue() as string, parent);
                     return propertyExpression;
+                case nameof(IqlUserPermissionContext<object>.Query):
+                    var lambda = context.Parse(node.Arguments[0], context);
+                    var entityTypeName = node.Arguments[0].Type.GenericTypeArguments[0].Name;
+                    var query = new IqlDataSetQueryExpression(entityTypeName);
+                    query.DataSet = new IqlDataSetReferenceExpression();
+                    query.DataSet.Name = entityTypeName;
+                    return query;
+
             }
             throw new NotImplementedException();
         }

@@ -8,6 +8,7 @@ namespace Iql.Tests.Data.Context
     {
         public async Task<IHttpResult> Get(string uri, IHttpRequest payload = null)
         {
+            RequestLog.Instance?.Gets.Add(new FakeHttpRequest(uri, payload));
             IHttpResult interceptedResult;
             if (TryIntercept(HttpMethod.Get, uri, payload, out interceptedResult))
             {

@@ -573,7 +573,7 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
-        public async Task TestResolveUri()
+        public async Task TestFilterAndExpandUri()
         {
             var query = Db.Clients.Where(c => c.Name == "hello");
 

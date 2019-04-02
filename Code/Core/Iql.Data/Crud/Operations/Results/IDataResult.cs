@@ -4,7 +4,7 @@ namespace Iql.Data.Crud.Operations.Results
 {
     public interface IDataResult
     {
-        int? TotalCount { get; set; }
+        long? TotalCount { get; set; }
         IList Root { get; set; }
     }
 }

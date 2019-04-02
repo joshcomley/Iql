@@ -2,7 +2,7 @@ namespace Iql.Data.Paging
 {
     public class PagingInfo
     {
-        public PagingInfo(int skippedSoFar, int totalCount, int pageSize, int page, int pageCount)
+        public PagingInfo(int skippedSoFar, long totalCount, int pageSize, int page, int pageCount)
         {
             SkippedSoFar = skippedSoFar;
             TotalCount = totalCount;
@@ -12,7 +12,7 @@ namespace Iql.Data.Paging
         }
 
         public int SkippedSoFar { get; set; }
-        public int TotalCount { get; set; }
+        public long TotalCount { get; set; }
         public int PageSize { get; private set; }
         public int Page { get; set; }
         public int PageCount { get; private set; }

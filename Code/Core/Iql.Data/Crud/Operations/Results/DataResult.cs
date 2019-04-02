@@ -14,7 +14,7 @@ namespace Iql.Data.Crud.Operations.Results
             Data = data;
         }
 
-        public int? TotalCount { get; set; }
+        public long? TotalCount { get; set; }
         public TResult Data { get; set; }
         public IList<T> Root { get; set; }
         IList IDataResult.Root

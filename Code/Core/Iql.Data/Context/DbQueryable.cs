@@ -38,6 +38,8 @@ namespace Iql.Data.Context
     {
         private MethodInfo _mappedToListWithResponseAsyncMethod;
         private MethodInfo MappedToListWithResponseAsyncMethod => _mappedToListWithResponseAsyncMethod = _mappedToListWithResponseAsyncMethod ?? typeof(DbQueryable<T>).GetMethod(nameof(MappedToListWithResponseAsync), BindingFlags.Instance | BindingFlags.NonPublic);
+        private MethodInfo _mappedCountWithResponseAsyncMethod;
+        private MethodInfo MappedCountWithResponseAsyncMethod => _mappedCountWithResponseAsyncMethod = _mappedCountWithResponseAsyncMethod ?? typeof(DbQueryable<T>).GetMethod(nameof(MappedCountWithResponseAsync), BindingFlags.Instance | BindingFlags.NonPublic);
 
         private ITrackingSet _trackingSet;
 
@@ -608,6 +610,19 @@ namespace Iql.Data.Context
             return IqlPropertyPath.FromString(EntityConfiguration.Builder, propertyName, this.EntityConfiguration.TypeMetadata, null, rootReferenceName).Expression;
         }
 
+        public override async Task<long> CountAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var result = await CountWithResponseAsync(expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+            return result?.Count ?? -1;
+        }
         public override async Task<DbList<T>> ToListAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -744,6 +759,34 @@ namespace Iql.Data.Context
                 );
         }
 
+        public async Task<CountDataResult<T>> CountWithResponseAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var dbQueryable = this;
+            if (expression != null)
+            {
+                dbQueryable = dbQueryable.Where(expression
+#if TypeScript
+            , evaluateContext
+#endif
+                );
+            }
+            var getDataOperation = new GetDataOperation<T>(dbQueryable, DataContext);
+            var specialTypeMap = DataContext.EntityConfigurationContext.GetSpecialTypeMap(EntityConfiguration.Type.Name);
+            if (specialTypeMap != null && specialTypeMap.EntityConfiguration != EntityConfiguration)
+            {
+                var mappedType = specialTypeMap.EntityConfiguration.Type;
+                var dbSet = DataContext.GetDbSetByEntityType(mappedType);
+                return await (Task<CountDataResult<T>>)MappedCountWithResponseAsyncMethod.InvokeGeneric(dbQueryable,
+                    new object[] { dbSet, specialTypeMap, getDataOperation },
+                    mappedType);
+            }
+            return await DataContext.CountAsync(getDataOperation);
+        }
+
         public async Task<GetDataResult<T>> ToListWithResponseAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -770,6 +813,23 @@ namespace Iql.Data.Context
                     mappedType);
             }
             return await DataContext.GetAsync(getDataOperation);
+        }
+
+        private async Task<CountDataResult<T>> MappedCountWithResponseAsync<TMap>(
+            global::Iql.Queryable.IQueryable<TMap> queryable,
+            SpecialTypeDefinition definition,
+            GetDataOperation<T> getOperation)
+            where TMap : class
+        {
+            for (var i = 0; i < Operations.Count; i++)
+            {
+                var operation = Operations[i];
+                queryable = (global::Iql.Queryable.IQueryable<TMap>)queryable.Then(operation);
+            }
+
+            var getDataResult = await DataContext.CountAsync(new GetDataOperation<TMap>(queryable, DataContext));
+            var result = new CountDataResult<T>(getDataResult.IsOffline, getOperation, getDataResult.Count, getDataResult.Success);
+            return result;
         }
 
         private async Task<GetDataResult<T>> MappedToListWithResponseAsync<TMap>(

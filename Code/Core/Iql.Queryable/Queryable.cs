@@ -44,6 +44,12 @@ namespace Iql.Queryable
             return Then(new ReverseOperation());
         }
 
+        public abstract Task<long> CountAsync(Expression<Func<T, bool>> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
         public TQueryable Where(Expression<Func<T, bool>> expression
 #if TypeScript
             , EvaluateContext evaluateContext = null

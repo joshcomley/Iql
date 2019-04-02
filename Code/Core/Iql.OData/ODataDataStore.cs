@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Data.Lists;
 using Iql.Data.Serialization;
 using Iql.Entities.Functions;
 
@@ -235,6 +236,13 @@ namespace Iql.OData
             QueuedGetDataOperation<TEntity> operation)
         {
             var fullQueryUri = await operation.Operation.Queryable.ResolveODataUriFromQueryAsync(EntityConfigurationBuilder, Configuration);
+            return await PerformGetInternalAsync(operation, fullQueryUri);
+        }
+
+        public override async Task<FlattenedGetDataResult<TEntity>> PerformCountAsync<TEntity>(
+            QueuedGetDataOperation<TEntity> operation)
+        {
+            var fullQueryUri = await (operation.Operation.Queryable as IDbQueryable).IncludeCount().Take(0).ResolveODataUriFromQueryAsync(EntityConfigurationBuilder, Configuration);
             return await PerformGetInternalAsync(operation, fullQueryUri);
         }
 

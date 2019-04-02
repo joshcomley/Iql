@@ -55,6 +55,25 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task TestCountInMemory()
+        {
+            for (var i = 1; i <= 300; i++)
+            {
+                var personType = new PersonType { Id = i };
+                if (i >= 10 && i < 20)
+                {
+                    personType.Title = "abc";
+                }
+                AppDbContext.InMemoryDb.PeopleTypes.Add(personType);
+            }
+            Db.InMemoryDataStore.DefaultPageSize = 5;
+            var count = await Db.PersonTypes.CountAsync(_=>_.Title == "abc");
+            var count2 = await Db.PersonTypes.Where(_=>_.Title == "abc").CountAsync();
+            Assert.AreEqual(10, count);
+            Assert.AreEqual(10, count2);
+        }
+
+        [TestMethod]
         public async Task TestSkipInMemory()
         {
             for (var i = 1; i <= 300; i++)

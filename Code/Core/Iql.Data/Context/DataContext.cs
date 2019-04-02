@@ -1454,6 +1454,28 @@ namespace Iql.Data.Context
             return false;
         }
 
+        public virtual async Task<CountDataResult<TEntity>> CountAsync<TEntity>(GetDataOperation<TEntity> operation)
+            where TEntity : class
+        {
+            var response = new FlattenedGetDataResult<TEntity>(null, operation, true);
+            var queuedGetDataOperation = new QueuedGetDataOperation<TEntity>(
+                operation,
+                response);
+
+            await DataStore.PerformCountAsync(queuedGetDataOperation);
+
+            if (response.RequestStatus == RequestStatus.Offline)
+            {
+                // Magic happens here...
+                if (SupportsOffline && response.Queryable.AllowOffline != false)
+                {
+                    response.IsOffline = true;
+                    await OfflineDataStore.PerformCountAsync(queuedGetDataOperation);
+                }
+            }
+
+            return new CountDataResult<TEntity>(response.IsOffline, operation, response.TotalCount, response.IsSuccessful());
+        }
 
         public virtual async Task<GetDataResult<TEntity>> GetAsync<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class

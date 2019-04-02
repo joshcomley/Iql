@@ -338,61 +338,79 @@ namespace Iql.Data.DataStores.InMemory
             return index;
         }
 
-        public override async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        public override Task<FlattenedGetDataResult<TEntity>> PerformCountAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        {
+            return PerformGetInnerAsync(operation, false);
+        }
+
+        public override Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(QueuedGetDataOperation<TEntity> operation)
+        {
+            return PerformGetInnerAsync(operation, true);
+        }
+
+        private async Task<FlattenedGetDataResult<TEntity>> PerformGetInnerAsync<TEntity>(QueuedGetDataOperation<TEntity> operation, bool trackResults)
+            where TEntity : class
         {
             var iql = await operation.Operation.Queryable.ToIqlAsync();
-            var expression = IqlExpressionConversion.DefaultExpressionConverter().ConvertIqlToExpression<TEntity>(iql, operation.Operation.DataContext.EntityConfigurationContext);
-            var func = (Func<InMemoryContext<TEntity>, InMemoryContext<TEntity>>)expression.Compile();
+            var expression = IqlExpressionConversion.DefaultExpressionConverter()
+                .ConvertIqlToExpression<TEntity>(iql, operation.Operation.DataContext.EntityConfigurationContext);
+            var func = (Func<InMemoryContext<TEntity>, InMemoryContext<TEntity>>) expression.Compile();
             var inMemoryContext = new InMemoryContext<TEntity>(this);
             var result = func(inMemoryContext);
             var resultList = result.SourceList.ToList();
             inMemoryContext.Finish();
-            inMemoryContext.AddMatches(typeof(TEntity), resultList);
-            var cloneLookup = new Dictionary<object, object>();
-            var clonedResult = new List<TEntity>();
-            var pageSize =
-                iql.Take ?? Database.GetSetConfiguration(typeof(TEntity)).PageSize ?? DefaultPageSize;
-            var take = 0;
-            for (var i = 0; i < resultList.Count; i++)
+            if (trackResults)
             {
-                if (iql.Skip != null && i < iql.Skip)
+                inMemoryContext.AddMatches(typeof(TEntity), resultList);
+                var cloneLookup = new Dictionary<object, object>();
+                var clonedResult = new List<TEntity>();
+                var pageSize =
+                    iql.Take ?? Database.GetSetConfiguration(typeof(TEntity)).PageSize ?? DefaultPageSize;
+                var take = 0;
+                for (var i = 0; i < resultList.Count; i++)
                 {
-                    continue;
-                }
-                if (pageSize != null && take == pageSize)
-                {
-                    break;
-                }
-                take++;
-                var item = resultList[i];
-                var clone = item.Clone(EntityConfigurationBuilder, typeof(TEntity), RelationshipCloneMode.DoNotClone);
-                cloneLookup.Add(item, clone);
-                clonedResult.Add((TEntity)clone);
-            }
-
-            var dictionary = new Dictionary<Type, IList>();
-            foreach (var pair in inMemoryContext.AllData)
-            {
-                var newList = ListExtensions.NewGenericList(pair.Key);
-
-                foreach (var item in pair.Value)
-                {
-                    if (cloneLookup.ContainsKey(item))
+                    if (iql.Skip != null && i < iql.Skip)
                     {
-                        newList.Add(cloneLookup[item]);
+                        continue;
                     }
-                    else
+
+                    if (pageSize != null && take == pageSize)
                     {
-                        newList.Add(item.Clone(EntityConfigurationBuilder, pair.Key, RelationshipCloneMode.DoNotClone));
+                        break;
                     }
+
+                    take++;
+                    var item = resultList[i];
+                    var clone = item.Clone(EntityConfigurationBuilder, typeof(TEntity), RelationshipCloneMode.DoNotClone);
+                    cloneLookup.Add(item, clone);
+                    clonedResult.Add((TEntity)clone);
                 }
-                dictionary.Add(pair.Key, newList);
+
+                var dictionary = new Dictionary<Type, IList>();
+                foreach (var pair in inMemoryContext.AllData)
+                {
+                    var newList = ListExtensions.NewGenericList(pair.Key);
+
+                    foreach (var item in pair.Value)
+                    {
+                        if (cloneLookup.ContainsKey(item))
+                        {
+                            newList.Add(cloneLookup[item]);
+                        }
+                        else
+                        {
+                            newList.Add(item.Clone(EntityConfigurationBuilder, pair.Key, RelationshipCloneMode.DoNotClone));
+                        }
+                    }
+
+                    dictionary.Add(pair.Key, newList);
+                }
+                operation.Result.Root = clonedResult;
+                operation.Result.Data = dictionary;
             }
 
             operation.Result.TotalCount = resultList.Count;
-            operation.Result.Root = clonedResult;
             operation.Result.Success = true;
-            operation.Result.Data = dictionary;
             return operation.Result;
         }
 

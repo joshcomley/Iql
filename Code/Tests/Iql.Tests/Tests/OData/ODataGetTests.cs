@@ -1,14 +1,18 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Haz.App.Data.Entities;
+using Iql.Data.Http;
 using Iql.OData;
 using Iql.Tests.Context;
+using Iql.Tests.Data.Context;
 using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests.OData
 {
     [TestClass]
-    public class ODataGetTests : TestsBase
+    public class ODataGetTests : ODataTestsBase
     {
         [TestMethod]
         public async Task TestGetExpandSingle()
@@ -92,6 +96,34 @@ namespace Iql.Tests.Tests.OData
             var db = new AppDbContext(new ODataDataStore());
             var site = await db.Sites.GetWithKeyAsync(1);
             AssertGeographyProperties(site);
+        }
+
+        [TestMethod]
+        public async Task TestCountWithFilter()
+        {
+            await RequestLog.LogSessionAsync(async log =>
+            {
+                await log.InterceptAsync(
+                    (method, c, request) => HttpResult.FromString(
+                        @"{
+""@odata.context"": ""https://services.odata.org/V4/"",
+""@odata.count"": 91,
+""value"": []
+}", success: true),
+                    async () =>
+                    {
+                        var db = NewDb();
+                        var result = await db.Clients.Where(_ => _.Name.Contains("abc")).CountAsync();
+                        Assert.AreEqual(91, result);
+                        var getRequest = log.Gets.Pop();
+                        var urlDecoded = WebUtility.UrlDecode(getRequest.Uri);
+#if !TypeScript
+                        Assert.AreEqual("http://localhost:28000/odata/Clients?$filter=contains($it/Name,'abc')&$top=0&$count=true", urlDecoded);
+#else
+                        Assert.AreEqual("http://localhost:28000/odata/Clients?$filter=(indexof(tolower(%24it%2FName)%2C'abc') ne -1)&$top=0&$count=true", urlDecoded);
+#endif
+                    });
+            });
         }
 
         private static void AssertGeographyProperties(Site site)
