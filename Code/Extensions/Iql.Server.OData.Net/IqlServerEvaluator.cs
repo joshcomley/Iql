@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Brandless.Data.EntityFramework.Crud;
 using Iql.Data.Evaluation;
 using Iql.Entities;
+using Iql.Parsing.Types;
 using Microsoft.EntityFrameworkCore;
 
 namespace Iql.Server.OData.Net
@@ -52,6 +53,21 @@ namespace Iql.Server.OData.Net
             }
 
             return null;
+        }
+
+        public Task<bool> QueryAnyAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> QueryAllAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<long> QueryCountAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)

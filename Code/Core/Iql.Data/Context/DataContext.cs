@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Iql.Conversion;
 using Iql.Data.Crud;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
@@ -32,6 +33,7 @@ using Iql.Entities.Validation.Validation;
 using Iql.Events;
 using Iql.Extensions;
 using Iql.Parsing;
+using Iql.Parsing.Types;
 using Iql.Queryable.Operations;
 
 namespace Iql.Data.Context
@@ -1749,6 +1751,27 @@ namespace Iql.Data.Context
         {
             var dataContext = FindDataContextForEntity(entity);
             return dataContext?.GetEntityState(entity);
+        }
+
+        public Task<bool> QueryAnyAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
+        {
+            typeResolver = typeResolver ?? EntityConfigurationContext;
+            return GetDbSetByEntityType(typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type).AnyAsync(
+                IqlConverter.Instance.ConvertIqlToLambdaExpression(query, EntityConfigurationContext));
+        }
+
+        public Task<bool> QueryAllAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
+        {
+            typeResolver = typeResolver ?? EntityConfigurationContext;
+            return GetDbSetByEntityType(typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type).AllAsync(
+                IqlConverter.Instance.ConvertIqlToLambdaExpression(query, EntityConfigurationContext));
+        }
+
+        public Task<long> QueryCountAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
+        {
+            typeResolver = typeResolver ?? EntityConfigurationContext;
+            return GetDbSetByEntityType(typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type).CountAsync(
+                IqlConverter.Instance.ConvertIqlToLambdaExpression(query, EntityConfigurationContext));
         }
 
         public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)

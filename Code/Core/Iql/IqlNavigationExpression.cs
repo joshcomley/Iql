@@ -4,6 +4,8 @@ namespace Iql
 {
     public abstract class IqlNavigationExpression : IqlParameteredLambdaExpression
     {
+        public string EntityTypeName { get; set; }
+
         protected IqlNavigationExpression(
             string entityTypeName,
             IqlExpressionKind kind,
@@ -13,6 +15,7 @@ namespace Iql
             IqlType.Class,
             parent)
         {
+            EntityTypeName = entityTypeName;
             Parameters.Add(new IqlRootReferenceExpression() { EntityTypeName = entityTypeName });
         }
 

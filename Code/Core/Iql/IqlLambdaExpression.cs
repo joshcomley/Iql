@@ -5,13 +5,30 @@ namespace Iql
 {
     public class IqlLambdaExpression : IqlParameteredLambdaExpression
     {
+        private IqlExpression _body;
+
         public IqlLambdaExpression AddParameter(string name = null)
         {
             Parameters.Add(new IqlRootReferenceExpression(name ?? ""));
             return this;
         }
 
-        public IqlExpression Body { get; set; }
+        public IqlExpression Body
+        {
+            get => _body;
+            set
+            {
+                _body = value;
+                if (_body == null)
+                {
+                    ReturnType = IqlType.Unknown;
+                }
+                else
+                {
+                    ReturnType = _body.ReturnType;
+                }
+            }
+        }
 
         public IqlLambdaExpression(IqlType? returnType = IqlType.Unknown, IqlExpression body = null, IqlExpression parent = null) : base(IqlExpressionKind.Lambda, returnType, parent)
         {

@@ -44,6 +44,16 @@ namespace Iql.Queryable
             return Then(new ReverseOperation());
         }
 
+        public abstract Task<bool> AnyAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        public abstract Task<bool> AllAsync(Expression<Func<T, bool>> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
         public abstract Task<long> CountAsync(Expression<Func<T, bool>> expression
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -100,6 +110,45 @@ namespace Iql.Queryable
         )
         {
             return Where((Expression<Func<T, bool>>) expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        Task<bool> IQueryableBase.AnyAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return AnyAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        Task<bool> IQueryableBase.AllAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return AllAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        Task<long> IQueryableBase.CountAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return CountAsync((Expression<Func<T, bool>>)expression
 #if TypeScript
             , evaluateContext
 #endif

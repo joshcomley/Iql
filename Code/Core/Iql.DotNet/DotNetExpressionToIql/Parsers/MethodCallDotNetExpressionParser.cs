@@ -132,12 +132,14 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                     parent = context.Parse(node.Arguments[0], context) as IqlReferenceExpression;
                     var propertyExpression = new IqlPropertyExpression(node.Arguments[1].GetValue() as string, parent);
                     return propertyExpression;
-                case nameof(IqlUserPermissionContext<object>.Query):
+                case nameof(IqlUserPermissionContext<object>.QueryAny):
+                case nameof(IqlUserPermissionContext<object>.QueryAll):
+                case nameof(IqlUserPermissionContext<object>.QueryCount):
                     var lambda = context.Parse(node.Arguments[0], context);
-                    var entityTypeName = node.Arguments[0].Type.GenericTypeArguments[0].Name;
+                    var entityTypeName = ((node.Arguments[0] as UnaryExpression).Operand as LambdaExpression).Parameters[0].Type.Name;
                     var query = new IqlDataSetQueryExpression(entityTypeName);
-                    query.DataSet = new IqlDataSetReferenceExpression();
-                    query.DataSet.Name = entityTypeName;
+                    query.Filter = lambda;
+                    query.Key = node.Method.Name;
                     return query;
 
             }

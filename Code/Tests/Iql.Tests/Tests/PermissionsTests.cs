@@ -2,12 +2,13 @@
 using System.Threading.Tasks;
 using Iql.Data;
 using Iql.Data.Extensions;
+#if !TypeScript
 using Iql.DotNet.Serialization;
+#endif
 using Iql.Entities.Permissions;
 using Iql.Extensions;
 using Iql.Tests.Context;
 using IqlSampleApp.Data.Entities;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #if TypeScript
 using Iql.Parsing;
@@ -163,36 +164,43 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
         }
 
-//        [TestMethod]
-//        public async Task TestPermissionRuleOnChildCollectionOnExistingEntity()
-//        {
-//            var cloudClient = new Client
-//            {
-//                Id = 9234,
-//                Description = "",
-//                CreatedByUserId = "NotUs"
-//            };
-//            AppDbContext.InMemoryDb.Clients.Add(cloudClient);
-//            var cloudUser = new ApplicationUser
-//            {
-//                Id = nameof(TestPermissionRuleOnChildCollectionOnExistingEntity),
-//                ClientId = 9234
-//            };
-//            AppDbContext.InMemoryDb.Users.Add(cloudUser);
-//            //var result = Db.Clients.Where(_ => _.CreatedByUserId == "abc").Any();
-//            var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
-//            // Only allow read and edit if the user has created this client
-//            var rule =
-//                clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-//                    context => context.Query<Client>(clients => clients.Any(_ => _.CreatedByUserId == context.User.Id)) ? IqlUserPermission.ReadAndEdit : IqlUserPermission.None
-//#if TypeScript
-//            , null, new EvaluateContext(_ => Evaluator.Eval(_))
-//#endif
-//                );
-//            var user = await Db.Users.GetWithKeyAsync(nameof(TestConvolutedPermissionRuleOnExistingEntity));
-//            var client = await Db.Clients.GetWithKeyAsync(9234);
-//            var permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
-//            Assert.AreEqual(IqlUserPermission.None, permission);
-//        }
+        [TestMethod]
+        public async Task TestPermissionRuleOnChildCollectionOnExistingEntity()
+        {
+            var cloudClient = new Client
+            {
+                Id = 9234,
+                Description = "",
+                CreatedByUserId = "NotUs"
+            };
+            AppDbContext.InMemoryDb.Clients.Add(cloudClient);
+            var cloudUser = new ApplicationUser
+            {
+                Id = nameof(TestPermissionRuleOnChildCollectionOnExistingEntity),
+                ClientId = 9234
+            };
+            AppDbContext.InMemoryDb.Users.Add(cloudUser);
+            var test1 = await Db.Clients.AnyAsync(_ => _.Id == 8888);
+            Assert.AreEqual(false, test1);
+            var test2 = await Db.Clients.AnyAsync(_ => _.Id == 9234);
+            Assert.AreEqual(true, test2);
+            //var result = Db.Clients.Where(_ => _.CreatedByUserId == "abc").Any();
+            var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
+            // Only allow read and edit if the user has created this client
+            var rule =
+                clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                    context => context.QueryAny<Client>(_ => _.CreatedByUserId == context.User.Id) ? IqlUserPermission.ReadAndEdit : IqlUserPermission.None
+#if TypeScript
+            , null, new EvaluateContext(_ => Evaluator.Eval(_))
+#endif
+                );
+#if !TypeScript
+            var xml = rule.IqlExpression.SerializeToXml();
+#endif
+            var user = await Db.Users.GetWithKeyAsync(nameof(TestConvolutedPermissionRuleOnExistingEntity));
+            var client = await Db.Clients.GetWithKeyAsync(9234);
+            var permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.None, permission);
+        }
     }
 }

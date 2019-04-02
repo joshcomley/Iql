@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Entities.InferredValues;
+using Iql.Extensions;
 
 namespace Iql
 {
@@ -12,13 +13,17 @@ namespace Iql
         protected IqlExpression(IqlExpressionKind kind, IqlType? returnType = IqlType.Unknown, IqlExpression parent = null)
         {
             Kind = kind;
+            if (returnType == null || returnType == IqlType.Unknown)
+            {
+                returnType = kind.ResolveDefaultReturnType();
+            }
             ReturnType = returnType ?? IqlType.Unknown;
             Parent = parent;
         }
 
         public string Key { get; set; }
         public IqlExpressionKind Kind { get; set; }
-        public IqlType ReturnType { get; set; }
+        public virtual IqlType ReturnType { get; set; }
         public IqlExpression Parent { get; set; }
 
         public bool IsOrHasRootEntity()
@@ -309,6 +314,18 @@ namespace Iql
         public IqlExpression Replace(ReplaceContext context)
         {
             return ReplaceExpressions(context);
+        }
+        public IqlExpression ReplaceExpression(IqlExpression toReplace, IqlExpression toReplaceWith)
+        {
+            return ReplaceWith((context, expression) =>
+            {
+                if (expression == toReplace)
+                {
+                    return toReplaceWith;
+                }
+
+                return expression;
+            });
         }
         internal abstract IqlExpression ReplaceExpressions(ReplaceContext context);
 

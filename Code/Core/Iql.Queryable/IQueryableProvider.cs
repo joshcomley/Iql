@@ -13,6 +13,17 @@ namespace Iql.Queryable
         where T : class
         where TQueryable : IQueryableProvider<T, TQueryable>
     {
+        Task<bool> AnyAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<long> CountAsync(Expression<Func<T, bool>> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
         TQueryable Where(Expression<Func<T, bool>> expression
 #if TypeScript
             , EvaluateContext evaluateContext = null

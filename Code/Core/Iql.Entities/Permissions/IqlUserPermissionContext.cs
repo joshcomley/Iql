@@ -9,10 +9,22 @@ namespace Iql.Entities.Permissions
     {
         public TUser User { get; set; }
 
-        public bool Query<T>(Expression<Func<List<T>, bool>> expression)
+        public bool QueryAny<T>(Expression<Func<T, bool>> expression)
             where T : class
         {
             return false;
+        }
+
+        public bool QueryAll<T>(Expression<Func<T, bool>> expression)
+            where T : class
+        {
+            return false;
+        }
+
+        public long QueryCount<T>(Expression<Func<T, bool>> expression)
+            where T : class
+        {
+            return -1;
         }
 
         public IqlUserPermissionContext(TUser user)

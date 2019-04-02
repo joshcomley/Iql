@@ -610,6 +610,26 @@ namespace Iql.Data.Context
             return IqlPropertyPath.FromString(EntityConfiguration.Builder, propertyName, this.EntityConfiguration.TypeMetadata, null, rootReferenceName).Expression;
         }
 
+        public override async Task<bool> AnyAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await CountAsync(expression
+#if TypeScript
+            , evaluateContext = null
+#endif
+            ) > 0;
+        }
+
+        public override async Task<bool> AllAsync(Expression<Func<T, bool>> expression)
+        {
+            var withoutFilterCount = await CountAsync();
+            var withFilterCount = await CountAsync(expression);
+            return withFilterCount == withoutFilterCount;
+        }
+
         public override async Task<long> CountAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -623,6 +643,7 @@ namespace Iql.Data.Context
             );
             return result?.Count ?? -1;
         }
+
         public override async Task<DbList<T>> ToListAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null

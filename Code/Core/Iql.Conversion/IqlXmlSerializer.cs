@@ -9,7 +9,7 @@ using Iql.Parsing.Types;
 
 namespace Iql.DotNet.Serialization
 {
-    public class IqlXmlSerializer
+    public static class IqlXmlSerializer
     {
         private static readonly Type[] IqlTypes;
 
@@ -32,7 +32,7 @@ namespace Iql.DotNet.Serialization
             return SerializeToXml((LambdaExpression)expression, typeResolver);
         }
 
-        public static string SerializeToXml(LambdaExpression expression, ITypeResolver typeResolver)
+        public static string SerializeToXml(this LambdaExpression expression, ITypeResolver typeResolver)
         {
             var parameter = expression.Parameters.First();
             var parser = Activator.CreateInstance(IqlConverter.Instance.GetType());
@@ -42,7 +42,7 @@ namespace Iql.DotNet.Serialization
             //return SerializeToXml(IqlConverter.Instance.ConvertLambdaExpressionToIql<>().Parse(expression));
         }
 
-        public static string SerializeToXml(IqlExpression expression)
+        public static string SerializeToXml(this IqlExpression expression)
         {
             return expression.SerializeToXml(IqlTypes);
         }
