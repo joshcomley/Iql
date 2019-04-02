@@ -8,6 +8,16 @@ namespace Iql.Extensions
 {
     public static class IqlExpressionExtensions
     {
+        public static IqlExpression RootExpression(this IqlExpression expression)
+        {
+            var parent = expression;
+            while (parent.Parent != null)
+            {
+                parent = parent.Parent;
+            }
+            return parent;
+        }
+
         public static IqlSimplePropertyPath ToSimplePropertyPath(this IqlExpression expression)
         {
             var parts = new List<string>();

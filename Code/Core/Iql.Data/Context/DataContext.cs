@@ -1756,8 +1756,9 @@ namespace Iql.Data.Context
         public Task<bool> QueryAnyAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
         {
             typeResolver = typeResolver ?? EntityConfigurationContext;
-            return GetDbSetByEntityType(typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type).AnyAsync(
-                IqlConverter.Instance.ConvertIqlToLambdaExpression(query, EntityConfigurationContext));
+            var entityType = typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type;
+            var convertIqlToLambdaExpression = IqlConverter.Instance.ConvertIqlToLambdaExpression(query.Filter, EntityConfigurationContext);
+            return GetDbSetByEntityType(entityType).AnyAsync(convertIqlToLambdaExpression);
         }
 
         public Task<bool> QueryAllAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)

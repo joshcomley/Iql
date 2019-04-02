@@ -19,7 +19,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlIsGreaterThanOrEqualToExpression(null, null);
+			var expression = new IqlIsGreaterThanOrEqualToExpression();
 			expression.Left = Left?.Clone();
 			expression.Right = Right?.Clone();
 			expression.Key = Key;

@@ -27,7 +27,7 @@ namespace Iql
         {
             // #CloneStart
 
-			var expression = new IqlMultiPointExpression(null);
+			var expression = new IqlMultiPointExpression();
 			if(Points == null)
 			{
 				expression.Points = null;

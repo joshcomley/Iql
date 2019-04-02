@@ -36,7 +36,7 @@ namespace Iql
         {
             // #CloneStart
 
-			var expression = new IqlPolygonExpression(null);
+			var expression = new IqlPolygonExpression();
 			expression.OuterRing = (IqlRingExpression)OuterRing?.Clone();
 			if(InnerRings == null)
 			{

@@ -22,7 +22,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlOrderByExpression(null);
+			var expression = new IqlOrderByExpression();
 			expression.OrderExpression = OrderExpression?.Clone();
 			expression.Descending = Descending;
 			expression.Key = Key;

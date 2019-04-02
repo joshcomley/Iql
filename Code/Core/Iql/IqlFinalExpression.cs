@@ -21,7 +21,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlFinalExpression<TValue>(default(TValue));
+			var expression = new IqlFinalExpression<TValue>();
 			expression.Value = Value;
 			expression.Key = Key;
 			expression.Kind = Kind;

@@ -40,7 +40,7 @@ namespace Iql
         {
             // #CloneStart
 
-			var expression = new IqlInvocationExpression(null);
+			var expression = new IqlInvocationExpression();
 			expression.MethodName = MethodName;
 			if(Parameters == null)
 			{

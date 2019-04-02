@@ -119,7 +119,7 @@ namespace Iql
         {
             // #CloneStart
 
-			var expression = new IqlPointExpression(0, 0);
+			var expression = new IqlPointExpression();
 			expression.X = X;
 			expression.Y = Y;
 			expression.Srid = Srid;

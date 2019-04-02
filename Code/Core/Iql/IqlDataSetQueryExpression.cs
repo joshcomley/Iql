@@ -67,6 +67,7 @@ namespace Iql
 			expression.IncludeCount = IncludeCount;
 			expression.Skip = Skip;
 			expression.Take = Take;
+			expression.EntityTypeName = EntityTypeName;
 			if(Expands == null)
 			{
 				expression.Expands = null;

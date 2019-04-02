@@ -19,7 +19,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlModuloEqualsExpression(null, null);
+			var expression = new IqlModuloEqualsExpression();
 			expression.Left = Left?.Clone();
 			expression.Right = Right?.Clone();
 			expression.Key = Key;

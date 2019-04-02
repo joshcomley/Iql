@@ -197,10 +197,15 @@ namespace Iql.Tests.Tests
 #if !TypeScript
             var xml = rule.IqlExpression.SerializeToXml();
 #endif
-            var user = await Db.Users.GetWithKeyAsync(nameof(TestConvolutedPermissionRuleOnExistingEntity));
+            var user = await Db.Users.GetWithKeyAsync(nameof(TestPermissionRuleOnChildCollectionOnExistingEntity));
             var client = await Db.Clients.GetWithKeyAsync(9234);
             var permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
             Assert.AreEqual(IqlUserPermission.None, permission);
+            permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.None, permission);
+            cloudClient.CreatedByUserId = cloudUser.Id;
+            permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
         }
     }
 }

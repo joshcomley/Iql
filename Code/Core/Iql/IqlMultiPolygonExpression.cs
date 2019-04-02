@@ -27,7 +27,7 @@ namespace Iql
         {
             // #CloneStart
 
-			var expression = new IqlMultiPolygonExpression(null);
+			var expression = new IqlMultiPolygonExpression();
 			if(Polygons == null)
 			{
 				expression.Polygons = null;

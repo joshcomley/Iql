@@ -20,7 +20,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlStringEndsWithExpression(null, null);
+			var expression = new IqlStringEndsWithExpression();
 			expression.Value = Value?.Clone();
 			expression.Key = Key;
 			expression.Kind = Kind;

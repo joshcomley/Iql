@@ -21,7 +21,7 @@ namespace Iql
         {
             // #CloneStart
 
-			var expression = new IqlDistanceExpression(null, null);
+			var expression = new IqlDistanceExpression();
 			expression.Srid = Srid;
 			expression.Left = Left?.Clone();
 			expression.Right = Right?.Clone();

@@ -26,7 +26,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlNotExpression(null);
+			var expression = new IqlNotExpression();
 			expression.Expression = Expression?.Clone();
 			expression.Key = Key;
 			expression.Kind = Kind;

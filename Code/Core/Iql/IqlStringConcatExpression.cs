@@ -20,7 +20,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlStringConcatExpression(null, null);
+			var expression = new IqlStringConcatExpression();
 			expression.Value = Value?.Clone();
 			expression.Key = Key;
 			expression.Kind = Kind;

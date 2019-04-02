@@ -31,7 +31,7 @@ namespace Iql
         {
             // #CloneStart
 
-			var expression = new IqlMultiLineExpression(null);
+			var expression = new IqlMultiLineExpression();
 			if(Lines == null)
 			{
 				expression.Lines = null;

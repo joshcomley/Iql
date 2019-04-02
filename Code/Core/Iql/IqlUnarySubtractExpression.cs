@@ -17,7 +17,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlUnarySubtractExpression(null);
+			var expression = new IqlUnarySubtractExpression();
 			expression.Value = Value;
 			expression.Key = Key;
 			expression.Kind = Kind;

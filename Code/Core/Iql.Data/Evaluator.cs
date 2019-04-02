@@ -168,9 +168,9 @@ namespace Iql.Data
         }
 
         public static Task<IqlUserPermission> EvaluateEntityPermissionsRuleAsync<TEntity, TUser>(
-            this IqlUserPermissionRule rule, 
-            TUser user, 
-            TEntity entity, 
+            this IqlUserPermissionRule rule,
+            TUser user,
+            TEntity entity,
             IDataContext dataContext)
             where TEntity : class
             where TUser : class
@@ -234,7 +234,35 @@ namespace Iql.Data
         {
             var isEntityNew = evaluator.EntityStatus(entity) != IqlEntityStatus.Existing;
             var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew, user, entity);
-            var iqlExpression = rule.IqlExpression;
+            var iqlExpression = rule.IqlExpression.Clone();
+            var flattened = iqlExpression.TopLevelPropertyExpressions();
+            for (var i = 0; i < flattened.Length; i++)
+            {
+                var flattenedExpression = flattened[i];
+                var rootExpression = flattenedExpression.Expression.RootExpression();
+                if (rootExpression.Kind == IqlExpressionKind.Variable)
+                {
+                    var variableExpression = rootExpression as IqlVariableExpression;
+                    if (variableExpression.EntityTypeName == context.GetType().GetFullName())
+                    {
+                        // Construct fake lambda
+                        var evaluatedResult = await flattenedExpression.Expression.EvaluateIqlCustomAsync(
+                            serviceProviderProvider,
+                            context,
+                            evaluator,
+                            typeResolver,
+                            typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
+                        if (evaluatedResult.Success)
+                        {
+                            iqlExpression.ReplaceExpression(
+                                flattenedExpression.Expression,
+                                new IqlLiteralExpression(evaluatedResult.Result)
+                            );
+                        }
+                    }
+                }
+            }
+
             var queries = iqlExpression.Flatten()
                 .Where(_ => _.Expression.Kind == IqlExpressionKind.DataSetQuery).Select(_ => _.Expression).ToArray();
             for (var i = 0; i < queries.Length; i++)
@@ -253,8 +281,7 @@ namespace Iql.Data
                         evaluatedValue = await evaluator.QueryCountAsync(query);
                         break;
                 }
-                iqlExpression =
-                    (IqlLambdaExpression)iqlExpression.ReplaceExpression(query, new IqlLiteralExpression(evaluatedValue));
+                iqlExpression.ReplaceExpression(query, new IqlLiteralExpression(evaluatedValue));
                 //var lambda =
                 //    IqlConverter.Instance.ConvertIqlToLambdaExpression(query, typeResolver);
             }
@@ -582,11 +609,23 @@ namespace Iql.Data
             });
             var processedLambda = IqlConverter.Instance.ConvertIqlToLambdaExpression(processedIql, typeResolver);
             var compiledLambda = processedLambda.Compile();
-            var result = compiledLambda.DynamicInvoke(entity
+            object result = null;
+            if (processedLambda.Parameters?.Any() == true)
+            {
+                result = compiledLambda.DynamicInvoke(entity
 #if TypeScript
                 , new InMemoryContext<object>(null)
 #endif
                 );
+            }
+            else
+            {
+                result = compiledLambda.DynamicInvoke(
+#if TypeScript
+                new InMemoryContext<object>(null)
+#endif
+                );
+            }
             if (result is IqlLiteralExpression)
             {
                 result = (result as IqlLiteralExpression).Value;

@@ -24,7 +24,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlStringSubStringExpression(null, null, null);
+			var expression = new IqlStringSubStringExpression();
 			expression.Take = (IqlReferenceExpression)Take?.Clone();
 			expression.Value = Value?.Clone();
 			expression.Key = Key;

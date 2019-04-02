@@ -22,7 +22,7 @@ namespace Iql
         {
             // #CloneStart
 
-			var expression = new IqlIntersectsExpression(null, null);
+			var expression = new IqlIntersectsExpression();
 			expression.Polygon = (IqlReferenceExpression)Polygon?.Clone();
 			expression.Srid = Srid;
 			expression.Key = Key;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 
 namespace Iql
@@ -14,13 +15,13 @@ namespace Iql
         {
             // #CloneStart
 
-            var expression = new IqlCurrentUserExpression();
-            expression.CanFail = CanFail;
-            expression.Key = Key;
-            expression.Kind = Kind;
-            expression.ReturnType = ReturnType;
-            expression.Parent = Parent?.Clone();
-            return expression;
+			var expression = new IqlNewGuidExpression();
+			expression.CanFail = CanFail;
+			expression.Key = Key;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
 
             // #CloneEnd
         }
@@ -29,13 +30,13 @@ namespace Iql
         {
             // #ReplaceStart
 
-            Parent = context.Replace(this, nameof(Parent), null, Parent);
-            var replaced = context.Replacer(context, this);
-            if (replaced != this)
-            {
-                return replaced;
-            }
-            return this;
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
 
             // #ReplaceEnd
         }
@@ -44,7 +45,7 @@ namespace Iql
         {
             // #FlattenStart
 
-            context.Flatten(Parent);
+				context.Flatten(Parent);
 
             // #FlattenEnd
         }

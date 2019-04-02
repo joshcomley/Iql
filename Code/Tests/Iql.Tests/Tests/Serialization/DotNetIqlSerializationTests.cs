@@ -88,7 +88,7 @@ namespace Iql.Tests.Tests.Serialization
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Lambda</Kind>
-  <ReturnType>Unknown</ReturnType>
+  <ReturnType>Boolean</ReturnType>
   <Parameters>
     <IqlRootReferenceExpression>
       <Kind>RootReference</Kind>
@@ -100,7 +100,7 @@ namespace Iql.Tests.Tests.Serialization
   </Parameters>
   <Body xsi:type=""IqlLambdaExpression"">
     <Kind>Lambda</Kind>
-    <ReturnType>Unknown</ReturnType>
+    <ReturnType>Boolean</ReturnType>
     <Parameters>
       <IqlRootReferenceExpression>
         <Kind>RootReference</Kind>
@@ -112,7 +112,7 @@ namespace Iql.Tests.Tests.Serialization
     </Parameters>
     <Body xsi:type=""IqlIsEqualToExpression"">
       <Kind>IsEqualTo</Kind>
-      <ReturnType>Unknown</ReturnType>
+      <ReturnType>Boolean</ReturnType>
       <Left xsi:type=""IqlPropertyExpression"">
         <Kind>Property</Kind>
         <ReturnType>Unknown</ReturnType>

@@ -36,7 +36,7 @@ namespace Iql
         {
             // #CloneStart
 
-			var expression = new IqlLineExpression(null);
+			var expression = new IqlLineExpression();
 			if(Points == null)
 			{
 				expression.Points = null;

@@ -18,7 +18,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlStringIncludesExpression(null, null);
+			var expression = new IqlStringIncludesExpression();
 			expression.Value = Value?.Clone();
 			expression.Key = Key;
 			expression.Kind = Kind;

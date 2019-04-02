@@ -18,7 +18,7 @@ namespace Iql
 		{
 			// #CloneStart
 
-			var expression = new IqlStringTrimExpression(null);
+			var expression = new IqlStringTrimExpression();
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;

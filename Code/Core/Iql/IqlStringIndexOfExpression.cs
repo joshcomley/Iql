@@ -20,13 +20,13 @@ namespace Iql
         {
             // #CloneStart
 
-            var expression = new IqlStringIndexOfExpression(null, null);
-            expression.Value = Value?.Clone();
-            expression.Key = Key;
-            expression.Kind = Kind;
-            expression.ReturnType = ReturnType;
-            expression.Parent = Parent?.Clone();
-            return expression;
+			var expression = new IqlStringIndexOfExpression();
+			expression.Value = Value?.Clone();
+			expression.Key = Key;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
 
             // #CloneEnd
         }
@@ -35,8 +35,8 @@ namespace Iql
         {
             // #FlattenStart
 
-            context.Flatten(Value);
-            context.Flatten(Parent);
+				context.Flatten(Value);
+				context.Flatten(Parent);
 
             // #FlattenEnd
         }
@@ -45,14 +45,14 @@ namespace Iql
         {
             // #ReplaceStart
 
-            Value = context.Replace(this, nameof(Value), null, Value);
-            Parent = context.Replace(this, nameof(Parent), null, Parent);
-            var replaced = context.Replacer(context, this);
-            if (replaced != this)
-            {
-                return replaced;
-            }
-            return this;
+			Value = context.Replace(this, nameof(Value), null, Value);
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
 
             // #ReplaceEnd
         }
