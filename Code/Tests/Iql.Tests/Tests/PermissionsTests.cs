@@ -224,6 +224,8 @@ namespace Iql.Tests.Tests
 
             cloudClient.CreatedByUserId = cloudUser.Id;
             permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
+
             cloudClient.CreatedByUserId = "NotUs";
             permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
             Assert.AreEqual(IqlUserPermission.None, permission);
@@ -240,8 +242,6 @@ namespace Iql.Tests.Tests
             permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
             Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
         }
-
-
 
         [TestMethod]
         public async Task TestPermissionRuleOnChildCollectionOnExistingEntity2()
@@ -284,9 +284,6 @@ namespace Iql.Tests.Tests
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
                 );
-#if !TypeScript
-            var xml = rule.IqlExpression.SerializeToXml();
-#endif
             var user = await Db.Users.GetWithKeyAsync(nameof(TestPermissionRuleOnChildCollectionOnExistingEntity));
             var client = await Db.Clients.GetWithKeyAsync(9234);
 

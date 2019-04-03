@@ -14,13 +14,14 @@ namespace Iql.Tests.Server
         [TestMethod]
         public async Task InferValuesForUserSettings()
         {
-            var controller = ControllerContext<UserSetting>(true);
+            var controller = ControllerContext<UserSetting>();
             var dbObject = new UserSetting
             {
                 Key1 = "Abc",
                 Key2 = "Def",
                 Value = "Fish"
             };
+            controller.ServerEvaluator.MarkAsUnsaved(dbObject);
             Assert.AreEqual(default(DateTimeOffset), dbObject.CreatedDate);
             var clone = (UserSetting)dbObject.Clone(Builder, typeof(UserSetting));
             var inferredValuesResult = await controller.EntityConfiguration.TrySetInferredValuesAsync(
@@ -35,8 +36,9 @@ namespace Iql.Tests.Server
         [TestMethod]
         public async Task InferValuesForPersonWithBirthdayNotSet()
         {
-            var controller = ControllerContext<Person>(true);
+            var controller = ControllerContext<Person>();
             var dbObject = new Person();
+            controller.ServerEvaluator.MarkAsUnsaved(dbObject);
             Assert.AreEqual(default(DateTimeOffset), dbObject.CreatedDate);
             Assert.AreEqual(null, dbObject.Birthday);
             Assert.AreNotEqual(PersonCategory.Conventional, dbObject.Category);
@@ -56,7 +58,7 @@ namespace Iql.Tests.Server
         [TestMethod]
         public async Task InferValuesForPersonWithBirthdaySet()
         {
-            var controller = ControllerContext<Person>(true);
+            var controller = ControllerContext<Person>();
             controller.EntityConfiguration.ConfigureProperty(p => p.Skills, p =>
             {
                 p.IsInferredWith(_ => PersonSkills.Coder,
@@ -78,6 +80,7 @@ namespace Iql.Tests.Server
                 );
             });
             var dbObjectInitialize = new Person();
+            controller.ServerEvaluator.MarkAsUnsaved(dbObjectInitialize);
             dbObjectInitialize.Category = PersonCategory.AutoDescription;
             Assert.AreEqual(default(DateTimeOffset), dbObjectInitialize.CreatedDate);
             Assert.AreEqual(null, dbObjectInitialize.Birthday);
@@ -95,6 +98,7 @@ namespace Iql.Tests.Server
             Assert.AreEqual(PersonCategory.Conventional, dbObjectInitialize.Category);
 
             var dbObjectNoInitialize = new Person();
+            controller.ServerEvaluator.MarkAsUnsaved(dbObjectNoInitialize);
             dbObjectNoInitialize.Category = PersonCategory.AutoDescription;
             Assert.AreEqual(default(DateTimeOffset), dbObjectNoInitialize.CreatedDate);
             Assert.AreEqual(null, dbObjectNoInitialize.Birthday);

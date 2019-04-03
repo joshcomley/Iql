@@ -13,6 +13,8 @@ namespace Iql.DotNet
 {
     public class DotNetExpressionConverter : ExpressionConverterBase
     {
+        public static bool DisableNullPropagation { get; set; }
+        public static bool DisableCaseSensitivityHandling { get; set; }
         public static void Use()
         {
             IqlExpressionConversion.DefaultExpressionConverter = () => new DotNetExpressionConverter();

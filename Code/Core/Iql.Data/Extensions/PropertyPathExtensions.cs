@@ -23,7 +23,8 @@ namespace Iql.Data.Extensions
             this IqlPropertyPath propertyPath, 
             object entity, 
             IIqlDataEvaluator dataEvaluator,
-            bool populate)
+            bool populate,
+            Dictionary<object, object> replacemenets = null)
         {
             var evaluationResult = new IqlPropertyPathEvaluationResult(
                 false,
@@ -56,6 +57,10 @@ namespace Iql.Data.Extensions
             for (var i = 0; i < propertyPath.PropertyPath.Length; i++)
             {
                 var part = propertyPath.PropertyPath[i];
+                if (result != null && replacemenets != null && replacemenets.ContainsKey(result))
+                {
+                    result = replacemenets[result];
+                }
                 var parent = result;
                 if (result == null)
                 {

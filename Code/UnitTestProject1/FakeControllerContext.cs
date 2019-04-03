@@ -17,12 +17,12 @@ namespace Iql.Tests.Server
         public CrudBase<ApplicationDbContext, ApplicationDbContext, T> CrudBase { get; set; }
         public EntityConfiguration<T> EntityConfiguration { get; set; }
 
-        public FakeControllerContext(IServiceProvider services, bool forNewEntity)
+        public FakeControllerContext(IServiceProvider services)
         {
             EntityConfiguration = services.GetService<IEntityConfigurationProvider>().Get<IIqlSampleAppService>().EntityType<T>();
             CrudBase = new CrudBase<ApplicationDbContext, ApplicationDbContext, T>(services);
             CrudManager = new CrudManager(CrudBase.Secured.Context);
-            ServerEvaluator = new IqlServerEvaluator(CrudManager, forNewEntity);
+            ServerEvaluator = new IqlServerEvaluator(CrudManager, () => CrudBase.NewUnsecuredDb());
         }
     }
 }

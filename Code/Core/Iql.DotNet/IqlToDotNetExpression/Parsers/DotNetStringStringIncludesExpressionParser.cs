@@ -66,22 +66,39 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                         , null
 #endif
             );
-            var parentExpression = Expression.Coalesce(parent.Expression, Expression.Constant(""));
+            var parentExpression =
+                DotNetExpressionConverter.DisableNullPropagation
+                    ? parent.Expression
+                    : Expression.Coalesce(parent.Expression, Expression.Constant(""));
             var valueExpression = parser.Parse(action.Value
 #if TypeScript
                         , null
 #endif
             ).Expression;
-            valueExpression = Expression.Coalesce(valueExpression, Expression.Constant(""));
+            valueExpression =
+                DotNetExpressionConverter.DisableNullPropagation
+                ? valueExpression
+                : Expression.Coalesce(valueExpression, Expression.Constant(""));
             MethodCallExpression methodCallExpression;
             if (action.Value != null)
             {
-                methodCallExpression = Expression.Call(
-                    Expression.Call(parentExpression, StringToUpperMethod),
-                    StringContainsMethod,
-                    Expression.Call(valueExpression,
-                        StringToUpperMethod)
-                );
+                if (DotNetExpressionConverter.DisableCaseSensitivityHandling)
+                {
+                    methodCallExpression = Expression.Call(
+                        parentExpression,
+                        StringContainsMethod,
+                        valueExpression
+                    );
+                }
+                else
+                {
+                    methodCallExpression = Expression.Call(
+                        Expression.Call(parentExpression, StringToUpperMethod),
+                        StringContainsMethod,
+                        Expression.Call(valueExpression,
+                            StringToUpperMethod)
+                    );
+                }
             }
             else
             {

@@ -198,7 +198,9 @@ namespace Iql.Data.Extensions
                                 NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
                                 dataEvaluator,
                                 property.EntityConfiguration.Builder,
-                                typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type));
+                                typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type),
+                                false,
+                                false);
 
                         if (!Equals(conditionResult.Result, true))
                         {

@@ -66,18 +66,18 @@ namespace Iql.Tests.Server
             }
         }
 
-        public FakeControllerContext<T> ControllerContext<T>(bool forNewEntity = false, Action<FakeControllerContext<T>> action = null)
+        public FakeControllerContext<T> ControllerContext<T>(Action<FakeControllerContext<T>> action = null)
             where T : class
         {
-            var context = new FakeControllerContext<T>(Host.Services, forNewEntity);
+            var context = new FakeControllerContext<T>(Host.Services);
             action?.Invoke(context);
             return context;
         }
 
-        public async Task<FakeControllerContext<T>> ControllerContextAsync<T>(bool forNewEntity = false, Func<FakeControllerContext<T>, Task> action = null)
+        public async Task<FakeControllerContext<T>> ControllerContextAsync<T>(Func<FakeControllerContext<T>, Task> action = null)
             where T : class
         {
-            var context = new FakeControllerContext<T>(Host.Services, forNewEntity);
+            var context = new FakeControllerContext<T>(Host.Services);
             if (action != null)
             {
                 await action(context);

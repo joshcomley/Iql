@@ -251,7 +251,9 @@ namespace Iql.Data
                             context,
                             evaluator,
                             typeResolver,
-                            typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
+                            typeof(IqlEntityUserPermissionContext<TEntity, TUser>),
+                            false,
+                            true);
                         if (evaluatedResult.Success)
                         {
                             iqlExpression.ReplaceExpression(
@@ -409,7 +411,8 @@ namespace Iql.Data
             IIqlDataEvaluator dataEvaluator,
             ITypeResolver typeResolver,
             Type contextType = null,
-            bool populatePath = false
+            bool populatePath = false,
+            bool enforceLatest = false
             )
         {
             var success = true;
@@ -461,7 +464,7 @@ namespace Iql.Data
                         expands[rootEntity].ExpandPaths.Add(path);
                     }
                 }
-                else if (propertyPath.HasRootEntity)
+                else if (propertyPath.HasRootEntity && enforceLatest)
                 {
                     var root = propertyPath.RootEntity;
                     object rootEntity = (await root.EvaluateCustomAsync(
@@ -481,6 +484,7 @@ namespace Iql.Data
                 }
             }
 
+            Dictionary<object, object> replacements = null;
             foreach (var expandGroup in expands)
             {
                 var entity = expandGroup.Key;
@@ -489,10 +493,15 @@ namespace Iql.Data
                 {
                     var expandPaths = expandGroup.Value.ExpandPaths.Distinct().ToArray();
                     // Ensure the relationships are populated
-                    await dataEvaluator.GetEntityByKeyAsync(
+                    var newEntity = await dataEvaluator.GetEntityByKeyAsync(
                         expandGroup.Value.EntityConfiguration,
                         expandGroup.Value.EntityConfiguration.GetCompositeKey(entity),
                         expandPaths);
+                    if (newEntity != entity && newEntity != null)
+                    {
+                        replacements = replacements ?? new Dictionary<object, object>();
+                        replacements.Add(entity, newEntity);
+                    }
                 }
             }
 
@@ -502,7 +511,8 @@ namespace Iql.Data
                 var evaluationResult = await propertyPath.EvaluateCustomAsync(
                     context,
                     dataEvaluator,
-                    populatePath);
+                    populatePath,
+                    replacements);
                 paths.Add(evaluationResult);
                 var flattenedExpression = processResult.propertyExpressions.First(_ => _.Expression == flattenedExpressions[i].Expression);
                 var value = evaluationResult.Value ?? ResolveNull(propertyPath, flattenedExpression);

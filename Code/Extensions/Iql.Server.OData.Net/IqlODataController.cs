@@ -304,7 +304,7 @@ namespace Iql.Server.OData.Net
 
         protected override async Task OnPatchAsync(Delta<T> patch, T dbObject)
         {
-            var serverEvaluator = new IqlServerEvaluator(CrudManager, false);
+            var serverEvaluator = new IqlServerEvaluator(CrudManager, () => Crud.NewUnsecuredDb());
             var clone = (T)dbObject.Clone(Builder, EntityConfiguration.Type);
             await base.OnPatchAsync(patch, dbObject);
             await EntityConfiguration.TrySetInferredValuesAsync(
@@ -329,7 +329,7 @@ namespace Iql.Server.OData.Net
 
         protected override async Task OnBeforePostAsync(T currentEntity)
         {
-            var serverEvaluator = new IqlServerEvaluator(CrudManager, true);
+            var serverEvaluator = new IqlServerEvaluator(CrudManager, () => Crud.NewUnsecuredDb(), currentEntity);
             if (EntityConfiguration.PersistenceKeyProperty != null)
             {
                 var value = EntityConfiguration.PersistenceKeyProperty.GetValue(currentEntity);

@@ -24,8 +24,9 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             var property = dotNetOutput.Expression.Type.GetProperty(action.PropertyName);
             IqlExpression expression =
                 new IqlFinalExpression<Expression>(
-                    Expression.Call(NullPropagateMethod.MakeGenericMethod(property.PropertyType), dotNetOutput.Expression, Expression.Constant(action.PropertyName))
-                    //Expression.PropertyOrField(dotNetOutput.Expression, action.PropertyName)
+                    DotNetExpressionConverter.DisableNullPropagation 
+                        ? Expression.PropertyOrField(dotNetOutput.Expression, action.PropertyName)
+                        : (Expression)Expression.Call(NullPropagateMethod.MakeGenericMethod(property.PropertyType), dotNetOutput.Expression, Expression.Constant(action.PropertyName))
                 );
             return expression;
         }

@@ -150,7 +150,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                     .First(m => m.Name == nameof(ToString) && m.GetParameters().Length == 0));
             var canBeNull = !expression.Type.IsValueType || (Nullable.GetUnderlyingType(expression.Type) != null);
             expression = Expression.Call(
-                canBeNull
+                canBeNull && !DotNetExpressionConverter.DisableNullPropagation
                     ? Expression.Coalesce(expression, Expression.Constant(""))
                     : expression,
                 toStringMethod);
@@ -161,6 +161,10 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 
         static Expression CoalesceOrUpperCase(Expression expression)
         {
+            if (DotNetExpressionConverter.DisableCaseSensitivityHandling)
+            {
+                return expression;
+            }
             if (expression is ConstantExpression)
             {
                 var constantExpression = expression as ConstantExpression;
@@ -169,7 +173,13 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                         ? constantExpression.Value
                         : ((expression as ConstantExpression).Value as string).ToUpper());
             }
-            return Expression.Condition(Expression.Equal(expression, Expression.Constant(null)), expression, Expression.Call(expression, nameof(string.ToUpper), new Type[] { }));
+
+            return Expression.Condition(
+                Expression.Equal(expression,
+                    Expression.Constant(null)),
+                expression,
+                Expression.Call(expression, nameof(string.ToUpper), new Type[] { })
+            );
         }
 
         public ExpressionType ResolveOperator(IqlBinaryExpression action)
