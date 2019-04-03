@@ -3,11 +3,31 @@ using Iql.Serialization;
 #endif
 using System.Collections.Generic;
 using System.Linq;
+using Iql.Serialization;
 
 namespace Iql.Extensions
 {
     public static class IqlExpressionExtensions
     {
+        public static object TryCloneIql(this object potentialExpression)
+        {
+            if(potentialExpression != null)
+            {
+                var isIqlType = potentialExpression is IqlExpression;
+                if (isIqlType || Equals(true,
+                        potentialExpression.GetPropertyValueByName(nameof(IqlExpression.IsIqlExpression))))
+                {
+                    var iql = (IqlExpression)potentialExpression;
+                    if (!isIqlType)
+                    {
+                        iql = iql.EnsureIsIql();
+                    }
+                    return iql.Clone();
+                }
+            }
+            return potentialExpression;
+        }
+
         public static IqlExpression RootExpression(this IqlExpression expression)
         {
             var parent = expression;
@@ -53,7 +73,7 @@ namespace Iql.Extensions
         public static TIql CloneIql<TIql>(this TIql iql)
             where TIql : IqlExpression
         {
-            return (TIql) iql.Clone();
+            return (TIql) iql.TryCloneIql();
 //#if !TypeScript
 //            JsonSerializerSettings jss = new JsonSerializerSettings();
 //            jss.TypeNameHandling = TypeNameHandling.All;

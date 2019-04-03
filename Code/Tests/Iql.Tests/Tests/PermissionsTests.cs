@@ -173,11 +173,19 @@ namespace Iql.Tests.Tests
                 Description = "",
                 CreatedByUserId = "NotUs"
             };
+            var cloudClient2 = new Client
+            {
+                Id = 9235,
+                Description = "",
+                CreatedByUserId = "NotUs"
+            };
             AppDbContext.InMemoryDb.Clients.Add(cloudClient);
+            AppDbContext.InMemoryDb.Clients.Add(cloudClient2);
             var cloudUser = new ApplicationUser
             {
                 Id = nameof(TestPermissionRuleOnChildCollectionOnExistingEntity),
-                ClientId = 9234
+                ClientId = 9234,
+                UserType = UserType.Candidate
             };
             AppDbContext.InMemoryDb.Users.Add(cloudUser);
             var test1 = await Db.Clients.AnyAsync(_ => _.Id == 8888);
@@ -189,7 +197,12 @@ namespace Iql.Tests.Tests
             // Only allow read and edit if the user has created this client
             var rule =
                 clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-                    context => context.QueryAny<Client>(_ => _.CreatedByUserId == context.User.Id) ? IqlUserPermission.ReadAndEdit : IqlUserPermission.None
+                    context => 
+                        context.QueryAny<Client>(_ => _.CreatedByUserId == context.User.Id) || 
+                        context.QueryAny<Client>(_ => _.Description.Contains(context.User.Id)) ||
+                        context.User.UserType == UserType.Super
+                            ? IqlUserPermission.ReadAndEdit 
+                            : IqlUserPermission.None
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -199,11 +212,88 @@ namespace Iql.Tests.Tests
 #endif
             var user = await Db.Users.GetWithKeyAsync(nameof(TestPermissionRuleOnChildCollectionOnExistingEntity));
             var client = await Db.Clients.GetWithKeyAsync(9234);
+
             var permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
             Assert.AreEqual(IqlUserPermission.None, permission);
+
+            for (var i = 0; i < 11; i++)
+            {
+                permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+                Assert.AreEqual(IqlUserPermission.None, permission);
+            }
+
+            cloudClient.CreatedByUserId = cloudUser.Id;
+            permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+            cloudClient.CreatedByUserId = "NotUs";
             permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
             Assert.AreEqual(IqlUserPermission.None, permission);
-            cloudClient.CreatedByUserId = cloudUser.Id;
+
+            cloudClient2.Description = $"Made by {nameof(TestPermissionRuleOnChildCollectionOnExistingEntity)}.";
+            permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
+
+            cloudClient2.Description = $"Made by NotUs.";
+            permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.None, permission);
+
+            cloudUser.UserType = UserType.Super;
+            permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
+        }
+
+
+
+        [TestMethod]
+        public async Task TestPermissionRuleOnChildCollectionOnExistingEntity2()
+        {
+            var cloudClient = new Client
+            {
+                Id = 9234,
+                Description = "",
+                CreatedByUserId = "NotUs"
+            };
+            var cloudClient2 = new Client
+            {
+                Id = 9235,
+                Description = "",
+                CreatedByUserId = "NotUs"
+            };
+            AppDbContext.InMemoryDb.Clients.Add(cloudClient);
+            AppDbContext.InMemoryDb.Clients.Add(cloudClient2);
+            var cloudUser = new ApplicationUser
+            {
+                Id = nameof(TestPermissionRuleOnChildCollectionOnExistingEntity),
+                ClientId = 9234,
+                UserType = UserType.Candidate
+            };
+            AppDbContext.InMemoryDb.Users.Add(cloudUser);
+            var test1 = await Db.Clients.AnyAsync(_ => _.Id == 8888);
+            Assert.AreEqual(false, test1);
+            var test2 = await Db.Clients.AnyAsync(_ => _.Id == 9234);
+            Assert.AreEqual(true, test2);
+            //var result = Db.Clients.Where(_ => _.CreatedByUserId == "abc").Any();
+            var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
+            // Only allow read and edit if the user has created this client
+            var rule =
+                clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                    context =>
+                        context.User.UserType == UserType.Super
+                            ? IqlUserPermission.ReadAndEdit
+                            : IqlUserPermission.None
+#if TypeScript
+            , null, new EvaluateContext(_ => Evaluator.Eval(_))
+#endif
+                );
+#if !TypeScript
+            var xml = rule.IqlExpression.SerializeToXml();
+#endif
+            var user = await Db.Users.GetWithKeyAsync(nameof(TestPermissionRuleOnChildCollectionOnExistingEntity));
+            var client = await Db.Clients.GetWithKeyAsync(9234);
+
+            var permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
+            Assert.AreEqual(IqlUserPermission.None, permission);
+
+            cloudUser.UserType = UserType.Super;
             permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);
             Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
         }

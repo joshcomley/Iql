@@ -451,7 +451,7 @@ namespace Iql.Data
                         if (!expands.ContainsKey(rootEntity))
                         {
                             var entityConfigurationTypeProvider =
-                                (root == null ? (object)typeResolver : (object)root.Child.EntityConfiguration) as EntityConfigurationTypeProvider;
+                                (root?.Child == null ? (object)typeResolver : (object)root.Child.EntityConfiguration) as EntityConfigurationTypeProvider;
                             if (entityConfigurationTypeProvider == null)
                             {
                                 continue;
@@ -459,6 +459,24 @@ namespace Iql.Data
                             expands.Add(rootEntity, new ExpandGroupDefinition(entityConfigurationTypeProvider.EntityConfiguration, rootEntity));
                         }
                         expands[rootEntity].ExpandPaths.Add(path);
+                    }
+                }
+                else if (propertyPath.HasRootEntity)
+                {
+                    var root = propertyPath.RootEntity;
+                    object rootEntity = (await root.EvaluateCustomAsync(
+                        context,
+                        dataEvaluator,
+                        populatePath)).Value;
+                    if (rootEntity != null && !expands.ContainsKey(rootEntity))
+                    {
+                        var entityConfigurationTypeProvider =
+                            (root?.Child == null ? (object)typeResolver : (object)root.Child.EntityConfiguration) as EntityConfigurationTypeProvider;
+                        if (entityConfigurationTypeProvider == null)
+                        {
+                            continue;
+                        }
+                        expands.Add(rootEntity, new ExpandGroupDefinition(entityConfigurationTypeProvider.EntityConfiguration, rootEntity));
                     }
                 }
             }

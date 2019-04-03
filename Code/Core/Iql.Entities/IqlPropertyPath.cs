@@ -68,8 +68,29 @@ namespace Iql.Entities
             return string.Join(separator, PropertyPath.Select(p => p.Property.PropertyName));
         }
 
+        public bool HasRootEntity => RootEntity != null;
         public bool HasRelationshipPathToHere => !string.IsNullOrWhiteSpace(RelationshipPathToHere);
         public string RelationshipPathToHere => GetRelationshipPathToHere(Separator);
+        public string PathToRootEntity => RootEntity?.PathToHere;
+        public IqlPropertyPath RootEntity => GetRootEntity();
+
+        private IqlPropertyPath GetRootEntity()
+        {
+            IqlPropertyPath foundRoot = null;
+            if (EntityConfiguration is EntityConfigurationTypeProvider)
+            {
+                foundRoot = this;
+                for (var i = PropertyPath.Length - 1; i >= 0; i--)
+                {
+                    foundRoot = PropertyPath[i];
+                    if (!(foundRoot.EntityConfiguration is EntityConfigurationTypeProvider))
+                    {
+                        break;
+                    }
+                }
+            }
+            return foundRoot;
+        }
 
         public IqlPropertyPath RelationshipPathToHereRoot
         {

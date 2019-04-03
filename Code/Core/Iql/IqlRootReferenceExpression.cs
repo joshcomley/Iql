@@ -1,3 +1,4 @@
+using Iql.Extensions;
 using System.Collections.Generic;
 using System;
 
@@ -29,7 +30,7 @@ namespace Iql
 			var expression = new IqlRootReferenceExpression();
 			expression.EntityTypeName = EntityTypeName;
 			expression.VariableName = VariableName;
-			expression.Value = Value;
+			expression.Value = Value?.TryCloneIql();
 			expression.InferredReturnType = InferredReturnType;
 			expression.Key = Key;
 			expression.Kind = Kind;

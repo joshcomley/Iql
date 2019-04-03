@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Iql.Extensions;
 
 namespace Iql.ExpressionMethodGenerator.ConsoleApp
 {
@@ -39,6 +40,7 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
                 linesList.RemoveRange(startIndex + 1, endIndex - startIndex - 1);
                 endIndex = linesList.IndexOf(lines.Single(l => l.Contains("#CloneEnd"))).Dump();
                 var hasList = false;
+                var hasTryClone = false;
                 var propertyAssignments = new StringBuilder();
                 foreach (var property in type.GetProperties())
                 {
@@ -46,8 +48,15 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
                     var cast = "";
                     if (typeof(IqlExpression).IsAssignableFrom(property.PropertyType))
                     {
-                        clone = "?.Clone()";
+                        clone = $"?.{nameof(IqlExpression.Clone)}()";
                         cast = property.PropertyType == typeof(IqlExpression) ? "" : $"({property.PropertyType.Name})";
+                    }
+                    else if ((typeof(IqlLiteralExpression).IsAssignableFrom(type) ||
+                              typeof(IqlUnaryExpression).IsAssignableFrom(type))
+                             && property.Name == nameof(IqlLiteralExpression.Value))
+                    {
+                        hasTryClone = true;
+                        clone = $"?.{nameof(IqlExpressionExtensions.TryCloneIql)}()";
                     }
                     if (property.CanWrite)
                     {
@@ -106,18 +115,32 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
                 linesList.Insert(startIndex + 1, implementation);
                 linesList.Insert(startIndex + 1, "");
                 linesList.Insert(endIndex + 2, "");
-                if (hasList && linesList.IndexOf("using System.Collections.Generic;") == -1)
+                var importNamespaces = new List<string>();
+                if (hasList)
                 {
-                    var addSpace = false;
-                    if (!linesList.Any(l => l.StartsWith("using ")))
+                    importNamespaces.Add("System.Collections.Generic");
+                }
+
+                if (hasTryClone)
+                {
+                    importNamespaces.Add("Iql.Extensions");
+                }
+                foreach (var importNamespace in importNamespaces)
+                {
+                    var fullImport = $"using {importNamespace};";
+                    if (linesList.IndexOf(fullImport) == -1)
                     {
-                        addSpace = true;
+                        var addSpace = false;
+                        if (!linesList.Any(l => l.StartsWith("using ")))
+                        {
+                            addSpace = true;
+                        }
+                        if (addSpace)
+                        {
+                            linesList.Insert(0, "");
+                        }
+                        linesList.Insert(0, fullImport);
                     }
-                    if (addSpace)
-                    {
-                        linesList.Insert(0, "");
-                    }
-                    linesList.Insert(0, "using System.Collections.Generic;");
                 }
                 File.WriteAllLines(file, linesList.ToArray());
             }

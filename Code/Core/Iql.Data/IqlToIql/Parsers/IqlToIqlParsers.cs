@@ -291,11 +291,16 @@ namespace Iql.Data.IqlToIql.Parsers
                 }
             }
 
-            action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
+            if (action.Parent != null)
+            {
+                action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;
+            }
 
             if (literal != null &&
+                (
                 (action.Kind == IqlExpressionKind.IsEqualTo && Equals(literal.Value, false)) ||
-                (action.Kind == IqlExpressionKind.IsNotEqualTo && Equals(literal.Value, true)))
+                (action.Kind == IqlExpressionKind.IsNotEqualTo && Equals(literal.Value, true))
+                ))
             {
                 return (await parser.ReplaceAndParseAsync(new IqlNotExpression(lr.SingleOrDefault(l => l != literal) ?? literal))).Expression;
             }
@@ -454,7 +459,7 @@ namespace Iql.Data.IqlToIql.Parsers
                     parser.Adapter.TypeResolver.FindType<TEntity>(),
                     action.NavigationProperty);
                 var processed = await action.Query.ProcessAsync(
-                    parser.Adapter.TypeResolver.FindTypeByType(path.Property.ElementType), 
+                    parser.Adapter.TypeResolver.FindTypeByType(path.Property.ElementType),
                     parser.TypeResolver,
                     parser);
                 action.Query = (IqlCollectitonQueryExpression)processed.Result;

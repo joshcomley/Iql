@@ -25,7 +25,7 @@ namespace Iql.Extensions
                 return null;
             }
 #endif
-            return type.GetRuntimeProperty(propertyName).GetValue(obj);
+            return type.GetRuntimeProperty(propertyName)?.GetValue(obj);
         }
 
         public static T GetPropertyValueByNameAs<T>(this object obj, string propertyName)

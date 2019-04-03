@@ -1,3 +1,4 @@
+using Iql.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -21,7 +22,7 @@ namespace Iql
 			// #CloneStart
 
 			var expression = new IqlLiteralExpression();
-			expression.Value = Value;
+			expression.Value = Value?.TryCloneIql();
 			expression.InferredReturnType = InferredReturnType;
 			expression.Key = Key;
 			expression.Kind = Kind;
