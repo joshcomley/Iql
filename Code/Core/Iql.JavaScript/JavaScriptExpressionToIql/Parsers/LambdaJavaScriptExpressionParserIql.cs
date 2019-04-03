@@ -1,4 +1,3 @@
-using System;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
@@ -11,24 +10,32 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             JavaScriptExpressionNodeParseContext<T> context,
             LambdaJavaScriptExpressionNode expression)
         {
-            //if (expression.Parent is CallJavaScriptExpressionNode)
-            //{
-            //    var call = expression.Parent as CallJavaScriptExpressionNode;
-            //    if (call.Callee is MemberJavaScriptExpressionNode)
-            //    {
-            //        var member = call.Callee as MemberJavaScriptExpressionNode;
-            //        if (member.Property is PropertyIdentifierJavaScriptExpressionNode)
-            //        {
-            //            var property = member.Property as PropertyIdentifierJavaScriptExpressionNode;
-            //            if (property.Name == "filter")
-            //            {
+            var iqlLambda = new IqlLambdaExpression();
+            if (!string.IsNullOrWhiteSpace(expression.ParameterName))
+            {
+                iqlLambda.Parameters.Add(new IqlRootReferenceExpression(expression.ParameterName));
+            }
 
-            //            }
-            //        }
-            //    }
-            //}
-            return new IqlParseResult(
-                new IqlPropertyExpression());
+            iqlLambda.Body = context.Parse(expression.Expression).Value;
+            return new IqlParseResult(iqlLambda);
+            ////if (expression.Parent is CallJavaScriptExpressionNode)
+            ////{
+            ////    var call = expression.Parent as CallJavaScriptExpressionNode;
+            ////    if (call.Callee is MemberJavaScriptExpressionNode)
+            ////    {
+            ////        var member = call.Callee as MemberJavaScriptExpressionNode;
+            ////        if (member.Property is PropertyIdentifierJavaScriptExpressionNode)
+            ////        {
+            ////            var property = member.Property as PropertyIdentifierJavaScriptExpressionNode;
+            ////            if (property.Name == "filter")
+            ////            {
+
+            ////            }
+            ////        }
+            ////    }
+            ////}
+            //return new IqlParseResult(
+            //    new IqlPropertyExpression());
         }
     }
 }

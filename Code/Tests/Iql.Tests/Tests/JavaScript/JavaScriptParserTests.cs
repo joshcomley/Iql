@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Iql.JavaScript;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,6 +9,17 @@ namespace Iql.Tests.Tests.JavaScript
     [TestClass]
     public class JavaScriptParserTests
     {
+        //[TestMethod]
+        //public void TestParseInlineObjects()
+        //{
+        //    var code =
+        //        "function(entity, context) { return ((((entity || {}).CreatedByUserId == null) ? null : ((entity || {}).CreatedByUserId || '').toUpperCase()) == ((((entity2 || {}).User || {}).Id == null) ? null : (((entity2 || {}).User || {}).Id || '').toUpperCase())); }";
+        //    var body = JavaScriptCodeExtractor.ExtractBody(code);
+        //    var jsp = new JavaScriptExpressionStringToExpressionTreeParser(body.CleanedCode);
+        //    var expressionTree = jsp.Parse();
+        //    Assert.IsNotNull(expressionTree);
+        //}
+
         [TestMethod]
         public async Task ConditionalExpression()
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Iql.Entities;
+using Iql.Entities.Permissions;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators;
@@ -100,6 +101,16 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                         TryGetArgAt(1, context, expression)
                     );
                     break;
+                case nameof(IqlUserPermissionContext<object>.QueryAny):
+                case nameof(IqlUserPermissionContext<object>.QueryAll):
+                case nameof(IqlUserPermissionContext<object>.QueryCount):
+                    var lambda = context.Parse(expression.Args[0]).Value;
+                    var entityTypeName = context.EntityType.GenericTypeArguments[0].Name;
+                    var query = new IqlDataSetQueryExpression(entityTypeName);
+                    query.Filter = lambda;
+                    query.Key = nativeMethodName;
+                    method = query;
+                    break;
                 case "filter":
                     if (expression.Parent is MemberJavaScriptExpressionNode)
                     {
@@ -179,7 +190,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                         return new IqlParseResult(context.ParseSubTree(local.Value as WhereQueryExpression));
                     }
                 }
-                throw new Exception("Method not supported in IQL: " + nativeMethodName);
+                throw new Exception("Method not supported in IQL for JavaScript: " + nativeMethodName);
             }
             return new IqlParseResult(method);
         }

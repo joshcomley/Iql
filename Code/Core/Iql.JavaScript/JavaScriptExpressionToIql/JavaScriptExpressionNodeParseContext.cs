@@ -15,6 +15,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         : IExpressionParserInstance
         where TEntity : class
     {
+        public Type EntityType => typeof(TEntity);
         private readonly List<object> _objectStack = new List<object>();
         public Func<string, object> Evaluate;
         public JavaScriptExpressionNode Expression { get; set; }

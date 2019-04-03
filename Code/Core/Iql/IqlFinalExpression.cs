@@ -11,10 +11,6 @@ namespace Iql
             Value = value;
         }
 
-        public IqlFinalExpression() : this(default(TValue))
-        {
-        }
-
         public TValue Value { get; set; }
 
 		public override IqlExpression Clone()

@@ -240,7 +240,7 @@ namespace Iql.Data
             {
                 var flattenedExpression = flattened[i];
                 var rootExpression = flattenedExpression.Expression.RootExpression();
-                if (rootExpression.Kind == IqlExpressionKind.Variable)
+                if (rootExpression.Kind == IqlExpressionKind.Variable || rootExpression.Kind == IqlExpressionKind.RootReference)
                 {
                     var variableExpression = rootExpression as IqlVariableExpression;
                     if (variableExpression.EntityTypeName == context.GetType().GetFullName())
@@ -272,13 +272,25 @@ namespace Iql.Data
                 switch (query.Key)
                 {
                     case nameof(IqlUserPermissionContext<object>.QueryAny):
-                        evaluatedValue = await evaluator.QueryAnyAsync(query);
+                        evaluatedValue = await evaluator.QueryAnyAsync(query, typeResolver
+#if TypeScript
+                            , null
+#endif
+                        );
                         break;
                     case nameof(IqlUserPermissionContext<object>.QueryAll):
-                        evaluatedValue = await evaluator.QueryAllAsync(query);
+                        evaluatedValue = await evaluator.QueryAllAsync(query, typeResolver
+#if TypeScript
+                            , null
+#endif
+                        );
                         break;
                     case nameof(IqlUserPermissionContext<object>.QueryCount):
-                        evaluatedValue = await evaluator.QueryCountAsync(query);
+                        evaluatedValue = await evaluator.QueryCountAsync(query, typeResolver
+#if TypeScript
+                            , null
+#endif
+                        );
                         break;
                 }
                 iqlExpression.ReplaceExpression(query, new IqlLiteralExpression(evaluatedValue));
@@ -610,7 +622,7 @@ namespace Iql.Data
             var processedLambda = IqlConverter.Instance.ConvertIqlToLambdaExpression(processedIql, typeResolver);
             var compiledLambda = processedLambda.Compile();
             object result = null;
-            if (processedLambda.Parameters?.Any() == true)
+            if (iql.Kind == IqlExpressionKind.Lambda && (iql as IqlLambdaExpression)?.Parameters?.Any() == true)
             {
                 result = compiledLambda.DynamicInvoke(entity
 #if TypeScript

@@ -238,6 +238,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             var result = (LambdaExpression)Evaluator.Eval(exp);
             return result;
         }
+
         public override LambdaExpression ConvertIqlToLambdaExpression(IqlExpression expression
             , ITypeResolver typeResolver
 #if TypeScript
@@ -245,11 +246,16 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 #endif
         )
         {
-            return ConvertIql(expression, typeResolver, null
+            var result = ConvertIql(expression, typeResolver, null
 #if TypeScript
             , evaluateContext
 #endif
-                );
+            );
+            if (!(result is LambdaExpression))
+            {
+                return (Expression<Func<object>>)(() => result);
+            }
+            return result;
         }
 
         public override string ConvertIqlToExpressionStringByType(IqlExpression expression

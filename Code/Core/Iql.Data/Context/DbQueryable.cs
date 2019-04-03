@@ -610,6 +610,54 @@ namespace Iql.Data.Context
             return IqlPropertyPath.FromString(EntityConfiguration.Builder, propertyName, this.EntityConfiguration.TypeMetadata, null, rootReferenceName).Expression;
         }
 
+        public override async Task<bool> AnyQueryAsync(IqlLambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await CountQueryAsync(expression
+#if TypeScript
+            , evaluateContext
+#endif
+                   ) > 0;
+        }
+
+        public override async Task<bool> AllQueryAsync(IqlLambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var withoutFilterCount = await CountQueryAsync();
+            var withFilterCount = await CountQueryAsync(expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+            return withFilterCount == withoutFilterCount;
+        }
+
+        public override async Task<long> CountQueryAsync(IqlLambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var set = this;
+            if (expression != null)
+            {
+                set = set.WhereEquals(expression);
+
+            }
+            var result = await set.CountWithResponseAsync(null
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+            return result?.Count ?? -1;
+        }
+
         public override async Task<bool> AnyAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -618,15 +666,27 @@ namespace Iql.Data.Context
         {
             return await CountAsync(expression
 #if TypeScript
-            , evaluateContext = null
+            , evaluateContext
 #endif
             ) > 0;
         }
 
-        public override async Task<bool> AllAsync(Expression<Func<T, bool>> expression)
+        public override async Task<bool> AllAsync(Expression<Func<T, bool>> expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
-            var withoutFilterCount = await CountAsync();
-            var withFilterCount = await CountAsync(expression);
+            var withoutFilterCount = await CountAsync(null
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+            var withFilterCount = await CountAsync(expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
             return withFilterCount == withoutFilterCount;
         }
 

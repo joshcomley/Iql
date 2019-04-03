@@ -17,7 +17,7 @@ namespace Iql.Data.Types
     {
         public TypeResolver()
         {
-            
+
         }
 
         private static Dictionary<string, IIqlTypeMetadata> KnownTypes { get; set; }
@@ -156,7 +156,8 @@ namespace Iql.Data.Types
         public Type Type { get; }
         public ITypeProperty FindProperty(string name)
         {
-            return new StandardPropertyMetadata(this, Type.GetProperties().FirstOrDefault(_ => _.Name == name));
+            var property = Type.GetProperties().FirstOrDefault(_ => _.Name == name);
+            return new StandardPropertyMetadata(this, property?.Name == null ? null : property);
         }
 
         public SpecialTypeDefinition SpecialTypeDefinition => null;
@@ -174,9 +175,9 @@ namespace Iql.Data.Types
             UnderlyingObject = PropertyInfo;
         }
 
-        public bool IsCollection => PropertyInfo.PropertyType is IEnumerable;
-        public Type ElementType => PropertyInfo.PropertyType;
-        public Type Type => PropertyInfo.PropertyType;
+        public bool IsCollection => PropertyInfo?.PropertyType is IEnumerable;
+        public Type ElementType => PropertyInfo?.PropertyType;
+        public Type Type => PropertyInfo?.PropertyType;
         public IIqlTypeMetadata TypeMetadata { get; }
 
         public IqlType ToIqlType()
@@ -191,7 +192,7 @@ namespace Iql.Data.Types
             (entity, value) => entity.SetPropertyValueByName(PropertyName, value);
 
         public PropertyKind Kind => PropertyKind.Primitive;
-        public string PropertyName => PropertyInfo.Name;
+        public string PropertyName => PropertyInfo?.Name;
         public object UnderlyingObject { get; }
         public EntityRelationship Relationship => null;
     }

@@ -82,6 +82,24 @@ namespace Iql.Queryable
 #endif
         );
 
+        Task<bool> AllQueryAsync(IqlLambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
+        Task<bool> AnyQueryAsync(IqlLambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
+        Task<long> CountQueryAsync(IqlLambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
         IQueryableBase WherePropertyEquals(string propertyName, object value
 #if TypeScript
             , EvaluateContext evaluateContext = null

@@ -1753,26 +1753,49 @@ namespace Iql.Data.Context
             return dataContext?.GetEntityState(entity);
         }
 
-        public Task<bool> QueryAnyAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
+        public Task<bool> QueryAnyAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
             typeResolver = typeResolver ?? EntityConfigurationContext;
             var entityType = typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type;
-            var convertIqlToLambdaExpression = IqlConverter.Instance.ConvertIqlToLambdaExpression(query.Filter, EntityConfigurationContext);
-            return GetDbSetByEntityType(entityType).AnyAsync(convertIqlToLambdaExpression);
+            return GetDbSetByEntityType(entityType).AnyQueryAsync(query.Filter as IqlLambdaExpression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
         }
 
-        public Task<bool> QueryAllAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
+        public Task<bool> QueryAllAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
             typeResolver = typeResolver ?? EntityConfigurationContext;
-            return GetDbSetByEntityType(typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type).AllAsync(
-                IqlConverter.Instance.ConvertIqlToLambdaExpression(query, EntityConfigurationContext));
+            var entityType = typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type;
+            return GetDbSetByEntityType(entityType).AllQueryAsync(query.Filter as IqlLambdaExpression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
         }
 
-        public Task<long> QueryCountAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)
+        public Task<long> QueryCountAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
         {
             typeResolver = typeResolver ?? EntityConfigurationContext;
-            return GetDbSetByEntityType(typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type).CountAsync(
-                IqlConverter.Instance.ConvertIqlToLambdaExpression(query, EntityConfigurationContext));
+            var entityType = typeResolver.ResolveTypeFromTypeName(query.EntityTypeName).Type;
+            return GetDbSetByEntityType(entityType).CountQueryAsync(query.Filter as IqlLambdaExpression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
         }
 
         public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)
