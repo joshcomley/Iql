@@ -26,7 +26,8 @@ namespace Iql.Tests.Tests
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
                 clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-                    _ => IqlUserPermission.Read
+                    _ => IqlUserPermission.Read,
+                    nameof(TestSimplePermissionRule)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -43,7 +44,8 @@ namespace Iql.Tests.Tests
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
                 clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-                    context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None
+                    context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None,
+                    nameof(TestComplexPermissionRule)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -69,7 +71,8 @@ namespace Iql.Tests.Tests
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
                 clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-                    context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit
+                    context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit,
+                    nameof(TestConvolutedPermissionRuleOnNewEntity)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -127,7 +130,8 @@ namespace Iql.Tests.Tests
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
                 clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-                    context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit
+                    context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit,
+                    nameof(TestConvolutedPermissionRuleOnExistingEntity)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -202,7 +206,8 @@ namespace Iql.Tests.Tests
                         context.QueryAny<Client>(_ => _.Description.Contains(context.User.Id)) ||
                         context.User.UserType == UserType.Super
                             ? IqlUserPermission.ReadAndEdit 
-                            : IqlUserPermission.None
+                            : IqlUserPermission.None,
+                    nameof(TestPermissionRuleOnChildCollectionOnExistingEntity)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -262,7 +267,7 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Clients.Add(cloudClient2);
             var cloudUser = new ApplicationUser
             {
-                Id = nameof(TestPermissionRuleOnChildCollectionOnExistingEntity),
+                Id = nameof(TestPermissionRuleOnChildCollectionOnExistingEntity2),
                 ClientId = 9234,
                 UserType = UserType.Candidate
             };
@@ -279,12 +284,13 @@ namespace Iql.Tests.Tests
                     context =>
                         context.User.UserType == UserType.Super
                             ? IqlUserPermission.ReadAndEdit
-                            : IqlUserPermission.None
+                            : IqlUserPermission.None,
+                    nameof(TestPermissionRuleOnChildCollectionOnExistingEntity2)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
                 );
-            var user = await Db.Users.GetWithKeyAsync(nameof(TestPermissionRuleOnChildCollectionOnExistingEntity));
+            var user = await Db.Users.GetWithKeyAsync(nameof(TestPermissionRuleOnChildCollectionOnExistingEntity2));
             var client = await Db.Clients.GetWithKeyAsync(9234);
 
             var permission = await rule.EvaluateEntityPermissionsRuleAsync(user, client, Db);

@@ -21,7 +21,8 @@ namespace Iql.Tests.Server
             var clientConfiguration = controller.EntityConfiguration;
             var rule =
                 clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-                    _ => IqlUserPermission.Read
+                    _ => IqlUserPermission.Read,
+                    nameof(TestSimplePermissionRule)
                 );
             var user = new ApplicationUser();
             var client = new Client();
@@ -42,7 +43,8 @@ namespace Iql.Tests.Server
             var clientConfiguration = controller.EntityConfiguration;
             var rule =
                 clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-                    context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None
+                    context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None,
+                    nameof(TestComplexPermissionRule)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -88,7 +90,8 @@ namespace Iql.Tests.Server
 
             var rule =
                 clientConfiguration.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
-                    context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit
+                    context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit,
+                    nameof(TestConvolutedPermissionRuleOnNewEntity)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -229,7 +232,8 @@ namespace Iql.Tests.Server
                         context.QueryAny<Client>(_ => _.Description.Contains(context.User.Id)) ||
                         context.User.UserType == UserType.Super
                             ? IqlUserPermission.ReadAndEdit
-                            : IqlUserPermission.None
+                            : IqlUserPermission.None,
+                    nameof(TestPermissionRuleOnChildCollectionOnExistingEntity)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -326,7 +330,8 @@ namespace Iql.Tests.Server
                     context =>
                         context.User.UserType == UserType.Super
                             ? IqlUserPermission.ReadAndEdit
-                            : IqlUserPermission.None
+                            : IqlUserPermission.None,
+                    nameof(TestPermissionRuleOnChildCollectionOnExistingEntity2)
 #if TypeScript
             , null, new EvaluateContext(_ => Evaluator.Eval(_))
 #endif

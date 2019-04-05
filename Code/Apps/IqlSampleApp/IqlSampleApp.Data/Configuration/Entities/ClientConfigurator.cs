@@ -1,7 +1,5 @@
-using System.Linq;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql.Entities;
-using Iql.Entities.Functions;
 using Iql.Entities.Permissions;
 using Iql.Server;
 using IqlSampleApp.Data.Contracts;
@@ -22,12 +20,16 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 });
             entityConfiguration
                 .Permissions
-                .DefineUserPermissionRule<ApplicationUser>(context =>
-                    context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read);
+                .DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit1",
+                    context =>
+                    context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read
+                    );
             entityConfiguration.ConfigureProperty(_ => _.AverageIncome, property =>
                 {
-                    property.Permissions.DefineUserPermissionRule<ApplicationUser>(context =>
-                        context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read);
+                    property.Permissions.DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit2",
+                        context =>
+                        context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read
+                        );
                 });
         }
     }

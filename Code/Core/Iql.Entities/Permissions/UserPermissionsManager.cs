@@ -1,12 +1,9 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Iql.Conversion;
-using Iql.Data.Evaluation;
 using Iql.Entities.Permissions;
-using Iql.Entities.Services;
-using Iql.Parsing.Types;
+using Iql.Extensions;
 
 #if TypeScript
 using Iql.Parsing;
@@ -19,8 +16,8 @@ namespace Iql.Entities
         public IUserPermission Container { get; }
         public IEntityConfigurationBuilder EntityConfigurationBuilder { get; }
 
-        public IqlUserPermissionRule DefineUserPermissionRule<TUser>(
-            Expression<Func<IqlUserPermissionContext<TUser>, IqlUserPermission>> rule, string key = null
+        public IqlUserPermissionRule DefineUserPermissionRule<TUser>(string key,
+            Expression<Func<IqlUserPermissionContext<TUser>, IqlUserPermission>> rule
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -47,7 +44,7 @@ namespace Iql.Entities
         }
 
         public IqlUserPermissionRule DefineEntityUserPermissionRule<TEntity, TUser>(
-            Expression<Func<IqlEntityUserPermissionContext<TEntity, TUser>, IqlUserPermission>> rule, string key = null
+            Expression<Func<IqlEntityUserPermissionContext<TEntity, TUser>, IqlUserPermission>> rule, string key
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -63,6 +60,22 @@ namespace Iql.Entities
             , evaluateContext
 #endif
                 );
+            var flattened = result.Expression.Flatten()
+                .Where(_ => _.Expression.Kind == IqlExpressionKind.Variable ||
+                            _.Expression.Kind == IqlExpressionKind.RootReference)
+                .ToArray();
+            for (var i = 0; i < flattened.Length; i++)
+            {
+                var exp = flattened[i];
+                var variableExpression = exp.Expression as IqlVariableExpression;
+                if (variableExpression != null && variableExpression.EntityTypeName ==
+                    typeof(IqlEntityUserPermissionContext<TEntity, TUser>).GetFullName())
+                {
+                    variableExpression.EntityTypeName =
+                        $"{nameof(IqlEntityUserPermissionContext<TEntity, TUser>)}<{nameof(TEntity)}, {typeof(TUser).Name}>";
+                }
+            }
+
             var lambdaExpression = result.Expression as IqlLambdaExpression;
             var configuredRule = new IqlUserPermissionRule(
                 EntityConfigurationBuilder,
@@ -77,12 +90,7 @@ namespace Iql.Entities
 
         public IqlUserPermissionRule FindRule(string key)
         {
-            if (Container.PermissionRules == null)
-            {
-                return null;
-            }
-
-            return Container.PermissionRules.FirstOrDefault(_ => _.Key == key);
+            return Container.PermissionRules?.FirstOrDefault(_ => _.Key == key);
         }
 
         public UserPermissionsManager(IUserPermission container, IEntityConfigurationBuilder entityConfigurationBuilder)

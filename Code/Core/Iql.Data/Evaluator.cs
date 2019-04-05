@@ -235,10 +235,26 @@ namespace Iql.Data
             var isEntityNew = evaluator.EntityStatus(entity) != IqlEntityStatus.Existing;
             var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew, user, entity);
             var iqlExpression = rule.IqlExpression.Clone();
-            var flattened = iqlExpression.TopLevelPropertyExpressions();
-            for (var i = 0; i < flattened.Length; i++)
+            var contextExpessions = iqlExpression.Flatten()
+                .Where(_ => _.Expression.Kind == IqlExpressionKind.Variable ||
+                            _.Expression.Kind == IqlExpressionKind.RootReference)
+                .ToArray();
+            for (var i = 0; i < contextExpessions.Length; i++)
             {
-                var flattenedExpression = flattened[i];
+                var exp = contextExpessions[i];
+                var variableExpression = exp.Expression as IqlVariableExpression;
+                if (variableExpression != null && variableExpression.EntityTypeName ==
+                    $"{nameof(IqlEntityUserPermissionContext<TEntity, TUser>)}<{nameof(TEntity)}, {typeof(TUser).Name}>")
+                {
+                    variableExpression.EntityTypeName =
+                        context.GetType().GetFullName();
+                }
+            }
+
+            var topLevelPropertyExpressions = iqlExpression.TopLevelPropertyExpressions();
+            for (var i = 0; i < topLevelPropertyExpressions.Length; i++)
+            {
+                var flattenedExpression = topLevelPropertyExpressions[i];
                 var rootExpression = flattenedExpression.Expression.RootExpression();
                 if (rootExpression.Kind == IqlExpressionKind.Variable || rootExpression.Kind == IqlExpressionKind.RootReference)
                 {

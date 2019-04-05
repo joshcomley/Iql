@@ -40,40 +40,37 @@ namespace Iql.Entities
         public string UserTypeName { get; set; }
         public string EntityTypeName { get; set; }
 
-        public LambdaExpression Expression
+        public LambdaExpression GetExpression(Type entityType = null)
         {
-            get
+            if (IqlExpression == null)
             {
-                if (IqlExpression == null)
-                {
-                    return null;
-                }
-
-                var json = JsonConvert.SerializeObject(IqlExpression);
-                if (_iqlConvertedExpressionJson == null || json != _iqlConvertedExpressionJson)
-                {
-                    _iqlConvertedExpressionJson = json;
-                    if (AcceptsEntity)
-                    {
-                        _iqlConvertedExpression = (LambdaExpression)ConvertEntityIqlToLambdaMethod.InvokeGeneric(
-                            null,
-                            new object[] { IqlExpression, EntityConfigurationBuilder },
-                            EntityType.Type,
-                            UserType.Type
-                        );
-                    }
-                    else
-                    {
-                        _iqlConvertedExpression = (LambdaExpression)ConvertIqlToLambdaMethod.InvokeGeneric(
-                            null,
-                            new object[] { IqlExpression, EntityConfigurationBuilder },
-                            UserType.Type
-                        );
-                    }
-                }
-
-                return _iqlConvertedExpression;
+                return null;
             }
+
+            var json = JsonConvert.SerializeObject(IqlExpression);
+            if (_iqlConvertedExpressionJson == null || json != _iqlConvertedExpressionJson)
+            {
+                _iqlConvertedExpressionJson = json;
+                if (AcceptsEntity)
+                {
+                    _iqlConvertedExpression = (LambdaExpression) ConvertEntityIqlToLambdaMethod.InvokeGeneric(
+                        null,
+                        new object[] {IqlExpression, EntityConfigurationBuilder},
+                        entityType,
+                        UserType.Type
+                    );
+                }
+                else
+                {
+                    _iqlConvertedExpression = (LambdaExpression) ConvertIqlToLambdaMethod.InvokeGeneric(
+                        null,
+                        new object[] {IqlExpression, EntityConfigurationBuilder},
+                        UserType.Type
+                    );
+                }
+            }
+
+            return _iqlConvertedExpression;
         }
 
         private static LambdaExpression ConvertEntityIqlToLambda<TEntity, TUser>(IqlExpression expression, ITypeResolver typeResolver)
@@ -90,7 +87,6 @@ namespace Iql.Entities
         }
 
         public IEntityConfiguration UserType => EntityConfigurationBuilder.GetEntityByTypeName(UserTypeName);
-        public IEntityConfiguration EntityType => EntityConfigurationBuilder.GetEntityByTypeName(EntityTypeName);
 
         public bool AcceptsEntity => EntityTypeName != null;
 
@@ -111,7 +107,7 @@ namespace Iql.Entities
             where TEntity : class
             where TUser : class
         {
-            var lambda = Expression.Compile();
+            var lambda = GetExpression().Compile();
             var result =
                 lambda.DynamicInvoke(new IqlEntityUserPermissionContext<TEntity, TUser>(true, user, entity));
             return (IqlUserPermission)result;
@@ -120,7 +116,7 @@ namespace Iql.Entities
         public IqlUserPermission RunGeneric<TUser>(TUser user)
             where TUser : class
         {
-            var lambda = Expression.Compile();
+            var lambda = GetExpression().Compile();
             var result =
                 lambda.DynamicInvoke(new IqlUserPermissionContext<TUser>(user));
             return (IqlUserPermission)result;
