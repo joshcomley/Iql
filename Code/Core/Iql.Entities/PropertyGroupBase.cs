@@ -14,11 +14,11 @@ using Iql.Events;
 
 namespace Iql.Entities
 {
-    public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>, IUserPermission
+    public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>
         where T : IConfigurable<T>
     {
         private UserPermissionsCollection _permissions;
-        public UserPermissionsCollection Permissions => _permissions = _permissions ?? new UserPermissionsCollection(EntityConfiguration.Builder);
+        public UserPermissionsCollection Permissions => _permissions = _permissions ?? new UserPermissionsCollection(EntityConfiguration?.Builder);
 
         public bool Matches(params string[] names)
         {

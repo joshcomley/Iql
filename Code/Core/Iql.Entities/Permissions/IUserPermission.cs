@@ -16,9 +16,9 @@ namespace Iql.Entities
 
     public class UserPermissionsCollection
     {
-        public IEntityConfigurationBuilder Builder { get; }
+        public IEntityConfigurationContainer Builder { get; }
 
-        public UserPermissionsCollection(IEntityConfigurationBuilder builder)
+        public UserPermissionsCollection(IEntityConfigurationContainer builder)
         {
             Builder = builder;
         }

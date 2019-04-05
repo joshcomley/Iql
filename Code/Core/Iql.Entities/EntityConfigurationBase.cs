@@ -669,6 +669,6 @@ namespace Iql.Entities
         }
 
         private UserPermissionsCollection _permissions;
-        public UserPermissionsCollection Permissions => _permissions = _permissions ?? new UserPermissionsCollection((IEntityConfigurationBuilder) this.ConfigurationContainer);
+        public UserPermissionsCollection Permissions => _permissions = _permissions ?? new UserPermissionsCollection(ConfigurationContainer);
     }
 }

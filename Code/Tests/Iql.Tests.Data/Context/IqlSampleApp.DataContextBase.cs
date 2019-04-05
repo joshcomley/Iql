@@ -85,6 +85,148 @@ namespace IqlSampleApp.ApiContext.Base
         public ODataConfiguration ODataConfiguration => _oDataConfiguration = _oDataConfiguration ?? new ODataConfiguration(EntityConfigurationContext);
         public override void Configure(EntityConfigurationBuilder builder)
         {
+            builder.PermissionRules.Add(new IqlUserPermissionRule
+            {
+                Key = "ClientReadAndEdit1",
+                IqlExpression = new IqlLambdaExpression
+                {
+                    Body = new IqlConditionExpression
+                    {
+                        Test = new IqlIsEqualToExpression
+                        {
+                            Left = new IqlPropertyExpression
+                            {
+                                PropertyName = "ClientId",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlPropertyExpression
+                                {
+                                    PropertyName = "User",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                                        VariableName = "context",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                }
+                            },
+                            Right = new IqlLiteralExpression
+                            {
+                                InferredReturnType = IqlType.Integer,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Integer
+                            },
+                            Kind = IqlExpressionKind.IsEqualTo,
+                            ReturnType = IqlType.Boolean
+                        },
+                        IfTrue = new IqlLiteralExpression
+                        {
+                            Value = 3L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        IfFalse = new IqlLiteralExpression
+                        {
+                            Value = 2L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        Kind = IqlExpressionKind.Condition,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                            VariableName = "context",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                },
+                UserTypeName = "ApplicationUser"
+            });
+            builder.PermissionRules.Add(new IqlUserPermissionRule
+            {
+                Key = "ClientReadAndEdit2",
+                IqlExpression = new IqlLambdaExpression
+                {
+                    Body = new IqlConditionExpression
+                    {
+                        Test = new IqlIsEqualToExpression
+                        {
+                            Left = new IqlPropertyExpression
+                            {
+                                PropertyName = "ClientId",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlPropertyExpression
+                                {
+                                    PropertyName = "User",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                                        VariableName = "context",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                }
+                            },
+                            Right = new IqlLiteralExpression
+                            {
+                                InferredReturnType = IqlType.Integer,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Integer
+                            },
+                            Kind = IqlExpressionKind.IsEqualTo,
+                            ReturnType = IqlType.Boolean
+                        },
+                        IfTrue = new IqlLiteralExpression
+                        {
+                            Value = 3L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        IfFalse = new IqlLiteralExpression
+                        {
+                            Value = 2L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        Kind = IqlExpressionKind.Condition,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                            VariableName = "context",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                },
+                UserTypeName = "ApplicationUser"
+            });
             builder.EntityType<ApplicationUser>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean).ConfigureProperty(p => p.IsLockedOut, p => {
                 p.PropertyName = "IsLockedOut";
                 p.Nullable = false;
@@ -866,76 +1008,6 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Client";
                 p.Title = "Client";
                 p.FriendlyName = "Client";
-            });
-            builder.PermissionRules.Add(new IqlUserPermissionRule
-            {
-                IqlExpression = new IqlLambdaExpression
-                {
-                    Body = new IqlConditionExpression
-                    {
-                        Test = new IqlIsEqualToExpression
-                        {
-                            Left = new IqlPropertyExpression
-                            {
-                                PropertyName = "ClientId",
-                                Kind = IqlExpressionKind.Property,
-                                ReturnType = IqlType.Unknown,
-                                Parent = new IqlPropertyExpression
-                                {
-                                    PropertyName = "User",
-                                    Kind = IqlExpressionKind.Property,
-                                    ReturnType = IqlType.Unknown,
-                                    Parent = new IqlRootReferenceExpression
-                                    {
-                                        EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
-                                        VariableName = "context",
-                                        InferredReturnType = IqlType.Unknown,
-                                        Kind = IqlExpressionKind.RootReference,
-                                        ReturnType = IqlType.Unknown
-                                    }
-                                }
-                            },
-                            Right = new IqlLiteralExpression
-                            {
-                                InferredReturnType = IqlType.Integer,
-                                Kind = IqlExpressionKind.Literal,
-                                ReturnType = IqlType.Integer
-                            },
-                            Kind = IqlExpressionKind.IsEqualTo,
-                            ReturnType = IqlType.Unknown
-                        },
-                        IfTrue = new IqlLiteralExpression
-                        {
-                            Value = 3L,
-                            InferredReturnType = IqlType.Integer,
-                            Kind = IqlExpressionKind.Literal,
-                            ReturnType = IqlType.Unknown
-                        },
-                        IfFalse = new IqlLiteralExpression
-                        {
-                            Value = 2L,
-                            InferredReturnType = IqlType.Integer,
-                            Kind = IqlExpressionKind.Literal,
-                            ReturnType = IqlType.Unknown
-                        },
-                        Kind = IqlExpressionKind.Condition,
-                        ReturnType = IqlType.Unknown
-                    },
-                    Parameters = new List<IqlRootReferenceExpression>
-                    {
-                        new IqlRootReferenceExpression
-                        {
-                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
-                            VariableName = "context",
-                            InferredReturnType = IqlType.Unknown,
-                            Kind = IqlExpressionKind.RootReference,
-                            ReturnType = IqlType.Unknown
-                        }
-                    },
-                    Kind = IqlExpressionKind.Lambda,
-                    ReturnType = IqlType.Unknown
-                },
-                UserTypeName = "ApplicationUser"
             });
             builder.EntityType<ClientType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
@@ -4628,7 +4700,7 @@ namespace IqlSampleApp.ApiContext.Base
                                             ReturnType = IqlType.Unknown
                                         },
                                         Kind = IqlExpressionKind.IsEqualTo,
-                                        ReturnType = IqlType.Unknown
+                                        ReturnType = IqlType.Boolean
                                     },
                                     Right = new IqlIsNotEqualToExpression
                                     {
@@ -4660,7 +4732,7 @@ namespace IqlSampleApp.ApiContext.Base
                                             ReturnType = IqlType.Integer
                                         },
                                         Kind = IqlExpressionKind.IsNotEqualTo,
-                                        ReturnType = IqlType.Unknown
+                                        ReturnType = IqlType.Boolean
                                     },
                                     Kind = IqlExpressionKind.Or,
                                     ReturnType = IqlType.Unknown
@@ -4705,7 +4777,7 @@ namespace IqlSampleApp.ApiContext.Base
                                         ReturnType = IqlType.Enum
                                     },
                                     Kind = IqlExpressionKind.IsEqualTo,
-                                    ReturnType = IqlType.Unknown
+                                    ReturnType = IqlType.Boolean
                                 },
                                 Kind = IqlExpressionKind.And,
                                 ReturnType = IqlType.Unknown
@@ -4809,7 +4881,7 @@ namespace IqlSampleApp.ApiContext.Base
                                                 ReturnType = IqlType.Unknown
                                             },
                                             Kind = IqlExpressionKind.IsEqualTo,
-                                            ReturnType = IqlType.Unknown
+                                            ReturnType = IqlType.Boolean
                                         },
                                         Right = new IqlIsEqualToExpression
                                         {
@@ -4841,7 +4913,7 @@ namespace IqlSampleApp.ApiContext.Base
                                                 ReturnType = IqlType.String
                                             },
                                             Kind = IqlExpressionKind.IsEqualTo,
-                                            ReturnType = IqlType.Unknown
+                                            ReturnType = IqlType.Boolean
                                         },
                                         Kind = IqlExpressionKind.Or,
                                         ReturnType = IqlType.Unknown
@@ -4876,7 +4948,7 @@ namespace IqlSampleApp.ApiContext.Base
                                             ReturnType = IqlType.String
                                         },
                                         Kind = IqlExpressionKind.IsEqualTo,
-                                        ReturnType = IqlType.Unknown
+                                        ReturnType = IqlType.Boolean
                                     },
                                     Kind = IqlExpressionKind.And,
                                     ReturnType = IqlType.Unknown
@@ -5016,7 +5088,7 @@ namespace IqlSampleApp.ApiContext.Base
                                     ReturnType = IqlType.Enum
                                 },
                                 Kind = IqlExpressionKind.IsEqualTo,
-                                ReturnType = IqlType.Unknown
+                                ReturnType = IqlType.Boolean
                             },
                             Parameters = new List<IqlRootReferenceExpression>
                             {
@@ -5030,7 +5102,7 @@ namespace IqlSampleApp.ApiContext.Base
                                 }
                             },
                             Kind = IqlExpressionKind.Lambda,
-                            ReturnType = IqlType.Unknown
+                            ReturnType = IqlType.Boolean
                         },
                         InferredWithIql = new IqlLambdaExpression
                         {
@@ -5053,7 +5125,7 @@ namespace IqlSampleApp.ApiContext.Base
                                 }
                             },
                             Kind = IqlExpressionKind.Lambda,
-                            ReturnType = IqlType.Unknown
+                            ReturnType = IqlType.String
                         }
                     }
                 };
@@ -8242,7 +8314,7 @@ namespace IqlSampleApp.ApiContext.Base
                                 }
                             },
                             Kind = IqlExpressionKind.Lambda,
-                            ReturnType = IqlType.Unknown
+                            ReturnType = IqlType.Decimal
                         },
                         UseForFiltering = true
                     });
