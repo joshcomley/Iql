@@ -47,6 +47,7 @@ namespace Iql.Server.Serialization.Serialization
             doc.UsersDefinition = entityConfigurationBuilder.UsersDefinition;
             doc.CustomReportsDefinition = entityConfigurationBuilder.CustomReportsDefinition;
             doc.UserSettingsDefinition = entityConfigurationBuilder.UserSettingsDefinition;
+            doc.PermissionRules = entityConfigurationBuilder.PermissionRules;
             return doc;
         }
     }
