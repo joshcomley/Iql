@@ -13,7 +13,7 @@ namespace Iql.Entities
 {
     public class UserPermissionsManager
     {
-        public IUserPermission Container { get; }
+        public IUserPermissionContainer Container { get; }
         public IEntityConfigurationBuilder EntityConfigurationBuilder { get; }
 
         public IqlUserPermissionRule DefineUserPermissionRule<TUser>(string key,
@@ -93,7 +93,7 @@ namespace Iql.Entities
             return Container.PermissionRules?.FirstOrDefault(_ => _.Key == key);
         }
 
-        public UserPermissionsManager(IUserPermission container, IEntityConfigurationBuilder entityConfigurationBuilder)
+        public UserPermissionsManager(IUserPermissionContainer container, IEntityConfigurationBuilder entityConfigurationBuilder)
         {
             Container = container;
             EntityConfigurationBuilder = entityConfigurationBuilder;

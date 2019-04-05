@@ -25,16 +25,6 @@ namespace Iql.Entities
         private IIqlTypeMetadata _typeMetadata = null;
         public IIqlTypeMetadata TypeMetadata => _typeMetadata = _typeMetadata ?? new EntityConfigurationTypeProvider((IEntityConfiguration)this);
 
-        private UserPermissionsManager _permissions;
-
-        private readonly List<IqlUserPermissionRule> _permissionRules = 
-            new List<IqlUserPermissionRule>();
-        public List<IqlUserPermissionRule> PermissionRules => 
-            _permissionRules.EnsureHasBuilder(((IEntityConfiguration)this).Builder);
-        public UserPermissionsManager Permissions => 
-            _permissions = _permissions ?? new UserPermissionsManager(
-                               this, 
-                               ((IEntityConfiguration)this).Builder);
         public List<IqlMethod> Methods { get; set; } = new List<IqlMethod>();
 
         public IEntityConfiguration AddMethod(IqlMethod method)
@@ -677,5 +667,8 @@ namespace Iql.Entities
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(property, (this as IEntityConfiguration).Builder, Type).Expression;
             return FindNestedPropertyByIqlExpression((iql as IqlLambdaExpression).Body as IqlPropertyExpression);
         }
+
+        private UserPermissionsCollection _permissions;
+        public UserPermissionsCollection Permissions => _permissions = _permissions ?? new UserPermissionsCollection((IEntityConfigurationBuilder) this.ConfigurationContainer);
     }
 }

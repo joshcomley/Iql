@@ -13,6 +13,17 @@ namespace Iql.Entities
 {
     public class EntityConfigurationBuilder : IEntityConfigurationBuilder
     {
+        private UserPermissionsManager _permissions;
+
+        private readonly List<IqlUserPermissionRule> _permissionRules =
+            new List<IqlUserPermissionRule>();
+        public List<IqlUserPermissionRule> PermissionRules =>
+            _permissionRules.EnsureHasBuilder(this);
+        public UserPermissionsManager Permissions =>
+            _permissions = _permissions ?? new UserPermissionsManager(
+                               this,
+                               this);
+
         private readonly Dictionary<Type, IEntityConfiguration> _entities =
             new Dictionary<Type, IEntityConfiguration>();
         private readonly Dictionary<string, IEntityConfiguration> _entitiesByTypeName =

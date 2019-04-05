@@ -4,7 +4,7 @@ using Iql.Entities.Relationships;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfigurationContainer
+    public interface IEntityConfigurationContainer : IUserPermissionContainer
     {
         IEnumerable<IEntityConfiguration> AllEntityTypes();
         IEnumerable<IEnumConfiguration> AllEnumTypes();

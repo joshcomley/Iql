@@ -867,7 +867,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Client";
                 p.FriendlyName = "Client";
             });
-            builder.EntityType<Client>().PermissionRules.Add(new IqlUserPermissionRule
+            builder.PermissionRules.Add(new IqlUserPermissionRule
             {
                 IqlExpression = new IqlLambdaExpression
                 {

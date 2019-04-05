@@ -19,6 +19,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     method.NameSpace = "Abc";
                 });
             entityConfiguration
+                .Builder
                 .Permissions
                 .DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit1",
                     context =>
@@ -26,7 +27,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     );
             entityConfiguration.ConfigureProperty(_ => _.AverageIncome, property =>
                 {
-                    property.Permissions.DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit2",
+                    property.EntityConfiguration.Builder.Permissions.DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit2",
                         context =>
                         context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read
                         );

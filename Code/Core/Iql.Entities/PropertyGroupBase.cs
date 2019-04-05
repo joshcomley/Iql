@@ -17,10 +17,8 @@ namespace Iql.Entities
     public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>, IUserPermission
         where T : IConfigurable<T>
     {
-        private UserPermissionsManager _permissions;
-        private readonly List<IqlUserPermissionRule> _permissionRules = new List<IqlUserPermissionRule>();
-        public List<IqlUserPermissionRule> PermissionRules => _permissionRules.EnsureHasBuilder(EntityConfiguration?.Builder);
-        public UserPermissionsManager Permissions => _permissions = _permissions ?? new UserPermissionsManager(this, EntityConfiguration?.Builder);
+        private UserPermissionsCollection _permissions;
+        public UserPermissionsCollection Permissions => _permissions = _permissions ?? new UserPermissionsCollection(EntityConfiguration.Builder);
 
         public bool Matches(params string[] names)
         {

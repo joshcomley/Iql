@@ -96,28 +96,28 @@ namespace Iql.Data.Rendering
         {
             var canEdit = !IsSimpleProperty || !await PropertyAsSimpleProperty.IsReadOnlyAsync(entity, dataContext);
             var canShow = CanShow(entity, dataContext, configuration);
-            if (IsPropertyGroup)
-            {
-                var permissions = await PropertyAsPropertyGroup.Permissions.GetUserPermissionAsync(
-                    dataContext,
-                    user, 
-                    entity);
-                switch (permissions)
-                {
-                    case IqlUserPermission.Read:
-                        canEdit = false;
-                        canShow = true;
-                        break;
-                    case IqlUserPermission.ReadAndEdit:
-                        canEdit = true;
-                        canShow = true;
-                        break;
-                    case IqlUserPermission.None:
-                        canEdit = false;
-                        canShow = false;
-                        break;
-                }
-            }
+            //if (IsPropertyGroup)
+            //{
+            //    var permissions = await PropertyAsPropertyGroup.Permissions.GetUserPermissionAsync(
+            //        dataContext,
+            //        user, 
+            //        entity);
+            //    switch (permissions)
+            //    {
+            //        case IqlUserPermission.Read:
+            //            canEdit = false;
+            //            canShow = true;
+            //            break;
+            //        case IqlUserPermission.ReadAndEdit:
+            //            canEdit = true;
+            //            canShow = true;
+            //            break;
+            //        case IqlUserPermission.None:
+            //            canEdit = false;
+            //            canShow = false;
+            //            break;
+            //    }
+            //}
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
                 entityConfiguration != null

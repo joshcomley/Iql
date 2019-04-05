@@ -166,6 +166,18 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     builder.IsLocal = true;
                     await MethodAsync(nameof(Data.Context.DataContext.Configure), new[] { builder }, TypeResolver.TranslateType(typeof(void)), async () =>
                       {
+                          if (Schema.EntityConfigurationDocument.PermissionRules?.Any() == true)
+                          {
+                              foreach (var rule in Schema.EntityConfigurationDocument.PermissionRules)
+                              {
+                                  var iql = rule.IqlExpression;
+                                  AppendLine();
+                                  VariableAccessor(builder);
+                                  AppendLine();
+                                  Dot();
+                                  AppendLine($"{nameof(IUserPermissionContainer.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
+                              }
+                          }
                           foreach (var entityDefinition in _entitySetDefinitions)
                           {
                               var entityTypeName = entityDefinition.Type.Name;
@@ -577,28 +589,28 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                   // TODO: Define methods
                               }
 
-                              foreach (var property in entityConfiguration.Properties)
-                              {
-                                  if (property.PermissionRules?.Any() == true)
-                                  {
-                                      foreach (var rule in property.PermissionRules)
-                                      {
-                                          var iql = rule.IqlExpression;
-                                          AppendLine();
-                                          VariableAccessor(builder, () =>
-                                          {
-                                              MethodCall(
-                                                  defineEntityName,
-                                                  false,
-                                                  defineEntityParameters
-                                              );
-                                          });
-                                          AppendLine();
-                                          Dot();
-                                          AppendLine($"{nameof(IUserPermission.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
-                                      }
-                                  }
-                              }
+                              //foreach (var property in entityConfiguration.Properties)
+                              //{
+                              //    if (property.PermissionRules?.Any() == true)
+                              //    {
+                              //        foreach (var rule in property.PermissionRules)
+                              //        {
+                              //            var iql = rule.IqlExpression;
+                              //            AppendLine();
+                              //            VariableAccessor(builder, () =>
+                              //            {
+                              //                MethodCall(
+                              //                    defineEntityName,
+                              //                    false,
+                              //                    defineEntityParameters
+                              //                );
+                              //            });
+                              //            AppendLine();
+                              //            Dot();
+                              //            AppendLine($"{nameof(IUserPermission.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
+                              //        }
+                              //    }
+                              //}
 
                               if (entityDefinition != _entitySetDefinitions.Last())
                               {
@@ -852,11 +864,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     }
 
                     void PrintMapping<TMapping, T>(
-                        Func<T, string> entityPropertyName, 
+                        Func<T, string> entityPropertyName,
                         string suffix = "")
                     where TMapping : IMapping<T>
                     {
-                        var mappings = (IEnumerable<IMapping<T>>) value;
+                        var mappings = (IEnumerable<IMapping<T>>)value;
                         if (mappings != null)
                         {
                             foreach (var mapping in mappings)
@@ -1341,11 +1353,11 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
         }
 
         private async Task ConfigureDisplaySettingAsync(
-            IVariable builder, 
-            DisplayConfiguration displayConfiguration, 
-            StringBuilder sb, 
+            IVariable builder,
+            DisplayConfiguration displayConfiguration,
+            StringBuilder sb,
             KeyValuePair<string, IEntityConfiguration> config,
-            string displaySettingMethodName, 
+            string displaySettingMethodName,
             IEntityMetadata entityMetadata)
         {
             if (displayConfiguration != null && displayConfiguration.Properties?.Any() == true)

@@ -35,5 +35,8 @@ namespace Iql.Server.Serialization
         {
             return Relationships;
         }
+
+        public UserPermissionsManager Permissions { get; set; }
+        public List<IqlUserPermissionRule> PermissionRules { get; set; }
     }
 }
