@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Iql.Data;
-using Iql.Entities;
+using Iql.Data.Evaluation;
 using Iql.Entities.Permissions;
 using IqlSampleApp.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,7 +26,8 @@ namespace Iql.Tests.Server
             var user = new ApplicationUser();
             var client = new Client();
             controller.ServerEvaluator.MarkAsUnsaved(client);
-            var permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -52,7 +52,8 @@ namespace Iql.Tests.Server
             var user = new ApplicationUser();
             var client = new Client();
             controller.ServerEvaluator.MarkAsUnsaved(client);
-            var permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -60,7 +61,8 @@ namespace Iql.Tests.Server
                 clientConfiguration.Builder);
             Assert.AreEqual(IqlUserPermission.None, permission);
             user.FullName = "abc";
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -108,7 +110,8 @@ namespace Iql.Tests.Server
             };
             controller.ServerEvaluator.MarkAsUnsaved(user);
             controller.ServerEvaluator.MarkAsUnsaved(client);
-            var permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -118,7 +121,8 @@ namespace Iql.Tests.Server
             cloudUserClient.Description = "one two abc three";
             client.AverageSales = 200;
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -127,7 +131,8 @@ namespace Iql.Tests.Server
             Assert.AreEqual(IqlUserPermission.Read, permission);
             client.AverageSales = 99;
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -136,7 +141,8 @@ namespace Iql.Tests.Server
             Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
             client.AverageSales = 101;
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -145,7 +151,8 @@ namespace Iql.Tests.Server
             Assert.AreEqual(IqlUserPermission.Read, permission);
             cloudUserClient.Description = "one two three";
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -154,7 +161,8 @@ namespace Iql.Tests.Server
             Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
             cloudUserClient.Description = "one two abc three";
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -165,7 +173,8 @@ namespace Iql.Tests.Server
             //var result = await db.SaveChangesAsync();
             //Assert.IsTrue(result > 0);
             controller.ServerEvaluator.MarkAsSaved(user, client);
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -241,7 +250,8 @@ namespace Iql.Tests.Server
             var user = await db.Users.SingleOrDefaultAsync(_=>_.FullName == nameof(TestPermissionRuleOnChildCollectionOnExistingEntity));
             var client = await db.Clients.SingleOrDefaultAsync(_=>_.Name == cloudClient.Name);
 
-            var permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -251,7 +261,8 @@ namespace Iql.Tests.Server
 
             for (var i = 0; i < 11; i++)
             {
-                permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+                permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                    rule,
                     user,
                     client,
                     ResolveServiceProviderProvider(),
@@ -262,7 +273,8 @@ namespace Iql.Tests.Server
 
             cloudClient.CreatedByUserId = cloudUser.Id;
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -272,7 +284,8 @@ namespace Iql.Tests.Server
 
             cloudClient.CreatedByUserId = null;
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -282,7 +295,8 @@ namespace Iql.Tests.Server
 
             cloudClient2.Description = $"Made by {user.Id}.";
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -292,7 +306,8 @@ namespace Iql.Tests.Server
 
             cloudClient2.Description = $"Made by NotUs.";
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -302,7 +317,8 @@ namespace Iql.Tests.Server
 
             cloudUser.UserType = UserType.Super;
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -339,7 +355,8 @@ namespace Iql.Tests.Server
             var user = await db.Users.SingleOrDefaultAsync(_ => _.FullName == nameof(TestPermissionRuleOnChildCollectionOnExistingEntity2));
             var client = await db.Clients.SingleOrDefaultAsync(_ => _.Name == cloudClient.Name);
 
-            var permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
@@ -349,7 +366,8 @@ namespace Iql.Tests.Server
 
             cloudUser.UserType = UserType.Super;
             await cloudDb.SaveChangesAsync();
-            permission = await rule.EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                rule,
                 user,
                 client,
                 ResolveServiceProviderProvider(),
