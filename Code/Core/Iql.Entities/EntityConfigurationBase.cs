@@ -667,8 +667,5 @@ namespace Iql.Entities
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(property, (this as IEntityConfiguration).Builder, Type).Expression;
             return FindNestedPropertyByIqlExpression((iql as IqlLambdaExpression).Body as IqlPropertyExpression);
         }
-
-        private UserPermissionsCollection _permissions;
-        public UserPermissionsCollection Permissions => _permissions = _permissions ?? new UserPermissionsCollection(ConfigurationContainer);
     }
 }

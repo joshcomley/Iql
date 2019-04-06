@@ -30,19 +30,19 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             if (typeof(IEventUnsubscriber).IsAssignableFrom(type) &&
                 typeof(IEventSubscriberSubscriber).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IEventUnsubscriber.OnUnsubscribe), nameof(IEventSubscriberSubscriber.OnSubscribe) });
+                ignoreProperties.AddRange(new[] { nameof(IEventUnsubscriber.OnUnsubscribe), nameof(IEventSubscriberSubscriber.OnSubscribe) });
             }
             if (typeof(IEventUnsubscriber).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IEventUnsubscriber.OnUnsubscribe) });
+                ignoreProperties.AddRange(new[] { nameof(IEventUnsubscriber.OnUnsubscribe) });
             }
             if (typeof(IEventSubscriberSubscriber).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IEventSubscriberSubscriber.OnSubscribe) });
+                ignoreProperties.AddRange(new[] { nameof(IEventSubscriberSubscriber.OnSubscribe) });
             }
             if (typeof(SpecialTypeDefinition).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(SpecialTypeDefinition.InternalType), nameof(SpecialTypeDefinition.EntityConfiguration) });
+                ignoreProperties.AddRange(new[] { nameof(SpecialTypeDefinition.InternalType), nameof(SpecialTypeDefinition.EntityConfiguration) });
             }
             if (typeof(PropertyMap).IsAssignableFrom(type))
             {
@@ -52,14 +52,14 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             {
                 ignoreProperties.AddRange(new[] { nameof(IqlMethod.EntityConfiguration) });
             }
-            if (typeof(IUserPermission).IsAssignableFrom(type))
+            if (typeof(UserPermissionsCollection).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new[] {nameof(IUserPermission.Permissions)});
+                ignoreProperties.AddRange(new[] { nameof(UserPermissionsCollection.Builder), nameof(UserPermissionsCollection.Rules) });
             }
             if (typeof(RelationshipMapping).IsAssignableFrom(type) ||
                 typeof(ValueMapping).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IMapping<object>.Container) });
+                ignoreProperties.AddRange(new[] { nameof(IMapping<object>.Container) });
             }
             if (typeof(IEntityConfiguration).IsAssignableFrom(type))
             {
@@ -80,7 +80,7 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             if (typeof(IProperty).IsAssignableFrom(type))
             {
                 resolvedType = typeof(IPropertyMetadata);
-                ignoreProperties.AddRange(new [] { nameof(IProperty.EntityConfiguration) });
+                ignoreProperties.AddRange(new[] { nameof(IProperty.EntityConfiguration) });
             }
             if (typeof(ITypeDefinition).IsAssignableFrom(type))
             {
@@ -93,7 +93,7 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             if (typeof(IRelationshipDetail).IsAssignableFrom(type))
             {
                 resolvedType = typeof(IRelationshipDetailMetadata);
-                ignoreProperties.AddRange(new [] { nameof(IRelationshipDetailMetadata.EntityConfiguration) });
+                ignoreProperties.AddRange(new[] { nameof(IRelationshipDetailMetadata.EntityConfiguration) });
             }
             if (typeof(IDisplayFormatting).IsAssignableFrom(type))
             {
@@ -101,63 +101,67 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             }
             if (typeof(IEntityDisplayTextFormatter).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IEntityDisplayTextFormatter.Format) });
+                ignoreProperties.AddRange(new[] { nameof(IEntityDisplayTextFormatter.Format) });
             }
             if (typeof(IDisplayRule).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IRuleBase<string>.Run) });
+                ignoreProperties.AddRange(new[] { nameof(IRuleBase<string>.Run) });
             }
             if (typeof(IGeographicPoint).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IGeographicPoint.EntityConfiguration) });
+                ignoreProperties.AddRange(new[] { nameof(IGeographicPoint.EntityConfiguration) });
             }
             if (typeof(IDateRange).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IDateRange.EntityConfiguration) });
+                ignoreProperties.AddRange(new[] { nameof(IDateRange.EntityConfiguration) });
             }
             if (typeof(IFile).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IFile.EntityConfiguration), nameof(IFile.RootFile) });
+                ignoreProperties.AddRange(new[] { nameof(IFile.EntityConfiguration), nameof(IFile.RootFile) });
             }
             if (typeof(IFilePreview).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IFile.EntityConfiguration), nameof(IFilePreview.File), nameof(IFilePreview.RootFile) });
+                ignoreProperties.AddRange(new[] { nameof(IFile.EntityConfiguration), nameof(IFilePreview.File), nameof(IFilePreview.RootFile) });
             }
             if (typeof(INestedSet).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(INestedSet.EntityConfiguration) });
+                ignoreProperties.AddRange(new[] { nameof(INestedSet.EntityConfiguration) });
+            }
+            if (typeof(IEntityConfigurationItem).IsAssignableFrom(type))
+            {
+                ignoreProperties.AddRange(new[] { nameof(IEntityConfigurationItem.EntityConfiguration) });
             }
             if (typeof(IMediaKey).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IMediaKey.File) });
+                ignoreProperties.AddRange(new[] { nameof(IMediaKey.File) });
             }
             if (typeof(IMediaKeyGroup).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IMediaKeyGroup.MediaKey) });
+                ignoreProperties.AddRange(new[] { nameof(IMediaKeyGroup.MediaKey) });
             }
             if (typeof(IMediaKeyPart).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IMediaKeyPart.MediaKey) });
+                ignoreProperties.AddRange(new[] { nameof(IMediaKeyPart.MediaKey) });
             }
             if (typeof(IEntityKey).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IEntityKey.Type), nameof(IEntityKey.KeyType) });
+                ignoreProperties.AddRange(new[] { nameof(IEntityKey.Type), nameof(IEntityKey.KeyType) });
             }
             if (typeof(IRelationshipRule).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IRuleBase<string>.Run) });
+                ignoreProperties.AddRange(new[] { nameof(IRuleBase<string>.Run) });
             }
             if (typeof(IBinaryRule).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IRuleBase<string>.Run) });
+                ignoreProperties.AddRange(new[] { nameof(IRuleBase<string>.Run) });
             }
             if (typeof(IPropertyPath).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IPropertyPath.Property), nameof(IPropertyPath.EntityConfiguration) });
+                ignoreProperties.AddRange(new[] { nameof(IPropertyPath.Property), nameof(IPropertyPath.EntityConfiguration) });
             }
             if (typeof(IPropertyGroup).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new [] { nameof(IPropertyPath.PropertyGroup), nameof(IPropertyPath.EntityConfiguration) });
+                ignoreProperties.AddRange(new[] { nameof(IPropertyPath.PropertyGroup), nameof(IPropertyPath.EntityConfiguration) });
             }
 
             ignoreProperties = ignoreProperties.Distinct().ToList();

@@ -10,7 +10,7 @@ using Iql.Entities.Functions;
 
 namespace Iql.Entities
 {
-    public interface IEntityMetadata : IMetadata, IUserPermission
+    public interface IEntityMetadata : IMetadata
     {
         List<IqlMethod> Methods { get; set; }
         bool AutoTitleProperty { get; set; }

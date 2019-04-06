@@ -1,12 +1,9 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Iql.Data;
-using Iql.Data.Extensions;
 #if !TypeScript
 using Iql.DotNet.Serialization;
 #endif
 using Iql.Entities.Permissions;
-using Iql.Extensions;
 using Iql.Tests.Context;
 using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +26,7 @@ namespace Iql.Tests.Tests
                     _ => IqlUserPermission.Read,
                     nameof(TestSimplePermissionRule)
 #if TypeScript
-            , null, new EvaluateContext(_ => Evaluator.Eval(_))
+            , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
                 );
             var user = new ApplicationUser();
@@ -47,7 +44,7 @@ namespace Iql.Tests.Tests
                     context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None,
                     nameof(TestComplexPermissionRule)
 #if TypeScript
-            , null, new EvaluateContext(_ => Evaluator.Eval(_))
+            , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
                 );
             var user = new ApplicationUser();
@@ -74,7 +71,7 @@ namespace Iql.Tests.Tests
                     context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit,
                     nameof(TestConvolutedPermissionRuleOnNewEntity)
 #if TypeScript
-            , null, new EvaluateContext(_ => Evaluator.Eval(_))
+            , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
                 );
             var user = new ApplicationUser
@@ -133,7 +130,7 @@ namespace Iql.Tests.Tests
                     context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit,
                     nameof(TestConvolutedPermissionRuleOnExistingEntity)
 #if TypeScript
-            , null, new EvaluateContext(_ => Evaluator.Eval(_))
+            , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
                 );
             var client = new Client
@@ -209,7 +206,7 @@ namespace Iql.Tests.Tests
                             : IqlUserPermission.None,
                     nameof(TestPermissionRuleOnChildCollectionOnExistingEntity)
 #if TypeScript
-            , null, new EvaluateContext(_ => Evaluator.Eval(_))
+            , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
                 );
 #if !TypeScript
@@ -287,7 +284,7 @@ namespace Iql.Tests.Tests
                             : IqlUserPermission.None,
                     nameof(TestPermissionRuleOnChildCollectionOnExistingEntity2)
 #if TypeScript
-            , null, new EvaluateContext(_ => Evaluator.Eval(_))
+            , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
                 );
             var user = await Db.Users.GetWithKeyAsync(nameof(TestPermissionRuleOnChildCollectionOnExistingEntity2));

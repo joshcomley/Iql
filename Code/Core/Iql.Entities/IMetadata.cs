@@ -3,7 +3,7 @@ using Iql.Entities.Metadata;
 
 namespace Iql.Entities
 {
-    public interface IMetadata
+    public interface IMetadata : IUserPermission, IEntityConfigurationItem
     {
         string GroupPath { get; set; }
         string Description { get; set; }

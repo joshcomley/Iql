@@ -17,9 +17,6 @@ namespace Iql.Entities
     public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>
         where T : IConfigurable<T>
     {
-        private UserPermissionsCollection _permissions;
-        public UserPermissionsCollection Permissions => _permissions = _permissions ?? new UserPermissionsCollection(EntityConfiguration?.Builder);
-
         public bool Matches(params string[] names)
         {
             var prop = this as IProperty;
@@ -205,7 +202,7 @@ namespace Iql.Entities
         public abstract IqlPropertyGroupKind GroupKind { get; }
         public abstract PropertyGroupMetadata[] GetPropertyGroupMetadata();
 
-        public virtual IEntityConfiguration EntityConfiguration => _entityConfiguration = _entityConfiguration ?? GetGroupProperties().Where(p => p != null).Select(p => p.EntityConfiguration).FirstOrDefault();
+        public override IEntityConfiguration EntityConfiguration => _entityConfiguration = _entityConfiguration ?? GetGroupProperties().Where(p => p != null).Select(p => p.EntityConfiguration).FirstOrDefault();
         public virtual IRuleCollection<IRelationshipRule> RelationshipFilterRules
         {
             get => _relationshipFilterRules = _relationshipFilterRules ?? NewRelationshipFilterRulesCollection();

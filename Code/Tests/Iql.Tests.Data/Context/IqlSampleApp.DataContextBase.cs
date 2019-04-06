@@ -745,6 +745,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "AverageIncome";
                 p.Title = "AverageIncome";
                 p.FriendlyName = "Average Income";
+                p.Permissions.UseRule("PropertyRule1").UseRule("PropertyRule2");
             }).DefineProperty(p => p.Category, false, IqlType.Integer).ConfigureProperty(p => p.Category, p => {
                 p.PropertyName = "Category";
                 p.Nullable = false;
@@ -994,10 +995,19 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
-                        Name = "IncrementVersion",
                         SupportsOffline = false,
                         NameSpace = "Abc",
-                        Parameters = new List<IqlMethodParameter>()
+                        Parameters = new List<IqlMethodParameter>(),
+                        Metadata = new MetadataCollection(),
+                        Name = "IncrementVersion",
+                        Title = "IncrementVersion",
+                        FriendlyName = "Increment Version",
+                        Hints = new List<String>(),
+                        HelpTexts = new List<HelpText>(),
+                        Permissions = new UserPermissionsCollection
+                        {
+                            Keys = new List<String>()
+                        }
                     }
                 };
                 p.SetFriendlyName = "Clients";
@@ -1008,6 +1018,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Client";
                 p.Title = "Client";
                 p.FriendlyName = "Client";
+                p.Permissions.UseRule("BlipBlop").UseRule("BooBoo");
             });
             builder.EntityType<ClientType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";

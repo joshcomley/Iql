@@ -12,6 +12,7 @@ namespace Iql.Entities
         protected bool _nameSet;
         private string _title;
         private bool _titleSet;
+        private UserPermissionsCollection _permissions;
         public IMetadataCollection Metadata { get; set; } = new MetadataCollection();
 
         public virtual string Name
@@ -122,6 +123,7 @@ namespace Iql.Entities
             }
         }
 
+        public virtual IEntityConfiguration EntityConfiguration { get; protected set; }
         public string GroupPath { get; set; }
         
         public string Description { get; set; }
@@ -148,6 +150,12 @@ namespace Iql.Entities
         {
             HintHelper.SetHint(this, name, value);
             return this;
+        }
+
+        public UserPermissionsCollection Permissions
+        {
+            get => _permissions = _permissions ?? new UserPermissionsCollection(EntityConfiguration?.Builder);
+            set => _permissions = value;
         }
     }
 }

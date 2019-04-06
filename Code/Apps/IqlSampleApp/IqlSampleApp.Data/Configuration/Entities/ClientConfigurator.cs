@@ -18,6 +18,10 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 {
                     method.NameSpace = "Abc";
                 });
+            entityConfiguration.Permissions.UseRule("BlipBlop");
+            entityConfiguration.Permissions.UseRule("FlipFlop");
+            entityConfiguration.Permissions.RemoveRule("FlipFlop");
+            entityConfiguration.Permissions.UseRule("BooBoo");
             entityConfiguration
                 .Builder
                 .Permissions
@@ -26,7 +30,8 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read
                     );
             entityConfiguration.ConfigureProperty(_ => _.AverageIncome, property =>
-                {
+            {
+                property.Permissions.UseRule("PropertyRule1").UseRule("PropertyRule2");
                     property.EntityConfiguration.Builder.Permissions.DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit2",
                         context =>
                         context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read

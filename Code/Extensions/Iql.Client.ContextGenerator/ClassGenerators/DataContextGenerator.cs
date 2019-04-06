@@ -189,7 +189,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                   OutputKind == OutputKind.TypeScript ?
                               new[]
                               {
-                                new EntityFunctionParameterDefinition(entityTypeName,
+                                new EntityFunctionParameterDefinition(
+                                    entityTypeName,
                                     new TypeInfo())
                               } : null;
                               var defineEntityName = nameof(EntityConfigurationBuilder.EntityType);
@@ -197,6 +198,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                               {
                                   defineEntityName += $"<{NameMapper(entityTypeName)}>";
                               }
+
                               VariableAccessor(builder, () =>
                               {
                                   MethodCall(
@@ -753,7 +755,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
 
         private const string DefaultLambdaKey = "p";
 
-        private async Task<string> ConfigureMetadataAsync(IMetadata metadata,
+        private async Task<string> ConfigureMetadataAsync(
+            IMetadata metadata,
             IVariable propertyParameter = null,
             string lambdaKey = null,
             bool appendConfigure = true,
@@ -882,6 +885,27 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             }
                         }
                     }
+
+                    if (metadataProperty.Name == nameof(IMetadata.Permissions))
+                    {
+                        if (metadata.Permissions != null &&
+                            metadata.Permissions.Keys != null &&
+                            metadata.Permissions.Keys.Any())
+                        {
+                            sb.Append($"{lambdaKey}");
+                            await IndentAsync(async () =>
+                            {
+                                sb.Append($".{nameof(IUserPermission.Permissions)}");
+                                foreach (var permissionKey in metadata.Permissions.Keys)
+                                {
+                                    sb.Append($".{nameof(UserPermissionsCollection.UseRule)}(\"{permissionKey}\")");
+                                }
+                                sb.Append(";");
+                            });
+                        }
+                        dealtWith = true;
+                    }
+
                     if (metadata is IProperty property1 &&
                         metadataProperty.Name == nameof(IPropertyMetadata.SearchKind))
                     {
