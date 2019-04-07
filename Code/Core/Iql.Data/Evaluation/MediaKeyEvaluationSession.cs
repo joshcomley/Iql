@@ -6,14 +6,14 @@ using Iql.Entities;
 
 namespace Iql.Data.Extensions
 {
-    public class MediaKeyEvaluationSession
+    public class MediaKeyEvaluationSession : IEvaluationSessionContainer
     {
-        public MediaKeyEvaluationSession()
+        public MediaKeyEvaluationSession(IEvaluationSessionContainer evaluationSession = null)
         {
-            EvaluationSession = new EvaluationSession();
+            Session = evaluationSession?.Session ?? new EvaluationSession();
         }
 
-        public EvaluationSession EvaluationSession { get; set; }
+        public IEvaluationSession Session { get; set; }
 
         public async Task<string[]> EvaluateGroupAsync(IMediaKeyGroup mediaGroup, object entity, IDataContext dataContext)
         {
@@ -30,7 +30,7 @@ namespace Iql.Data.Extensions
                         keyPart.Key,
                         mediaGroup.MediaKey.File.EntityConfiguration.TypeMetadata
                     );
-                    var iqlPropertyPathEvaluationResult = await EvaluationSession.EvaluateAsync(
+                    var iqlPropertyPathEvaluationResult = await Session.EvaluateAsync(
                         propertyPath,
                         entity,
                         dataContext,

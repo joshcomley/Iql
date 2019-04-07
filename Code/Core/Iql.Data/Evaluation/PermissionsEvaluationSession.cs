@@ -9,14 +9,14 @@ using Iql.Parsing.Types;
 
 namespace Iql.Data.Evaluation
 {
-    public class PermissionsEvaluationSession
+    public class PermissionsEvaluationSession : IEvaluationSessionContainer
     {
-        public PermissionsEvaluationSession()
+        public PermissionsEvaluationSession(IEvaluationSessionContainer evaluationSession = null)
         {
-            this.EvaluationSession = new EvaluationSession();
+            Session = evaluationSession?.Session ?? new EvaluationSession();
         }
 
-        public EvaluationSession EvaluationSession { get; set; }
+        public IEvaluationSession Session { get; set; }
 
         public Task<IqlUserPermission> EvaluateEntityPermissionsRuleAsync<TEntity, TUser>(
             IqlUserPermissionRule rule,
@@ -116,7 +116,7 @@ namespace Iql.Data.Evaluation
                     if (variableExpression.EntityTypeName == context.GetType().GetFullName())
                     {
                         // Construct fake lambda
-                        var evaluatedResult = await EvaluationSession.EvaluateIqlCustomAsync(
+                        var evaluatedResult = await Session.EvaluateIqlCustomAsync(
                             flattenedExpression.Expression,
                             serviceProviderProvider,
                             context,
@@ -170,7 +170,7 @@ namespace Iql.Data.Evaluation
                 //var lambda =
                 //    IqlConverter.Instance.ConvertIqlToLambdaExpression(query, typeResolver);
             }
-            var result = await EvaluationSession.EvaluateIqlCustomAsync(
+            var result = await Session.EvaluateIqlCustomAsync(
                 iqlExpression,
                 serviceProviderProvider,
                 context,
@@ -179,19 +179,6 @@ namespace Iql.Data.Evaluation
                 typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
             var permission = (IqlUserPermission)result.Result;
             return permission;
-
-
-
-            //var isEntityNew = evaluator.EntityStatus(entity) != IqlEntityStatus.Existing;
-            //var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew, user, entity);
-            //var result = await rule.IqlExpression.EvaluateIqlCustomAsync(
-            //    serviceProviderProvider,
-            //    context,
-            //    evaluator,
-            //    typeResolver,
-            //    typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
-            //var permission = (IqlUserPermission)result.Result;
-            //return permission;
         }
 
         public Task<IqlUserPermission> EvaluatePermissionsRuleAsync<TEntity, TUser>(IqlUserPermissionRule rule, TUser user, TEntity entity, IDataContext dataContext)
@@ -217,7 +204,7 @@ namespace Iql.Data.Evaluation
             where TUser : class
         {
             var context = new IqlUserPermissionContext<TUser>(user);
-            var result = await EvaluationSession.EvaluateIqlCustomAsync(
+            var result = await Session.EvaluateIqlCustomAsync(
                 rule.IqlExpression,
                 serviceProviderProvider,
                 context,

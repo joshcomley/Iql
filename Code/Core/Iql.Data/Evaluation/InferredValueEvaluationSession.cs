@@ -11,7 +11,7 @@ using Iql.Extensions;
 
 namespace Iql.Data.Evaluation
 {
-    public class InferredValueEvaluationSession
+    public class InferredValueEvaluationSession : IEvaluationSessionContainer
     {
         private static MethodInfo NewInferredValueContextTypedMethod { get; }
 
@@ -22,13 +22,13 @@ namespace Iql.Data.Evaluation
                     BindingFlags.NonPublic | BindingFlags.Static);
         }
 
-        public InferredValueEvaluationSession()
+        public InferredValueEvaluationSession(IEvaluationSessionContainer evaluationSession = null)
         {
-            EvaluationSession = new EvaluationSession();
+            Session = evaluationSession?.Session ?? new EvaluationSession();
         }
 
-        public EvaluationSession EvaluationSession { get; set; }
-        
+        public IEvaluationSession Session { get; set; }
+
         public async Task<InferredValuesResult> TrySetInferredValuesAsync(
             IDataContext dataContext,
             object entity,
@@ -122,7 +122,7 @@ namespace Iql.Data.Evaluation
                             return true;
                         }
 
-                        var conditionResult = await EvaluationSession.EvaluateIqlAsync(
+                        var conditionResult = await Session.EvaluateIqlAsync(
                             inferredValueConfiguration.InferredWithConditionIql,
                             NewInferredValueContext(entity, entity, property.EntityConfiguration.Type),
                             dataContext);
@@ -186,7 +186,7 @@ namespace Iql.Data.Evaluation
                     var inferredWith = property.InferredValueConfigurations[i];
                     if (inferredWith.HasCondition)
                     {
-                        var conditionResult = await EvaluationSession
+                        var conditionResult = await Session
                             .EvaluateIqlCustomAsync(
                                 inferredWith.InferredWithConditionIql,
                                 serviceProviderProvider,
@@ -229,7 +229,7 @@ namespace Iql.Data.Evaluation
                     }
 
                     var inferredWithIql = inferredWith.InferredWithIql;
-                    var result = await EvaluationSession.EvaluateIqlCustomAsync(
+                    var result = await Session.EvaluateIqlCustomAsync(
                         inferredWithIql,
                         serviceProviderProvider,
                         NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),

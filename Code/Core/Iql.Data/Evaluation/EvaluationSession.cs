@@ -18,8 +18,10 @@ using Iql.Parsing.Types;
 
 namespace Iql.Data.Evaluation
 {
-    public class EvaluationSession
+    public class EvaluationSession : IEvaluationSession
     {
+        public IEvaluationSession Session => this;
+
         private readonly Dictionary<string, object> _resolvedEntities = new Dictionary<string, object>();
         public Task<IqlObjectEvaluationResult> EvaluateExpressionAsync<T>(
             Expression<Func<T, object>> expression,
@@ -172,9 +174,9 @@ namespace Iql.Data.Evaluation
             entityType = entityType ?? entity.GetType();
             var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, dataContext.EntityConfigurationContext, entityType).Expression;
             return await EvaluateIqlAsync(
-                iql, 
-                entity, 
-                dataContext, 
+                iql,
+                entity,
+                dataContext,
                 entityType);
         }
 
@@ -382,7 +384,7 @@ namespace Iql.Data.Evaluation
                         if (!expands.ContainsKey(rootEntity))
                         {
                             var entityConfigurationTypeProvider =
-                                (root?.Child == null ? (object) typeResolver : (object) root.Child.EntityConfiguration)
+                                (root?.Child == null ? (object)typeResolver : (object)root.Child.EntityConfiguration)
                                 as EntityConfigurationTypeProvider;
                             if (entityConfigurationTypeProvider == null)
                             {
@@ -408,7 +410,7 @@ namespace Iql.Data.Evaluation
                     if (rootEntity != null && !expands.ContainsKey(rootEntity))
                     {
                         var entityConfigurationTypeProvider =
-                            (root?.Child == null ? (object) typeResolver : (object) root.Child.EntityConfiguration) as
+                            (root?.Child == null ? (object)typeResolver : (object)root.Child.EntityConfiguration) as
                             EntityConfigurationTypeProvider;
                         if (entityConfigurationTypeProvider == null)
                         {
