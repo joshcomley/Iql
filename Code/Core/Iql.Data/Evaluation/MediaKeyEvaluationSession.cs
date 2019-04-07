@@ -46,7 +46,7 @@ namespace Iql.Data.Extensions
             return parts.ToArray();
         }
 
-        public async Task<string> EvaluateToStringAsync(IMediaKeyGroup mediaGroup, object entity, IDataContext dataContext)
+        public async Task<string> EvaluateGroupToStringAsync(IMediaKeyGroup mediaGroup, object entity, IDataContext dataContext)
         {
             var parts = await EvaluateGroupAsync(mediaGroup, entity, dataContext);
             return string.Join(mediaGroup.Separator, parts);
@@ -73,7 +73,7 @@ namespace Iql.Data.Extensions
 
             foreach (var keyGroup in mediaKey.Groups)
             {
-                var groupString = await EvaluateToStringAsync(keyGroup, entity, dataContext);
+                var groupString = await EvaluateGroupToStringAsync(keyGroup, entity, dataContext);
                 groups.Add(groupString);
             }
 
