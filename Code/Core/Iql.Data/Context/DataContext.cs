@@ -1325,7 +1325,8 @@ namespace Iql.Data.Context
                         var inferredWith = property.InferredValueConfigurations[i];
                         if (inferredWith.HasCondition)
                         {
-                            var result = await inferredWith.InferredWithConditionIql.EvaluateIqlAsync(
+                            var result = await new EvaluationSession().EvaluateIqlAsync(
+                                inferredWith.InferredWithConditionIql,
                                 new InferredValueContext<T>((T)oldEntity, entity),
                                 this,
                                 typeof(InferredValueContext<T>));

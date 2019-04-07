@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Data.Context;
+using Iql.Data.Evaluation;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
@@ -122,10 +123,6 @@ namespace Iql.Data.Extensions
                 },
                 parentType,
                 childType);
-            if (result == null && isRelationship)
-            {
-                int a = 0;
-            }
             return result;
         }
 
@@ -151,7 +148,8 @@ namespace Iql.Data.Extensions
         {
             var ctx = new RelationshipFilterContext<TParent>();
             ctx.Owner = parent;
-            var result = await expression.EvaluateIqlPathAsync(
+            var result = await new EvaluationSession().EvaluateIqlPathAsync(
+                expression,
                 ctx,
                 dataContext,
                 typeof(RelationshipFilterContext<TParent>),

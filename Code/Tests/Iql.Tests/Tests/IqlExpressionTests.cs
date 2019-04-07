@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data;
+using Iql.Data.Evaluation;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Tests.Context;
@@ -24,7 +25,7 @@ namespace Iql.Tests.Tests
             person.Client = new Client();
             person.Client.CreatedByUser = new ApplicationUser();
             person.Client.CreatedByUser.ClientId = 7;
-            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db.EntityConfigurationContext, Db.EntityConfigurationContext);
+            var result = await new EvaluationSession().EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db.EntityConfigurationContext, Db.EntityConfigurationContext);
             Assert.AreEqual("Person Description - 7", result.Result);
         }
 
@@ -34,7 +35,7 @@ namespace Iql.Tests.Tests
             var person = new Person();
             person.Description = "Person Description";
             person.Client = new Client();
-            var result = await ExpressionEvaluator.EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db.EntityConfigurationContext, Db.EntityConfigurationContext);
+            var result = await new EvaluationSession().EvaluateExpressionAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db.EntityConfigurationContext, Db.EntityConfigurationContext);
             Assert.AreEqual("Person Description - ", result.Result);
         }
 
@@ -65,7 +66,7 @@ namespace Iql.Tests.Tests
                 _ => _.Description + ": " + (_.CreatedByUserId == null ? "No User" : "Has User") + " - " + (_.Client.CreatedByUser.ClientId == null ? "No Client" : _.Client.CreatedByUser.Client.Name);
             //var iql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(expression, typeof(Person)).Expression;
             //var xml = IqlXmlSerializer.SerializeToXml(iql);
-            var result = await ExpressionEvaluator.EvaluateExpressionWithDbAsync(expression, person, Db);
+            var result = await new EvaluationSession().EvaluateExpressionWithDbAsync(expression, person, Db);
             Assert.AreEqual("Asynchronous Person Description: No User - My Other Client", result.Result);
         }
 
@@ -79,7 +80,7 @@ namespace Iql.Tests.Tests
             {
                 Id = 8
             });
-            var result = await ExpressionEvaluator.EvaluateExpressionWithDbAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db);
+            var result = await new EvaluationSession().EvaluateExpressionWithDbAsync(_ => _.Description + " - " + _.Client.CreatedByUser.ClientId, person, Db);
             Assert.AreEqual("Asynchronous Person Description - ", result.Result);
         }
 

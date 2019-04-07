@@ -101,30 +101,5 @@ namespace Iql.Data.Extensions
             }
             return properties;
         }
-
-        public static async Task<InferredValuesResult> TrySetInferredValuesAsync(
-            this IDataContext dataContext,
-            object entity,
-            bool isInitialize = false)
-        {
-            var changes = await dataContext.TryGetInferredValuesAsync(entity, isInitialize);
-            changes?.ApplyChanges();
-            return changes;
-        }
-
-        public static async Task<InferredValuesResult> TryGetInferredValuesAsync(
-            this IDataContext dataContext,
-            object entity,
-            bool isInitialize = false)
-        {
-            var config = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
-            var oldEntity = dataContext.GetEntityState(entity)?.EntityBeforeChanges();
-            return await config.TryGetInferredValuesAsync(
-                oldEntity, 
-                entity,
-                isInitialize,
-                dataContext, 
-                dataContext);
-        }
     }
 }

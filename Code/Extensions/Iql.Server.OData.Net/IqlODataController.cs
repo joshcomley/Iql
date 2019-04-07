@@ -13,6 +13,7 @@ using Brandless.Data.EntityFramework.Crud;
 using Brandless.Data.Models;
 using Brandless.Data.Mptt;
 using Iql.Data;
+using Iql.Data.Evaluation;
 using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Entities.NestedSets;
@@ -307,12 +308,14 @@ namespace Iql.Server.OData.Net
             var serverEvaluator = new IqlServerEvaluator(CrudManager, () => Crud.NewUnsecuredDb());
             var clone = (T)dbObject.Clone(Builder, EntityConfiguration.Type);
             await base.OnPatchAsync(patch, dbObject);
-            await EntityConfiguration.TrySetInferredValuesAsync(
-                clone,
-                dbObject,
-                false,
-                serverEvaluator,
-                ResolveServiceProviderProvider());
+            await new InferredValueEvaluationSession()
+                .TrySetInferredValuesCustomAsync(
+                    EntityConfiguration,
+                    clone,
+                    dbObject,
+                    false,
+                    serverEvaluator,
+                    ResolveServiceProviderProvider());
             ClearNestedEntities(dbObject);
         }
 
@@ -376,7 +379,8 @@ namespace Iql.Server.OData.Net
 
                 EntityConfiguration.PersistenceKeyProperty.SetValue(currentEntity, value);
             }
-            await EntityConfiguration.TrySetInferredValuesAsync(
+            await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+                EntityConfiguration,
                 null,
                 currentEntity,
                 true,

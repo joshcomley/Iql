@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Iql.Data;
+using Iql.Data.Evaluation;
 using Iql.Data.Extensions;
 using Iql.Entities.InferredValues;
 using IqlSampleApp.Data.Entities;
@@ -24,12 +25,14 @@ namespace Iql.Tests.Server
             controller.ServerEvaluator.MarkAsUnsaved(dbObject);
             Assert.AreEqual(default(DateTimeOffset), dbObject.CreatedDate);
             var clone = (UserSetting)dbObject.Clone(Builder, typeof(UserSetting));
-            var inferredValuesResult = await controller.EntityConfiguration.TrySetInferredValuesAsync(
-                clone,
-                dbObject,
-                true,
-                controller.ServerEvaluator,
-                ResolveServiceProviderProvider());
+            var inferredValuesResult = await new InferredValueEvaluationSession()
+                .TrySetInferredValuesCustomAsync(
+                    controller.EntityConfiguration,
+                    clone,
+                    dbObject,
+                    true,
+                    controller.ServerEvaluator,
+                    ResolveServiceProviderProvider());
             Assert.AreNotEqual(default(DateTimeOffset), dbObject.CreatedDate);
         }
 
@@ -43,7 +46,8 @@ namespace Iql.Tests.Server
             Assert.AreEqual(null, dbObject.Birthday);
             Assert.AreNotEqual(PersonCategory.Conventional, dbObject.Category);
             Assert.AreNotEqual(PersonSkills.Coder, dbObject.Skills);
-            var inferredValuesResult = await controller.EntityConfiguration.TrySetInferredValuesAsync(
+            var inferredValuesResult = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+                controller.EntityConfiguration,
                 null,
                 dbObject,
                 true,
@@ -86,7 +90,8 @@ namespace Iql.Tests.Server
             Assert.AreEqual(null, dbObjectInitialize.Birthday);
             Assert.AreNotEqual(PersonCategory.Conventional, dbObjectInitialize.Category);
             Assert.AreNotEqual(PersonSkills.Coder, dbObjectInitialize.Skills);
-            var inferredValuesResult = await controller.EntityConfiguration.TrySetInferredValuesAsync(
+            var inferredValuesResult = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+                controller.EntityConfiguration,
                 null,
                 dbObjectInitialize,
                 true,
@@ -104,7 +109,8 @@ namespace Iql.Tests.Server
             Assert.AreEqual(null, dbObjectNoInitialize.Birthday);
             Assert.AreNotEqual(PersonCategory.Conventional, dbObjectNoInitialize.Category);
             Assert.AreNotEqual(PersonSkills.Coder, dbObjectNoInitialize.Skills);
-            inferredValuesResult = await controller.EntityConfiguration.TrySetInferredValuesAsync(
+            inferredValuesResult = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+                controller.EntityConfiguration,
                 null,
                 dbObjectNoInitialize,
                 false,

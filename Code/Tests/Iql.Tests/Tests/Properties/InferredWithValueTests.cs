@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Iql.Data.Evaluation;
 using Iql.Data.Extensions;
 using Iql.Entities.Services;
 using Iql.Tests.Context;
@@ -25,7 +26,7 @@ namespace Iql.Tests.Tests.Properties
             applicationUsersInMemory.Add(applicationUserInMemory);
             var client = new Client();
             Db.Clients.Add(client);
-            await Db.TrySetInferredValuesAsync(client);
+            await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, client);
             Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserId, client.CreatedByUserId, "Relationship key not inferred");
             Assert.IsNotNull(client.CreatedByUser, "Relationship object not inferred");
             Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserId, client.CreatedByUser.Id, "Relationship object incorrectly inferred");
@@ -44,7 +45,7 @@ namespace Iql.Tests.Tests.Properties
             };
             applicationUsersInMemory.Add(applicationUserInMemory);
             var client = new Client();
-            await Db.TrySetInferredValuesAsync(client);
+            await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, client);
             Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserId, client.CreatedByUserId, "Relationship key not inferred");
             Assert.IsNotNull(client.CreatedByUser, "Relationship object not inferred");
             Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserId, client.CreatedByUser.Id, "Relationship object incorrectly inferred");
@@ -163,7 +164,7 @@ namespace Iql.Tests.Tests.Properties
             site.ClientId = 7;
             site.Address = "A\nB";
             site.PostCode = "DEF";
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(site)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, site)).Success);
             Assert.AreEqual("7", site.Key);
             Assert.AreEqual("A\nB\nDEF", site.FullAddress);
         }
@@ -189,13 +190,13 @@ namespace Iql.Tests.Tests.Properties
                 Name = "My client"
             });
             var person = await Db.People.GetWithKeyAsync(177);
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual(null, person.CreatedByUserId);
             Assert.AreEqual(null, person.Location);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual(null, person.CreatedByUserId);
             Assert.AreEqual(null, person.Location);
             Assert.AreEqual(107, person.ClientId);
@@ -203,7 +204,7 @@ namespace Iql.Tests.Tests.Properties
 
             Db.ServiceProvider.RegisterInstance(new TestCurrentUserResolver());
             Db.ServiceProvider.RegisterInstance(new TestCurrentLocationResolver());
-            Assert.IsTrue((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsTrue((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual(null, person.Location);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
@@ -215,7 +216,7 @@ namespace Iql.Tests.Tests.Properties
             TestCurrentLocationResolver.CurrentLongitude = currentLongitude;
             Db.ServiceProvider.Unregister<TestCurrentUserResolver>();
 
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.IsNotNull(person.Location);
             Assert.AreEqual(TestCurrentLocationResolver.CurrentLongitude, person.Location.X);
@@ -228,7 +229,7 @@ namespace Iql.Tests.Tests.Properties
             TestCurrentLocationResolver.CurrentLongitude = -1.0775452;
 
             Db.ServiceProvider.RegisterInstance(new TestCurrentUserResolver());
-            Assert.IsTrue((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsTrue((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(location, person.Location);
             Assert.AreEqual(currentLongitude, person.Location.X);
@@ -237,7 +238,7 @@ namespace Iql.Tests.Tests.Properties
             Assert.IsNotNull(person.Client);
 
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(location, person.Location);
             Assert.AreEqual(currentLongitude, person.Location.X);
@@ -247,7 +248,7 @@ namespace Iql.Tests.Tests.Properties
 
             Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
             person.Location = null;
-            Assert.IsTrue((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsTrue((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.IsNotNull(person.Location);
             Assert.AreEqual(TestCurrentLocationResolver.CurrentLongitude, person.Location.X);
@@ -256,7 +257,7 @@ namespace Iql.Tests.Tests.Properties
             Assert.IsNotNull(person.Client);
 
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.IsNotNull(person.Location);
             Assert.AreEqual(TestCurrentLocationResolver.CurrentLongitude, person.Location.X);
@@ -284,7 +285,7 @@ namespace Iql.Tests.Tests.Properties
                 Name = "My client"
             });
 
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person, true)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person, true)).Success);
             Assert.IsTrue(person.CreatedDate.Year == 2019);
             Assert.IsTrue(person.CreatedDate.Month == 1);
             Assert.IsTrue(person.CreatedDate.Day == 2);
@@ -295,44 +296,44 @@ namespace Iql.Tests.Tests.Properties
             Assert.IsNotNull(person.Client);
 
             person.Category = PersonCategory.AutoDescription;
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("I'm \\ \"auto\"", person.Description);
             Assert.AreEqual(null, person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
             Db.ServiceProvider.RegisterInstance(new TestCurrentUserResolver());
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
             Db.ServiceProvider.Unregister<TestCurrentUserResolver>();
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
             Db.ServiceProvider.RegisterInstance(new TestCurrentUserResolver());
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
             Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);
 
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();
-            Assert.IsFalse((await Db.TrySetInferredValuesAsync(person)).Success);
+            Assert.IsFalse((await new InferredValueEvaluationSession().TrySetInferredValuesAsync(Db, person)).Success);
             Assert.AreEqual("testuserid", person.CreatedByUserId);
             Assert.AreEqual(107, person.ClientId);
             Assert.IsNotNull(person.Client);

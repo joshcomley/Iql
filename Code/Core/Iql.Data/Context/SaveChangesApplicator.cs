@@ -8,6 +8,7 @@ using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
+using Iql.Data.Evaluation;
 using Iql.Data.Events;
 using Iql.Data.Extensions;
 using Iql.Data.Tracking;
@@ -86,7 +87,10 @@ namespace Iql.Data.Context
                     else if (CheckPendingDependencies(isOfflineResync, addEntityOperation.Operation, addEntityOperation.Result) &&
                              (isOfflineResync || await CheckNotAlreadyExistsAsync(addEntityOperation)))
                     {
-                        inferredValuesResult = await DataContext.TrySetInferredValuesAsync(addEntityOperation.Operation.Entity, false);
+                        inferredValuesResult = await new InferredValueEvaluationSession().TrySetInferredValuesAsync(
+                            DataContext,
+                            addEntityOperation.Operation.Entity, 
+                            false);
                         var localEntity = addEntityOperation.Operation.Entity;
 
                         var specialTypeMap = EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
@@ -202,7 +206,10 @@ namespace Iql.Data.Context
                     }
                     else if (CheckPendingDependencies(isOfflineResync, updateEntityOperation.Operation, updateEntityOperation.Result))
                     {
-                        inferredValuesResult = await DataContext.TrySetInferredValuesAsync(updateEntityOperation.Operation.Entity, false);
+                        inferredValuesResult = await new InferredValueEvaluationSession().TrySetInferredValuesAsync(
+                            DataContext,
+                            updateEntityOperation.Operation.Entity,
+                            false);
                         var updateEntityValidationResult = await DataContext.ValidateEntityAsync(updateEntityOperation.Operation.Entity, true);
                         if (!isOfflineResync && updateEntityValidationResult.HasValidationFailures())
                         {

@@ -94,7 +94,7 @@ namespace Iql.Data.Rendering
             bool appendNonConfiguredProperties = true
         )
         {
-            var canEdit = !IsSimpleProperty || !await PropertyAsSimpleProperty.IsReadOnlyAsync(entity, dataContext);
+            var canEdit = !IsSimpleProperty || !await new InferredValueEvaluationSession().IsReadOnlyAsync(PropertyAsSimpleProperty, entity, dataContext);
             var canShow = CanShow(entity, dataContext, configuration);
             //if (IsPropertyGroup)
             //{

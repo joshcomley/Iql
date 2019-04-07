@@ -26,7 +26,7 @@ namespace Iql.Tests.Server
             var user = new ApplicationUser();
             var client = new Client();
             controller.ServerEvaluator.MarkAsUnsaved(client);
-            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -52,7 +52,7 @@ namespace Iql.Tests.Server
             var user = new ApplicationUser();
             var client = new Client();
             controller.ServerEvaluator.MarkAsUnsaved(client);
-            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -61,7 +61,7 @@ namespace Iql.Tests.Server
                 clientConfiguration.Builder);
             Assert.AreEqual(IqlUserPermission.None, permission);
             user.FullName = "abc";
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -110,7 +110,7 @@ namespace Iql.Tests.Server
             };
             controller.ServerEvaluator.MarkAsUnsaved(user);
             controller.ServerEvaluator.MarkAsUnsaved(client);
-            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -121,7 +121,7 @@ namespace Iql.Tests.Server
             cloudUserClient.Description = "one two abc three";
             client.AverageSales = 200;
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -131,7 +131,7 @@ namespace Iql.Tests.Server
             Assert.AreEqual(IqlUserPermission.Read, permission);
             client.AverageSales = 99;
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -141,7 +141,7 @@ namespace Iql.Tests.Server
             Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
             client.AverageSales = 101;
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -151,7 +151,7 @@ namespace Iql.Tests.Server
             Assert.AreEqual(IqlUserPermission.Read, permission);
             cloudUserClient.Description = "one two three";
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -161,7 +161,7 @@ namespace Iql.Tests.Server
             Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
             cloudUserClient.Description = "one two abc three";
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -173,7 +173,7 @@ namespace Iql.Tests.Server
             //var result = await db.SaveChangesAsync();
             //Assert.IsTrue(result > 0);
             controller.ServerEvaluator.MarkAsSaved(user, client);
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -250,7 +250,7 @@ namespace Iql.Tests.Server
             var user = await db.Users.SingleOrDefaultAsync(_=>_.FullName == nameof(TestPermissionRuleOnChildCollectionOnExistingEntity));
             var client = await db.Clients.SingleOrDefaultAsync(_=>_.Name == cloudClient.Name);
 
-            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -261,7 +261,7 @@ namespace Iql.Tests.Server
 
             for (var i = 0; i < 11; i++)
             {
-                permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+                permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                     rule,
                     user,
                     client,
@@ -273,7 +273,7 @@ namespace Iql.Tests.Server
 
             cloudClient.CreatedByUserId = cloudUser.Id;
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -284,7 +284,7 @@ namespace Iql.Tests.Server
 
             cloudClient.CreatedByUserId = null;
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -295,7 +295,7 @@ namespace Iql.Tests.Server
 
             cloudClient2.Description = $"Made by {user.Id}.";
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -306,7 +306,7 @@ namespace Iql.Tests.Server
 
             cloudClient2.Description = $"Made by NotUs.";
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -317,7 +317,7 @@ namespace Iql.Tests.Server
 
             cloudUser.UserType = UserType.Super;
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -355,7 +355,7 @@ namespace Iql.Tests.Server
             var user = await db.Users.SingleOrDefaultAsync(_ => _.FullName == nameof(TestPermissionRuleOnChildCollectionOnExistingEntity2));
             var client = await db.Clients.SingleOrDefaultAsync(_ => _.Name == cloudClient.Name);
 
-            var permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            var permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -366,7 +366,7 @@ namespace Iql.Tests.Server
 
             cloudUser.UserType = UserType.Super;
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluator().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,

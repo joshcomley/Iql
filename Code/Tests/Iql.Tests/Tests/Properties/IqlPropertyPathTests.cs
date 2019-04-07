@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Iql.Data.Evaluation;
 using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Tests.Context;
@@ -34,7 +35,7 @@ namespace Iql.Tests.Tests.Properties
                 p => p.Client.Type,
                 Db.EntityConfigurationContext
                 );
-            var result = await path.EvaluateAsync(person, Db, false);
+            var result = await new EvaluationSession().EvaluateAsync(path, person, Db, false);
             Assert.AreEqual((result.Value as ClientType).Name, "My Client Type 11");
         }
 

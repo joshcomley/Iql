@@ -152,11 +152,18 @@ namespace Iql.Tests.Tests.EntityConfiguration
                         .AddString(stringKey))
                 ;
             var dbUser = await Db.Users.GetWithKeyAsync(user.Id);
-            var evaluated = await mediaKey.EvaluateAsync(dbUser, Db);
+            var evaluationSession = new MediaKeyEvaluationSession();
+            var evaluated = await evaluationSession.EvaluateAsync(
+                mediaKey,
+                dbUser,
+                Db);
             Assert.AreEqual(clientType.Name, evaluated[0][0]);
             Assert.AreEqual(user.Id, evaluated[1][0]);
             Assert.AreEqual(stringKey, evaluated[1][1]);
-            var evaluatedToString = await mediaKey.EvaluateToStringAsync(dbUser, Db);
+            var evaluatedToString = await evaluationSession.EvaluateToStringAsync(
+                mediaKey,
+                dbUser, 
+                Db);
             Assert.AreEqual($"{clientType.Name}/{user.Id}-{stringKey}", evaluatedToString);
             mediaKey.Clear();
         }

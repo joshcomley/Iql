@@ -9,8 +9,14 @@ using Iql.Parsing.Types;
 
 namespace Iql.Data.Evaluation
 {
-    public class PermissionsEvaluator
+    public class PermissionsEvaluationSession
     {
+        public PermissionsEvaluationSession()
+        {
+            this.EvaluationSession = new EvaluationSession();
+        }
+
+        public EvaluationSession EvaluationSession { get; set; }
 
         public Task<IqlUserPermission> EvaluateEntityPermissionsRuleAsync<TEntity, TUser>(
             IqlUserPermissionRule rule,
@@ -110,7 +116,8 @@ namespace Iql.Data.Evaluation
                     if (variableExpression.EntityTypeName == context.GetType().GetFullName())
                     {
                         // Construct fake lambda
-                        var evaluatedResult = await flattenedExpression.Expression.EvaluateIqlCustomAsync(
+                        var evaluatedResult = await EvaluationSession.EvaluateIqlCustomAsync(
+                            flattenedExpression.Expression,
                             serviceProviderProvider,
                             context,
                             evaluator,
@@ -163,7 +170,8 @@ namespace Iql.Data.Evaluation
                 //var lambda =
                 //    IqlConverter.Instance.ConvertIqlToLambdaExpression(query, typeResolver);
             }
-            var result = await iqlExpression.EvaluateIqlCustomAsync(
+            var result = await EvaluationSession.EvaluateIqlCustomAsync(
+                iqlExpression,
                 serviceProviderProvider,
                 context,
                 evaluator,
@@ -209,7 +217,8 @@ namespace Iql.Data.Evaluation
             where TUser : class
         {
             var context = new IqlUserPermissionContext<TUser>(user);
-            var result = await rule.IqlExpression.EvaluateIqlCustomAsync(
+            var result = await EvaluationSession.EvaluateIqlCustomAsync(
+                rule.IqlExpression,
                 serviceProviderProvider,
                 context,
                 evaluator,

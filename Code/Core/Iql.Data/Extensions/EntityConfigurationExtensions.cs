@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Iql.Data.Context;
-using Iql.Data.Evaluation;
 using Iql.Data.Operations;
 using Iql.Entities;
-using Iql.Entities.InferredValues;
-using Iql.Entities.Services;
 using Iql.Queryable.Expressions;
 using Iql.Queryable.Operations;
 
@@ -14,44 +9,6 @@ namespace Iql.Data.Extensions
 {
     public static class EntityConfigurationExtensions
     {
-        public static async Task<InferredValuesResult> TrySetInferredValuesAsync(
-            this IEntityConfiguration config,
-            object oldEntity,
-            object entity,
-            bool isInitialize,
-            IIqlDataEvaluator dataEvaluator,
-            IServiceProviderProvider serviceProviderProvider = null)
-        {
-            var result = await TryGetInferredValuesAsync(config, oldEntity, entity, isInitialize, dataEvaluator, serviceProviderProvider);
-            result.ApplyChanges();
-            return result;
-        }
-
-        public static async Task<InferredValuesResult> TryGetInferredValuesAsync(
-            this IEntityConfiguration config, 
-            object oldEntity, 
-            object entity,
-            bool isInitialize,
-            IIqlDataEvaluator dataEvaluator, 
-            IServiceProviderProvider serviceProviderProvider)
-        {
-            serviceProviderProvider = serviceProviderProvider ?? config.Builder;
-            var changes = new List<InferredValueChanges>();
-            for (var i = 0; i < config.Properties.Count; i++)
-            {
-                var propety = config.Properties[i];
-                var inferredValueChanges = await propety.TryGetInferredValueCustomAsync(
-                    oldEntity,
-                    entity,
-                    isInitialize,
-                    dataEvaluator,
-                    serviceProviderProvider);
-                changes.Add(inferredValueChanges);
-            }
-
-            return new InferredValuesResult(oldEntity, entity, changes.ToArray());
-        }
-
         public static IExpressionQueryOperation BuildExpandOperation(
             this IDataContext dataContext,
             Type entityType,
