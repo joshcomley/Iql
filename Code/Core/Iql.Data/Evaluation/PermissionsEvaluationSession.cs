@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Entities;
@@ -11,6 +12,22 @@ namespace Iql.Data.Evaluation
 {
     public class PermissionsEvaluationSession : IEvaluationSessionContainer
     {
+        class PermissionsEvaluationResult
+        {
+            public IqlUserPermissionRule Rule { get; }
+            public object Entity { get; }
+            public object User { get; }
+            public IqlUserPermission Permission { get; }
+
+            public PermissionsEvaluationResult(IqlUserPermissionRule rule, object entity, object user, IqlUserPermission permission)
+            {
+                Rule = rule;
+                Entity = entity;
+                User = user;
+                Permission = permission;
+            }
+        }
+        private List<PermissionsEvaluationResult> Results { get; } = new List<PermissionsEvaluationResult>();
         public PermissionsEvaluationSession(IEvaluationSessionContainer evaluationSession = null)
         {
             Session = evaluationSession?.Session ?? new EvaluationSession();
@@ -86,16 +103,21 @@ namespace Iql.Data.Evaluation
             where TEntity : class
             where TUser : class
         {
+            var cached = Results.SingleOrDefault(_ => _.Entity == entity && _.User == user && _.Rule == rule);
+            if (cached != null)
+            {
+                return cached.Permission;
+            }
             var isEntityNew = evaluator.EntityStatus(entity) != IqlEntityStatus.Existing;
             var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew, user, entity);
             var iqlExpression = rule.IqlExpression.Clone();
-            var contextExpessions = iqlExpression.Flatten()
+            var contextExpressions = iqlExpression.Flatten()
                 .Where(_ => _.Expression.Kind == IqlExpressionKind.Variable ||
                             _.Expression.Kind == IqlExpressionKind.RootReference)
                 .ToArray();
-            for (var i = 0; i < contextExpessions.Length; i++)
+            for (var i = 0; i < contextExpressions.Length; i++)
             {
-                var exp = contextExpessions[i];
+                var exp = contextExpressions[i];
                 var variableExpression = exp.Expression as IqlVariableExpression;
                 if (variableExpression != null && variableExpression.EntityTypeName ==
                     $"{nameof(IqlEntityUserPermissionContext<TEntity, TUser>)}<{nameof(TEntity)}, {typeof(TUser).Name}>")
@@ -178,6 +200,11 @@ namespace Iql.Data.Evaluation
                 typeResolver,
                 typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
             var permission = (IqlUserPermission)result.Result;
+            Results.Add(new PermissionsEvaluationResult(
+                rule,
+                entity,
+                user,
+                permission));
             return permission;
         }
 
