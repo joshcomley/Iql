@@ -42,6 +42,7 @@ namespace Iql.Server.Serialization.Serialization
         {
             var doc = new EntityConfigurationDocument();
             doc.EntityTypes.AddRange(entityConfigurationBuilder.AllEntityTypes());
+            doc.Methods.AddRange(entityConfigurationBuilder.AllMethods());
             doc.EnumTypes.AddRange(entityConfigurationBuilder.AllEnumTypes());
             doc.Relationships.AddRange(entityConfigurationBuilder.AllRelationships());
             doc.UsersDefinition = entityConfigurationBuilder.UsersDefinition;

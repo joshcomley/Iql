@@ -10,9 +10,8 @@ using Iql.Entities.Functions;
 
 namespace Iql.Entities
 {
-    public interface IEntityMetadata : IMetadata
+    public interface IEntityMetadata : IMetadata, IMethodContainer
     {
-        List<IqlMethod> Methods { get; set; }
         bool AutoTitleProperty { get; set; }
         bool SupportsCascadeDelete { get; set; }
         IList<IGeographicPoint> Geographics { get; set; }

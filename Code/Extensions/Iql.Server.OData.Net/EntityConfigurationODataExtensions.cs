@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Brandless.AspNetCore.OData.Extensions.Extensions;
 using Iql.Entities;
+using Iql.Entities.Functions;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Server.OData.Net.Geography;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OData.Edm;
 using Microsoft.Spatial;
 using NetTopologySuite.Geometries;
 
@@ -19,6 +22,8 @@ namespace Iql.Server.OData.Net
         static EntityConfigurationODataExtensions()
         {
             BuildEntityTypeMethod = typeof(EntityConfigurationODataExtensions).GetMethod(nameof(BuildEntityType),
+                BindingFlags.NonPublic | BindingFlags.Static);
+            BuildEntityMethodMethod = typeof(EntityConfigurationODataExtensions).GetMethod(nameof(BuildEntityMethod),
                 BindingFlags.NonPublic | BindingFlags.Static);
             BuildEnumTypeMethod = typeof(EntityConfigurationODataExtensions).GetMethod(nameof(BuildEnumType),
                 BindingFlags.NonPublic | BindingFlags.Static);
@@ -39,6 +44,7 @@ namespace Iql.Server.OData.Net
         private static MethodInfo BuildEntitySetMethod { get; }
         private static MethodInfo BuildEntityTypeMethod { get; }
         private static MethodInfo BuildEnumTypeMethod { get; }
+        private static MethodInfo BuildEntityMethodMethod { get; }
         private static MethodInfo BuildEntityPropertyMethod { get; }
         private static MethodInfo BuildEntityNavigationPropertyMethod { get; }
         private static MethodInfo BuildEntityNavigationCollectionPropertyMethod { get; }
@@ -85,8 +91,75 @@ namespace Iql.Server.OData.Net
                 {
                     BuildEnumTypeMethod.MakeGenericMethod(enumType.ClrType).Invoke(null, new object[] { builder, enumType });
                 }
+                foreach (var operation in model.Operations)
+                {
+                    if (operation.BindingParameter != null)
+                    {
+                        var forCollection = operation.BindingParameter.TypeConfiguration.Kind == EdmTypeKind.Collection;
+                        var clrType = forCollection
+                            ? operation.BindingParameter.TypeConfiguration.ClrType.GenericTypeArguments[0]
+                            : operation.BindingParameter.TypeConfiguration.ClrType;
+                        BuildEntityMethodMethod.MakeGenericMethod(clrType).Invoke(null, new object[]
+                        {
+                            builder.GetEntityByType(clrType),
+                            builder,
+                            model,
+                            operation,
+                            forCollection
+                        });
+                    }
+                    else
+                    {
+                        BuildGlobalMethod(builder, model, operation);
+                    }
+                }
             });
             return app;
+        }
+
+        private static void BuildEntityMethod<T>(
+            EntityConfiguration<T> entityConfiguration,
+            IEntityConfigurationBuilder builder,
+            ODataModelBuilder model,
+            OperationConfiguration operation,
+            bool forCollection)
+            where T : class
+        {
+            BuildMethod(entityConfiguration, operation, forCollection ? IqlMethodScopeKind.EntitySet : IqlMethodScopeKind.Entity);
+        }
+
+        private static void BuildMethod(IMethodContainer methodContainer, OperationConfiguration operation,
+            IqlMethodScopeKind scope)
+        {
+            var method = new IqlMethod(scope, operation.Name);
+            foreach (var parameter in operation.Parameters)
+            {
+                var isCollection = parameter.TypeConfiguration.ClrType.IsCollection();
+                var clrType = isCollection
+                    ? parameter.TypeConfiguration.ClrType.GenericTypeArguments[0]
+                    : parameter.TypeConfiguration.ClrType;
+                method.Parameters.Add(new IqlMethodParameter(
+                    parameter.Name,
+                    operation.BindingParameter == parameter,
+                    new TypeDetail(clrType,
+                        parameter.Nullable,
+                        null,
+                        null,
+                        clrType,
+                        clrType.IsCollection(),
+                        clrType.ToIqlType())
+                ));
+            }
+
+            methodContainer.Methods.Add(method);
+        }
+
+        private static void BuildGlobalMethod(
+            IEntityConfigurationBuilder builder,
+            ODataModelBuilder model,
+            OperationConfiguration operation)
+        {
+            BuildMethod(builder, operation, IqlMethodScopeKind.Global);
         }
 
         private static void BuildEnumType<T>(IEntityConfigurationBuilder builder, EnumTypeConfiguration enumTypeConfiguration)

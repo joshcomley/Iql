@@ -5,6 +5,7 @@ using System.Linq;
 using Iql.Data.Types;
 using Iql.Entities.Enums;
 using Iql.Entities.Extensions;
+using Iql.Entities.Functions;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
@@ -160,6 +161,11 @@ namespace Iql.Entities
             return _enumTypes[name];
         }
 
+        public IEnumerable<IqlMethod> AllMethods()
+        {
+            return Methods;
+        }
+
         public IEnumerable<IEntityConfiguration> AllEntityTypes()
         {
             return _entities.Values;
@@ -183,7 +189,7 @@ namespace Iql.Entities
         }
 
         public IqlServiceProvider ServiceProvider { get; } = new IqlServiceProvider();
-
+        public List<IqlMethod> Methods { get; set; } = new List<IqlMethod>();
         public bool ValidateInferredWithClientSide { get; set; }
 
         public SpecialTypeDefinition GetSpecialTypeMap(string name)
