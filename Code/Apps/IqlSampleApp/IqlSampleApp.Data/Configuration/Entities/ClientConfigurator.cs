@@ -17,6 +17,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             entityConfiguration.FindMethod(nameof(ClientsController.IncrementVersion), true, method =>
                 {
                     method.NameSpace = "Abc";
+                    method.Permissions.UseRule("FlipFlop");
                 });
             entityConfiguration.Permissions.UseRule("BlipBlop");
             entityConfiguration.Permissions.UseRule("FlipFlop");

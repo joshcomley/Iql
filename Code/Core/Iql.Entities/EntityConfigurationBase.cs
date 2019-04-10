@@ -49,15 +49,16 @@ namespace Iql.Entities
         public IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null)
         {
             Methods = Methods ?? new List<IqlMethod>();
-            var result = Methods.FirstOrDefault(_=>_.Name == name);
+            var result = Methods.FirstOrDefault(_ => _.Name == name);
             if (result == null && ensure != null && ensure == true)
             {
                 result = new IqlMethod(IqlMethodScopeKind.EntitySet, name, null, null, (IEntityConfiguration)this);
-                if (configure != null)
-                {
-                    configure(result);
-                }
                 Methods.Add(result);
+            }
+
+            if (result != null && configure != null)
+            {
+                configure(result);
             }
             return result;
         }
@@ -614,8 +615,8 @@ namespace Iql.Entities
         public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
         {
             return IqlPropertyPath.FromPropertyExpression(
-                (this as IEntityConfiguration).Builder, 
-                (this as IEntityConfiguration).TypeMetadata, 
+                (this as IEntityConfiguration).Builder,
+                (this as IEntityConfiguration).TypeMetadata,
                 propertyExpression)
                 .Property.EntityProperty();
         }
