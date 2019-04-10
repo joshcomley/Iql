@@ -12,7 +12,7 @@ using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
 {
-    public class EntityConfigurationBuilder : IEntityConfigurationBuilder
+    public class EntityConfigurationBuilder : MetadataBase, IEntityConfigurationBuilder
     {
         private UserPermissionsManager _permissions;
 
@@ -20,7 +20,7 @@ namespace Iql.Entities
             new List<IqlUserPermissionRule>();
         public List<IqlUserPermissionRule> PermissionRules =>
             _permissionRules.EnsureHasBuilder(this);
-        public UserPermissionsManager Permissions =>
+        public UserPermissionsManager PermissionManager =>
             _permissions = _permissions ?? new UserPermissionsManager(
                                this,
                                this);
@@ -190,6 +190,9 @@ namespace Iql.Entities
 
         public IqlServiceProvider ServiceProvider { get; } = new IqlServiceProvider();
         public List<IqlMethod> Methods { get; set; } = new List<IqlMethod>();
+        public IEnumerable<IEnumConfiguration> EnumTypes => AllEnumTypes();
+        public IEnumerable<IEntityConfiguration> EntityTypes => AllEntityTypes();
+        public IEnumerable<IRelationship> Relationships => AllRelationships();
         public bool ValidateInferredWithClientSide { get; set; }
 
         public SpecialTypeDefinition GetSpecialTypeMap(string name)

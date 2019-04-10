@@ -13,6 +13,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(IEntityConfigurationBuilder builder)
         {
+            builder.SetHint("RootHint", "root123");
             EntityConfiguration<Client> entityConfiguration = builder.EntityType<Client>();
             entityConfiguration.FindMethod(nameof(ClientsController.IncrementVersion), true, method =>
                 {
@@ -25,7 +26,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             entityConfiguration.Permissions.UseRule("BooBoo");
             entityConfiguration
                 .Builder
-                .Permissions
+                .PermissionManager
                 .DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit1",
                     context =>
                     context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read
@@ -33,7 +34,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             entityConfiguration.ConfigureProperty(_ => _.AverageIncome, property =>
             {
                 property.Permissions.UseRule("PropertyRule1").UseRule("PropertyRule2");
-                    property.EntityConfiguration.Builder.Permissions.DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit2",
+                    property.EntityConfiguration.Builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit2",
                         context =>
                         context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read
                         );

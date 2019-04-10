@@ -5,7 +5,7 @@ namespace Iql.Entities
 {
     public interface IUserPermissionContainer
     {
-        UserPermissionsManager Permissions { get; }
+        UserPermissionsManager PermissionManager { get; }
         List<IqlUserPermissionRule> PermissionRules { get; }
     }
     public interface IUserPermission

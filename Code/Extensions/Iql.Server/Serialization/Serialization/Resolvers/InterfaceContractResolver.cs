@@ -65,6 +65,10 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             {
                 resolvedType = typeof(IEntityMetadata);
             }
+            if (typeof(IEntityConfigurationBuilder).IsAssignableFrom(type))
+            {
+                resolvedType = typeof(IEntityConfigurationBuilderMetadata);
+            }
             if (typeof(IInferredValueConfiguration).IsAssignableFrom(type))
             {
                 ignoreProperties.AddRange(new[] { nameof(IInferredValueConfiguration.Property) });
@@ -130,6 +134,14 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             if (typeof(IEntityConfigurationItem).IsAssignableFrom(type))
             {
                 ignoreProperties.AddRange(new[] { nameof(IEntityConfigurationItem.EntityConfiguration) });
+            }
+            if (typeof(IMetadata).IsAssignableFrom(type))
+            {
+                ignoreProperties.AddRange(new[] { nameof(IMetadata.EntityConfiguration) });
+            }
+            if (typeof(IEntityConfigurationBuilder).IsAssignableFrom(type))
+            {
+                ignoreProperties.AddRange(new[] { nameof(IEntityConfigurationBuilder.PermissionManager) });
             }
             if (typeof(IMediaKey).IsAssignableFrom(type))
             {

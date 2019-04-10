@@ -25,7 +25,7 @@ namespace Iql.Server.Serialization.Serialization
             try
             {
                 var serialized = JsonConvert.SerializeObject(
-                    ToSerializableDocument(entityConfigurationBuilder),
+                    entityConfigurationBuilder,
                     settings);
 
                 return serialized;

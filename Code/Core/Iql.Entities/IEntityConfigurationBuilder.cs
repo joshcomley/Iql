@@ -2,20 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Entities.Enums;
-using Iql.Entities.Functions;
 using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
 using Iql.Parsing.Types;
 
 namespace Iql.Entities
 {
-    public interface IEntityConfigurationBuilder : IEntityConfigurationContainer, IServiceProviderProvider, ITypeResolver, IMethodContainer
+    public interface IEntityConfigurationBuilder : IEntityConfigurationBuilderMetadata, IConfiguration, IServiceProviderProvider, ITypeResolver, IMethodContainer
     {
-        bool ValidateInferredWithClientSide { get; set; }
         SpecialTypeDefinition GetSpecialTypeMap(string name);
-        SpecialTypeDefinition UsersDefinition { get; set; }
-        SpecialTypeDefinition UserSettingsDefinition { get; set; }
-        SpecialTypeDefinition CustomReportsDefinition { get; set; }
         bool IsEntityType<T>();
         bool IsEntityTypeByType(Type type);
         void ForEntityTypes(Func<IEntityConfiguration, bool> filter, Action<IEntityConfiguration> action);

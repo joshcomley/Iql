@@ -165,212 +165,213 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     var builder = new EntityFunctionParameterDefinition("builder", TypeResolver.TranslateType(typeof(EntityConfigurationBuilder)));
                     builder.IsLocal = true;
                     await MethodAsync(nameof(Data.Context.DataContext.Configure), new[] { builder }, TypeResolver.TranslateType(typeof(void)), async () =>
-                      {
-                          if (Schema.EntityConfigurationDocument.PermissionRules?.Any() == true)
-                          {
-                              foreach (var rule in Schema.EntityConfigurationDocument.PermissionRules)
-                              {
-                                  var iql = rule.IqlExpression;
-                                  AppendLine();
-                                  VariableAccessor(builder);
-                                  AppendLine();
-                                  Dot();
-                                  AppendLine($"{nameof(IUserPermissionContainer.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
-                              }
-                          }
-                          foreach (var entityDefinition in _entitySetDefinitions)
-                          {
-                              var entityTypeName = entityDefinition.Type.Name;
-                              var entityConfiguration =
-                                  Schema.EntityConfigurations.ContainsKey(entityTypeName)
-                                  ? Schema.EntityConfigurations[entityTypeName]
-                                  : null;
-                              var defineEntityParameters =
-                                  OutputKind == OutputKind.TypeScript ?
-                              new[]
-                              {
+                        {
+                            await ConfigureMetadataAsync(Schema.EntityConfigurationDocument);
+                            if (Schema.EntityConfigurationDocument.PermissionRules?.Any() == true)
+                            {
+                                foreach (var rule in Schema.EntityConfigurationDocument.PermissionRules)
+                                {
+                                    var iql = rule.IqlExpression;
+                                    AppendLine();
+                                    VariableAccessor(builder);
+                                    AppendLine();
+                                    Dot();
+                                    AppendLine($"{nameof(IUserPermissionContainer.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
+                                }
+                            }
+                            foreach (var entityDefinition in _entitySetDefinitions)
+                            {
+                                var entityTypeName = entityDefinition.Type.Name;
+                                var entityConfiguration =
+                                    Schema.EntityConfigurations.ContainsKey(entityTypeName)
+                                    ? Schema.EntityConfigurations[entityTypeName]
+                                    : null;
+                                var defineEntityParameters =
+                                    OutputKind == OutputKind.TypeScript ?
+                                new[]
+                                {
                                 new EntityFunctionParameterDefinition(
                                     entityTypeName,
                                     new TypeInfo())
-                              } : null;
-                              var defineEntityName = nameof(EntityConfigurationBuilder.EntityType);
-                              if (OutputKind == OutputKind.CSharp)
-                              {
-                                  defineEntityName += $"<{NameMapper(entityTypeName)}>";
-                              }
+                                } : null;
+                                var defineEntityName = nameof(EntityConfigurationBuilder.EntityType);
+                                if (OutputKind == OutputKind.CSharp)
+                                {
+                                    defineEntityName += $"<{NameMapper(entityTypeName)}>";
+                                }
 
-                              VariableAccessor(builder, () =>
-                              {
-                                  MethodCall(
-                                      defineEntityName,
-                                      false,
-                                      defineEntityParameters
-                                  );
-                              });
-                              AppendLine();
-                              await IndentAsync(async () =>
-                              {
-                                  Dot();
-                                  var hasKeyParameters = entityDefinition.Type.Key.Properties.Select(keyProperty =>
-                                          new EntityFunctionParameterDefinition("p => p." + keyProperty.Name,
-                                              keyProperty.TypeInfo))
-                                      .Cast<IVariable>()
-                                      .ToList();
-                                  var keyIqlType = IqlType.Unknown;
-                                  var compositeKey = hasKeyParameters.Count > 1;
-                                  if (!compositeKey)
-                                  {
-                                      if (OutputKind == OutputKind.TypeScript)
-                                      {
-                                          keyIqlType = hasKeyParameters.First().TypeInfo.ResolveIqlType();
-                                          hasKeyParameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{keyIqlType}"));
-                                          var keyName = TypeResolver.ResolveTypeNameFromODataName(hasKeyParameters.First().TypeInfo).Name;
-                                          hasKeyParameters.Add(new EntityFunctionParameterDefinition(
-                                              keyName.AsTypeScriptTypeParameter()));
-                                      }
-                                      else
-                                      {
-                                          hasKeyParameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{keyIqlType}"));
-                                          hasKeyParameters.Add(new PropertyDefinition($"{entityConfiguration.Key.CanWrite.ToString().ToLower()}"));
-                                      }
-                                  }
-                                  else
-                                  {
-                                      hasKeyParameters.Insert(0, new PropertyDefinition($"{entityConfiguration.Key.CanWrite.ToString().ToLower()}"));
-                                  }
+                                VariableAccessor(builder, () =>
+                                {
+                                    MethodCall(
+                                        defineEntityName,
+                                        false,
+                                        defineEntityParameters
+                                    );
+                                });
+                                AppendLine();
+                                await IndentAsync(async () =>
+                                {
+                                    Dot();
+                                    var hasKeyParameters = entityDefinition.Type.Key.Properties.Select(keyProperty =>
+                                            new EntityFunctionParameterDefinition("p => p." + keyProperty.Name,
+                                                keyProperty.TypeInfo))
+                                        .Cast<IVariable>()
+                                        .ToList();
+                                    var keyIqlType = IqlType.Unknown;
+                                    var compositeKey = hasKeyParameters.Count > 1;
+                                    if (!compositeKey)
+                                    {
+                                        if (OutputKind == OutputKind.TypeScript)
+                                        {
+                                            keyIqlType = hasKeyParameters.First().TypeInfo.ResolveIqlType();
+                                            hasKeyParameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{keyIqlType}"));
+                                            var keyName = TypeResolver.ResolveTypeNameFromODataName(hasKeyParameters.First().TypeInfo).Name;
+                                            hasKeyParameters.Add(new EntityFunctionParameterDefinition(
+                                                keyName.AsTypeScriptTypeParameter()));
+                                        }
+                                        else
+                                        {
+                                            hasKeyParameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{keyIqlType}"));
+                                            hasKeyParameters.Add(new PropertyDefinition($"{entityConfiguration.Key.CanWrite.ToString().ToLower()}"));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        hasKeyParameters.Insert(0, new PropertyDefinition($"{entityConfiguration.Key.CanWrite.ToString().ToLower()}"));
+                                    }
                                   // Currently only support types with single property keys
                                   MethodCall(
-                                        compositeKey ? nameof(EntityConfiguration<object>.HasCompositeKey) : nameof(EntityConfiguration<object>.HasKey),
-                                        false,
-                                        hasKeyParameters.ToArray()
-                                    );
-                                  foreach (var property in entityDefinition.Type.Properties)
-                                  {
-                                      AppendLine();
-                                      Dot();
-                                      var propertyType =
-                                          TypeResolver.ResolveTypeNameFromODataName(property.TypeInfo, true, "nonull");
-                                      var propertyEntityType =
-                                          Schema.AllTypes().SingleOrDefault(t => t.Name == propertyType.Name);
-                                      if (propertyEntityType != null)
-                                      {
-                                          File.References.Add(propertyEntityType);
-                                      }
-                                      var parameters = new List<IVariable>(new[]
-                                      {
+                                          compositeKey ? nameof(EntityConfiguration<object>.HasCompositeKey) : nameof(EntityConfiguration<object>.HasKey),
+                                          false,
+                                          hasKeyParameters.ToArray()
+                                      );
+                                    foreach (var property in entityDefinition.Type.Properties)
+                                    {
+                                        AppendLine();
+                                        Dot();
+                                        var propertyType =
+                                            TypeResolver.ResolveTypeNameFromODataName(property.TypeInfo, true, "nonull");
+                                        var propertyEntityType =
+                                            Schema.AllTypes().SingleOrDefault(t => t.Name == propertyType.Name);
+                                        if (propertyEntityType != null)
+                                        {
+                                            File.References.Add(propertyEntityType);
+                                        }
+                                        var parameters = new List<IVariable>(new[]
+                                        {
                                         new EntityFunctionParameterDefinition("p => p." + property.Name)
-                                      });
-                                      var isConverted = false;
-                                      if (property.TypeInfo.EdmType == "Edm.Guid")
-                                      {
-                                          isConverted = true;
-                                          parameters.Add(new EntityFunctionParameterDefinition(String("Guid")));
-                                      }
-                                      if (propertyType.IsCollection)
-                                      {
-                                          if (Settings.GenerateCountProperties)
-                                          {
-                                              parameters.Add(
-                                                  new EntityFunctionParameterDefinition(
-                                                      "p => p." + property.Name + "Count"));
-                                          }
-                                          else
-                                          {
-                                              parameters.Add(
-                                                  new EntityFunctionParameterDefinition(
-                                                      "null"));
-                                          }
-                                      }
-                                      else
-                                      {
-                                          parameters.Add(new EntityFunctionParameterDefinition(property.TypeInfo.Nullable ? "true" : "false"));
-                                      }
+                                        });
+                                        var isConverted = false;
+                                        if (property.TypeInfo.EdmType == "Edm.Guid")
+                                        {
+                                            isConverted = true;
+                                            parameters.Add(new EntityFunctionParameterDefinition(String("Guid")));
+                                        }
+                                        if (propertyType.IsCollection)
+                                        {
+                                            if (Settings.GenerateCountProperties)
+                                            {
+                                                parameters.Add(
+                                                    new EntityFunctionParameterDefinition(
+                                                        "p => p." + property.Name + "Count"));
+                                            }
+                                            else
+                                            {
+                                                parameters.Add(
+                                                    new EntityFunctionParameterDefinition(
+                                                        "null"));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            parameters.Add(new EntityFunctionParameterDefinition(property.TypeInfo.Nullable ? "true" : "false"));
+                                        }
 
-                                      if (!propertyType.IsCollection)
-                                      {
-                                          var iqlType = property.TypeInfo.ResolveIqlType();
-                                          parameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{iqlType}"));
-                                      }
+                                        if (!propertyType.IsCollection)
+                                        {
+                                            var iqlType = property.TypeInfo.ResolveIqlType();
+                                            parameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{iqlType}"));
+                                        }
 
-                                      var name = propertyType.IsCollection
-                                              ? nameof(EntityConfiguration<object>.DefineCollectionProperty)
-                                              : (isConverted
-                                                  ? nameof(EntityConfiguration<object>.DefineConvertedProperty)
-                                                  : nameof(EntityConfiguration<object>.DefineProperty))
-                                          ;
+                                        var name = propertyType.IsCollection
+                                                ? nameof(EntityConfiguration<object>.DefineCollectionProperty)
+                                                : (isConverted
+                                                    ? nameof(EntityConfiguration<object>.DefineConvertedProperty)
+                                                    : nameof(EntityConfiguration<object>.DefineProperty))
+                                            ;
                                       //if (propertyType.IsCollection && OutputType == OutputType.CSharp)
                                       //{
                                       //    name += $"<{propertyEntityType.Name}>";
                                       //}
                                       MethodCall(
-                                          name,
-                                          false,
-                                          parameters.ToArray()
-                                      );
-                                      if (entityConfiguration != null)
-                                      {
-                                          IMetadata propertyMetadata =
-                                              entityConfiguration.Properties.SingleOrDefault(p => p.Name == property.Name);
-                                          await ConfigureMetadataAsync(propertyMetadata, parameters.First(), "p", true, entityConfiguration);
-                                      }
-                                  }
-                                  if (entityConfiguration != null)
-                                  {
-                                      if (entityConfiguration.EntityValidation != null)
-                                      {
-                                          foreach (var validation in entityConfiguration.EntityValidation.All)
-                                          {
-                                              var expression = validation.GetPropertyValueByNameAs<IqlExpression>(nameof(RuleBase.ExpressionIql));
-                                              AppendLine();
-                                              Dot();
-                                              MethodCall(nameof(EntityConfiguration<object>.DefineEntityValidation),
-                                                  false,
-                                                  new[]
-                                                  {
+                                            name,
+                                            false,
+                                            parameters.ToArray()
+                                        );
+                                        if (entityConfiguration != null)
+                                        {
+                                            IMetadata propertyMetadata =
+                                                entityConfiguration.Properties.SingleOrDefault(p => p.Name == property.Name);
+                                            await ConfigureMetadataAsync(propertyMetadata, parameters.First(), "p", true, entityConfiguration);
+                                        }
+                                    }
+                                    if (entityConfiguration != null)
+                                    {
+                                        if (entityConfiguration.EntityValidation != null)
+                                        {
+                                            foreach (var validation in entityConfiguration.EntityValidation.All)
+                                            {
+                                                var expression = validation.GetPropertyValueByNameAs<IqlExpression>(nameof(RuleBase.ExpressionIql));
+                                                AppendLine();
+                                                Dot();
+                                                MethodCall(nameof(EntityConfiguration<object>.DefineEntityValidation),
+                                                    false,
+                                                    new[]
+                                                    {
                                                       new EntityFunctionParameterDefinition(
                                                           GetExpressionString(expression)),
                                                       new EntityFunctionParameterDefinition(
                                                           String(validation.Message)),
                                                       new EntityFunctionParameterDefinition(
                                                           String(validation.Key)),
-                                                  });
-                                          }
-                                      }
-                                      if (entityConfiguration.DisplayFormatting != null)
-                                      {
-                                          foreach (var formatter in entityConfiguration.DisplayFormatting.All)
-                                          {
-                                              var expression = formatter.GetPropertyValueByNameAs<IqlExpression>(nameof(DisplayFormatter.FormatterExpressionIql));
-                                              AppendLine();
-                                              Dot();
-                                              MethodCall(nameof(EntityConfiguration<object>.DefineDisplayFormatter),
-                                                  false,
-                                                  new[]
-                                                  {
+                                                    });
+                                            }
+                                        }
+                                        if (entityConfiguration.DisplayFormatting != null)
+                                        {
+                                            foreach (var formatter in entityConfiguration.DisplayFormatting.All)
+                                            {
+                                                var expression = formatter.GetPropertyValueByNameAs<IqlExpression>(nameof(DisplayFormatter.FormatterExpressionIql));
+                                                AppendLine();
+                                                Dot();
+                                                MethodCall(nameof(EntityConfiguration<object>.DefineDisplayFormatter),
+                                                    false,
+                                                    new[]
+                                                    {
                                                   new EntityFunctionParameterDefinition(
                                                       GetExpressionString(expression)),
                                                   new EntityFunctionParameterDefinition(
                                                       String(formatter.Key))
-                                                  });
-                                          }
-                                      }
-                                      if (entityConfiguration.Properties != null)
-                                      {
-                                          foreach (var property in entityConfiguration.Properties)
-                                          {
-                                              foreach (var validation in property.ValidationRules.All)
-                                              {
-                                                  var expression = validation.GetPropertyValueByNameAs<IqlExpression>(nameof(RuleBase.ExpressionIql));
-                                                  var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
-                                                  var iqlRootReference = new IqlRootReferenceExpression("e", "");
-                                                  propertyExpression.Parent = iqlRootReference;
-                                                  AppendLine();
-                                                  Dot();
-                                                  MethodCall(
-                                                      nameof(EntityConfiguration<object>.DefinePropertyValidation),
-                                                      false,
-                                                      new[]
-                                                      {
+                                                    });
+                                            }
+                                        }
+                                        if (entityConfiguration.Properties != null)
+                                        {
+                                            foreach (var property in entityConfiguration.Properties)
+                                            {
+                                                foreach (var validation in property.ValidationRules.All)
+                                                {
+                                                    var expression = validation.GetPropertyValueByNameAs<IqlExpression>(nameof(RuleBase.ExpressionIql));
+                                                    var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
+                                                    var iqlRootReference = new IqlRootReferenceExpression("e", "");
+                                                    propertyExpression.Parent = iqlRootReference;
+                                                    AppendLine();
+                                                    Dot();
+                                                    MethodCall(
+                                                        nameof(EntityConfiguration<object>.DefinePropertyValidation),
+                                                        false,
+                                                        new[]
+                                                        {
                                                           new EntityFunctionParameterDefinition(
                                                               "p => p." + propertyExpression.PropertyName),
                                                           new EntityFunctionParameterDefinition(
@@ -379,25 +380,25 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                               String(validation.Message)),
                                                           new EntityFunctionParameterDefinition(
                                                               String(validation.Key)),
-                                                      });
-                                              }
+                                                        });
+                                                }
 
-                                              if (property.RelationshipFilterRules != null)
-                                              {
-                                                  foreach (var relationshipFilterRule in property.RelationshipFilterRules.All)
-                                                  {
-                                                      var expression =
-                                                          relationshipFilterRule.GetPropertyValueByNameAs<IqlExpression>(
-                                                              "ExpressionIql");
-                                                      var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
-                                                      var iqlRootReference = new IqlRootReferenceExpression("e", "");
-                                                      propertyExpression.Parent = iqlRootReference;
-                                                      AppendLine();
-                                                      Dot();
-                                                      MethodCall(nameof(EntityConfiguration<object>.DefineRelationshipFilterRule),
-                                                          false,
-                                                          new[]
-                                                          {
+                                                if (property.RelationshipFilterRules != null)
+                                                {
+                                                    foreach (var relationshipFilterRule in property.RelationshipFilterRules.All)
+                                                    {
+                                                        var expression =
+                                                            relationshipFilterRule.GetPropertyValueByNameAs<IqlExpression>(
+                                                                "ExpressionIql");
+                                                        var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
+                                                        var iqlRootReference = new IqlRootReferenceExpression("e", "");
+                                                        propertyExpression.Parent = iqlRootReference;
+                                                        AppendLine();
+                                                        Dot();
+                                                        MethodCall(nameof(EntityConfiguration<object>.DefineRelationshipFilterRule),
+                                                            false,
+                                                            new[]
+                                                            {
                                                       new EntityFunctionParameterDefinition(
                                                           "p => p." + propertyExpression.PropertyName),
                                                       new EntityFunctionParameterDefinition(
@@ -406,25 +407,25 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                           String(relationshipFilterRule.Key)),
                                                       new EntityFunctionParameterDefinition(
                                                           String(relationshipFilterRule.Message))
-                                                          });
-                                                  }
-                                              }
+                                                            });
+                                                    }
+                                                }
 
-                                              if (property.DisplayRules != null)
-                                              {
-                                                  foreach (var displayRule in property.DisplayRules.All)
-                                                  {
-                                                      var expression =
-                                                          displayRule.GetPropertyValueByNameAs<IqlExpression>("ExpressionIql");
-                                                      var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
-                                                      var iqlRootReference = new IqlRootReferenceExpression("e", "");
-                                                      propertyExpression.Parent = iqlRootReference;
-                                                      AppendLine();
-                                                      Dot();
-                                                      MethodCall(nameof(EntityConfiguration<object>.DefinePropertyDisplayRule),
-                                                          false,
-                                                          new[]
-                                                          {
+                                                if (property.DisplayRules != null)
+                                                {
+                                                    foreach (var displayRule in property.DisplayRules.All)
+                                                    {
+                                                        var expression =
+                                                            displayRule.GetPropertyValueByNameAs<IqlExpression>("ExpressionIql");
+                                                        var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
+                                                        var iqlRootReference = new IqlRootReferenceExpression("e", "");
+                                                        propertyExpression.Parent = iqlRootReference;
+                                                        AppendLine();
+                                                        Dot();
+                                                        MethodCall(nameof(EntityConfiguration<object>.DefinePropertyDisplayRule),
+                                                            false,
+                                                            new[]
+                                                            {
                                                       new EntityFunctionParameterDefinition(
                                                           "p => p." + propertyExpression.PropertyName),
                                                       new EntityFunctionParameterDefinition(
@@ -437,87 +438,87 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                           $"{nameof(DisplayRuleKind)}.{displayRule.Kind}"),
                                                       new EntityFunctionParameterDefinition(
                                                           $"{nameof(DisplayRuleAppliesToKind)}.{displayRule.AppliesToKind}"),
-                                                          });
-                                                  }
-                                              }
-                                          }
-                                      }
-                                  }
-                              });
-                              Append(";");
-                              AppendLine();
+                                                            });
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                                Append(";");
+                                AppendLine();
 
-                              foreach (var property in entityDefinition.Type.Properties)
-                              {
-                                  var navigationProperty = property as NavigationPropertyDefinition;
-                                  if (navigationProperty?.Constraint == null ||
-                                      string.IsNullOrWhiteSpace(navigationProperty.Partner))
-                                  {
-                                      continue;
-                                  }
-                                  AppendLine();
-                                  VariableAccessor(builder, () =>
-                                  {
-                                      MethodCall(
-                                          defineEntityName,
-                                          false,
-                                          defineEntityParameters
-                                      );
-                                      AppendLine();
-                                      var type =
-                                          TypeResolver.ResolveTypeNameFromODataName(
-                                              navigationProperty.TypeInfo);
-                                      var propertyLambda = new EntityFunctionParameterDefinition(
-                                          "p => p." + navigationProperty.Name);
-                                      Indent(() =>
-                                      {
-                                          var relatedEntityDefinition =
-                                              Schema.EntityTypes.Single(t => t.Name == type.OriginalName);
-                                          var partnerProperty =
-                                              relatedEntityDefinition.Properties.Single(
-                                                  p => p.Name == navigationProperty.Partner);
-                                          var partnerPropertyType =
-                                              TypeResolver.ResolveTypeNameFromODataName(partnerProperty
-                                                  .TypeInfo);
+                                foreach (var property in entityDefinition.Type.Properties)
+                                {
+                                    var navigationProperty = property as NavigationPropertyDefinition;
+                                    if (navigationProperty?.Constraint == null ||
+                                        string.IsNullOrWhiteSpace(navigationProperty.Partner))
+                                    {
+                                        continue;
+                                    }
+                                    AppendLine();
+                                    VariableAccessor(builder, () =>
+                                    {
+                                        MethodCall(
+                                            defineEntityName,
+                                            false,
+                                            defineEntityParameters
+                                        );
+                                        AppendLine();
+                                        var type =
+                                            TypeResolver.ResolveTypeNameFromODataName(
+                                                navigationProperty.TypeInfo);
+                                        var propertyLambda = new EntityFunctionParameterDefinition(
+                                            "p => p." + navigationProperty.Name);
+                                        Indent(() =>
+                                        {
+                                            var relatedEntityDefinition =
+                                                Schema.EntityTypes.Single(t => t.Name == type.OriginalName);
+                                            var partnerProperty =
+                                                relatedEntityDefinition.Properties.Single(
+                                                    p => p.Name == navigationProperty.Partner);
+                                            var partnerPropertyType =
+                                                TypeResolver.ResolveTypeNameFromODataName(partnerProperty
+                                                    .TypeInfo);
 
-                                          Dot();
-                                          var hasOneParameters = new[]
-                                          {
+                                            Dot();
+                                            var hasOneParameters = new[]
+                                            {
                                             propertyLambda
-                                          }.ToList();
-                                          if (OutputKind == OutputKind.TypeScript)
-                                          {
-                                              hasOneParameters.Add(new EntityFunctionParameterDefinition(type.Name.AsTypeScriptTypeParameter()));
-                                          }
-                                          MethodCall(nameof(EntityConfiguration<object>.HasOne),
-                                              false,
-                                              hasOneParameters.ToArray());
-                                          AppendLine();
-                                          Dot();
-                                          MethodCall(
-                                              partnerPropertyType.IsCollection
-                                                  ? nameof(OneToRelationshipMap<object, object>.WithMany)
-                                                  : nameof(OneToRelationshipMap<object, object>.WithOne),
-                                              false,
-                                              new[]
-                                              {
+                                            }.ToList();
+                                            if (OutputKind == OutputKind.TypeScript)
+                                            {
+                                                hasOneParameters.Add(new EntityFunctionParameterDefinition(type.Name.AsTypeScriptTypeParameter()));
+                                            }
+                                            MethodCall(nameof(EntityConfiguration<object>.HasOne),
+                                                false,
+                                                hasOneParameters.ToArray());
+                                            AppendLine();
+                                            Dot();
+                                            MethodCall(
+                                                partnerPropertyType.IsCollection
+                                                    ? nameof(OneToRelationshipMap<object, object>.WithMany)
+                                                    : nameof(OneToRelationshipMap<object, object>.WithOne),
+                                                false,
+                                                new[]
+                                                {
                                                 new EntityFunctionParameterDefinition(
                                                     "p => p." + navigationProperty.Partner)
-                                              });
-                                          AppendLine();
-                                          Dot();
-                                          MethodCall(nameof(OneToOneRelationship<object, object>.WithConstraint),
-                                              false,
-                                              new[]
-                                          {
+                                                });
+                                            AppendLine();
+                                            Dot();
+                                            MethodCall(nameof(OneToOneRelationship<object, object>.WithConstraint),
+                                                false,
+                                                new[]
+                                            {
                                             new EntityFunctionParameterDefinition(
                                                 "p => p." + navigationProperty.Constraint.LocalIdProperty),
                                             new EntityFunctionParameterDefinition(
                                                 "p => p." + navigationProperty.Constraint.RemoteIdProperty)
-                                          });
-                                      });
-                                      Append(";");
-                                      AppendLine();
+                                            });
+                                        });
+                                        Append(";");
+                                        AppendLine();
 
                                       //if (entityConfiguration != null)
                                       //{
@@ -545,19 +546,19 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                       //    }
                                       //}
                                   });
-                              }
+                                }
 
-                              await VariableAccessorAsync(builder, async () =>
-                              {
-                                  MethodCall(
-                                      defineEntityName,
-                                      false,
-                                      defineEntityParameters
-                                  );
-                                  AppendLine();
-                                  await ConfigureMetadataAsync(entityConfiguration);
-                                  Append(";");
-                                  AppendLine();
+                                await VariableAccessorAsync(builder, async () =>
+                                {
+                                    MethodCall(
+                                        defineEntityName,
+                                        false,
+                                        defineEntityParameters
+                                    );
+                                    AppendLine();
+                                    await ConfigureMetadataAsync(entityConfiguration);
+                                    Append(";");
+                                    AppendLine();
 
                                   //if (entityConfiguration != null)
                                   //{
@@ -586,67 +587,67 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                   //}
                               });
 
-                              if (entityDefinition.Functions?.Any() == true && entityConfiguration.Methods?.Any() == true)
-                              {
-                                  // TODO: Define methods
-                              }
+                                if (entityDefinition.Functions?.Any() == true && entityConfiguration.Methods?.Any() == true)
+                                {
+                                    // TODO: Define methods
+                                }
 
-                              //foreach (var property in entityConfiguration.Properties)
-                              //{
-                              //    if (property.PermissionRules?.Any() == true)
-                              //    {
-                              //        foreach (var rule in property.PermissionRules)
-                              //        {
-                              //            var iql = rule.IqlExpression;
-                              //            AppendLine();
-                              //            VariableAccessor(builder, () =>
-                              //            {
-                              //                MethodCall(
-                              //                    defineEntityName,
-                              //                    false,
-                              //                    defineEntityParameters
-                              //                );
-                              //            });
-                              //            AppendLine();
-                              //            Dot();
-                              //            AppendLine($"{nameof(IUserPermission.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
-                              //        }
-                              //    }
-                              //}
+                                //foreach (var property in entityConfiguration.Properties)
+                                //{
+                                //    if (property.PermissionRules?.Any() == true)
+                                //    {
+                                //        foreach (var rule in property.PermissionRules)
+                                //        {
+                                //            var iql = rule.IqlExpression;
+                                //            AppendLine();
+                                //            VariableAccessor(builder, () =>
+                                //            {
+                                //                MethodCall(
+                                //                    defineEntityName,
+                                //                    false,
+                                //                    defineEntityParameters
+                                //                );
+                                //            });
+                                //            AppendLine();
+                                //            Dot();
+                                //            AppendLine($"{nameof(IUserPermission.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
+                                //        }
+                                //    }
+                                //}
 
-                              if (entityDefinition != _entitySetDefinitions.Last())
-                              {
-                                  AppendLine();
-                              }
+                                if (entityDefinition != _entitySetDefinitions.Last())
+                                {
+                                    AppendLine();
+                                }
 
-                              /*
-                                  builder
-                                      .defineEntity(Person)
-                                      .hasOne(School, p => p.school)
-                                      .withMany(s => s.students)
-                                      .withKey(p => p.schoolId, s => s.id);
+                                /*
+                                    builder
+                                        .defineEntity(Person)
+                                        .hasOne(School, p => p.school)
+                                        .withMany(s => s.students)
+                                        .withKey(p => p.schoolId, s => s.id);
 
-                                  builder.defineEntity(Person)
-                                      .hasKey(Number, p => p.id)
-                                      .defineProperty(School, p => p.school)
-                                      .defineProperty(Number, p => p.schoolId)
-                                      .defineProperty(Certificate, p => p.certificate)
-                              */
-                              //if (entityDefinition.Functions?.Any())
-                              //{
-                              //    new IqlMethod(
-                              //        "MyMethod",
-                              //        new IqlMethodParameter[] { },
-                              //        (context, args) => { },
-                              //        null,
-                              //        "ns",
-                              //        false);
-                              //}
-                          }
-                          Append(await ConfigureRelationshipsAsync(builder));
-                          Append(await ConfigurePropertyOrdersAsync(builder));
-                          Append(ConfigureSpecialTypes(builder));
-                      },
+                                    builder.defineEntity(Person)
+                                        .hasKey(Number, p => p.id)
+                                        .defineProperty(School, p => p.school)
+                                        .defineProperty(Number, p => p.schoolId)
+                                        .defineProperty(Certificate, p => p.certificate)
+                                */
+                                //if (entityDefinition.Functions?.Any())
+                                //{
+                                //    new IqlMethod(
+                                //        "MyMethod",
+                                //        new IqlMethodParameter[] { },
+                                //        (context, args) => { },
+                                //        null,
+                                //        "ns",
+                                //        false);
+                                //}
+                            }
+                            Append(await ConfigureRelationshipsAsync(builder));
+                            Append(await ConfigurePropertyOrdersAsync(builder));
+                            Append(ConfigureSpecialTypes(builder));
+                        },
                       modifier: Modifier.Override);
                     AppendLine();
                     if (Settings.GenerateEntitySets)

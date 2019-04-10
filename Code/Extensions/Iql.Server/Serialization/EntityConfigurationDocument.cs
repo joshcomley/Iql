@@ -8,7 +8,7 @@ using Iql.Server.Serialization.Deserialization;
 
 namespace Iql.Server.Serialization
 {
-    public class EntityConfigurationDocument : IEntityConfigurationContainer
+    public class EntityConfigurationDocument : MetadataBase, IEntityConfigurationContainer
     {
         public SpecialTypeDefinition UsersDefinition { get; set; }
         public SpecialTypeDefinition CustomReportsDefinition { get; set; }
@@ -22,7 +22,7 @@ namespace Iql.Server.Serialization
         {
             return EntityConfigurationParser.FromJson(json);
         }
-
+        
         public IEnumerable<IqlMethod> AllMethods()
         {
             return Methods;
@@ -43,7 +43,7 @@ namespace Iql.Server.Serialization
             return Relationships;
         }
 
-        public UserPermissionsManager Permissions { get; set; }
+        public UserPermissionsManager PermissionManager { get; }
         public List<IqlUserPermissionRule> PermissionRules { get; set; }
     }
 }

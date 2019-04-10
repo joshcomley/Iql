@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Iql.Entities
 {
-    public class MetadataBase : IConfiguration
+    public abstract class MetadataBase : IConfiguration
     {
         private string _friendlyName;
         private bool _friendlyNameSet;

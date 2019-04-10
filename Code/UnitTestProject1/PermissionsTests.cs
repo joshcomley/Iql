@@ -19,7 +19,7 @@ namespace Iql.Tests.Server
             var controller = ControllerContext<Client>();
             var clientConfiguration = controller.EntityConfiguration;
             var rule =
-                clientConfiguration.Builder.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(
                     _ => IqlUserPermission.Read,
                     nameof(TestSimplePermissionRule)
                 );
@@ -42,7 +42,7 @@ namespace Iql.Tests.Server
             var controller = ControllerContext<Client>();
             var clientConfiguration = controller.EntityConfiguration;
             var rule =
-                clientConfiguration.Builder.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(
                     context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None,
                     nameof(TestComplexPermissionRule)
 #if TypeScript
@@ -91,7 +91,7 @@ namespace Iql.Tests.Server
             await db.SaveChangesAsync();
 
             var rule =
-                clientConfiguration.Builder.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(
                     context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit,
                     nameof(TestConvolutedPermissionRuleOnNewEntity)
 #if TypeScript
@@ -235,7 +235,7 @@ namespace Iql.Tests.Server
             //var result = Db.Clients.Where(_ => _.CreatedByUserId == "abc").Any();
             // Only allow read and edit if the user has created this client
             var rule =
-                clientConfiguration.Builder.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(
                     context =>
                         context.QueryAny<Client>(_ => _.CreatedByUserId == context.User.Id) ||
                         context.QueryAny<Client>(_ => _.Description.Contains(context.User.Id)) ||
@@ -342,7 +342,7 @@ namespace Iql.Tests.Server
             //var result = Db.Clients.Where(_ => _.CreatedByUserId == "abc").Any();
             // Only allow read and edit if the user has created this client
             var rule =
-                clientConfiguration.Builder.Permissions.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(
                     context =>
                         context.User.UserType == UserType.Super
                             ? IqlUserPermission.ReadAndEdit
