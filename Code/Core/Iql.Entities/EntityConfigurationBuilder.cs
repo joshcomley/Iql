@@ -14,14 +14,14 @@ namespace Iql.Entities
 {
     public class EntityConfigurationBuilder : MetadataBase, IEntityConfigurationBuilder
     {
-        private UserPermissionsManager _permissions;
+        private UserPermissionsManager _permissionsManager;
 
         private readonly List<IqlUserPermissionRule> _permissionRules =
             new List<IqlUserPermissionRule>();
         public List<IqlUserPermissionRule> PermissionRules =>
             _permissionRules.EnsureHasBuilder(this);
         public UserPermissionsManager PermissionManager =>
-            _permissions = _permissions ?? new UserPermissionsManager(
+            _permissionsManager = _permissionsManager ?? new UserPermissionsManager(
                                this,
                                this);
 
