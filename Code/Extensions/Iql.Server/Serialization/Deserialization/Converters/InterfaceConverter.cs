@@ -144,11 +144,18 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             if (objectType == typeof(UserPermissionsCollection))
             {
                 var jobj = serializer.Deserialize(reader) as JObject;
-                if (jobj.ToString() != "{\r\n  \"Keys\": []\r\n}")
+                if (jobj == null)
                 {
-                    int a = 0;
+                    result = null;
                 }
-                result = JsonConvert.DeserializeObject<UserPermissionsCollection>(jobj.ToString());
+                else
+                {
+                    //if (jobj.ToString() != "{\r\n  \"Keys\": []\r\n}")
+                    //{
+                    //    int a = 0;
+                    //}
+                    result = JsonConvert.DeserializeObject<UserPermissionsCollection>(jobj.ToString());
+                }
             }
             else if (objectType == typeof(IPropertyGroup) || objectType == typeof(IRelationshipDetail))
             {
@@ -159,7 +166,7 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                     {
                         var propertyPath = EntityConfigurationParser.DeserializeFromJson<PropertyPathJson>(jobj.ToString(), Details);
                         var entityConfigIndex = Details.CurrentEntityConfigurationIndex;
-                        Details.Finalisers.Add(doc => propertyPath.SetEntityConfiguration(doc.EntityTypes[entityConfigIndex]));
+                        Details.Finalisers.Add(doc => propertyPath.SetEntityConfiguration(doc.EntityTypes.ToArray()[entityConfigIndex]));
                         result = propertyPath;
                         //serializer.Deserialize(new JTokenReader(jobj), typeof(PropertyPath));
                     }

@@ -88,7 +88,7 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             }
             if (typeof(ITypeDefinition).IsAssignableFrom(type))
             {
-                resolvedType = typeof(ITypeConfiguration);
+                resolvedType = typeof(ITypeDefinition);
             }
             if (typeof(IRelationship).IsAssignableFrom(type))
             {

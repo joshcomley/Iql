@@ -68,6 +68,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             _className = className.AsSafeClassName();
             _dbSetsPath = dbSetsPath;
             CSharpObjectSerializer = new CSharpObjectSerializer();
+            CSharpObjectSerializer.Converters.Add(new TypeDetailTypeConverter());
         }
 
         private class MyDataContext : Data.Context.DataContext
@@ -166,7 +167,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     builder.IsLocal = true;
                     await MethodAsync(nameof(Data.Context.DataContext.Configure), new[] { builder }, TypeResolver.TranslateType(typeof(void)), async () =>
                         {
-                            await ConfigureMetadataAsync(Schema.EntityConfigurationDocument);
+                            await ConfigureMetadataAsync(Schema.EntityConfigurationDocument, null, "builder", false);
                             if (Schema.EntityConfigurationDocument.PermissionRules?.Any() == true)
                             {
                                 foreach (var rule in Schema.EntityConfigurationDocument.PermissionRules)
@@ -824,12 +825,21 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         metadataType = typeof(IFilePreview);
                         metadataSolidType = typeof(FilePreview);
                     }
+                    else if (metadata is IEntityConfigurationContainer)
+                    {
+                        metadataType = typeof(IMetadata);
+                        metadataSolidType = typeof(EntityConfigurationDocument);
+                    }
                 }
                 var metadataProperties = metadataType.GetPublicProperties().ToArray();
                 var propertyMetadata = metadata as IPropertyMetadata;
                 var entityMetadata = metadata as IEntityMetadata;
                 foreach (var metadataProperty in metadataProperties)
                 {
+                    if (metadataProperty.Name == "Methods")
+                    {
+                        int a = 0;
+                    }
                     var dealtWith = false;
                     string assign = null;
                     var assignIsAssign = true;

@@ -9,7 +9,7 @@
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10036-1-Debug" />
+        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10037-1-Debug" />
         <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10101-1-Debug" />
         <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10101-1-Debug" />
       </ItemGroup>

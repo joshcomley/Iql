@@ -8,15 +8,16 @@ using Iql.Server.Serialization.Deserialization;
 
 namespace Iql.Server.Serialization
 {
-    public class EntityConfigurationDocument : MetadataBase, IEntityConfigurationContainer
+    public class EntityConfigurationDocument : MetadataBase, IEntityConfigurationBuilderMetadata
     {
         public SpecialTypeDefinition UsersDefinition { get; set; }
         public SpecialTypeDefinition CustomReportsDefinition { get; set; }
+        public bool ValidateInferredWithClientSide { get; set; }
         public SpecialTypeDefinition UserSettingsDefinition { get; set; }
         public List<IqlMethod> Methods { get; set; } = new List<IqlMethod>();
-        public List<IEnumConfiguration> EnumTypes { get; set; } = new List<IEnumConfiguration>();
-        public List<IEntityConfiguration> EntityTypes { get; set; } = new List<IEntityConfiguration>();
-        public List<IRelationship> Relationships { get; set; } = new List<IRelationship>();
+        public IEnumerable<IEnumConfiguration> EnumTypes { get; set; } = new List<IEnumConfiguration>();
+        public IEnumerable<IEntityConfiguration> EntityTypes { get; set; } = new List<IEntityConfiguration>();
+        public IEnumerable<IRelationship> Relationships { get; set; } = new List<IRelationship>();
 
         public static EntityConfigurationDocument FromJson(string json)
         {

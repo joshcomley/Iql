@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Iql.Server.Serialization.Serialization.Converters
 {
-    public class TypeConverter : JsonConverter
+    public class TypeToIqlTypeConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {

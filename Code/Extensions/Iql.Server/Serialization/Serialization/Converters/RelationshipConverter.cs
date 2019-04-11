@@ -42,7 +42,7 @@ namespace Iql.Server.Serialization.Serialization.Converters
             };
             settings.Converters.Add(new RelationshipConverter(typeResolver, true, true));
             settings.Converters.Add(new ExpressionJsonConverter(typeResolver));
-            settings.Converters.Add(new TypeConverter());
+            settings.Converters.Add(new TypeToIqlTypeConverter());
             settings.Converters.Add(new IPropertyConverter(typeResolver, true, allowAnyPropertyConversion));
             //settings.Converters.Add(new IPropertyConverter());
             var ppp = writer.Path;

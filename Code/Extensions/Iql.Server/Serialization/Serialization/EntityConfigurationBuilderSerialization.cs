@@ -20,7 +20,7 @@ namespace Iql.Server.Serialization.Serialization
             settings.Converters.Add(new RelationshipConverter(entityConfigurationBuilder, false));
             settings.Converters.Add(new ExpressionJsonConverter(entityConfigurationBuilder));
             settings.Converters.Add(new IPropertyConverter(entityConfigurationBuilder));
-            settings.Converters.Add(new TypeConverter());
+            settings.Converters.Add(new TypeToStringConverter());
             settings.Formatting = Formatting.Indented;
             try
             {
@@ -35,21 +35,6 @@ namespace Iql.Server.Serialization.Serialization
                 int a = 0;
             }
             return null;
-        }
-
-        private static EntityConfigurationDocument ToSerializableDocument(
-            IEntityConfigurationBuilder entityConfigurationBuilder)
-        {
-            var doc = new EntityConfigurationDocument();
-            doc.EntityTypes.AddRange(entityConfigurationBuilder.AllEntityTypes());
-            doc.Methods.AddRange(entityConfigurationBuilder.AllMethods());
-            doc.EnumTypes.AddRange(entityConfigurationBuilder.AllEnumTypes());
-            doc.Relationships.AddRange(entityConfigurationBuilder.AllRelationships());
-            doc.UsersDefinition = entityConfigurationBuilder.UsersDefinition;
-            doc.CustomReportsDefinition = entityConfigurationBuilder.CustomReportsDefinition;
-            doc.UserSettingsDefinition = entityConfigurationBuilder.UserSettingsDefinition;
-            doc.PermissionRules = entityConfigurationBuilder.PermissionRules;
-            return doc;
         }
     }
 }

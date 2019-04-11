@@ -15,7 +15,7 @@
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-    <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10014-1-Debug" />
+    <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10018-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>
