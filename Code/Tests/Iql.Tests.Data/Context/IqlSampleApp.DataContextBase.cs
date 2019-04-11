@@ -621,9 +621,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ApplicationUser),
                                     TypeName = "ApplicationUser",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ApplicationUser),
                                     ElementTypeName = "ApplicationUser",
                                     IsCollection = false
                                 }
@@ -667,9 +669,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ApplicationUser),
                                     TypeName = "ApplicationUser",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ApplicationUser),
                                     ElementTypeName = "ApplicationUser",
                                     IsCollection = false
                                 }
@@ -713,9 +717,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ApplicationUser),
                                     TypeName = "ApplicationUser",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ApplicationUser),
                                     ElementTypeName = "ApplicationUser",
                                     IsCollection = false
                                 }
@@ -774,9 +780,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ApplicationUser),
                                     TypeName = "ApplicationUser",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ApplicationUser),
                                     ElementTypeName = "ApplicationUser",
                                     IsCollection = false
                                 }
@@ -805,9 +813,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ApplicationUser),
                                     TypeName = "ApplicationUser",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ApplicationUser),
                                     ElementTypeName = "ApplicationUser",
                                     IsCollection = false
                                 }
@@ -836,9 +846,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ApplicationUser),
                                     TypeName = "ApplicationUser",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ApplicationUser),
                                     ElementTypeName = "ApplicationUser",
                                     IsCollection = false
                                 }
@@ -867,9 +879,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ApplicationUser),
                                     TypeName = "ApplicationUser",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ApplicationUser),
                                     ElementTypeName = "ApplicationUser",
                                     IsCollection = false
                                 }
@@ -898,9 +912,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ApplicationUser),
                                     TypeName = "ApplicationUser",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ApplicationUser),
                                     ElementTypeName = "ApplicationUser",
                                     IsCollection = false
                                 }
@@ -1325,9 +1341,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(Client),
                                     TypeName = "Client",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(Client),
                                     ElementTypeName = "Client",
                                     IsCollection = false
                                 }
@@ -1374,9 +1392,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(Client),
                                     TypeName = "Client",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(Client),
                                     ElementTypeName = "Client",
                                     IsCollection = false
                                 }
@@ -1420,9 +1440,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(Client),
                                     TypeName = "Client",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(Client),
                                     ElementTypeName = "Client",
                                     IsCollection = false
                                 }
@@ -1489,9 +1511,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ClientType),
                                     TypeName = "ClientType",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ClientType),
                                     ElementTypeName = "ClientType",
                                     IsCollection = false
                                 }
@@ -1535,9 +1559,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ClientType),
                                     TypeName = "ClientType",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ClientType),
                                     ElementTypeName = "ClientType",
                                     IsCollection = false
                                 }
@@ -1581,9 +1607,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ClientType),
                                     TypeName = "ClientType",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ClientType),
                                     ElementTypeName = "ClientType",
                                     IsCollection = false
                                 }
@@ -1885,9 +1913,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(DocumentCategory),
                                     TypeName = "DocumentCategory",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(DocumentCategory),
                                     ElementTypeName = "DocumentCategory",
                                     IsCollection = false
                                 }
@@ -1931,9 +1961,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(DocumentCategory),
                                     TypeName = "DocumentCategory",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(DocumentCategory),
                                     ElementTypeName = "DocumentCategory",
                                     IsCollection = false
                                 }
@@ -2264,9 +2296,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(SiteDocument),
                                     TypeName = "SiteDocument",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(SiteDocument),
                                     ElementTypeName = "SiteDocument",
                                     IsCollection = false
                                 }
@@ -2310,9 +2344,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(SiteDocument),
                                     TypeName = "SiteDocument",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(SiteDocument),
                                     ElementTypeName = "SiteDocument",
                                     IsCollection = false
                                 }
@@ -2624,9 +2660,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportActionsTaken),
                                     TypeName = "ReportActionsTaken",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportActionsTaken),
                                     ElementTypeName = "ReportActionsTaken",
                                     IsCollection = false
                                 }
@@ -2670,9 +2708,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportActionsTaken),
                                     TypeName = "ReportActionsTaken",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportActionsTaken),
                                     ElementTypeName = "ReportActionsTaken",
                                     IsCollection = false
                                 }
@@ -2974,9 +3014,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportCategory),
                                     TypeName = "ReportCategory",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportCategory),
                                     ElementTypeName = "ReportCategory",
                                     IsCollection = false
                                 }
@@ -3020,9 +3062,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportCategory),
                                     TypeName = "ReportCategory",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportCategory),
                                     ElementTypeName = "ReportCategory",
                                     IsCollection = false
                                 }
@@ -3333,9 +3377,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportDefaultRecommendation),
                                     TypeName = "ReportDefaultRecommendation",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportDefaultRecommendation),
                                     ElementTypeName = "ReportDefaultRecommendation",
                                     IsCollection = false
                                 }
@@ -3379,9 +3425,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportDefaultRecommendation),
                                     TypeName = "ReportDefaultRecommendation",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportDefaultRecommendation),
                                     ElementTypeName = "ReportDefaultRecommendation",
                                     IsCollection = false
                                 }
@@ -3712,9 +3760,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportRecommendation),
                                     TypeName = "ReportRecommendation",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportRecommendation),
                                     ElementTypeName = "ReportRecommendation",
                                     IsCollection = false
                                 }
@@ -3758,9 +3808,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportRecommendation),
                                     TypeName = "ReportRecommendation",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportRecommendation),
                                     ElementTypeName = "ReportRecommendation",
                                     IsCollection = false
                                 }
@@ -4081,9 +4133,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportType),
                                     TypeName = "ReportType",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportType),
                                     ElementTypeName = "ReportType",
                                     IsCollection = false
                                 }
@@ -4127,9 +4181,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportType),
                                     TypeName = "ReportType",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportType),
                                     ElementTypeName = "ReportType",
                                     IsCollection = false
                                 }
@@ -4431,9 +4487,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(Project),
                                     TypeName = "Project",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(Project),
                                     ElementTypeName = "Project",
                                     IsCollection = false
                                 }
@@ -4477,9 +4535,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(Project),
                                     TypeName = "Project",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(Project),
                                     ElementTypeName = "Project",
                                     IsCollection = false
                                 }
@@ -4791,9 +4851,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportReceiverEmailAddress),
                                     TypeName = "ReportReceiverEmailAddress",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportReceiverEmailAddress),
                                     ElementTypeName = "ReportReceiverEmailAddress",
                                     IsCollection = false
                                 }
@@ -4837,9 +4899,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(ReportReceiverEmailAddress),
                                     TypeName = "ReportReceiverEmailAddress",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(ReportReceiverEmailAddress),
                                     ElementTypeName = "ReportReceiverEmailAddress",
                                     IsCollection = false
                                 }
@@ -5151,9 +5215,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(RiskAssessment),
                                     TypeName = "RiskAssessment",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(RiskAssessment),
                                     ElementTypeName = "RiskAssessment",
                                     IsCollection = false
                                 }
@@ -5197,9 +5263,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(RiskAssessment),
                                     TypeName = "RiskAssessment",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(RiskAssessment),
                                     ElementTypeName = "RiskAssessment",
                                     IsCollection = false
                                 }
@@ -5776,9 +5844,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(RiskAssessmentAnswer),
                                     TypeName = "RiskAssessmentAnswer",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(RiskAssessmentAnswer),
                                     ElementTypeName = "RiskAssessmentAnswer",
                                     IsCollection = false
                                 }
@@ -5822,9 +5892,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(RiskAssessmentAnswer),
                                     TypeName = "RiskAssessmentAnswer",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(RiskAssessmentAnswer),
                                     ElementTypeName = "RiskAssessmentAnswer",
                                     IsCollection = false
                                 }
@@ -6126,9 +6198,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(RiskAssessmentQuestion),
                                     TypeName = "RiskAssessmentQuestion",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(RiskAssessmentQuestion),
                                     ElementTypeName = "RiskAssessmentQuestion",
                                     IsCollection = false
                                 }
@@ -6172,9 +6246,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(RiskAssessmentQuestion),
                                     TypeName = "RiskAssessmentQuestion",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(RiskAssessmentQuestion),
                                     ElementTypeName = "RiskAssessmentQuestion",
                                     IsCollection = false
                                 }
@@ -7253,9 +7329,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(Person),
                                     TypeName = "Person",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(Person),
                                     ElementTypeName = "Person",
                                     IsCollection = false
                                 }
@@ -7299,9 +7377,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(Person),
                                     TypeName = "Person",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(Person),
                                     ElementTypeName = "Person",
                                     IsCollection = false
                                 }
@@ -7667,9 +7747,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonInspection),
                                     TypeName = "PersonInspection",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonInspection),
                                     ElementTypeName = "PersonInspection",
                                     IsCollection = false
                                 }
@@ -7713,9 +7795,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonInspection),
                                     TypeName = "PersonInspection",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonInspection),
                                     ElementTypeName = "PersonInspection",
                                     IsCollection = false
                                 }
@@ -8017,9 +8101,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonLoading),
                                     TypeName = "PersonLoading",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonLoading),
                                     ElementTypeName = "PersonLoading",
                                     IsCollection = false
                                 }
@@ -8063,9 +8149,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonLoading),
                                     TypeName = "PersonLoading",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonLoading),
                                     ElementTypeName = "PersonLoading",
                                     IsCollection = false
                                 }
@@ -8376,9 +8464,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonType),
                                     TypeName = "PersonType",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonType),
                                     ElementTypeName = "PersonType",
                                     IsCollection = false
                                 }
@@ -8422,9 +8512,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonType),
                                     TypeName = "PersonType",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonType),
                                     ElementTypeName = "PersonType",
                                     IsCollection = false
                                 }
@@ -8633,9 +8725,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonTypeMap),
                                     TypeName = "PersonTypeMap",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonTypeMap),
                                     ElementTypeName = "PersonTypeMap",
                                     IsCollection = false
                                 }
@@ -8679,9 +8773,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonTypeMap),
                                     TypeName = "PersonTypeMap",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonTypeMap),
                                     ElementTypeName = "PersonTypeMap",
                                     IsCollection = false
                                 }
@@ -9039,9 +9135,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonReport),
                                     TypeName = "PersonReport",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonReport),
                                     ElementTypeName = "PersonReport",
                                     IsCollection = false
                                 }
@@ -9085,9 +9183,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(PersonReport),
                                     TypeName = "PersonReport",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(PersonReport),
                                     ElementTypeName = "PersonReport",
                                     IsCollection = false
                                 }
@@ -9691,9 +9791,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(Site),
                                     TypeName = "Site",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(Site),
                                     ElementTypeName = "Site",
                                     IsCollection = false
                                 }
@@ -9737,9 +9839,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(Site),
                                     TypeName = "Site",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(Site),
                                     ElementTypeName = "Site",
                                     IsCollection = false
                                 }
@@ -10343,9 +10447,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(SiteInspection),
                                     TypeName = "SiteInspection",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(SiteInspection),
                                     ElementTypeName = "SiteInspection",
                                     IsCollection = false
                                 }
@@ -10389,9 +10495,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(SiteInspection),
                                     TypeName = "SiteInspection",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(SiteInspection),
                                     ElementTypeName = "SiteInspection",
                                     IsCollection = false
                                 }
@@ -10774,9 +10882,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(UserSite),
                                     TypeName = "UserSite",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(UserSite),
                                     ElementTypeName = "UserSite",
                                     IsCollection = false
                                 }
@@ -10820,9 +10930,11 @@ namespace IqlSampleApp.ApiContext.Base
                                 IsBindingParameter = true,
                                 Type = new TypeDetail
                                 {
+                                    Type = typeof(UserSite),
                                     TypeName = "UserSite",
                                     Nullable = true,
                                     Kind = IqlType.Unknown,
+                                    ElementType = typeof(UserSite),
                                     ElementTypeName = "UserSite",
                                     IsCollection = false
                                 }
