@@ -30,6 +30,7 @@ namespace Iql.OData
 {
     public class ODataDataStore : DataStore
     {
+        public static string StoreName = nameof(ODataDataStore);
         public ODataConfiguration Configuration { get; set; }
 
         public IHttpProvider GetHttp()
@@ -40,7 +41,7 @@ namespace Iql.OData
         public virtual ODataDataMethodRequest<TResult> MethodWithResponse<TResult>(
             IEnumerable<ODataParameter> parameters,
             ODataMethodType methodType,
-            ODataMethodScope methodScope,
+            ODataMethodScopeKind methodScope,
             string nameSpace,
             string name,
             Type entityType,
@@ -84,29 +85,38 @@ namespace Iql.OData
             return request;
         }
 
-        public virtual ODataMethodRequest IqlMethod(IqlMethod method, object[] args)
+        public virtual ODataMethodRequest IqlMethod(IqlMethod method, params IqlMethodArgument[] args)
         {
             var parameters = new List<ODataParameter>();
-            for (var i = 0; i < method.Parameters.Count; i++)
+            for (var i = 0; i < args.Length; i++)
             {
-                var p = method.Parameters[i];
-                parameters.Add(new ODataParameter(args[i], p.Type.Type, p.Name, p.IsBindingParameter));
+                var p = method.Parameters.Single(_ => _.Name == args[i].Name);
+                parameters.Add(new ODataParameter(args[i].Value, p.Type.Type, p.Name, p.IsBindingParameter));
             }
-            return Method(parameters, ODataMethodType.Action, ODataMethodScope.Entity, method.NameSpace, method.Name, method.EntityConfiguration?.Type);
+            return Method(
+                parameters, 
+                ODataMethodType.Action, 
+                method.ScopeKind.ToODataMethodScope(), 
+                method.NameSpace, 
+                method.Name, 
+                method.EntityConfiguration?.Type);
         }
 
-        public virtual ODataDataMethodRequest<TResult> IqlMethodWithResponse<TResult>(IqlMethod method, Type responseElementType, object[] args)
+        public virtual ODataDataMethodRequest<TResult> IqlMethodWithResponse<TResult>(
+            IqlMethod method, 
+            Type responseElementType,
+            params IqlMethodArgument[] args)
         {
             var parameters = new List<ODataParameter>();
-            for (var i = 0; i < method.Parameters.Count; i++)
+            for (var i = 0; i < args.Length; i++)
             {
-                var p = method.Parameters[i];
-                parameters.Add(new ODataParameter(args[i], p.Type.Type, p.Name, p.IsBindingParameter));
+                var p = method.Parameters.Single(_ => _.Name == args[i].Name);
+                parameters.Add(new ODataParameter(args[i].Value, p.Type.Type, p.Name, p.IsBindingParameter));
             }
             return MethodWithResponse<TResult>(
                 parameters,
                 ODataMethodType.Action,
-                ODataMethodScope.Entity,
+                ODataMethodScopeKind.Entity,
                 method.NameSpace,
                 method.Name,
                 method.EntityConfiguration?.Type,
@@ -116,7 +126,7 @@ namespace Iql.OData
         public virtual ODataMethodRequest Method(
             IEnumerable<ODataParameter> parameters,
             ODataMethodType methodType,
-            ODataMethodScope methodScope,
+            ODataMethodScopeKind methodScope,
             string nameSpace,
             string name,
             Type entityType
@@ -180,7 +190,7 @@ namespace Iql.OData
 
         public string GetMethodUri(
             IEnumerable<ODataParameter> parameters,
-            ODataMethodScope methodScope,
+            ODataMethodScopeKind methodScope,
             ODataMethodType methodType,
             string nameSpace,
             string name,
@@ -190,10 +200,10 @@ namespace Iql.OData
             var bindingParameterName = "bindingParameter";
             switch (methodScope)
             {
-                case ODataMethodScope.Collection:
+                case ODataMethodScopeKind.Collection:
                     baseUri = Configuration.ResolveEntitySetUriByType(entityType);
                     break;
-                case ODataMethodScope.Entity:
+                case ODataMethodScopeKind.Entity:
                     var bindingParameter = parameters.Single(p => p.Name == bindingParameterName);
                     var entityState = DataContext.FindEntityState(bindingParameter.Value);
                     var compositeKey = entityState == null
@@ -201,7 +211,7 @@ namespace Iql.OData
                         : entityState.CurrentKey;
                     baseUri = ResolveEntityUriByType(compositeKey, bindingParameter.ValueType);
                     break;
-                case ODataMethodScope.Global:
+                case ODataMethodScopeKind.Global:
                     nameSpace = "";
                     break;
             }

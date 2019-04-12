@@ -10,6 +10,7 @@ using Iql.Data.Context;
 using Iql.Data.DataStores;
 using Iql.Data.Lists;
 using Iql.Entities;
+using Iql.Entities.Functions;
 
 namespace Hazception.Sets
 {
@@ -46,7 +47,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<HazApplicationUser>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Collection,
+				ODataMethodScopeKind.Collection,
 				"Hazception",
 				"Me",
 				typeof(HazApplicationUser),
@@ -62,7 +63,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<HazApplicationUser>>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Collection,
+				ODataMethodScopeKind.Collection,
 				"Hazception",
 				"ForClient",
 				typeof(HazApplicationUser),
@@ -78,7 +79,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"GeneratePasswordResetLink",
 				typeof(HazApplicationUser),
@@ -92,7 +93,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"SendAccountConfirmationEmail",
 				typeof(HazApplicationUser),
@@ -103,7 +104,7 @@ namespace Hazception.Sets
             return ((ODataDataStore) this.DataContext.DataStore).IqlMethodWithResponse<string>(
                 EntityConfiguration.FindMethod("SendPasswordResetEmail"),
                 typeof(string),
-                new[] {bindingParameter});
+                new IqlMethodArgument("bindingParameter", bindingParameter));
         }
 		public virtual ODataDataMethodRequest<string> AccountConfirm(HazApplicationUser bindingParameter)
 		{
@@ -113,7 +114,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"AccountConfirm",
 				typeof(HazApplicationUser),
@@ -127,7 +128,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ReinstateUser",
 				typeof(HazApplicationUser),
@@ -145,7 +146,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ValidateEntity",
 				typeof(HazApplicationUser),
@@ -175,7 +176,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<HazClient>>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Collection,
+				ODataMethodScopeKind.Collection,
 				"Hazception",
 				"All",
 				typeof(HazClient),
@@ -195,7 +196,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ValidateEntity",
 				typeof(HazClient),
@@ -226,7 +227,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<Video>>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Collection,
+				ODataMethodScopeKind.Collection,
 				"Hazception",
 				"ForClient",
 				typeof(Video),
@@ -246,7 +247,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ValidateEntity",
 				typeof(Video),
@@ -262,7 +263,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"UpdateTitle",
 				typeof(Video),
@@ -276,7 +277,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"VideoUrl",
 				typeof(Video),
@@ -290,7 +291,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"VideoUploadUrl",
 				typeof(Video),
@@ -304,7 +305,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ScreenshotUploadUrl",
 				typeof(Video),
@@ -318,7 +319,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ScreenshotMiniUploadUrl",
 				typeof(Video),
@@ -332,7 +333,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ScreenshotMiniUrl",
 				typeof(Video),
@@ -346,7 +347,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"IncrementVersion",
 				typeof(Video),
@@ -368,7 +369,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<int>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"Clone",
 				typeof(Video),
@@ -382,7 +383,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"Description",
 				typeof(Video),
@@ -413,7 +414,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<IEnumerable<Exam>>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Collection,
+				ODataMethodScopeKind.Collection,
 				"Hazception",
 				"ForClient",
 				typeof(Exam),
@@ -429,7 +430,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).Method(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"SetCandidateExamOpened",
 				typeof(Exam));
@@ -442,7 +443,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).Method(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"SetCandidateExamStarted",
 				typeof(Exam));
@@ -461,7 +462,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<ExamCandidateResult>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"LogClicks",
 				typeof(Exam),
@@ -475,7 +476,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<Exam>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"SetStarted",
 				typeof(Exam),
@@ -493,7 +494,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ValidateEntity",
 				typeof(Exam),
@@ -565,7 +566,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).Method(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"SetExamCandidateLatestTime",
 				typeof(ExamCandidate));
@@ -594,7 +595,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).Method(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Collection,
+				ODataMethodScopeKind.Collection,
 				"Hazception",
 				"IncrementVersionsForVideo",
 				typeof(Hazard));
@@ -609,7 +610,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Function,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ScreenshotUploadUrl",
 				typeof(Hazard),
@@ -623,7 +624,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"IncrementVersion",
 				typeof(Hazard),
@@ -641,7 +642,7 @@ namespace Hazception.Sets
 			return ((ODataDataStore)this.DataContext.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Entity,
+				ODataMethodScopeKind.Entity,
 				"Hazception",
 				"ValidateEntity",
 				typeof(Hazard),

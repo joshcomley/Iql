@@ -613,6 +613,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -662,6 +663,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -697,6 +699,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -711,6 +715,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -761,6 +766,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.EntitySet,
+                        ReturnType = typeof(IEnumerable<ApplicationUser>),
+                        ReturnTypeName = "Collection<ApplicationUser>",
                         Metadata = new MetadataCollection(),
                         Name = "ForClient",
                         Title = "ForClient",
@@ -775,6 +782,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -795,6 +803,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GeneratePasswordResetLink",
                         Title = "GeneratePasswordResetLink",
@@ -809,6 +819,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -829,6 +840,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "AccountConfirm",
                         Title = "AccountConfirm",
@@ -843,6 +856,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -863,6 +877,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "SendPasswordResetEmail",
                         Title = "SendPasswordResetEmail",
@@ -877,6 +893,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -897,6 +914,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "ReinstateUser",
                         Title = "ReinstateUser",
@@ -911,6 +930,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -931,6 +951,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.EntitySet,
+                        ReturnType = typeof(ApplicationUser),
+                        ReturnTypeName = "ApplicationUser",
                         Metadata = new MetadataCollection(),
                         Name = "Me",
                         Title = "Me",
@@ -1340,6 +1362,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         NameSpace = "Abc",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
@@ -1393,6 +1416,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -1428,6 +1452,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -1442,6 +1468,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -1462,6 +1489,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.EntitySet,
+                        ReturnType = typeof(IEnumerable<Client>),
+                        ReturnTypeName = "Collection<Client>",
                         Metadata = new MetadataCollection(),
                         Name = "All",
                         Title = "All",
@@ -1514,6 +1543,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -1549,6 +1579,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "SayHi",
                         Title = "SayHi",
@@ -1563,6 +1595,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -1612,6 +1645,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -1647,6 +1681,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -1919,6 +1955,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -1968,6 +2005,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -2003,6 +2041,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -2304,6 +2344,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -2353,6 +2394,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -2388,6 +2430,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -2670,6 +2714,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -2719,6 +2764,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -2754,6 +2800,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -3026,6 +3074,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -3075,6 +3124,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -3110,6 +3160,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -3391,6 +3443,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -3440,6 +3493,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -3475,6 +3529,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -3776,6 +3832,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -3825,6 +3882,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -3860,6 +3918,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -4151,6 +4211,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -4200,6 +4261,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -4235,6 +4297,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -4507,6 +4571,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -4556,6 +4621,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -4591,6 +4657,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -4873,6 +4941,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -4922,6 +4991,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -4957,6 +5027,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -5239,6 +5311,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -5288,6 +5361,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -5323,6 +5397,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -5870,6 +5946,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -5919,6 +5996,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -5954,6 +6032,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -6226,6 +6306,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -6275,6 +6356,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -6310,6 +6392,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -7359,6 +7443,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -7408,6 +7493,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -7443,6 +7529,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -7779,6 +7867,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -7828,6 +7917,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -7863,6 +7953,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -8135,6 +8227,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -8184,6 +8277,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -8219,6 +8313,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -8500,6 +8596,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -8549,6 +8646,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -8584,6 +8682,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -8763,6 +8863,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -8812,6 +8913,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -8847,6 +8949,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -9175,6 +9279,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -9224,6 +9329,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -9259,6 +9365,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -9833,6 +9941,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -9882,6 +9991,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -9917,6 +10027,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -10491,6 +10603,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -10540,6 +10653,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -10575,6 +10689,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -10928,6 +11044,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -10977,6 +11094,7 @@ namespace IqlSampleApp.ApiContext.Base
                     new IqlMethod
                     {
                         SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
@@ -11012,6 +11130,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
+                        ReturnType = typeof(String),
+                        ReturnTypeName = "string",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -12095,7 +12215,7 @@ namespace IqlSampleApp.ApiContext.Base
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(name, typeof(string), "name", false));
-            return ((ODataDataStore) this.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScope.Global, "IqlSampleApp", "SendHi", null, typeof(String));
+            return ((ODataDataStore) this.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScopeKind.Global, "IqlSampleApp", "SendHi", null, typeof(String));
         }
     }
 }

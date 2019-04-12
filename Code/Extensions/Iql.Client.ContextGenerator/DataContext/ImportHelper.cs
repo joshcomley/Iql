@@ -60,7 +60,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             typeof(JObject),
             typeof(EventEmitter<>),
             typeof(PropertyChangeEvent<>),
-            typeof(ODataMethodScope),
+            typeof(ODataMethodScopeKind),
             typeof(ODataMethodType),
             typeof(MethodResult),
             typeof(DataMethodResult<>),

@@ -1,4 +1,5 @@
 ﻿using System;
+using Iql.Data.Types;
 using Iql.Extensions;
 using Newtonsoft.Json;
 
@@ -12,7 +13,18 @@ namespace Iql.Server.Serialization.Serialization.Converters
             {
                 var type = value as Type;
                 var iqlType = type.ToIqlType();
-                writer.WriteValue(iqlType == IqlType.Unknown ? type.GetFullName() : iqlType.ToString());
+                string fullName = iqlType.ToString();
+                switch (iqlType)
+                {
+                    case IqlType.Unknown:
+                    case IqlType.Collection:
+                        fullName = type.GetFullName();
+                        var parsed = TypeName.Parse(fullName);
+                        fullName = parsed.FullName;
+                        break;
+                }
+
+                writer.WriteValue(fullName);
             }
         }
 

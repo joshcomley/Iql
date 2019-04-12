@@ -6,7 +6,7 @@ namespace Iql.OData.TypeScript.Generator.Definitions
     public class EntityFunctionDefinition
     {
         public EntityTypeReference EntityType { get; set; }
-        public ODataMethodScope Scope { get; set; }
+        public ODataMethodScopeKind Scope { get; set; }
         public string Name { get; set; }
         public ITypeInfo ReturnType { get; set; }
         public EntityFunctionDefinitionType Type { get; set; }

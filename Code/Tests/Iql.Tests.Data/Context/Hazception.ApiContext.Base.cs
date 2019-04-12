@@ -528,7 +528,7 @@ namespace Hazception.ApiContext.Base
 			return ((ODataDataStore)this.DataStore).MethodWithResponse<string>(
 				parameters,
 				ODataMethodType.Action,
-				ODataMethodScope.Global,
+				ODataMethodScopeKind.Global,
 				"Hazception",
 				"ValidateField",
 				null,

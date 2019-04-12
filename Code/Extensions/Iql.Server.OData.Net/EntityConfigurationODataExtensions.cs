@@ -133,6 +133,15 @@ namespace Iql.Server.OData.Net
             IqlMethodScopeKind scope)
         {
             var method = new IqlMethod(scope, operation.Name);
+            if (operation.ReturnType != null)
+            {
+                method.ReturnType = operation.ReturnType.ClrType;
+            }
+            else
+            {
+                method.ReturnType = null;
+            }
+            method.DataStoreRequired = "ODataDataStore";
             if (method.Name == nameof(IqlODataController<object, DbContext, DbContext, object, object>.IncrementVersion)
                 || method.Name == nameof(IqlODataController<object, DbContext, DbContext, object, object>.GetMediaUploadUrl)
                 || method.Name == nameof(IqlODataController<object, DbContext, DbContext, object, object>.GetMediaUrl))

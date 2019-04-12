@@ -487,7 +487,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
 
             methodReturnType.ResolvedType = methodReturnType.EdmType;
             EntityFunctionParameterDefinition keyParam = null;
-            if (method.Scope == ODataMethodScope.Entity)
+            if (method.Scope == ODataMethodScopeKind.Entity)
             {
                 keyParam = new EntityFunctionParameterDefinition(
                    "bindingParameter",
@@ -552,7 +552,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 : TypeOfExpression(returnType.Name.AsTypeScriptTypeParameter())
                             : null;
                     Return(
-                        $"({Cast(nameof(ODataDataStore))}this{scope}.{nameof(DataStore)}).{dataStoreMethod}{(hasDataResponse ? typeScriptReturnType : "")}({newLine}parameters,{newLine}{nameof(ODataMethodType)}.{(method.Type == EntityFunctionDefinitionType.Action ? nameof(ODataMethodType.Action) : nameof(ODataMethodType.Function))},{newLine}{nameof(ODataMethodScope)}.{method.Scope},{newLine}{String(method.Namespace)},{newLine}{String(method.Name)},{newLine}{entityType}{(hasDataResponse ? $",{newLine}{responseElementType}" : "")}{(OutputKind == OutputKind.TypeScript && hasDataResponse ? $",{newLine}{typeScriptReturnTypeParameter}" : "")})");
+                        $"({Cast(nameof(ODataDataStore))}this{scope}.{nameof(DataStore)}).{dataStoreMethod}{(hasDataResponse ? typeScriptReturnType : "")}({newLine}parameters,{newLine}{nameof(ODataMethodType)}.{(method.Type == EntityFunctionDefinitionType.Action ? nameof(ODataMethodType.Action) : nameof(ODataMethodType.Function))},{newLine}{nameof(ODataMethodScopeKind)}.{method.Scope},{newLine}{String(method.Namespace)},{newLine}{String(method.Name)},{newLine}{entityType}{(hasDataResponse ? $",{newLine}{responseElementType}" : "")}{(OutputKind == OutputKind.TypeScript && hasDataResponse ? $",{newLine}{typeScriptReturnTypeParameter}" : "")})");
                 },
                 async: false,
                 resolveTypeName: false,

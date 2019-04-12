@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Iql.Data.Types
 {
@@ -7,7 +8,20 @@ namespace Iql.Data.Types
         public string Name { get; set; }
         public string[] Generics { get; set; }
 
-        public static TypeName Parse(string fullName)
+        public string FullName
+        {
+            get
+            {
+                var name = Name;
+                if (Generics != null && Generics.Any())
+                {
+                    name = $"{name}<{string.Join(", ", Generics)}>";
+                }
+                return name;
+            }
+        }
+
+        public static TypeName Parse(string fullName, bool useEnumerable = false)
         {
             var type = new TypeName();
             var isInBrackets = 0;
@@ -47,6 +61,11 @@ namespace Iql.Data.Types
             if (!string.IsNullOrWhiteSpace(part))
             {
                 type.Name = part;
+            }
+
+            if (type.Name == "IEnumerable" || type.Name == "IList" || type.Name == "List" || type.Name == "Collection")
+            {
+                type.Name = useEnumerable ? "IEnumerable" : "Collection";
             }
             type.Generics = genericParts.ToArray();
             return type;

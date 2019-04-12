@@ -12,6 +12,8 @@ namespace Iql.Data.Evaluation
 {
     public interface IEvaluationSession : IEvaluationSessionContainer
     {
+        GetCachedEntityResult GetCachedEntity(IEntityConfiguration entityConfiguration, object compositeKeyOrEntity);
+        void SetCachedEntity(IEntityConfiguration entityConfiguration, CompositeKey compositeKey, object entity);
         Task<IqlObjectEvaluationResult> EvaluateExpressionAsync<T>(
             Expression<Func<T, object>> expression,
             T entity,

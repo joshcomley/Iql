@@ -4,6 +4,7 @@ using System.Reflection;
 using Brandless.ObjectSerializer;
 using Iql.Data.Types;
 using Iql.Entities;
+using Iql.Entities.Functions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -13,10 +14,17 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
     {
         public bool CanConvert(Type objectType, object @object, object propertyOwner, PropertyInfo propertyBeingAssigned)
         {
-            return objectType == typeof(Type) && 
-                   propertyOwner is TypeDetail && 
-                   (propertyBeingAssigned?.Name == nameof(TypeDetail.ElementType) ||
-                    propertyBeingAssigned?.Name == nameof(TypeDetail.Type));
+            return objectType == typeof(Type) &&
+
+                   ((
+                        propertyOwner is TypeDetail &&
+                        (propertyBeingAssigned?.Name == nameof(TypeDetail.ElementType) ||
+                         propertyBeingAssigned?.Name == nameof(TypeDetail.Type))
+                    ) ||
+                    (propertyOwner is IqlMethod &&
+                     (propertyBeingAssigned?.Name == nameof(IqlMethod.ReturnType)))
+                   )
+                ;
         }
 
         public ConversionResult Convert(Type objectType, object @object, object propertyOwner, PropertyInfo propertyBeingAssigned)
@@ -28,7 +36,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 return new ConversionResult(null, false);
             }
 
-            var type = TypeName.Parse(name);
+            var type = TypeName.Parse(name, true);
             return new ConversionResult(
                 SyntaxFactory.TypeOfExpression(TypeSyntax(type)),
                 true);

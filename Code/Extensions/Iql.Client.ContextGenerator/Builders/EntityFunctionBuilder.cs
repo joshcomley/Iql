@@ -49,13 +49,13 @@ namespace Iql.OData.TypeScript.Generator.Builders
                     new EntityTypeReferenceBuilder().Build(new TypeInfo(functionElementType.Attribute("Type").Value), schema);
                 var forEntitySet = functionEntityType.IsCollection;
                 functionDefinition.Scope = forEntitySet 
-                    ? ODataMethodScope.Collection 
-                    : ODataMethodScope.Entity;
+                    ? ODataMethodScopeKind.Collection 
+                    : ODataMethodScopeKind.Entity;
                 functionDefinition.EntityType = functionEntityType;
             }
             else
             {
-                functionDefinition.Scope = ODataMethodScope.Global;
+                functionDefinition.Scope = ODataMethodScopeKind.Global;
             }
             return functionDefinition;
         }

@@ -52,7 +52,7 @@ namespace Iql.Entities
             var result = Methods.FirstOrDefault(_ => _.Name == name);
             if (result == null && ensure != null && ensure == true)
             {
-                result = new IqlMethod(IqlMethodScopeKind.EntitySet, name, null, null, (IEntityConfiguration)this);
+                result = new IqlMethod(IqlMethodScopeKind.EntitySet, name, null, null, null, (IEntityConfiguration)this);
                 Methods.Add(result);
             }
 

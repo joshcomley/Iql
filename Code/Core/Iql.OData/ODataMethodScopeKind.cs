@@ -1,6 +1,6 @@
 ﻿namespace Iql.OData
 {
-    public enum ODataMethodScope
+    public enum ODataMethodScopeKind
     {
         Global,
         Collection,

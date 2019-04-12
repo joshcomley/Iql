@@ -97,13 +97,13 @@ namespace Iql.OData.TypeScript.Generator.Parsers
                 var functionDefinition = new EntityFunctionBuilder().Build(functionOrAction, _schema);
                 switch (functionDefinition.Scope)
                 {
-                    case ODataMethodScope.Global:
+                    case ODataMethodScopeKind.Global:
                         _schema.Functions.Add(functionDefinition);
                         break;
-                    case ODataMethodScope.Collection:
-                    case ODataMethodScope.Entity:
+                    case ODataMethodScopeKind.Collection:
+                    case ODataMethodScopeKind.Entity:
                         var collection = _schema.EntitySets.Single(ec => ec.Type == functionDefinition.EntityType.Type);
-                        if (functionDefinition.Scope == ODataMethodScope.Collection)
+                        if (functionDefinition.Scope == ODataMethodScopeKind.Collection)
                         {
                             collection.Functions.Add(functionDefinition);
                         }

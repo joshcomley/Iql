@@ -50,7 +50,12 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             }
             if (typeof(IqlMethod).IsAssignableFrom(type))
             {
-                ignoreProperties.AddRange(new[] { nameof(IqlMethod.EntityConfiguration) });
+                ignoreProperties.AddRange(new[]
+                {
+                    nameof(IqlMethod.EntityConfiguration),
+                    nameof(IqlMethod.BindingParameters),
+                    nameof(IqlMethod.NonBindingParameters)
+                });
             }
             if (typeof(UserPermissionsCollection).IsAssignableFrom(type))
             {
