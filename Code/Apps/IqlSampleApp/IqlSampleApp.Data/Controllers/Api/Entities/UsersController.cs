@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Brandless.AspNetCore.OData.Extensions.Configuration;
 using IqlSampleApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace IqlSampleApp.Data.Controllers.Api.Entities
 {
@@ -46,6 +49,12 @@ namespace IqlSampleApp.Data.Controllers.Api.Entities
             return Ok(users);
         }
 
+        [ODataFunction(ForCollection = typeof(ApplicationUser))]
+        public async Task<IEnumerable<ApplicationUser>> OldUsers()
+        {
+            var users = await Context.Users.Take(20).ToListAsync();
+            return users;
+        }
         #endregion Imports
     }
 }

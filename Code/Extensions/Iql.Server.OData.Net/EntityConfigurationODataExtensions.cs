@@ -150,21 +150,25 @@ namespace Iql.Server.OData.Net
             }
             foreach (var parameter in operation.Parameters)
             {
-                var isCollection = parameter.TypeConfiguration.ClrType.IsCollection();
-                var clrType = isCollection
-                    ? parameter.TypeConfiguration.ClrType.GenericTypeArguments[0]
-                    : parameter.TypeConfiguration.ClrType;
-                method.Parameters.Add(new IqlMethodParameter(
-                    parameter.Name,
-                    operation.BindingParameter == parameter,
-                    new TypeDetail(clrType,
-                        parameter.Nullable,
-                        null,
-                        null,
-                        clrType,
-                        clrType.IsCollection(),
-                        clrType.ToIqlType())
-                ));
+                var isBindingParameter = operation.BindingParameter == parameter;
+                if (!isBindingParameter || scope == IqlMethodScopeKind.Entity)
+                {
+                    var isCollection = parameter.TypeConfiguration.ClrType.IsCollection();
+                    var clrType = isCollection
+                        ? parameter.TypeConfiguration.ClrType.GenericTypeArguments[0]
+                        : parameter.TypeConfiguration.ClrType;
+                    method.Parameters.Add(new IqlMethodParameter(
+                        parameter.Name,
+                        isBindingParameter,
+                        new TypeDetail(clrType,
+                            parameter.Nullable,
+                            null,
+                            null,
+                            clrType,
+                            clrType.IsCollection(),
+                            clrType.ToIqlType())
+                    ));
+                }
             }
 
             methodContainer.Methods.Add(method);

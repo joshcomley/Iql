@@ -2,8 +2,8 @@
 {
     public enum IqlMethodScopeKind
     {
-        Global,
-        EntitySet,
-        Entity
+        Global = 1,
+        EntitySet = 2,
+        Entity = 3
     }
 }
