@@ -39,6 +39,7 @@ namespace Iql.Parsing
         public TIqlData Data { get; set; }
         public TQueryAdapter Adapter { get; set; }
         public Type CurrentEntityType => TypeStack.LastOrDefault();
+        public bool IsTypeRoot => TypeStack.Count == 1;
         public List<Type> TypeStack { get; } = new List<Type>();
         public Type RootEntityType { get; }
         protected virtual void SetEntityType(Type type)
@@ -207,7 +208,7 @@ namespace Iql.Parsing
             }
         }
 
-        private bool IsRoot => Ancestors.Count == 1;
+        public bool IsRoot => Ancestors.Count == 1;
         protected void DecrementPath(IqlExpression expression)
         {
             switch (expression?.Kind)

@@ -28,6 +28,7 @@ namespace Iql.Queryable
         }
 
         public bool? TrackEntities { get; set; } = null;
+        public Type MappedFrom { get; set; }
         public bool? AllowOffline { get; set; } = null;
 
         public EvaluateContext EvaluateContext { get; set; }

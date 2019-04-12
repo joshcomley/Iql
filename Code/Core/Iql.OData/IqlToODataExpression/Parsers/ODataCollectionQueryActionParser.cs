@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Iql.Entities;
 using Iql.OData.Extensions;
 
 namespace Iql.OData.IqlToODataExpression.Parsers
@@ -105,83 +104,6 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 query = $"{baseUri}{query}";
             }
             return new IqlFinalExpression<string>(query);
-        }
-    }
-    public class ODataWithKeyActionParser : ODataActionParserBase<IqlWithKeyExpression>
-    {
-        public override IqlExpression ToQueryString(IqlWithKeyExpression action, ODataIqlParserContext parser)
-        {
-            var compositeKey = new CompositeKey(action.KeyEqualToExpressions.Count);
-            for (var i = 0; i < action.KeyEqualToExpressions.Count; i++)
-            {
-                
-                var keyPart = action.KeyEqualToExpressions[i];
-                var propertyExpressionIsLeft = keyPart.Left is IqlPropertyExpression;
-                var left = propertyExpressionIsLeft
-                    ? keyPart.Left as IqlPropertyExpression
-                    : keyPart.Right as IqlPropertyExpression;
-                var right = propertyExpressionIsLeft
-                    ? keyPart.Right
-                    : keyPart.Left;
-                compositeKey.Keys[i] = new KeyValue(parser.Parse(left).ToCodeString(),
-                    parser.Parse(right).ToCodeString(),
-                    null);
-            }
-
-            if (compositeKey.Keys.Length == 1)
-            {
-                return new IqlFinalExpression<string>(compositeKey.Keys[0].Value.ToString());
-            }
-
-            var parts = new List<string>();
-            for (var i = 0; i < compositeKey.Keys.Length; i++)
-            {
-                var part = compositeKey.Keys[i];
-                parts.Add($"{part.Name}={part.Value}");
-            }
-
-            return new IqlFinalExpression<string>(string.Join(",", parts));
-        }
-    }
-    public class ODataExpandActionParser : ODataActionParserBase<IqlExpandExpression>
-    {
-        public override IqlExpression ToQueryString(IqlExpandExpression action, ODataIqlParserContext parser)
-        {
-            var expandProperty = parser.Parse(action.NavigationProperty).ToCodeString();
-            if (action.Query != null)
-            {
-                var expandDetails = parser.Parse(action.Query).ToCodeString();
-                if (!string.IsNullOrWhiteSpace(expandDetails))
-                {
-                    expandProperty = $"{expandProperty}({expandDetails})";
-                }
-            }
-
-            if (action.Count)
-            {
-                expandProperty = $"{expandProperty}/$count";
-            }
-
-            if (parser.Data.Expands.ContainsKey(expandProperty))
-            {
-                return null;
-            }
-            parser.Data.Expands.Add(expandProperty, expandProperty);
-            return new IqlFinalExpression<string>(
-                expandProperty);
-        }
-    }
-    public class ODataOrderByActionParser : ODataActionParserBase<IqlOrderByExpression>
-    {
-        public override IqlExpression ToQueryString(IqlOrderByExpression action, ODataIqlParserContext parser)
-        {
-            var orderBy = parser.Parse(action.OrderExpression).ToCodeString();
-            if (action.Descending)
-            {
-                orderBy = $"{orderBy} desc";
-            }
-            return new IqlFinalExpression<string>(
-                orderBy);
         }
     }
 }

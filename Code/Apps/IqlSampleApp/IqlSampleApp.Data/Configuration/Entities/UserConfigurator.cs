@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.Data.Entities;
 using Iql.Entities;
+using Iql.Entities.SpecialTypes;
 using Iql.Server;
 using IqlSampleApp.Data.Contracts;
 using IqlSampleApp.Data.Controllers.Api.Entities;
@@ -16,6 +17,10 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(IEntityConfigurationBuilder builder)
         {
+            builder.UsersDefinition = UsersDefinition.Define(builder.EntityType<ApplicationUser>(),
+                _ => _.Id,
+                _ => _.FullName
+            );
             builder.EntityType<ApplicationUser>()
                 .FindRelationship(_ => _.Client)
                 .CreateWithRelationshipValue(_ => _.CreatedByUser, ctx => _ => ctx.Owner.CreatedByUser)

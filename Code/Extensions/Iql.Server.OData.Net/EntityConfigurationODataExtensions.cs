@@ -10,6 +10,7 @@ using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Server.OData.Net.Geography;
 using Microsoft.AspNet.OData.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Edm;
 using Microsoft.Spatial;
@@ -132,6 +133,12 @@ namespace Iql.Server.OData.Net
             IqlMethodScopeKind scope)
         {
             var method = new IqlMethod(scope, operation.Name);
+            if (method.Name == nameof(IqlODataController<object, DbContext, DbContext, object, object>.IncrementVersion)
+                || method.Name == nameof(IqlODataController<object, DbContext, DbContext, object, object>.GetMediaUploadUrl)
+                || method.Name == nameof(IqlODataController<object, DbContext, DbContext, object, object>.GetMediaUrl))
+            {
+                method.IsPublic = false;
+            }
             foreach (var parameter in operation.Parameters)
             {
                 var isCollection = parameter.TypeConfiguration.ClrType.IsCollection();

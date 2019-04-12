@@ -14,5 +14,10 @@ namespace Iql.Data.Types
         {
             return Builder.GetEntityByTypeName(CleanTypeName(fullTypeName))?.TypeMetadata ?? base.ResolveTypeFromTypeName(fullTypeName);
         }
+
+        public override IIqlTypeMetadata GetTypeMap(IIqlTypeMetadata type)
+        {
+            return Builder.GetTypeMap(type);
+        }
     }
 }

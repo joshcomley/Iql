@@ -54,6 +54,7 @@ namespace Iql.Data.Evaluation
 
         public async Task<IqlUserPermission> GetUserPermissionAsync(
             UserPermissionsManager permissionsManager,
+            UserPermissionsCollection permissionsCollection,
             IIqlDataEvaluator evaluationContext,
             object user,
             object entity = null,
@@ -61,12 +62,20 @@ namespace Iql.Data.Evaluation
             ITypeResolver typeResolver = null
         )
         {
+            if (permissionsCollection == null || permissionsCollection.Keys == null || permissionsCollection.Keys.Count == 0)
+            {
+                return IqlUserPermission.Unset;
+            }
             typeResolver = typeResolver ?? permissionsManager.EntityConfigurationBuilder;
             serviceProviderProvider = serviceProviderProvider ?? permissionsManager.EntityConfigurationBuilder;
             IqlUserPermission result = IqlUserPermission.Unset;
             for (var i = 0; i < permissionsManager.Container.PermissionRules.Count; i++)
             {
                 var rule = permissionsManager.Container.PermissionRules[i];
+                if (permissionsCollection.Keys.All(_ => _ != rule.Key))
+                {
+                    continue;
+                }
                 var evaluatedResult = await EvaluateEntityPermissionsRuleCustomAsync(
                     rule,
                     user,

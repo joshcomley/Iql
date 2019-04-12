@@ -227,11 +227,15 @@ namespace Iql.Data.IqlToIql.Parsers
             }
             parser.ResolveSpecialTypeMap(specialTypeMap =>
             {
-                var mappedProperty = specialTypeMap.ResolvePropertyMap(action.PropertyName);
-                if (mappedProperty != null)
+                if (specialTypeMap.EntityConfiguration.Type != parser.CurrentEntityType ||
+                    (parser.IsTypeRoot && parser.MappedFrom != null && parser.MappedFrom != parser.CurrentEntityType))
                 {
-                    action.PropertyName = mappedProperty.CustomProperty.PropertyName;
-                    action.ReturnType = mappedProperty.CustomProperty.TypeDefinition.ToIqlType();
+                    var mappedProperty = specialTypeMap.ResolvePropertyMap(action.PropertyName);
+                    if (mappedProperty != null)
+                    {
+                        action.PropertyName = mappedProperty.CustomProperty.PropertyName;
+                        action.ReturnType = mappedProperty.CustomProperty.TypeDefinition.ToIqlType();
+                    }
                 }
             });
             action.Parent = (IqlExpression)(await parser.ParseAsync(action.Parent)).Expression;

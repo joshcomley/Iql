@@ -908,7 +908,8 @@ namespace Iql.Data.Context
                 queryable = (global::Iql.Queryable.IQueryable<TMap>)queryable.Then(operation);
             }
 
-            var getDataResult = await DataContext.CountAsync(new GetDataOperation<TMap>(queryable, DataContext));
+            queryable.MappedFrom = typeof(T);
+            var getDataResult = await DataContext.CountAsync(new GetDataOperation<TMap>(queryable, DataContext, typeof(T)));
             var result = new CountDataResult<T>(getDataResult.IsOffline, getOperation, getDataResult.Count, getDataResult.Success);
             return result;
         }
@@ -925,7 +926,8 @@ namespace Iql.Data.Context
                 queryable = (global::Iql.Queryable.IQueryable<TMap>)queryable.Then(operation);
             }
 
-            var getDataResult = await DataContext.GetAsync(new GetDataOperation<TMap>(queryable, DataContext));
+            queryable.MappedFrom = typeof(T);
+            var getDataResult = await DataContext.GetAsync(new GetDataOperation<TMap>(queryable, DataContext, typeof(T)));
             var list = new List<T>();
             var entityConfiguration = EntityConfiguration;//DataContext.EntityConfigurationContext.EntityType<T>();
             for (var i = 0; i < getDataResult.Data.Count; i++)
@@ -1419,6 +1421,7 @@ namespace Iql.Data.Context
             {
                 Name = DataContext.GetDbSetPropertyNameByEntityType(EntityConfiguration.Type)
             };
+            var typeMetadata = EntityConfiguration.TypeMetadata;
             for (var i = 0; i < Operations.Count; i++)
             {
                 var operation = Operations[i];
@@ -1461,7 +1464,7 @@ namespace Iql.Data.Context
                     queryExpression.Expands = queryExpression.Expands ?? new List<IqlExpandExpression>();
                     var iqlExpandExpression = new IqlExpandExpression();
                     iqlExpandExpression.NavigationProperty = iql.TryGetPropertyExpression();
-                    var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration.Builder, EntityConfiguration.TypeMetadata, iqlExpandExpression.NavigationProperty);
+                    var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration.Builder, typeMetadata, iqlExpandExpression.NavigationProperty);
                     var expressionQueryOperatiton = operation as IExpressionQueryOperation;
                     var expandQueryExpression = expressionQueryOperatiton.QueryExpression as IExpandQueryExpression;
                     var property = propertytPath.Property.EntityProperty();
@@ -1519,7 +1522,7 @@ namespace Iql.Data.Context
                 )
                 .ReduceStaticContent(queryExpression);
 
-            await result.ProcessAsync(EntityConfiguration.TypeMetadata, EntityConfigurationBuilder, DataContext);
+            await result.ProcessAsync(typeMetadata, EntityConfigurationBuilder, DataContext, false, MappedFrom);
             return result;
         }
     }

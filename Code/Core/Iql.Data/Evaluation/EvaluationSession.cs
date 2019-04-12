@@ -23,6 +23,30 @@ namespace Iql.Data.Evaluation
         public IEvaluationSession Session => this;
 
         private readonly Dictionary<string, object> _resolvedEntities = new Dictionary<string, object>();
+
+        public GetCachedEntityResult GetCachedEntity(IEntityConfiguration entityConfiguration, object compositeKeyOrEntity)
+        {
+            var compositeKey = CompositeKey.Ensure(compositeKeyOrEntity, entityConfiguration);
+            var compositeKeyLookup = $"{entityConfiguration.Name}::{compositeKey.AsKeyString(true)}";
+            if (_resolvedEntities.ContainsKey(compositeKeyLookup))
+            {
+                return new GetCachedEntityResult(true, _resolvedEntities[compositeKeyLookup]);
+            }
+            return new GetCachedEntityResult(false, null);
+        }
+
+        public void SetCachedEntity(IEntityConfiguration entityConfiguration, CompositeKey compositeKey, object entity)
+        {
+            var compositeKeyLookup = $"{entityConfiguration.Name}::{compositeKey.AsKeyString(true)}";
+            if (_resolvedEntities.ContainsKey(compositeKeyLookup))
+            {
+                _resolvedEntities[compositeKeyLookup] = entity;
+            }
+            else
+            {
+                _resolvedEntities.Add(compositeKeyLookup, entity);
+            }
+        }
         public Task<IqlObjectEvaluationResult> EvaluateExpressionAsync<T>(
             Expression<Func<T, object>> expression,
             T entity,
@@ -432,19 +456,20 @@ namespace Iql.Data.Evaluation
                 {
                     var expandPaths = expandGroup.Value.ExpandPaths.Distinct().ToArray();
                     // Ensure the relationships are populated
-                    var compositeKey = expandGroup.Value.EntityConfiguration.GetCompositeKey(entity);
-                    var compositeKeyLookup = $"{expandGroup.Value.EntityConfiguration.Name}::{compositeKey.AsKeyString(true)}";
                     object newEntity = null;
-                    if (_resolvedEntities.ContainsKey(compositeKeyLookup))
+                    var cachedEntityResult = GetCachedEntity(expandGroup.Value.EntityConfiguration, entity);
+                    if (cachedEntityResult.Exists)
                     {
-                        newEntity = _resolvedEntities[compositeKeyLookup];
+                        newEntity = cachedEntityResult.Entity;
                     }
                     else
                     {
+                        var compositeKey = expandGroup.Value.EntityConfiguration.GetCompositeKey(entity);
                         newEntity = await dataEvaluator.GetEntityByKeyAsync(
                             expandGroup.Value.EntityConfiguration,
                             compositeKey,
                             expandPaths);
+                        SetCachedEntity(expandGroup.Value.EntityConfiguration, compositeKey, newEntity);
                     }
                     if (newEntity != entity && newEntity != null)
                     {

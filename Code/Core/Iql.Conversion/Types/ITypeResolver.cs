@@ -8,5 +8,6 @@ namespace Iql.Parsing.Types
         IIqlTypeMetadata FindType<T>();
         IIqlTypeMetadata FindTypeByType(Type type);
         IIqlTypeMetadata ResolveTypeFromTypeName(string typeName);
+        IIqlTypeMetadata GetTypeMap(IIqlTypeMetadata type);
     }
 }

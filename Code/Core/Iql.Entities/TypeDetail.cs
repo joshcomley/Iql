@@ -36,11 +36,14 @@ namespace Iql.Entities
 
         public bool IsCollection { get; set; }
 
-        public TypeDetail()
-        {
-            
-        }
-        public TypeDetail(Type type, bool nullable, Type declaringType, string convertedFromType, Type elementType, bool isCollection, IqlType kind)
+        public TypeDetail(
+            Type type = null, 
+            bool nullable = false, 
+            Type declaringType = null, 
+            string convertedFromType = null, 
+            Type elementType = null, 
+            bool isCollection = false, 
+            IqlType kind = IqlType.Unknown)
         {
             Type = type;
             Nullable = nullable;

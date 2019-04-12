@@ -12,6 +12,7 @@ namespace Iql.Queryable
 {
     public interface IQueryableBase
     {
+        Type MappedFrom { get; set; }
         bool? AllowOffline { get; set; }
         bool? TrackEntities { get; set; }
         bool HasDefaults { get; set; }

@@ -462,38 +462,8 @@ namespace Iql.OData
             //    compositeKey.Keys[i] = new KeyValue(p.Name, entity.GetPropertyValueByName(p.Name), null);
             //}
 
-            var entityUri = $"{apiUriBase}{entitySetName}({FormatKey(compositeKey)})";
+            var entityUri = $"{apiUriBase}{entitySetName}({ODataWithKeyActionParser.FormatKey(compositeKey)})";
             return entityUri;
-        }
-
-        public static string FormatKey(CompositeKey key)
-        {
-            string keyString;
-            if (key.Keys.Length == 1)
-            {
-                keyString = GetKeyValue(key.Keys.Single());
-            }
-            else
-            {
-                var keys = key.Keys.Select(k => k.Name + "=" + GetKeyValue(k));
-                keyString = string.Join(",", keys);
-            }
-            return keyString;
-        }
-
-        private static string GetKeyValue(KeyValue key)
-        {
-            if (key.ValueType.Kind != IqlType.Guid &&
-                key.ValueType.ConvertedFromType != KnownPrimitiveTypes.Guid &&
-                (key.Value is string ||
-                key.ValueType != null &&
-                key.ValueType.Type == typeof(string))
-                )
-            {
-                return $"\'{key.Value}\'";
-            }
-
-            return key.Value.ToString();
         }
 
         #region Validation

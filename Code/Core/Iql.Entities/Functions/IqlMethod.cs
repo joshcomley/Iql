@@ -5,18 +5,13 @@ using System.Threading.Tasks;
 
 namespace Iql.Entities.Functions
 {
-    public enum IqlMethodScopeKind
-    {
-        Global,
-        EntitySet,
-        Entity
-    }
     public class IqlMethod : MetadataBase
     {
         public bool SupportsOffline { get; set; }
         public string DataStoreRequired { get; set; }
         public Func<object, object[], Task<object>> RunAsync { get; set; }
         public string NameSpace { get; set; }
+        public bool IsPublic { get; set; }
         public List<IqlMethodParameter> Parameters { get; set; }
         public IqlMethodScopeKind ScopeKind { get; set; }
 

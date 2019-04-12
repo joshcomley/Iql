@@ -78,6 +78,11 @@ namespace Iql.Data.Types
             var resolvedType = KnownTypes.ContainsKey(typeNameParsed.Name) ? KnownTypes[typeNameParsed.Name] : null;
             return resolvedType == null ? null : new ResolvedType(resolvedType, subTypes);
         }
+
+        public virtual IIqlTypeMetadata GetTypeMap(IIqlTypeMetadata type)
+        {
+            return null;
+        }
     }
 
 
