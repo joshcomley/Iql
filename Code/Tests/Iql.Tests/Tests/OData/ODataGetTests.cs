@@ -37,6 +37,18 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task TestGetEnum()
+        {
+            var db = new HazceptionDataContext(new ODataDataStore());
+            var user = await
+                db
+                    .Users
+                    .GetWithKeyAsync("2b2b0e44-4579-4965-8e3a-097e6684b767");
+            Assert.IsFalse(user.UserType is string);
+            Assert.AreEqual(HazUserType.Candidate, user.UserType);
+        }
+
+        [TestMethod]
         public async Task TestGetExpandCollection()
         {
             var db = new HazceptionDataContext(new ODataDataStore());

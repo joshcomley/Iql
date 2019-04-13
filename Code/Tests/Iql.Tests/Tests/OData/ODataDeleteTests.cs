@@ -41,7 +41,7 @@ namespace Iql.Tests.Tests.OData
                 var result = await db.SaveChangesAsync();
                 Assert.AreEqual(true, result.Success);
                 var request = log.Deletes.Pop();
-                Assert.AreEqual(@"http://localhost:28000/odata/MyCustomReports('571202dc-057f-49b8-8681-8450695fc079')", request.Uri);
+                Assert.AreEqual(@"http://localhost:28000/odata/MyCustomReports(571202dc-057f-49b8-8681-8450695fc079)", request.Uri);
             });
         }
 

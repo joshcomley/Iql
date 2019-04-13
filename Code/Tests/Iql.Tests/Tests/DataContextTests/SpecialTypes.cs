@@ -61,7 +61,7 @@ namespace Iql.Tests.Tests.DataContextTests
             var query =
                 Db.CustomReportsManager.Set.WithKey(new Guid("9cac910f-6b7c-46b8-9de6-d4373a0063d8"));
             var odataUri = await query.ResolveODataUriAsync();
-            Assert.AreEqual(@"http://localhost:28000/odata/MyCustomReports('9cac910f-6b7c-46b8-9de6-d4373a0063d8')", odataUri);
+            Assert.AreEqual(@"http://localhost:28000/odata/MyCustomReports(9cac910f-6b7c-46b8-9de6-d4373a0063d8)", odataUri);
         }
 
         [TestMethod]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 
 namespace Iql.OData.IqlToODataExpression.Parsers
 {
@@ -52,22 +53,23 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
         private static string GetKeyValue(KeyValue key, ITypeProperty foundProperty)
         {
+            var entityProperty = foundProperty?.EntityProperty();
+            if (entityProperty != null && 
+                (entityProperty.TypeDefinition.Kind == IqlType.Guid || entityProperty.TypeDefinition.ConvertedFromType == "Guid"))
+            {
+                return key.Value.ToString();
+            }
             if (foundProperty != null)
             {
-                if (foundProperty.Type == typeof(string) ||
-                    foundProperty.Type == typeof(Guid) ||
-                    foundProperty.Type == typeof(Guid?))
+                if (foundProperty.Type == typeof(string))
                 {
                     return EnsureQuoted(key);
                 }
             }
             else if (key.ValueType != null)
             {
-                if (key.ValueType.Type == typeof(string) ||
-                    key.ValueType.Type == typeof(Guid) ||
-                    key.ValueType.Type == typeof(Guid?) ||
-                    key.ValueType.Kind == IqlType.String ||
-                    key.ValueType.Kind == IqlType.Guid)
+                if ((key.ValueType.Type == typeof(string) && key.ValueType.Kind != IqlType.Guid) ||
+                    key.ValueType.Kind == IqlType.String)
                 {
                     return EnsureQuoted(key);
                 }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Entities;
@@ -12,6 +14,15 @@ namespace Iql.Data.Evaluation
 {
     public class PermissionsEvaluationSession : IEvaluationSessionContainer
     {
+        static PermissionsEvaluationSession()
+        {
+            EvaluateEntityPermissionsRuleCustomAsyncMethod = typeof(PermissionsEvaluationSession)
+                .GetMethod(nameof(EvaluateEntityPermissionsRuleCustomAsync),
+                    BindingFlags.Instance | BindingFlags.Public);
+        }
+
+        public static MethodInfo EvaluateEntityPermissionsRuleCustomAsyncMethod { get; set; }
+
         class PermissionsEvaluationResult
         {
             public IqlUserPermissionRule Rule { get; }
@@ -57,7 +68,9 @@ namespace Iql.Data.Evaluation
             UserPermissionsCollection permissionsCollection,
             IIqlDataEvaluator evaluationContext,
             object user,
+            Type userType,
             object entity = null,
+            Type entityType = null,
             IServiceProviderProvider serviceProviderProvider = null,
             ITypeResolver typeResolver = null
         )
@@ -76,12 +89,11 @@ namespace Iql.Data.Evaluation
                 {
                     continue;
                 }
-                var evaluatedResult = await EvaluateEntityPermissionsRuleCustomAsync(
-                    rule,
-                    user,
-                    entity,
-                    serviceProviderProvider, evaluationContext,
-                    typeResolver);
+                var task = (Task<IqlUserPermission>)EvaluateEntityPermissionsRuleCustomAsyncMethod.InvokeGeneric(
+                    this,
+                    new object[] { rule, user, entity, serviceProviderProvider, evaluationContext, typeResolver },
+                    entityType ?? entity?.GetType() ?? typeof(object), userType ?? user.GetType());
+                var evaluatedResult = await task;
                 if (evaluatedResult == IqlUserPermission.None)
                 {
                     return evaluatedResult;
@@ -112,6 +124,15 @@ namespace Iql.Data.Evaluation
             where TEntity : class
             where TUser : class
         {
+            var userType = typeof(TUser);
+            if (user != null && userType == typeof(object) && user.GetType() != typeof(object))
+            {
+                var task = (Task<IqlUserPermission>)EvaluateEntityPermissionsRuleCustomAsyncMethod.InvokeGeneric(
+                    this,
+                    new object[] {rule, user, entity, serviceProviderProvider, evaluator, typeResolver}, 
+                    entity?.GetType() ?? typeof(object), user.GetType());
+                return await task;
+            }
             var cached = Results.SingleOrDefault(_ => _.Entity == entity && _.User == user && _.Rule == rule);
             if (cached != null)
             {
@@ -119,6 +140,7 @@ namespace Iql.Data.Evaluation
             }
             var isEntityNew = evaluator.EntityStatus(entity) != IqlEntityStatus.Existing;
             var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew, user, entity);
+            var contextExpectedFullName = $"{nameof(IqlEntityUserPermissionContext<TEntity, TUser>)}<{nameof(TEntity)}, {typeof(TUser).Name}>";
             var iqlExpression = rule.IqlExpression.Clone();
             var contextExpressions = iqlExpression.Flatten()
                 .Where(_ => _.Expression.Kind == IqlExpressionKind.Variable ||
@@ -129,7 +151,7 @@ namespace Iql.Data.Evaluation
                 var exp = contextExpressions[i];
                 var variableExpression = exp.Expression as IqlVariableExpression;
                 if (variableExpression != null && variableExpression.EntityTypeName ==
-                    $"{nameof(IqlEntityUserPermissionContext<TEntity, TUser>)}<{nameof(TEntity)}, {typeof(TUser).Name}>")
+                    contextExpectedFullName)
                 {
                     variableExpression.EntityTypeName =
                         context.GetType().GetFullName();
