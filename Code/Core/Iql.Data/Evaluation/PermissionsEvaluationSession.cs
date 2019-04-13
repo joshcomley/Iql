@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Iql.Data.Context;
+using Iql.Data.Serialization;
+using Iql.Data.Types;
 using Iql.Entities;
 using Iql.Entities.Permissions;
 using Iql.Entities.Services;
@@ -27,21 +30,30 @@ namespace Iql.Data.Evaluation
         {
             public IqlUserPermissionRule Rule { get; }
             public object Entity { get; }
+            public string EntityKey { get; set; }
             public object User { get; }
+            public string UserKey { get; set; }
             public IqlUserPermission Permission { get; }
 
-            public PermissionsEvaluationResult(IqlUserPermissionRule rule, object entity, object user, IqlUserPermission permission)
+            public PermissionsEvaluationResult(IqlUserPermissionRule rule, object entity, string entityKey, object user, string userKey, IqlUserPermission permission)
             {
                 Rule = rule;
                 Entity = entity;
+                EntityKey = entityKey;
                 User = user;
+                UserKey = userKey;
                 Permission = permission;
             }
         }
         private List<PermissionsEvaluationResult> Results { get; } = new List<PermissionsEvaluationResult>();
-        public PermissionsEvaluationSession(IEvaluationSessionContainer evaluationSession = null)
+        public PermissionsEvaluationSession(
+            bool enforceLatest = false, 
+            EvaluationCacheMode cacheMode = EvaluationCacheMode.All,
+            IEvaluationSessionContainer evaluationSession = null)
         {
-            Session = evaluationSession?.Session ?? new EvaluationSession();
+            Session = evaluationSession?.Session ?? new EvaluationSession(enforceLatest, cacheMode);
+            Session.EnforceLatest = enforceLatest;
+            Session.CacheMode = cacheMode;
         }
 
         public IEvaluationSession Session { get; set; }
@@ -133,10 +145,16 @@ namespace Iql.Data.Evaluation
                     entity?.GetType() ?? typeof(object), user.GetType());
                 return await task;
             }
-            var cached = Results.SingleOrDefault(_ => _.Entity == entity && _.User == user && _.Rule == rule);
-            if (cached != null)
+
+            if (!Session.EnforceLatest)
             {
-                return cached.Permission;
+                var entityKey = GetEntityKey(entity, typeResolver, evaluator);
+                var userKey = GetEntityKey(user, typeResolver, evaluator);
+                var cached = Results.SingleOrDefault(_ => _.EntityKey == entityKey && _.UserKey == userKey && _.Rule == rule);
+                if (cached != null)
+                {
+                    return cached.Permission;
+                }
             }
             var isEntityNew = evaluator.EntityStatus(entity) != IqlEntityStatus.Existing;
             var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew, user, entity);
@@ -176,8 +194,7 @@ namespace Iql.Data.Evaluation
                             evaluator,
                             typeResolver,
                             typeof(IqlEntityUserPermissionContext<TEntity, TUser>),
-                            false,
-                            true);
+                            false);
                         if (evaluatedResult.Success)
                         {
                             iqlExpression.ReplaceExpression(
@@ -231,12 +248,57 @@ namespace Iql.Data.Evaluation
                 typeResolver,
                 typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
             var permission = (IqlUserPermission)result.Result;
-            Results.Add(new PermissionsEvaluationResult(
-                rule,
-                entity,
-                user,
-                permission));
+            var currentEntityKey = GetEntityKey(entity, typeResolver, evaluator);
+            var currentUserKey = GetEntityKey(user, typeResolver, evaluator);
+            var cachedResult = Results.SingleOrDefault(_ => _.Entity == entity && _.User == user && _.Rule == rule);
+            if (cachedResult == null)
+            {
+                cachedResult = new PermissionsEvaluationResult(
+                    rule,
+                    entity,
+                    currentEntityKey,
+                    user,
+                    currentUserKey,
+                    permission);
+                Results.Add(cachedResult);
+            }
+            cachedResult.EntityKey = currentEntityKey;
+            cachedResult.UserKey = currentUserKey;
             return permission;
+        }
+
+        private string GetEntityKey<TEntity>(TEntity entity, ITypeResolver typeResolver,
+            IIqlDataEvaluator evaluator) where TEntity : class
+        {
+            IEntityConfigurationBuilder builder = typeResolver as IEntityConfigurationBuilder;
+            if (builder == null)
+            {
+                if (!(typeResolver is EntityConfigurationTypeResolver))
+                {
+                    return Guid.NewGuid().ToString();
+                }
+                else
+                {
+                    builder = (typeResolver as EntityConfigurationTypeResolver).Builder;
+                }
+            }
+
+            var entityConfiguration = builder.EntityType<TEntity>();
+            var all = entityConfiguration.Builder.FlattenObjectGraph(entity, typeof(TEntity));
+            var sb = new StringBuilder();
+            foreach (var item in all)
+            {
+                var config = entityConfiguration.Builder.GetEntityByType(item.Key);
+                for (var i = 0; i < item.Value.Count; i++)
+                {
+                    var itemEntity = item.Value[i];
+                    var json = JsonDataSerializer.SerializeEntityToJson(
+                        itemEntity, 
+                        config);
+                    sb.Append($"{Md5.Hash(json)}:");
+                }
+            }
+            return Md5.Hash(sb.ToString());
         }
 
         public Task<IqlUserPermission> EvaluatePermissionsRuleAsync<TEntity, TUser>(IqlUserPermissionRule rule, TUser user, TEntity entity, IDataContext dataContext)

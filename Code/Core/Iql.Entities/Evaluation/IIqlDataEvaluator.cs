@@ -29,8 +29,10 @@ namespace Iql.Data.Evaluation
         Task<object> GetEntityByKeyAsync(
             IEntityConfiguration entityConfiguration,
             CompositeKey key,
-            string[] expandPaths);
+            string[] expandPaths,
+            bool trackResult);
 
         IqlEntityStatus EntityStatus(object entity, IEntityConfiguration entityConfiguration = null);
+        string EntityStateKey(object entity, IEntityConfiguration entityConfiguration = null);
     }
 }

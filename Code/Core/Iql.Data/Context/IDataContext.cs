@@ -122,7 +122,7 @@ namespace Iql.Data.Context
             , Type entityType = null
 #endif
         );
-        Task<T> RefreshEntity<T>(T entity
+        Task<T> RefreshEntityAsync<T>(T entity
 #if TypeScript
             , Type entityType = null
 #endif

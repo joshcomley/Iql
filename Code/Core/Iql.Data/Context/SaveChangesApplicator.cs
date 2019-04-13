@@ -176,7 +176,7 @@ namespace Iql.Data.Context
 
                             if (!DataContext.RefreshDisabled)
                             {
-                                await DataContext.RefreshEntity(localEntity
+                                await DataContext.RefreshEntityAsync(localEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif
@@ -300,7 +300,7 @@ namespace Iql.Data.Context
                                 // TODO: Should be able to refresh an entity yet maintain existing changes
                                 if (!DataContext.RefreshDisabled)
                                 {
-                                    await DataContext.RefreshEntity(operationEntity
+                                    await DataContext.RefreshEntityAsync(operationEntity
 #if TypeScript
                         , typeof(TEntity)
 #endif

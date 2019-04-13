@@ -108,7 +108,7 @@ namespace Iql.Tests.Tests
             // Modify DB
             AppDbContext.InMemoryDb.Clients.Single(c => c.Id == 7).TypeId = clientType2.Id;
 
-            await Db.RefreshEntity(client
+            await Db.RefreshEntityAsync(client
 #if TypeScript
                 , typeof(Client)
 #endif

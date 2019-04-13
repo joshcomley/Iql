@@ -194,8 +194,8 @@ namespace Iql.Data.Evaluation
                                 dataEvaluator,
                                 property.EntityConfiguration.Builder,
                                 typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type),
-                                false,
-                                false);
+                                false
+                                );
 
                         if (!Equals(conditionResult.Result, true))
                         {
@@ -272,7 +272,8 @@ namespace Iql.Data.Evaluation
                             var relatedEntity = await dataEvaluator.GetEntityByKeyAsync(
                                 property.Relationship.OtherEnd.EntityConfiguration,
                                 compositeKey,
-                                new string[] { });
+                                new string[] { },
+                                true);
                             changes.Add(getPropertyChange(property.Relationship.ThisEnd.Property, relatedEntity));
                         }
                         else

@@ -20,33 +20,55 @@ namespace Iql.Data.Evaluation
 {
     public class EvaluationSession : IEvaluationSession
     {
+        public bool EnforceLatest { get; set; }
+        public EvaluationCacheMode CacheMode { get; set; } = EvaluationCacheMode.All;
+
+        public EvaluationSession(bool enforceLatest = false, EvaluationCacheMode cacheMode = EvaluationCacheMode.All)
+        {
+            EnforceLatest = enforceLatest;
+            CacheMode = cacheMode;
+        }
+
         public IEvaluationSession Session => this;
 
-        private readonly Dictionary<string, object> _resolvedEntities = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _cachedEntities = new Dictionary<string, object>();
+        //private readonly Dictionary<string, object> _cachedExcludedEntities = new Dictionary<string, object>();
+
+        //public void ExcludeFromCache(IEntityConfiguration entityConfiguration, CompositeKey compositeKey, object entity)
+        //{
+        //    AddToDictionary(entityConfiguration, compositeKey, entity, _cachedExcludedEntities);
+        //}
 
         public GetCachedEntityResult GetCachedEntity(IEntityConfiguration entityConfiguration, object compositeKeyOrEntity)
         {
             var compositeKey = CompositeKey.Ensure(compositeKeyOrEntity, entityConfiguration);
             var compositeKeyLookup = $"{entityConfiguration.Name}::{compositeKey.AsKeyString(true)}";
-            if (_resolvedEntities.ContainsKey(compositeKeyLookup))
+            if (_cachedEntities.ContainsKey(compositeKeyLookup))
             {
-                return new GetCachedEntityResult(true, _resolvedEntities[compositeKeyLookup]);
+                return new GetCachedEntityResult(true, _cachedEntities[compositeKeyLookup]);
             }
             return new GetCachedEntityResult(false, null);
         }
 
         public void SetCachedEntity(IEntityConfiguration entityConfiguration, CompositeKey compositeKey, object entity)
         {
+            AddToDictionary(entityConfiguration, compositeKey, entity, _cachedEntities);
+        }
+
+        private static void AddToDictionary(IEntityConfiguration entityConfiguration, CompositeKey compositeKey, object entity,
+            Dictionary<string, object> dictionary)
+        {
             var compositeKeyLookup = $"{entityConfiguration.Name}::{compositeKey.AsKeyString(true)}";
-            if (_resolvedEntities.ContainsKey(compositeKeyLookup))
+            if (dictionary.ContainsKey(compositeKeyLookup))
             {
-                _resolvedEntities[compositeKeyLookup] = entity;
+                dictionary[compositeKeyLookup] = entity;
             }
             else
             {
-                _resolvedEntities.Add(compositeKeyLookup, entity);
+                dictionary.Add(compositeKeyLookup, entity);
             }
         }
+
         public Task<IqlObjectEvaluationResult> EvaluateExpressionAsync<T>(
             Expression<Func<T, object>> expression,
             T entity,
@@ -71,7 +93,8 @@ namespace Iql.Data.Evaluation
             object entity,
             IIqlDataEvaluator dataEvaluator,
             bool populate,
-            Dictionary<object, object> replacements = null)
+            Dictionary<object, object> replacements = null,
+            bool? trackResults = null)
         {
             var evaluationResult = new IqlPropertyPathEvaluationResult(
                 false,
@@ -120,7 +143,8 @@ namespace Iql.Data.Evaluation
                     result = await dataEvaluator.GetEntityByKeyAsync(
                         part.Property.EntityProperty().Relationship.OtherEnd.EntityConfiguration,
                         key,
-                        new string[] { });
+                        new string[] { },
+                        trackResults == true);
                     if (populate && part.Property.GetValue(parent) != result)
                     {
                         part.Property.SetValue(parent, result);
@@ -363,8 +387,7 @@ namespace Iql.Data.Evaluation
             IIqlDataEvaluator dataEvaluator,
             ITypeResolver typeResolver,
             Type contextType = null,
-            bool populatePath = false,
-            bool enforceLatest = false
+            bool populatePath = false
         )
         {
             var success = true;
@@ -423,7 +446,7 @@ namespace Iql.Data.Evaluation
                         expands[rootEntity].ExpandPaths.Add(path);
                     }
                 }
-                else if (propertyPath.HasRootEntity && enforceLatest)
+                else if (propertyPath.HasRootEntity && EnforceLatest)
                 {
                     var root = propertyPath.RootEntity;
                     object rootEntity = (await EvaluateCustomAsync(
@@ -457,8 +480,8 @@ namespace Iql.Data.Evaluation
                     var expandPaths = expandGroup.Value.ExpandPaths.Distinct().ToArray();
                     // Ensure the relationships are populated
                     object newEntity = null;
-                    var cachedEntityResult = GetCachedEntity(expandGroup.Value.EntityConfiguration, entity);
-                    if (cachedEntityResult.Exists)
+                    var cachedEntityResult = CacheMode == EvaluationCacheMode.None ? null : GetCachedEntity(expandGroup.Value.EntityConfiguration, entity);
+                    if (cachedEntityResult?.Exists == true)
                     {
                         newEntity = cachedEntityResult.Entity;
                     }
@@ -468,10 +491,34 @@ namespace Iql.Data.Evaluation
                         newEntity = await dataEvaluator.GetEntityByKeyAsync(
                             expandGroup.Value.EntityConfiguration,
                             compositeKey,
-                            expandPaths);
-                        SetCachedEntity(expandGroup.Value.EntityConfiguration, compositeKey, newEntity);
+                            expandPaths,
+                            false);
+                        switch (CacheMode)
+                        {
+                            case EvaluationCacheMode.All:
+                                SetCachedEntity(expandGroup.Value.EntityConfiguration, compositeKey, newEntity);
+                                break;
+                            case EvaluationCacheMode.FetchesOnly:
+                                var all = expandGroup.Value.EntityConfiguration.Builder.FlattenObjectGraph(newEntity, expandGroup.Value.EntityConfiguration.Type);
+                                foreach (var itemGroup in all)
+                                {
+                                    for (var i = 0; i < itemGroup.Value.Count; i++)
+                                    {
+                                        var item = itemGroup.Value[i];
+                                        var itemConfiguration = expandGroup.Value.EntityConfiguration.Builder.GetEntityByType(
+                                            itemGroup.Key);
+                                        if (dataEvaluator.EntityStatus(item, itemConfiguration) == IqlEntityStatus.NotTracked)
+                                        {
+                                            var itemKey = itemConfiguration.GetCompositeKey(item);
+                                            SetCachedEntity(itemConfiguration, itemKey, item);
+                                        }
+                                    }
+                                }
+                                break;
+                        }
                     }
-                    if (newEntity != entity && newEntity != null)
+                    if (newEntity != entity && newEntity != null &&
+                        (EnforceLatest || (!EnforceLatest && entity == null && newEntity != null)))
                     {
                         replacements = replacements ?? new Dictionary<object, object>();
                         replacements.Add(entity, newEntity);

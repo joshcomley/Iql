@@ -65,6 +65,98 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(IqlUserPermission.Read, permission);
         }
 
+
+        [TestMethod]
+        public async Task TestComplexPermissionRuleWithFetchOnlyCacheMode()
+        {
+            var cloudUserClient = new Client
+            {
+                Id = 9233,
+                Description = "The ABCd"
+            };
+            AppDbContext.InMemoryDb.Clients.Add(cloudUserClient);
+            var cloudUser = new ApplicationUser
+            {
+                Id = nameof(TestComplexPermissionRuleWithFetchOnlyCacheMode),
+                ClientId = 9233,
+                EmailConfirmed = true
+            };
+            AppDbContext.InMemoryDb.Users.Add(cloudUser);
+            var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
+            var rule =
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                    context => context.User.Client.Description.Contains("abc") && context.User.EmailConfirmed == true ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit,
+                    nameof(TestComplexPermissionRuleWithFetchOnlyCacheMode)
+#if TypeScript
+            , new EvaluateContext(_ => Evaluator.Eval(_))
+#endif
+                );
+            var client = new Client
+            {
+                AverageSales = 10,
+                Name = "New client",
+                TypeId = 7
+            };
+            var user = await Db.Users.GetWithKeyAsync(nameof(TestComplexPermissionRuleWithFetchOnlyCacheMode));
+            var permissionsEvaluationSession = new PermissionsEvaluationSession(false, EvaluationCacheMode.FetchesOnly);
+            var permission = await permissionsEvaluationSession.EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
+            Assert.AreEqual(IqlUserPermission.Read, permission);
+
+            cloudUser.EmailConfirmed = false;
+
+            permission = await permissionsEvaluationSession.EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
+            Assert.AreEqual(IqlUserPermission.Read, permission);
+        }
+
+        [TestMethod]
+        public async Task TestComplexPermissionRuleWithNoneCacheMode()
+        {
+            var cloudUserClient = new Client
+            {
+                Id = 9233,
+                Description = "The ABCd"
+            };
+            AppDbContext.InMemoryDb.Clients.Add(cloudUserClient);
+            var cloudUser = new ApplicationUser
+            {
+                Id = nameof(TestComplexPermissionRuleWithNoneCacheMode),
+                ClientId = 9233,
+                EmailConfirmed = true
+            };
+            AppDbContext.InMemoryDb.Users.Add(cloudUser);
+            var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
+            var rule =
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                    context => context.User.Client.Description.Contains("abc") && context.User.EmailConfirmed == true ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit,
+                    nameof(TestComplexPermissionRuleWithNoneCacheMode)
+#if TypeScript
+            , new EvaluateContext(_ => Evaluator.Eval(_))
+#endif
+                );
+            var client = new Client
+            {
+                AverageSales = 10,
+                Name = "New client",
+                TypeId = 7
+            };
+            var user = await Db.Users.GetWithKeyAsync(nameof(TestComplexPermissionRuleWithNoneCacheMode));
+            var permissionsEvaluationSession = new PermissionsEvaluationSession(false, EvaluationCacheMode.None);
+            var permission = await permissionsEvaluationSession.EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
+            Assert.AreEqual(IqlUserPermission.Read, permission);
+
+            cloudUser.EmailConfirmed = false;
+
+            permission = await permissionsEvaluationSession.EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
+            Assert.AreEqual(IqlUserPermission.Read, permission);
+
+            permission = await permissionsEvaluationSession.EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
+            Assert.AreEqual(IqlUserPermission.Read, permission);
+
+            user = await Db.Users.GetWithKeyAsync(nameof(TestComplexPermissionRuleWithNoneCacheMode));
+            permission = await permissionsEvaluationSession.EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
+            Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
+        }
+
         [TestMethod]
         public async Task TestConvolutedPermissionRuleOnNewEntity()
         {
@@ -250,7 +342,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(IqlUserPermission.None, permission);
 
             cloudUser.UserType = UserType.Super;
-            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
+            permission = await new PermissionsEvaluationSession(true).EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
             Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
         }
 
@@ -303,7 +395,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(IqlUserPermission.None, permission);
 
             cloudUser.UserType = UserType.Super;
-            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
+            permission = await new PermissionsEvaluationSession(true).EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
             Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
         }
     }

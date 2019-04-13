@@ -34,6 +34,7 @@ namespace Iql.Data.Tracking.State
         IPropertyState[] GetChangedProperties(IProperty[] properties = null);
         IEntityConfiguration EntityConfiguration { get; }
         EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }
+        string StateKey { get; set; }
         IPropertyState GetPropertyState(string name);
         void MarkForCascadeDeletion(object from, IRelationship relationship);
         void UnmarkForDeletion();

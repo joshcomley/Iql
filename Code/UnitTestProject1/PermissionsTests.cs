@@ -317,7 +317,7 @@ namespace Iql.Tests.Server
 
             cloudUser.UserType = UserType.Super;
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession(true).EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,
@@ -366,7 +366,7 @@ namespace Iql.Tests.Server
 
             cloudUser.UserType = UserType.Super;
             await cloudDb.SaveChangesAsync();
-            permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleCustomAsync(
+            permission = await new PermissionsEvaluationSession(true).EvaluateEntityPermissionsRuleCustomAsync(
                 rule,
                 user,
                 client,

@@ -54,6 +54,7 @@ namespace Iql.Data.Tracking.State
         }
 
         public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; } = new EventEmitter<MarkedForDeletionChangeEvent>();
+        public string StateKey { get; set; }
 
         public bool MarkedForDeletion
         {

@@ -887,7 +887,7 @@ namespace Iql.Data.Context
             return (IEntityStateBase)AddInternalMethod.InvokeGeneric(this, new[] { entity }, entityType);
         }
 
-        public async Task<T> RefreshEntity<T>(T entity
+        public async Task<T> RefreshEntityAsync<T>(T entity
 #if TypeScript
             , Type entityType = null
 #endif
@@ -1799,14 +1799,24 @@ namespace Iql.Data.Context
             );
         }
 
-        public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)
+        public Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths, bool trackResult)
         {
             var set = GetDbSetByEntityType(entityConfiguration.Type);
+            if (!trackResult)
+            {
+                set = set.NoTracking();
+            }
             for (var i = 0; i < expandPaths.Length; i++)
             {
                 set = set.ExpandRelationship(expandPaths[i]);
             }
             return set.GetWithKeyAsync(key);
+        }
+
+        public string EntityStateKey(object entity, IEntityConfiguration entityConfiguration = null)
+        {
+            var state = GetEntityState(entity, entityConfiguration?.Type ?? entity?.GetType());
+            return state.StateKey;
         }
 
         public IqlEntityStatus EntityStatus(object entity, IEntityConfiguration entityConfiguration = null)

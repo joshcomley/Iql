@@ -53,7 +53,8 @@ namespace Iql.Server.OData.Net
         private async Task<object> GetEntityByKeyTypedAsync<TEntity>(
             EntityConfiguration<TEntity> entityConfiguration,
             CompositeKey key,
-            string[] expandPaths)
+            string[] expandPaths,
+            bool trackResult)
             where TEntity : class
         {
             var dic = new List<KeyValuePair<string, object>>();
@@ -66,7 +67,12 @@ namespace Iql.Server.OData.Net
 
             try
             {
-                var entityQuery = NewDbContext().Set<TEntity>().AsNoTracking().Where(CrudManager.KeyEqualsExpression<TEntity>(dic));
+                IQueryable<TEntity> dbSet = NewDbContext().Set<TEntity>();
+                if (!trackResult)
+                {
+                    dbSet = dbSet.AsNoTracking();
+                }
+                var entityQuery = dbSet.Where(CrudManager.KeyEqualsExpression<TEntity>(dic));
                 if (expandPaths != null)
                 {
                     foreach (var expand in expandPaths)
@@ -74,7 +80,7 @@ namespace Iql.Server.OData.Net
                         entityQuery = entityQuery.Include(expand);
                     }
                 }
-                return await entityQuery.AsNoTracking().SingleOrDefaultAsync();
+                return await entityQuery.SingleOrDefaultAsync();
             }
             catch
             {
@@ -111,10 +117,10 @@ namespace Iql.Server.OData.Net
             throw new System.NotImplementedException();
         }
 
-        public async Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths)
+        public async Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths, bool trackResult)
         {
             return await (Task<object>)(GetEntityByKeyTypedAsyncMethod.MakeGenericMethod(entityConfiguration.Type)
-                .Invoke(this, new object[] { entityConfiguration, key, expandPaths }));
+                .Invoke(this, new object[] { entityConfiguration, key, expandPaths, trackResult }));
         }
 
         public IqlEntityStatus EntityStatus(object entity, IEntityConfiguration entityConfiguration = null)
@@ -122,6 +128,11 @@ namespace Iql.Server.OData.Net
             return UnsavedEntities != null && UnsavedEntities.Length > 0 && UnsavedEntities.Contains(entity)
                 ? IqlEntityStatus.New
                 : IqlEntityStatus.Existing;
+        }
+
+        public string EntityStateKey(object entity, IEntityConfiguration entityConfiguration = null)
+        {
+            return Guid.NewGuid().ToString();
         }
     }
 }

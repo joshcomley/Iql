@@ -129,7 +129,7 @@ namespace Iql.Data.Serialization
             var all = new List<JObject>();
             foreach (var entity in entities)
             {
-                all.Add(SerializeInternal(entityConfiguration, entity, areNew, allowAllKeys, properties));
+                all.Add(SerializePropertyChangesInternal(entityConfiguration, entity, areNew, allowAllKeys, properties));
             }
             return all;
         }
@@ -140,17 +140,23 @@ namespace Iql.Data.Serialization
             bool allowAllKeys,
             params IPropertyState[] properties)
         {
-            var obj = SerializeInternal(entityConfiguration, entity, isNew, allowAllKeys, properties);
+            var obj = SerializePropertyChangesInternal(entityConfiguration, entity, isNew, allowAllKeys, properties);
             return obj;
         }
 
         public static string SerializeEntityToJson(object entity,
-            IEntityConfiguration entityConfigurationBuilder,
+            IEntityConfiguration entityConfiguration)
+        {
+            return SerializePropertiesInternal(entityConfiguration, entity, true, true, entityConfiguration.Properties.ToArray()).ToString();
+        }
+
+        public static string SerializeEntityPropertiesToJson(object entity,
+            IEntityConfiguration entityConfiguration,
             bool isNew,
             bool allowAllKeys,
             params IPropertyState[] properties)
         {
-            return PrepareEntityForSerialization(entity, entityConfigurationBuilder, isNew, allowAllKeys, properties).ToString();
+            return PrepareEntityForSerialization(entity, entityConfiguration, isNew, allowAllKeys, properties).ToString();
         }
 
         public static DeserializeCollectionResult<T> DeserializeCollection<T>(string json,
@@ -242,18 +248,18 @@ namespace Iql.Data.Serialization
             return jvalue;
         }
 
-        private static JObject SerializeInternal(
+        private static JObject SerializePropertyChangesInternal(
             IEntityConfiguration entityConfiguration, 
             object entity, 
             bool isNew,
             bool allowAllKeys,
             IEnumerable<IPropertyState> properties)
         {
-            var obj = new JObject();
             if (properties == null)
             {
                 properties = new PropertyState[] { };
             }
+
             var propertyChanges = properties as PropertyState[] ?? properties.ToArray();
             if (!propertyChanges.Any())
             {
@@ -263,6 +269,17 @@ namespace Iql.Data.Serialization
                     propertyChanges = entityConfiguration.Builder.EntityNonNullProperties(entity).ToArray();
                 }
             }
+            return SerializePropertiesInternal(entityConfiguration, entity, isNew, allowAllKeys, propertyChanges.Select(_ => _.Property).ToArray());
+        }
+
+        private static JObject SerializePropertiesInternal(
+            IEntityConfiguration entityConfiguration, 
+            object entity, 
+            bool isNew,
+            bool allowAllKeys, 
+            IProperty[] propertiesToSerialize)
+        {
+            var obj = new JObject();
 
             bool CanSendKey(IProperty keyProperty)
             {
@@ -270,71 +287,76 @@ namespace Iql.Data.Serialization
                 {
                     return true;
                 }
+
                 var invalid = (isNew && !keyProperty.EntityConfiguration.Key.CanWrite) ||
-                    keyProperty.GetValue(entity) == null;
+                              keyProperty.GetValue(entity) == null;
                 return !invalid;
             }
+
             foreach (var key in entityConfiguration.Key.Properties)
             {
                 if (!CanSendKey(key))
                 {
                     continue;
                 }
+
                 obj[key.Name] = new JValue(entity.GetPropertyValueByName(key.Name));
             }
-            foreach (var property in propertyChanges)
+
+            foreach (var property in propertiesToSerialize)
             {
-                if (property.Property.EntityConfiguration.Key.Properties.Any(p => p == property.Property))
+                if (property.EntityConfiguration.Key.Properties.Any(p => p == property))
                 {
                     // Main keys are dealt with above
                     continue;
                 }
 
-                if (property.Property.Kind.HasFlag(PropertyKind.Key) && !CanSendKey(property.Property))
+                if (property.Kind.HasFlag(PropertyKind.Key) && !CanSendKey(property))
                 {
                     continue;
                 }
 
-                var propertyValue = property.Property.GetValue(entity);
-                if (property.Property.Kind.HasFlag(PropertyKind.Count) || property.Property.Kind.HasFlag(PropertyKind.Relationship))
+                var propertyValue = property.GetValue(entity);
+                if (property.Kind.HasFlag(PropertyKind.Count) || property.Kind.HasFlag(PropertyKind.Relationship))
                 {
                     continue;
                 }
 
                 if (propertyValue != null)
                 {
-                    if (property.Property.TypeDefinition.Kind.IsGeographic())
+                    if (property.TypeDefinition.Kind.IsGeographic())
                     {
                         SerializeGeography(obj, property, propertyValue);
                         continue;
                     }
                 }
 
-                if (property.Property.TypeDefinition.IsCollection)
+                if (property.TypeDefinition.IsCollection)
                 {
-                    obj[property.Property.Name] = new JArray(propertyValue);
+                    obj[property.Name] = new JArray(propertyValue);
                 }
                 else
                 {
-                    if (property.Property.TypeDefinition.ToIqlType() == IqlType.Date)
+                    if (property.TypeDefinition.ToIqlType() == IqlType.Date)
                     {
-                        if (propertyValue == null && !property.Property.TypeDefinition.Nullable)
+                        if (propertyValue == null && !property.TypeDefinition.Nullable)
                         {
-                            obj[property.Property.Name] = "0001-01-01T00:00:00.0+00:00";
+                            obj[property.Name] = "0001-01-01T00:00:00.0+00:00";
                         }
                         else
                         {
-                            var normalizedDate = ((DateTimeOffset)propertyValue).NormalizeDate();
-                            obj[property.Property.Name] = new JValue(normalizedDate);
+                            var normalizedDate = propertyValue == null ? null : ((DateTimeOffset) propertyValue).NormalizeDate();
+                            obj[property.Name] = new JValue(normalizedDate);
                         }
                     }
-                    else if (property.Property.TypeDefinition.ConvertedFromType == KnownPrimitiveTypes.Guid && !property.Property.TypeDefinition.Nullable && propertyValue == null)
+                    else if (property.TypeDefinition.ConvertedFromType == KnownPrimitiveTypes.Guid &&
+                             !property.TypeDefinition.Nullable && propertyValue == null)
                     {
-                        obj[property.Property.Name] = "00000000-0000-0000-0000-000000000000";
+                        obj[property.Name] = "00000000-0000-0000-0000-000000000000";
                     }
-                    else if (property.Property.TypeDefinition.Kind == IqlType.Enum)
+                    else if (property.TypeDefinition.Kind == IqlType.Enum)
                     {
-                        if (propertyValue == null && property.Property.Nullable == false)
+                        if (propertyValue == null && property.Nullable == false)
                         {
                             propertyValue = 0;
                         }
@@ -343,51 +365,53 @@ namespace Iql.Data.Serialization
                         if (value != null)
                         {
 #if !TypeScript
-                            var enumUnderlyingType = property.Property.TypeDefinition.Type.GetEnumUnderlyingType();
+                            var enumUnderlyingType = property.TypeDefinition.Type.GetEnumUnderlyingType();
                             if (enumUnderlyingType == typeof(long))
                             {
                                 try
                                 {
-                                    value = ((long)propertyValue).ToString();
+                                    value = ((long) propertyValue).ToString();
                                 }
                                 catch
                                 {
-                                    value = ((int)propertyValue).ToString();
+                                    value = ((int) propertyValue).ToString();
                                 }
                             }
                             else if (enumUnderlyingType == typeof(short))
                             {
                                 try
                                 {
-                                    value = ((short)propertyValue).ToString();
+                                    value = ((short) propertyValue).ToString();
                                 }
                                 catch
                                 {
-                                    value = ((int)propertyValue).ToString();
+                                    value = ((int) propertyValue).ToString();
                                 }
                             }
                             else
                             {
-                                value = ((int)propertyValue).ToString();
+                                value = ((int) propertyValue).ToString();
                             }
 #else
                             value = propertyValue.ToString();
 #endif
                         }
-                        obj[property.Property.Name] = new JValue(value);
+
+                        obj[property.Name] = new JValue(value);
                     }
                     else
                     {
-                        obj[property.Property.Name] = new JValue(propertyValue);
+                        obj[property.Name] = new JValue(propertyValue);
                     }
                 }
             }
+
             return obj;
         }
 
         private static void SerializeGeography(
             JObject obj,
-            IPropertyState property,
+            IProperty propertyProperty,
             object propertyValue)
         {
             if (propertyValue == null)
@@ -395,10 +419,10 @@ namespace Iql.Data.Serialization
                 return;
             }
             var container = new JObject();
-            obj[property.Property.Name] = container;
+            obj[propertyProperty.Name] = container;
             string typeName = "";
             object coordinates = null;
-            switch (property.Property.TypeDefinition.Kind)
+            switch (propertyProperty.TypeDefinition.Kind)
             {
                 case IqlType.GeometryLine:
                 case IqlType.GeographyLine:

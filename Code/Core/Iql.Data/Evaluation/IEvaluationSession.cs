@@ -12,6 +12,8 @@ namespace Iql.Data.Evaluation
 {
     public interface IEvaluationSession : IEvaluationSessionContainer
     {
+        bool EnforceLatest { get; set; }
+        EvaluationCacheMode CacheMode { get; set; }
         GetCachedEntityResult GetCachedEntity(IEntityConfiguration entityConfiguration, object compositeKeyOrEntity);
         void SetCachedEntity(IEntityConfiguration entityConfiguration, CompositeKey compositeKey, object entity);
         Task<IqlObjectEvaluationResult> EvaluateExpressionAsync<T>(
@@ -32,7 +34,8 @@ namespace Iql.Data.Evaluation
             object entity,
             IIqlDataEvaluator dataEvaluator,
             bool populate,
-            Dictionary<object, object> replacements = null);
+            Dictionary<object, object> replacements = null,
+            bool? trackResults = null);
 
         Task<T> EvaluateAsAsync<T>(IqlPropertyPath propertyPath, object entity, IDataContext dataContext, bool populate);
 
@@ -79,8 +82,7 @@ namespace Iql.Data.Evaluation
             IIqlDataEvaluator dataEvaluator,
             ITypeResolver typeResolver,
             Type contextType = null,
-            bool populatePath = false,
-            bool enforceLatest = false
+            bool populatePath = false
         );
     }
 }

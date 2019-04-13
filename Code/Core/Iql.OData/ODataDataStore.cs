@@ -167,7 +167,7 @@ namespace Iql.OData
                                     jobject[parameter.Name] =
                                         entityConfiguration == null
                                             ? JToken.FromObject(parameter.Value)
-                                            : JToken.Parse(JsonDataSerializer.SerializeEntityToJson(parameter.Value, entityConfiguration, false, false, EntityConfigurationBuilder.EntityNonNullProperties(parameter.Value).ToArray()));
+                                            : JToken.Parse(JsonDataSerializer.SerializeEntityPropertiesToJson(parameter.Value, entityConfiguration, false, false, EntityConfigurationBuilder.EntityNonNullProperties(parameter.Value).ToArray()));
                                 }
                                 else
                                 {
@@ -367,7 +367,7 @@ namespace Iql.OData
             var configuration = Configuration;
             var http = configuration.HttpProvider;
             var entitySetUri = Configuration.ResolveEntitySetUri<TEntity>();
-            var json = JsonDataSerializer.SerializeEntityToJson(operation.Operation.Entity, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), true, false);
+            var json = JsonDataSerializer.SerializeEntityPropertiesToJson(operation.Operation.Entity, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), true, false);
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             var responseData = await httpResult.GetResponseTextAsync();
             if (httpResult.IsOffline)
@@ -407,7 +407,7 @@ namespace Iql.OData
                 properties.Add(key.Name);
             }
 
-            var json = JsonDataSerializer.SerializeEntityToJson(
+            var json = JsonDataSerializer.SerializeEntityPropertiesToJson(
                 operation.Operation.Entity,
                 entityConfiguration,
                 false,
