@@ -227,6 +227,123 @@ namespace IqlSampleApp.ApiContext.Base
                 },
                 UserTypeName = "ApplicationUser"
             });
+            builder.PermissionRules.Add(new IqlUserPermissionRule
+            {
+                Key = "SkillsPermission",
+                IqlExpression = new IqlLambdaExpression
+                {
+                    Body = new IqlConditionExpression
+                    {
+                        Test = new IqlIsEqualToExpression
+                        {
+                            Left = new IqlPropertyExpression
+                            {
+                                PropertyName = "Email",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlPropertyExpression
+                                {
+                                    PropertyName = "User",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "IqlEntityUserPermissionContext<TEntity, ApplicationUser>",
+                                        VariableName = "context",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                }
+                            },
+                            Right = new IqlLiteralExpression
+                            {
+                                Value = "CannotSeeOrEdit",
+                                InferredReturnType = IqlType.String,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.String
+                            },
+                            Kind = IqlExpressionKind.IsEqualTo,
+                            ReturnType = IqlType.Boolean
+                        },
+                        IfTrue = new IqlLiteralExpression
+                        {
+                            Value = 1L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        IfFalse = new IqlConditionExpression
+                        {
+                            Test = new IqlIsEqualToExpression
+                            {
+                                Left = new IqlPropertyExpression
+                                {
+                                    PropertyName = "Email",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlPropertyExpression
+                                    {
+                                        PropertyName = "User",
+                                        Kind = IqlExpressionKind.Property,
+                                        ReturnType = IqlType.Unknown,
+                                        Parent = new IqlRootReferenceExpression
+                                        {
+                                            EntityTypeName = "IqlEntityUserPermissionContext<TEntity, ApplicationUser>",
+                                            VariableName = "context",
+                                            InferredReturnType = IqlType.Unknown,
+                                            Kind = IqlExpressionKind.RootReference,
+                                            ReturnType = IqlType.Unknown
+                                        }
+                                    }
+                                },
+                                Right = new IqlLiteralExpression
+                                {
+                                    Value = "CanSeeCannotEdit",
+                                    InferredReturnType = IqlType.String,
+                                    Kind = IqlExpressionKind.Literal,
+                                    ReturnType = IqlType.String
+                                },
+                                Kind = IqlExpressionKind.IsEqualTo,
+                                ReturnType = IqlType.Boolean
+                            },
+                            IfTrue = new IqlLiteralExpression
+                            {
+                                Value = 2L,
+                                InferredReturnType = IqlType.Integer,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            IfFalse = new IqlLiteralExpression
+                            {
+                                Value = 3L,
+                                InferredReturnType = IqlType.Integer,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.Unknown
+                            },
+                            Kind = IqlExpressionKind.Condition,
+                            ReturnType = IqlType.Unknown
+                        },
+                        Kind = IqlExpressionKind.Condition,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "IqlEntityUserPermissionContext<TEntity, ApplicationUser>",
+                            VariableName = "context",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                },
+                UserTypeName = "ApplicationUser",
+                EntityTypeName = "Person"
+            });
             builder.EntityType<ApplicationUser>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean).ConfigureProperty(p => p.IsLockedOut, p => {
                 p.PropertyName = "IsLockedOut";
                 p.Nullable = false;
@@ -615,6 +732,26 @@ namespace IqlSampleApp.ApiContext.Base
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
+                        Parameters = new List<IqlMethodParameter>(),
+                        ScopeKind = IqlMethodScopeKind.EntitySet,
+                        ReturnType = typeof(IEnumerable<ApplicationUser>),
+                        ReturnTypeName = "Collection<ApplicationUser>",
+                        Metadata = new MetadataCollection(),
+                        Name = "OldUsers",
+                        Title = "OldUsers",
+                        FriendlyName = "Old Users",
+                        Hints = new List<String>(),
+                        HelpTexts = new List<HelpText>(),
+                        Permissions = new UserPermissionsCollection
+                        {
+                            Keys = new List<String>()
+                        }
+                    },
+                    new IqlMethod
+                    {
+                        SupportsOffline = false,
+                        DataStoreRequired = "ODataDataStore",
+                        IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
                             new IqlMethodParameter
@@ -699,8 +836,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -719,21 +856,6 @@ namespace IqlSampleApp.ApiContext.Base
                         IsPublic = false,
                         Parameters = new List<IqlMethodParameter>
                         {
-                            new IqlMethodParameter
-                            {
-                                Name = "bindingParameter",
-                                IsBindingParameter = true,
-                                Type = new TypeDetail
-                                {
-                                    Type = typeof(ApplicationUser),
-                                    TypeName = "ApplicationUser",
-                                    Nullable = true,
-                                    Kind = IqlType.Unknown,
-                                    ElementType = typeof(ApplicationUser),
-                                    ElementTypeName = "ApplicationUser",
-                                    IsCollection = false
-                                }
-                            },
                             new IqlMethodParameter
                             {
                                 Name = "id",
@@ -932,24 +1054,7 @@ namespace IqlSampleApp.ApiContext.Base
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
-                        Parameters = new List<IqlMethodParameter>
-                        {
-                            new IqlMethodParameter
-                            {
-                                Name = "bindingParameter",
-                                IsBindingParameter = true,
-                                Type = new TypeDetail
-                                {
-                                    Type = typeof(ApplicationUser),
-                                    TypeName = "ApplicationUser",
-                                    Nullable = true,
-                                    Kind = IqlType.Unknown,
-                                    ElementType = typeof(ApplicationUser),
-                                    ElementTypeName = "ApplicationUser",
-                                    IsCollection = false
-                                }
-                            }
-                        },
+                        Parameters = new List<IqlMethodParameter>(),
                         ScopeKind = IqlMethodScopeKind.EntitySet,
                         ReturnType = typeof(ApplicationUser),
                         ReturnTypeName = "ApplicationUser",
@@ -1452,8 +1557,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -1470,24 +1575,7 @@ namespace IqlSampleApp.ApiContext.Base
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
-                        Parameters = new List<IqlMethodParameter>
-                        {
-                            new IqlMethodParameter
-                            {
-                                Name = "bindingParameter",
-                                IsBindingParameter = true,
-                                Type = new TypeDetail
-                                {
-                                    Type = typeof(Client),
-                                    TypeName = "Client",
-                                    Nullable = true,
-                                    Kind = IqlType.Unknown,
-                                    ElementType = typeof(Client),
-                                    ElementTypeName = "Client",
-                                    IsCollection = false
-                                }
-                            }
-                        },
+                        Parameters = new List<IqlMethodParameter>(),
                         ScopeKind = IqlMethodScopeKind.EntitySet,
                         ReturnType = typeof(IEnumerable<Client>),
                         ReturnTypeName = "Collection<Client>",
@@ -1579,8 +1667,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "SayHi",
                         Title = "SayHi",
@@ -1681,8 +1769,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -2041,8 +2129,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -2430,8 +2518,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -2800,8 +2888,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -3160,8 +3248,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -3529,8 +3617,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -3918,8 +4006,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -4297,8 +4385,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -4657,8 +4745,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -5027,8 +5115,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -5397,8 +5485,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -6032,8 +6120,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -6392,8 +6480,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -7088,6 +7176,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Skills";
                 p.Title = "Skills";
                 p.FriendlyName = "Skills";
+                p.Permissions.UseRule("SkillsPermission");
             }).DefineProperty(p => p.Category, false, IqlType.Enum).ConfigureProperty(p => p.Category, p => {
                 p.PropertyName = "Category";
                 p.Nullable = false;
@@ -7529,8 +7618,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -7953,8 +8042,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -8313,8 +8402,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -8682,8 +8771,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -8949,8 +9038,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -9365,8 +9454,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -10027,8 +10116,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -10689,8 +10778,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -11130,8 +11219,8 @@ namespace IqlSampleApp.ApiContext.Base
                             }
                         },
                         ScopeKind = IqlMethodScopeKind.Entity,
-                        ReturnType = typeof(String),
-                        ReturnTypeName = "string",
+                        ReturnType = typeof(IEnumerable<string>),
+                        ReturnTypeName = "Collection<string>",
                         Metadata = new MetadataCollection(),
                         Name = "GetMediaUploadUrl",
                         Title = "GetMediaUploadUrl",
@@ -12211,11 +12300,11 @@ namespace IqlSampleApp.ApiContext.Base
             get;
             set;
         }
-        public virtual ODataDataMethodRequest<string>SendHi(string name)
+        public virtual ODataMethodRequest SendHi(string name)
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(name, typeof(string), "name", false));
-            return ((ODataDataStore) this.DataStore).MethodWithResponse<string>(parameters, ODataMethodType.Action, ODataMethodScopeKind.Global, "IqlSampleApp", "SendHi", null, typeof(String));
+            return ((ODataDataStore) this.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Global, "IqlSampleApp", "SendHi", null);
         }
     }
 }

@@ -4,6 +4,7 @@ using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql;
 using Iql.Entities;
 using Iql.Entities.InferredValues;
+using Iql.Entities.Permissions;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
@@ -16,6 +17,11 @@ namespace IqlSampleApp.Data.Configuration.Entities
         public void Configure(IEntityConfigurationBuilder builder)
         {
             //model.ModelConfiguration();
+            builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>(
+                "SkillsPermission",
+                context =>
+                    context.User.Email == "CannotSeeOrEdit" ? IqlUserPermission.None : (context.User.Email == "CanSeeCannotEdit" ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit)
+                );
             var model = builder.EntityType<Person>();
             model.HasFile(s => s.PhotoUrl, f =>
             {
@@ -31,6 +37,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
 
             model.ConfigureProperty(p => p.Skills, p =>
             {
+                p.Permissions.UseRule("SkillsPermission");
                 p.IsInferredWith(_ => PersonSkills.Coder,
                     true,
                     InferredValueKind.IfNullOrEmpty,

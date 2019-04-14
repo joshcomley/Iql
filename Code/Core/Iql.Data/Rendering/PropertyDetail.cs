@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Iql.Data.Context;
@@ -87,37 +88,51 @@ namespace Iql.Data.Rendering
 
         public async Task<EntityPropertySnapshot> GetSnapshotAsync(
             object entity,
+            Type entityType,
             object user,
+            Type userType,
             IDataContext dataContext,
             DisplayConfiguration configuration,
             SnapshotOrdering ordering = SnapshotOrdering.Default,
-            bool appendNonConfiguredProperties = true
+            bool appendNonConfiguredProperties = true,
+            PermissionsEvaluationSession permissionsEvaluationSession = null,
+            InferredValueEvaluationSession inferredValueEvaluationSession = null
         )
         {
-            var canEdit = !IsSimpleProperty || !await new InferredValueEvaluationSession().IsReadOnlyAsync(PropertyAsSimpleProperty, entity, dataContext);
+            permissionsEvaluationSession = permissionsEvaluationSession ?? new PermissionsEvaluationSession();
+            inferredValueEvaluationSession = inferredValueEvaluationSession ??
+                                             new InferredValueEvaluationSession(permissionsEvaluationSession.Session);
+            var canEditAltersPosition = true;
+            var canEdit = !IsSimpleProperty || !await inferredValueEvaluationSession.IsReadOnlyAsync(PropertyAsSimpleProperty, entity, dataContext);
             var canShow = CanShow(entity, dataContext, configuration);
-            //if (IsPropertyGroup)
-            //{
-            //    var permissions = await PropertyAsPropertyGroup.Permissions.GetUserPermissionAsync(
-            //        dataContext,
-            //        user, 
-            //        entity);
-            //    switch (permissions)
-            //    {
-            //        case IqlUserPermission.Read:
-            //            canEdit = false;
-            //            canShow = true;
-            //            break;
-            //        case IqlUserPermission.ReadAndEdit:
-            //            canEdit = true;
-            //            canShow = true;
-            //            break;
-            //        case IqlUserPermission.None:
-            //            canEdit = false;
-            //            canShow = false;
-            //            break;
-            //    }
-            //}
+            var canShowReason = SnapshotReasonKind.Configuration;
+            var canEditReason = SnapshotReasonKind.Configuration;
+            if (IsPropertyGroup && (canShow || canEdit))
+            {
+                var permissions = await permissionsEvaluationSession.GetUserPermissionAsync(
+                    PropertyAsPropertyGroup.EntityConfiguration.Builder.PermissionManager,
+                    PropertyAsPropertyGroup.Permissions,
+                    dataContext,
+                    user,
+                    userType,
+                    entity,
+                    entityType,
+                    dataContext,
+                    dataContext.EntityConfigurationContext);
+                switch (permissions)
+                {
+                    case IqlUserPermission.Read:
+                        canEditReason = SnapshotReasonKind.Permissions;
+                        canEdit = false;
+                        break;
+                    case IqlUserPermission.None:
+                        canEditReason = SnapshotReasonKind.Permissions;
+                        canShowReason = SnapshotReasonKind.Permissions;
+                        canEdit = false;
+                        canShow = false;
+                        break;
+                }
+            }
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
                 entityConfiguration != null
@@ -150,7 +165,7 @@ namespace Iql.Data.Rendering
                 var child = childProperties[i];
                 if (child.Property != Property)
                 {
-                    var propertySnapshot = await child.GetSnapshotAsync(entity, user, dataContext, configuration);
+                    var propertySnapshot = await child.GetSnapshotAsync(entity, entityType, user, userType, dataContext, configuration, ordering, appendNonConfiguredProperties, permissionsEvaluationSession);
                     wasManuallyAdded.Add(propertySnapshot, manuallyAddedCount - 1 >= i);
                     children.Add(propertySnapshot);
                 }
@@ -169,7 +184,7 @@ namespace Iql.Data.Rendering
                             for (var i = 0; i < kids.Length; i++)
                             {
                                 var kid = kids[i];
-                                if (!kid.CanEdit && (!wasManuallyAdded.ContainsKey(kid) || wasManuallyAdded[kid] == false))
+                                if (!kid.CanEdit && kid.CanEditReason == SnapshotReasonKind.Configuration && (!wasManuallyAdded.ContainsKey(kid) || wasManuallyAdded[kid] == false))
                                 {
                                     readOnly.Add(kid);
                                 }
@@ -194,7 +209,7 @@ namespace Iql.Data.Rendering
                             for (var i = 0; i < kids.Length; i++)
                             {
                                 var kid = kids[i];
-                                if (kid.CanEdit)
+                                if (kid.CanEdit || kid.CanEditReason == SnapshotReasonKind.Permissions)
                                 {
                                     if (kid.IsRelationshipTarget)
                                     {
@@ -225,7 +240,7 @@ namespace Iql.Data.Rendering
                 }
             }
 
-            if (kids.Any())
+            if (canEdit && kids.Any())
             {
                 canEdit = kids.Any(_ => _.CanEdit);
             }
@@ -233,7 +248,9 @@ namespace Iql.Data.Rendering
                 this,
                 Kind,
                 canShow,
+                canShowReason,
                 canEdit,
+                canEditReason,
                 kids);
         }
 

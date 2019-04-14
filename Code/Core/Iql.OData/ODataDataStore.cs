@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Iql.Data.Lists;
 using Iql.Data.Serialization;
@@ -45,7 +46,7 @@ namespace Iql.OData
             string nameSpace,
             string name,
             Type entityType,
-            Type responseElementType
+            Type responseType
         )
         {
             var uri = GetMethodUri(parameters, methodScope, methodType, nameSpace, name, entityType);
@@ -56,13 +57,17 @@ namespace Iql.OData
                 {
                     var httpResult = await GetMethodHttpResult(methodType, uri, parameters);
                     var dataMethodResult = new DataMethodResult<TResult>(httpResult.Success);
-                    var isCollectionResult = typeof(TResult).IsEnumerableType();
+                    var isCollectionResult = responseType.IsEnumerableType();
+                    var responseElementType = isCollectionResult ? responseType.GenericTypeArguments[0] : responseType;
                     if (EntityConfigurationBuilder.IsEntityType(responseElementType))
                     {
                         var flattenedResponse = await ParseODataEntityResponseByTypeAsync(responseElementType, httpResult, isCollectionResult);
                         DataSetRetrieved.Emit(() => new DataSetRetrievedEvent(flattenedResponse));
                         var dbList = flattenedResponse.ToDbList();
                         var list = dbList.ToList(responseElementType);
+#if TypeScript
+                        list = EntityConfigurationBuilder.EnsureTypedListByType(list, responseElementType);
+#endif
                         dataMethodResult.Data = (TResult)(isCollectionResult
                             ? list
                             : (list.Count == 0 ? null : list[0]));
@@ -104,7 +109,7 @@ namespace Iql.OData
 
         public virtual ODataDataMethodRequest<TResult> IqlMethodWithResponse<TResult>(
             IqlMethod method, 
-            Type responseElementType,
+            Type responseType,
             params IqlMethodArgument[] args)
         {
             var parameters = new List<ODataParameter>();
@@ -120,7 +125,7 @@ namespace Iql.OData
                 method.NameSpace,
                 method.Name,
                 method.EntityConfiguration?.Type,
-                responseElementType);
+                responseType);
         }
 
         public virtual ODataMethodRequest Method(
@@ -275,11 +280,11 @@ namespace Iql.OData
             bool isCollection,
             IFlattenedGetDataResult result = null)
         {
-            return (Task<IFlattenedGetDataResult>)GetType().GetMethod(nameof(ParseODataEntityResponseAsync))
+            return (Task<IFlattenedGetDataResult>)GetType().GetMethod(nameof(ParseODataEntityResponseAsync), BindingFlags.Instance | BindingFlags.NonPublic)
                 .InvokeGeneric(this, new object[] { httpResult, isCollection, result }, entityType);
         }
 
-        protected async Task<FlattenedGetDataResult<TEntity>> ParseODataEntityResponseAsync<TEntity>(
+        protected async Task<IFlattenedGetDataResult> ParseODataEntityResponseAsync<TEntity>(
             IHttpResult httpResult,
             bool isCollection,
             FlattenedGetDataResult<TEntity> result = null)
@@ -476,7 +481,7 @@ namespace Iql.OData
             return entityUri;
         }
 
-        #region Validation
+#region Validation
         private void ParseValidation<TEntity>(IEntityCrudResult result, TEntity entity, string responseData) where TEntity : class
         {
             if (!result.Success)
@@ -632,7 +637,7 @@ namespace Iql.OData
             }
             return null;
         }
-        #endregion Validation
+#endregion Validation
 
         public ODataDataStore(string name = null) : base(name ?? nameof(ODataDataStore))
         {

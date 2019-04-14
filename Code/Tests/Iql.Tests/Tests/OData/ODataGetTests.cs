@@ -15,6 +15,31 @@ namespace Iql.Tests.Tests.OData
     public class ODataGetTests : ODataTestsBase
     {
         [TestMethod]
+        public async Task TestGetSingleEntityFromMethod()
+        {
+            await RequestLog.LogSessionAsync(async log =>
+            {
+                await log.InterceptAsync(
+                    (method, c, request) => HttpResult.FromString(
+                        @"{
+  ""@odata.context"": ""https://localhost:44316/odata/$metadata#Users/$entity"",
+  ""Id"": ""cd403222-0c78-4adc-bd53-0fec97841f96"",
+  ""CreatedByUserId"": ""cd403222-0c78-4adc-bd53-0fec97841f96"",
+  ""Email"": ""joshcomley@googlemail.com"",
+  ""UserType"": ""Client"",
+  ""FullName"": ""Josh Comley"",
+  ""CreatedDate"": ""2019-04-13T10:17:37.935668+01:00""
+}", success: true),
+                    async () =>
+                    {
+                        var db = NewDb();
+                        var result = await db.Users.Me().SubmitAsync();
+                        Assert.AreEqual(result.Data.UserType, UserType.Client);
+                    });
+            });
+        }
+
+        [TestMethod]
         public async Task TestGetExpandSingle()
         {
             var db = new HazceptionDataContext(new ODataDataStore());

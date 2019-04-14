@@ -8,6 +8,7 @@ using Iql.Data.Context;
 using Iql.Data.Serialization;
 using Iql.Data.Types;
 using Iql.Entities;
+using Iql.Entities.Extensions;
 using Iql.Entities.Permissions;
 using Iql.Entities.Services;
 using Iql.Extensions;
@@ -17,6 +18,7 @@ namespace Iql.Data.Evaluation
 {
     public class PermissionsEvaluationSession : IEvaluationSessionContainer
     {
+        public PermissionsResultsCachingKind ResultsCachingKind { get; set; } = PermissionsResultsCachingKind.EntityKey;
         static PermissionsEvaluationSession()
         {
             EvaluateEntityPermissionsRuleCustomAsyncMethod = typeof(PermissionsEvaluationSession)
@@ -45,7 +47,7 @@ namespace Iql.Data.Evaluation
                 Permission = permission;
             }
         }
-        private List<PermissionsEvaluationResult> Results { get; } = new List<PermissionsEvaluationResult>();
+        private List<PermissionsEvaluationResult> Results { get; set; } = new List<PermissionsEvaluationResult>();
         public PermissionsEvaluationSession(
             bool enforceLatest = false, 
             EvaluationCacheMode cacheMode = EvaluationCacheMode.All,
@@ -146,14 +148,38 @@ namespace Iql.Data.Evaluation
                 return await task;
             }
 
-            if (!Session.EnforceLatest)
+            if (!Session.EnforceLatest && ResultsCachingKind != PermissionsResultsCachingKind.None)
             {
-                var entityKey = GetEntityKey(entity, typeResolver, evaluator);
-                var userKey = GetEntityKey(user, typeResolver, evaluator);
-                var cached = Results.SingleOrDefault(_ => _.EntityKey == entityKey && _.UserKey == userKey && _.Rule == rule);
-                if (cached != null)
+                switch (ResultsCachingKind)
                 {
-                    return cached.Permission;
+                    case PermissionsResultsCachingKind.EntityKey:
+                    case PermissionsResultsCachingKind.EntityHash:
+                    {
+                        var entityKey = GetEntityKey(entity, typeof(TEntity), typeResolver, ResultsCachingKind);
+                        var userKey = GetEntityKey(user, typeof(TUser), typeResolver, ResultsCachingKind);
+                        var cached = Results.SingleOrDefault(_ =>
+                            _.EntityKey == entityKey &&
+                            _.UserKey == userKey &&
+                            _.Rule == rule);
+                        if (cached != null)
+                        {
+                            return cached.Permission;
+                        }
+                        break;
+                    }
+                    case PermissionsResultsCachingKind.Entity:
+                    {
+                        var cached = Results.SingleOrDefault(_ =>
+                            _.Entity == entity &&
+                            _.User == user &&
+                            _.Rule == rule);
+                        if (cached != null)
+                        {
+                            return cached.Permission;
+                        }
+                        break;
+                    }
+
                 }
             }
             var isEntityNew = evaluator.EntityStatus(entity) != IqlEntityStatus.Existing;
@@ -247,58 +273,141 @@ namespace Iql.Data.Evaluation
                 evaluator,
                 typeResolver,
                 typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
-            var permission = (IqlUserPermission)result.Result;
-            var currentEntityKey = GetEntityKey(entity, typeResolver, evaluator);
-            var currentUserKey = GetEntityKey(user, typeResolver, evaluator);
-            var cachedResult = Results.SingleOrDefault(_ => _.Entity == entity && _.User == user && _.Rule == rule);
-            if (cachedResult == null)
+            var permission = (IqlUserPermission)Convert.ToInt32(result.Result);
+            var currentEntityKey = GetEntityKey(entity, typeof(TEntity), typeResolver, ResultsCachingKind);
+            var currentUserKey = GetEntityKey(user, typeof(TUser), typeResolver, ResultsCachingKind);
+            switch (ResultsCachingKind)
             {
-                cachedResult = new PermissionsEvaluationResult(
-                    rule,
-                    entity,
-                    currentEntityKey,
-                    user,
-                    currentUserKey,
-                    permission);
-                Results.Add(cachedResult);
+                case PermissionsResultsCachingKind.EntityKey:
+                case PermissionsResultsCachingKind.EntityHash:
+                {
+                    var cachedResult = Results.SingleOrDefault(_ => _.Entity == entity && _.User == user && _.Rule == rule);
+                    if (cachedResult == null)
+                    {
+                        cachedResult = new PermissionsEvaluationResult(
+                            rule,
+                            entity,
+                            currentEntityKey,
+                            user,
+                            currentUserKey,
+                            permission);
+                        Results.Add(cachedResult);
+                    }
+                    cachedResult.EntityKey = currentEntityKey;
+                    cachedResult.UserKey = currentUserKey;
+                    break;
+                }
+                case PermissionsResultsCachingKind.Entity:
+                {
+                    var cachedResult = Results.SingleOrDefault(_ => _.Entity == entity && _.User == user && _.Rule == rule);
+                    if (cachedResult == null)
+                    {
+                        cachedResult = new PermissionsEvaluationResult(
+                            rule,
+                            entity,
+                            "",
+                            user,
+                            "",
+                            permission);
+                        Results.Add(cachedResult);
+                    }
+                    cachedResult.EntityKey = "";
+                    cachedResult.UserKey = "";
+                    break;
+                }
             }
-            cachedResult.EntityKey = currentEntityKey;
-            cachedResult.UserKey = currentUserKey;
             return permission;
         }
 
-        private string GetEntityKey<TEntity>(TEntity entity, ITypeResolver typeResolver,
-            IIqlDataEvaluator evaluator) where TEntity : class
+        public void ClearEntitiesResultsCache(ITypeResolver typeResolver, Type entityType, params object[] entities)
+        {
+            if (entities == null || entities.Length == 0)
+            {
+                Results = Results.Where(_ => _.Entity == null).ToList();
+            }
+            else
+            {
+                var keys = entities.Select(_ => GetEntityKey(_, entityType, typeResolver, ResultsCachingKind)).Where(_ => !string.IsNullOrWhiteSpace(_)).ToArray();
+                Results = Results.Where(_ => !entities.Contains(_.Entity) && !keys.Contains(_.EntityKey)).ToList();
+            }
+        }
+
+        public void ClearUsersResultsCache(ITypeResolver typeResolver, Type userType, params object[] users)
+        {
+            if (users == null || users.Length == 0)
+            {
+                Results = Results.Where(_ => _.User == null).ToList();
+            }
+            else
+            {
+                var keys = users.Select(_ => GetEntityKey(_, userType, typeResolver, ResultsCachingKind)).Where(_ => !string.IsNullOrWhiteSpace(_)).ToArray();
+                Results = Results.Where(_ => !users.Contains(_.User) && !keys.Contains(_.UserKey)).ToList();
+            }
+        }
+
+        public void ClearResultsCache()
+        {
+            Results = new List<PermissionsEvaluationResult>();
+        }
+
+        private static Dictionary<object, string> _tempIds = new Dictionary<object, string>();
+        private string GetEntityKey(object entity, Type entityType, ITypeResolver typeResolver, PermissionsResultsCachingKind cachingKind)
         {
             IEntityConfigurationBuilder builder = typeResolver as IEntityConfigurationBuilder;
-            if (builder == null)
+            switch (cachingKind)
             {
-                if (!(typeResolver is EntityConfigurationTypeResolver))
+                case PermissionsResultsCachingKind.EntityHash:
                 {
-                    return Guid.NewGuid().ToString();
+                    if (builder == null)
+                    {
+                        if (!(typeResolver is EntityConfigurationTypeResolver))
+                        {
+                            return Guid.NewGuid().ToString();
+                        }
+                        else
+                        {
+                            builder = (typeResolver as EntityConfigurationTypeResolver).Builder;
+                        }
+                    }
+
+                    var entityConfiguration = builder.GetEntityByType(entityType);
+                    var all = entityConfiguration.Builder.FlattenObjectGraph(entity, entityType);
+                    var sb = new StringBuilder();
+                    foreach (var item in all)
+                    {
+                        var config = entityConfiguration.Builder.GetEntityByType(item.Key);
+                        for (var i = 0; i < item.Value.Count; i++)
+                        {
+                            var itemEntity = item.Value[i];
+                            var json = JsonDataSerializer.SerializeEntityToJson(
+                                itemEntity,
+                                config);
+                            sb.Append($"{Md5.Hash(json)}:");
+                        }
+                    }
+                    return Md5.Hash(sb.ToString());
                 }
-                else
-                {
-                    builder = (typeResolver as EntityConfigurationTypeResolver).Builder;
-                }
+                case PermissionsResultsCachingKind.EntityKey:
+                    if (builder != null)
+                    {
+                        var compositeKey = builder.GetEntityByType(entityType).GetCompositeKey(entity);
+                        if (compositeKey.HasDefaultValue())
+                        {
+                            if (_tempIds.ContainsKey(entity))
+                            {
+                                return _tempIds[entity];
+                            }
+
+                            var key = Guid.NewGuid().ToString();
+                            _tempIds.Add(entity, key);
+                            return key;
+                        }
+                        return compositeKey.AsKeyString(true);
+                    }
+                    break;
             }
 
-            var entityConfiguration = builder.EntityType<TEntity>();
-            var all = entityConfiguration.Builder.FlattenObjectGraph(entity, typeof(TEntity));
-            var sb = new StringBuilder();
-            foreach (var item in all)
-            {
-                var config = entityConfiguration.Builder.GetEntityByType(item.Key);
-                for (var i = 0; i < item.Value.Count; i++)
-                {
-                    var itemEntity = item.Value[i];
-                    var json = JsonDataSerializer.SerializeEntityToJson(
-                        itemEntity, 
-                        config);
-                    sb.Append($"{Md5.Hash(json)}:");
-                }
-            }
-            return Md5.Hash(sb.ToString());
+            return "";
         }
 
         public Task<IqlUserPermission> EvaluatePermissionsRuleAsync<TEntity, TUser>(IqlUserPermissionRule rule, TUser user, TEntity entity, IDataContext dataContext)

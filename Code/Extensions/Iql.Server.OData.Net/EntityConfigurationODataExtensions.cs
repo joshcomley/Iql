@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Brandless.AspNetCore.OData.Extensions.Extensions;
 using Iql.Entities;
 using Iql.Entities.Functions;
@@ -10,6 +11,7 @@ using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Server.OData.Net.Geography;
 using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Edm;
@@ -133,7 +135,7 @@ namespace Iql.Server.OData.Net
             IqlMethodScopeKind scope)
         {
             var method = new IqlMethod(scope, operation.Name);
-            if (operation.ReturnType != null)
+            if (operation.ReturnType != null && operation.ReturnType.ClrType != typeof(IActionResult) && operation.ReturnType.ClrType != typeof(Task<IActionResult>))
             {
                 method.ReturnType = operation.ReturnType.ClrType;
             }

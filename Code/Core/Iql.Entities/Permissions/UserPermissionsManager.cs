@@ -43,8 +43,8 @@ namespace Iql.Entities
             return configuredRule;
         }
 
-        public IqlUserPermissionRule DefineEntityUserPermissionRule<TEntity, TUser>(
-            Expression<Func<IqlEntityUserPermissionContext<TEntity, TUser>, IqlUserPermission>> rule, string key
+        public IqlUserPermissionRule DefineEntityUserPermissionRule<TEntity, TUser>(string key,
+            Expression<Func<IqlEntityUserPermissionContext<TEntity, TUser>, IqlUserPermission>> rule
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

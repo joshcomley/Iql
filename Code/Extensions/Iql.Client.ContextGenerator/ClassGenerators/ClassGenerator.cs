@@ -33,8 +33,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         public ClassGenerator(
             string fileName,
             string @namespace,
-            ODataSchema schema, 
-            OutputKind outputKind, 
+            ODataSchema schema,
+            OutputKind outputKind,
             GeneratorSettings settings)
         {
             OutputKind = outputKind;
@@ -475,7 +475,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             const string dataStoreWithDataMethod = nameof(ODataDataStore.MethodWithResponse);
             const string dataStoreWithoutDataMethod = nameof(ODataDataStore.Method);
             var methodParameters = method.Parameters;
-            var hasDataResponse = method.ReturnType != null;
+            var hasDataResponse = !string.IsNullOrWhiteSpace(typeScriptReturnType);
             var dataStoreMethod = hasDataResponse
                 ? dataStoreWithDataMethod
                 : dataStoreWithoutDataMethod;
@@ -496,6 +496,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     keyParam);
             }
 
+            if (name == "ForClient")
+            {
+                int a = 0;
+            }
             Method(
                 name,
                 methodParameters,
@@ -546,11 +550,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     }
 
                     var responseElementType =
-                        hasDataResponse
-                            ? returnType.IsCollection
-                                ? TypeOfExpression(returnType.ElementName.AsTypeScriptTypeParameter())
-                                : TypeOfExpression(returnType.Name.AsTypeScriptTypeParameter())
-                            : null;
+                        hasDataResponse ? TypeOfExpression(returnType.Name.AsTypeScriptTypeParameter()) : null;
                     Return(
                         $"({Cast(nameof(ODataDataStore))}this{scope}.{nameof(DataStore)}).{dataStoreMethod}{(hasDataResponse ? typeScriptReturnType : "")}({newLine}parameters,{newLine}{nameof(ODataMethodType)}.{(method.Type == EntityFunctionDefinitionType.Action ? nameof(ODataMethodType.Action) : nameof(ODataMethodType.Function))},{newLine}{nameof(ODataMethodScopeKind)}.{method.Scope},{newLine}{String(method.Namespace)},{newLine}{String(method.Name)},{newLine}{entityType}{(hasDataResponse ? $",{newLine}{responseElementType}" : "")}{(OutputKind == OutputKind.TypeScript && hasDataResponse ? $",{newLine}{typeScriptReturnTypeParameter}" : "")})");
                 },

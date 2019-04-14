@@ -73,18 +73,31 @@ namespace Iql.Data.Rendering
         public bool IsGroup => Kind == PropertyRenderingKind.Group;
         public bool IsUnknown => Kind == PropertyRenderingKind.Unknown;
         public bool CanShow { get; set; }
+        public SnapshotReasonKind CanShowReason { get; }
         public bool CanEdit { get; set; }
+        public SnapshotReasonKind CanEditReason { get; }
         public EntityPropertySnapshot[] ChildProperties { get; set; }
         public string PropertyName => Property?.Name;
         public IPropertyContainer Property => Detail?.Property;
+        public bool EditPermissionDenied => CanEditReason == SnapshotReasonKind.Permissions && !CanEdit;
+        public bool ReadPermissionDenied => CanShowReason == SnapshotReasonKind.Permissions && !CanShow;
 
-        public EntityPropertySnapshot(PropertyDetail detail, string kind, bool canShow, bool canEdit, EntityPropertySnapshot[] childProperties)
+        public EntityPropertySnapshot(PropertyDetail detail, string kind, bool canShow, SnapshotReasonKind canShowReason, bool canEdit,
+            SnapshotReasonKind canEditReason, EntityPropertySnapshot[] childProperties)
         {
             Detail = detail;
             Kind = kind;
             CanShow = canShow;
+            CanShowReason = canShowReason;
             CanEdit = canEdit;
+            CanEditReason = canEditReason;
             ChildProperties = childProperties;
         }
+    }
+
+    public enum SnapshotReasonKind
+    {
+        Configuration = 1,
+        Permissions = 2
     }
 }

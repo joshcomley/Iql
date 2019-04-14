@@ -138,12 +138,12 @@ namespace Iql.Data.Extensions
             IEnumerable responseData, bool forceNotNull = false)
             where T : class
         {
-            return (IList<T>)context.EnsureTypedListByType(responseData, typeof(T), null, null, forceNotNull);
+            return (IList<T>)context.EnsureTypedListByType(responseData, typeof(T), null, null, false, forceNotNull);
         }
 
         public static IList EnsureTypedListByType(
             this IEntityConfigurationBuilder context,
-            IEnumerable responseData, Type type, object owner, Type childType, bool convertRelationships, bool forceNotNull = false)
+            IEnumerable responseData, Type type, object owner = null, Type childType = null, bool convertRelationships = false, bool forceNotNull = false)
         {
             IList list = null;
             if (responseData != null || forceNotNull)
