@@ -103,6 +103,55 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task TestPropertyPermissionRule()
+        {
+            var cloudUserClient = new Client
+            {
+                Id = 9233,
+                Description = "The ABCd"
+            };
+            AppDbContext.InMemoryDb.Clients.Add(cloudUserClient);
+            var cloudUser = new ApplicationUser
+            {
+                Id = nameof(TestPropertyPermissionRule),
+                ClientId = 9233,
+                EmailConfirmed = true,
+                UserType = UserType.Client
+            };
+            AppDbContext.InMemoryDb.Users.Add(cloudUser);
+            var userConfiguration = Db.EntityConfigurationContext.EntityType<ApplicationUser>();
+            var property = userConfiguration.FindProperty(nameof(ApplicationUser.IsLockedOut));
+            var user = await Db.Users.GetWithKeyAsync(nameof(TestPropertyPermissionRule));
+            var permissionsEvaluationSession = new PermissionsEvaluationSession(false, EvaluationCacheMode.None);
+            permissionsEvaluationSession.ResultsCachingKind = PermissionsResultsCachingKind.None;
+            var permission = await permissionsEvaluationSession.GetUserPermissionAsync(
+                Db.EntityConfigurationContext.PermissionManager,
+                property.Permissions, 
+                Db,
+                user,
+                typeof(ApplicationUser),
+                null,
+                null,
+                Db,
+                Db.EntityConfigurationContext);
+            Assert.AreEqual(IqlUserPermission.None, permission);
+
+            user.UserType = UserType.Super;
+
+             permission = await permissionsEvaluationSession.GetUserPermissionAsync(
+                Db.EntityConfigurationContext.PermissionManager,
+                property.Permissions,
+                Db,
+                user,
+                typeof(ApplicationUser),
+                null,
+                null,
+                Db,
+                Db.EntityConfigurationContext);
+            Assert.AreEqual(IqlUserPermission.ReadAndEdit, permission);
+        }
+        
+        [TestMethod]
         public async Task TestComplexPermissionRuleWithNoneCacheMode()
         {
             var cloudUserClient = new Client

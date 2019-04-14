@@ -1139,6 +1139,10 @@ namespace Iql.Data.Context
 #endif
 )
         {
+            if (entity == null)
+            {
+                return null;
+            }
 #if !TypeScript
             var entityType = entity.GetType();
 #else

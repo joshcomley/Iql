@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.Data.Entities;
 using Iql.Entities;
+using Iql.Entities.Permissions;
 using Iql.Entities.SpecialTypes;
 using Iql.Server;
 using IqlSampleApp.Data.Contracts;
@@ -17,14 +18,21 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(IEntityConfigurationBuilder builder)
         {
-            builder.UsersDefinition = UsersDefinition.Define(builder.EntityType<ApplicationUser>(),
+            builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>("SuperUser",
+                context => context.User.UserType == UserType.Super
+                    ? IqlUserPermission.ReadAndEdit
+                    : IqlUserPermission.None);
+            var users = builder.EntityType<ApplicationUser>();
+            users.ConfigureProperty(_ => _.IsLockedOut, property => { property.Permissions.UseRule("SuperUser"); });
+            builder.UsersDefinition = UsersDefinition.Define(users,
                 _ => _.Id,
                 _ => _.FullName
             );
-            builder.EntityType<ApplicationUser>()
+            users
                 .FindRelationship(_ => _.Client)
                 .CreateWithRelationshipValue(_ => _.CreatedByUser, ctx => _ => ctx.Owner.CreatedByUser)
-                .CreateWithPropertyValue(_ => _.AverageIncome, _ => 12);
+                .CreateWithPropertyValue(_ => _.AverageIncome, _ => 12)
+                ;
         }
     }
 

@@ -183,8 +183,14 @@ namespace Iql.Data.Evaluation
                 }
             }
             var isEntityNew = evaluator.EntityStatus(entity) != IqlEntityStatus.Existing;
-            var context = new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew, user, entity);
-            var contextExpectedFullName = $"{nameof(IqlEntityUserPermissionContext<TEntity, TUser>)}<{nameof(TEntity)}, {typeof(TUser).Name}>";
+            var context = 
+                entity == null
+                ? new IqlUserPermissionContext<TUser>(user)
+                : new IqlEntityUserPermissionContext<TEntity, TUser>(isEntityNew, user, entity);
+            var contextExpectedFullName = 
+                entity == null
+                ? $"{nameof(IqlUserPermissionContext<TUser>)}<{typeof(TUser).Name}>"
+                : $"{nameof(IqlEntityUserPermissionContext<TEntity, TUser>)}<{nameof(TEntity)}, {typeof(TUser).Name}>";
             var iqlExpression = rule.IqlExpression.Clone();
             var contextExpressions = iqlExpression.Flatten()
                 .Where(_ => _.Expression.Kind == IqlExpressionKind.Variable ||
@@ -219,7 +225,9 @@ namespace Iql.Data.Evaluation
                             context,
                             evaluator,
                             typeResolver,
-                            typeof(IqlEntityUserPermissionContext<TEntity, TUser>),
+                            entity == null
+                                ? typeof(IqlUserPermissionContext<TUser>)
+                                : typeof(IqlEntityUserPermissionContext<TEntity, TUser>),
                             false);
                         if (evaluatedResult.Success)
                         {
@@ -272,7 +280,7 @@ namespace Iql.Data.Evaluation
                 context,
                 evaluator,
                 typeResolver,
-                typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
+                entity == null ? typeof(IqlUserPermissionContext<TUser>): typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
             var permission = (IqlUserPermission)Convert.ToInt32(result.Result);
             var currentEntityKey = GetEntityKey(entity, typeof(TEntity), typeResolver, ResultsCachingKind);
             var currentUserKey = GetEntityKey(user, typeof(TUser), typeResolver, ResultsCachingKind);
@@ -353,6 +361,10 @@ namespace Iql.Data.Evaluation
         private static Dictionary<object, string> _tempIds = new Dictionary<object, string>();
         private string GetEntityKey(object entity, Type entityType, ITypeResolver typeResolver, PermissionsResultsCachingKind cachingKind)
         {
+            if (entity == null)
+            {
+                return "";
+            }
             IEntityConfigurationBuilder builder = typeResolver as IEntityConfigurationBuilder;
             switch (cachingKind)
             {

@@ -248,7 +248,7 @@ namespace IqlSampleApp.ApiContext.Base
                                     ReturnType = IqlType.Unknown,
                                     Parent = new IqlRootReferenceExpression
                                     {
-                                        EntityTypeName = "IqlEntityUserPermissionContext<TEntity, ApplicationUser>",
+                                        EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
                                         VariableName = "context",
                                         InferredReturnType = IqlType.Unknown,
                                         Kind = IqlExpressionKind.RootReference,
@@ -289,7 +289,7 @@ namespace IqlSampleApp.ApiContext.Base
                                         ReturnType = IqlType.Unknown,
                                         Parent = new IqlRootReferenceExpression
                                         {
-                                            EntityTypeName = "IqlEntityUserPermissionContext<TEntity, ApplicationUser>",
+                                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
                                             VariableName = "context",
                                             InferredReturnType = IqlType.Unknown,
                                             Kind = IqlExpressionKind.RootReference,
@@ -331,7 +331,7 @@ namespace IqlSampleApp.ApiContext.Base
                     {
                         new IqlRootReferenceExpression
                         {
-                            EntityTypeName = "IqlEntityUserPermissionContext<TEntity, ApplicationUser>",
+                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
                             VariableName = "context",
                             InferredReturnType = IqlType.Unknown,
                             Kind = IqlExpressionKind.RootReference,
@@ -341,8 +341,89 @@ namespace IqlSampleApp.ApiContext.Base
                     Kind = IqlExpressionKind.Lambda,
                     ReturnType = IqlType.Unknown
                 },
-                UserTypeName = "ApplicationUser",
-                EntityTypeName = "Person"
+                UserTypeName = "ApplicationUser"
+            });
+            builder.PermissionRules.Add(new IqlUserPermissionRule
+            {
+                Key = "SuperUser",
+                IqlExpression = new IqlLambdaExpression
+                {
+                    Body = new IqlConditionExpression
+                    {
+                        Test = new IqlIsEqualToExpression
+                        {
+                            Left = new IqlPropertyExpression
+                            {
+                                PropertyName = "UserType",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlPropertyExpression
+                                {
+                                    PropertyName = "User",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                                        VariableName = "context",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                }
+                            },
+                            Right = new IqlEnumLiteralExpression
+                            {
+                                Value = new IqlEnumValueExpression[]
+                                {
+                                    new IqlEnumValueExpression
+                                    {
+                                        Name = "",
+                                        Value = 1L,
+                                        InferredReturnType = IqlType.Integer,
+                                        Kind = IqlExpressionKind.EnumValue,
+                                        ReturnType = IqlType.EnumValue
+                                    }
+                                },
+                                InferredReturnType = IqlType.Collection,
+                                Kind = IqlExpressionKind.EnumLiteral,
+                                ReturnType = IqlType.Enum
+                            },
+                            Kind = IqlExpressionKind.IsEqualTo,
+                            ReturnType = IqlType.Boolean
+                        },
+                        IfTrue = new IqlLiteralExpression
+                        {
+                            Value = 3L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        IfFalse = new IqlLiteralExpression
+                        {
+                            Value = 1L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        Kind = IqlExpressionKind.Condition,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                            VariableName = "context",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                },
+                UserTypeName = "ApplicationUser"
             });
             builder.EntityType<ApplicationUser>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean).ConfigureProperty(p => p.IsLockedOut, p => {
                 p.PropertyName = "IsLockedOut";
@@ -353,6 +434,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "IsLockedOut";
                 p.Title = "IsLockedOut";
                 p.FriendlyName = "Is Locked Out";
+                p.Permissions.UseRule("SuperUser");
             }).DefineProperty(p => p.ClientId, true, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
                 p.PropertyName = "ClientId";
                 p.Nullable = true;
