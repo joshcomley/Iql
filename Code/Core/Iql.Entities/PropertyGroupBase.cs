@@ -17,6 +17,7 @@ namespace Iql.Entities
     public abstract class PropertyGroupBase<T> : MetadataBase, IPropertyGroup, IConfigurable<T>
         where T : IConfigurable<T>
     {
+        public override IUserPermission ParentPermissions => EntityConfiguration;
         public bool Matches(params string[] names)
         {
             var prop = this as IProperty;
@@ -46,7 +47,7 @@ namespace Iql.Entities
 
         public Task<IqlUserPermission> GetUserPermissionAsync(object entity = null)
         {
-            return Task.FromResult(IqlUserPermission.ReadAndEdit);
+            return Task.FromResult(IqlUserPermission.ReadAndUpdate);
         }
 
         public virtual bool CanWriteSet

@@ -25,6 +25,7 @@ namespace Iql.Entities
 {
     public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {
+        public override IUserPermission ParentPermissions => Builder;
         public virtual EntityConfigurationBuilder Builder { get; }
         IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
 

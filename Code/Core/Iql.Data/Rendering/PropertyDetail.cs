@@ -111,7 +111,7 @@ namespace Iql.Data.Rendering
             {
                 var permissions = await permissionsEvaluationSession.GetUserPermissionAsync(
                     PropertyAsPropertyGroup.EntityConfiguration.Builder.PermissionManager,
-                    PropertyAsPropertyGroup.Permissions,
+                    PropertyAsPropertyGroup,
                     dataContext,
                     user,
                     userType,

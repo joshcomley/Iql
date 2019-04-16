@@ -267,5 +267,7 @@ namespace Iql.Entities
 
             return null;
         }
+
+        public override IUserPermission ParentPermissions => null;
     }
 }

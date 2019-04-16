@@ -17,6 +17,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
 
         private  IEntityConfigurationContainer _configurationContainer;
         IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
+        public override IUserPermission ParentPermissions => Builder;
 
         internal void SetConfigurationProvider(IEntityConfigurationContainer container)
         {

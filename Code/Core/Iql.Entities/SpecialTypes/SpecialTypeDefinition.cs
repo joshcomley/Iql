@@ -6,6 +6,7 @@ namespace Iql.Entities.SpecialTypes
 {
     public abstract class SpecialTypeDefinition : MetadataBase, IPropertyContainer
     {
+        public override IUserPermission ParentPermissions => EntityConfiguration;
         public abstract Type InternalType { get; }
         private List<IPropertyGroup> _cachedProperties;
         public IProperty IdProperty { get; set; }

@@ -157,5 +157,7 @@ namespace Iql.Entities
             get => _permissions = _permissions ?? new UserPermissionsCollection(EntityConfiguration?.Builder);
             set => _permissions = value;
         }
+
+        public abstract IUserPermission ParentPermissions { get; }
     }
 }

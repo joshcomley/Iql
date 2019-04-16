@@ -20,9 +20,34 @@ namespace IqlSampleApp.Data.Configuration.Entities
             builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>(
                 "SkillsPermission",
                 context =>
-                    context.User.Email == "CannotSeeOrEdit" ? IqlUserPermission.None : (context.User.Email == "CanSeeCannotEdit" ? IqlUserPermission.Read : IqlUserPermission.ReadAndEdit)
-                );
+                    context.User.Email == "CannotSeeOrEdit"
+                        ? IqlUserPermission.None
+                        : (
+                            context.User.Email == "CanSeeCannotEdit"
+                                ? IqlUserPermission.Read
+                                : IqlUserPermission.ReadAndUpdate
+                        )
+            );
+            builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>(
+                "SkillsPermissionOnlyReadAttemptedOverride",
+                context =>
+                    context.User.Email == "OnlyRead"
+                        ? IqlUserPermission.Full
+                        : IqlUserPermission.Unset
+            );
+            builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>(
+                "PersonsPermission",
+                context =>
+                    context.User.Email == "CannotSeeOrEditAnyPersons" ? IqlUserPermission.None : IqlUserPermission.Full
+            );
+            builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>(
+                "PersonsPermissionOnlyRead",
+                context =>
+                    context.User.Email == "OnlyRead" ? IqlUserPermission.Read : IqlUserPermission.Full
+            );
             var model = builder.EntityType<Person>();
+            model.Permissions.UseRule("PersonsPermission");
+            model.Permissions.UseRule("PersonsPermissionOnlyRead");
             model.HasFile(s => s.PhotoUrl, f =>
             {
                 f.SetVersionProperty(_ => _.PhotoRevisionKey);
@@ -38,6 +63,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             model.ConfigureProperty(p => p.Skills, p =>
             {
                 p.Permissions.UseRule("SkillsPermission");
+                p.Permissions.UseRule("SkillsPermissionOnlyReadAttemptedOverride");
                 p.IsInferredWith(_ => PersonSkills.Coder,
                     true,
                     InferredValueKind.IfNullOrEmpty,

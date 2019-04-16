@@ -46,5 +46,6 @@ namespace Iql.Server.Serialization
 
         public UserPermissionsManager PermissionManager { get; }
         public List<IqlUserPermissionRule> PermissionRules { get; set; }
+        public override IUserPermission ParentPermissions => null;
     }
 }

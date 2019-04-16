@@ -8,9 +8,11 @@ namespace Iql.Entities
         UserPermissionsManager PermissionManager { get; }
         List<IqlUserPermissionRule> PermissionRules { get; }
     }
+
     public interface IUserPermission
     {
         UserPermissionsCollection Permissions { get; }
+        IUserPermission ParentPermissions { get; }
     }
 
     public class UserPermissionsCollection

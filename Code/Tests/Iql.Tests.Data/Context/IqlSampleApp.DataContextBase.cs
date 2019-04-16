@@ -125,7 +125,7 @@ namespace IqlSampleApp.ApiContext.Base
                         },
                         IfTrue = new IqlLiteralExpression
                         {
-                            Value = 3L,
+                            Value = 10L,
                             InferredReturnType = IqlType.Integer,
                             Kind = IqlExpressionKind.Literal,
                             ReturnType = IqlType.Unknown
@@ -196,7 +196,7 @@ namespace IqlSampleApp.ApiContext.Base
                         },
                         IfTrue = new IqlLiteralExpression
                         {
-                            Value = 3L,
+                            Value = 10L,
                             InferredReturnType = IqlType.Integer,
                             Kind = IqlExpressionKind.Literal,
                             ReturnType = IqlType.Unknown
@@ -316,12 +316,228 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             IfFalse = new IqlLiteralExpression
                             {
-                                Value = 3L,
+                                Value = 10L,
                                 InferredReturnType = IqlType.Integer,
                                 Kind = IqlExpressionKind.Literal,
                                 ReturnType = IqlType.Unknown
                             },
                             Kind = IqlExpressionKind.Condition,
+                            ReturnType = IqlType.Unknown
+                        },
+                        Kind = IqlExpressionKind.Condition,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                            VariableName = "context",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                },
+                UserTypeName = "ApplicationUser"
+            });
+            builder.PermissionRules.Add(new IqlUserPermissionRule
+            {
+                Key = "SkillsPermissionOnlyReadAttemptedOverride",
+                IqlExpression = new IqlLambdaExpression
+                {
+                    Body = new IqlConditionExpression
+                    {
+                        Test = new IqlIsEqualToExpression
+                        {
+                            Left = new IqlPropertyExpression
+                            {
+                                PropertyName = "Email",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlPropertyExpression
+                                {
+                                    PropertyName = "User",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                                        VariableName = "context",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                }
+                            },
+                            Right = new IqlLiteralExpression
+                            {
+                                Value = "OnlyRead",
+                                InferredReturnType = IqlType.String,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.String
+                            },
+                            Kind = IqlExpressionKind.IsEqualTo,
+                            ReturnType = IqlType.Boolean
+                        },
+                        IfTrue = new IqlLiteralExpression
+                        {
+                            Value = 30L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        IfFalse = new IqlLiteralExpression
+                        {
+                            Value = 0L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        Kind = IqlExpressionKind.Condition,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                            VariableName = "context",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                },
+                UserTypeName = "ApplicationUser"
+            });
+            builder.PermissionRules.Add(new IqlUserPermissionRule
+            {
+                Key = "PersonsPermission",
+                IqlExpression = new IqlLambdaExpression
+                {
+                    Body = new IqlConditionExpression
+                    {
+                        Test = new IqlIsEqualToExpression
+                        {
+                            Left = new IqlPropertyExpression
+                            {
+                                PropertyName = "Email",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlPropertyExpression
+                                {
+                                    PropertyName = "User",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                                        VariableName = "context",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                }
+                            },
+                            Right = new IqlLiteralExpression
+                            {
+                                Value = "CannotSeeOrEditAnyPersons",
+                                InferredReturnType = IqlType.String,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.String
+                            },
+                            Kind = IqlExpressionKind.IsEqualTo,
+                            ReturnType = IqlType.Boolean
+                        },
+                        IfTrue = new IqlLiteralExpression
+                        {
+                            Value = 1L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        IfFalse = new IqlLiteralExpression
+                        {
+                            Value = 30L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        Kind = IqlExpressionKind.Condition,
+                        ReturnType = IqlType.Unknown
+                    },
+                    Parameters = new List<IqlRootReferenceExpression>
+                    {
+                        new IqlRootReferenceExpression
+                        {
+                            EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                            VariableName = "context",
+                            InferredReturnType = IqlType.Unknown,
+                            Kind = IqlExpressionKind.RootReference,
+                            ReturnType = IqlType.Unknown
+                        }
+                    },
+                    Kind = IqlExpressionKind.Lambda,
+                    ReturnType = IqlType.Unknown
+                },
+                UserTypeName = "ApplicationUser"
+            });
+            builder.PermissionRules.Add(new IqlUserPermissionRule
+            {
+                Key = "PersonsPermissionOnlyRead",
+                IqlExpression = new IqlLambdaExpression
+                {
+                    Body = new IqlConditionExpression
+                    {
+                        Test = new IqlIsEqualToExpression
+                        {
+                            Left = new IqlPropertyExpression
+                            {
+                                PropertyName = "Email",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlPropertyExpression
+                                {
+                                    PropertyName = "User",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlRootReferenceExpression
+                                    {
+                                        EntityTypeName = "IqlUserPermissionContext<ApplicationUser>",
+                                        VariableName = "context",
+                                        InferredReturnType = IqlType.Unknown,
+                                        Kind = IqlExpressionKind.RootReference,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                }
+                            },
+                            Right = new IqlLiteralExpression
+                            {
+                                Value = "OnlyRead",
+                                InferredReturnType = IqlType.String,
+                                Kind = IqlExpressionKind.Literal,
+                                ReturnType = IqlType.String
+                            },
+                            Kind = IqlExpressionKind.IsEqualTo,
+                            ReturnType = IqlType.Boolean
+                        },
+                        IfTrue = new IqlLiteralExpression
+                        {
+                            Value = 2L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
+                            ReturnType = IqlType.Unknown
+                        },
+                        IfFalse = new IqlLiteralExpression
+                        {
+                            Value = 30L,
+                            InferredReturnType = IqlType.Integer,
+                            Kind = IqlExpressionKind.Literal,
                             ReturnType = IqlType.Unknown
                         },
                         Kind = IqlExpressionKind.Condition,
@@ -394,7 +610,7 @@ namespace IqlSampleApp.ApiContext.Base
                         },
                         IfTrue = new IqlLiteralExpression
                         {
-                            Value = 3L,
+                            Value = 10L,
                             InferredReturnType = IqlType.Integer,
                             Kind = IqlExpressionKind.Literal,
                             ReturnType = IqlType.Unknown
@@ -7258,7 +7474,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Skills";
                 p.Title = "Skills";
                 p.FriendlyName = "Skills";
-                p.Permissions.UseRule("SkillsPermission");
+                p.Permissions.UseRule("SkillsPermission").UseRule("SkillsPermissionOnlyReadAttemptedOverride");
             }).DefineProperty(p => p.Category, false, IqlType.Enum).ConfigureProperty(p => p.Category, p => {
                 p.PropertyName = "Category";
                 p.Nullable = false;
@@ -7609,6 +7825,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Person";
                 p.Title = "Person";
                 p.FriendlyName = "Person";
+                p.Permissions.UseRule("PersonsPermission").UseRule("PersonsPermissionOnlyRead");
                 p.Methods = new List<IqlMethod>
                 {
                     new IqlMethod

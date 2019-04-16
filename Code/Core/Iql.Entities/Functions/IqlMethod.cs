@@ -59,5 +59,7 @@ namespace Iql.Entities.Functions
             
 
         }
+
+        public override IUserPermission ParentPermissions => EntityConfiguration;
     }
 }

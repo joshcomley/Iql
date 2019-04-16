@@ -29,14 +29,14 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 .PermissionManager
                 .DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit1",
                     context =>
-                    context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read
+                    context.User.ClientId == null ? IqlUserPermission.ReadAndUpdate : IqlUserPermission.Read
                     );
             entityConfiguration.ConfigureProperty(_ => _.AverageIncome, property =>
             {
                 property.Permissions.UseRule("PropertyRule1").UseRule("PropertyRule2");
                     property.EntityConfiguration.Builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>("ClientReadAndEdit2",
                         context =>
-                        context.User.ClientId == null ? IqlUserPermission.ReadAndEdit : IqlUserPermission.Read
+                        context.User.ClientId == null ? IqlUserPermission.ReadAndUpdate : IqlUserPermission.Read
                         );
                 });
         }

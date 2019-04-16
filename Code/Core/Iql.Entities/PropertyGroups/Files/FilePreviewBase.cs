@@ -41,6 +41,7 @@
         }
 
         public IEntityConfiguration EntityConfiguration => UrlPropertyInternal?.EntityConfiguration;
+        public override IUserPermission ParentPermissions => EntityConfiguration;
         public IFile RootFile => FileInternal;
     }
 }

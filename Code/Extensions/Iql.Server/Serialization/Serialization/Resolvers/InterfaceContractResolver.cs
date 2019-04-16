@@ -91,6 +91,10 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
                 resolvedType = typeof(IPropertyMetadata);
                 ignoreProperties.AddRange(new[] { nameof(IProperty.EntityConfiguration) });
             }
+            if (typeof(IUserPermission).IsAssignableFrom(type))
+            {
+                ignoreProperties.AddRange(new[] { nameof(IUserPermission.ParentPermissions) });
+            }
             if (typeof(ITypeDefinition).IsAssignableFrom(type))
             {
                 resolvedType = typeof(ITypeDefinition);

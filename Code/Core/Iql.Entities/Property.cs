@@ -265,5 +265,5 @@ namespace Iql.Entities
             return (Expression<Func<T, TAssignmentProperty, TAssignmentProperty>>)l;
 #endif
         }
-    }
+   }
 }

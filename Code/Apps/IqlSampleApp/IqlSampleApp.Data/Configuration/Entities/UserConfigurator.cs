@@ -20,7 +20,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
         {
             builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>("SuperUser",
                 context => context.User.UserType == UserType.Super
-                    ? IqlUserPermission.ReadAndEdit
+                    ? IqlUserPermission.ReadAndUpdate
                     : IqlUserPermission.None);
             var users = builder.EntityType<ApplicationUser>();
             users.ConfigureProperty(_ => _.IsLockedOut, property => { property.Permissions.UseRule("SuperUser"); });
