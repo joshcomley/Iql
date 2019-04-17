@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests.OrderByTests
@@ -21,6 +22,14 @@ namespace Iql.Tests.Tests.OrderByTests
                     Assert.IsNotNull(list);
                 }
             }
+        }
+
+        [TestMethod]
+        public async Task TestOrderByProperty()
+        {
+            var query = Db.Clients.OrderByProperty($"{nameof(Client.CreatedByUser)}/{nameof(ApplicationUser.FullName)}");
+            var list = await query.ToListAsync();
+            Assert.IsNotNull(list);
         }
     }
 }

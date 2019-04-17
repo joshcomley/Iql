@@ -119,7 +119,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        IQueryableBase OrderByProperty(string propetyName, bool descending = false
+        IQueryableBase OrderByProperty(string propertyName, bool? descending = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -127,7 +127,7 @@ namespace Iql.Queryable
 
         IQueryableBase OrderByDefault(bool? descending = null);
 
-//        IQueryableBase ExpandProperty(string propetyName
+//        IQueryableBase ExpandProperty(string propertyName
         //#if TypeScript
         //            , EvaluateContext evaluateContext = null
         //#endif

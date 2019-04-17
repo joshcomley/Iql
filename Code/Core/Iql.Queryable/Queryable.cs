@@ -258,20 +258,25 @@ namespace Iql.Queryable
 
 
 
-        public TQueryable OrderByProperty(string propetyName, bool descending = false
+        public TQueryable OrderByProperty(string propertyName, bool? descending = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            var orderByOperation = new OrderByOperation(null, descending);
+            var orderByOperation = new OrderByOperation(null, descending == true);
             var rootReferenceName = "entity";
-            var propertyExpression = PropertyExpression(propetyName, rootReferenceName);
+            var propertyExpression = PropertyExpression(propertyName, rootReferenceName);
             var lambdaExpression = new IqlLambdaExpression
             {
                 Body = propertyExpression
             };
-            lambdaExpression.Parameters.Add(propertyExpression.Parent as IqlRootReferenceExpression);
+            var parent = propertyExpression.Parent;
+            while (parent.Parent != null)
+            {
+                parent = parent.Parent;
+            }
+            lambdaExpression.Parameters.Add(parent as IqlRootReferenceExpression);
             orderByOperation.Expression = lambdaExpression;
             return Then(orderByOperation);
         }
@@ -282,14 +287,14 @@ namespace Iql.Queryable
 
         public abstract TQueryable OrderByDefault(bool? descending = null);
 
-        //        public TQueryable ExpandProperty(string propetyName
+        //        public TQueryable ExpandProperty(string propertyName
         //#if TypeScript
         //            , EvaluateContext evaluateContext = null
         //#endif
         //        )
         //        {
         //            var orderByOperation = new ExpandOperation<>(null, descending);
-        //            orderByOperation.Expression = PropertyExpression(propetyName);
+        //            orderByOperation.Expression = PropertyExpression(propertyName);
         //            return Then();
         //        }
 
@@ -528,26 +533,26 @@ namespace Iql.Queryable
             );
         }
 
-        IQueryableBase IQueryableBase.OrderByProperty(string propetyName, bool descending = false
+        IQueryableBase IQueryableBase.OrderByProperty(string propertyName, bool? descending = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         )
         {
-            return OrderByProperty(propetyName, descending
+            return OrderByProperty(propertyName, descending
 #if TypeScript
                 , evaluateContext
 #endif
             );
         }
 
-        //        IQueryableBase IQueryableBase.ExpandProperty(string propetyName
+        //        IQueryableBase IQueryableBase.ExpandProperty(string propertyName
         //#if TypeScript
         //            , EvaluateContext evaluateContext = null
         //#endif
         //        )
         //        {
-        //            return OrderByProperty(propetyName, descending
+        //            return OrderByProperty(propertyName, descending
         //#if TypeScript
         //                , evaluateContext
         //#endif
