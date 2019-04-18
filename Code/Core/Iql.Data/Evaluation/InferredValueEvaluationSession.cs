@@ -261,6 +261,7 @@ namespace Iql.Data.Evaluation
                     changes.Add(inferredValueChange);
                     if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
                     {
+                        object relatedEntity = null;
                         if (value != null)
                         {
                             var entityClone = entity.Clone(property.EntityConfiguration.Builder,
@@ -269,11 +270,24 @@ namespace Iql.Data.Evaluation
                             var compositeKey = property.Relationship.ThisEnd.GetCompositeKey(
                                 entityClone,
                                 true);
-                            var relatedEntity = await dataEvaluator.GetEntityByKeyAsync(
-                                property.Relationship.OtherEnd.EntityConfiguration,
-                                compositeKey,
-                                new string[] { },
-                                true);
+                            var cached = Session.GetCachedEntity(property.Relationship.OtherEnd.EntityConfiguration, compositeKey);
+                            if (cached != null && cached.Exists)
+                            {
+                                relatedEntity = cached.Entity;
+                            }
+                            else
+                            {
+                                relatedEntity = await dataEvaluator.GetEntityByKeyAsync(
+                                   property.Relationship.OtherEnd.EntityConfiguration,
+                                   compositeKey,
+                                   new string[] { },
+                                   true);
+                            }
+
+                            if (Session.CacheMode != EvaluationCacheMode.None)
+                            {
+                                Session.SetCachedEntity(property.Relationship.OtherEnd.EntityConfiguration, compositeKey, relatedEntity);
+                            }
                             changes.Add(getPropertyChange(property.Relationship.ThisEnd.Property, relatedEntity));
                         }
                         else

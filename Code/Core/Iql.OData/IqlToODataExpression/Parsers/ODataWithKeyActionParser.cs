@@ -24,11 +24,14 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 var right = propertyExpressionIsLeft
                     ? keyPart.Right
                     : keyPart.Left;
-                var property = parser.Parse(left).ToCodeString();
+                //var property = parser.Parse(left).ToCodeString();
+                var property = type.FindProperty(left.PropertyName);
+                var entityProperty = property?.EntityProperty();
+                var propertyType = entityProperty?.TypeDefinition;
                 compositeKey.Keys[i] = new KeyValue(
                     left.PropertyName,
                     parser.Parse(right).ToCodeString(),
-                    null
+                    propertyType
                 );
             }
 
@@ -66,7 +69,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                     return EnsureQuoted(key);
                 }
             }
-            else if (key.ValueType != null)
+            else if (key.ValueType != null && key.ValueType.ConvertedFromType != "Guid")
             {
                 if ((key.ValueType.Type == typeof(string) && key.ValueType.Kind != IqlType.Guid) ||
                     key.ValueType.Kind == IqlType.String)

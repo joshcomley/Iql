@@ -60,6 +60,15 @@ namespace Iql.Entities.Functions
 
         }
 
+        public IqlMethod Configure(Action<IqlMethod> action)
+        {
+            if (action != null)
+            {
+                action(this);
+            }
+
+            return this;
+        }
         public override IUserPermission ParentPermissions => EntityConfiguration;
     }
 }
