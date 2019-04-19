@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Data.Context;
 using Iql.Entities;
 using Iql.Parsing;
 using Iql.Parsing.Expressions.QueryExpressions;
@@ -125,7 +126,7 @@ namespace Iql.Queryable
 #endif
         );
 
-        IQueryableBase OrderByDefault(bool? descending = null);
+        IQueryableBase OrderByDefault(bool? descending = null, IqlDefaultOrderKind? orderKind = null);
 
 //        IQueryableBase ExpandProperty(string propertyName
         //#if TypeScript

@@ -138,8 +138,8 @@ namespace Iql.Server
                     p.SetReadOnly();
                     p.IsInferredWith(_ => new IqlNowExpression(), true, InferredValueKind.IfNullOrEmpty);
                 });
-                config.DefaultSortExpression = nameof(ICreatedDate.CreatedDate);
-                config.DefaultSortDescending = true;
+                config.DefaultBrowseSortExpression = nameof(ICreatedDate.CreatedDate);
+                config.DefaultBrowseSortDescending = true;
             });
         }
 

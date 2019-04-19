@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Data.Context;
 using Iql.Entities;
 using Iql.Entities.Rules.Relationship;
 using Iql.Extensions;
@@ -280,12 +281,12 @@ namespace Iql.Queryable
             orderByOperation.Expression = lambdaExpression;
             return Then(orderByOperation);
         }
-        IQueryableBase IQueryableBase.OrderByDefault(bool? descending = null)
+        IQueryableBase IQueryableBase.OrderByDefault(bool? descending = null, IqlDefaultOrderKind? orderKind = null)
         {
             return OrderByDefault(descending);
         }
 
-        public abstract TQueryable OrderByDefault(bool? descending = null);
+        public abstract TQueryable OrderByDefault(bool? descending = null, IqlDefaultOrderKind? orderKind = null);
 
         //        public TQueryable ExpandProperty(string propertyName
         //#if TypeScript

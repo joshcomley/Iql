@@ -9,6 +9,7 @@ namespace Iql.Entities.Functions
 {
     public class IqlMethod : MetadataBase
     {
+        public int Ordering { get; set; }
         public bool SupportsOffline { get; set; }
         public string DataStoreRequired { get; set; }
         public Func<object, object[], Task<object>> RunAsync { get; set; }

@@ -1027,6 +1027,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1047,6 +1048,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1097,6 +1099,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1149,6 +1152,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1201,6 +1205,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1238,6 +1243,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1275,6 +1281,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1312,6 +1319,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1349,6 +1357,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1753,8 +1762,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Client>().Configure(p => {
                 p.SetFriendlyName = "Clients";
                 p.SetName = "Clients";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "Client";
                 p.Title = "Client";
@@ -1764,6 +1773,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         NameSpace = "Abc",
@@ -1818,6 +1828,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1870,6 +1881,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1928,6 +1940,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -1980,6 +1993,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -2030,6 +2044,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -2330,8 +2345,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<DocumentCategory>().Configure(p => {
                 p.SetFriendlyName = "Document Categories";
                 p.SetName = "DocumentCategories";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "DocumentCategory";
                 p.Title = "DocumentCategory";
@@ -2340,6 +2355,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -2390,6 +2406,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -2719,8 +2736,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<SiteDocument>().Configure(p => {
                 p.SetFriendlyName = "Site Documents";
                 p.SetName = "SiteDocuments";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "SiteDocument";
                 p.Title = "SiteDocument";
@@ -2729,6 +2746,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -2779,6 +2797,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -3089,8 +3108,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportActionsTaken>().Configure(p => {
                 p.SetFriendlyName = "Report Actions Taken";
                 p.SetName = "ReportActionsTaken";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportActionsTaken";
                 p.Title = "ReportActionsTaken";
@@ -3099,6 +3118,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -3149,6 +3169,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -3449,8 +3470,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportCategory>().Configure(p => {
                 p.SetFriendlyName = "Report Categories";
                 p.SetName = "ReportCategories";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportCategory";
                 p.Title = "ReportCategory";
@@ -3459,6 +3480,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -3509,6 +3531,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -3818,8 +3841,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportDefaultRecommendation>().Configure(p => {
                 p.SetFriendlyName = "Report Default Recommendations";
                 p.SetName = "ReportDefaultRecommendations";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportDefaultRecommendation";
                 p.Title = "ReportDefaultRecommendation";
@@ -3828,6 +3851,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -3878,6 +3902,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -4207,8 +4232,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportRecommendation>().Configure(p => {
                 p.SetFriendlyName = "Report Recommendations";
                 p.SetName = "ReportRecommendations";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportRecommendation";
                 p.Title = "ReportRecommendation";
@@ -4217,6 +4242,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -4267,6 +4293,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -4586,8 +4613,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportType>().Configure(p => {
                 p.SetFriendlyName = "Report Types";
                 p.SetName = "ReportTypes";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportType";
                 p.Title = "ReportType";
@@ -4596,6 +4623,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -4646,6 +4674,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -4946,8 +4975,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Project>().Configure(p => {
                 p.SetFriendlyName = "Projects";
                 p.SetName = "Projects";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "Project";
                 p.Title = "Project";
@@ -4956,6 +4985,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -5006,6 +5036,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -5316,8 +5347,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ReportReceiverEmailAddress>().Configure(p => {
                 p.SetFriendlyName = "Report Receiver Email Addresses";
                 p.SetName = "ReportReceiverEmailAddresses";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "ReportReceiverEmailAddress";
                 p.Title = "ReportReceiverEmailAddress";
@@ -5326,6 +5357,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -5376,6 +5408,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -5686,8 +5719,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<RiskAssessment>().Configure(p => {
                 p.SetFriendlyName = "Risk Assessments";
                 p.SetName = "RiskAssessments";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "RiskAssessment";
                 p.Title = "RiskAssessment";
@@ -5696,6 +5729,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -5746,6 +5780,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -6047,8 +6082,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<RiskAssessmentSolution>().Configure(p => {
                 p.SetFriendlyName = "Risk Assessment Solutions";
                 p.SetName = "RiskAssessmentSolutions";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "RiskAssessmentSolution";
                 p.Title = "RiskAssessmentSolution";
@@ -6321,8 +6356,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<RiskAssessmentAnswer>().Configure(p => {
                 p.SetFriendlyName = "Risk Assessment Answers";
                 p.SetName = "RiskAssessmentAnswers";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "RiskAssessmentAnswer";
                 p.Title = "RiskAssessmentAnswer";
@@ -6331,6 +6366,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -6381,6 +6417,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -6681,8 +6718,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<RiskAssessmentQuestion>().Configure(p => {
                 p.SetFriendlyName = "Risk Assessment Questions";
                 p.SetName = "RiskAssessmentQuestions";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "RiskAssessmentQuestion";
                 p.Title = "RiskAssessmentQuestion";
@@ -6691,6 +6728,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -6741,6 +6779,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -7811,8 +7850,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Person>().Configure(p => {
                 p.SetFriendlyName = "People";
                 p.SetName = "People";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.HasFile(p_f => p_f.PhotoUrl, p_f => {
                     p_f.VersionProperty = p.FindProperty("PhotoRevisionKey");
@@ -7830,6 +7869,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -7880,6 +7920,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -8244,8 +8285,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonInspection>().Configure(p => {
                 p.SetFriendlyName = "Person Inspections";
                 p.SetName = "PersonInspections";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "PersonInspection";
                 p.Title = "PersonInspection";
@@ -8254,6 +8295,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -8304,6 +8346,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -8604,8 +8647,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonLoading>().Configure(p => {
                 p.SetFriendlyName = "Person Loadings";
                 p.SetName = "PersonLoadings";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "PersonLoading";
                 p.Title = "PersonLoading";
@@ -8614,6 +8657,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -8664,6 +8708,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -8973,8 +9018,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonType>().Configure(p => {
                 p.SetFriendlyName = "Person Types";
                 p.SetName = "PersonTypes";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "PersonType";
                 p.Title = "PersonType";
@@ -8983,6 +9028,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -9033,6 +9079,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -9241,8 +9288,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonTypeMap>().Configure(p => {
                 p.SetFriendlyName = "Person Types Map";
                 p.SetName = "PersonTypesMap";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.Name = "PersonTypeMap";
                 p.Title = "PersonTypeMap";
                 p.FriendlyName = "Person Type Map";
@@ -9250,6 +9297,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -9300,6 +9348,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -9656,8 +9705,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<PersonReport>().Configure(p => {
                 p.SetFriendlyName = "Person Reports";
                 p.SetName = "PersonReports";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "PersonReport";
                 p.Title = "PersonReport";
@@ -9666,6 +9715,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -9716,6 +9766,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -10318,8 +10369,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Site>().Configure(p => {
                 p.SetFriendlyName = "Sites";
                 p.SetName = "Sites";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "Site";
                 p.Title = "Site";
@@ -10328,6 +10379,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -10378,6 +10430,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -10688,8 +10741,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<SiteArea>().Configure(p => {
                 p.SetFriendlyName = "Site Areas";
                 p.SetName = "SiteAreas";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "SiteArea";
                 p.Title = "SiteArea";
@@ -10980,8 +11033,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<SiteInspection>().Configure(p => {
                 p.SetFriendlyName = "Site Inspections";
                 p.SetName = "SiteInspections";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "SiteInspection";
                 p.Title = "SiteInspection";
@@ -10990,6 +11043,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -11040,6 +11094,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -11375,8 +11430,8 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<UserSetting>().Configure(p => {
                 p.SetFriendlyName = "User Settings";
                 p.SetName = "UserSettings";
-                p.DefaultSortExpression = "CreatedDate";
-                p.DefaultSortDescending = true;
+                p.DefaultBrowseSortExpression = "CreatedDate";
+                p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
                 p.Name = "UserSetting";
                 p.Title = "UserSetting";
@@ -11431,6 +11486,7 @@ namespace IqlSampleApp.ApiContext.Base
                 {
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -11481,6 +11537,7 @@ namespace IqlSampleApp.ApiContext.Base
                     },
                     new IqlMethod
                     {
+                        Ordering = 0,
                         SupportsOffline = false,
                         DataStoreRequired = "ODataDataStore",
                         IsPublic = false,
@@ -11628,6 +11685,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.ClientsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "ClientsCreated";
                     rel_cnf.Title = "Clients Created";
@@ -11635,6 +11693,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.DocumentCategoriesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "DocumentCategoriesCreated";
                     rel_cnf.Title = "Document Categories Created";
@@ -11642,6 +11701,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteDocumentsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "SiteDocumentsCreated";
                     rel_cnf.Title = "Site Documents Created";
@@ -11649,6 +11709,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultActionsTakenCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "FaultActionsTakenCreated";
                     rel_cnf.Title = "Fault Actions Taken Created";
@@ -11656,6 +11717,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultCategoriesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "FaultCategoriesCreated";
                     rel_cnf.Title = "Fault Categories Created";
@@ -11663,6 +11725,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultDefaultRecommendationsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "FaultDefaultRecommendationsCreated";
                     rel_cnf.Title = "Fault Default Recommendations Created";
@@ -11670,6 +11733,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultRecommendationsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "FaultRecommendationsCreated";
                     rel_cnf.Title = "Fault Recommendations Created";
@@ -11677,6 +11741,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultTypesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "FaultTypesCreated";
                     rel_cnf.Title = "Fault Types Created";
@@ -11684,6 +11749,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.ProjectCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "ProjectCreated";
                     rel_cnf.Title = "Project Created";
@@ -11691,6 +11757,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.ReportReceiverEmailAddressesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "ReportReceiverEmailAddressesCreated";
                     rel_cnf.Title = "Report Receiver Email Addresses Created";
@@ -11698,6 +11765,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessmentsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "RiskAssessmentsCreated";
                     rel_cnf.Title = "Risk Assessments Created";
@@ -11705,6 +11773,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessmentSolutionsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "RiskAssessmentSolutionsCreated";
                     rel_cnf.Title = "Risk Assessment Solutions Created";
@@ -11712,6 +11781,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessmentAnswersCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "RiskAssessmentAnswersCreated";
                     rel_cnf.Title = "Risk Assessment Answers Created";
@@ -11719,6 +11789,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessmentQuestionsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "RiskAssessmentQuestionsCreated";
                     rel_cnf.Title = "Risk Assessment Questions Created";
@@ -11726,6 +11797,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.PeopleCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "PeopleCreated";
                     rel_cnf.Title = "People Created";
@@ -11733,6 +11805,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.PersonInspectionsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "PersonInspectionsCreated";
                     rel_cnf.Title = "Person Inspections Created";
@@ -11740,6 +11813,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.PersonLoadingsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "PersonLoadingsCreated";
                     rel_cnf.Title = "Person Loadings Created";
@@ -11747,6 +11821,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.PersonTypesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "PersonTypesCreated";
                     rel_cnf.Title = "Person Types Created";
@@ -11754,6 +11829,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultReportsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "FaultReportsCreated";
                     rel_cnf.Title = "Fault Reports Created";
@@ -11761,6 +11837,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.SitesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "SitesCreated";
                     rel_cnf.Title = "Sites Created";
@@ -11768,6 +11845,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteAreasCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "SiteAreasCreated";
                     rel_cnf.Title = "Site Areas Created";
@@ -11775,6 +11853,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteInspectionsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "SiteInspectionsCreated";
                     rel_cnf.Title = "Site Inspections Created";
@@ -11782,6 +11861,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.UserSettingsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "UserSettingsCreated";
                     rel_cnf.Title = "User Settings Created";
@@ -11789,6 +11869,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.UserSettings).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "UserSettings";
                     rel_cnf.Title = "User Settings";
@@ -11796,6 +11877,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Sites).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Sites";
                     rel_cnf.Title = "Sites";
@@ -11805,6 +11887,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Client>().Configure(rel => {
                 rel.FindCollectionRelationship(rel_p => rel_p.Users).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Users";
                     rel_cnf.Title = "Users";
@@ -11826,6 +11909,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
@@ -11833,6 +11917,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Sites).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Sites";
                     rel_cnf.Title = "Sites";
@@ -11842,6 +11927,7 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<ClientType>().Configure(rel => {
                 rel.FindCollectionRelationship(rel_p => rel_p.Clients).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Clients";
                     rel_cnf.Title = "Clients";
@@ -11858,6 +11944,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Documents).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Documents";
                     rel_cnf.Title = "Documents";
@@ -11904,6 +11991,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Documents).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Documents";
                     rel_cnf.Title = "Documents";
@@ -11911,6 +11999,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.AdditionalSendReportsTo).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "AdditionalSendReportsTo";
                     rel_cnf.Title = "Additional Send Reports To";
@@ -11918,6 +12007,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
@@ -11932,6 +12022,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Children).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Children";
                     rel_cnf.Title = "Children";
@@ -11939,6 +12030,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Areas).Configure(rel_cnf => {
                     rel_cnf.CanWrite = true;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Areas";
                     rel_cnf.Title = "Areas";
@@ -11946,6 +12038,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteInspections).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "SiteInspections";
                     rel_cnf.Title = "Site Inspections";
@@ -11953,6 +12046,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Users).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Users";
                     rel_cnf.Title = "Users";
@@ -11985,6 +12079,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.ActionsTaken).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "ActionsTaken";
                     rel_cnf.Title = "Actions Taken";
@@ -11992,6 +12087,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Recommendations).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Recommendations";
                     rel_cnf.Title = "Recommendations";
@@ -12022,6 +12118,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.ReportTypes).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "ReportTypes";
                     rel_cnf.Title = "Report Types";
@@ -12038,6 +12135,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Recommendations).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Recommendations";
                     rel_cnf.Title = "Recommendations";
@@ -12077,6 +12175,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultReports).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "FaultReports";
                     rel_cnf.Title = "Fault Reports";
@@ -12148,6 +12247,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessments).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "RiskAssessments";
                     rel_cnf.Title = "Risk Assessments";
@@ -12155,6 +12255,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.PersonInspections).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "PersonInspections";
                     rel_cnf.Title = "Person Inspections";
@@ -12196,6 +12297,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Answers).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Answers";
                     rel_cnf.Title = "Answers";
@@ -12226,6 +12328,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Reports).Configure(rel_cnf => {
                     rel_cnf.CanWrite = true;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Reports";
                     rel_cnf.Title = "Reports";
@@ -12311,6 +12414,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Types).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Types";
                     rel_cnf.Title = "Types";
@@ -12334,6 +12438,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
@@ -12350,6 +12455,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
@@ -12357,6 +12463,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.PeopleMap).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "PeopleMap";
                     rel_cnf.Title = "People Map";
@@ -12373,6 +12480,7 @@ namespace IqlSampleApp.ApiContext.Base
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";

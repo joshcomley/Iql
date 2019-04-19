@@ -23,6 +23,8 @@ namespace Iql.Entities
         IPropertyGroup SetHidden();
         bool IsHiddenFromRead { get; }
         bool IsHiddenFromEdit { get; }
+        ReadOnlyEditDisplayKind ReadOnlyEditDisplayKind { get; set; }
+        ReadOnlyEditDisplayKind ResolvedReadOnlyEditDisplayKind { get; }
         PropertyReadKind ReadKind { get; set; }
         PropertyEditKind EditKind { get; set; }
         IPropertyGroup ResolvePrimaryProperty();

@@ -133,6 +133,18 @@ namespace Iql.Data.Rendering
                         break;
                 }
             }
+
+            if (!canEdit && canShow)
+            {
+                var propertyGroup = PropertyAsPropertyGroup;
+                if (propertyGroup != null)
+                {
+                    if (propertyGroup.ResolvedReadOnlyEditDisplayKind == ReadOnlyEditDisplayKind.Hide)
+                    {
+                        canShow = false;
+                    }
+                }
+            }
             var entityConfiguration = Property as IEntityConfiguration;
             var allProperties =
                 entityConfiguration != null
@@ -254,8 +266,7 @@ namespace Iql.Data.Rendering
                 kids);
         }
 
-        private bool CanShow(
-            object entity,
+        private bool CanShow(object entity,
             IDataContext dataContext,
             DisplayConfiguration displayConfiguration)
         {

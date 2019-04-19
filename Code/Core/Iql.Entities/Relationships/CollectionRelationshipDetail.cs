@@ -12,6 +12,7 @@ namespace Iql.Entities.Relationships
         where T : class
     {
         protected override bool CanWriteDefaultValue { get; } = false;
+        public override ReadOnlyEditDisplayKind ReadOnlyEditDisplayKind { get; set; } = ReadOnlyEditDisplayKind.Hide;
 
         public CollectionRelationshipDetail(
             IRelationship relationship,

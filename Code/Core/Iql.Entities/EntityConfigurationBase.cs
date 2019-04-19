@@ -508,8 +508,10 @@ namespace Iql.Entities
             return Type?.Name ?? _setName ?? _setFriendlyName;
         }
 
-        public string DefaultSortExpression { get; set; }
-        public bool DefaultSortDescending { get; set; }
+        public string DefaultBrowseSortExpression { get; set; }
+        public bool DefaultBrowseSortDescending { get; set; }
+        public string DefaultSearchSortExpression { get; set; }
+        public bool DefaultSearchSortDescending { get; set; }
 
 
         private List<EntityRelationship> _allRelationships = new List<EntityRelationship>();

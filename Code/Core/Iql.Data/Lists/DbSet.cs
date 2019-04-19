@@ -100,9 +100,9 @@ namespace Iql.Data.Lists
             return (DbSet<T, TKey>)base.WithKeys(ids.Select(c => (object)c));
         }
 
-        public new DbSet<T, TKey> OrderByDefault(bool? descending = null)
+        public new DbSet<T, TKey> OrderByDefault(bool? descending = null, IqlDefaultOrderKind? orderKind = null)
         {
-            return (DbSet<T, TKey>)base.OrderByDefault(descending);
+            return (DbSet<T, TKey>)base.OrderByDefault(descending, orderKind);
         }
 
         public new DbSet<T, TKey> Search(string search, IqlSearchKind searchKind = IqlSearchKind.Primary)

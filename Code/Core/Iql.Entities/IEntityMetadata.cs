@@ -26,8 +26,10 @@ namespace Iql.Entities
         string SetFriendlyName { get; set; }
         string SetName { get; set; }
         bool SetNameSet { get; }
-        string DefaultSortExpression { get; set; }
-        bool DefaultSortDescending { get; set; }
+        string DefaultBrowseSortExpression { get; set; }
+        string DefaultSearchSortExpression { get; set; }
+        bool DefaultBrowseSortDescending { get; set; }
+        bool DefaultSearchSortDescending { get; set; }
         IList<DisplayConfiguration> DisplayConfigurations { get; set; }
         IList<IProperty> Properties { get; set; }
         IProperty PersistenceKeyProperty { get; set; }

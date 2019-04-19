@@ -588,9 +588,18 @@ namespace Iql.Data.Context
             return ResolveLastOrDefault(result);
         }
 
-        public override DbQueryable<T> OrderByDefault(bool? descending = null)
+        public override DbQueryable<T> OrderByDefault(bool? descending = null, IqlDefaultOrderKind? orderKind = null)
         {
-            var resolvedSort = EntityConfiguration.DefaultSortExpression;
+            orderKind = orderKind ?? IqlDefaultOrderKind.Browse;
+            var resolvedSort =
+                orderKind == IqlDefaultOrderKind.Browse
+                ? EntityConfiguration.DefaultBrowseSortExpression
+                : EntityConfiguration.DefaultSearchSortExpression;
+            var resolvedDescending = descending == null
+                ? (orderKind == IqlDefaultOrderKind.Browse
+                    ? EntityConfiguration.DefaultBrowseSortDescending
+                    : EntityConfiguration.DefaultSearchSortDescending)
+                : descending.Value;
             if (string.IsNullOrWhiteSpace(resolvedSort))
             {
                 var sortProperty = (EntityConfiguration.ResolveSearchProperties().FirstOrDefault() ??
@@ -600,9 +609,21 @@ namespace Iql.Data.Context
             }
             if (string.IsNullOrWhiteSpace(resolvedSort))
             {
-                return this;
+                resolvedSort =
+                   orderKind == IqlDefaultOrderKind.Browse
+                       ? EntityConfiguration.DefaultSearchSortExpression
+                       : EntityConfiguration.DefaultBrowseSortExpression;
+                if (string.IsNullOrWhiteSpace(resolvedSort))
+                {
+                    return this;
+                }
+                resolvedDescending = descending == null
+                    ? (orderKind == IqlDefaultOrderKind.Browse
+                        ? EntityConfiguration.DefaultSearchSortDescending
+                        : EntityConfiguration.DefaultBrowseSortDescending)
+                    : descending.Value;
             }
-            return this.OrderByProperty(resolvedSort, EntityConfiguration.DefaultSortDescending);
+            return OrderByProperty(resolvedSort, resolvedDescending);
         }
 
         public override IqlPropertyExpression PropertyExpression(string propertyName, string rootReferenceName = null)
@@ -724,7 +745,7 @@ namespace Iql.Data.Context
 #endif
         )
         {
-            return await ToListAsync((Expression<Func<T, bool>>) expression
+            return await ToListAsync((Expression<Func<T, bool>>)expression
 #if TypeScript
 , evaluateContext
 #endif
@@ -753,7 +774,7 @@ namespace Iql.Data.Context
 #endif
         )
         {
-            return await AllPagesToListAsync(progressNotifier, (Expression<Func<T, bool>>) expression
+            return await AllPagesToListAsync(progressNotifier, (Expression<Func<T, bool>>)expression
 #if TypeScript
 , evaluateContext
 #endif
@@ -1504,7 +1525,7 @@ namespace Iql.Data.Context
                         var keyPart = withKey.Key.Keys[index];
                         isEqualToOperations.Add(new IqlIsEqualToExpression(
                             IqlExpression.GetPropertyExpression(keyPart.Name),
-                            // TODO: Use configuratiton context and property path to resolve type
+                            // TODO: Use configuration context and property path to resolve type
                             new IqlLiteralExpression(keyPart.Value, keyPart.ValueType?.ToIqlType() ?? IqlType.Unknown)));
                     }
                     queryExpression.WithKey = new IqlWithKeyExpression(isEqualToOperations);

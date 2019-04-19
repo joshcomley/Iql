@@ -340,11 +340,11 @@ namespace Iql.OData
             return oDataGetResult;
         }
 
-        private static Task<IODataCollectionResult> GetODataCollectionResponseByTypeAsync(Type entityType, IHttpResult httpResult)
+        private Task<IODataCollectionResult> GetODataCollectionResponseByTypeAsync(Type entityType, IHttpResult httpResult)
         {
             return (Task<IODataCollectionResult>)typeof(ODataDataStore).GetMethod(nameof(GetODataCollectionResponseAsync))
                 .InvokeGeneric(
-                    null,
+                    this,
                     new object[] { httpResult },
                     entityType
                 );

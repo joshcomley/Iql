@@ -115,6 +115,10 @@ namespace Iql.Entities
         public bool Sortable { get; set; } = true;
         public virtual bool IsHiddenFromEdit =>
             EditKind == PropertyEditKind.Hidden;
+
+        public virtual ReadOnlyEditDisplayKind ReadOnlyEditDisplayKind { get; set; } = ReadOnlyEditDisplayKind.Display;
+        public virtual ReadOnlyEditDisplayKind ResolvedReadOnlyEditDisplayKind => ReadOnlyEditDisplayKind;
+
         public virtual bool IsHiddenFromRead =>
             ReadKind == PropertyReadKind.Hidden;
 

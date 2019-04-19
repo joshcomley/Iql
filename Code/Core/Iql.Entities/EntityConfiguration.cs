@@ -125,7 +125,7 @@ namespace Iql.Entities
 
         public IEntityConfiguration SetDefaultSortExpression(string expression)
         {
-            DefaultSortExpression = expression;
+            DefaultBrowseSortExpression = expression;
             return this;
         }
 

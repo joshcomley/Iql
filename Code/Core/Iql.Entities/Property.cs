@@ -132,6 +132,19 @@ namespace Iql.Entities
 
         public new ValidationCollection<TOwner> ValidationRules => (ValidationCollection<TOwner>)base.ValidationRules;
 
+        public override ReadOnlyEditDisplayKind ResolvedReadOnlyEditDisplayKind
+        {
+            get
+            {
+                if (Relationship != null)
+                {
+                    return Relationship.ThisEnd.ReadOnlyEditDisplayKind;
+                }
+
+                return ReadOnlyEditDisplayKind;
+            }
+        }
+
         IRuleCollection<IBinaryRule> IPropertyGroup.ValidationRules
         {
             get => ValidationRules;
