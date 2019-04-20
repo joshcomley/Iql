@@ -27,6 +27,14 @@ namespace Iql.Entities.SpecialTypes
             var entityType = entityConfiguration.Builder.EntityType<IqlUser>();
             entityType.ManageKind = EntityManageKind.None;
             entityType.SpecialTypeDefinition = definition;
+            if (entityType.Properties.Count == 0)
+            {
+                entityType
+                    .DefineProperty(_ => _.Id, true, IqlType.Guid)
+                    .DefineProperty(_ => _.Name, false, IqlType.String)
+                    .HasKey(_ => _.Id)
+                    ;
+            }
             return definition;
         }
 

@@ -56,6 +56,21 @@ namespace Iql.Entities.SpecialTypes
             var entityType = entityConfiguration.Builder.EntityType<IqlCustomReport>();
             entityType.ManageKind = EntityManageKind.None;
             entityType.SpecialTypeDefinition = definition;
+            if (entityType.Properties.Count == 0)
+            {
+                entityType
+                    .DefineProperty(_ => _.Id, true, IqlType.Guid)
+                    .DefineProperty(_ => _.UserId, true, IqlType.String)
+                    .DefineProperty(_ => _.Name, false, IqlType.String)
+                    .DefineProperty(_ => _.EntityType, true, IqlType.String)
+                    .DefineProperty(_ => _.Iql, true, IqlType.String)
+                    .DefineProperty(_ => _.Fields, true, IqlType.String)
+                    .DefineProperty(_ => _.Sort, true, IqlType.String)
+                    .DefineProperty(_ => _.SortDescending, true, IqlType.Boolean)
+                    .DefineProperty(_ => _.Search, true, IqlType.String)
+                    .HasKey(_ => _.Id)
+                    ;
+            }
             return definition;
         }
 

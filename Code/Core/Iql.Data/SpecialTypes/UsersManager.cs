@@ -9,15 +9,6 @@ namespace Iql.Data.SpecialTypes
         public UsersManager(IDataContext dataContext) :
             base(dataContext, dataContext.EntityConfigurationContext.UsersDefinition)
         {
-            if (dataContext.EntityConfigurationContext.EntityType<IqlUser>().Properties.Count == 0)
-            {
-                var entityConfiguration = dataContext.EntityConfigurationContext.EntityType<IqlUser>();
-                entityConfiguration
-                    .DefineProperty(_ => _.Id, true, IqlType.Guid)
-                    .DefineProperty(_ => _.Name, false, IqlType.String)
-                    .HasKey(_ => _.Id)
-                    ;
-            }
         }
     }
 }

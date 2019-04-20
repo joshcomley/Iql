@@ -33,17 +33,7 @@ namespace Iql.Data.Context
             var entityType = entity.GetType();
 #endif
             var configuration = dataContext.EntityConfigurationContext.GetEntityByType(entityType);
-            var keyDefinition = configuration.Key;
-            var compositeKey = new CompositeKey(keyDefinition.Properties.Length);
-            for (var i = 0; i < keyDefinition.Properties.Length; i++)
-            {
-                var kp = keyDefinition.Properties[i];
-                compositeKey.Keys[i] = new KeyValue(
-                    kp.Name,
-                    entity.GetPropertyValue(kp),
-                    kp.TypeDefinition);
-            }
-            var withKeyOperation = new WithKeyOperation(compositeKey);
+            var withKeyOperation = new WithKeyOperation(configuration.GetCompositeKey(entity));
             return withKeyOperation;
         }
 

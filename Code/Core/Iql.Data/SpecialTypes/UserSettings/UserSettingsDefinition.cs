@@ -48,6 +48,19 @@ namespace Iql.Entities.SpecialTypes
             var entityType = entityConfiguration.Builder.EntityType<IqlUserSetting>();
             entityType.ManageKind = EntityManageKind.None;
             entityType.SpecialTypeDefinition = definition;
+            if (entityType.Properties.Count == 0)
+            {
+                entityType
+                    .DefineProperty(_ => _.Id, true, IqlType.Guid)
+                    .DefineProperty(_ => _.UserId, true, IqlType.String)
+                    .DefineProperty(_ => _.Key1, false, IqlType.String)
+                    .DefineProperty(_ => _.Key2, true, IqlType.String)
+                    .DefineProperty(_ => _.Key3, true, IqlType.String)
+                    .DefineProperty(_ => _.Key4, true, IqlType.String)
+                    .DefineProperty(_ => _.Value, true, IqlType.String)
+                    .HasKey(_ => _.Id)
+                    ;
+            }
             return definition;
         }
 

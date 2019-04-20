@@ -31,5 +31,22 @@ namespace Iql.Tests.Tests.SpecialTypes
             Assert.AreEqual(cloudReport.MyName, "New Report Name");
             Assert.AreEqual(cloudReport.MyIql, "New IQL");
         }
+
+        [TestMethod]
+        public async Task TestGetCustomReport()
+        {
+            var cloudReport = new MyCustomReport
+            {
+                MyId = new Guid("a0da5a95-84f1-42b4-811c-ed7e2193ec6c"),
+                MyName = "Report Name",
+                MyIql = "Some IQL"
+            };
+            AppDbContext.InMemoryDb.MyCustomReports.Add(cloudReport);
+            var report =
+                await Db.CustomReportsManager.Set.GetWithKeyAsync(new Guid("a0da5a95-84f1-42b4-811c-ed7e2193ec6c"));
+            Assert.IsNotNull(report);
+            var reportAgain = await Db.GetEntityFromEntityAsync(report);
+            Assert.IsNotNull(reportAgain);
+        }
     }
 }
