@@ -91,6 +91,10 @@ namespace Iql.Entities
             }
             set
             {
+                if (Name == "ParentId")
+                {
+                    int a = 0;
+                }
                 CanWriteHasBeenSet = true;
                 if (this is IProperty property)
                 {
@@ -242,6 +246,11 @@ namespace Iql.Entities
         }
 
         public abstract IPropertyGroup[] GetGroupProperties();
+
+        public virtual bool IsTypeGroup => GroupKind == IqlPropertyGroupKind.NestedSet ||
+                                             GroupKind == IqlPropertyGroupKind.GeographicPoint ||
+                                             GroupKind == IqlPropertyGroupKind.DateRange ||
+                                             GroupKind == IqlPropertyGroupKind.File;
 
         protected PropertyGroupBase(IEntityConfiguration entityConfiguration, string key)
         {

@@ -193,6 +193,7 @@ namespace Iql.Tests.Tests.OData
     ]
   },
   ""FullAddress"": ""\n"",
+  ""Level"": 0,
   ""Left"": 0,
   ""Right"": 0,
   ""Guid"": ""f3a3a088-0740-4904-9588-6b4c4ba37656"",

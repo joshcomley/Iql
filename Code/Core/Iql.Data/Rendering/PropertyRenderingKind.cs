@@ -13,6 +13,7 @@
         public static string Number = "number";
         public static string GeoPolygon = "geo-polygon";
         public static string GeoPoint = "geo-point";
+        public static string Tree = "tree";
         //public static string Key = "key";
         //public static string RelationshipKey = "relationship-key";
         //public static string Relationship = "relationship";

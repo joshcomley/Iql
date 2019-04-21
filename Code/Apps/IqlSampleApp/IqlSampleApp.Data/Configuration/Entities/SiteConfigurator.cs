@@ -12,7 +12,10 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(IEntityConfigurationBuilder builder)
         {
-            builder.EntityType<Site>()
+            var sites = builder.EntityType<Site>();
+            sites.HasNestedSet(s => s.Left, s => s.Right, s => s.LeftOf, s => s.RightOf,
+                s => s.Key, s => s.Level, s => s.ParentId, s => s.Parent, s => s.Id);
+            sites
                 .ConfigureProperty(_ => _.Key,
                     _ =>
                     {
@@ -46,7 +49,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     );
                 });
 
-            builder.EntityType<Site>().FindCollectionRelationship(_ => _.Areas).CanWrite = true;
+            sites.FindCollectionRelationship(_ => _.Areas).CanWrite = true;
         }
     }
 

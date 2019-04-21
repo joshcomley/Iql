@@ -125,6 +125,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
         {
         }
 
+        public bool IsTypeGroup => true;
         public IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.EntityConfiguration;
         public PropertyGroupMetadata[] GetPropertyGroupMetadata()
         {

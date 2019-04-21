@@ -11,6 +11,7 @@ namespace Iql.Entities
         File = 6,
         GeographicPoint = 7,
         NestedSet = 8,
+        Tree = 8,
         PropertyPath = 9,
         PropertyCollection = 10,
         SpecialType = 11

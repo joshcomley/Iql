@@ -103,7 +103,15 @@ namespace Iql.Data.Rendering
             inferredValueEvaluationSession = inferredValueEvaluationSession ??
                                              new InferredValueEvaluationSession(permissionsEvaluationSession.Session);
             var canEditAltersPosition = true;
-            var canEdit = !IsSimpleProperty || !await inferredValueEvaluationSession.IsReadOnlyAsync(PropertyAsSimpleProperty, entity, dataContext);
+            //var isInferredReadOnly =
+            //    await inferredValueEvaluationSession.IsReadOnlyAsync(PropertyAsSimpleProperty, entity, dataContext);
+            var canEdit = !IsSimpleProperty;
+            if (IsSimpleProperty)
+            {
+                var isInferredReadOnly = await inferredValueEvaluationSession.IsReadOnlyAsync(PropertyAsSimpleProperty, entity,
+                    dataContext);
+                canEdit = !isInferredReadOnly;
+            }
             var canShow = CanShow(entity, dataContext, configuration);
             var canShowReason = SnapshotReasonKind.Configuration;
             var canEditReason = SnapshotReasonKind.Configuration;
@@ -218,9 +226,15 @@ namespace Iql.Data.Rendering
                             var readOnlyRelationshipCollections = new List<EntityPropertySnapshot>();
                             var nonReadOnlyRelationshipCollections = new List<EntityPropertySnapshot>();
                             var nonReadOnly = new List<EntityPropertySnapshot>();
+                            var manuallyAdded = new List<EntityPropertySnapshot>();
                             for (var i = 0; i < kids.Length; i++)
                             {
                                 var kid = kids[i];
+                                if (wasManuallyAdded.ContainsKey(kid) && wasManuallyAdded[kid] == true)
+                                {
+                                    manuallyAdded.Add(kid);
+                                    continue;
+                                }
                                 if (kid.CanEdit || kid.CanEditReason == SnapshotReasonKind.Permissions)
                                 {
                                     if (kid.IsRelationshipTarget)
@@ -245,14 +259,16 @@ namespace Iql.Data.Rendering
                                 }
                             }
                             kids = (readOnly.Concat(readOnlyRelationshipCollections)
-                                .Concat(nonReadOnlyRelationshipCollections).Concat(nonReadOnly)).ToArray();
+                                .Concat(nonReadOnlyRelationshipCollections).Concat(manuallyAdded).Concat(nonReadOnly)).ToArray();
 
                             break;
                         }
                 }
             }
 
-            if (canEdit && kids.Any())
+            if (canEdit && 
+                kids.Any() &&
+                !Property.IsTypeGroup)
             {
                 canEdit = kids.Any(_ => _.CanEdit);
             }

@@ -1,5 +1,6 @@
 ﻿using Iql.Data.Rendering;
 using Iql.Entities;
+using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 
@@ -71,6 +72,10 @@ namespace Iql.Data.Extensions
             else if (property is IFile)
             {
                 kind = PropertyRenderingKind.File;
+            }
+            else if (property is INestedSet)
+            {
+                kind = PropertyRenderingKind.Tree;
             }
             else
             {

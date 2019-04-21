@@ -87,7 +87,7 @@ namespace Iql.Server.OData.Net
             {
                 foreach (var nestedSet in EntityConfiguration.NestedSets)
                 {
-                    await ApplyNewNestedSetItem(nestedSet, postedEntity);
+                    await ApplyNewNestedSetItemAsync(nestedSet, postedEntity);
                 }
             }
             await base.OnAfterPostAsync(postedEntity);
@@ -129,16 +129,16 @@ namespace Iql.Server.OData.Net
             return success;
         }
 
-        protected override async Task OnAfterPatchAsync(KeyValuePair<string, object>[] id, T currentEntity, Delta<T> patch)
+        protected override async Task OnAfterPatchAsync(KeyValuePair<string, object>[] id, T currentEntity, Delta<T> patch, T prePatchObject)
         {
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
             {
                 foreach (var nestedSet in EntityConfiguration.NestedSets)
                 {
-                    await ApplyExistingNestedSetItem(nestedSet, currentEntity, patch);
+                    await ApplyExistingNestedSetItemAsync(nestedSet, currentEntity, prePatchObject, patch);
                 }
             }
-            await base.OnAfterPatchAsync(id, currentEntity, patch);
+            await base.OnAfterPatchAsync(id, currentEntity, patch, prePatchObject);
         }
 
         private Task<bool> ApplyDeleteNestedSetItem(INestedSet nestedSet, T entity)
@@ -180,14 +180,14 @@ namespace Iql.Server.OData.Net
             return mptt.DeleteAsync((TKey)id);
         }
 
-        private Task ApplyNewNestedSetItem(INestedSet nestedSet, T postedEntity)
+        protected virtual Task ApplyNewNestedSetItemAsync(INestedSet nestedSet, T postedEntity)
         {
             var method = typeof(IqlODataController<
                     TService,
                     TDbContextSecured,
                     TDbContextUnsecured,
                     TUser,
-                    T>).GetMethod(nameof(ApplyNewNestedSetItemTyped), BindingFlags.Instance | BindingFlags.NonPublic)
+                    T>).GetMethod(nameof(ApplyNewNestedSetItemTypedAsync), BindingFlags.Instance | BindingFlags.NonPublic)
                 ;
             var genericMethod = method.MakeGenericMethod(
                 nestedSet.IdProperty.TypeDefinition.Type,
@@ -197,26 +197,27 @@ namespace Iql.Server.OData.Net
                 .Invoke(this, new object[] { nestedSet, postedEntity, nestedSet.KeyProperty.GetValue(postedEntity) });
         }
 
-        private Task ApplyExistingNestedSetItem(INestedSet nestedSet, T currentEntity, Delta<T> patch)
+        protected virtual Task ApplyExistingNestedSetItemAsync(INestedSet nestedSet, T currentEntity, T prePatchEntity, Delta<T> patch)
         {
             var method = typeof(IqlODataController<
                     TService,
                     TDbContextSecured,
                     TDbContextUnsecured,
                     TUser,
-                    T>).GetMethod(nameof(ApplyExistingNestedSetItemTyped), BindingFlags.Instance | BindingFlags.NonPublic)
+                    T>).GetMethod(nameof(ApplyExistingNestedSetItemTypedAsync), BindingFlags.Instance | BindingFlags.NonPublic)
                 ;
             var genericMethod = method.MakeGenericMethod(
                 nestedSet.IdProperty.TypeDefinition.Type,
                 nestedSet.ParentIdProperty.TypeDefinition.Type,
                 nestedSet.KeyProperty.TypeDefinition.Type);
             return (Task)genericMethod
-                .Invoke(this, new object[] { nestedSet, currentEntity, patch, nestedSet.KeyProperty.GetValue(currentEntity) });
+                .Invoke(this, new object[] { nestedSet, currentEntity, prePatchEntity, patch, nestedSet.KeyProperty.GetValue(currentEntity) });
         }
 
-        private async Task ApplyExistingNestedSetItemTyped<TKey, TNullableKey, TTreeKey>(
+        protected virtual async Task ApplyExistingNestedSetItemTypedAsync<TKey, TNullableKey, TTreeKey>(
             INestedSet nestedSet,
             T currentEntity,
+            T prePatchEntity,
             Delta<T> patch,
             TTreeKey key)
         {
@@ -234,7 +235,7 @@ namespace Iql.Server.OData.Net
                 Data.Context.Model.FindEntityType(typeof(T)).Relational().TableName
             );
             var id = nestedSet.IdProperty.GetValue(currentEntity);
-            var parentId = nestedSet.ParentIdProperty.GetValue(currentEntity);
+            var parentId = nestedSet.ParentIdProperty.GetValue(prePatchEntity);
             var leftOf = nestedSet.LeftOfProperty.GetValue(currentEntity);
             var rightOf = nestedSet.RightOfProperty.GetValue(currentEntity);
             if (!Equals(leftOf, null))
@@ -249,12 +250,12 @@ namespace Iql.Server.OData.Net
             {
                 if (!Equals(value, parentId))
                 {
-                    await mptt.MoveToAsync((TKey)id, (TNullableKey)parentId, NodeMoveKind.Beneath);
+                    await mptt.MoveToAsync((TKey)id, (TNullableKey)value, NodeMoveKind.Beneath);
                 }
             }
         }
 
-        private async Task ApplyNewNestedSetItemTyped<TKey, TNullableKey, TTreeKey>(
+        protected virtual async Task ApplyNewNestedSetItemTypedAsync<TKey, TNullableKey, TTreeKey>(
             INestedSet nestedSet,
             T postedEntity,
             TTreeKey key)
@@ -481,7 +482,7 @@ namespace Iql.Server.OData.Net
 
             return null;
         }
-        protected override async Task OnAfterPostAndPatchAsync(T currentEntity, Delta<T> patch)
+        protected override async Task OnAfterPostAndPatchAsync(T currentEntity, Delta<T> patch, T prePatchObject)
         {
             // Download the file, generate thumbnail, update preview URL, delete file
             // Enqueue a worker item
@@ -523,7 +524,7 @@ namespace Iql.Server.OData.Net
                     }
                 }
             }
-            await base.OnAfterPostAndPatchAsync(currentEntity, patch);
+            await base.OnAfterPostAndPatchAsync(currentEntity, patch, prePatchObject);
         }
 
         protected abstract Task EnqueueThumbnailRequest(string sourceUrl, string targetUrl);

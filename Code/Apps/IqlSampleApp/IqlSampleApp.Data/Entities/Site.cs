@@ -81,6 +81,10 @@ namespace IqlSampleApp.Data.Entities
 
         public string Name { get; set; }
 
+        public int? LeftOf { get; set; }
+        public int? RightOf { get; set; }
+        public int Level { get; set; }
+
         /// <summary>
         ///     Left in Modified Pre-Order Tree Traversal
         /// </summary>

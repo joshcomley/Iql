@@ -1834,6 +1834,33 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
             }
         }
+        protected int ? _leftOf;
+        public int ? LeftOf
+        {
+            get => _leftOf;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "LeftOf", _leftOf, value, _propertyChanging, _propertyChanged, newValue => this._leftOf = newValue);
+            }
+        }
+        protected int ? _rightOf;
+        public int ? RightOf
+        {
+            get => _rightOf;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "RightOf", _rightOf, value, _propertyChanging, _propertyChanged, newValue => this._rightOf = newValue);
+            }
+        }
+        protected int _level;
+        public int Level
+        {
+            get => _level;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Level", _level, value, _propertyChanging, _propertyChanged, newValue => this._level = newValue);
+            }
+        }
         protected int _left;
         public int Left
         {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Iql.Data.Rendering;
 using Iql.Entities;
@@ -42,17 +43,14 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKind.Edit,
                 DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.Standard);
-            Assert.AreEqual(22, instance.ChildProperties.Length);
+            Assert.AreEqual(21, instance.ChildProperties.Length);
             var expectedIndex = 0;
+            var xx = GetAsserts<Site>(instance);
             // N.B. "Parent" should be in here twice, as it is specified twice in the configuration
-            AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
-            //AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
-            //AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
-            //AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.AdditionalSendReportsTo), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.People), false, false);
@@ -62,17 +60,16 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Areas), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, "Site Address", true);
             var siteAddress = instance.ChildProperties.FirstOrDefault(_ => _.PropertyName == "Site Address");
-            AssertProperty(0, siteAddress, nameof(Site.Address), true);
-            AssertProperty(1, siteAddress, nameof(Site.PostCode), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
+            Assert.AreEqual(PropertyRenderingKind.Tree, instance.ChildProperties[expectedIndex].Kind);
+            AssertProperty(expectedIndex++, instance, "Hierarchy", true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Area), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Line), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Left), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Right), true);
         }
 
         [TestMethod]
@@ -89,12 +86,12 @@ namespace Iql.Tests.Tests.Properties
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, "Site Address", true);
             var siteAddress = instance.ChildProperties.FirstOrDefault(_ => _.PropertyName == "Site Address");
             AssertProperty(0, siteAddress, nameof(Site.Address), true);
             AssertProperty(1, siteAddress, nameof(Site.PostCode), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
         }
@@ -113,12 +110,12 @@ namespace Iql.Tests.Tests.Properties
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, "Site Address", true);
             var siteAddress = instance.ChildProperties.FirstOrDefault(_ => _.PropertyName == "Site Address");
             AssertProperty(0, siteAddress, nameof(Site.Address), true);
             AssertProperty(1, siteAddress, nameof(Site.PostCode), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
         }
@@ -134,16 +131,16 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKind.Edit,
                 DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration);
-            Assert.AreEqual(22, instance.ChildProperties.Length);
+            Assert.AreEqual(21, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, "Site Address", true);
             var siteAddress = instance.ChildProperties.FirstOrDefault(_ => _.PropertyName == "Site Address");
             AssertProperty(0, siteAddress, nameof(Site.Address), true);
             AssertProperty(1, siteAddress, nameof(Site.PostCode), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
@@ -156,10 +153,9 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Areas), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.SiteInspections), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Users), false, false);
+            AssertProperty(expectedIndex++, instance, "Hierarchy", true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Area), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Line), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Left), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Right), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
             //AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             //AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
@@ -178,7 +174,7 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKeys.Default);
             Assert.IsFalse(displayConfiguration.AutoGenerated);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.ReadOnlyFirst);
-            Assert.AreEqual(22, instance.ChildProperties.Length);
+            Assert.AreEqual(21, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
@@ -195,19 +191,18 @@ namespace Iql.Tests.Tests.Properties
             //AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, "Site Address", true);
             var siteAddress = instance.ChildProperties.FirstOrDefault(_ => _.PropertyName == "Site Address");
             AssertProperty(0, siteAddress, nameof(Site.Address), true);
             AssertProperty(1, siteAddress, nameof(Site.PostCode), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Areas), true);
+            AssertProperty(expectedIndex++, instance, "Hierarchy", true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Area), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Line), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Left), true);
-            AssertProperty(expectedIndex++, instance, nameof(Site.Right), true);
         }
 
         private static string GetAsserts<T>(EntityPropertySnapshot snapshot)
@@ -216,8 +211,17 @@ namespace Iql.Tests.Tests.Properties
             for (var i = 0; i < snapshot.ChildProperties.Length; i++)
             {
                 var child = snapshot.ChildProperties[i];
+                var parameters = new List<string>();
+                parameters.Add("expectedIndex++");
+                parameters.Add("instance");
+                parameters.Add($"nameof({typeof(T).Name}.{child.PropertyName})");
+                parameters.Add(child.CanEdit.ToString().ToLower());
+                if (child.CanShow == false)
+                {
+                    parameters.Add("false");
+                }
                 str +=
-                    $"AssertProperty(expectedIndex++, instance, nameof({typeof(T).Name}.{child.PropertyName}), {child.CanEdit.ToString().ToLower()});\n";
+                    $"AssertProperty({string.Join(", ", parameters)});\n";
             }
 
             return str;

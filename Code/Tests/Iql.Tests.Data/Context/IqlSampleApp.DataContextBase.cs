@@ -9859,7 +9859,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "ParentId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.CanWrite = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.RelationshipKey;
                 p.Name = "ParentId";
                 p.Title = "ParentId";
@@ -10080,7 +10080,7 @@ namespace IqlSampleApp.ApiContext.Base
                         {}
                     }
                 };
-                p.CanWrite = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Key";
                 p.Title = "Key";
@@ -10094,11 +10094,38 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
                 p.FriendlyName = "Name";
+            }).DefineProperty(p => p.LeftOf, true, IqlType.Integer).ConfigureProperty(p => p.LeftOf, p => {
+                p.PropertyName = "LeftOf";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = false;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "LeftOf";
+                p.Title = "LeftOf";
+                p.FriendlyName = "Left Of";
+            }).DefineProperty(p => p.RightOf, true, IqlType.Integer).ConfigureProperty(p => p.RightOf, p => {
+                p.PropertyName = "RightOf";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = false;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "RightOf";
+                p.Title = "RightOf";
+                p.FriendlyName = "Right Of";
+            }).DefineProperty(p => p.Level, false, IqlType.Integer).ConfigureProperty(p => p.Level, p => {
+                p.PropertyName = "Level";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = false;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Level";
+                p.Title = "Level";
+                p.FriendlyName = "Level";
             }).DefineProperty(p => p.Left, false, IqlType.Integer).ConfigureProperty(p => p.Left, p => {
                 p.PropertyName = "Left";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.CanWrite = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Left";
                 p.Title = "Left";
@@ -10107,7 +10134,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Right";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.CanWrite = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "Right";
                 p.Title = "Right";
@@ -10303,7 +10330,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Parent";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.CanWrite = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "Parent";
                 p.Title = "Parent";
@@ -10367,6 +10394,13 @@ namespace IqlSampleApp.ApiContext.Base
             builder.EntityType<Site>().HasOne(p => p.Client).WithMany(p => p.Sites).WithConstraint(p => p.ClientId, p => p.Id);
             builder.EntityType<Site>().HasOne(p => p.CreatedByUser).WithMany(p => p.SitesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<Site>().Configure(p => {
+                p.HasNestedSet(p_ns => p_ns.Left, p_ns => p_ns.Right, p_ns => p_ns.LeftOf, p_ns => p_ns.RightOf, p_ns => p_ns.Key, p_ns => p_ns.Level, p_ns => p_ns.ParentId, p_ns => p_ns.Parent, p_ns => p_ns.Id, "", "", p_ns => {
+                    p_ns.CanWrite = true;
+                    p_ns.Kind = PropertyKind.SimpleCollection;
+                    p_ns.Name = "Hierarchy";
+                    p_ns.Title = "Hierarchy";
+                    p_ns.FriendlyName = "Hierarchy";
+                });
                 p.SetFriendlyName = "Sites";
                 p.SetName = "Sites";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -12014,7 +12048,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "People";
                 });
                 rel.FindRelationship(rel_p => rel_p.Parent).Configure(rel_cnf => {
-                    rel_cnf.CanWrite = true;
+                    rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Parent";
                     rel_cnf.Title = "Parent";

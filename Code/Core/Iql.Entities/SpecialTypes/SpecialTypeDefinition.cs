@@ -12,7 +12,7 @@ namespace Iql.Entities.SpecialTypes
         public IProperty IdProperty { get; set; }
 
         private IEntityConfiguration _entityConfiguration = null;
-        public IEntityConfiguration EntityConfiguration => _entityConfiguration = _entityConfiguration ??
+        public override IEntityConfiguration EntityConfiguration => _entityConfiguration = _entityConfiguration ??
             GetGroupProperties().Select(_ => _.EntityConfiguration).FirstOrDefault();
 
         protected SpecialTypeDefinition(IProperty idProperty)
@@ -52,6 +52,8 @@ namespace Iql.Entities.SpecialTypes
             }
             return all.ToArray();
         }
+
+        public bool IsTypeGroup => false;
 
         public IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.SpecialType;
         public abstract PropertyGroupMetadata[] GetPropertyGroupMetadata();

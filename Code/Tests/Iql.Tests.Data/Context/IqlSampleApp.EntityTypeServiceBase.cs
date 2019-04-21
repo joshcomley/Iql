@@ -2481,6 +2481,30 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Site_Name = _Site_Name ?? FindPropertyByName<Site>("Name");
             }
         }
+        private IProperty _Site_LeftOf = null;
+        public IProperty Site_LeftOf
+        {
+            get
+            {
+                return _Site_LeftOf = _Site_LeftOf ?? FindPropertyByName<Site>("LeftOf");
+            }
+        }
+        private IProperty _Site_RightOf = null;
+        public IProperty Site_RightOf
+        {
+            get
+            {
+                return _Site_RightOf = _Site_RightOf ?? FindPropertyByName<Site>("RightOf");
+            }
+        }
+        private IProperty _Site_Level = null;
+        public IProperty Site_Level
+        {
+            get
+            {
+                return _Site_Level = _Site_Level ?? FindPropertyByName<Site>("Level");
+            }
+        }
         private IProperty _Site_Left = null;
         public IProperty Site_Left
         {

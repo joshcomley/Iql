@@ -879,6 +879,7 @@ namespace Iql.Entities
             return this;
         }
 
+        public bool IsTypeGroup => true;
         public IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.EntityConfiguration;
         public PropertyGroupMetadata[] GetPropertyGroupMetadata()
         {
