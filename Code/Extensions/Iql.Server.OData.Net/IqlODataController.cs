@@ -246,9 +246,11 @@ namespace Iql.Server.OData.Net
             {
                 await mptt.MoveToAsync((TKey)id, (TNullableKey)rightOf, NodeMoveKind.Right);
             }
-            else if (patch.TryGetPropertyValue(nestedSet.ParentIdProperty.PropertyName, out var value))
+            else if (
+                patch.GetChangedPropertyNames().Any(_ => _ == nestedSet.ParentIdProperty.PropertyName) &&
+                patch.TryGetPropertyValue(nestedSet.ParentIdProperty.PropertyName, out var value))
             {
-                if (!Equals(value, parentId))
+                if (!Equals(value, parentId) && !Equals(value, null) && !Equals(value, default(TNullableKey)))
                 {
                     await mptt.MoveToAsync((TKey)id, (TNullableKey)value, NodeMoveKind.Beneath);
                 }
