@@ -11,7 +11,10 @@ namespace Iql.Entities.Relationships
             ITargetRelationshipSourceDetail
         where T : class
     {
+        public bool SupportsCascadeDelete { get; set; }
         protected override bool CanWriteDefaultValue { get; } = false;
+        public override PropertyEditKind EditKind { get; set; } = PropertyEditKind.Hidden;
+
         public override ReadOnlyEditDisplayKind ReadOnlyEditDisplayKind { get; set; } = ReadOnlyEditDisplayKind.Hide;
 
         public CollectionRelationshipDetail(

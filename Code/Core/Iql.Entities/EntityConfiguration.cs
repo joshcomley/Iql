@@ -735,6 +735,8 @@ namespace Iql.Entities
             return this;
         }
 
+        public string TypeName => Type?.Name;
+
         DisplayConfiguration IEntityConfiguration.GetOrDefineDisplayConfigurationBase<TEntity>(DisplayConfigurationKind kind, string key, Action<EntityConfiguration<TEntity>, DisplayConfiguration> configure = null)
         {
             return GetOrDefineDisplayConfiguration(kind, key, (configuration, displayConfiguration) =>

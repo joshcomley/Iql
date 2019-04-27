@@ -2,7 +2,7 @@ namespace Iql.Entities.Relationships
 {
     public interface ITargetRelationshipSourceDetail : IRelationshipDetail
     {
-
+        bool SupportsCascadeDelete { get; set; }
     }
     public interface ISourceRelationshipDetail : IRelationshipDetail
     {

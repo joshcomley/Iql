@@ -137,14 +137,18 @@ namespace Iql.Server.Azure
             return policy;
         }
 
-        public override async Task DeleteAsync<T>(T entity, IFileUrl<T> file)
+        public override  Task<Func<Task>> GetDeleteTaskAsync<T>(T entity, IFileUrl<T> file)
         {
-            // Should use file or preview
-            var blob = await GetCloudBlockBlob(entity, file, false);
-            if (blob != null)
+            Func<Task> task = async () =>
             {
-                await blob.DeleteIfExistsAsync();
-            }
+                // Should use file or preview
+                var blob = await GetCloudBlockBlob(entity, file, false);
+                if (blob != null)
+                {
+                    await blob.DeleteIfExistsAsync();
+                }
+            };
+            return Task.FromResult(task);
         }
     }
 }

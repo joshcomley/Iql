@@ -8,7 +8,7 @@ namespace Iql.Data.Tracking
     {
         public static CompositeKey ToCompositeKey(this SerializedCompositeKey key, IEntityConfiguration entityConfiguration)
         {
-            var compositeKey = new CompositeKey(key.Keys.Length);
+            var compositeKey = new CompositeKey(entityConfiguration.TypeName, key.Keys.Length);
             for (var i = 0; i < key.Keys.Length; i++)
             {
                 var part = key.Keys[i];

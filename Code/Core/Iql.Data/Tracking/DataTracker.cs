@@ -219,7 +219,7 @@ namespace Iql.Data.Tracking
         }
 
         public IEntityStateBase DeleteEntity<T>(T entity)
-        where T : class
+            where T : class
         {
             var entityType = ResolveTrackingSet(entity, out var set);
             set.MarkForDelete(entity);

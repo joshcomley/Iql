@@ -123,7 +123,7 @@ namespace Iql.Entities
             recursionLookup.Add(objectGraphRoot, objectGraphRoot);
             var graphEntityConfiguration = builder.GetEntityByType(entityType);
             var compositeKey = graphEntityConfiguration.GetCompositeKey(objectGraphRoot);
-            var keyString = compositeKey.AsKeyString();
+            var keyString = compositeKey.AsLegacyKeyString();
             if (compositeKey.HasDefaultValue())
             {
                 keyString += Guid.NewGuid().ToString();

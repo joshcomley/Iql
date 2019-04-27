@@ -27,13 +27,23 @@ namespace Iql.Entities.Relationships
             }
         }
         private bool _editKindSet;
+        private bool _editKindNeedsPersisting;
         private PropertyEditKind _editKindTemp = PropertyEditKind.Display;
         public override PropertyEditKind EditKind
         {
-            get => Property?.EditKind ?? _editKindTemp;
+            get
+            {
+                if (_editKindNeedsPersisting && Property != null)
+                {
+                    _editKindNeedsPersisting = false;
+                    Property.EditKind = _editKindTemp;
+                }
+                return Property?.EditKind ?? _editKindTemp;
+            }
             set
             {
                 _editKindSet = true;
+                _editKindNeedsPersisting = true;
                 if (Property != null)
                 {
                     Property.EditKind = value;
@@ -184,7 +194,7 @@ namespace Iql.Entities.Relationships
             var constraints = Constraints;
             var inverseConstraints = RelationshipSide == RelationshipSide.Source
                 ? Relationship.Target.Constraints : Relationship.Source.Constraints;
-            var compositeKey = new CompositeKey(constraints.Length);
+            var compositeKey = new CompositeKey(EntityConfiguration.TypeName, constraints.Length);
             compositeKey.Entity = entity;
             for (var i = 0; i < constraints.Length; i++)
             {

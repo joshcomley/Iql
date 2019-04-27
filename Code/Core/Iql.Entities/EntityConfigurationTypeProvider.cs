@@ -14,7 +14,8 @@ namespace Iql.Entities
         }
 
         public IGenericTypeParameter[] GenericTypeParameters { get; } = new IGenericTypeParameter[] { };
-        public Type Type => EntityConfiguration.Type;
+        public Type Type => EntityConfiguration?.Type;
+        public string TypeName => EntityConfiguration?.TypeName;
 
         public ITypeProperty FindProperty(string name)
         {

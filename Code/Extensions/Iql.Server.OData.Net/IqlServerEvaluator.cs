@@ -72,7 +72,9 @@ namespace Iql.Server.OData.Net
                 {
                     dbSet = dbSet.AsNoTracking();
                 }
-                var entityQuery = dbSet.Where(CrudManager.KeyEqualsExpression<TEntity>(dic));
+
+                var keyEqualsExpression = CrudManager.KeyEqualsExpression<TEntity>(dic);
+                var entityQuery = dbSet.Where(keyEqualsExpression);
                 if (expandPaths != null)
                 {
                     foreach (var expand in expandPaths)
@@ -119,8 +121,10 @@ namespace Iql.Server.OData.Net
 
         public async Task<object> GetEntityByKeyAsync(IEntityConfiguration entityConfiguration, CompositeKey key, string[] expandPaths, bool trackResult)
         {
-            return await (Task<object>)(GetEntityByKeyTypedAsyncMethod.MakeGenericMethod(entityConfiguration.Type)
-                .Invoke(this, new object[] { entityConfiguration, key, expandPaths, trackResult }));
+            var task = GetEntityByKeyTypedAsyncMethod.MakeGenericMethod(entityConfiguration.Type)
+                .Invoke(this, new object[] { entityConfiguration, key, expandPaths, trackResult });
+            var result = await (Task<object>)task;
+            return result;
         }
 
         public IqlEntityStatus EntityStatus(object entity, IEntityConfiguration entityConfiguration = null)

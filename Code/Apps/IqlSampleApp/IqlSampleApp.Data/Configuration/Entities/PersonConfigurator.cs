@@ -77,7 +77,8 @@ namespace IqlSampleApp.Data.Configuration.Entities
                          _.CurrentEntityState.Category == PersonCategory.AutoDescription
                 );
             });
-            model.FindCollectionRelationship(_ => _.Reports).CanWrite = true;
+            var reports = model.FindCollectionRelationship(_ => _.Reports);
+            reports.EditKind = PropertyEditKind.Edit;
             model.ConfigureProperty(_ => _.Description,
                 p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.CurrentEntityState.Category == PersonCategory.AutoDescription); });
             model.ConfigureProperty(_ => _.Location, p =>

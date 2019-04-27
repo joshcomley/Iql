@@ -11,6 +11,8 @@ namespace Iql.Events
 
         }
 
+        public int SubscriptionCount => SubscriptionActions?.Count ?? 0;
+
         EventSubscription IEventSubscriberBase.Subscribe(Action<object> action)
         {
             return Subscribe(e =>

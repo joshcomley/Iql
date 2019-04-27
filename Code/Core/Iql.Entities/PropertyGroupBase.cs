@@ -187,6 +187,10 @@ namespace Iql.Entities
             get => _editKind;
             set
             {
+                if (EntityConfiguration?.Name == "Sites" && Name == "Documents" && value == PropertyEditKind.Edit)
+                {
+                    int a = 0;
+                }
                 var oldValue = _editKind;
                 _editKind = value;
                 if (oldValue != value && _editKindChanged != null)

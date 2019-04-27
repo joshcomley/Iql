@@ -23,12 +23,12 @@ namespace Iql.Data.Queryable
                 else if(entityConfiguration.Key.Properties.Length == 1 && id.GetType() == entityConfiguration.Key.Properties[0].TypeDefinition.Type)
                 {
                     var primaryKey = entityConfiguration.Key.Properties[0];
-                    compositeKey = new CompositeKey(1);
+                    compositeKey = new CompositeKey(entityConfiguration.TypeName, 1);
                     compositeKey.Keys[0] = new KeyValue(primaryKey.Name, id, primaryKey.TypeDefinition);
                 }
                 else
                 {
-                    compositeKey = new CompositeKey(entityConfiguration.Key.Properties.Length);
+                    compositeKey = new CompositeKey(entityConfiguration.TypeName, entityConfiguration.Key.Properties.Length);
                     for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
                     {
                         var keyProperty = entityConfiguration.Key.Properties[i];

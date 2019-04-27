@@ -252,13 +252,13 @@ namespace Iql.Data.Relationships
                 var key = CompositeKey.Ensure(entity, EntityConfigurationContext.GetEntityByType(relationship.Target.Type));
                 if (!idLookup.ContainsKey(entity))
                 {
-                    idLookup.Add(entity, key.HasDefaultValue() ? Guid.NewGuid().ToString() : key.AsKeyString());
+                    idLookup.Add(entity, key.HasDefaultValue() ? Guid.NewGuid().ToString() : key.AsLegacyKeyString());
                 }
 
                 return idLookup[entity];
             }
 
-            return relationship.Target.GetCompositeKey(state.Entity).AsKeyString(false);
+            return relationship.Target.GetCompositeKey(state.Entity).AsLegacyKeyString(false);
         }
 
         private string GetRelationshipKeyString(
@@ -304,7 +304,7 @@ namespace Iql.Data.Relationships
 
             var keyString = key.HasDefaultValue()
                 ? null
-                : key.AsKeyString(false);
+                : key.AsLegacyKeyString(false);
             return keyString;
         }
 

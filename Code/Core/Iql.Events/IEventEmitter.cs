@@ -50,6 +50,7 @@ namespace Iql.Events
 
     public interface IEventSubscriberBase : IEventUnsubscriber, IEventSubscriberSubscriber
     {
+        int SubscriptionCount { get; }
         EventSubscription Subscribe(Action<object> propertyChangeEvent);
     }
 

@@ -4,10 +4,13 @@ namespace Iql.Entities.Extensions
 {
     public static class CompositeKeyExtensions
     {
-        public static int AsKeyStringCount;
-        public static string AsKeyString(this CompositeKey compositeKey, bool? includeName = null)
+        public static string AsLegacyKeyString(this CompositeKey compositeKey, bool? includeName = null)
         {
-            AsKeyStringCount++;
+            return compositeKey.AsKeyString(includeName, false);
+        }
+
+        public static string AsKeyString(this CompositeKey compositeKey, bool? includeName = null, bool includeTypeName = true)
+        {
             // Shortcuts for speed
             bool shouldIncludeName;
             switch (includeName)
@@ -22,23 +25,31 @@ namespace Iql.Entities.Extensions
                     shouldIncludeName = compositeKey.Keys.Length > 1;
                     break;
             }
+            var str = "";
             if (compositeKey.Keys.Length == 1)
             {
-                return $"{(shouldIncludeName ? compositeKey.Keys[0].Name + ":" : "")}{compositeKey.Keys[0].Value ?? "NULL"}";
+                str = $"{(shouldIncludeName ? compositeKey.Keys[0].Name + ":" : "")}{compositeKey.Keys[0].Value ?? "NULL"}";
             }
-            if (compositeKey.Keys.Length == 2)
+            else if (compositeKey.Keys.Length == 2)
             {
-                return $"{(shouldIncludeName ? compositeKey.Keys[0].Name + ":" : "")}{compositeKey.Keys[0].Value ?? "NULL"}" +
+                str = $"{(shouldIncludeName ? compositeKey.Keys[0].Name + ":" : "")}{compositeKey.Keys[0].Value ?? "NULL"}" +
                     $";{(shouldIncludeName ? compositeKey.Keys[1].Name + ":" : "")}:{compositeKey.Keys[1].Value ?? "NULL"}";
             }
-            var str = "";
-            foreach (var key in compositeKey.Keys)
+            else
             {
-                if (shouldIncludeName)
+                foreach (var key in compositeKey.Keys)
                 {
-                    str += key.Name + ":";
+                    if (shouldIncludeName)
+                    {
+                        str += key.Name + ":";
+                    }
+                    str += key.Value + ";";
                 }
-                str += key.Value + ";";
+            }
+
+            if (includeTypeName == true && compositeKey.TypeName != null)
+            {
+                str = $"{compositeKey.TypeName}>{str}";
             }
             return str;
         }

@@ -9,6 +9,7 @@ namespace Iql.Entities
 {
     public interface IEntityConfiguration : IEntityMetadata, IPropertyContainer, IIqlTypeMetadataProvider
     {
+        string TypeName { get; }
         IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null);
         IEntityConfiguration AddMethod(IqlMethod method);
         IProperty[] TryMatchProperty(params string[] names);

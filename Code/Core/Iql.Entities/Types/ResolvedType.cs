@@ -25,6 +25,7 @@ namespace Iql.Parsing.Types
         public IGenericTypeParameter[] GenericTypeParameters {get;} = new IGenericTypeParameter[]{};
 
         public Type Type { get; }
+        public string TypeName => Type?.Name;
 
         public ITypeProperty FindProperty(string name)
         {

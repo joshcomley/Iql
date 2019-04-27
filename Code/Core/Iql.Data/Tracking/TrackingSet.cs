@@ -267,7 +267,7 @@ namespace Iql.Data.Tracking
 
         public IEntityStateBase GetEntityStateByKey(CompositeKey key)
         {
-            var keyString = key.AsKeyString();
+            var keyString = key.AsLegacyKeyString();
             return EntitiesByKey.ContainsKey(keyString)
                 ? EntitiesByKey[keyString]
                 : null;
@@ -563,7 +563,7 @@ namespace Iql.Data.Tracking
             var hasKey = !entityState.CurrentKey.HasDefaultValue();
             if (hasKey)
             {
-                EntitiesByKey.Add(entityState.CurrentKey.AsKeyString(), entityState);
+                EntitiesByKey.Add(entityState.CurrentKey.AsLegacyKeyString(), entityState);
             }
             else if (PersistenceKey != null)
             {
@@ -619,7 +619,7 @@ namespace Iql.Data.Tracking
             var compositeKey = entityState.CurrentKey.ToCompositeKey(EntityConfiguration);
 
             IEntityStateBase state = null;
-            var keyString = compositeKey.AsKeyString();
+            var keyString = compositeKey.AsLegacyKeyString();
             if (EntitiesByKey.ContainsKey(keyString))
             {
                 state = EntitiesByKey[keyString];
@@ -647,7 +647,7 @@ namespace Iql.Data.Tracking
 
         public void RemoveEntityByKey(CompositeKey compositeKey)
         {
-            var keyString = compositeKey.AsKeyString();
+            var keyString = compositeKey.AsLegacyKeyString();
             if (EntitiesByRemoteKey.ContainsKey(keyString))
             {
                 var mapping = EntitiesByRemoteKey[keyString];
@@ -675,7 +675,7 @@ namespace Iql.Data.Tracking
                 _entityObservers.Remove(entity);
             }
 
-            EntitiesByKey.Remove(state.CurrentKey.AsKeyString());
+            EntitiesByKey.Remove(state.CurrentKey.AsLegacyKeyString());
             EntitiesByObject.Remove(entity);
             if (state.PersistenceKey.HasValue)
             {
@@ -899,8 +899,8 @@ namespace Iql.Data.Tracking
                 var state = EntitiesByObject[entity];
                 var newKey = EntityConfiguration.GetCompositeKey(entity);
                 var oldKey = state.CurrentKey;
-                var oldKeyString = oldKey.AsKeyString();
-                var newKeyString = newKey.AsKeyString();
+                var oldKeyString = oldKey.AsLegacyKeyString();
+                var newKeyString = newKey.AsLegacyKeyString();
                 if (newKeyString != oldKeyString ||
                     !state.IsNew && !EntitiesByKey.ContainsKey(newKeyString))
                 {
@@ -923,7 +923,7 @@ namespace Iql.Data.Tracking
 
         private void TrackRemoteKey(IEntityStateBase state, CompositeKey oldKey)
         {
-            var keyString = state.CurrentKey.AsKeyString();
+            var keyString = state.CurrentKey.AsLegacyKeyString();
             if (!state.IsNew && state.HasValidKey())
             {
                 if (EntitiesByRemoteKey.ContainsKey(keyString))
@@ -945,7 +945,7 @@ namespace Iql.Data.Tracking
 
                 if (oldKey != null)
                 {
-                    var oldKeyString = oldKey.AsKeyString();
+                    var oldKeyString = oldKey.AsLegacyKeyString();
                     if (oldKeyString != keyString && EntitiesByRemoteKey.ContainsKey(oldKeyString))
                     {
                         EntitiesByRemoteKey.Remove(oldKeyString);
@@ -954,7 +954,7 @@ namespace Iql.Data.Tracking
             }
             else if (oldKey != null)
             {
-                var oldKeyString = oldKey.AsKeyString();
+                var oldKeyString = oldKey.AsLegacyKeyString();
                 if (oldKeyString != keyString && EntitiesByRemoteKey.ContainsKey(oldKeyString))
                 {
                     var remoteKeyMap = EntitiesByRemoteKey[oldKeyString];

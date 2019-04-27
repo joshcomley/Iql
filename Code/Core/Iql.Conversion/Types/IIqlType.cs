@@ -18,6 +18,7 @@ namespace Iql.Entities
     {
         IGenericTypeParameter[] GenericTypeParameters { get; }
         Type Type { get; }
+        string TypeName { get; }
         ITypeProperty FindProperty(string name);
         object UnderlyingObject { get; }
         //SpecialTypeDefinition SpecialTypeDefinition { get; }

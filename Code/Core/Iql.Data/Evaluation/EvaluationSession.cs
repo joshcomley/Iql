@@ -42,7 +42,7 @@ namespace Iql.Data.Evaluation
         public GetCachedEntityResult GetCachedEntity(IEntityConfiguration entityConfiguration, object compositeKeyOrEntity)
         {
             var compositeKey = CompositeKey.Ensure(compositeKeyOrEntity, entityConfiguration);
-            var compositeKeyLookup = $"{entityConfiguration.Name}::{compositeKey.AsKeyString(true)}";
+            var compositeKeyLookup = $"{entityConfiguration.Name}::{compositeKey.AsLegacyKeyString(true)}";
             if (_cachedEntities.ContainsKey(compositeKeyLookup))
             {
                 return new GetCachedEntityResult(true, _cachedEntities[compositeKeyLookup]);
@@ -58,7 +58,7 @@ namespace Iql.Data.Evaluation
         private static void AddToDictionary(IEntityConfiguration entityConfiguration, CompositeKey compositeKey, object entity,
             Dictionary<string, object> dictionary)
         {
-            var compositeKeyLookup = $"{entityConfiguration.Name}::{compositeKey.AsKeyString(true)}";
+            var compositeKeyLookup = $"{entityConfiguration.Name}::{compositeKey.AsLegacyKeyString(true)}";
             if (dictionary.ContainsKey(compositeKeyLookup))
             {
                 dictionary[compositeKeyLookup] = entity;

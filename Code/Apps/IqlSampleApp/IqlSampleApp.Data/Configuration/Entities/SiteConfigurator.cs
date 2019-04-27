@@ -49,7 +49,9 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     );
                 });
 
-            sites.FindCollectionRelationship(_ => _.Areas).CanWrite = true;
+            var areas = sites.FindCollectionRelationship(_ => _.Areas);
+            //areas.CanWrite = true;
+            areas.EditKind = PropertyEditKind.Edit;
         }
     }
 

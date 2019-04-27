@@ -108,6 +108,8 @@ namespace Iql.Data.Types
 
         public IGenericTypeParameter[] GenericTypeParameters { get; } = new IGenericTypeParameter[] { };
         public Type Type { get; }
+        public string TypeName => Type?.Name;
+
         public ITypeProperty FindProperty(string name)
         {
             var property = Type.GetProperties().FirstOrDefault(_ => _.Name == name);

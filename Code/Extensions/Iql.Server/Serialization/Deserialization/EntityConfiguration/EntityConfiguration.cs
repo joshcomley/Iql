@@ -24,6 +24,8 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
             _configurationContainer = container;
         }
 
+        public string TypeName { get; }
+
         public DisplayConfiguration GetOrDefineDisplayConfigurationBase<T>(DisplayConfigurationKind kind, string key,
             Action<EntityConfiguration<T>, DisplayConfiguration> configure = null) where T : class
         {

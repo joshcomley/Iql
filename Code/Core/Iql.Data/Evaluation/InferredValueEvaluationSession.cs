@@ -6,6 +6,7 @@ using Iql.Data.Context;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.InferredValues;
+using Iql.Entities.Relationships;
 using Iql.Entities.Services;
 using Iql.Extensions;
 
@@ -99,7 +100,27 @@ namespace Iql.Data.Evaluation
             object entity,
             IDataContext dataContext)
         {
-            if (!property.CanWrite || property.EditKind != PropertyEditKind.Edit)
+            if (property.Name == "Documents")
+            {
+                int a = 0;
+            }
+            var sourceProperty = property;
+            var basicProperty = property as IProperty;
+            if (basicProperty != null &&
+                basicProperty.Relationship != null &&
+                basicProperty.Relationship.ThisIsTarget)
+            {
+                sourceProperty = basicProperty.Relationship.OtherEnd.Property;
+            }
+            else
+            {
+                var collectionRelationship = property as ITargetRelationshipSourceDetail;
+                if (collectionRelationship != null)
+                {
+                    sourceProperty = collectionRelationship.Relationship.Source.Property;
+                }
+            }
+            if (!sourceProperty.CanWrite || property.EditKind != PropertyEditKind.Edit)
             {
                 return true;
             }

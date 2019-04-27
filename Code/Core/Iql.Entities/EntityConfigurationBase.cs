@@ -307,7 +307,6 @@ namespace Iql.Entities
             return properties.ToArray();
         }
 
-        public bool SupportsCascadeDelete { get; set; }
         public IList<IGeographicPoint> Geographics { get; set; } = new List<IGeographicPoint>();
         public IList<INestedSet> NestedSets { get; set; } = new List<INestedSet>();
         public IList<IDateRange> DateRanges { get; set; } = new List<IDateRange>();
@@ -611,7 +610,7 @@ namespace Iql.Entities
 
         public string GetCompositeKeyString(object entity)
         {
-            return GetCompositeKey(entity).AsKeyString();
+            return GetCompositeKey(entity).AsLegacyKeyString();
         }
 
         public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)

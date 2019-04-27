@@ -477,7 +477,7 @@ namespace Iql.Data.Context
         {
             var mappedEntity = (TMap)Activator.CreateInstance(typeof(TMap));
             var operationKey = deleteOperation.Operation.Key;
-            var remappedCompositeKey = new CompositeKey(operationKey.Keys.Length);
+            var remappedCompositeKey = new CompositeKey(definition.EntityConfiguration.TypeName, operationKey.Keys.Length);
             for (var i = 0; i < operationKey.Keys.Length; i++)
             {
                 remappedCompositeKey.Keys[i] = new KeyValue(

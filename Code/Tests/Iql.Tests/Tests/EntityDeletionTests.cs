@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Iql.Entities;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
@@ -9,6 +10,20 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class EntityDeletionTests : TestsBase
     {
+        [TestMethod]
+        public async Task DeletingAnUntrackedEntityByKey()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 997 });
+            Assert.IsTrue(AppDbContext.InMemoryDb.People.Where(_ => _.Id == 997).ToList().Count == 1);
+            var personConfig = Db.EntityConfigurationContext.EntityType<Person>();
+            var person = new Person() {Id = 997};
+            var key = personConfig.GetCompositeKey(person);
+            Db.DeleteEntity(key);
+            var result = await Db.SaveChangesAsync();
+            Assert.AreEqual(true, result.Success);
+            Assert.IsTrue(AppDbContext.InMemoryDb.People.Where(_ => _.Id == 997).ToList().Count == 0);
+        }
+
         [TestMethod]
         public async Task DeletingAnEntityShouldRemoveEntityFromDbLists()
         {

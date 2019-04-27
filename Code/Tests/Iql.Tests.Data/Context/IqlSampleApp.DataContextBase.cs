@@ -7835,7 +7835,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Reports";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.CanWrite = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "Reports";
                 p.Title = "Reports";
@@ -10366,7 +10366,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.PropertyName = "Areas";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.CanWrite = true;
+                p.CanWrite = false;
                 p.Kind = PropertyKind.Relationship;
                 p.Name = "Areas";
                 p.Title = "Areas";
@@ -11720,7 +11720,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.ClientsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "ClientsCreated";
                     rel_cnf.Title = "Clients Created";
                     rel_cnf.FriendlyName = "Clients Created";
@@ -11728,7 +11728,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.DocumentCategoriesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "DocumentCategoriesCreated";
                     rel_cnf.Title = "Document Categories Created";
                     rel_cnf.FriendlyName = "Document Categories Created";
@@ -11736,7 +11736,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteDocumentsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "SiteDocumentsCreated";
                     rel_cnf.Title = "Site Documents Created";
                     rel_cnf.FriendlyName = "Site Documents Created";
@@ -11744,7 +11744,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultActionsTakenCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "FaultActionsTakenCreated";
                     rel_cnf.Title = "Fault Actions Taken Created";
                     rel_cnf.FriendlyName = "Fault Actions Taken Created";
@@ -11752,7 +11752,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultCategoriesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "FaultCategoriesCreated";
                     rel_cnf.Title = "Fault Categories Created";
                     rel_cnf.FriendlyName = "Fault Categories Created";
@@ -11760,7 +11760,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultDefaultRecommendationsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "FaultDefaultRecommendationsCreated";
                     rel_cnf.Title = "Fault Default Recommendations Created";
                     rel_cnf.FriendlyName = "Fault Default Recommendations Created";
@@ -11768,7 +11768,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultRecommendationsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "FaultRecommendationsCreated";
                     rel_cnf.Title = "Fault Recommendations Created";
                     rel_cnf.FriendlyName = "Fault Recommendations Created";
@@ -11776,7 +11776,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultTypesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "FaultTypesCreated";
                     rel_cnf.Title = "Fault Types Created";
                     rel_cnf.FriendlyName = "Fault Types Created";
@@ -11784,7 +11784,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.ProjectCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "ProjectCreated";
                     rel_cnf.Title = "Project Created";
                     rel_cnf.FriendlyName = "Project Created";
@@ -11792,7 +11792,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.ReportReceiverEmailAddressesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "ReportReceiverEmailAddressesCreated";
                     rel_cnf.Title = "Report Receiver Email Addresses Created";
                     rel_cnf.FriendlyName = "Report Receiver Email Addresses Created";
@@ -11800,7 +11800,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessmentsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "RiskAssessmentsCreated";
                     rel_cnf.Title = "Risk Assessments Created";
                     rel_cnf.FriendlyName = "Risk Assessments Created";
@@ -11808,7 +11808,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessmentSolutionsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "RiskAssessmentSolutionsCreated";
                     rel_cnf.Title = "Risk Assessment Solutions Created";
                     rel_cnf.FriendlyName = "Risk Assessment Solutions Created";
@@ -11816,7 +11816,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessmentAnswersCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "RiskAssessmentAnswersCreated";
                     rel_cnf.Title = "Risk Assessment Answers Created";
                     rel_cnf.FriendlyName = "Risk Assessment Answers Created";
@@ -11824,7 +11824,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessmentQuestionsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "RiskAssessmentQuestionsCreated";
                     rel_cnf.Title = "Risk Assessment Questions Created";
                     rel_cnf.FriendlyName = "Risk Assessment Questions Created";
@@ -11832,7 +11832,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.PeopleCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "PeopleCreated";
                     rel_cnf.Title = "People Created";
                     rel_cnf.FriendlyName = "People Created";
@@ -11840,7 +11840,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.PersonInspectionsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "PersonInspectionsCreated";
                     rel_cnf.Title = "Person Inspections Created";
                     rel_cnf.FriendlyName = "Person Inspections Created";
@@ -11848,7 +11848,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.PersonLoadingsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "PersonLoadingsCreated";
                     rel_cnf.Title = "Person Loadings Created";
                     rel_cnf.FriendlyName = "Person Loadings Created";
@@ -11856,7 +11856,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.PersonTypesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "PersonTypesCreated";
                     rel_cnf.Title = "Person Types Created";
                     rel_cnf.FriendlyName = "Person Types Created";
@@ -11864,7 +11864,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultReportsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "FaultReportsCreated";
                     rel_cnf.Title = "Fault Reports Created";
                     rel_cnf.FriendlyName = "Fault Reports Created";
@@ -11872,7 +11872,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.SitesCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "SitesCreated";
                     rel_cnf.Title = "Sites Created";
                     rel_cnf.FriendlyName = "Sites Created";
@@ -11880,7 +11880,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteAreasCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "SiteAreasCreated";
                     rel_cnf.Title = "Site Areas Created";
                     rel_cnf.FriendlyName = "Site Areas Created";
@@ -11888,7 +11888,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteInspectionsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "SiteInspectionsCreated";
                     rel_cnf.Title = "Site Inspections Created";
                     rel_cnf.FriendlyName = "Site Inspections Created";
@@ -11896,7 +11896,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.UserSettingsCreated).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "UserSettingsCreated";
                     rel_cnf.Title = "User Settings Created";
                     rel_cnf.FriendlyName = "User Settings Created";
@@ -11904,7 +11904,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.UserSettings).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "UserSettings";
                     rel_cnf.Title = "User Settings";
                     rel_cnf.FriendlyName = "User Settings";
@@ -11912,7 +11912,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Sites).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Sites";
                     rel_cnf.Title = "Sites";
                     rel_cnf.FriendlyName = "Sites";
@@ -11922,7 +11922,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Users).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Users";
                     rel_cnf.Title = "Users";
                     rel_cnf.FriendlyName = "Users";
@@ -11944,7 +11944,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
                     rel_cnf.FriendlyName = "People";
@@ -11952,7 +11952,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Sites).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Sites";
                     rel_cnf.Title = "Sites";
                     rel_cnf.FriendlyName = "Sites";
@@ -11962,7 +11962,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Clients).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Clients";
                     rel_cnf.Title = "Clients";
                     rel_cnf.FriendlyName = "Clients";
@@ -11979,7 +11979,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Documents).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Documents";
                     rel_cnf.Title = "Documents";
                     rel_cnf.FriendlyName = "Documents";
@@ -12026,7 +12026,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Documents).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Documents";
                     rel_cnf.Title = "Documents";
                     rel_cnf.FriendlyName = "Documents";
@@ -12034,7 +12034,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.AdditionalSendReportsTo).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "AdditionalSendReportsTo";
                     rel_cnf.Title = "Additional Send Reports To";
                     rel_cnf.FriendlyName = "Additional Send Reports To";
@@ -12042,7 +12042,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
                     rel_cnf.FriendlyName = "People";
@@ -12057,13 +12057,13 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Children).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Children";
                     rel_cnf.Title = "Children";
                     rel_cnf.FriendlyName = "Children";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Areas).Configure(rel_cnf => {
-                    rel_cnf.CanWrite = true;
+                    rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Areas";
@@ -12073,7 +12073,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.SiteInspections).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "SiteInspections";
                     rel_cnf.Title = "Site Inspections";
                     rel_cnf.FriendlyName = "Site Inspections";
@@ -12081,7 +12081,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Users).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Users";
                     rel_cnf.Title = "Users";
                     rel_cnf.FriendlyName = "Users";
@@ -12114,7 +12114,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.ActionsTaken).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "ActionsTaken";
                     rel_cnf.Title = "Actions Taken";
                     rel_cnf.FriendlyName = "Actions Taken";
@@ -12122,7 +12122,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Recommendations).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Recommendations";
                     rel_cnf.Title = "Recommendations";
                     rel_cnf.FriendlyName = "Recommendations";
@@ -12153,7 +12153,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.ReportTypes).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "ReportTypes";
                     rel_cnf.Title = "Report Types";
                     rel_cnf.FriendlyName = "Report Types";
@@ -12170,7 +12170,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Recommendations).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Recommendations";
                     rel_cnf.Title = "Recommendations";
                     rel_cnf.FriendlyName = "Recommendations";
@@ -12210,7 +12210,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.FaultReports).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "FaultReports";
                     rel_cnf.Title = "Fault Reports";
                     rel_cnf.FriendlyName = "Fault Reports";
@@ -12282,7 +12282,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.RiskAssessments).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "RiskAssessments";
                     rel_cnf.Title = "Risk Assessments";
                     rel_cnf.FriendlyName = "Risk Assessments";
@@ -12290,7 +12290,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.PersonInspections).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "PersonInspections";
                     rel_cnf.Title = "Person Inspections";
                     rel_cnf.FriendlyName = "Person Inspections";
@@ -12332,7 +12332,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Answers).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Answers";
                     rel_cnf.Title = "Answers";
                     rel_cnf.FriendlyName = "Answers";
@@ -12361,7 +12361,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.FriendlyName = "Site";
                 });
                 rel.FindCollectionRelationship(rel_p => rel_p.Reports).Configure(rel_cnf => {
-                    rel_cnf.CanWrite = true;
+                    rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
                     rel_cnf.EditKind = PropertyEditKind.Edit;
                     rel_cnf.Name = "Reports";
@@ -12449,7 +12449,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.Types).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "Types";
                     rel_cnf.Title = "Types";
                     rel_cnf.FriendlyName = "Types";
@@ -12473,7 +12473,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
                     rel_cnf.FriendlyName = "People";
@@ -12490,7 +12490,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
                     rel_cnf.FriendlyName = "People";
@@ -12498,7 +12498,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.PeopleMap).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "PeopleMap";
                     rel_cnf.Title = "People Map";
                     rel_cnf.FriendlyName = "People Map";
@@ -12515,7 +12515,7 @@ namespace IqlSampleApp.ApiContext.Base
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
-                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
                     rel_cnf.Name = "People";
                     rel_cnf.Title = "People";
                     rel_cnf.FriendlyName = "People";

@@ -96,7 +96,8 @@ namespace Iql.Data.Rendering
             SnapshotOrdering ordering = SnapshotOrdering.Default,
             bool appendNonConfiguredProperties = true,
             PermissionsEvaluationSession permissionsEvaluationSession = null,
-            InferredValueEvaluationSession inferredValueEvaluationSession = null
+            InferredValueEvaluationSession inferredValueEvaluationSession = null,
+            Dictionary<IPropertyContainer, PropertyEditKind> editKindOverrides = null
         )
         {
             permissionsEvaluationSession = permissionsEvaluationSession ?? new PermissionsEvaluationSession();
@@ -115,6 +116,20 @@ namespace Iql.Data.Rendering
             var canShow = CanShow(entity, dataContext, configuration);
             var canShowReason = SnapshotReasonKind.Configuration;
             var canEditReason = SnapshotReasonKind.Configuration;
+            if (editKindOverrides != null && editKindOverrides.ContainsKey(Property))
+            {
+                var overrideKind = editKindOverrides[Property];
+                switch (overrideKind)
+                {
+                    case PropertyEditKind.Display:
+                        canEdit = false;
+                        break;
+                    case PropertyEditKind.Hidden:
+                        canEdit = false;
+                        canShow = false;
+                        break;
+                }
+            }
             if (IsPropertyGroup && (canShow || canEdit))
             {
                 var permissions = await permissionsEvaluationSession.GetUserPermissionAsync(
@@ -185,7 +200,7 @@ namespace Iql.Data.Rendering
                 var child = childProperties[i];
                 if (child.Property != Property)
                 {
-                    var propertySnapshot = await child.GetSnapshotAsync(entity, entityType, user, userType, dataContext, configuration, ordering, appendNonConfiguredProperties, permissionsEvaluationSession);
+                    var propertySnapshot = await child.GetSnapshotAsync(entity, entityType, user, userType, dataContext, configuration, ordering, appendNonConfiguredProperties, permissionsEvaluationSession, null, editKindOverrides);
                     wasManuallyAdded.Add(propertySnapshot, manuallyAddedCount - 1 >= i);
                     children.Add(propertySnapshot);
                 }

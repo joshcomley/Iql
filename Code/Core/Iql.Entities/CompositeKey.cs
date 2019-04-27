@@ -3,11 +3,12 @@ using System.Diagnostics;
 using System.Linq;
 using Iql.Conversion;
 using Iql.Entities.Extensions;
+using Iql.Extensions;
 using Newtonsoft.Json;
 
 namespace Iql.Entities
 {
-    [DebuggerDisplay("{KeyString}")]
+    [DebuggerDisplay("{FullKeyString}")]
     public class CompositeKey : IJsonSerializable
     {
         public static bool IsValid(IEntityConfiguration entityConfiguration, object entity, bool isNew)
@@ -51,10 +52,27 @@ namespace Iql.Entities
             return Keys.Single(k => k.Name == name).Value;
         }
 
-        public static CompositeKey FromKeyString(string keyString, IEntityConfiguration entityConfiguration)
+        public void ApplyTo(object entity)
         {
+            foreach (var property in Keys)
+            {
+                entity.SetPropertyValueByName(property.Name, property.Value);
+            }
+        }
+
+        public static CompositeKey FromKeyString(string keyString, IEntityConfigurationBuilder builder, IEntityConfiguration entityConfiguration = null)
+        {
+            var indexOfTypeNameEnd = keyString.IndexOf(">");
+            string typeName = "";
+            if (indexOfTypeNameEnd != -1)
+            {
+                typeName = keyString.Substring(0, indexOfTypeNameEnd);
+                keyString = keyString.Substring(typeName.Length + 1);
+            }
+
+            entityConfiguration = entityConfiguration ?? builder.GetEntityByTypeName(typeName);
             var parts = keyString.Split(';');
-            var compositeKey = new CompositeKey(parts.Length);
+            var compositeKey = new CompositeKey(entityConfiguration.TypeName, parts.Length);
             for (var i = 0; i < parts.Length; i++)
             {
                 var part = parts[i];
@@ -103,7 +121,7 @@ namespace Iql.Entities
         private static CompositeKey ExtractCompositeKey(object entityOrKey, IEntityConfiguration entityConfiguration)
         {
             CompositeKey compositeKey;
-            compositeKey = new CompositeKey(entityConfiguration.Key.Properties.Length);
+            compositeKey = new CompositeKey(entityConfiguration.TypeName, entityConfiguration.Key.Properties.Length);
             for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
             {
                 var property = entityConfiguration.Key.Properties[i];
@@ -121,7 +139,7 @@ namespace Iql.Entities
                 return key as CompositeKey;
             }
 
-            var compositeKey = new CompositeKey(1);
+            var compositeKey = new CompositeKey(entityConfiguration.TypeName, 1);
             var propertyName = entityConfiguration.Key.Properties.First().Name;
             compositeKey.Keys[0] = new KeyValue(
                 propertyName,
@@ -131,15 +149,18 @@ namespace Iql.Entities
             return compositeKey;
         }
 
-        private string KeyString => this.AsKeyString();
+        public string FullKeyString => this.AsKeyString(true);
+
+        public string TypeName { get; set; }
 
         public static List<CompositeKey> All { get; set; }
             = new List<CompositeKey>();
 
-        public CompositeKey(int size)
+        public CompositeKey(string typeName, int size)
         {
             //All.Add(this);
             Keys = new KeyValue[size];
+            TypeName = typeName;
         }
         public object Entity { get; set; }
         public KeyValue[] Keys { get; }

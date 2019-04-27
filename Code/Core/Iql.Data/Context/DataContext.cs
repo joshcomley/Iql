@@ -840,11 +840,43 @@ namespace Iql.Data.Context
         )
         {
 #if !TypeScript
-            var entityType = entity.GetType();
-#else
-            entityType = entityType ?? entity.GetType();
+            Type entityType = null;
 #endif
-            return (IEntityStateBase)DeleteInternalMethod.InvokeGeneric(this, new[] { entity }, entity.GetType());
+            entityType = entityType ?? entity.GetType();
+            var key = entity as CompositeKey;
+            IEntityConfiguration entityConfiguration = null;
+            if (key != null)
+            {
+                entityConfiguration = EntityConfigurationContext.GetEntityByTypeName(key.TypeName);
+                if (entityConfiguration != null)
+                {
+                    entityType = entityConfiguration.Type;
+                    var entityState = GetEntityState(key, entityType);
+                    if (entityState == null)
+                    {
+                        var trackingSet = TemporalDataTracker.TrackingSetByType(entityType);
+                        entity = Activator.CreateInstance(entityType);
+                        key.ApplyTo(entity);
+                        trackingSet.Synchronise(entity, true, true, null);
+                        entityState = GetEntityState(key, entityType);
+                        if (entityState != null)
+                        {
+                            entity = entityState.Entity;
+                        }
+                    }
+                    else
+                    {
+                        entity = entityState.Entity;
+                    }
+                }
+            }
+
+            entityConfiguration = entityConfiguration ?? EntityConfigurationContext.GetEntityByType(entityType);
+            if (entityConfiguration == null)
+            {
+                throw new Exception("Cannot delete entity: Unable to resolve type for entity.");
+            }
+            return (IEntityStateBase)DeleteInternalMethod.InvokeGeneric(this, new[] { entity }, entityType);
         }
 
         public IEntityStateBase CascadeDeleteEntity(object entity,
@@ -1623,7 +1655,7 @@ namespace Iql.Data.Context
                         dataTracker.EntityConfigurationBuilder == EntityConfigurationContext
                         )
                     {
-                        Dictionary<object, object> dealtWith = new Dictionary<object, object>();
+                        var dealtWith = new Dictionary<object, object>();
                         if (response.Root != null)
                         {
                             for (var i = 0; i < response.Root.Count; i++)
@@ -1741,7 +1773,7 @@ namespace Iql.Data.Context
             return (EntityState<TEntity>)DeleteInternalMethod.InvokeGeneric(this, new[] { entity }, entityType);
         }
 
-        private IEntityState<T> DeleteInternal<T>(T entity)
+        private IEntityStateBase DeleteInternal<T>(T entity)
             where T : class
         {
             return (IEntityState<T>)TemporalDataTracker.DeleteEntity(entity);

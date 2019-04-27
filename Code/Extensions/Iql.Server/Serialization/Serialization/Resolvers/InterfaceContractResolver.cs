@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Functions;
@@ -15,6 +16,7 @@ using Iql.Entities.Rules.Display;
 using Iql.Entities.Rules.Relationship;
 using Iql.Entities.SpecialTypes;
 using Iql.Events;
+using Iql.Server.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -185,6 +187,9 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
                 ignoreProperties.AddRange(new[] { nameof(IPropertyPath.PropertyGroup), nameof(IPropertyPath.EntityConfiguration) });
             }
 
+            var eventEmitterProperties = resolvedType.GetPublicProperties()
+                .Where(p => typeof(IEventSubscriberBase).IsAssignableFrom(p.PropertyType)).ToArray();
+            ignoreProperties.AddRange(eventEmitterProperties.Select(_ => _.Name));
             ignoreProperties = ignoreProperties.Distinct().ToList();
             //if (resolvedType == typeof(IRuleCollection<IBinaryRule>))
             //{
@@ -204,9 +209,10 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             //    int a = 0;
             //}
             //IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-            return base.CreateProperties(resolvedType, memberSerialization)
+            var jsonProperties = base.CreateProperties(resolvedType, memberSerialization)
                 .Where(p => !ignoreProperties.Contains(p.PropertyName))
                 .ToArray();
+            return jsonProperties;
         }
     }
 }

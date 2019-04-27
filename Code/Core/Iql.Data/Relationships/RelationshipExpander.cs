@@ -243,7 +243,7 @@ namespace Iql.Data.Relationships
                 for (var i = 0; i < dataSet.Count; i++)
                 {
                     var entity = dataSet[i];
-                    var compositeKey = new CompositeKey(properties.Length);
+                    var compositeKey = new CompositeKey(relationship.EntityConfiguration.TypeName, properties.Length);
                     for (var j = 0; j < properties.Length; j++)
                     {
                         var property = properties[j];
@@ -255,7 +255,7 @@ namespace Iql.Data.Relationships
                     }
 
                     var itemAndList = new EntityRelationships<T>(entity);
-                    sourceDictionary.Add(compositeKey.AsKeyString(false),
+                    sourceDictionary.Add(compositeKey.AsLegacyKeyString(false),
                         itemAndList);
 
                     if (relationship.IsCollection)
@@ -270,7 +270,7 @@ namespace Iql.Data.Relationships
                             entity.GetPropertyValue(
                                 relationship.Property));
                     }
-                    result.Add(compositeKey.AsKeyString(false), itemAndList);
+                    result.Add(compositeKey.AsLegacyKeyString(false), itemAndList);
                 }
                 root.Add(relationship, result);
             }
@@ -302,7 +302,7 @@ namespace Iql.Data.Relationships
                 for (var i = 0; i < dataSet.Count; i++)
                 {
                     var entity = dataSet[i];
-                    var compositeKey = new CompositeKey(properties.Length);
+                    var compositeKey = new CompositeKey(relationship.EntityConfiguration.TypeName, properties.Length);
                     for (var j = 0; j < properties.Length; j++)
                     {
                         var property = properties[j];
@@ -316,7 +316,7 @@ namespace Iql.Data.Relationships
                         continue;
                     }
 
-                    var key = compositeKey.AsKeyString(false);
+                    var key = compositeKey.AsLegacyKeyString(false);
                     if (!grouping.ContainsKey(key))
                     {
                         var list = new List<T>();

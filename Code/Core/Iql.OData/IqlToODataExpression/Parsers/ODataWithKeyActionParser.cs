@@ -10,10 +10,10 @@ namespace Iql.OData.IqlToODataExpression.Parsers
     {
         public override IqlExpression ToQueryString(IqlWithKeyExpression action, ODataIqlParserContext parser)
         {
-            var compositeKey = new CompositeKey(action.KeyEqualToExpressions.Count);
             var type = parser.TypeResolver.FindTypeByType(parser.CurrentEntityType);
             var mappedType = parser.TypeResolver.GetTypeMap(type);
             type = mappedType ?? type;
+            var compositeKey = new CompositeKey(type.TypeName, action.KeyEqualToExpressions.Count);
             for (var i = 0; i < action.KeyEqualToExpressions.Count; i++)
             {
                 var keyPart = action.KeyEqualToExpressions[i];

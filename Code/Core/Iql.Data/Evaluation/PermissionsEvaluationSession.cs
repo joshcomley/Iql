@@ -520,7 +520,7 @@ namespace Iql.Data.Evaluation
                             _tempIds.Add(entity, key);
                             return key;
                         }
-                        return compositeKey.AsKeyString(true);
+                        return compositeKey.AsLegacyKeyString(true);
                     }
                     break;
             }

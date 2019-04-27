@@ -49,14 +49,14 @@ namespace Iql.Server.OData.Net
         private ODataMediaManager<TService> _oDataMediaManager;
         private EntityConfiguration<T> _entityConfiguration;
 
-        public EntityConfiguration<T> EntityConfiguration =>
+        public virtual EntityConfiguration<T> EntityConfiguration =>
             _entityConfiguration = _entityConfiguration ?? Builder.EntityType<T>();
-        public IEntityConfigurationBuilder Builder => _builder = _builder ?? HttpContext.RequestServices.GetService<IEntityConfigurationProvider>().Get<TService>();
+        public virtual IEntityConfigurationBuilder Builder => _builder = _builder ?? HttpContext.RequestServices.GetService<IEntityConfigurationProvider>().Get<TService>();
 
-        public IMediaManager MediaManager => _mediaManager = _mediaManager ?? HttpContext.RequestServices.GetService<IMediaManager>();
+        public virtual IMediaManager MediaManager => _mediaManager = _mediaManager ?? HttpContext.RequestServices.GetService<IMediaManager>();
 
-        public CrudManager CrudManager => _crudManager = _crudManager ?? new CrudManager(Crud.Unsecured.Context);
-        public ODataMediaManager<TService> ODataMediaManager => _oDataMediaManager = _oDataMediaManager ?? new ODataMediaManager<TService>(
+        public virtual CrudManager CrudManager => _crudManager = _crudManager ?? new CrudManager(Crud.Unsecured.Context);
+        public virtual ODataMediaManager<TService> ODataMediaManager => _oDataMediaManager = _oDataMediaManager ?? new ODataMediaManager<TService>(
                                                                                          HttpContext.RequestServices.GetService<IEntityConfigurationProvider>(),
                                                                                          MediaManager,
                                                                                          Crud.Unsecured.Context);
@@ -97,19 +97,32 @@ namespace Iql.Server.OData.Net
         {
             if (result.Success)
             {
-                await DeleteAssociatedMediaAsync(key, entity);
+                await DeleteAssociatedMediaAsync(key, entity, result);
             }
             await base.OnAfterDeleteAsync(key, entity, result);
         }
 
+        private readonly Dictionary<DeleteActionResult, List<Func<Task>>> _deleteMediaTasks = new Dictionary<DeleteActionResult, List<Func<Task>>>();
         protected override async Task<DeleteActionResult> DeleteEntityAsync(KeyValuePair<string, object>[] key, T entity)
         {
+            DeleteActionResult result = null;
+            var serverEvaluator = NewDataEvaluator();
+            var deleteMediaTasks = await MediaManager.GetDeleteAssociatedMediaTasksAsync(entity, Builder, serverEvaluator);
             var nestedSetDelete = await DeleteNestedSetEntriesAsync(entity);
             if (nestedSetDelete.HasValue)
             {
-                return new DeleteActionResult(entity, nestedSetDelete.Value, nestedSetDelete.Value ? DeleteEntityResult.Success : DeleteEntityResult.Conflict);
+                result = new DeleteActionResult(entity, nestedSetDelete.Value, nestedSetDelete.Value ? DeleteEntityResult.Success : DeleteEntityResult.Conflict);
             }
-            return await base.DeleteEntityAsync(key, entity);
+            else
+            {
+                result = await base.DeleteEntityAsync(key, entity);
+            }
+
+            if (deleteMediaTasks != null && deleteMediaTasks.Any())
+            {
+                _deleteMediaTasks.Add(result, deleteMediaTasks);
+            }
+            return result;
         }
 
         private async Task<bool?> DeleteNestedSetEntriesAsync(T entity)
@@ -308,7 +321,7 @@ namespace Iql.Server.OData.Net
 
         protected override async Task OnPatchAsync(Delta<T> patch, T dbObject)
         {
-            var serverEvaluator = new IqlServerEvaluator(CrudManager, () => Crud.NewUnsecuredDb());
+            var serverEvaluator = NewDataEvaluator();
             var clone = (T)dbObject.Clone(Builder, EntityConfiguration.Type);
             await base.OnPatchAsync(patch, dbObject);
             await new InferredValueEvaluationSession()
@@ -320,6 +333,11 @@ namespace Iql.Server.OData.Net
                     serverEvaluator,
                     ResolveServiceProviderProvider());
             ClearNestedEntities(dbObject);
+        }
+
+        protected virtual IIqlDataEvaluator NewDataEvaluator(params object[] unsavedEntities)
+        {
+            return new IqlServerEvaluator(CrudManager, () => Crud.NewUnsecuredDb(), unsavedEntities);
         }
 
         private static bool IsGuid(string expression)
@@ -335,7 +353,7 @@ namespace Iql.Server.OData.Net
 
         protected override async Task OnBeforePostAsync(T currentEntity)
         {
-            var serverEvaluator = new IqlServerEvaluator(CrudManager, () => Crud.NewUnsecuredDb(), currentEntity);
+            var serverEvaluator = NewDataEvaluator(currentEntity);
             if (EntityConfiguration.PersistenceKeyProperty != null)
             {
                 var value = EntityConfiguration.PersistenceKeyProperty.GetValue(currentEntity);
@@ -499,7 +517,7 @@ namespace Iql.Server.OData.Net
                     var populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, file);
                     var revisionKeysForMediaProperty =
                         file.VersionProperty;
-                    var requiresNewPreviews = 
+                    var requiresNewPreviews =
                         revisionKeysForMediaProperty != null &&
                         HasChangedPropertyValue(currentEntity, patch, revisionKeysForMediaProperty.PropertyName);
                     // TODO: Only refresh previews if file version has changed
@@ -556,9 +574,15 @@ namespace Iql.Server.OData.Net
             return newUrl;
         }
 
-        public virtual Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, T entity)
+        public virtual async Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, T entity,
+            DeleteActionResult result)
         {
-            return MediaManager.DeleteAssociatedMediaAsync(entity, Builder);
+            if (_deleteMediaTasks.ContainsKey(result))
+            {
+                var tasks = _deleteMediaTasks[result];
+                await Task.WhenAll(tasks.Select(_ => _()));
+                _deleteMediaTasks.Remove(result);
+            }
         }
 
         protected virtual Task<T> PreloadMediaKeyDependenciesAsync(KeyValuePair<string, object>[] key,

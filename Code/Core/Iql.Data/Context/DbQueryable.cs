@@ -143,7 +143,7 @@ namespace Iql.Data.Context
             }
             var thisEndConstraints = property.Relationship.ThisEnd.Constraints.ToArray();
             var otherEndConstraints = property.Relationship.OtherEnd.Constraints.ToArray();
-            var compositeKey = new CompositeKey(thisEndConstraints.Length);
+            var compositeKey = new CompositeKey(EntityConfiguration.TypeName, thisEndConstraints.Length);
             for (var i = 0; i < thisEndConstraints.Length; i++)
             {
                 compositeKey.Keys[i] = new KeyValue(otherEndConstraints[i].Name,

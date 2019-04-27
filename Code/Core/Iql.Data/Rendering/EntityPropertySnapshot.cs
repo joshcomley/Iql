@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Iql.Entities;
 
 namespace Iql.Data.Rendering
@@ -92,6 +94,23 @@ namespace Iql.Data.Rendering
             CanEdit = canEdit;
             CanEditReason = canEditReason;
             ChildProperties = childProperties;
+        }
+
+        public EntityPropertySnapshot[] Flattened()
+        {
+            var list = new List<EntityPropertySnapshot>();
+            if (IsGroup)
+            {
+                foreach (var child in ChildProperties)
+                {
+                    list.AddRange(child.Flattened());
+                }
+            }
+            else
+            {
+                list.Add(this);
+            }
+            return list.Distinct().ToArray();
         }
     }
 

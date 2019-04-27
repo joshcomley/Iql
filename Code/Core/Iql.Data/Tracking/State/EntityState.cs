@@ -127,7 +127,7 @@ namespace Iql.Data.Tracking.State
 
         public CompositeKey KeyBeforeChanges()
         {
-            var compositeKey = new CompositeKey(EntityConfiguration.Key.Properties.Length);
+            var compositeKey = new CompositeKey(EntityConfiguration.TypeName, EntityConfiguration.Key.Properties.Length);
             for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
             {
                 var property = EntityConfiguration.Key.Properties[i];

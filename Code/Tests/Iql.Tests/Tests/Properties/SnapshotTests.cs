@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Iql.Tests.Tests.Properties
 {
     [TestClass]
-    public class PropertyDetailTests : TestsBase
+    public class SnapshotTests : TestsBase
     {
         [TestMethod]
         public void TestStandardReadOrdering()
@@ -121,6 +121,21 @@ namespace Iql.Tests.Tests.Properties
         }
 
         [TestMethod]
+        public async Task TestGetCustomDetailFlattened()
+        {
+            var site = new Site();
+            var currentUser = new ApplicationUser();
+            var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
+            var detail = PropertyDetail.For(siteEntityConfiguration);
+            var displayConfiguration = siteEntityConfiguration.GetDisplayConfiguration(
+                DisplayConfigurationKind.Edit,
+                DisplayConfigurationKeys.Default);
+            var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration);
+            var flattened = instance.Flattened();
+            Assert.AreEqual(22, flattened.Length);
+        }
+
+        [TestMethod]
         public async Task TestGetCustomDetail()
         {
             var site = new Site();
@@ -140,6 +155,51 @@ namespace Iql.Tests.Tests.Properties
             var siteAddress = instance.ChildProperties.FirstOrDefault(_ => _.PropertyName == "Site Address");
             AssertProperty(0, siteAddress, nameof(Site.Address), true);
             AssertProperty(1, siteAddress, nameof(Site.PostCode), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.AdditionalSendReportsTo), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.People), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Children), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Areas), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.SiteInspections), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Users), false, false);
+            AssertProperty(expectedIndex++, instance, "Hierarchy", true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Area), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Line), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
+            //AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
+            //AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
+            //AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
+        }
+
+        [TestMethod]
+        public async Task TestGetCustomDetailWithEditKindOverrides()
+        {
+            var editKindOverrides = new Dictionary<IPropertyContainer, PropertyEditKind>();
+            var site = new Site();
+            var currentUser = new ApplicationUser();
+            var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
+            editKindOverrides.Add(siteEntityConfiguration.FindProperty(nameof(Site.Address)), PropertyEditKind.Hidden);
+            editKindOverrides.Add(siteEntityConfiguration.FindProperty(nameof(Site.PostCode)), PropertyEditKind.Display);
+            var detail = PropertyDetail.For(siteEntityConfiguration);
+            var displayConfiguration = siteEntityConfiguration.GetDisplayConfiguration(
+                DisplayConfigurationKind.Edit,
+                DisplayConfigurationKeys.Default);
+            var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.Default, true, null, null, editKindOverrides);
+            Assert.AreEqual(21, instance.ChildProperties.Length);
+            var expectedIndex = 0;
+            AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
+            AssertProperty(expectedIndex++, instance, "Site Address", false);
+            var siteAddress = instance.ChildProperties.FirstOrDefault(_ => _.PropertyName == "Site Address");
+            AssertProperty(0, siteAddress, nameof(Site.Address), false, false);
+            AssertProperty(1, siteAddress, nameof(Site.PostCode), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
