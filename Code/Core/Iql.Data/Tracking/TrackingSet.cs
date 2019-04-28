@@ -187,8 +187,7 @@ namespace Iql.Data.Tracking
             var state = (IEntityState<T>)FindMatchingEntityState(existingEntity ?? remoteEntity);
             if (state == null)
             {
-                var clone = remoteEntity.CloneAs(EntityConfiguration.Builder, EntityConfiguration.Type,
-                    RelationshipCloneMode.DoNotClone);
+                var clone = remoteEntity.CloneAs(EntityConfiguration.Builder, EntityConfiguration.Type);
                 state = AttachEntity(
                     clone, !isRemote);
                 return state;

@@ -9,6 +9,7 @@ using Iql.Entities.InferredValues;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
 using Iql.Extensions;
+using Iql.Parsing.Types;
 
 namespace Iql.Data.Evaluation
 {
@@ -95,15 +96,26 @@ namespace Iql.Data.Evaluation
             return new InferredValuesResult(oldEntity, entity, changes.ToArray());
         }
 
-        public async Task<bool> IsReadOnlyAsync(
-            IPropertyGroup property,
+        public async Task<bool> IsReadOnlyWithDataContextAsync(
+            IPropertyContainer property,
             object entity,
             IDataContext dataContext)
         {
-            if (property.Name == "Documents")
-            {
-                int a = 0;
-            }
+            return await IsReadOnlyAsync(
+                property,
+                entity,
+                dataContext,
+                dataContext,
+                dataContext.EntityConfigurationContext);
+        }
+
+        public async Task<bool> IsReadOnlyAsync(
+            IPropertyContainer property,
+            object entity,
+            IIqlDataEvaluator dataContext,
+            IServiceProviderProvider serviceProviderProvider,
+            ITypeResolver typeResolver)
+        {
             var sourceProperty = property;
             var basicProperty = property as IProperty;
             if (basicProperty != null &&
@@ -120,7 +132,11 @@ namespace Iql.Data.Evaluation
                     sourceProperty = collectionRelationship.Relationship.Source.Property;
                 }
             }
-            if (!sourceProperty.CanWrite || property.EditKind != PropertyEditKind.Edit)
+
+            var sourcePropertyAsGroup = sourceProperty as IPropertyGroup;
+            var propertyAsGroup = property as IPropertyGroup;
+            if ((sourcePropertyAsGroup != null && !sourcePropertyAsGroup.CanWrite) ||
+                (propertyAsGroup != null && propertyAsGroup.EditKind != PropertyEditKind.Edit))
             {
                 return true;
             }
@@ -143,10 +159,12 @@ namespace Iql.Data.Evaluation
                             return true;
                         }
 
-                        var conditionResult = await Session.EvaluateIqlAsync(
+                        var conditionResult = await Session.EvaluateIqlCustomAsync(
                             inferredValueConfiguration.InferredWithConditionIql,
+                            serviceProviderProvider,
                             NewInferredValueContext(entity, entity, property.EntityConfiguration.Type),
-                            dataContext);
+                            dataContext,
+                            typeResolver);
 
                         if (conditionResult.Success && Equals(conditionResult.Result, true))
                         {

@@ -436,8 +436,7 @@ namespace Iql.Data.Tracking
             var state = trackingSet.AttachEntity(
                 (TEntity)operation.Result.RemoteEntity.Clone(
                     EntityConfigurationBuilder,
-                    typeof(TEntity),
-                    RelationshipCloneMode.DoNotClone),
+                    typeof(TEntity)),
                 isOffline);
             if (!isOffline)
             {

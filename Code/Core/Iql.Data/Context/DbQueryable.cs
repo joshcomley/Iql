@@ -1114,6 +1114,19 @@ namespace Iql.Data.Context
                 result.Success);
         }
 
+        public DbQueryable<T> ClearExpands()
+        {
+            var copy = Then();
+            var noExpandOperations = copy.Operations.Where(_ => !(_ is IExpandOperation));
+            copy.Operations.Clear();
+            copy.Operations.AddRange(noExpandOperations);
+            return copy;
+        }
+
+        IDbQueryable IDbQueryable.ClearExpands()
+        {
+            return ClearExpands();
+        }
 
         public DbQueryable<T> ExpandAllCollectionCounts()
         {

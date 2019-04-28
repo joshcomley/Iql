@@ -132,6 +132,11 @@ namespace Iql.Data.Lists
             return (DbSet<T, TKey>)base.Expand(target);
         }
 
+        public new DbSet<T, TKey> ClearExpands()
+        {
+            return (DbSet<T, TKey>)base.ClearExpands();
+        }
+
         public new DbSet<T, TKey> ExpandAll()
         {
             return (DbSet<T, TKey>)base.ExpandAll();

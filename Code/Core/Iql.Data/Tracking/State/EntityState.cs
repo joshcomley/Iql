@@ -19,7 +19,6 @@ namespace Iql.Data.Tracking.State
     [DebuggerDisplay("{EntityType.Name}")]
     public class EntityState<T> : IEntityState<T>
     {
-        private bool _exists;
         private bool _markedForDeletion;
         private bool _isNew = true;
 
@@ -34,21 +33,6 @@ namespace Iql.Data.Tracking.State
                 {
                     //_remoteKey = null;
                     MarkedForDeletion = false;
-                }
-            }
-        }
-
-        public EventEmitter<ExistsChangeEvent> ExistsChanged { get; } = new EventEmitter<ExistsChangeEvent>();
-        public bool Exists
-        {
-            get => _exists;
-            set
-            {
-                var changed = _exists != value;
-                _exists = value;
-                if (changed)
-                {
-                    ExistsChanged.Emit(() => new ExistsChangeEvent(this, value));
                 }
             }
         }
@@ -249,7 +233,7 @@ namespace Iql.Data.Tracking.State
             {
                 return default(T);
             }
-            var entity = Entity.Clone(EntityConfiguration.Builder, EntityType, RelationshipCloneMode.DoNotClone);
+            var entity = Entity.Clone(EntityConfiguration.Builder, EntityType);
             foreach (var property in Properties)
             {
                 property.Property.SetValue(entity, property.RemoteValue);

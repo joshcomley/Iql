@@ -99,7 +99,7 @@ namespace Iql.Data.Rendering
             InferredValueEvaluationSession inferredValueEvaluationSession = null,
             Dictionary<IPropertyContainer, PropertyEditKind> editKindOverrides = null
         )
-        {
+        { 
             permissionsEvaluationSession = permissionsEvaluationSession ?? new PermissionsEvaluationSession();
             inferredValueEvaluationSession = inferredValueEvaluationSession ??
                                              new InferredValueEvaluationSession(permissionsEvaluationSession.Session);
@@ -109,11 +109,11 @@ namespace Iql.Data.Rendering
             var canEdit = !IsSimpleProperty;
             if (IsSimpleProperty)
             {
-                var isInferredReadOnly = await inferredValueEvaluationSession.IsReadOnlyAsync(PropertyAsSimpleProperty, entity,
+                var isInferredReadOnly = await inferredValueEvaluationSession.IsReadOnlyWithDataContextAsync(PropertyAsSimpleProperty, entity,
                     dataContext);
                 canEdit = !isInferredReadOnly;
             }
-            var canShow = CanShow(entity, dataContext, configuration);
+            var canShow = CanShow(entity, configuration);
             var canShowReason = SnapshotReasonKind.Configuration;
             var canEditReason = SnapshotReasonKind.Configuration;
             if (editKindOverrides != null && editKindOverrides.ContainsKey(Property))
@@ -298,7 +298,6 @@ namespace Iql.Data.Rendering
         }
 
         private bool CanShow(object entity,
-            IDataContext dataContext,
             DisplayConfiguration displayConfiguration)
         {
             if (IsCoreProperty)

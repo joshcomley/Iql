@@ -234,8 +234,6 @@ namespace Iql.Data.DataStores.InMemory
             var clone = operation.Operation.Entity.CloneAs(
                 EntityConfigurationBuilder,
                 typeof(TEntity),
-                RelationshipCloneMode.DoNotClone,
-                null,
                 _cloneMap);
 
             var configuration = operation
@@ -381,7 +379,7 @@ namespace Iql.Data.DataStores.InMemory
 
                     take++;
                     var item = resultList[i];
-                    var clone = item.Clone(EntityConfigurationBuilder, typeof(TEntity), RelationshipCloneMode.DoNotClone);
+                    var clone = item.Clone(EntityConfigurationBuilder, typeof(TEntity));
                     cloneLookup.Add(item, clone);
                     clonedResult.Add((TEntity)clone);
                 }
@@ -399,7 +397,7 @@ namespace Iql.Data.DataStores.InMemory
                         }
                         else
                         {
-                            newList.Add(item.Clone(EntityConfigurationBuilder, pair.Key, RelationshipCloneMode.DoNotClone));
+                            newList.Add(item.Clone(EntityConfigurationBuilder, pair.Key));
                         }
                     }
 
@@ -661,7 +659,7 @@ namespace Iql.Data.DataStores.InMemory
                 {
                     source.Remove(match);
                 }
-                var clone = (T)entity.Clone(EntityConfigurationBuilder, typeof(T), RelationshipCloneMode.DoNotClone);
+                var clone = (T)entity.Clone(EntityConfigurationBuilder, typeof(T));
                 source.Add(clone);
             }
         }

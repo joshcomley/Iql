@@ -55,6 +55,7 @@ namespace Iql.Data.Lists
         IDbQueryable NoTracking();
         IDbQueryable SetTracking(bool enabled);
         IDbQueryable IncludeCount();
+        IDbQueryable ClearExpands();
         IDbQueryable ExpandAll();
         IDbQueryable ExpandForDisplayFormatter(IEntityDisplayTextFormatter displayFomatter = null);
         IDbQueryable ExpandRelationship(string name);

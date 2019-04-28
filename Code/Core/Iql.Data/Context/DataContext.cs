@@ -408,8 +408,21 @@ namespace Iql.Data.Context
 
         public IEntityStateBase GetEntityState(object entity, Type entityType = null)
         {
-            entityType = entityType ?? entity.GetType();
-            return TemporalDataTracker.TrackingSetByType(entityType).FindMatchingEntityState(entity);
+            var key = entity as CompositeKey;
+            if (key != null)
+            {
+                entityType = EntityConfigurationContext.GetEntityByTypeName(key.TypeName)?.Type;
+            }
+            else
+            {
+                entityType = entityType ?? entity.GetType();
+            }
+            IEntityConfiguration entityConfiguration = null;
+            if (entityType != null)
+            {
+                entityConfiguration = EntityConfigurationContext.GetEntityByType(entityType);
+            }
+            return entityConfiguration == null ? null : TemporalDataTracker.TrackingSetByType(entityType).FindMatchingEntityState(entity);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -1152,7 +1165,7 @@ namespace Iql.Data.Context
             {
                 if (clone)
                 {
-                    entity = (T)entity.Clone(EntityConfigurationContext, entityType, RelationshipCloneMode.DoNotClone);
+                    entity = (T)entity.Clone(EntityConfigurationContext, entityType);
                 }
                 else
                 {

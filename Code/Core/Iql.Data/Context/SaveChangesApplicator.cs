@@ -167,8 +167,7 @@ namespace Iql.Data.Context
                                 var temporalEntityState = DataContext.TemporalDataTracker.TrackingSet<TEntity>()
                                     .FindMatchingEntityState(localEntity);
                                 localEntity = (TEntity)(temporalEntityState?.Entity ??
-                                                         localEntity.Clone(EntityConfigurationContext, typeof(TEntity),
-                                                             RelationshipCloneMode.DoNotClone));
+                                                         localEntity.Clone(EntityConfigurationContext, typeof(TEntity)));
                             }
                             //var trackingSet = DataContext.DataTracker.TrackingSet<TEntity>();
                             //trackingSet.TrackEntity(localEntity, remoteEntity, false);
