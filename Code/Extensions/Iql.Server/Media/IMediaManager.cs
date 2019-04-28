@@ -13,5 +13,7 @@ namespace Iql.Server.Media
         IEnumerable<File<T>> GetMediaProperties<T>(IEntityConfigurationBuilder configuration) where T : class;
         Task<string> GetMediaUriAsync<T>(T entity, IFileUrl<T> file, MediaAccessKind accessKind, TimeSpan? lifetime = null) where T : class;
         Task DeleteAsync<T>(T entity, IFileUrl<T> file) where T : class;
+        Task CloneAsync<T>(T fromEntity, T toEntity, IFileUrl<T> file) where T : class;
+        Task CloneUrlAsync(string fromUrl, string toUrl);
     }
 }

@@ -28,16 +28,21 @@ namespace Iql.Server.Azure
 
         protected async Task<CloudBlobContainer> GetContainerAsync(string name)
         {
+            var client = NewClient();
+            // Retrieve a reference to a container.
+            var container = client.GetContainerReference(AzureSafe(name));
+            await container.CreateIfNotExistsAsync();
+            return container;
+        }
+
+        private CloudBlobClient NewClient()
+        {
             var storageAccount = CloudStorageAccount.Parse(
                 ConnectionDetails.ConnectionString);
 
             // Create the blob client.
             var blobClient = storageAccount.CreateCloudBlobClient();
-            
-            // Retrieve a reference to a container.
-            var container = blobClient.GetContainerReference(AzureSafe(name));
-            await container.CreateIfNotExistsAsync();
-            return container;
+            return blobClient;
         }
 
         private string AzureSafe(string name)
@@ -137,7 +142,28 @@ namespace Iql.Server.Azure
             return policy;
         }
 
-        public override  Task<Func<Task>> GetDeleteTaskAsync<T>(T entity, IFileUrl<T> file)
+        public override async Task CloneAsync<T>(T fromEntity, T toEntity, IFileUrl<T> file)
+        {
+            var fromBlob = await GetCloudBlockBlob(fromEntity, file, false);
+            if (fromBlob != null && await fromBlob.ExistsAsync())
+            {
+                var toBlob = await GetCloudBlockBlob(toEntity, file);
+                await fromBlob.StartCopyAsync(toBlob);
+            }
+        }
+
+        public override async Task CloneUrlAsync(string fromUrl, string toUrl)
+        {
+            var client = NewClient();
+            var fromBlob = new CloudBlockBlob(new Uri(fromUrl), client);
+            var toBlob = new CloudBlockBlob(new Uri(toUrl), client);
+            if (await fromBlob.ExistsAsync())
+            {
+                await fromBlob.StartCopyAsync(toBlob);
+            }
+        }
+
+        public override Task<Func<Task>> GetDeleteTaskAsync<T>(T entity, IFileUrl<T> file)
         {
             Func<Task> task = async () =>
             {

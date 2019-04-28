@@ -98,6 +98,9 @@ namespace Iql.Server.Media
             await task();
         }
 
+        public abstract Task CloneAsync<T>(T fromEntity, T toEntity, IFileUrl<T> file) where T : class;
+        public abstract Task CloneUrlAsync(string fromUrl, string toUrl);
+
         public abstract Task<Func<Task>> GetDeleteTaskAsync<T>(T entity, IFileUrl<T> entityProperty) where T : class;
     }
 }

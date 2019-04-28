@@ -463,7 +463,7 @@ namespace Iql.Server.OData.Net
                 query[$"iql_{file.UrlProperty.PropertyName}_{file.RootFile.VersionProperty.PropertyName}"] = version;
                 uriBuilder.Query = query.ToString();
                 url = uriBuilder.ToString();
-                patch.TrySetPropertyValue(file.UrlProperty.PropertyName, url);
+                patch?.TrySetPropertyValue(file.UrlProperty.PropertyName, url);
                 file.UrlProperty.SetValue(currentEntity, url);
             }
         }
@@ -502,6 +502,7 @@ namespace Iql.Server.OData.Net
 
             return null;
         }
+
         protected override async Task OnAfterPostAndPatchAsync(T currentEntity, Delta<T> patch, T prePatchObject)
         {
             // Download the file, generate thumbnail, update preview URL, delete file
@@ -515,6 +516,18 @@ namespace Iql.Server.OData.Net
                 {
                     entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
                     var populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, file);
+                    if (HttpContext.Request.Method.ToUpper() == "POST")
+                    {
+                        var existingUrl = file.UrlProperty.GetValue(populatedEntity) as string;
+                        if (!string.IsNullOrWhiteSpace(existingUrl))
+                        {
+                            var newUrl = await MediaManager.GetMediaUriAsync(populatedEntity, file, MediaAccessKind.Admin);
+                            var oldUrl = existingUrl;
+                            await MediaManager.CloneUrlAsync(oldUrl, newUrl);
+                            file.UrlProperty.SetValue(populatedEntity, newUrl);
+                            await ODataMediaManager.Context.SaveChangesAsync();
+                        }
+                    }
                     var revisionKeysForMediaProperty =
                         file.VersionProperty;
                     var requiresNewPreviews =
