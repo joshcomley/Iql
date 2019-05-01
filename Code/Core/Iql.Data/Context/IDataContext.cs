@@ -25,15 +25,7 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider, IIqlDataEvaluator
     {
-        EventEmitter<IAddEntityResult> EntityAddSaved { get; }
-        EventEmitter<IDeleteEntityResult> EntityDeleteSaved { get; }
-        EventEmitter<IUpdateEntityResult> EntityUpdateSaved { get; }
-        EventEmitter<ICrudResult> EntityChangesSaved { get; }
-        AsyncEventEmitter<IAddEntityResult> EntityAddSavedAsync { get; }
-        AsyncEventEmitter<IDeleteEntityResult> EntityDeleteSavedAsync { get; }
-        AsyncEventEmitter<IUpdateEntityResult> EntityUpdateSavedAsync { get; }
-        AsyncEventEmitter<ICrudResult> EntityChangesSavedAsync { get; }
-        AsyncEventEmitter<SaveChangesResult> ChangesSavedAsync { get; }
+        DataContextEventsManager Events { get; }
         EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged { get; }
         bool EnableOffline { get; set; }
         bool SupportsOffline { get; }

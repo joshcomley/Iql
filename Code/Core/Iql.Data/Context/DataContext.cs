@@ -59,17 +59,7 @@ namespace Iql.Data.Context
 
         private IOfflineDataStore _offlineDataStore = new InMemoryDataStore("OfflineData", AutoIntegerIdStrategy.Negative);
 
-        public EventEmitter<IAddEntityResult> EntityAddSaved { get; } = new EventEmitter<IAddEntityResult>();
-        public EventEmitter<IUpdateEntityResult> EntityUpdateSaved { get; } = new EventEmitter<IUpdateEntityResult>();
-        public EventEmitter<IDeleteEntityResult> EntityDeleteSaved { get; } = new EventEmitter<IDeleteEntityResult>();
-        public EventEmitter<ICrudResult> EntityChangesSaved { get; } = new EventEmitter<ICrudResult>();
-        public EventEmitter<SaveChangesResult> ChangesSaved { get; } = new EventEmitter<SaveChangesResult>();
-
-        public AsyncEventEmitter<IAddEntityResult> EntityAddSavedAsync { get; } = new AsyncEventEmitter<IAddEntityResult>();
-        public AsyncEventEmitter<IUpdateEntityResult> EntityUpdateSavedAsync { get; } = new AsyncEventEmitter<IUpdateEntityResult>();
-        public AsyncEventEmitter<IDeleteEntityResult> EntityDeleteSavedAsync { get; } = new AsyncEventEmitter<IDeleteEntityResult>();
-        public AsyncEventEmitter<ICrudResult> EntityChangesSavedAsync { get; } = new AsyncEventEmitter<ICrudResult>();
-        public AsyncEventEmitter<SaveChangesResult> ChangesSavedAsync { get; } = new AsyncEventEmitter<SaveChangesResult>();
+        public DataContextEventsManager Events => _events = _events ?? new DataContextEventsManager();
 
         public EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged =>
             SynchronisedConfiguration.OfflineStateChanged;
@@ -825,8 +815,8 @@ namespace Iql.Data.Context
                 }
             }
 
-            await ChangesSavedAsync.EmitAsync(() => saveChangesResult);
-            ChangesSaved.Emit(() => saveChangesResult);
+            await Events.ChangesSavedAsync.EmitAsync(() => saveChangesResult);
+            Events.ChangesSaved.Emit(() => saveChangesResult);
             return saveChangesResult;
         }
 
@@ -1045,6 +1035,7 @@ namespace Iql.Data.Context
         private MethodInfo _validateEntityInternalAsyncMethod;
         private IDataStore _dataStore;
         private SynchronisedDataContextConfiguration _synchronisedConfiguration;
+        private DataContextEventsManager _events;
 
         private MethodInfo ValidateEntityPropertyInternalAsyncMethod
         {

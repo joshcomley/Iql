@@ -23,11 +23,11 @@ namespace Iql.Tests.Tests
             var entityUpdateSavedAsyncCount = 0;
             var entityDeleteSavedAsyncCount = 0;
 
-            db.ChangesSavedAsync.SubscribeAsync(async _ => { changesSavedAsyncCount++; });
-            db.EntityChangesSavedAsync.SubscribeAsync(async _ => { entityChangesSavedAsyncCount++; });
-            db.EntityAddSavedAsync.SubscribeAsync(async _ => { entityAddSavedAsyncCount++; });
-            db.EntityUpdateSavedAsync.SubscribeAsync(async _ => { entityUpdateSavedAsyncCount++; });
-            db.EntityDeleteSavedAsync.SubscribeAsync(async _ => { entityDeleteSavedAsyncCount++; });
+            db.Events.ChangesSavedAsync.SubscribeAsync(async _ => { changesSavedAsyncCount++; });
+            db.Events.EntityChangesSavedAsync.SubscribeAsync(async _ => { entityChangesSavedAsyncCount++; });
+            db.Events.AddEvents.SavedAsync.SubscribeAsync(async _ => { entityAddSavedAsyncCount++; });
+            db.Events.UpdateEvents.SavedAsync.SubscribeAsync(async _ => { entityUpdateSavedAsyncCount++; });
+            db.Events.DeleteEvents.SavedAsync.SubscribeAsync(async _ => { entityDeleteSavedAsyncCount++; });
 
             var changesSavedCount = 0;
             var entityChangesSavedCount = 0;
@@ -35,11 +35,11 @@ namespace Iql.Tests.Tests
             var entityUpdateSavedCount = 0;
             var entityDeleteSavedCount = 0;
 
-            db.ChangesSaved.Subscribe(_ => { changesSavedCount++; });
-            db.EntityChangesSaved.Subscribe(_ => { entityChangesSavedCount++; });
-            db.EntityAddSaved.Subscribe(_ => { entityAddSavedCount++; });
-            db.EntityUpdateSaved.Subscribe(_ => { entityUpdateSavedCount++; });
-            db.EntityDeleteSaved.Subscribe(_ => { entityDeleteSavedCount++; });
+            db.Events.ChangesSaved.Subscribe(_ => { changesSavedCount++; });
+            db.Events.EntityChangesSaved.Subscribe(_ => { entityChangesSavedCount++; });
+            db.Events.AddEvents.Saved.Subscribe(_ => { entityAddSavedCount++; });
+            db.Events.UpdateEvents.Saved.Subscribe(_ => { entityUpdateSavedCount++; });
+            db.Events.DeleteEvents.Saved.Subscribe(_ => { entityDeleteSavedCount++; });
 
             var clientType = new ClientType();
             var client = new Client();

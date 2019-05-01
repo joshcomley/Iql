@@ -185,10 +185,10 @@ namespace Iql.Data.Context
                             {
                                 await DataContext.OfflineDataStore.ApplyAddAsync(addEntityOperation);
                             }
-                            await DataContext.EntityAddSavedAsync.EmitAsync(() => addEntityOperation.Result);
-                            DataContext.EntityAddSaved.Emit(() => addEntityOperation.Result);
-                            await DataContext.EntityChangesSavedAsync.EmitAsync(() => result);
-                            DataContext.EntityChangesSaved.Emit(() => result);
+                            await DataContext.Events.AddEvents.SavedAsync.EmitAsync(() => addEntityOperation.Result);
+                            DataContext.Events.AddEvents.Saved.Emit(() => addEntityOperation.Result);
+                            await DataContext.Events.EntityChangesSavedAsync.EmitAsync(() => result);
+                            DataContext.Events.EntityChangesSaved.Emit(() => result);
                         }
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     }
@@ -317,10 +317,10 @@ namespace Iql.Data.Context
                                         changedProperties);
                                 }
 
-                                await DataContext.EntityUpdateSavedAsync.EmitAsync(() => updateEntityOperation.Result);
-                                DataContext.EntityUpdateSaved.Emit(() => updateEntityOperation.Result);
-                                await DataContext.EntityChangesSavedAsync.EmitAsync(() => result);
-                                DataContext.EntityChangesSaved.Emit(() => result);
+                                await DataContext.Events.UpdateEvents.SavedAsync.EmitAsync(() => updateEntityOperation.Result);
+                                DataContext.Events.UpdateEvents.Saved.Emit(() => updateEntityOperation.Result);
+                                await DataContext.Events.EntityChangesSavedAsync.EmitAsync(() => result);
+                                DataContext.Events.EntityChangesSaved.Emit(() => result);
                             }
                             else
                             {
@@ -402,10 +402,10 @@ namespace Iql.Data.Context
                             {
                                 await DataContext.OfflineDataStore.ApplyDeleteAsync(deleteEntityOperation);
                             }
-                            await DataContext.EntityDeleteSavedAsync.EmitAsync(() => deleteEntityOperation.Result);
-                            DataContext.EntityDeleteSaved.Emit(() => deleteEntityOperation.Result);
-                            await DataContext.EntityChangesSavedAsync.EmitAsync(() => result);
-                            DataContext.EntityChangesSaved.Emit(() => result);
+                            await DataContext.Events.DeleteEvents.SavedAsync.EmitAsync(() => deleteEntityOperation.Result);
+                            DataContext.Events.DeleteEvents.Saved.Emit(() => deleteEntityOperation.Result);
+                            await DataContext.Events.EntityChangesSavedAsync.EmitAsync(() => result);
+                            DataContext.Events.EntityChangesSaved.Emit(() => result);
                         }
                         else
                         {
