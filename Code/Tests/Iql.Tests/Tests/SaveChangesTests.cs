@@ -20,6 +20,7 @@ namespace Iql.Tests.Tests
             var saveChangesOperationSavingStartedAsyncCount = 0;
             var saveChangesOperationSavedAsyncCount = 0;
             var saveChangesOperationSavingCompletedAsyncCount = 0;
+
             var changesSavedAsyncCount = 0;
             var entityChangesSavedAsyncCount = 0;
             var entityAddSavedAsyncCount = 0;
@@ -35,6 +36,22 @@ namespace Iql.Tests.Tests
             var entityAddSavingCompletedAsyncCount = 0;
             var entityUpdateSavingCompletedAsyncCount = 0;
             var entityDeleteSavingCompletedAsyncCount = 0;
+
+            var globalChangesSavedAsyncCount = 0;
+            var globalEntityChangesSavedAsyncCount = 0;
+            var globalEntityAddSavedAsyncCount = 0;
+            var globalEntityUpdateSavedAsyncCount = 0;
+            var globalEntityDeleteSavedAsyncCount = 0;
+            var globalChangesSavingStartedAsyncCount = 0;
+            var globalEntityChangesSavingStartedAsyncCount = 0;
+            var globalEntityAddSavingStartedAsyncCount = 0;
+            var globalEntityUpdateSavingStartedAsyncCount = 0;
+            var globalEntityDeleteSavingStartedAsyncCount = 0;
+            var globalChangesSavingCompletedAsyncCount = 0;
+            var globalEntityChangesSavingCompletedAsyncCount = 0;
+            var globalEntityAddSavingCompletedAsyncCount = 0;
+            var globalEntityUpdateSavingCompletedAsyncCount = 0;
+            var globalEntityDeleteSavingCompletedAsyncCount = 0;
 
             db.Events.ContextEvents.SavedAsync.SubscribeAsync(async _ => { changesSavedAsyncCount++; });
             db.Events.ContextEvents.SavingStartedAsync.SubscribeAsync(async _ => { changesSavingStartedAsyncCount++; });
@@ -52,9 +69,26 @@ namespace Iql.Tests.Tests
             db.Events.DeleteEvents.SavingStartedAsync.SubscribeAsync(async _ => { entityDeleteSavingStartedAsyncCount++; });
             db.Events.DeleteEvents.SavingCompletedAsync.SubscribeAsync(async _ => { entityDeleteSavingCompletedAsyncCount++; });
 
+            DataContextEventsManager.GlobalEvents.ContextEvents.SavedAsync.SubscribeAsync(async _ => { globalChangesSavedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.ContextEvents.SavingStartedAsync.SubscribeAsync(async _ => { globalChangesSavingStartedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.ContextEvents.SavingCompletedAsync.SubscribeAsync(async _ => { globalChangesSavingCompletedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.EntityEvents.SavedAsync.SubscribeAsync(async _ => { globalEntityChangesSavedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.EntityEvents.SavingStartedAsync.SubscribeAsync(async _ => { globalEntityChangesSavingStartedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.EntityEvents.SavingCompletedAsync.SubscribeAsync(async _ => { globalEntityChangesSavingCompletedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.AddEvents.SavedAsync.SubscribeAsync(async _ => { globalEntityAddSavedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.AddEvents.SavingStartedAsync.SubscribeAsync(async _ => { globalEntityAddSavingStartedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.AddEvents.SavingCompletedAsync.SubscribeAsync(async _ => { globalEntityAddSavingCompletedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.UpdateEvents.SavedAsync.SubscribeAsync(async _ => { globalEntityUpdateSavedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.UpdateEvents.SavingStartedAsync.SubscribeAsync(async _ => { globalEntityUpdateSavingStartedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.UpdateEvents.SavingCompletedAsync.SubscribeAsync(async _ => { globalEntityUpdateSavingCompletedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.DeleteEvents.SavedAsync.SubscribeAsync(async _ => { globalEntityDeleteSavedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.DeleteEvents.SavingStartedAsync.SubscribeAsync(async _ => { globalEntityDeleteSavingStartedAsyncCount++; });
+            DataContextEventsManager.GlobalEvents.DeleteEvents.SavingCompletedAsync.SubscribeAsync(async _ => { globalEntityDeleteSavingCompletedAsyncCount++; });
+
             var saveChangesOperationSavingStartedCount = 0;
             var saveChangesOperationSavedCount = 0;
             var saveChangesOperationSavingCompletedCount = 0;
+
             var changesSavedCount = 0;
             var entityChangesSavedCount = 0;
             var entityAddSavedCount = 0;
@@ -71,6 +105,22 @@ namespace Iql.Tests.Tests
             var entityUpdateSavingCompletedCount = 0;
             var entityDeleteSavingCompletedCount = 0;
 
+            var globalChangesSavedCount = 0;
+            var globalEntityChangesSavedCount = 0;
+            var globalEntityAddSavedCount = 0;
+            var globalEntityUpdateSavedCount = 0;
+            var globalEntityDeleteSavedCount = 0;
+            var globalChangesSavingStartedCount = 0;
+            var globalEntityChangesSavingStartedCount = 0;
+            var globalEntityAddSavingStartedCount = 0;
+            var globalEntityUpdateSavingStartedCount = 0;
+            var globalEntityDeleteSavingStartedCount = 0;
+            var globalChangesSavingCompletedCount = 0;
+            var globalEntityChangesSavingCompletedCount = 0;
+            var globalEntityAddSavingCompletedCount = 0;
+            var globalEntityUpdateSavingCompletedCount = 0;
+            var globalEntityDeleteSavingCompletedCount = 0;
+
             db.Events.ContextEvents.Saved.Subscribe(_ => { changesSavedCount++; });
             db.Events.ContextEvents.SavingStarted.Subscribe(_ => { changesSavingStartedCount++; });
             db.Events.ContextEvents.SavingCompleted.Subscribe(_ => { changesSavingCompletedCount++; });
@@ -86,6 +136,22 @@ namespace Iql.Tests.Tests
             db.Events.DeleteEvents.Saved.Subscribe(_ => { entityDeleteSavedCount++; });
             db.Events.DeleteEvents.SavingStarted.Subscribe(_ => { entityDeleteSavingStartedCount++; });
             db.Events.DeleteEvents.SavingCompleted.Subscribe(_ => { entityDeleteSavingCompletedCount++; });
+
+            DataContextEventsManager.GlobalEvents.ContextEvents.Saved.Subscribe(_ => { globalChangesSavedCount++; });
+            DataContextEventsManager.GlobalEvents.ContextEvents.SavingStarted.Subscribe(_ => { globalChangesSavingStartedCount++; });
+            DataContextEventsManager.GlobalEvents.ContextEvents.SavingCompleted.Subscribe(_ => { globalChangesSavingCompletedCount++; });
+            DataContextEventsManager.GlobalEvents.EntityEvents.Saved.Subscribe(_ => { globalEntityChangesSavedCount++; });
+            DataContextEventsManager.GlobalEvents.EntityEvents.SavingStarted.Subscribe(_ => { globalEntityChangesSavingStartedCount++; });
+            DataContextEventsManager.GlobalEvents.EntityEvents.SavingCompleted.Subscribe(_ => { globalEntityChangesSavingCompletedCount++; });
+            DataContextEventsManager.GlobalEvents.AddEvents.Saved.Subscribe(_ => { globalEntityAddSavedCount++; });
+            DataContextEventsManager.GlobalEvents.AddEvents.SavingStarted.Subscribe(_ => { globalEntityAddSavingStartedCount++; });
+            DataContextEventsManager.GlobalEvents.AddEvents.SavingCompleted.Subscribe(_ => { globalEntityAddSavingCompletedCount++; });
+            DataContextEventsManager.GlobalEvents.UpdateEvents.Saved.Subscribe(_ => { globalEntityUpdateSavedCount++; });
+            DataContextEventsManager.GlobalEvents.UpdateEvents.SavingStarted.Subscribe(_ => { globalEntityUpdateSavingStartedCount++; });
+            DataContextEventsManager.GlobalEvents.UpdateEvents.SavingCompleted.Subscribe(_ => { globalEntityUpdateSavingCompletedCount++; });
+            DataContextEventsManager.GlobalEvents.DeleteEvents.Saved.Subscribe(_ => { globalEntityDeleteSavedCount++; });
+            DataContextEventsManager.GlobalEvents.DeleteEvents.SavingStarted.Subscribe(_ => { globalEntityDeleteSavingStartedCount++; });
+            DataContextEventsManager.GlobalEvents.DeleteEvents.SavingCompleted.Subscribe(_ => { globalEntityDeleteSavingCompletedCount++; });
 
             var clientType = new ClientType();
             var client = new Client();
@@ -155,6 +221,54 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(0, entityDeleteSavingCompletedCount);
             Assert.AreEqual(0, entityDeleteSavedCount);
 
+            Assert.AreEqual(1, saveChangesOperationSavingStartedAsyncCount);
+            Assert.AreEqual(1, saveChangesOperationSavedAsyncCount);
+            Assert.AreEqual(1, saveChangesOperationSavingCompletedAsyncCount);
+
+            Assert.AreEqual(1, saveChangesOperationSavingStartedCount);
+            Assert.AreEqual(1, saveChangesOperationSavedCount);
+            Assert.AreEqual(1, saveChangesOperationSavingCompletedCount);
+
+            Assert.AreEqual(1, globalChangesSavingStartedAsyncCount);
+            Assert.AreEqual(1, globalChangesSavingCompletedAsyncCount);
+            Assert.AreEqual(1, globalChangesSavedAsyncCount);
+
+            Assert.AreEqual(1, globalChangesSavingStartedCount);
+            Assert.AreEqual(1, globalChangesSavingCompletedCount);
+            Assert.AreEqual(1, globalChangesSavedCount);
+
+            Assert.AreEqual(2, globalEntityChangesSavingStartedAsyncCount);
+            Assert.AreEqual(2, globalEntityChangesSavingCompletedAsyncCount);
+            Assert.AreEqual(2, globalEntityChangesSavedAsyncCount);
+
+            Assert.AreEqual(2, globalEntityChangesSavingStartedCount);
+            Assert.AreEqual(2, globalEntityChangesSavingCompletedCount);
+            Assert.AreEqual(2, globalEntityChangesSavedCount);
+
+            Assert.AreEqual(2, globalEntityAddSavingStartedAsyncCount);
+            Assert.AreEqual(2, globalEntityAddSavingCompletedAsyncCount);
+            Assert.AreEqual(2, globalEntityAddSavedAsyncCount);
+
+            Assert.AreEqual(2, globalEntityAddSavingStartedCount);
+            Assert.AreEqual(2, globalEntityAddSavingCompletedCount);
+            Assert.AreEqual(2, globalEntityAddSavedCount);
+
+            Assert.AreEqual(0, globalEntityUpdateSavingStartedAsyncCount);
+            Assert.AreEqual(0, globalEntityUpdateSavingCompletedAsyncCount);
+            Assert.AreEqual(0, globalEntityUpdateSavedAsyncCount);
+
+            Assert.AreEqual(0, globalEntityUpdateSavingStartedCount);
+            Assert.AreEqual(0, globalEntityUpdateSavingCompletedCount);
+            Assert.AreEqual(0, globalEntityUpdateSavedCount);
+
+            Assert.AreEqual(0, globalEntityDeleteSavingStartedAsyncCount);
+            Assert.AreEqual(0, globalEntityDeleteSavingCompletedAsyncCount);
+            Assert.AreEqual(0, globalEntityDeleteSavedAsyncCount);
+
+            Assert.AreEqual(0, globalEntityDeleteSavingStartedCount);
+            Assert.AreEqual(0, globalEntityDeleteSavingCompletedCount);
+            Assert.AreEqual(0, globalEntityDeleteSavedCount);
+
             client.Name = "New name";
 
             result = await db.SaveChangesAsync();
@@ -208,6 +322,54 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(0, entityDeleteSavingStartedCount);
             Assert.AreEqual(0, entityDeleteSavingCompletedCount);
             Assert.AreEqual(0, entityDeleteSavedCount);
+
+            Assert.AreEqual(1, saveChangesOperationSavingStartedAsyncCount);
+            Assert.AreEqual(1, saveChangesOperationSavedAsyncCount);
+            Assert.AreEqual(1, saveChangesOperationSavingCompletedAsyncCount);
+
+            Assert.AreEqual(1, saveChangesOperationSavingStartedCount);
+            Assert.AreEqual(1, saveChangesOperationSavedCount);
+            Assert.AreEqual(1, saveChangesOperationSavingCompletedCount);
+
+            Assert.AreEqual(2, globalChangesSavingStartedAsyncCount);
+            Assert.AreEqual(2, globalChangesSavingCompletedAsyncCount);
+            Assert.AreEqual(2, globalChangesSavedAsyncCount);
+
+            Assert.AreEqual(2, globalChangesSavingStartedCount);
+            Assert.AreEqual(2, globalChangesSavingCompletedCount);
+            Assert.AreEqual(2, globalChangesSavedCount);
+
+            Assert.AreEqual(3, globalEntityChangesSavingStartedAsyncCount);
+            Assert.AreEqual(3, globalEntityChangesSavingCompletedAsyncCount);
+            Assert.AreEqual(3, globalEntityChangesSavedAsyncCount);
+
+            Assert.AreEqual(3, globalEntityChangesSavingStartedCount);
+            Assert.AreEqual(3, globalEntityChangesSavingCompletedCount);
+            Assert.AreEqual(3, globalEntityChangesSavedCount);
+
+            Assert.AreEqual(2, globalEntityAddSavingStartedAsyncCount);
+            Assert.AreEqual(2, globalEntityAddSavingCompletedAsyncCount);
+            Assert.AreEqual(2, globalEntityAddSavedAsyncCount);
+
+            Assert.AreEqual(2, globalEntityAddSavingStartedCount);
+            Assert.AreEqual(2, globalEntityAddSavingCompletedCount);
+            Assert.AreEqual(2, globalEntityAddSavedCount);
+
+            Assert.AreEqual(1, globalEntityUpdateSavingStartedAsyncCount);
+            Assert.AreEqual(1, globalEntityUpdateSavingCompletedAsyncCount);
+            Assert.AreEqual(1, globalEntityUpdateSavedAsyncCount);
+
+            Assert.AreEqual(1, globalEntityUpdateSavingStartedCount);
+            Assert.AreEqual(1, globalEntityUpdateSavingCompletedCount);
+            Assert.AreEqual(1, globalEntityUpdateSavedCount);
+
+            Assert.AreEqual(0, globalEntityDeleteSavingStartedAsyncCount);
+            Assert.AreEqual(0, globalEntityDeleteSavingCompletedAsyncCount);
+            Assert.AreEqual(0, globalEntityDeleteSavedAsyncCount);
+
+            Assert.AreEqual(0, globalEntityDeleteSavingStartedCount);
+            Assert.AreEqual(0, globalEntityDeleteSavingCompletedCount);
+            Assert.AreEqual(0, globalEntityDeleteSavedCount);
 
             db.DeleteEntity(client);
 
@@ -271,6 +433,54 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, entityDeleteSavingStartedCount);
             Assert.AreEqual(1, entityDeleteSavingCompletedCount);
             Assert.AreEqual(1, entityDeleteSavedCount);
+
+            Assert.AreEqual(2, saveChangesOperationSavingStartedAsyncCount);
+            Assert.AreEqual(2, saveChangesOperationSavedAsyncCount);
+            Assert.AreEqual(2, saveChangesOperationSavingCompletedAsyncCount);
+
+            Assert.AreEqual(2, saveChangesOperationSavingStartedCount);
+            Assert.AreEqual(2, saveChangesOperationSavedCount);
+            Assert.AreEqual(2, saveChangesOperationSavingCompletedCount);
+
+            Assert.AreEqual(3, globalChangesSavingStartedAsyncCount);
+            Assert.AreEqual(3, globalChangesSavingCompletedAsyncCount);
+            Assert.AreEqual(3, globalChangesSavedAsyncCount);
+
+            Assert.AreEqual(3, globalChangesSavingStartedCount);
+            Assert.AreEqual(3, globalChangesSavingCompletedCount);
+            Assert.AreEqual(3, globalChangesSavedCount);
+
+            Assert.AreEqual(4, globalEntityChangesSavingStartedAsyncCount);
+            Assert.AreEqual(4, globalEntityChangesSavingCompletedAsyncCount);
+            Assert.AreEqual(4, globalEntityChangesSavedAsyncCount);
+
+            Assert.AreEqual(4, globalEntityChangesSavingStartedCount);
+            Assert.AreEqual(4, globalEntityChangesSavingCompletedCount);
+            Assert.AreEqual(4, globalEntityChangesSavedCount);
+
+            Assert.AreEqual(2, globalEntityAddSavingStartedAsyncCount);
+            Assert.AreEqual(2, globalEntityAddSavingCompletedAsyncCount);
+            Assert.AreEqual(2, globalEntityAddSavedAsyncCount);
+
+            Assert.AreEqual(2, globalEntityAddSavingStartedCount);
+            Assert.AreEqual(2, globalEntityAddSavingCompletedCount);
+            Assert.AreEqual(2, globalEntityAddSavedCount);
+
+            Assert.AreEqual(1, globalEntityUpdateSavingStartedAsyncCount);
+            Assert.AreEqual(1, globalEntityUpdateSavingCompletedAsyncCount);
+            Assert.AreEqual(1, globalEntityUpdateSavedAsyncCount);
+
+            Assert.AreEqual(1, globalEntityUpdateSavingStartedCount);
+            Assert.AreEqual(1, globalEntityUpdateSavingCompletedCount);
+            Assert.AreEqual(1, globalEntityUpdateSavedCount);
+
+            Assert.AreEqual(1, globalEntityDeleteSavingStartedAsyncCount);
+            Assert.AreEqual(1, globalEntityDeleteSavingCompletedAsyncCount);
+            Assert.AreEqual(1, globalEntityDeleteSavedAsyncCount);
+
+            Assert.AreEqual(1, globalEntityDeleteSavingStartedCount);
+            Assert.AreEqual(1, globalEntityDeleteSavingCompletedCount);
+            Assert.AreEqual(1, globalEntityDeleteSavedCount);
         }
 
         [TestMethod]

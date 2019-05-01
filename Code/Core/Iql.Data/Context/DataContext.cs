@@ -794,8 +794,8 @@ namespace Iql.Data.Context
             IEnumerable<IQueuedOperation> queue, 
             bool forceOnline)
         {
-            await saveChangesOperation.Events.EmitSavingStartedAsync(() => saveChangesOperation);
             await Events.ContextEvents.EmitSavingStartedAsync(() => saveChangesOperation);
+            await saveChangesOperation.Events.EmitSavingStartedAsync(() => saveChangesOperation);
             var offlineChangesBefore = OfflineDataTracker?.SerializeToJson();
             var saveChangesResult = new SaveChangesResult(saveChangesOperation, SaveChangeKind.NoAction);
             var hasAny = false;
