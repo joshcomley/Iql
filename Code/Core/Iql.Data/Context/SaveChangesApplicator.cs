@@ -89,7 +89,7 @@ namespace Iql.Data.Context
                     {
                         inferredValuesResult = await new InferredValueEvaluationSession().TrySetInferredValuesAsync(
                             DataContext,
-                            addEntityOperation.Operation.Entity, 
+                            addEntityOperation.Operation.Entity,
                             false);
                         var localEntity = addEntityOperation.Operation.Entity;
 
@@ -185,6 +185,10 @@ namespace Iql.Data.Context
                             {
                                 await DataContext.OfflineDataStore.ApplyAddAsync(addEntityOperation);
                             }
+                            await DataContext.EntityAddSavedAsync.EmitAsync(() => addEntityOperation.Result);
+                            DataContext.EntityAddSaved.Emit(() => addEntityOperation.Result);
+                            await DataContext.EntityChangesSavedAsync.EmitAsync(() => result);
+                            DataContext.EntityChangesSaved.Emit(() => result);
                         }
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     }
@@ -312,6 +316,11 @@ namespace Iql.Data.Context
                                         updateEntityOperation,
                                         changedProperties);
                                 }
+
+                                await DataContext.EntityUpdateSavedAsync.EmitAsync(() => updateEntityOperation.Result);
+                                DataContext.EntityUpdateSaved.Emit(() => updateEntityOperation.Result);
+                                await DataContext.EntityChangesSavedAsync.EmitAsync(() => result);
+                                DataContext.EntityChangesSaved.Emit(() => result);
                             }
                             else
                             {
@@ -393,6 +402,10 @@ namespace Iql.Data.Context
                             {
                                 await DataContext.OfflineDataStore.ApplyDeleteAsync(deleteEntityOperation);
                             }
+                            await DataContext.EntityDeleteSavedAsync.EmitAsync(() => deleteEntityOperation.Result);
+                            DataContext.EntityDeleteSaved.Emit(() => deleteEntityOperation.Result);
+                            await DataContext.EntityChangesSavedAsync.EmitAsync(() => result);
+                            DataContext.EntityChangesSaved.Emit(() => result);
                         }
                         else
                         {

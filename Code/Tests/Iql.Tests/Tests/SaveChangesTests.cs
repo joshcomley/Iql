@@ -14,6 +14,91 @@ namespace Iql.Tests.Tests
     public class SaveChangesTests : TestsBase
     {
         [TestMethod]
+        public async Task CrudEventsTest()
+        {
+            var db = new AppDbContext();
+            var changesSavedAsyncCount = 0;
+            var entityChangesSavedAsyncCount = 0;
+            var entityAddSavedAsyncCount = 0;
+            var entityUpdateSavedAsyncCount = 0;
+            var entityDeleteSavedAsyncCount = 0;
+
+            db.ChangesSavedAsync.SubscribeAsync(async _ => { changesSavedAsyncCount++; });
+            db.EntityChangesSavedAsync.SubscribeAsync(async _ => { entityChangesSavedAsyncCount++; });
+            db.EntityAddSavedAsync.SubscribeAsync(async _ => { entityAddSavedAsyncCount++; });
+            db.EntityUpdateSavedAsync.SubscribeAsync(async _ => { entityUpdateSavedAsyncCount++; });
+            db.EntityDeleteSavedAsync.SubscribeAsync(async _ => { entityDeleteSavedAsyncCount++; });
+
+            var changesSavedCount = 0;
+            var entityChangesSavedCount = 0;
+            var entityAddSavedCount = 0;
+            var entityUpdateSavedCount = 0;
+            var entityDeleteSavedCount = 0;
+
+            db.ChangesSaved.Subscribe(_ => { changesSavedCount++; });
+            db.EntityChangesSaved.Subscribe(_ => { entityChangesSavedCount++; });
+            db.EntityAddSaved.Subscribe(_ => { entityAddSavedCount++; });
+            db.EntityUpdateSaved.Subscribe(_ => { entityUpdateSavedCount++; });
+            db.EntityDeleteSaved.Subscribe(_ => { entityDeleteSavedCount++; });
+
+            var clientType = new ClientType();
+            var client = new Client();
+            client.Type = clientType;
+            client.Name = "My client";
+
+            db.Clients.Add(client);
+
+            var result = await db.SaveChangesAsync();
+
+            Assert.AreEqual(true, result.Success);
+
+            Assert.AreEqual(1, changesSavedAsyncCount);
+            Assert.AreEqual(1, changesSavedCount);
+            Assert.AreEqual(2, entityChangesSavedAsyncCount);
+            Assert.AreEqual(2, entityChangesSavedCount);
+            Assert.AreEqual(2, entityAddSavedAsyncCount);
+            Assert.AreEqual(2, entityAddSavedCount);
+            Assert.AreEqual(0, entityUpdateSavedAsyncCount);
+            Assert.AreEqual(0, entityUpdateSavedCount);
+            Assert.AreEqual(0, entityDeleteSavedAsyncCount);
+            Assert.AreEqual(0, entityDeleteSavedCount);
+
+            client.Name = "New name";
+
+            result = await db.SaveChangesAsync();
+
+            Assert.AreEqual(true, result.Success);
+
+            Assert.AreEqual(2, changesSavedAsyncCount);
+            Assert.AreEqual(2, changesSavedCount);
+            Assert.AreEqual(3, entityChangesSavedAsyncCount);
+            Assert.AreEqual(3, entityChangesSavedCount);
+            Assert.AreEqual(2, entityAddSavedAsyncCount);
+            Assert.AreEqual(2, entityAddSavedCount);
+            Assert.AreEqual(1, entityUpdateSavedAsyncCount);
+            Assert.AreEqual(1, entityUpdateSavedCount);
+            Assert.AreEqual(0, entityDeleteSavedAsyncCount);
+            Assert.AreEqual(0, entityDeleteSavedCount);
+
+            db.DeleteEntity(client);
+
+            result = await db.SaveChangesAsync();
+
+            Assert.AreEqual(true, result.Success);
+
+            Assert.AreEqual(3, changesSavedAsyncCount);
+            Assert.AreEqual(3, changesSavedCount);
+            Assert.AreEqual(4, entityChangesSavedAsyncCount);
+            Assert.AreEqual(4, entityChangesSavedCount);
+            Assert.AreEqual(2, entityAddSavedAsyncCount);
+            Assert.AreEqual(2, entityAddSavedCount);
+            Assert.AreEqual(1, entityUpdateSavedAsyncCount);
+            Assert.AreEqual(1, entityUpdateSavedCount);
+            Assert.AreEqual(1, entityDeleteSavedAsyncCount);
+            Assert.AreEqual(1, entityDeleteSavedCount);
+        }
+
+        [TestMethod]
         public async Task UpdateSelectedPropertiesOnly()
         {
             AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 1, Name = "Test", Discount = 60, TypeId = 1 });
@@ -28,7 +113,7 @@ namespace Iql.Tests.Tests
             client1.Name = "Test Changed";
             client1.Discount = 50;
 
-            var result = await Db.SaveChangesAsync(null, new[] {nameProperty});
+            var result = await Db.SaveChangesAsync(null, new[] { nameProperty });
             Assert.AreEqual(true, result.Success);
             Assert.AreEqual(dbClient.Name, "Test Changed");
             Assert.AreEqual(dbClient.Discount, 60);
@@ -49,9 +134,9 @@ namespace Iql.Tests.Tests
         {
             var db1 = new AppDbContext();
 
-            var clienType = new ClientType();
+            var clientType = new ClientType();
             var client = new Client();
-            client.Type = clienType;
+            client.Type = clientType;
             client.Name = "My client";
 
             db1.Clients.Add(client);

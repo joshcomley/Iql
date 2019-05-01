@@ -287,7 +287,10 @@ namespace Iql.Data.Tracking
         public void MarkForDelete(object entity)
         {
             var entityState = GetEntityState(entity);
-            entityState.MarkedForDeletion = true;
+            if (entityState != null)
+            {
+                entityState.MarkedForDeletion = true;
+            }
         }
 
         void ITrackingSet.RemoveEntity(object entity)
