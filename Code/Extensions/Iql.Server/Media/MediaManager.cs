@@ -90,7 +90,7 @@ namespace Iql.Server.Media
             }
         }
 
-        public abstract Task<string> GetMediaUriAsync<T>(T entity, IFileUrl<T> entityProperty, MediaAccessKind accessKind, TimeSpan? lifetime = null) where T : class;
+        public abstract Task<string> SetMediaUriAsync<T>(T entity, IFileUrl<T> entityProperty, MediaAccessKind accessKind, TimeSpan? lifetime = null) where T : class;
 
         public async Task DeleteAsync<T>(T entity, IFileUrl<T> entityProperty) where T : class
         {

@@ -34,23 +34,23 @@ namespace Iql.Server.OData.Net
         TDbContextSecured,
         TDbContextUnsecured,
         TUser,
-        T> : ODataCrudController<TDbContextSecured,
+        TModel> : ODataCrudController<TDbContextSecured,
         TDbContextUnsecured,
         TUser,
-        T>
+        TModel>
         where TDbContextSecured : DbContext
         where TDbContextUnsecured : DbContext
         where TUser : class
-        where T : class
+        where TModel : class
     {
         private IEntityConfigurationBuilder _builder;
         private IMediaManager _mediaManager;
         private CrudManager _crudManager;
         private ODataMediaManager<TService> _oDataMediaManager;
-        private EntityConfiguration<T> _entityConfiguration;
+        private EntityConfiguration<TModel> _entityConfiguration;
 
-        public virtual EntityConfiguration<T> EntityConfiguration =>
-            _entityConfiguration = _entityConfiguration ?? Builder.EntityType<T>();
+        public virtual EntityConfiguration<TModel> EntityConfiguration =>
+            _entityConfiguration = _entityConfiguration ?? Builder.EntityType<TModel>();
         public virtual IEntityConfigurationBuilder Builder => _builder = _builder ?? HttpContext.RequestServices.GetService<IEntityConfigurationProvider>().Get<TService>();
 
         public virtual IMediaManager MediaManager => _mediaManager = _mediaManager ?? HttpContext.RequestServices.GetService<IMediaManager>();
@@ -61,7 +61,7 @@ namespace Iql.Server.OData.Net
                                                                                          MediaManager,
                                                                                          Crud.Unsecured.Context);
 
-        [ODataGenericAction(ForTypeTypeParameterName = nameof(T), BindingName = "keys")]
+        [ODataGenericAction(ForTypeTypeParameterName = nameof(TModel), BindingName = "keys")]
         public virtual async Task<IActionResult> IncrementVersion([ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] keys, [FromBody]IncrementVersionModel model)
         {
             if (!string.IsNullOrWhiteSpace(model.PropertyName))
@@ -81,7 +81,7 @@ namespace Iql.Server.OData.Net
             return Ok();
         }
 
-        protected override async Task OnAfterPostAsync(T postedEntity)
+        protected override async Task OnAfterPostAsync(TModel postedEntity)
         {
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
             {
@@ -93,7 +93,7 @@ namespace Iql.Server.OData.Net
             await base.OnAfterPostAsync(postedEntity);
         }
 
-        protected override async Task OnAfterDeleteAsync(KeyValuePair<string, object>[] key, T entity, DeleteActionResult result)
+        protected override async Task OnAfterDeleteAsync(KeyValuePair<string, object>[] key, TModel entity, DeleteActionResult result)
         {
             if (result.Success)
             {
@@ -103,7 +103,7 @@ namespace Iql.Server.OData.Net
         }
 
         private readonly Dictionary<DeleteActionResult, List<Func<Task>>> _deleteMediaTasks = new Dictionary<DeleteActionResult, List<Func<Task>>>();
-        protected override async Task<DeleteActionResult> DeleteEntityAsync(KeyValuePair<string, object>[] key, T entity)
+        protected override async Task<DeleteActionResult> DeleteEntityAsync(KeyValuePair<string, object>[] key, TModel entity)
         {
             DeleteActionResult result = null;
             var serverEvaluator = NewDataEvaluator();
@@ -125,7 +125,7 @@ namespace Iql.Server.OData.Net
             return result;
         }
 
-        private async Task<bool?> DeleteNestedSetEntriesAsync(T entity)
+        private async Task<bool?> DeleteNestedSetEntriesAsync(TModel entity)
         {
             bool? success = null;
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
@@ -142,7 +142,7 @@ namespace Iql.Server.OData.Net
             return success;
         }
 
-        protected override async Task OnAfterPatchAsync(KeyValuePair<string, object>[] id, T currentEntity, Delta<T> patch, T prePatchObject)
+        protected override async Task OnAfterPatchAsync(KeyValuePair<string, object>[] id, TModel currentEntity, Delta<TModel> patch, TModel prePatchObject)
         {
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
             {
@@ -154,14 +154,14 @@ namespace Iql.Server.OData.Net
             await base.OnAfterPatchAsync(id, currentEntity, patch, prePatchObject);
         }
 
-        private Task<bool> ApplyDeleteNestedSetItem(INestedSet nestedSet, T entity)
+        private Task<bool> ApplyDeleteNestedSetItem(INestedSet nestedSet, TModel entity)
         {
             var method = typeof(IqlODataController<
                     TService,
                     TDbContextSecured,
                     TDbContextUnsecured,
                     TUser,
-                    T>).GetMethod(nameof(ApplyDeleteNestedSetItemTyped), BindingFlags.Instance | BindingFlags.NonPublic)
+                    TModel>).GetMethod(nameof(ApplyDeleteNestedSetItemTyped), BindingFlags.Instance | BindingFlags.NonPublic)
                 ;
             var genericMethod = method.MakeGenericMethod(
                 nestedSet.IdProperty.TypeDefinition.Type,
@@ -173,7 +173,7 @@ namespace Iql.Server.OData.Net
 
         private Task<bool> ApplyDeleteNestedSetItemTyped<TKey, TNullableKey, TTreeKey>(
             INestedSet nestedSet,
-            T entity,
+            TModel entity,
             TTreeKey key)
         {
             var mptt = new MpttManager<TKey, TNullableKey, TTreeKey>(
@@ -187,20 +187,20 @@ namespace Iql.Server.OData.Net
                 nestedSet.ParentIdProperty.PropertyName,
                 nestedSet.LevelProperty.PropertyName,
                 nestedSet.KeyProperty.PropertyName,
-                Data.Context.Model.FindEntityType(typeof(T)).Relational().TableName
+                Data.Context.Model.FindEntityType(typeof(TModel)).Relational().TableName
             );
             var id = nestedSet.IdProperty.GetValue(entity);
             return mptt.DeleteAsync((TKey)id);
         }
 
-        protected virtual Task ApplyNewNestedSetItemAsync(INestedSet nestedSet, T postedEntity)
+        protected virtual Task ApplyNewNestedSetItemAsync(INestedSet nestedSet, TModel postedEntity)
         {
             var method = typeof(IqlODataController<
                     TService,
                     TDbContextSecured,
                     TDbContextUnsecured,
                     TUser,
-                    T>).GetMethod(nameof(ApplyNewNestedSetItemTypedAsync), BindingFlags.Instance | BindingFlags.NonPublic)
+                    TModel>).GetMethod(nameof(ApplyNewNestedSetItemTypedAsync), BindingFlags.Instance | BindingFlags.NonPublic)
                 ;
             var genericMethod = method.MakeGenericMethod(
                 nestedSet.IdProperty.TypeDefinition.Type,
@@ -210,14 +210,14 @@ namespace Iql.Server.OData.Net
                 .Invoke(this, new object[] { nestedSet, postedEntity, nestedSet.KeyProperty.GetValue(postedEntity) });
         }
 
-        protected virtual Task ApplyExistingNestedSetItemAsync(INestedSet nestedSet, T currentEntity, T prePatchEntity, Delta<T> patch)
+        protected virtual Task ApplyExistingNestedSetItemAsync(INestedSet nestedSet, TModel currentEntity, TModel prePatchEntity, Delta<TModel> patch)
         {
             var method = typeof(IqlODataController<
                     TService,
                     TDbContextSecured,
                     TDbContextUnsecured,
                     TUser,
-                    T>).GetMethod(nameof(ApplyExistingNestedSetItemTypedAsync), BindingFlags.Instance | BindingFlags.NonPublic)
+                    TModel>).GetMethod(nameof(ApplyExistingNestedSetItemTypedAsync), BindingFlags.Instance | BindingFlags.NonPublic)
                 ;
             var genericMethod = method.MakeGenericMethod(
                 nestedSet.IdProperty.TypeDefinition.Type,
@@ -229,9 +229,9 @@ namespace Iql.Server.OData.Net
 
         protected virtual async Task ApplyExistingNestedSetItemTypedAsync<TKey, TNullableKey, TTreeKey>(
             INestedSet nestedSet,
-            T currentEntity,
-            T prePatchEntity,
-            Delta<T> patch,
+            TModel currentEntity,
+            TModel prePatchEntity,
+            Delta<TModel> patch,
             TTreeKey key)
         {
             var mptt = new MpttManager<TKey, TNullableKey, TTreeKey>(
@@ -245,7 +245,7 @@ namespace Iql.Server.OData.Net
                 nestedSet.ParentIdProperty.PropertyName,
                 nestedSet.LevelProperty.PropertyName,
                 nestedSet.KeyProperty.PropertyName,
-                Data.Context.Model.FindEntityType(typeof(T)).Relational().TableName
+                Data.Context.Model.FindEntityType(typeof(TModel)).Relational().TableName
             );
             var id = nestedSet.IdProperty.GetValue(currentEntity);
             var parentId = nestedSet.ParentIdProperty.GetValue(prePatchEntity);
@@ -272,7 +272,7 @@ namespace Iql.Server.OData.Net
 
         protected virtual async Task ApplyNewNestedSetItemTypedAsync<TKey, TNullableKey, TTreeKey>(
             INestedSet nestedSet,
-            T postedEntity,
+            TModel postedEntity,
             TTreeKey key)
         {
             var mptt = new MpttManager<TKey, TNullableKey, TTreeKey>(
@@ -286,7 +286,7 @@ namespace Iql.Server.OData.Net
                 nestedSet.ParentIdProperty.PropertyName,
                 nestedSet.LevelProperty.PropertyName,
                 nestedSet.KeyProperty.PropertyName,
-                Data.Context.Model.FindEntityType(typeof(T)).Relational().TableName
+                Data.Context.Model.FindEntityType(typeof(TModel)).Relational().TableName
             );
             var id = nestedSet.IdProperty.GetValue(postedEntity);
             var parentId = nestedSet.ParentIdProperty.GetValue(postedEntity);
@@ -319,10 +319,10 @@ namespace Iql.Server.OData.Net
             return Task.FromResult<object>(null);
         }
 
-        protected override async Task OnPatchAsync(Delta<T> patch, T dbObject)
+        protected override async Task OnPatchAsync(Delta<TModel> patch, TModel dbObject)
         {
             var serverEvaluator = NewDataEvaluator();
-            var clone = (T)dbObject.Clone(Builder, EntityConfiguration.Type);
+            var clone = (TModel)dbObject.Clone(Builder, EntityConfiguration.Type);
             await base.OnPatchAsync(patch, dbObject);
             await new InferredValueEvaluationSession()
                 .TrySetInferredValuesCustomAsync(
@@ -351,7 +351,7 @@ namespace Iql.Server.OData.Net
             return false;
         }
 
-        protected override async Task OnBeforePostAsync(T currentEntity)
+        protected override async Task OnBeforePostAsync(TModel currentEntity)
         {
             var serverEvaluator = NewDataEvaluator(currentEntity);
             if (EntityConfiguration.PersistenceKeyProperty != null)
@@ -382,7 +382,7 @@ namespace Iql.Server.OData.Net
                     {
                         value = value.ToString();
                     }
-                    var param = Expression.Parameter(typeof(T));
+                    var param = Expression.Parameter(typeof(TModel));
                     var pred = Expression.Lambda(
                         Expression.Equal(
                             Expression.Property(param, EntityConfiguration.PersistenceKeyProperty.PropertyName),
@@ -390,8 +390,8 @@ namespace Iql.Server.OData.Net
                         ),
                         param
                     );
-                    var compiled = (Func<T, bool>)pred.Compile();
-                    var result = CrudManager.DbSet<T>().Where(compiled).SingleOrDefault();
+                    var compiled = (Func<TModel, bool>)pred.Compile();
+                    var result = CrudManager.DbSet<TModel>().Where(compiled).SingleOrDefault();
                     if (result == null)
                     {
                         break;
@@ -410,7 +410,7 @@ namespace Iql.Server.OData.Net
             ClearNestedEntities(currentEntity);
         }
 
-        protected override async Task OnBeforePostAndPatchAsync(T currentEntity, Delta<T> patch)
+        protected override async Task OnBeforePostAndPatchAsync(TModel currentEntity, Delta<TModel> patch)
         {
             if (EntityConfiguration.Files != null)
             {
@@ -425,14 +425,14 @@ namespace Iql.Server.OData.Net
                         )
                     )
                     {
-                        UpdateFileUrlWithVersion(currentEntity, patch, (IFileUrl<T>)file);
+                        UpdateFileUrlWithVersion(currentEntity, patch, (IFileUrl<TModel>)file);
                     }
                 }
             }
             await base.OnBeforePostAndPatchAsync(currentEntity, patch);
         }
 
-        protected virtual void ClearNestedEntities(T currentEntity)
+        protected virtual void ClearNestedEntities(TModel currentEntity)
         {
             // Clear any nested entities
             foreach (var property in EntityConfiguration.Properties)
@@ -441,7 +441,7 @@ namespace Iql.Server.OData.Net
             }
         }
 
-        private static void UpdateFileUrlWithVersion(T currentEntity, Delta<T> patch, IFileUrl<T> file)
+        protected virtual void UpdateFileUrlWithVersion(TModel currentEntity, Delta<TModel> patch, IFileUrl<TModel> file)
         {
             var url = (string)file.UrlProperty.GetValue(currentEntity);
             if (!string.IsNullOrWhiteSpace(url))
@@ -468,7 +468,7 @@ namespace Iql.Server.OData.Net
             }
         }
 
-        private bool HasChangedPropertyValue(T entity, Delta<T> patch, string propertyName)
+        protected virtual bool HasChangedPropertyValue(TModel entity, Delta<TModel> patch, string propertyName)
         {
             if (patch == null)
             {
@@ -483,12 +483,12 @@ namespace Iql.Server.OData.Net
             return false;
         }
 
-        private bool HasPostedPropertyValue(T entity, Delta<T> patch, string propertyName)
+        private bool HasPostedPropertyValue(TModel entity, Delta<TModel> patch, string propertyName)
         {
             return !Equals(null, PostedPropertyValue(entity, patch, propertyName));
         }
 
-        private object PostedPropertyValue(T entity, Delta<T> patch, string propertyName)
+        private object PostedPropertyValue(TModel entity, Delta<TModel> patch, string propertyName)
         {
             if (patch == null)
             {
@@ -503,7 +503,7 @@ namespace Iql.Server.OData.Net
             return null;
         }
 
-        protected override async Task OnAfterPostAndPatchAsync(T currentEntity, Delta<T> patch, T prePatchObject)
+        protected override async Task OnAfterPostAndPatchAsync(TModel currentEntity, Delta<TModel> patch, TModel prePatchObject)
         {
             // Download the file, generate thumbnail, update preview URL, delete file
             // Enqueue a worker item
@@ -511,7 +511,7 @@ namespace Iql.Server.OData.Net
             var saveChanges = false;
             foreach (var file_ in EntityConfiguration.Files)
             {
-                var file = (File<T>)file_;
+                var file = (File<TModel>)file_;
                 if (file.MediaKey != null)
                 {
                     entityKey = entityKey ?? CrudManager.EntityKey(currentEntity);
@@ -521,7 +521,7 @@ namespace Iql.Server.OData.Net
                         var existingUrl = file.UrlProperty.GetValue(populatedEntity) as string;
                         if (!string.IsNullOrWhiteSpace(existingUrl))
                         {
-                            var newUrl = await MediaManager.GetMediaUriAsync(populatedEntity, file, MediaAccessKind.Admin);
+                            var newUrl = await MediaManager.SetMediaUriAsync(populatedEntity, file, MediaAccessKind.Admin);
                             var oldUrl = existingUrl;
                             await MediaManager.CloneUrlAsync(oldUrl, newUrl);
                             file.UrlProperty.SetValue(populatedEntity, newUrl);
@@ -538,15 +538,15 @@ namespace Iql.Server.OData.Net
                     {
                         foreach (var filePreview_ in file.Previews)
                         {
-                            var filePreview = (IFileUrl<T>)filePreview_;
+                            var filePreview = (IFileUrl<TModel>)filePreview_;
                             var previewProperty = filePreview.UrlProperty;
                             populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, file);
                             populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, filePreview);
-                            var sourceUrl = await MediaManager.GetMediaUriAsync(populatedEntity, file, MediaAccessKind.ReadOnly);
+                            var sourceUrl = await MediaManager.SetMediaUriAsync(populatedEntity, file, MediaAccessKind.ReadOnly);
                             // Should be preview
-                            var targetUrl = await MediaManager.GetMediaUriAsync(populatedEntity, filePreview, MediaAccessKind.Admin);
+                            var targetUrl = await MediaManager.SetMediaUriAsync(populatedEntity, filePreview, MediaAccessKind.Admin);
                             // Should be preview
-                            var targetUrlReadOnly = await MediaManager.GetMediaUriAsync(populatedEntity, filePreview, MediaAccessKind.ReadOnly);
+                            var targetUrlReadOnly = await MediaManager.SetMediaUriAsync(populatedEntity, filePreview, MediaAccessKind.ReadOnly);
                             previewProperty.SetValue(populatedEntity, targetUrlReadOnly);
                             await ODataMediaManager.Context.SaveChangesAsync();
                             // Should be preview
@@ -562,23 +562,23 @@ namespace Iql.Server.OData.Net
 
         protected abstract Task EnqueueThumbnailRequest(string sourceUrl, string targetUrl);
 
-        [ODataGenericFunction(ForTypeTypeParameterName = nameof(T), BindingName = "keys")]
+        [ODataGenericFunction(ForTypeTypeParameterName = nameof(TModel), BindingName = "keys")]
         public virtual Task<string> GetMediaUploadUrl(
             [ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] keys,
             [FromRoute]string property
             )
         {
-            return GetMediaUrl(keys, Builder.EntityType<T>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
+            return GetMediaUrl(keys, Builder.EntityType<TModel>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
         }
 
-        public virtual async Task<string> GetMediaUrl(KeyValuePair<string, object>[] keys, IEntityProperty<T> propertyMetadata, MediaAccessKind mediaAccessKind,
+        public virtual async Task<string> GetMediaUrl(KeyValuePair<string, object>[] keys, IEntityProperty<TModel> propertyMetadata, MediaAccessKind mediaAccessKind,
             TimeSpan? lifetime = null)
         {
-            var file = (File<T>)propertyMetadata.File;
+            var file = (File<TModel>)propertyMetadata.File;
             var populatedEntity = await PreloadMediaKeyDependenciesAsync(keys, file);
             var oldValue = propertyMetadata.GetValue(populatedEntity) as string;
             lifetime = TimeSpan.FromDays(1);
-            var newUrl = await MediaManager.GetMediaUriAsync(populatedEntity, file, mediaAccessKind, lifetime);
+            var newUrl = await MediaManager.SetMediaUriAsync(populatedEntity, file, mediaAccessKind, lifetime);
             var newValue = propertyMetadata.GetValue(populatedEntity) as string;
             if (oldValue != newValue)
             {
@@ -587,7 +587,7 @@ namespace Iql.Server.OData.Net
             return newUrl;
         }
 
-        public virtual async Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, T entity,
+        public virtual async Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, TModel entity,
             DeleteActionResult result)
         {
             if (_deleteMediaTasks.ContainsKey(result))
@@ -598,22 +598,22 @@ namespace Iql.Server.OData.Net
             }
         }
 
-        protected virtual Task<T> PreloadMediaKeyDependenciesAsync(KeyValuePair<string, object>[] key,
-            IFileUrl<T> file)
+        protected virtual Task<TModel> PreloadMediaKeyDependenciesAsync(KeyValuePair<string, object>[] key,
+            IFileUrl<TModel> file)
         {
-            return ODataMediaManager.PreloadMediaKeyDependenciesAsync<T>(key, file);
+            return ODataMediaManager.PreloadMediaKeyDependenciesAsync<TModel>(key, file);
         }
 
-        public virtual Task<T> PreloadPropertyPathAsync(KeyValuePair<string, object>[] key,
+        public virtual Task<TModel> PreloadPropertyPathAsync(KeyValuePair<string, object>[] key,
             IqlPropertyPath path)
         {
-            var query = CrudManager.FindQuery<T>(key);
+            var query = CrudManager.FindQuery<TModel>(key);
             var relationshipPath = path.GetRelationshipPathToHere(".");
             if (!string.IsNullOrWhiteSpace(relationshipPath))
             {
                 query = query.Include(relationshipPath);
             }
-            var where = CrudManager.KeyEqualsExpression<T>(key);
+            var where = CrudManager.KeyEqualsExpression<TModel>(key);
             var finalQuery = query.Where(where);
             return finalQuery.SingleOrDefaultAsync();
         }

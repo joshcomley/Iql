@@ -17,21 +17,22 @@ namespace Iql.Server.Azure
             ConnectionDetails = connectionDetails;
         }
 
-        protected async Task<CloudBlockBlob> GetBlobAsync(string mycontainer, string id)
+        protected async Task<CloudBlockBlob> GetBlobAsync(string container, string id, bool createIfNotExists = true)
         {
-            var container = await GetContainerAsync(mycontainer);
-
-            var blockBlob = container.GetBlockBlobReference(id);
-
+            var containerReference = await GetContainerAsync(container, createIfNotExists);
+            var blockBlob = containerReference.GetBlockBlobReference(id);
             return blockBlob;
         }
 
-        protected async Task<CloudBlobContainer> GetContainerAsync(string name)
+        protected async Task<CloudBlobContainer> GetContainerAsync(string name, bool createIfNotExists = true)
         {
             var client = NewClient();
             // Retrieve a reference to a container.
             var container = client.GetContainerReference(AzureSafe(name));
-            await container.CreateIfNotExistsAsync();
+            if (createIfNotExists)
+            {
+                await container.CreateIfNotExistsAsync();
+            }
             return container;
         }
 
@@ -50,7 +51,10 @@ namespace Iql.Server.Azure
             return name;
         }
 
-        public override async Task<string> GetMediaUriAsync<T>(T entity, IFileUrl<T> file, MediaAccessKind accessKind,
+        public override async Task<string> SetMediaUriAsync<T>(
+            T entity,
+            IFileUrl<T> file,
+            MediaAccessKind accessKind,
             TimeSpan? lifetime = null)
         {
             if (file.MediaKey == null)
@@ -60,14 +64,24 @@ namespace Iql.Server.Azure
 
             if (file.MediaKey.Groups.Count != 2)
             {
-                throw new ArgumentException("Azure MediaKey must consiste of two groups");
+                throw new ArgumentException("Azure MediaKey must consist of two groups");
             }
 
             // TODO: Should use preview or file
+            var existingReadUrl = file.UrlProperty.GetValue(entity) as string;
+            if (!string.IsNullOrWhiteSpace(existingReadUrl))
+            {
+                var existingUri = new Uri(new Uri(existingReadUrl).GetLeftPart(UriPartial.Path));
+                var expectedBlob = await BuildCloudBlockBlobAsync(entity, file, false);
+                if (existingUri.GetLeftPart(UriPartial.Path).ToLower() != expectedBlob.Uri.GetLeftPart(UriPartial.Path).ToLower())
+                {
+                    file.UrlProperty.SetValue(entity, null);
+                    existingReadUrl = null;
+                }
+            }
             var cloudBlockBlob = await GetCloudBlockBlob(entity, file);
             var sasToken = cloudBlockBlob.GetSharedAccessSignature(
                 accessKind == MediaAccessKind.Admin ? AdminPolicy(lifetime) : ReadOnlyPolicy(lifetime));
-            var existingReadUrl = file.UrlProperty.GetValue(entity) as string;
             if (string.IsNullOrWhiteSpace(existingReadUrl))
             {
                 var readOnlySasToken = cloudBlockBlob.GetSharedAccessSignature(ReadOnlyPolicy());
@@ -81,7 +95,6 @@ namespace Iql.Server.Azure
         private async Task<CloudBlockBlob> GetCloudBlockBlob<T>(T entity, IFileUrl<T> file, bool createIfNotExists = true)
             where T : class
         {
-            CloudBlockBlob cloudBlockBlob = null;
             var existingUrl = file.UrlProperty.GetValue(entity) as string;
             string containerName = null;
             string id = null;
@@ -89,27 +102,33 @@ namespace Iql.Server.Azure
             {
                 if (Uri.TryCreate(existingUrl, UriKind.Absolute, out var uri))
                 {
-                    cloudBlockBlob = new CloudBlockBlob(uri);
+                    var cloudBlockBlob = new CloudBlockBlob(uri);
                     containerName = cloudBlockBlob.Container.Name;
                     id = cloudBlockBlob.Name;
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(containerName) && createIfNotExists)
+            if (string.IsNullOrWhiteSpace(containerName))
             {
-                containerName = file.MediaKey.Groups[0].EvaluateToString(entity);
-                id = file.MediaKey.Groups[1].EvaluateToString(entity);
+                return await BuildCloudBlockBlobAsync(entity, file, createIfNotExists);
             }
 
+            return await GetBlobAsync(containerName, id, createIfNotExists);
+        }
+
+        protected async Task<CloudBlockBlob> BuildCloudBlockBlobAsync<T>(T entity, IFileUrl<T> file, bool createIfNotExists)
+            where T : class
+        {
+            var containerName = file.MediaKey.Groups[0].EvaluateToString(entity);
+            var id = file.MediaKey.Groups[1].EvaluateToString(entity);
+
+            CloudBlockBlob cloudBlockBlob = null;
             if (!string.IsNullOrWhiteSpace(containerName))
             {
-                cloudBlockBlob = await GetBlobAsync(containerName, id);
-                if (createIfNotExists)
-                {
-                    await cloudBlockBlob.Container.CreateIfNotExistsAsync();
-                }
+                cloudBlockBlob = await GetBlobAsync(containerName, id, createIfNotExists);
             }
             return cloudBlockBlob;
+
         }
 
         public static SharedAccessBlobPolicy AdminPolicy(TimeSpan? lifetime = null)
@@ -155,11 +174,12 @@ namespace Iql.Server.Azure
         public override async Task CloneUrlAsync(string fromUrl, string toUrl)
         {
             var client = NewClient();
-            var fromBlob = new CloudBlockBlob(new Uri(fromUrl), client);
-            var toBlob = new CloudBlockBlob(new Uri(toUrl), client);
+            var fromBlob = new CloudBlockBlob(new Uri(new Uri(fromUrl).GetLeftPart(UriPartial.Path)), client);
+            var toBlob = new CloudBlockBlob(new Uri(new Uri(toUrl).GetLeftPart(UriPartial.Path)), client);
             if (await fromBlob.ExistsAsync())
             {
-                await fromBlob.StartCopyAsync(toBlob);
+                await toBlob.Container.CreateIfNotExistsAsync();
+                await toBlob.StartCopyAsync(fromBlob);
             }
         }
 

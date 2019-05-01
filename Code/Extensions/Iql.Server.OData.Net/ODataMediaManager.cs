@@ -43,7 +43,7 @@ namespace Iql.Server.OData.Net
             where TEntity : class
         {
             var populatedEntity = await PreloadMediaKeyDependenciesAsync<TEntity>(CrudManager.EntityKey(entity), file);
-            return await MediaManager.GetMediaUriAsync(populatedEntity, (File<TEntity>) file, mediaAccessKind, lifetime);
+            return await MediaManager.SetMediaUriAsync(populatedEntity, (File<TEntity>) file, mediaAccessKind, lifetime);
         }
 
         public virtual async Task<TEntity> PreloadMediaKeyDependenciesAsync<TEntity>(KeyValuePair<string, object>[] key,
