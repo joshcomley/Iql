@@ -32,11 +32,11 @@ namespace Iql.Data.Context
             SavingStarted.Emit(ev);
         }
 
-        public virtual async Task EmitSavedAsync(Func<TResult> ev)
+        public virtual async Task EmitSavedSuccessfullyAsync(Func<TResult> ev)
         {
             if (Global != null && Global != this)
             {
-                await Global.EmitSavedAsync(ev);
+                await Global.EmitSavedSuccessfullyAsync(ev);
             }
             await SaveSuccessfulAsync.EmitAsync(ev);
             SaveSuccessful.Emit(ev);

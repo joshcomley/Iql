@@ -15,7 +15,7 @@ namespace Iql.Data.Context
         AsyncEventEmitter<TResult> SavingCompletedAsync { get; }
         AsyncEventEmitter<TResult> SaveSuccessfulAsync { get; }
         Task EmitSavingStartedAsync(Func<TOperation> ev);
-        Task EmitSavedAsync(Func<TResult> ev);
+        Task EmitSavedSuccessfullyAsync(Func<TResult> ev);
         Task EmitSavingCompletedAsync(Func<TResult> ev);
     }
 }

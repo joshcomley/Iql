@@ -832,8 +832,8 @@ namespace Iql.Data.Context
 
             if (saveChangesResult.Results.Any(_ => _.Success))
             {
-                await saveChangesOperation.Events.EmitSavedAsync(() => saveChangesResult);
-                await Events.ContextEvents.EmitSavedAsync(() => saveChangesResult);
+                await saveChangesOperation.Events.EmitSavedSuccessfullyAsync(() => saveChangesResult);
+                await Events.ContextEvents.EmitSavedSuccessfullyAsync(() => saveChangesResult);
             }
             await saveChangesOperation.Events.EmitSavingCompletedAsync(() => saveChangesResult);
             await Events.ContextEvents.EmitSavingCompletedAsync(() => saveChangesResult);

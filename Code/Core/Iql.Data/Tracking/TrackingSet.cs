@@ -423,7 +423,7 @@ namespace Iql.Data.Tracking
                     !entityState.MarkedForAnyDeletion &&
                     entityState.GetChangedProperties().Any())
                 {
-                    updates.Add(new UpdateEntityOperation<T>((T)entity, dataContext, entityState,
+                    updates.Add(new UpdateEntityOperation<T>((T)entity, dataContext, (IEntityState<T>) entityState,
                         properties?.Where(p => p.EntityConfiguration == EntityConfiguration).ToArray()));
                 }
             }

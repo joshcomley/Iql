@@ -17,25 +17,25 @@ namespace Iql.Data.Context
 
         public static int ActiveOperationsCount => _active.Count;
 
-        public override Task EmitSavingStartedAsync(Func<SaveChangesOperation> ev)
+        public override async Task EmitSavingStartedAsync(Func<SaveChangesOperation> ev)
         {
             _active.Add(ev());
-            return base.EmitSavingStartedAsync(ev);
+            await base.EmitSavingStartedAsync(ev);
         }
 
-        public override Task EmitSavingCompletedAsync(Func<SaveChangesResult> ev)
+        public override async Task EmitSavingCompletedAsync(Func<SaveChangesResult> ev)
         {
             var saveChangesResult = ev();
             saveChangesResult.Operation.SetResult(saveChangesResult);
             _active = _active.Where(_ => _ != saveChangesResult.Operation).ToList();
-            return base.EmitSavingCompletedAsync(ev);
+            await base.EmitSavingCompletedAsync(ev);
         }
 
-        public override Task EmitSavedAsync(Func<SaveChangesResult> ev)
+        public override async Task EmitSavedSuccessfullyAsync(Func<SaveChangesResult> ev)
         {
             var saveChangesResult = ev();
             saveChangesResult.Operation.SetResult(saveChangesResult);
-            return base.EmitSavedAsync(ev);
+            await base.EmitSavedSuccessfullyAsync(ev);
         }
     }
 }

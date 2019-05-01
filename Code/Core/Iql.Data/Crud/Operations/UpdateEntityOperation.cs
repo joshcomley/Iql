@@ -7,22 +7,16 @@ namespace Iql.Data.Crud.Operations
     public class UpdateEntityOperation<T> : EntityCrudOperation<T>, IUpdateEntityOperation
     {
         public IProperty[] Properties { get; }
-        public IEntityStateBase EntityState { get; set; }
 
         public IPropertyState[] GetChangedProperties()
         {
             return EntityState.GetChangedProperties(Properties);
         }
 
-        public UpdateEntityOperation(T entity, IDataContext dataContext, IEntityStateBase entityState = null, IProperty[] properties = null)
-            : base(IqlOperationKind.Update, entity, dataContext)
+        public UpdateEntityOperation(T entity, IDataContext dataContext, IEntityState<T> entityState = null, IProperty[] properties = null)
+            : base(IqlOperationKind.Update, entity, dataContext, entityState)
         {
             Properties = properties;
-            EntityState = entityState ?? dataContext.GetEntityState(entity
-#if TypeScript
-            , typeof(T)
-#endif
-                );
         }
     }
 }
