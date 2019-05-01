@@ -7,16 +7,16 @@ namespace Iql.Data.Context
 {
     public class DataContextEventsManager
     {
-        private IDataContextSaveEvents<IQueuedAddEntityOperation, IAddEntityResult> _addEvents;
-        private IDataContextSaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult> _updateEvents;
-        private IDataContextSaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult> _deleteEvents;
-        private IDataContextSaveEvents<IQueuedCrudOperation, IEntityCrudResult> _entityEvents;
-        private IDataContextSaveEvents<SaveChangesOperation, SaveChangesResult> _contextEvents;
+        private ISaveEvents<IQueuedAddEntityOperation, IAddEntityResult> _addEvents;
+        private ISaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult> _updateEvents;
+        private ISaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult> _deleteEvents;
+        private ISaveEvents<IQueuedCrudOperation, IEntityCrudResult> _entityEvents;
+        private ISaveEvents<SaveChangesOperation, SaveChangesResult> _contextEvents;
 
-        public IDataContextSaveEvents<IQueuedAddEntityOperation, IAddEntityResult> AddEvents => _addEvents = _addEvents ?? new DataContextSaveEvents<IQueuedAddEntityOperation, IAddEntityResult>();
-        public IDataContextSaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult> UpdateEvents => _updateEvents = _updateEvents ?? new DataContextSaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult>();
-        public IDataContextSaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult> DeleteEvents => _deleteEvents = _deleteEvents ?? new DataContextSaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult>();
-        public IDataContextSaveEvents<IQueuedCrudOperation, IEntityCrudResult> EntityEvents => _entityEvents = _entityEvents ?? new DataContextSaveEvents<IQueuedCrudOperation, IEntityCrudResult>();
-        public IDataContextSaveEvents<SaveChangesOperation, SaveChangesResult> ContextEvents => _contextEvents = _contextEvents ?? new DataContextSaveEvents<SaveChangesOperation, SaveChangesResult>();
+        public ISaveEvents<IQueuedAddEntityOperation, IAddEntityResult> AddEvents => _addEvents = _addEvents ?? new SaveEvents<IQueuedAddEntityOperation, IAddEntityResult>();
+        public ISaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult> UpdateEvents => _updateEvents = _updateEvents ?? new SaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult>();
+        public ISaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult> DeleteEvents => _deleteEvents = _deleteEvents ?? new SaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult>();
+        public ISaveEvents<IQueuedCrudOperation, IEntityCrudResult> EntityEvents => _entityEvents = _entityEvents ?? new SaveEvents<IQueuedCrudOperation, IEntityCrudResult>();
+        public ISaveEvents<SaveChangesOperation, SaveChangesResult> ContextEvents => _contextEvents = _contextEvents ?? new SaveEvents<SaveChangesOperation, SaveChangesResult>();
     }
 }

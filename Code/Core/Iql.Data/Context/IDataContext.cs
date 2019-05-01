@@ -87,6 +87,7 @@ namespace Iql.Data.Context
         void AbandonChangesForEntityState(IEntityStateBase state);
         void AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states);
         //Task<SaveChangesResult> CommitQueueAsync(IEnumerable<IQueuedOperation> operations);
+        SaveChangesOperation GetSaveChangesOperation(object[] entities = null, IProperty[] properties = null);
         bool HasOfflineChanges();
         Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null);
         Task<SaveChangesResult> SaveOfflineChangesAsync();

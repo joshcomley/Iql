@@ -764,7 +764,8 @@ namespace Iql.Data.Context
             }
         }
 
-        public async Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null)
+        public async Task<SaveChangesResult> SaveChangesAsync(
+            IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null)
         {
             return await ApplySaveChangesAsync(
                 new SaveChangesOperation(this, entities?.ToArray(), properties?.ToArray()));
@@ -793,7 +794,7 @@ namespace Iql.Data.Context
             IEnumerable<IQueuedOperation> queue, 
             bool forceOnline)
         {
-
+            await saveChangesOperation.Events.EmitSavingStartedAsync(() => saveChangesOperation);
             await Events.ContextEvents.EmitSavingStartedAsync(() => saveChangesOperation);
             var offlineChangesBefore = OfflineDataTracker?.SerializeToJson();
             var saveChangesResult = new SaveChangesResult(saveChangesOperation, SaveChangeKind.NoAction);
@@ -831,8 +832,10 @@ namespace Iql.Data.Context
 
             if (saveChangesResult.Results.Any(_ => _.Success))
             {
+                await saveChangesOperation.Events.EmitSavedAsync(() => saveChangesResult);
                 await Events.ContextEvents.EmitSavedAsync(() => saveChangesResult);
             }
+            await saveChangesOperation.Events.EmitSavingCompletedAsync(() => saveChangesResult);
             await Events.ContextEvents.EmitSavingCompletedAsync(() => saveChangesResult);
             return saveChangesResult;
         }
@@ -1143,6 +1146,11 @@ namespace Iql.Data.Context
         public IqlDataChanges GetOfflineChanges(object[] entities = null, IProperty[] properties = null)
         {
             return OfflineDataTracker?.GetChanges(new SaveChangesOperation(this, entities, properties)) ?? new IqlDataChanges(new SaveChangesOperation(this),  null);
+        }
+
+        public SaveChangesOperation GetSaveChangesOperation(object[] entities = null, IProperty[] properties = null)
+        {
+            return new SaveChangesOperation(this, entities, properties);
         }
 
         public IqlDataChanges GetChanges(object[] entities = null, IProperty[] properties = null)

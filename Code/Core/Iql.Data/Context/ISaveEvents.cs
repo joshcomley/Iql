@@ -6,7 +6,7 @@ using Iql.Events;
 
 namespace Iql.Data.Context
 {
-    public interface IDataContextSaveEvents<TOperation, TResult>
+    public interface ISaveEvents<TOperation, TResult>
     {
         EventEmitter<TOperation> SavingStarted { get; }
         EventEmitter<TResult> SavingCompleted { get; }

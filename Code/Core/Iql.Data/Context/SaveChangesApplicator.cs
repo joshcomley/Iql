@@ -59,6 +59,7 @@ namespace Iql.Data.Context
             bool isOfflineResync) where TEntity : class
         {
             await DataContext.Events.EntityEvents.EmitSavingStartedAsync(() => operation);
+            await operation.Events.EmitSavingStartedAsync(() => operation);
             var allowOnline = isOfflineResync || !DataContext.HasOfflineChanges();
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
             var isOffline = !allowOnline;
@@ -192,6 +193,7 @@ namespace Iql.Data.Context
                             {
                                 await DataContext.OfflineDataStore.ApplyAddAsync(addEntityOperation);
                             }
+                            await operation.Events.EmitSavedAsync(() => addEntityOperation.Result);
                             await DataContext.Events.AddEvents.EmitSavedAsync(() => addEntityOperation.Result);
                             await DataContext.Events.EntityEvents.EmitSavedAsync(() => result);
                         }
@@ -324,6 +326,7 @@ namespace Iql.Data.Context
                                         changedProperties);
                                 }
 
+                                await operation.Events.EmitSavedAsync(() => updateEntityOperation.Result);
                                 await DataContext.Events.UpdateEvents.EmitSavedAsync(() => updateEntityOperation.Result);
                                 await DataContext.Events.EntityEvents.EmitSavedAsync(() => result);
                             }
@@ -332,6 +335,7 @@ namespace Iql.Data.Context
                                 await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore(operationEntity);
                             }
                         }
+
                         await DataContext.Events.UpdateEvents.EmitSavingCompletedAsync(() => updateEntityOperation.Result);
                         //GetTracking().TrackingSet<TEntity>().TrackEntity(operationEntity);
                     }
@@ -414,6 +418,7 @@ namespace Iql.Data.Context
                             {
                                 await DataContext.OfflineDataStore.ApplyDeleteAsync(deleteEntityOperation);
                             }
+                            await operation.Events.EmitSavedAsync(() => deleteEntityOperation.Result);
                             await DataContext.Events.DeleteEvents.EmitSavedAsync(() => deleteEntityOperation.Result);
                             await DataContext.Events.EntityEvents.EmitSavedAsync(() => result);
                         }
@@ -437,6 +442,7 @@ namespace Iql.Data.Context
                 await DataContext.SaveOfflineStateAsync();
             }
 
+            await operation.Events.EmitSavingCompletedAsync(() => entityCrudResult);
             await DataContext.Events.EntityEvents.EmitSavingCompletedAsync(() => entityCrudResult);
         }
 
@@ -452,7 +458,8 @@ namespace Iql.Data.Context
             var mappedAdd = new QueuedAddEntityOperation<TMap>(
                 add.SaveChangesOperation,
                 addEntityOperation,
-                new AddEntityResult<TMap>(true, addEntityOperation));
+                new AddEntityResult<TMap>(true, addEntityOperation))
+                .ReplaceEventsWith(add.Events);
 
             var properties = DataContext.EntityConfigurationContext.EntityType<TEntity>().Properties;
             for (var i = 0; i < properties.Count; i++)
@@ -516,7 +523,8 @@ namespace Iql.Data.Context
             var mappedDelete = new QueuedDeleteEntityOperation<TMap>(
                 deleteOperation.SaveChangesOperation,
                 deleteEntityOperation,
-                new DeleteEntityResult<TMap>(true, deleteEntityOperation));
+                new DeleteEntityResult<TMap>(true, deleteEntityOperation))
+                .ReplaceEventsWith(deleteOperation.Events);
             var mappedDeleteResult = mappedDelete.Result;
             await PerformAsync<TMap>(mappedDelete, new SaveChangesResult(deleteOperation.SaveChangesOperation, SaveChangeKind.Success), forceOnline);
 
@@ -535,7 +543,8 @@ namespace Iql.Data.Context
             var mappedUpdate = new QueuedUpdateEntityOperation<TMap>(
                 update.SaveChangesOperation,
                 updateEntityOperation,
-                new UpdateEntityResult<TMap>(true, updateEntityOperation));
+                new UpdateEntityResult<TMap>(true, updateEntityOperation))
+                .ReplaceEventsWith(update.Events);
 
             var dummyEntityState = new EntityState<TMap>(
                 update.Operation.EntityState.DataTracker,

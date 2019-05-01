@@ -17,6 +17,9 @@ namespace Iql.Tests.Tests
         public async Task CrudEventsTest()
         {
             var db = new AppDbContext();
+            var saveChangesOperationSavingStartedAsyncCount = 0;
+            var saveChangesOperationSavedAsyncCount = 0;
+            var saveChangesOperationSavingCompletedAsyncCount = 0;
             var changesSavedAsyncCount = 0;
             var entityChangesSavedAsyncCount = 0;
             var entityAddSavedAsyncCount = 0;
@@ -49,6 +52,9 @@ namespace Iql.Tests.Tests
             db.Events.DeleteEvents.SavingStartedAsync.SubscribeAsync(async _ => { entityDeleteSavingStartedAsyncCount++; });
             db.Events.DeleteEvents.SavingCompletedAsync.SubscribeAsync(async _ => { entityDeleteSavingCompletedAsyncCount++; });
 
+            var saveChangesOperationSavingStartedCount = 0;
+            var saveChangesOperationSavedCount = 0;
+            var saveChangesOperationSavingCompletedCount = 0;
             var changesSavedCount = 0;
             var entityChangesSavedCount = 0;
             var entityAddSavedCount = 0;
@@ -88,9 +94,26 @@ namespace Iql.Tests.Tests
 
             db.Clients.Add(client);
 
-            var result = await db.SaveChangesAsync();
+            var saveChangesOperation = db.GetSaveChangesOperation();
+
+            saveChangesOperation.Events.Saved.Subscribe(_ => { saveChangesOperationSavedCount++; });
+            saveChangesOperation.Events.SavingStarted.Subscribe(_ => { saveChangesOperationSavingStartedCount++; });
+            saveChangesOperation.Events.SavingCompleted.Subscribe(_ => { saveChangesOperationSavingCompletedCount++; });
+            saveChangesOperation.Events.SavedAsync.SubscribeAsync(async _ => { saveChangesOperationSavedAsyncCount++; });
+            saveChangesOperation.Events.SavingStartedAsync.SubscribeAsync(async _ => { saveChangesOperationSavingStartedAsyncCount++; });
+            saveChangesOperation.Events.SavingCompletedAsync.SubscribeAsync(async _ => { saveChangesOperationSavingCompletedAsyncCount++; });
+
+            var result = await db.ApplySaveChangesAsync(saveChangesOperation);
 
             Assert.AreEqual(true, result.Success);
+
+            Assert.AreEqual(1, saveChangesOperationSavingStartedAsyncCount);
+            Assert.AreEqual(1, saveChangesOperationSavedAsyncCount);
+            Assert.AreEqual(1, saveChangesOperationSavingCompletedAsyncCount);
+
+            Assert.AreEqual(1, saveChangesOperationSavingStartedCount);
+            Assert.AreEqual(1, saveChangesOperationSavedCount);
+            Assert.AreEqual(1, saveChangesOperationSavingCompletedCount);
 
             Assert.AreEqual(1, changesSavingStartedAsyncCount);
             Assert.AreEqual(1, changesSavingCompletedAsyncCount);
@@ -138,6 +161,14 @@ namespace Iql.Tests.Tests
 
             Assert.AreEqual(true, result.Success);
 
+            Assert.AreEqual(1, saveChangesOperationSavingStartedAsyncCount);
+            Assert.AreEqual(1, saveChangesOperationSavedAsyncCount);
+            Assert.AreEqual(1, saveChangesOperationSavingCompletedAsyncCount);
+
+            Assert.AreEqual(1, saveChangesOperationSavingStartedCount);
+            Assert.AreEqual(1, saveChangesOperationSavedCount);
+            Assert.AreEqual(1, saveChangesOperationSavingCompletedCount);
+
             Assert.AreEqual(2, changesSavingStartedAsyncCount);
             Assert.AreEqual(2, changesSavingCompletedAsyncCount);
             Assert.AreEqual(2, changesSavedAsyncCount);
@@ -180,9 +211,26 @@ namespace Iql.Tests.Tests
 
             db.DeleteEntity(client);
 
-            result = await db.SaveChangesAsync();
+            saveChangesOperation = db.GetSaveChangesOperation();
+
+            saveChangesOperation.Events.Saved.Subscribe(_ => { saveChangesOperationSavedCount++; });
+            saveChangesOperation.Events.SavingStarted.Subscribe(_ => { saveChangesOperationSavingStartedCount++; });
+            saveChangesOperation.Events.SavingCompleted.Subscribe(_ => { saveChangesOperationSavingCompletedCount++; });
+            saveChangesOperation.Events.SavedAsync.SubscribeAsync(async _ => { saveChangesOperationSavedAsyncCount++; });
+            saveChangesOperation.Events.SavingStartedAsync.SubscribeAsync(async _ => { saveChangesOperationSavingStartedAsyncCount++; });
+            saveChangesOperation.Events.SavingCompletedAsync.SubscribeAsync(async _ => { saveChangesOperationSavingCompletedAsyncCount++; });
+
+            result = await db.ApplySaveChangesAsync(saveChangesOperation);
 
             Assert.AreEqual(true, result.Success);
+
+            Assert.AreEqual(2, saveChangesOperationSavingStartedAsyncCount);
+            Assert.AreEqual(2, saveChangesOperationSavedAsyncCount);
+            Assert.AreEqual(2, saveChangesOperationSavingCompletedAsyncCount);
+
+            Assert.AreEqual(2, saveChangesOperationSavingStartedCount);
+            Assert.AreEqual(2, saveChangesOperationSavedCount);
+            Assert.AreEqual(2, saveChangesOperationSavingCompletedCount);
 
             Assert.AreEqual(3, changesSavingStartedAsyncCount);
             Assert.AreEqual(3, changesSavingCompletedAsyncCount);
