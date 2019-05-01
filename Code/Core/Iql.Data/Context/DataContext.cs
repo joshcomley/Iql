@@ -59,7 +59,7 @@ namespace Iql.Data.Context
 
         private IOfflineDataStore _offlineDataStore = new InMemoryDataStore("OfflineData", AutoIntegerIdStrategy.Negative);
 
-        public DataContextEventsManager Events => _events = _events ?? new DataContextEventsManager();
+        public DataContextEvents Events => _events = _events ?? new DataContextEvents();
 
         public EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged =>
             SynchronisedConfiguration.OfflineStateChanged;
@@ -1055,7 +1055,7 @@ namespace Iql.Data.Context
         private MethodInfo _validateEntityInternalAsyncMethod;
         private IDataStore _dataStore;
         private SynchronisedDataContextConfiguration _synchronisedConfiguration;
-        private DataContextEventsManager _events;
+        private DataContextEvents _events;
 
         private MethodInfo ValidateEntityPropertyInternalAsyncMethod
         {

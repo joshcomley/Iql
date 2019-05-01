@@ -25,7 +25,7 @@ namespace Iql.Data.Context
 {
     public interface IDataContext : IServiceProviderProvider, IIqlDataEvaluator
     {
-        DataContextEventsManager Events { get; }
+        DataContextEvents Events { get; }
         EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged { get; }
         bool EnableOffline { get; set; }
         bool SupportsOffline { get; }

@@ -197,9 +197,9 @@ namespace Iql.Data.Context
                             await DataContext.Events.AddEvents.EmitSavedAsync(() => addEntityOperation.Result);
                             await DataContext.Events.EntityEvents.EmitSavedAsync(() => result);
                         }
-                        await DataContext.Events.AddEvents.EmitSavingCompletedAsync(() => addEntityOperation.Result);
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     }
+                    await DataContext.Events.AddEvents.EmitSavingCompletedAsync(() => addEntityOperation.Result);
                     break;
                 case IqlOperationKind.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
@@ -335,11 +335,8 @@ namespace Iql.Data.Context
                                 await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore(operationEntity);
                             }
                         }
-
-                        await DataContext.Events.UpdateEvents.EmitSavingCompletedAsync(() => updateEntityOperation.Result);
-                        //GetTracking().TrackingSet<TEntity>().TrackEntity(operationEntity);
                     }
-
+                    await DataContext.Events.UpdateEvents.EmitSavingCompletedAsync(() => updateEntityOperation.Result);
                     break;
                 case IqlOperationKind.Delete:
                     var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;

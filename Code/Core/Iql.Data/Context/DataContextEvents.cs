@@ -5,12 +5,12 @@ using Iql.Data.Crud.Operations.Results;
 
 namespace Iql.Data.Context
 {
-    public class DataContextEventsManager
+    public class DataContextEvents
     {
-        private static DataContextEventsManager _globalEvents;
-        public static DataContextEventsManager GlobalEvents => _globalEvents = _globalEvents ?? new DataContextEventsManager().IsGlobal();
+        private static DataContextEvents _globalEvents;
+        public static DataContextEvents GlobalEvents => _globalEvents = _globalEvents ?? new DataContextEvents().IsGlobal();
 
-        private DataContextEventsManager IsGlobal()
+        private DataContextEvents IsGlobal()
         {
             this._isGlobal = true;
             return this;
