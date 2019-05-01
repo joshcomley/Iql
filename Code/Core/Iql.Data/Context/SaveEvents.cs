@@ -4,27 +4,35 @@ using Iql.Events;
 
 namespace Iql.Data.Context
 {
-    public class SaveEvents<TOperation, TResult> : ISaveEvents<TOperation, TResult>
+    public class SaveEvents<TOperation, TResult> : SaveEventsBase, ISaveEvents<TOperation, TResult>
     {
-        public ISaveEvents<TOperation, TResult> Global { get; }
-        public EventEmitter<TOperation> SavingStarted { get; } = new EventEmitter<TOperation>();
-        public EventEmitter<TResult> SavingCompleted { get; } = new EventEmitter<TResult>();
-        public EventEmitter<TResult> SaveSuccessful { get; } = new EventEmitter<TResult>();
-        public AsyncEventEmitter<TOperation> SavingStartedAsync { get; } = new AsyncEventEmitter<TOperation>();
-        public AsyncEventEmitter<TResult> SavingCompletedAsync { get; } = new AsyncEventEmitter<TResult>();
-        public AsyncEventEmitter<TResult> SaveSuccessfulAsync { get; } = new AsyncEventEmitter<TResult>();
+        private EventEmitter<TOperation> _savingStarted = null;
+        private EventEmitter<TResult> _savingCompleted = null;
+        private EventEmitter<TResult> _saveSuccessful = null;
+        private AsyncEventEmitter<TOperation> _savingStartedAsync = null;
+        private AsyncEventEmitter<TResult> _savingCompletedAsync = null;
+        private AsyncEventEmitter<TResult> _saveSuccessfulAsync = null;
 
-        public async Task EmitSavingStartedAsync(Func<TOperation> ev)
+        public ISaveEvents<TOperation, TResult> Global { get; }
+        public EventEmitter<TOperation> SavingStarted => _savingStarted = _savingStarted ?? new EventEmitter<TOperation>();
+        public EventEmitter<TResult> SavingCompleted => _savingCompleted = _savingCompleted ?? new EventEmitter<TResult>();
+        public EventEmitter<TResult> SaveSuccessful => _saveSuccessful = _saveSuccessful ?? new EventEmitter<TResult>();
+        public AsyncEventEmitter<TOperation> SavingStartedAsync => _savingStartedAsync = _savingStartedAsync ?? new AsyncEventEmitter<TOperation>();
+        public AsyncEventEmitter<TResult> SavingCompletedAsync => _savingCompletedAsync = _savingCompletedAsync ?? new AsyncEventEmitter<TResult>();
+        public AsyncEventEmitter<TResult> SaveSuccessfulAsync => _saveSuccessfulAsync = _saveSuccessfulAsync ?? new AsyncEventEmitter<TResult>();
+
+        public virtual async Task EmitSavingStartedAsync(Func<TOperation> ev)
         {
-            if (Global != null && Global != this)
+            if (Global != null)
             {
+                (Global as ISaveEventsInternal)?.Increment();
                 await Global.EmitSavingStartedAsync(ev);
             }
             await SavingStartedAsync.EmitAsync(ev);
             SavingStarted.Emit(ev);
         }
 
-        public async Task EmitSavedAsync(Func<TResult> ev)
+        public virtual async Task EmitSavedAsync(Func<TResult> ev)
         {
             if (Global != null && Global != this)
             {
@@ -34,10 +42,11 @@ namespace Iql.Data.Context
             SaveSuccessful.Emit(ev);
         }
 
-        public async Task EmitSavingCompletedAsync(Func<TResult> ev)
+        public virtual async Task EmitSavingCompletedAsync(Func<TResult> ev)
         {
             if (Global != null && Global != this)
             {
+                (Global as ISaveEventsInternal)?.Decrement();
                 await Global.EmitSavingCompletedAsync(ev);
             }
             await SavingCompletedAsync.EmitAsync(ev);

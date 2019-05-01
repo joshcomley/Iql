@@ -7,10 +7,6 @@ namespace Iql.Data.Crud.Operations
     public class SaveChangesOperation : CrudOperation, IGetChangesOperation
     {
         private ISaveEvents<SaveChangesOperation, SaveChangesResult> _events;
-        public ISaveEvents<SaveChangesOperation, SaveChangesResult> Events => _events = _events ?? new SaveEvents<SaveChangesOperation, SaveChangesResult>();
-
-        public object[] Entities { get; }
-        public IProperty[] Properties { get; }
 
         public SaveChangesOperation(
             IDataContext dataContext,
@@ -19,6 +15,20 @@ namespace Iql.Data.Crud.Operations
         {
             Entities = entities;
             Properties = properties;
+        }
+
+        public ISaveEvents<SaveChangesOperation, SaveChangesResult> Events =>
+            _events = _events ?? new SaveEvents<SaveChangesOperation, SaveChangesResult>();
+
+        public SaveChangesResult Result { get; private set; }
+
+        public object[] Entities { get; }
+        public IProperty[] Properties { get; }
+
+        public SaveChangesOperation SetResult(SaveChangesResult result)
+        {
+            Result = result;
+            return this;
         }
     }
 }

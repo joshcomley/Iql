@@ -12,7 +12,7 @@ namespace Iql.Data.Context
 
         private DataContextEvents IsGlobal()
         {
-            this._isGlobal = true;
+            _isGlobal = true;
             return this;
         }
 
@@ -20,13 +20,13 @@ namespace Iql.Data.Context
         private ISaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult> _updateEvents;
         private ISaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult> _deleteEvents;
         private ISaveEvents<IQueuedCrudOperation, IEntityCrudResult> _entityEvents;
-        private ISaveEvents<SaveChangesOperation, SaveChangesResult> _contextEvents;
+        private DataContextSaveEvents _contextEvents;
         private bool _isGlobal;
 
         public ISaveEvents<IQueuedAddEntityOperation, IAddEntityResult> AddEvents => _addEvents = _addEvents ?? new SaveEvents<IQueuedAddEntityOperation, IAddEntityResult>(_isGlobal ? null : GlobalEvents.AddEvents);
         public ISaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult> UpdateEvents => _updateEvents = _updateEvents ?? new SaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult>(_isGlobal ? null : GlobalEvents.UpdateEvents);
         public ISaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult> DeleteEvents => _deleteEvents = _deleteEvents ?? new SaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult>(_isGlobal ? null : GlobalEvents.DeleteEvents);
         public ISaveEvents<IQueuedCrudOperation, IEntityCrudResult> EntityEvents => _entityEvents = _entityEvents ?? new SaveEvents<IQueuedCrudOperation, IEntityCrudResult>(_isGlobal ? null : GlobalEvents.EntityEvents);
-        public ISaveEvents<SaveChangesOperation, SaveChangesResult> ContextEvents => _contextEvents = _contextEvents ?? new SaveEvents<SaveChangesOperation, SaveChangesResult>(_isGlobal ? null : GlobalEvents.ContextEvents);
+        public DataContextSaveEvents ContextEvents => _contextEvents = _contextEvents ?? new DataContextSaveEvents(_isGlobal ? null : GlobalEvents.ContextEvents);
     }
 }
