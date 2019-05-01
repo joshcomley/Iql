@@ -377,18 +377,20 @@ namespace Iql.Data.Context
 
         public async Task<SaveChangesResult> SaveOfflineChangesAsync()
         {
+            var saveChangesOperation = new SaveChangesOperation(this);
+
             if (OfflineDataTracker == null)
             {
-                return new SaveChangesResult(SaveChangeKind.NoAction);
+                return new SaveChangesResult(saveChangesOperation, SaveChangeKind.NoAction);
             }
 
-            var changes = OfflineDataTracker.GetChanges(this);
+            var changes = OfflineDataTracker.GetChanges(saveChangesOperation);
             if (changes == null || changes.Count == 0)
             {
-                return new SaveChangesResult(SaveChangeKind.NoAction);
+                return new SaveChangesResult(saveChangesOperation, SaveChangeKind.NoAction);
             }
 
-            return await CommitQueueInternalAsync(changes.AllChanges, true);
+            return await CommitQueueAsync(saveChangesOperation, changes.AllChanges, true);
         }
 
         public bool HasOfflineChanges()
@@ -764,7 +766,8 @@ namespace Iql.Data.Context
 
         public async Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null)
         {
-            return await ApplySaveChangesAsync(new SaveChangesOperation(this, entities?.ToArray(), properties?.ToArray()));
+            return await ApplySaveChangesAsync(
+                new SaveChangesOperation(this, entities?.ToArray(), properties?.ToArray()));
         }
 
         public virtual Task<SaveChangesResult> ApplySaveChangesAsync(
@@ -773,18 +776,27 @@ namespace Iql.Data.Context
             // Sets could be added to whilst detecting changes
             // so get a copy now
             //var observable = this.Observable<SaveChangesResult>();
-            return CommitQueueAsync(GetChanges(operation.Entities, operation.Properties).AllChanges);
+            return CommitQueueAsync(
+                operation,
+                TemporalDataTracker.GetChanges(operation).AllChanges,
+                false);
         }
 
-        public virtual async Task<SaveChangesResult> CommitQueueAsync(IEnumerable<IQueuedOperation> queue)
-        {
-            return await CommitQueueInternalAsync(queue, false);
-        }
+        //protected virtual async Task<SaveChangesResult> CommitQueueAsync(
+        //    IEnumerable<IQueuedOperation> queue)
+        //{
+        //    return await CommitQueueInternalAsync(new SaveChangesOperation(this), queue, false);
+        //}
 
-        private async Task<SaveChangesResult> CommitQueueInternalAsync(IEnumerable<IQueuedOperation> queue, bool forceOnline)
+        private async Task<SaveChangesResult> CommitQueueAsync(
+            SaveChangesOperation saveChangesOperation,
+            IEnumerable<IQueuedOperation> queue, 
+            bool forceOnline)
         {
+
+            await Events.ContextEvents.EmitSavingStartedAsync(() => saveChangesOperation);
             var offlineChangesBefore = OfflineDataTracker?.SerializeToJson();
-            var saveChangesResult = new SaveChangesResult(SaveChangeKind.NoAction);
+            var saveChangesResult = new SaveChangesResult(saveChangesOperation, SaveChangeKind.NoAction);
             var hasAny = false;
             var queuedOperations = queue as IQueuedOperation[] ?? queue.ToArray();
             for (var i = 0; i < queuedOperations.Length; i++)
@@ -792,10 +804,12 @@ namespace Iql.Data.Context
                 var queuedOperation = queuedOperations[i];
                 hasAny = true;
                 var task = GetType()
-                    .GetMethod(nameof(PerformAsync))
+                    .GetMethod(nameof(PerformAsync), BindingFlags.Instance | BindingFlags.NonPublic)
                     .InvokeGeneric(this, new object[]
                         {
-                            queuedOperation, saveChangesResult, forceOnline
+                            queuedOperation,
+                            saveChangesResult,
+                            forceOnline
                         },
                         queuedOperation.Operation.EntityType) as Task;
                 await task;
@@ -815,8 +829,11 @@ namespace Iql.Data.Context
                 }
             }
 
-            await Events.ChangesSavedAsync.EmitAsync(() => saveChangesResult);
-            Events.ChangesSaved.Emit(() => saveChangesResult);
+            if (saveChangesResult.Results.Any(_ => _.Success))
+            {
+                await Events.ContextEvents.EmitSavedAsync(() => saveChangesResult);
+            }
+            await Events.ContextEvents.EmitSavingCompletedAsync(() => saveChangesResult);
             return saveChangesResult;
         }
 
@@ -825,8 +842,8 @@ namespace Iql.Data.Context
             OfflineStateChanged.Emit(() => new OfflineChangeStateChangedEvent(this, OfflineDataTracker, HasOfflineChanges()));
         }
 
-        public virtual Task PerformAsync<TEntity>(
-            IQueuedOperation operation,
+        protected virtual Task PerformAsync<TEntity>(
+            IQueuedCrudOperation operation,
             SaveChangesResult saveChangesResult,
             bool forceOnline) where TEntity : class
         {
@@ -1125,12 +1142,12 @@ namespace Iql.Data.Context
 
         public IqlDataChanges GetOfflineChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return OfflineDataTracker?.GetChanges(this, entities, properties) ?? new IqlDataChanges(null);
+            return OfflineDataTracker?.GetChanges(new SaveChangesOperation(this, entities, properties)) ?? new IqlDataChanges(new SaveChangesOperation(this),  null);
         }
 
         public IqlDataChanges GetChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return TemporalDataTracker.GetChanges(this, entities, properties);
+            return TemporalDataTracker.GetChanges(new SaveChangesOperation(this, entities, properties));
         }
 
         public IQueuedAddEntityOperation[] GetAdditions(object[] entities = null)
@@ -1140,7 +1157,7 @@ namespace Iql.Data.Context
 
         public IQueuedUpdateEntityOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null)
         {
-            return GetChanges(entities).Updates;
+            return GetChanges(entities, properties).Updates;
         }
 
         public IQueuedDeleteEntityOperation[] GetDeletions(object[] entities = null)

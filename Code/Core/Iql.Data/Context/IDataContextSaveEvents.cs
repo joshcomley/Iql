@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Iql.Data.Crud;
 using Iql.Data.Crud.Operations;
 using Iql.Events;
@@ -5,14 +7,15 @@ using Iql.Events;
 namespace Iql.Data.Context
 {
     public interface IDataContextSaveEvents<TOperation, TResult>
-        where TOperation : IEntityCrudOperationBase
-        where TResult : IEntityCrudResult
     {
         EventEmitter<TOperation> SavingStarted { get; }
-        EventEmitter<TOperation> SavingCompleted { get; }
+        EventEmitter<TResult> SavingCompleted { get; }
         EventEmitter<TResult> Saved { get; }
         AsyncEventEmitter<TOperation> SavingStartedAsync { get; }
-        AsyncEventEmitter<TOperation> SavingCompletedAsync { get; }
+        AsyncEventEmitter<TResult> SavingCompletedAsync { get; }
         AsyncEventEmitter<TResult> SavedAsync { get; }
+        Task EmitSavingStartedAsync(Func<TOperation> ev);
+        Task EmitSavedAsync(Func<TResult> ev);
+        Task EmitSavingCompletedAsync(Func<TResult> ev);
     }
 }

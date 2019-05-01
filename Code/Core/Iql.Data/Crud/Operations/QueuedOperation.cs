@@ -1,11 +1,14 @@
 namespace Iql.Data.Crud.Operations
 {
-    public class QueuedOperation<TOperation,
+    public abstract class QueuedOperation<TOperation,
         TResult> : IQueuedOperation
         where TOperation : IEntitySetCrudOperationBase
         where TResult : ICrudResult
     {
-        public QueuedOperation(QueuedOperationKind kind, TOperation operation, TResult result)
+        protected QueuedOperation(
+            QueuedOperationKind kind, 
+            TOperation operation, 
+            TResult result)
         {
             Kind = kind;
             Operation = operation;

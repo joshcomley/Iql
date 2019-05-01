@@ -1,26 +1,22 @@
 using Iql.Data.Crud;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Queued;
 using Iql.Data.Crud.Operations.Results;
-using Iql.Events;
 
 namespace Iql.Data.Context
 {
     public class DataContextEventsManager
     {
-        private IDataContextSaveEvents<IAddEntityOperation, IAddEntityResult> _addEvents;
-        private IDataContextSaveEvents<IUpdateEntityOperation, IUpdateEntityResult> _updateEvents;
-        private IDataContextSaveEvents<IDeleteEntityOperation, IDeleteEntityResult> _deleteEvents;
-        private EventEmitter<ICrudResult> _entityChangesSaved;
-        private AsyncEventEmitter<ICrudResult> _entityChangesSavedAsync;
-        private EventEmitter<SaveChangesResult> _changesSaved;
-        private AsyncEventEmitter<SaveChangesResult> _changesSavedAsync;
+        private IDataContextSaveEvents<IQueuedAddEntityOperation, IAddEntityResult> _addEvents;
+        private IDataContextSaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult> _updateEvents;
+        private IDataContextSaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult> _deleteEvents;
+        private IDataContextSaveEvents<IQueuedCrudOperation, IEntityCrudResult> _entityEvents;
+        private IDataContextSaveEvents<SaveChangesOperation, SaveChangesResult> _contextEvents;
 
-        public IDataContextSaveEvents<IAddEntityOperation, IAddEntityResult> AddEvents => _addEvents = _addEvents ?? new DataContextSaveEvents<IAddEntityOperation, IAddEntityResult>();
-        public IDataContextSaveEvents<IUpdateEntityOperation, IUpdateEntityResult> UpdateEvents => _updateEvents = _updateEvents ?? new DataContextSaveEvents<IUpdateEntityOperation, IUpdateEntityResult>();
-        public IDataContextSaveEvents<IDeleteEntityOperation, IDeleteEntityResult> DeleteEvents => _deleteEvents = _deleteEvents ?? new DataContextSaveEvents<IDeleteEntityOperation, IDeleteEntityResult>();
-        public EventEmitter<ICrudResult> EntityChangesSaved => _entityChangesSaved = _entityChangesSaved ?? new EventEmitter<ICrudResult>();
-        public AsyncEventEmitter<ICrudResult> EntityChangesSavedAsync => _entityChangesSavedAsync = _entityChangesSavedAsync ?? new AsyncEventEmitter<ICrudResult>();
-        public EventEmitter<SaveChangesResult> ChangesSaved => _changesSaved = _changesSaved ?? new EventEmitter<SaveChangesResult>();
-        public AsyncEventEmitter<SaveChangesResult> ChangesSavedAsync => _changesSavedAsync = _changesSavedAsync ?? new AsyncEventEmitter<SaveChangesResult>();
+        public IDataContextSaveEvents<IQueuedAddEntityOperation, IAddEntityResult> AddEvents => _addEvents = _addEvents ?? new DataContextSaveEvents<IQueuedAddEntityOperation, IAddEntityResult>();
+        public IDataContextSaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult> UpdateEvents => _updateEvents = _updateEvents ?? new DataContextSaveEvents<IQueuedUpdateEntityOperation, IUpdateEntityResult>();
+        public IDataContextSaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult> DeleteEvents => _deleteEvents = _deleteEvents ?? new DataContextSaveEvents<IQueuedDeleteEntityOperation, IDeleteEntityResult>();
+        public IDataContextSaveEvents<IQueuedCrudOperation, IEntityCrudResult> EntityEvents => _entityEvents = _entityEvents ?? new DataContextSaveEvents<IQueuedCrudOperation, IEntityCrudResult>();
+        public IDataContextSaveEvents<SaveChangesOperation, SaveChangesResult> ContextEvents => _contextEvents = _contextEvents ?? new DataContextSaveEvents<SaveChangesOperation, SaveChangesResult>();
     }
 }

@@ -28,30 +28,28 @@ namespace Iql.Data.Extensions
 
         public static IQueuedOperation[] GetQueuedChanges(
             this IDataChangeProvider changeProvider, 
-            IDataContext dataContext,
-            object[] entities = null, 
-            IProperty[] properties = null)
+            IGetChangesOperation getChangesOperation)
         {
             var changes = new List<IQueuedOperation>();
-            changeProvider.GetDeletions(dataContext, entities).ForEach(deletion =>
+            changeProvider.GetDeletions(getChangesOperation.DataContext, getChangesOperation.Entities).ForEach(deletion =>
             {
                 var queuedOperation =
                     Activator.CreateInstance(
-                        typeof(QueuedDeleteEntityOperation<>).MakeGenericType(deletion.EntityType), deletion, null);
+                        typeof(QueuedDeleteEntityOperation<>).MakeGenericType(deletion.EntityType), getChangesOperation, deletion, null);
                 changes.Add((IQueuedOperation)queuedOperation);
             });
-            changeProvider.GetUpdates(dataContext, entities, properties).ForEach(update =>
+            changeProvider.GetUpdates(getChangesOperation.DataContext, getChangesOperation.Entities, getChangesOperation.Properties).ForEach(update =>
             {
                 var queuedOperation =
                     Activator.CreateInstance(
-                        typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), update, null);
+                        typeof(QueuedUpdateEntityOperation<>).MakeGenericType(update.EntityType), getChangesOperation, update, null);
                 changes.Add((IQueuedOperation)queuedOperation);
             });
-            changeProvider.GetInserts(dataContext, entities).ForEach(insert =>
+            changeProvider.GetInserts(getChangesOperation.DataContext, getChangesOperation.Entities).ForEach(insert =>
             {
                 var queuedOperation =
                     Activator.CreateInstance(
-                        typeof(QueuedAddEntityOperation<>).MakeGenericType(insert.EntityType), insert, null);
+                        typeof(QueuedAddEntityOperation<>).MakeGenericType(insert.EntityType), getChangesOperation, insert, null);
                 changes.Add((IQueuedOperation)queuedOperation);
             });
             return changes.ToArray();

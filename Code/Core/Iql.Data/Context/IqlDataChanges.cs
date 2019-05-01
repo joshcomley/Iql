@@ -7,6 +7,7 @@ namespace Iql.Data.Context
 {
     public class IqlDataChanges
     {
+        public SaveChangesOperation Operation { get; }
         private IQueuedAddEntityOperation[] _additions;
         private IQueuedUpdateEntityOperation[] _updates;
         private IQueuedDeleteEntityOperation[] _deletions;
@@ -14,8 +15,9 @@ namespace Iql.Data.Context
         public int Count => AllChanges.Length;
         public bool HasChanges => AllChanges.Length > 0;
 
-        public IqlDataChanges(IQueuedOperation[] allChanges)
+        public IqlDataChanges(SaveChangesOperation operation, IQueuedOperation[] allChanges)
         {
+            Operation = operation;
             AllChanges = allChanges ?? new IQueuedOperation[] { };
         }
 

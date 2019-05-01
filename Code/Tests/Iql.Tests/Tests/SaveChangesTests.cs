@@ -22,24 +22,64 @@ namespace Iql.Tests.Tests
             var entityAddSavedAsyncCount = 0;
             var entityUpdateSavedAsyncCount = 0;
             var entityDeleteSavedAsyncCount = 0;
+            var changesSavingStartedAsyncCount = 0;
+            var entityChangesSavingStartedAsyncCount = 0;
+            var entityAddSavingStartedAsyncCount = 0;
+            var entityUpdateSavingStartedAsyncCount = 0;
+            var entityDeleteSavingStartedAsyncCount = 0;
+            var changesSavingCompletedAsyncCount = 0;
+            var entityChangesSavingCompletedAsyncCount = 0;
+            var entityAddSavingCompletedAsyncCount = 0;
+            var entityUpdateSavingCompletedAsyncCount = 0;
+            var entityDeleteSavingCompletedAsyncCount = 0;
 
-            db.Events.ChangesSavedAsync.SubscribeAsync(async _ => { changesSavedAsyncCount++; });
-            db.Events.EntityChangesSavedAsync.SubscribeAsync(async _ => { entityChangesSavedAsyncCount++; });
+            db.Events.ContextEvents.SavedAsync.SubscribeAsync(async _ => { changesSavedAsyncCount++; });
+            db.Events.ContextEvents.SavingStartedAsync.SubscribeAsync(async _ => { changesSavingStartedAsyncCount++; });
+            db.Events.ContextEvents.SavingCompletedAsync.SubscribeAsync(async _ => { changesSavingCompletedAsyncCount++; });
+            db.Events.EntityEvents.SavedAsync.SubscribeAsync(async _ => { entityChangesSavedAsyncCount++; });
+            db.Events.EntityEvents.SavingStartedAsync.SubscribeAsync(async _ => { entityChangesSavingStartedAsyncCount++; });
+            db.Events.EntityEvents.SavingCompletedAsync.SubscribeAsync(async _ => { entityChangesSavingCompletedAsyncCount++; });
             db.Events.AddEvents.SavedAsync.SubscribeAsync(async _ => { entityAddSavedAsyncCount++; });
+            db.Events.AddEvents.SavingStartedAsync.SubscribeAsync(async _ => { entityAddSavingStartedAsyncCount++; });
+            db.Events.AddEvents.SavingCompletedAsync.SubscribeAsync(async _ => { entityAddSavingCompletedAsyncCount++; });
             db.Events.UpdateEvents.SavedAsync.SubscribeAsync(async _ => { entityUpdateSavedAsyncCount++; });
+            db.Events.UpdateEvents.SavingStartedAsync.SubscribeAsync(async _ => { entityUpdateSavingStartedAsyncCount++; });
+            db.Events.UpdateEvents.SavingCompletedAsync.SubscribeAsync(async _ => { entityUpdateSavingCompletedAsyncCount++; });
             db.Events.DeleteEvents.SavedAsync.SubscribeAsync(async _ => { entityDeleteSavedAsyncCount++; });
+            db.Events.DeleteEvents.SavingStartedAsync.SubscribeAsync(async _ => { entityDeleteSavingStartedAsyncCount++; });
+            db.Events.DeleteEvents.SavingCompletedAsync.SubscribeAsync(async _ => { entityDeleteSavingCompletedAsyncCount++; });
 
             var changesSavedCount = 0;
             var entityChangesSavedCount = 0;
             var entityAddSavedCount = 0;
             var entityUpdateSavedCount = 0;
             var entityDeleteSavedCount = 0;
+            var changesSavingStartedCount = 0;
+            var entityChangesSavingStartedCount = 0;
+            var entityAddSavingStartedCount = 0;
+            var entityUpdateSavingStartedCount = 0;
+            var entityDeleteSavingStartedCount = 0;
+            var changesSavingCompletedCount = 0;
+            var entityChangesSavingCompletedCount = 0;
+            var entityAddSavingCompletedCount = 0;
+            var entityUpdateSavingCompletedCount = 0;
+            var entityDeleteSavingCompletedCount = 0;
 
-            db.Events.ChangesSaved.Subscribe(_ => { changesSavedCount++; });
-            db.Events.EntityChangesSaved.Subscribe(_ => { entityChangesSavedCount++; });
+            db.Events.ContextEvents.Saved.Subscribe(_ => { changesSavedCount++; });
+            db.Events.ContextEvents.SavingStarted.Subscribe(_ => { changesSavingStartedCount++; });
+            db.Events.ContextEvents.SavingCompleted.Subscribe(_ => { changesSavingCompletedCount++; });
+            db.Events.EntityEvents.Saved.Subscribe(_ => { entityChangesSavedCount++; });
+            db.Events.EntityEvents.SavingStarted.Subscribe(_ => { entityChangesSavingStartedCount++; });
+            db.Events.EntityEvents.SavingCompleted.Subscribe(_ => { entityChangesSavingCompletedCount++; });
             db.Events.AddEvents.Saved.Subscribe(_ => { entityAddSavedCount++; });
+            db.Events.AddEvents.SavingStarted.Subscribe(_ => { entityAddSavingStartedCount++; });
+            db.Events.AddEvents.SavingCompleted.Subscribe(_ => { entityAddSavingCompletedCount++; });
             db.Events.UpdateEvents.Saved.Subscribe(_ => { entityUpdateSavedCount++; });
+            db.Events.UpdateEvents.SavingStarted.Subscribe(_ => { entityUpdateSavingStartedCount++; });
+            db.Events.UpdateEvents.SavingCompleted.Subscribe(_ => { entityUpdateSavingCompletedCount++; });
             db.Events.DeleteEvents.Saved.Subscribe(_ => { entityDeleteSavedCount++; });
+            db.Events.DeleteEvents.SavingStarted.Subscribe(_ => { entityDeleteSavingStartedCount++; });
+            db.Events.DeleteEvents.SavingCompleted.Subscribe(_ => { entityDeleteSavingCompletedCount++; });
 
             var clientType = new ClientType();
             var client = new Client();
@@ -52,15 +92,44 @@ namespace Iql.Tests.Tests
 
             Assert.AreEqual(true, result.Success);
 
+            Assert.AreEqual(1, changesSavingStartedAsyncCount);
+            Assert.AreEqual(1, changesSavingCompletedAsyncCount);
             Assert.AreEqual(1, changesSavedAsyncCount);
+
+            Assert.AreEqual(1, changesSavingStartedCount);
+            Assert.AreEqual(1, changesSavingCompletedCount);
             Assert.AreEqual(1, changesSavedCount);
+
+            Assert.AreEqual(2, entityChangesSavingStartedAsyncCount);
+            Assert.AreEqual(2, entityChangesSavingCompletedAsyncCount);
             Assert.AreEqual(2, entityChangesSavedAsyncCount);
+
+            Assert.AreEqual(2, entityChangesSavingStartedCount);
+            Assert.AreEqual(2, entityChangesSavingCompletedCount);
             Assert.AreEqual(2, entityChangesSavedCount);
+
+            Assert.AreEqual(2, entityAddSavingStartedAsyncCount);
+            Assert.AreEqual(2, entityAddSavingCompletedAsyncCount);
             Assert.AreEqual(2, entityAddSavedAsyncCount);
+
+            Assert.AreEqual(2, entityAddSavingStartedCount);
+            Assert.AreEqual(2, entityAddSavingCompletedCount);
             Assert.AreEqual(2, entityAddSavedCount);
+
+            Assert.AreEqual(0, entityUpdateSavingStartedAsyncCount);
+            Assert.AreEqual(0, entityUpdateSavingCompletedAsyncCount);
             Assert.AreEqual(0, entityUpdateSavedAsyncCount);
+
+            Assert.AreEqual(0, entityUpdateSavingStartedCount);
+            Assert.AreEqual(0, entityUpdateSavingCompletedCount);
             Assert.AreEqual(0, entityUpdateSavedCount);
+
+            Assert.AreEqual(0, entityDeleteSavingStartedAsyncCount);
+            Assert.AreEqual(0, entityDeleteSavingCompletedAsyncCount);
             Assert.AreEqual(0, entityDeleteSavedAsyncCount);
+
+            Assert.AreEqual(0, entityDeleteSavingStartedCount);
+            Assert.AreEqual(0, entityDeleteSavingCompletedCount);
             Assert.AreEqual(0, entityDeleteSavedCount);
 
             client.Name = "New name";
@@ -69,15 +138,44 @@ namespace Iql.Tests.Tests
 
             Assert.AreEqual(true, result.Success);
 
+            Assert.AreEqual(2, changesSavingStartedAsyncCount);
+            Assert.AreEqual(2, changesSavingCompletedAsyncCount);
             Assert.AreEqual(2, changesSavedAsyncCount);
+
+            Assert.AreEqual(2, changesSavingStartedCount);
+            Assert.AreEqual(2, changesSavingCompletedCount);
             Assert.AreEqual(2, changesSavedCount);
+
+            Assert.AreEqual(3, entityChangesSavingStartedAsyncCount);
+            Assert.AreEqual(3, entityChangesSavingCompletedAsyncCount);
             Assert.AreEqual(3, entityChangesSavedAsyncCount);
+
+            Assert.AreEqual(3, entityChangesSavingStartedCount);
+            Assert.AreEqual(3, entityChangesSavingCompletedCount);
             Assert.AreEqual(3, entityChangesSavedCount);
+
+            Assert.AreEqual(2, entityAddSavingStartedAsyncCount);
+            Assert.AreEqual(2, entityAddSavingCompletedAsyncCount);
             Assert.AreEqual(2, entityAddSavedAsyncCount);
+
+            Assert.AreEqual(2, entityAddSavingStartedCount);
+            Assert.AreEqual(2, entityAddSavingCompletedCount);
             Assert.AreEqual(2, entityAddSavedCount);
+
+            Assert.AreEqual(1, entityUpdateSavingStartedAsyncCount);
+            Assert.AreEqual(1, entityUpdateSavingCompletedAsyncCount);
             Assert.AreEqual(1, entityUpdateSavedAsyncCount);
+
+            Assert.AreEqual(1, entityUpdateSavingStartedCount);
+            Assert.AreEqual(1, entityUpdateSavingCompletedCount);
             Assert.AreEqual(1, entityUpdateSavedCount);
+
+            Assert.AreEqual(0, entityDeleteSavingStartedAsyncCount);
+            Assert.AreEqual(0, entityDeleteSavingCompletedAsyncCount);
             Assert.AreEqual(0, entityDeleteSavedAsyncCount);
+
+            Assert.AreEqual(0, entityDeleteSavingStartedCount);
+            Assert.AreEqual(0, entityDeleteSavingCompletedCount);
             Assert.AreEqual(0, entityDeleteSavedCount);
 
             db.DeleteEntity(client);
@@ -86,15 +184,44 @@ namespace Iql.Tests.Tests
 
             Assert.AreEqual(true, result.Success);
 
+            Assert.AreEqual(3, changesSavingStartedAsyncCount);
+            Assert.AreEqual(3, changesSavingCompletedAsyncCount);
             Assert.AreEqual(3, changesSavedAsyncCount);
+
+            Assert.AreEqual(3, changesSavingStartedCount);
+            Assert.AreEqual(3, changesSavingCompletedCount);
             Assert.AreEqual(3, changesSavedCount);
+
+            Assert.AreEqual(4, entityChangesSavingStartedAsyncCount);
+            Assert.AreEqual(4, entityChangesSavingCompletedAsyncCount);
             Assert.AreEqual(4, entityChangesSavedAsyncCount);
+
+            Assert.AreEqual(4, entityChangesSavingStartedCount);
+            Assert.AreEqual(4, entityChangesSavingCompletedCount);
             Assert.AreEqual(4, entityChangesSavedCount);
+
+            Assert.AreEqual(2, entityAddSavingStartedAsyncCount);
+            Assert.AreEqual(2, entityAddSavingCompletedAsyncCount);
             Assert.AreEqual(2, entityAddSavedAsyncCount);
+
+            Assert.AreEqual(2, entityAddSavingStartedCount);
+            Assert.AreEqual(2, entityAddSavingCompletedCount);
             Assert.AreEqual(2, entityAddSavedCount);
+
+            Assert.AreEqual(1, entityUpdateSavingStartedAsyncCount);
+            Assert.AreEqual(1, entityUpdateSavingCompletedAsyncCount);
             Assert.AreEqual(1, entityUpdateSavedAsyncCount);
+
+            Assert.AreEqual(1, entityUpdateSavingStartedCount);
+            Assert.AreEqual(1, entityUpdateSavingCompletedCount);
             Assert.AreEqual(1, entityUpdateSavedCount);
+
+            Assert.AreEqual(1, entityDeleteSavingStartedAsyncCount);
+            Assert.AreEqual(1, entityDeleteSavingCompletedAsyncCount);
             Assert.AreEqual(1, entityDeleteSavedAsyncCount);
+
+            Assert.AreEqual(1, entityDeleteSavingStartedCount);
+            Assert.AreEqual(1, entityDeleteSavingCompletedCount);
             Assert.AreEqual(1, entityDeleteSavedCount);
         }
 

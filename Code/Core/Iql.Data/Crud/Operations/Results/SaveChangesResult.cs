@@ -10,6 +10,7 @@ namespace Iql.Data.Crud.Operations.Results
     }
     public class SaveChangesResult : CrudResultBase
     {
+        public SaveChangesOperation Operation { get; }
         private SaveChangeKind _kind;
 
         public SaveChangeKind Kind => _kind;
@@ -19,8 +20,10 @@ namespace Iql.Data.Crud.Operations.Results
             get => Kind != SaveChangeKind.Fail;
             set => _kind = value ? SaveChangeKind.Success : SaveChangeKind.Fail;
         }
-        public SaveChangesResult(SaveChangeKind kind) : base(kind != SaveChangeKind.Fail)
+
+        public SaveChangesResult(SaveChangesOperation operation, SaveChangeKind kind) : base(kind != SaveChangeKind.Fail)
         {
+            Operation = operation;
             _kind = kind;
         }
 

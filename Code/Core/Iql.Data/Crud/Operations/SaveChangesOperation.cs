@@ -3,7 +3,7 @@ using Iql.Entities;
 
 namespace Iql.Data.Crud.Operations
 {
-    public class SaveChangesOperation : CrudOperation
+    public class SaveChangesOperation : CrudOperation, IGetChangesOperation
     {
         public object[] Entities { get; }
         public IProperty[] Properties { get; }

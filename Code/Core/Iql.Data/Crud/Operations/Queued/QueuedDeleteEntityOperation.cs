@@ -3,11 +3,13 @@ using Iql.Entities;
 
 namespace Iql.Data.Crud.Operations.Queued
 {
-    public class QueuedDeleteEntityOperation<T> : QueuedOperation<DeleteEntityOperation<T>, DeleteEntityResult<T>>, IQueuedDeleteEntityOperation
+    public class QueuedDeleteEntityOperation<T> : QueuedCrudOperation<DeleteEntityOperation<T>, DeleteEntityResult<T>>, IQueuedDeleteEntityOperation
     {
         public CompositeKey Key => Operation.Key ?? Operation.DataContext.GetEntityState(Operation.Entity).CurrentKey;
-        public QueuedDeleteEntityOperation(DeleteEntityOperation<T> operation,
-            DeleteEntityResult<T> result) : base(QueuedOperationKind.Delete, operation, result ?? new DeleteEntityResult<T>(false, operation))
+        public QueuedDeleteEntityOperation(
+            SaveChangesOperation saveChangesOperation,
+            DeleteEntityOperation<T> operation,
+            DeleteEntityResult<T> result) : base(saveChangesOperation, QueuedOperationKind.Delete, operation, result ?? new DeleteEntityResult<T>(false, operation))
         {
         }
 

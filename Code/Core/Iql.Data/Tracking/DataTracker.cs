@@ -117,7 +117,7 @@ namespace Iql.Data.Tracking
         public object PrepareForJson()
         {
             var trackingSets = Sets
-                .Where(_ => _.GetQueuedChanges(null).Length > 0)
+                .Where(_ => _.GetQueuedChanges(new SaveChangesOperation(null)).Length > 0)
                 .ToArray();
             if(trackingSets.Length == 0)
             {
@@ -490,9 +490,12 @@ namespace Iql.Data.Tracking
             EmitStateChangedEvent();
         }
 
-        public IqlDataChanges GetChanges(IDataContext dataContext = null, object[] entities = null, IProperty[] properties = null)
+        public IqlDataChanges GetChanges(IGetChangesOperation getChangesOperation = null)
         {
-            return new IqlDataChanges(this.GetQueuedChanges(dataContext, entities, properties).OrderBy(_ =>
+            getChangesOperation = getChangesOperation ?? new SaveChangesOperation(null);
+            return new IqlDataChanges(
+                (SaveChangesOperation)getChangesOperation,
+                this.GetQueuedChanges(getChangesOperation).OrderBy(_ =>
             {
                 if (_.Operation is IEntityCrudOperationBase op)
                 {
