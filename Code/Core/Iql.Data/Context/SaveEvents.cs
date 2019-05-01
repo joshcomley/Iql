@@ -9,10 +9,10 @@ namespace Iql.Data.Context
         public ISaveEvents<TOperation, TResult> Global { get; }
         public EventEmitter<TOperation> SavingStarted { get; } = new EventEmitter<TOperation>();
         public EventEmitter<TResult> SavingCompleted { get; } = new EventEmitter<TResult>();
-        public EventEmitter<TResult> Saved { get; } = new EventEmitter<TResult>();
+        public EventEmitter<TResult> SaveSuccessful { get; } = new EventEmitter<TResult>();
         public AsyncEventEmitter<TOperation> SavingStartedAsync { get; } = new AsyncEventEmitter<TOperation>();
         public AsyncEventEmitter<TResult> SavingCompletedAsync { get; } = new AsyncEventEmitter<TResult>();
-        public AsyncEventEmitter<TResult> SavedAsync { get; } = new AsyncEventEmitter<TResult>();
+        public AsyncEventEmitter<TResult> SaveSuccessfulAsync { get; } = new AsyncEventEmitter<TResult>();
 
         public async Task EmitSavingStartedAsync(Func<TOperation> ev)
         {
@@ -30,8 +30,8 @@ namespace Iql.Data.Context
             {
                 await Global.EmitSavedAsync(ev);
             }
-            await SavedAsync.EmitAsync(ev);
-            Saved.Emit(ev);
+            await SaveSuccessfulAsync.EmitAsync(ev);
+            SaveSuccessful.Emit(ev);
         }
 
         public async Task EmitSavingCompletedAsync(Func<TResult> ev)
