@@ -22,15 +22,60 @@ namespace Iql.Tests.Tests.Properties
             Assert.AreEqual(nameof(Client.Description), allProperties[index++].Name);
             Assert.AreEqual(nameof(Client.Type), allProperties[index++].Name);
             Assert.AreEqual(nameof(Client.CreatedByUser), allProperties[index++].Name);
-            Assert.AreEqual(nameof(Client.Users), allProperties[index++].Name);
-            Assert.AreEqual(nameof(Client.People), allProperties[index++].Name);
-            Assert.AreEqual(nameof(Client.Sites), allProperties[index++].Name);
             Assert.AreEqual(nameof(Client.AverageSales), allProperties[index++].Name);
             Assert.AreEqual(nameof(Client.AverageIncome), allProperties[index++].Name);
             Assert.AreEqual(nameof(Client.Category), allProperties[index++].Name);
             Assert.AreEqual(nameof(Client.Discount), allProperties[index++].Name);
             Assert.AreEqual(nameof(Client.CreatedDate), allProperties[index++].Name);
         }
+
+        [TestMethod]
+        public async Task TestSnapshotNonEntitySpecificReadDisplayOrdering()
+        {
+            var currentUser = new ApplicationUser();
+            var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
+            var detail = PropertyDetail.For(siteEntityConfiguration);
+            var displayConfiguration = siteEntityConfiguration.GetDisplayConfiguration(
+                DisplayConfigurationKind.Read);
+            var instance = await detail.GetSnapshotAsync(
+                null,
+                typeof(Site),
+                currentUser,
+                typeof(ApplicationUser),
+                Db,
+                displayConfiguration,
+                SnapshotOrdering.Standard
+            );
+            var xx = GetAsserts<Site>(instance);
+            Assert.AreEqual(23, instance.ChildProperties.Length);
+            var expectedIndex = 0;
+
+            AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Address), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.PostCode), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.AdditionalSendReportsTo), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.People), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Children), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Areas), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.SiteInspections), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Users), false, false);
+            Assert.AreEqual(PropertyRenderingKind.Tree, instance.ChildProperties[expectedIndex].Kind);
+            AssertProperty(expectedIndex++, instance, "Hierarchy", true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Area), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Line), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
+        }
+
 
         [TestMethod]
         public async Task TestStandardOrdering()
@@ -43,14 +88,17 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKind.Edit,
                 DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.Standard);
-            Assert.AreEqual(21, instance.ChildProperties.Length);
+            Assert.AreEqual(24, instance.ChildProperties.Length);
             var expectedIndex = 0;
             var xx = GetAsserts<Site>(instance);
             // N.B. "Parent" should be in here twice, as it is specified twice in the configuration
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.AdditionalSendReportsTo), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.People), false, false);
@@ -81,7 +129,7 @@ namespace Iql.Tests.Tests.Properties
             var detail = PropertyDetail.For(siteEntityConfiguration);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, siteEntityConfiguration.GetDisplayConfiguration(
                 DisplayConfigurationKind.Edit,
-                DisplayConfigurationKeys.Default), SnapshotOrdering.Default, false);
+                DisplayConfigurationKeys.Default), SnapshotOrdering.Default, true);
             Assert.AreEqual(7, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
@@ -105,7 +153,7 @@ namespace Iql.Tests.Tests.Properties
             var detail = PropertyDetail.For(siteEntityConfiguration);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, siteEntityConfiguration.GetDisplayConfiguration(
                 DisplayConfigurationKind.Edit,
-                DisplayConfigurationKeys.Default), SnapshotOrdering.ReadOnlyFirst, false);
+                DisplayConfigurationKeys.Default), SnapshotOrdering.ReadOnlyFirst, true);
             Assert.AreEqual(7, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
@@ -132,7 +180,7 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration);
             var flattened = instance.Flattened();
-            Assert.AreEqual(22, flattened.Length);
+            Assert.AreEqual(25, flattened.Length);
         }
 
         [TestMethod]
@@ -146,15 +194,15 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKind.Edit,
                 DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration);
-            Assert.AreEqual(21, instance.ChildProperties.Length);
+            Assert.AreEqual(24, instance.ChildProperties.Length);
+            var xxx = GetAsserts<Site>(instance);
             var expectedIndex = 0;
+
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, "Site Address", true);
             var siteAddress = instance.ChildProperties.FirstOrDefault(_ => _.PropertyName == "Site Address");
-            AssertProperty(0, siteAddress, nameof(Site.Address), true);
-            AssertProperty(1, siteAddress, nameof(Site.PostCode), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
@@ -171,7 +219,10 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, "Hierarchy", true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Area), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Line), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
             //AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             //AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
             //AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
@@ -190,8 +241,9 @@ namespace Iql.Tests.Tests.Properties
             var displayConfiguration = siteEntityConfiguration.GetDisplayConfiguration(
                 DisplayConfigurationKind.Edit,
                 DisplayConfigurationKeys.Default);
-            var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.Default, true, null, null, editKindOverrides);
-            Assert.AreEqual(21, instance.ChildProperties.Length);
+            var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.Default, false, null, null, editKindOverrides);
+            var xxx = GetAsserts<Site>(instance);
+            Assert.AreEqual(24, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
@@ -216,10 +268,10 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, "Hierarchy", true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Area), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Line), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
-            //AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
-            //AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
-            //AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
         }
 
         [TestMethod]
@@ -234,7 +286,8 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKeys.Default);
             Assert.IsFalse(displayConfiguration.AutoGenerated);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.ReadOnlyFirst);
-            Assert.AreEqual(21, instance.ChildProperties.Length);
+            var xxx = GetAsserts<Person>(instance);
+            Assert.AreEqual(24, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
@@ -245,10 +298,10 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Children), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.SiteInspections), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Users), false, false);
-            //AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedDate), false);
-            //AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
-            //AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.RevisionKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.PersistenceKey), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
@@ -299,7 +352,7 @@ namespace Iql.Tests.Tests.Properties
             var instance = await detail.GetSnapshotAsync(person, typeof(Person), currentUser, typeof(ApplicationUser), Db, displayConfiguration);
             // Currently just check no infinite loop is created
             Assert.IsNotNull(instance);
-            Assert.AreEqual(21, instance.ChildProperties.Length);
+            Assert.AreEqual(24, instance.ChildProperties.Length);
             var xxx = GetAsserts<Person>(instance);
             var expectedIndex = 0;
 
@@ -315,8 +368,6 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Person.Type), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Loading), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.CreatedByUser), false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Types), false, false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Reports), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Birthday), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.IsComplete), true);
@@ -324,6 +375,11 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Person.Skills), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Person.Category), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.CreatedDate), false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Types), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Reports), true);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Guid), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.RevisionKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.PersistenceKey), false, false);
         }
 
 
@@ -339,7 +395,7 @@ namespace Iql.Tests.Tests.Properties
             var instance = await detail.GetSnapshotAsync(person, typeof(Person), currentUser, typeof(ApplicationUser), Db, displayConfiguration);
             // Currently just check no infinite loop is created
             Assert.IsNotNull(instance);
-            Assert.AreEqual(21, instance.ChildProperties.Length);
+            Assert.AreEqual(24, instance.ChildProperties.Length);
             var xxx = GetAsserts<Person>(instance);
             var expectedIndex = 0;
 
@@ -355,8 +411,6 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Person.Type), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Loading), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.CreatedByUser), false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Types), false, false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Reports), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Birthday), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.IsComplete), true);
@@ -364,6 +418,11 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Person.Skills), false);
             AssertProperty(expectedIndex++, instance, nameof(Person.Category), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.CreatedDate), false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Types), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Reports), true);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Guid), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.RevisionKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.PersistenceKey), false, false);
         }
 
         [TestMethod]
@@ -377,7 +436,7 @@ namespace Iql.Tests.Tests.Properties
             var instance = await detail.GetSnapshotAsync(person, typeof(Person), currentUser, typeof(ApplicationUser), Db, displayConfiguration);
             // Currently just check no infinite loop is created
             Assert.IsNotNull(instance);
-            Assert.AreEqual(21, instance.ChildProperties.Length);
+            Assert.AreEqual(24, instance.ChildProperties.Length);
             var xxx = GetAsserts<Person>(instance);
             var expectedIndex = 0;
 
@@ -393,8 +452,6 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Person.Type), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Loading), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.CreatedByUser), false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Types), false, false);
-            AssertProperty(expectedIndex++, instance, nameof(Person.Reports), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Birthday), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.IsComplete), true);
@@ -402,6 +459,11 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Person.Skills), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.Category), true);
             AssertProperty(expectedIndex++, instance, nameof(Person.CreatedDate), false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Types), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Reports), true);
+            AssertProperty(expectedIndex++, instance, nameof(Person.Guid), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.RevisionKey), false, false);
+            AssertProperty(expectedIndex++, instance, nameof(Person.PersistenceKey), false, false);
         }
 
         static void AssertProperty(int expectedIndex, EntityPropertySnapshot snapshot, string name, bool canEdit, bool canShow = true)

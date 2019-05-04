@@ -7,7 +7,7 @@ using Iql.Events;
 
 namespace Iql.Data.Crud.Operations
 {
-    public interface IPropertyState : IJsonSerializable
+    public interface IPropertyState : IJsonSerializable, IAbandonChanges
     {
         EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; }
         EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; }

@@ -12,9 +12,29 @@ namespace Iql.Server.Azure
             string key = null)
             where T : class
         {
+            return mediaKey.ConfigureAzureMediaKeyCustom(
+                g => g.AddPropertyPath(containerExpression),
+                    g => g.AddPropertyPath(blobExpression),
+                key);
+        }
+
+        public static MediaKey<T> ConfigureAzureMediaKeyCustom<T>(this MediaKey<T> mediaKey,
+            Action<MediaKeyGroup<T>> configureContainer,
+            Action<MediaKeyGroup<T>> configureBlob,
+            string key = null,
+            bool appendUrlPropertyName = true)
+            where T : class
+        {
             return mediaKey
-                .AddGroup(g => g.AddPropertyPath(containerExpression))
-                .AddGroup(g => g.AddPropertyPath(blobExpression).AddString(key ?? mediaKey.File.UrlProperty.Name));
+                .AddGroup(configureContainer)
+                .AddGroup(g =>
+                {
+                    configureBlob(g);
+                    if (appendUrlPropertyName)
+                    {
+                        g.AddString(key ?? mediaKey.File.UrlProperty.Name);
+                    }
+                });
         }
     }
 }

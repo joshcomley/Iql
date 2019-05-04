@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Iql.Conversion;
+using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Entities;
 using Iql.Entities.Events;
@@ -220,12 +221,20 @@ namespace Iql.Data.Tracking.State
             };
         }
 
+        public EventEmitter<AbandonChangeEvent> AbandoningChanges { get; } = new EventEmitter<AbandonChangeEvent>();
+        public EventEmitter<AbandonChangeEvent> AbandonedChanges { get; } = new EventEmitter<AbandonChangeEvent>();
+
         public void AbandonChange()
         {
             if (HasChanged)
             {
+                var ev = new AbandonChangeEvent(EntityState, this);
+                AbandoningChanges.Emit(() => ev);
+                StateEvents.AbandoningPropertyChange.Emit(() => ev);
                 EntityState.Entity.SetPropertyValue(Property, _remoteValueClone);
                 HardReset();
+                AbandonedChanges.Emit(() => ev);
+                StateEvents.AbandonedPropertyChange.Emit(() => ev);
                 //PropertyChanger.ApplyTo(_oldObjectClone, _oldObject);
             }
             //_hasChanged = false;

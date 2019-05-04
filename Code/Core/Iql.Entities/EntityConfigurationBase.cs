@@ -169,7 +169,7 @@ namespace Iql.Entities
             all.AddRange(AllPropertyGroups());
             all.AddRange(Properties.Where(p =>
                 p.PropertyGroup == null || p.Kind.HasFlag(PropertyKind.Key)));
-            var ordered = all.PrioritizeForReading().Where(_ => !_.IsHiddenFromRead).ToArray();
+            var ordered = all.PrioritizeForReading().ToArray();
             return ordered;
         }
 
@@ -204,7 +204,7 @@ namespace Iql.Entities
         private DisplayConfiguration BuildFullDisplayConfiguration(DisplayConfigurationKind kind)
         {
             var final = new List<IPropertyGroup>();
-            var properties = BuildDisplayConfiguration(null, true);
+            var properties = BuildDisplayConfiguration(null);
             for (int i = 0; i < properties.Length; i++)
             {
                 var property = properties[i];
@@ -281,19 +281,21 @@ namespace Iql.Entities
             }
         }
 
-        public virtual IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration,
-            bool appendMissingProperties = true)
+        public virtual IPropertyGroup[] BuildDisplayConfiguration(
+            DisplayConfiguration configuration,
+            bool? doNotAppendMissingProperties = null,
+            bool? includeReadHiddenProperties = null)
         {
             if (configuration == null || !configuration.Properties.Any())
             {
-                return GetGroupProperties();
+                return GetGroupProperties().Where(_ => includeReadHiddenProperties == true || !_.IsHiddenFromRead).ToArray();
             }
 
             var properties = configuration.Properties.ToList();
-            if (appendMissingProperties)
+            if (doNotAppendMissingProperties != true)
             {
                 var flattened = configuration.Properties.FlattenAllToSimpleProperties().ToList();
-                var groupProperties = GetGroupProperties().FlattenAllToSimpleProperties().ToList();
+                var groupProperties = GetGroupProperties().Where(_ => includeReadHiddenProperties == true || !_.IsHiddenFromRead).ToArray().FlattenAllToSimpleProperties().ToList();
                 for (var i = 0; i < groupProperties.Count; i++)
                 {
                     var property = groupProperties[i];
@@ -302,6 +304,10 @@ namespace Iql.Entities
                         properties.Add(property);
                     }
                 }
+            }
+            else
+            {
+                int a = 0;
             }
 
             return properties.ToArray();

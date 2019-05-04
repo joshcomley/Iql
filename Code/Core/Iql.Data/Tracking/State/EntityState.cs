@@ -66,6 +66,9 @@ namespace Iql.Data.Tracking.State
 
         public void AbandonChanges()
         {
+            var ev = new AbandonChangeEvent(this, null);
+            AbandoningChanges.Emit(() => ev);
+            StateEvents.AbandoningEntityChanges.Emit(() => ev);
             for (var i = 0; i < Properties.Count; i++)
             {
                 var state = Properties[i];
@@ -73,7 +76,12 @@ namespace Iql.Data.Tracking.State
             }
             MarkedForDeletion = false;
             MarkedForCascadeDeletion = false;
+            AbandonedChanges.Emit(() => ev);
+            StateEvents.AbandonedEntityChanges.Emit(() => ev);
         }
+
+        public EventEmitter<AbandonChangeEvent> AbandoningChanges { get; } = new EventEmitter<AbandonChangeEvent>();
+        public EventEmitter<AbandonChangeEvent> AbandonedChanges { get; } = new EventEmitter<AbandonChangeEvent>();
 
         public void MarkForCascadeDeletion(object from, IRelationship relationship)
         {
@@ -160,8 +168,8 @@ namespace Iql.Data.Tracking.State
 
         public EntityState(
             DataTracker dataTracker,
-            T entity, 
-            Type entityType, 
+            T entity,
+            Type entityType,
             IEntityConfiguration entityConfiguration)
         {
             DataTracker = dataTracker;
@@ -238,7 +246,7 @@ namespace Iql.Data.Tracking.State
             {
                 property.Property.SetValue(entity, property.RemoteValue);
             }
-            return (T) entity;
+            return (T)entity;
         }
 
         object IEntityStateBase.EntityBeforeChanges()

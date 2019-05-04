@@ -10,7 +10,7 @@ using Iql.Events;
 
 namespace Iql.Data.Tracking.State
 {
-    public interface IEntityStateBase : IJsonSerializable
+    public interface IEntityStateBase : IJsonSerializable, IAbandonChanges
     {
         void Restore(SerializedEntityState state);
         bool Floating { get; set; }
@@ -26,7 +26,6 @@ namespace Iql.Data.Tracking.State
         Type EntityType { get; }
         bool MarkedForAnyDeletion { get; }
         List<CascadeDeletion> CascadeDeletedBy { get; }
-
         bool HasValidKey();
         void HardReset();
         void SoftReset(bool markAsNotNew);

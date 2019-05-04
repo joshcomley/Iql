@@ -91,10 +91,6 @@ namespace Iql.Entities
             }
             set
             {
-                if (Name == "ParentId")
-                {
-                    int a = 0;
-                }
                 CanWriteHasBeenSet = true;
                 if (this is IProperty property)
                 {

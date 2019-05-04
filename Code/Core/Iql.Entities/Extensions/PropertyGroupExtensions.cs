@@ -82,29 +82,17 @@ namespace Iql.Entities.Extensions
             {
                 return properties;
             }
-
             var propertiesArray = properties as IPropertyGroup[] ?? properties.ToArray();
             double increment = 0.0001;
-            //var aaaa = propertiesArray.Select(property =>
-            //{
-            //    index += increment;
-            //    var order = ResolveOrder(property) + index;
-            //    return new
-            //    {
-            //        Order = order,
-            //        Property = property,
-            //        Name = property.Name
-            //    };
-            //}).OrderBy(_ => _.Order).ToArray();
             return propertiesArray.OrderByWithIndex((property, i) =>
             {
                 double index = (i + 1) * increment;
-                var order = ResolveOrder(property) + index;
+                var order = property.ResolveDisplayOrderKey() + index;
                 return order;
             });
         }
 
-        private static int ResolveOrder(IPropertyGroup property)
+        public static int ResolveDisplayOrderKey(this IPropertyContainer property)
         {
             if (property is IGeographicPoint)
             {
