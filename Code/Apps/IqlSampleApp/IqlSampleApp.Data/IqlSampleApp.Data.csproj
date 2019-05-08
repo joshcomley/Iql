@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10042-1-Debug" />
-    <PackageReference Include="Microsoft.AspNetCore.OData.NetTopology" Version="7.2.0-pre-0011" />
+    <PackageReference Include="Microsoft.AspNetCore.OData.NetTopology" Version="7.2.0-pre-0013" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.3-alpha0003-1-Debug" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.0.3-alpha0003-1-Debug" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.3-alpha0003-1-Debug" />

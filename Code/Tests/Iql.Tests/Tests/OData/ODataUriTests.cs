@@ -909,6 +909,22 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task AnyCheck2()
+        {
+            var query = Db.Users.WhereEquals(new IqlAnyExpression("_",
+                new IqlPropertyExpression(
+                    nameof(ApplicationUser.ClientsCreated),
+                    new IqlRootReferenceExpression()),
+                new IqlStringIncludesExpression(new IqlPropertyExpression(
+                        nameof(Client.Name),
+                        new IqlRootReferenceExpression("_")),
+                    new IqlLiteralExpression("jimbo", IqlType.String))));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/any(_:contains(_/Name,'jimbo'))",
+                uri);
+        }
+
+        [TestMethod]
         public async Task AllCheck()
         {
             var query = Db.Users.WhereEquals(new IqlAllExpression("_",
