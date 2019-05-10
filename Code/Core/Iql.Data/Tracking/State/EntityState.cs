@@ -21,6 +21,8 @@ namespace Iql.Data.Tracking.State
     {
         private bool _markedForDeletion;
         private bool _isNew = true;
+        private CompositeKey _remoteKey;
+        private CompositeKey _localKey;
 
         //private CompositeKey _remoteKey;
         public bool IsNew
@@ -39,6 +41,7 @@ namespace Iql.Data.Tracking.State
 
         public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; } = new EventEmitter<MarkedForDeletionChangeEvent>();
         public string StateKey { get; set; }
+
 
         public bool MarkedForDeletion
         {
@@ -113,7 +116,17 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        public CompositeKey CurrentKey { get; set; }
+        public CompositeKey RemoteKey => IsNew ? null : _remoteKey = _remoteKey ?? KeyBeforeChanges();
+
+        public CompositeKey LocalKey
+        {
+            get => _localKey;
+            set
+            {
+                _localKey = value;
+                _remoteKey = null;
+            }
+        }
 
         //public CompositeKey RemoteKey => _remoteKey ?? CurrentKey;
 
@@ -150,11 +163,11 @@ namespace Iql.Data.Tracking.State
             }
 
             IsNew = state.IsNew;
-            CurrentKey = state.CurrentKey.ToCompositeKey(EntityConfiguration);
+            LocalKey = state.CurrentKey.ToCompositeKey(EntityConfiguration);
             for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
             {
                 var key = EntityConfiguration.Key.Properties[i];
-                key.SetValue(Entity, CurrentKey.Keys.Single(_ => _.Name == key.PropertyName).Value);
+                key.SetValue(Entity, LocalKey.Keys.Single(_ => _.Name == key.PropertyName).Value);
             }
         }
 
@@ -181,7 +194,7 @@ namespace Iql.Data.Tracking.State
             {
                 Properties.Add(new PropertyState(property, this));
             }
-            CurrentKey = entityConfiguration.GetCompositeKey(entity);
+            LocalKey = entityConfiguration.GetCompositeKey(entity);
         }
 
         public static IEntityStateBase New(object entity, Type entityType, IEntityConfiguration entityConfiguration)
@@ -276,7 +289,7 @@ namespace Iql.Data.Tracking.State
         {
             return new
             {
-                CurrentKey = CurrentKey.PrepareForJson(),
+                CurrentKey = LocalKey.PrepareForJson(),
                 PersistenceKey,
                 IsNew,
                 MarkedForDeletion,

@@ -1066,6 +1066,94 @@ namespace IqlSampleApp.Data.Entities
 }
 namespace IqlSampleApp.Data.Entities
 {
+    public class ClientCategoryPivotBase: IEntity
+    {
+        protected Boolean _propertyChangingSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanging;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanging
+        {
+            get => _propertyChanging;
+            set
+            {
+                _propertyChanging = value;
+                this._propertyChangingSet = value != null;
+            }
+        }
+        protected Boolean _propertyChangedSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanged;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanged
+        {
+            get => _propertyChanged;
+            set
+            {
+                _propertyChanged = value;
+                this._propertyChangedSet = value != null;
+            }
+        }
+        protected Boolean _existsChangedSet;
+        protected EventEmitter<ExistsChangeEvent>_existsChanged;
+        public EventEmitter<ExistsChangeEvent>ExistsChanged
+        {
+            get => _existsChanged;
+            set
+            {
+                _existsChanged = value;
+                this._existsChangedSet = value != null;
+            }
+        }
+        public static String ClassName
+        {
+            get;
+            set;
+        } = "ClientCategoryPivotBase";
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
+    public class ClientCategoryBase: IEntity
+    {
+        protected Boolean _propertyChangingSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanging;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanging
+        {
+            get => _propertyChanging;
+            set
+            {
+                _propertyChanging = value;
+                this._propertyChangingSet = value != null;
+            }
+        }
+        protected Boolean _propertyChangedSet;
+        protected EventEmitter<IPropertyChangeEvent>_propertyChanged;
+        public EventEmitter<IPropertyChangeEvent>PropertyChanged
+        {
+            get => _propertyChanged;
+            set
+            {
+                _propertyChanged = value;
+                this._propertyChangedSet = value != null;
+            }
+        }
+        protected Boolean _existsChangedSet;
+        protected EventEmitter<ExistsChangeEvent>_existsChanged;
+        public EventEmitter<ExistsChangeEvent>ExistsChanged
+        {
+            get => _existsChanged;
+            set
+            {
+                _existsChanged = value;
+                this._existsChangedSet = value != null;
+            }
+        }
+        public static String ClassName
+        {
+            get;
+            set;
+        } = "ClientCategoryBase";
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
     public class ClientTypeBase: IEntity
     {
         protected Boolean _propertyChangingSet;
@@ -4293,6 +4381,92 @@ namespace IqlSampleApp.Data.Entities
 }
 namespace IqlSampleApp.Data.Entities
 {
+    public class ClientCategoryPivot: ClientCategoryPivotBase,
+    IEntity
+    {
+        protected int _clientId;
+        public int ClientId
+        {
+            get => _clientId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "ClientId", _clientId, value, _propertyChanging, _propertyChanged, newValue => this._clientId = newValue);
+            }
+        }
+        protected int _categoryId;
+        public int CategoryId
+        {
+            get => _categoryId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "CategoryId", _categoryId, value, _propertyChanging, _propertyChanged, newValue => this._categoryId = newValue);
+            }
+        }
+        protected Client _client;
+        public Client Client
+        {
+            get => _client;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Client", _client, value, _propertyChanging, _propertyChanged, newValue => this._client = newValue);
+            }
+        }
+        protected ClientCategory _category;
+        public ClientCategory Category
+        {
+            get => _category;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Category", _category, value, _propertyChanging, _propertyChanged, newValue => this._category = newValue);
+            }
+        }
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
+    public class ClientCategory: ClientCategoryBase,
+    IEntity
+    {
+        protected int _id;
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
+            }
+        }
+        protected string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Name", _name, value, _propertyChanging, _propertyChanged, newValue => this._name = newValue);
+            }
+        }
+        public Int64 ClientsCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<ClientCategory, ClientCategoryPivot>_clients;
+        public RelatedList<ClientCategory, ClientCategoryPivot>Clients
+        {
+            get
+            {
+                this._clients = this._clients ?? new RelatedList<ClientCategory, ClientCategoryPivot>(this, nameof(Clients));
+                return _clients;
+            }
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Clients", _clients, value, _propertyChanging, _propertyChanged, newValue => this._clients = newValue);
+            }
+        }
+    }
+}
+namespace IqlSampleApp.Data.Entities
+{
     public class ClientType: ClientTypeBase,
     IEntity
     {
@@ -4339,15 +4513,6 @@ namespace IqlSampleApp.Data.Entities
     public class Client: ClientBase,
     IEntity
     {
-        protected int _typeId;
-        public int TypeId
-        {
-            get => _typeId;
-            set
-            {
-                PrimitivePropertyChanger.Instance.ChangeProperty(this, "TypeId", _typeId, value, _propertyChanging, _propertyChanged, newValue => this._typeId = newValue);
-            }
-        }
         protected int _id;
         public int Id
         {
@@ -4355,6 +4520,15 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "Id", _id, value, _propertyChanging, _propertyChanged, newValue => this._id = newValue);
+            }
+        }
+        protected int _typeId;
+        public int TypeId
+        {
+            get => _typeId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "TypeId", _typeId, value, _propertyChanging, _propertyChanged, newValue => this._typeId = newValue);
             }
         }
         protected string _createdByUserId;
@@ -4490,6 +4664,24 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUser", _createdByUser, value, _propertyChanging, _propertyChanged, newValue => this._createdByUser = newValue);
+            }
+        }
+        public Int64 CategoriesCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<Client, ClientCategoryPivot>_categories;
+        public RelatedList<Client, ClientCategoryPivot>Categories
+        {
+            get
+            {
+                this._categories = this._categories ?? new RelatedList<Client, ClientCategoryPivot>(this, nameof(Categories));
+                return _categories;
+            }
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "Categories", _categories, value, _propertyChanging, _propertyChanged, newValue => this._categories = newValue);
             }
         }
         public Int64 PeopleCount

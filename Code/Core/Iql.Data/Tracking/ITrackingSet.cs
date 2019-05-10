@@ -20,6 +20,7 @@ namespace Iql.Data.Tracking
         void SetKey(object entity, Action action);
         bool IsTracked(object entity);
         bool IsMatchingEntityTracked(object entity);
+        bool IsEntityTracked(object entity);
         bool DifferentEntityWithSameKeyIsTracked(object entity);
         IEntityConfiguration EntityConfiguration { get; }
         IEntityStateBase GetEntityState(object entity);

@@ -47,7 +47,7 @@ namespace Iql.Data.Tracking
         public IEntityState<T> AddEntity(T entity)
         {
             var rootTrackingSet = DataTracker.TrackingSet<T>();
-            if (rootTrackingSet.IsMatchingEntityTracked(entity))
+            if (rootTrackingSet.IsEntityTracked(entity))
             {
                 var state = rootTrackingSet.FindMatchingEntityState(entity);
                 state.MarkedForDeletion = false;
@@ -68,7 +68,7 @@ namespace Iql.Data.Tracking
                         entityState = state;
                         if (entityState.Entity != (object)entity)
                         {
-                            throw new Exception("An item with the same key is already being tracked.");
+                            throw new DuplicateKeyException("An item with the same key is already being tracked.");
                         }
                     }
                 }
@@ -133,11 +133,11 @@ namespace Iql.Data.Tracking
                 var entityState = CreateEntityState(entity);
                 entityState.IsNew = isLocal;
                 Watch(entityState.Entity);
-                TrackRemoteKey(entityState, null);
                 if (!isLocal)
                 {
                     entityState.HardReset();
                 }
+                TrackRemoteKey(entityState, null, !isLocal);
 
                 return entityState;
             }
@@ -188,8 +188,7 @@ namespace Iql.Data.Tracking
             if (state == null)
             {
                 var clone = remoteEntity.CloneAs(EntityConfiguration.Builder, EntityConfiguration.Type);
-                state = AttachEntity(
-                    clone, !isRemote);
+                state = AttachEntity(clone, !isRemote);
                 return state;
             }
             if (state.Entity != remoteEntity)
@@ -238,6 +237,11 @@ namespace Iql.Data.Tracking
             return HasEntityState(entity, false);
         }
 
+        public bool IsEntityTracked(object entity)
+        {
+            return HasEntityState(entity, true);
+        }
+
         public bool IsTracked(object entity)
         {
             return HasEntityState(entity, true);
@@ -266,17 +270,17 @@ namespace Iql.Data.Tracking
 
         public IEntityStateBase GetEntityStateByKey(CompositeKey key)
         {
-            var keyString = key.AsLegacyKeyString();
-            return EntitiesByKey.ContainsKey(keyString)
-                ? EntitiesByKey[keyString]
-                : null;
-            //var keyString = key.AsKeyString();
-            //var state = EntitiesByKey.ContainsKey(keyString)
+            //var keyString = key.AsLegacyKeyString();
+            //return EntitiesByKey.ContainsKey(keyString)
             //    ? EntitiesByKey[keyString]
             //    : null;
-            //state = state ??
-            //        (EntitiesByRemoteKey.ContainsKey(keyString) ? EntitiesByRemoteKey[keyString].State : null);
-            //return state;
+            var keyString = key.AsLegacyKeyString();
+            var state = EntitiesByKey.ContainsKey(keyString)
+                ? EntitiesByKey[keyString]
+                : null;
+            state = state ??
+                    (EntitiesByRemoteKey.ContainsKey(keyString) ? EntitiesByRemoteKey[keyString].State : null);
+            return state;
         }
 
         public bool KeyIsTracked(CompositeKey key)
@@ -395,7 +399,7 @@ namespace Iql.Data.Tracking
                     var entityState = GetEntityState(entity);
                     if (entityState.MarkedForAnyDeletion && !entityState.IsNew)
                     {
-                        deletions.Add(new DeleteEntityOperation<T>(entityState.CurrentKey, (T)entity, dataContext));
+                        deletions.Add(new DeleteEntityOperation<T>(entityState.LocalKey, (T)entity, dataContext));
                     }
                 }
             }
@@ -423,7 +427,7 @@ namespace Iql.Data.Tracking
                     !entityState.MarkedForAnyDeletion &&
                     entityState.GetChangedProperties().Any())
                 {
-                    updates.Add(new UpdateEntityOperation<T>((T)entity, dataContext, (IEntityState<T>) entityState,
+                    updates.Add(new UpdateEntityOperation<T>((T)entity, dataContext, (IEntityState<T>)entityState,
                         properties?.Where(p => p.EntityConfiguration == EntityConfiguration).ToArray()));
                 }
             }
@@ -562,10 +566,10 @@ namespace Iql.Data.Tracking
                 typeof(T),
                 EntityConfiguration);
             EntitiesByObject.Add(entity, entityState);
-            var hasKey = !entityState.CurrentKey.HasDefaultValue();
+            var hasKey = !entityState.LocalKey.HasDefaultValue();
             if (hasKey)
             {
-                EntitiesByKey.Add(entityState.CurrentKey.AsLegacyKeyString(), entityState);
+                EntitiesByKey.Add(entityState.LocalKey.AsLegacyKeyString(), entityState);
             }
             else if (PersistenceKey != null)
             {
@@ -677,7 +681,7 @@ namespace Iql.Data.Tracking
                 _entityObservers.Remove(entity);
             }
 
-            EntitiesByKey.Remove(state.CurrentKey.AsLegacyKeyString());
+            EntitiesByKey.Remove(state.LocalKey.AsLegacyKeyString());
             EntitiesByObject.Remove(entity);
             if (state.PersistenceKey.HasValue)
             {
@@ -839,7 +843,7 @@ namespace Iql.Data.Tracking
 
                 if (property.Kind.HasFlag(PropertyKind.Key))
                 {
-                    Reindex(propertyChange.Entity);
+                    Reindex(propertyChange.Entity, false);
                 }
             }, propertyChange.Entity);
         }
@@ -890,17 +894,18 @@ namespace Iql.Data.Tracking
                         mergeWith
                     );
                 }
-                Reindex(entity);
+                Reindex(entity, overrideChanges);
             }, entity);
         }
 
-        private void Reindex(object entity)
+        private void Reindex(object entity, bool updateRemoteKey)
         {
             if (EntitiesByObject.ContainsKey(entity))
             {
                 var state = EntitiesByObject[entity];
+
                 var newKey = EntityConfiguration.GetCompositeKey(entity);
-                var oldKey = state.CurrentKey;
+                var oldKey = state.LocalKey;
                 var oldKeyString = oldKey.AsLegacyKeyString();
                 var newKeyString = newKey.AsLegacyKeyString();
                 if (newKeyString != oldKeyString ||
@@ -916,18 +921,18 @@ namespace Iql.Data.Tracking
                         EntitiesByKey.Add(newKeyString, state);
                     }
 
-                    state.CurrentKey = newKey;
+                    state.LocalKey = newKey;
                 }
 
-                TrackRemoteKey(state, oldKey);
+                TrackRemoteKey(state, oldKey, updateRemoteKey);
             }
         }
 
-        private void TrackRemoteKey(IEntityStateBase state, CompositeKey oldKey)
+        private void TrackRemoteKey(IEntityStateBase state, CompositeKey oldKey, bool useLocalKey = false)
         {
-            var keyString = state.CurrentKey.AsLegacyKeyString();
             if (!state.IsNew && state.HasValidKey())
             {
+                var keyString = (useLocalKey ? state.LocalKey : state.RemoteKey).AsLegacyKeyString();
                 if (EntitiesByRemoteKey.ContainsKey(keyString))
                 {
                     var map = EntitiesByRemoteKey[keyString];
@@ -942,7 +947,11 @@ namespace Iql.Data.Tracking
                 }
                 else
                 {
-                    EntitiesByRemoteKey.Add(keyString, new RemoteKeyMap(state, state.CurrentKey));
+                    if (keyString == "0")
+                    {
+                        int a = 0;
+                    }
+                    EntitiesByRemoteKey.Add(keyString, new RemoteKeyMap(state, state.LocalKey));
                 }
 
                 if (oldKey != null)
@@ -956,6 +965,7 @@ namespace Iql.Data.Tracking
             }
             else if (oldKey != null)
             {
+                var keyString = state.LocalKey.AsLegacyKeyString();
                 var oldKeyString = oldKey.AsLegacyKeyString();
                 if (oldKeyString != keyString && EntitiesByRemoteKey.ContainsKey(oldKeyString))
                 {
@@ -971,6 +981,7 @@ namespace Iql.Data.Tracking
             //}
             if (state.IsNew)
             {
+                var keyString = state.LocalKey.AsLegacyKeyString();
                 if (EntitiesByRemoteKey.ContainsKey(keyString))
                 {
                     var map = EntitiesByRemoteKey[keyString];
@@ -993,6 +1004,7 @@ namespace Iql.Data.Tracking
                     }
                 }
             }
+
             //var entity = state.Entity;
             //var hasDefaultValue = false;
             //for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)

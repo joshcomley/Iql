@@ -143,6 +143,22 @@ namespace IqlSampleApp.Sets
 }
 namespace IqlSampleApp.Sets
 {
+    public class ClientCategorySet: DbSet<ClientCategory, int>
+    {
+        public ClientCategorySet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
+        {}
+    }
+}
+namespace IqlSampleApp.Sets
+{
+    public class ClientCategoryPivotSet: DbSet<ClientCategoryPivot, CompositeKey>
+    {
+        public ClientCategoryPivotSet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)
+        {}
+    }
+}
+namespace IqlSampleApp.Sets
+{
     public class DocumentCategorySet: DbSet<DocumentCategory, int>
     {
         public DocumentCategorySet(EntityConfigurationBuilder entityConfigurationBuilder, Func<IDataStore>dataStoreGetter, EvaluateContext evaluateContext = null, IDataContext dataContext = null) : base(entityConfigurationBuilder, dataStoreGetter, evaluateContext, dataContext)

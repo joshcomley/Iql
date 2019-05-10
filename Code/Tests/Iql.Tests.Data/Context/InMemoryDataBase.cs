@@ -11,6 +11,8 @@ namespace Iql.Tests.Data.Context
         public IList<DocumentCategory> DocumentCategories { get; set; } = new List<DocumentCategory>();
         public IList<MyCustomReport> MyCustomReports { get; set; } = new List<MyCustomReport>();
         public IList<ClientType> ClientTypes { get; set; } = new List<ClientType>();
+        public IList<ClientCategory> ClientCategories { get; set; } = new List<ClientCategory>();
+        public IList<ClientCategoryPivot> ClientCategoriesPivot { get; set; } = new List<ClientCategoryPivot>();
         public IList<Client> Clients { get; set; } = new List<Client>();
         public IList<Project> Projects { get; set; } = new List<Project>();
         public IList<Site> Sites { get; set; } = new List<Site>();

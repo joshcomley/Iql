@@ -71,6 +71,9 @@ namespace Iql.Tests.Context
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.DocumentCategories);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.MyCustomReports);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientCategories);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientCategoriesPivot);
+                InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.ClientTypes);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Clients);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.Sites);
                 InMemoryDataStoreConfiguration.RegisterSource(() => InMemoryDb.SiteAreas);

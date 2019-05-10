@@ -27,6 +27,8 @@ namespace IqlSampleApp.ApiContext.Base
             this.ApplicationLogs = this.AsCustomDbSet<ApplicationLog, Guid, ApplicationLogSet>();
             this.Clients = this.AsCustomDbSet<Client, int, ClientSet>();
             this.ClientTypes = this.AsCustomDbSet<ClientType, int, ClientTypeSet>();
+            this.ClientCategories = this.AsCustomDbSet<ClientCategory, int, ClientCategorySet>();
+            this.ClientCategoriesPivot = this.AsCustomDbSet<ClientCategoryPivot, CompositeKey, ClientCategoryPivotSet>();
             this.DocumentCategories = this.AsCustomDbSet<DocumentCategory, int, DocumentCategorySet>();
             this.SiteDocuments = this.AsCustomDbSet<SiteDocument, int, SiteDocumentSet>();
             this.ReportActionsTaken = this.AsCustomDbSet<ReportActionsTaken, int, ReportActionsTakenSet>();
@@ -55,6 +57,8 @@ namespace IqlSampleApp.ApiContext.Base
             this.ODataConfiguration.RegisterEntitySet<ApplicationLog>(nameof(ApplicationLogs));
             this.ODataConfiguration.RegisterEntitySet<Client>(nameof(Clients));
             this.ODataConfiguration.RegisterEntitySet<ClientType>(nameof(ClientTypes));
+            this.ODataConfiguration.RegisterEntitySet<ClientCategory>(nameof(ClientCategories));
+            this.ODataConfiguration.RegisterEntitySet<ClientCategoryPivot>(nameof(ClientCategoriesPivot));
             this.ODataConfiguration.RegisterEntitySet<DocumentCategory>(nameof(DocumentCategories));
             this.ODataConfiguration.RegisterEntitySet<SiteDocument>(nameof(SiteDocuments));
             this.ODataConfiguration.RegisterEntitySet<ReportActionsTaken>(nameof(ReportActionsTaken));
@@ -1431,16 +1435,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ApplicationLog";
                 p.FriendlyName = "Application Log";
             });
-            builder.EntityType<Client>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.TypeId, false, IqlType.Integer).ConfigureProperty(p => p.TypeId, p => {
-                p.PropertyName = "TypeId";
-                p.Nullable = false;
-                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
-                p.CanWrite = true;
-                p.Kind = PropertyKind.RelationshipKey;
-                p.Name = "TypeId";
-                p.Title = "TypeId";
-                p.FriendlyName = "Type Id";
-            }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.EntityType<Client>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1449,6 +1444,15 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
                 p.FriendlyName = "Id";
+            }).DefineProperty(p => p.TypeId, false, IqlType.Integer).ConfigureProperty(p => p.TypeId, p => {
+                p.PropertyName = "TypeId";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = true;
+                p.Kind = PropertyKind.RelationshipKey;
+                p.Name = "TypeId";
+                p.Title = "TypeId";
+                p.FriendlyName = "Type Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
@@ -1738,6 +1742,15 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+            }).DefineCollectionProperty(p => p.Categories, p => p.CategoriesCount).ConfigureProperty(p => p.Categories, p => {
+                p.PropertyName = "Categories";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = false;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "Categories";
+                p.Title = "Categories";
+                p.FriendlyName = "Categories";
             }).DefineCollectionProperty(p => p.People, p => p.PeopleCount).ConfigureProperty(p => p.People, p => {
                 p.PropertyName = "People";
                 p.Nullable = false;
@@ -2096,6 +2109,87 @@ namespace IqlSampleApp.ApiContext.Base
                         }
                     }
                 };
+            });
+            builder.EntityType<ClientCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+                p.PropertyName = "Id";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = false;
+                p.Kind = PropertyKind.Key;
+                p.Name = "Id";
+                p.Title = "Id";
+                p.FriendlyName = "Id";
+            }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
+                p.PropertyName = "Name";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = true;
+                p.Kind = PropertyKind.Primitive;
+                p.Name = "Name";
+                p.Title = "Name";
+                p.FriendlyName = "Name";
+            }).DefineCollectionProperty(p => p.Clients, p => p.ClientsCount).ConfigureProperty(p => p.Clients, p => {
+                p.PropertyName = "Clients";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = false;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "Clients";
+                p.Title = "Clients";
+                p.FriendlyName = "Clients";
+            });
+            builder.EntityType<ClientCategory>().Configure(p => {
+                p.SetFriendlyName = "Client Categories";
+                p.SetName = "ClientCategories";
+                p.Name = "ClientCategory";
+                p.Title = "ClientCategory";
+                p.FriendlyName = "Client Category";
+            });
+            builder.EntityType<ClientCategoryPivot>().HasCompositeKey(false, p => p.ClientId, p => p.CategoryId).DefineProperty(p => p.ClientId, false, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
+                p.PropertyName = "ClientId";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = true;
+                p.Kind = PropertyKind.SimpleCollection | PropertyKind.RelationshipKey;
+                p.Name = "ClientId";
+                p.Title = "ClientId";
+                p.FriendlyName = "Client Id";
+            }).DefineProperty(p => p.CategoryId, false, IqlType.Integer).ConfigureProperty(p => p.CategoryId, p => {
+                p.PropertyName = "CategoryId";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = true;
+                p.Kind = PropertyKind.SimpleCollection | PropertyKind.RelationshipKey;
+                p.Name = "CategoryId";
+                p.Title = "CategoryId";
+                p.FriendlyName = "Category Id";
+            }).DefineProperty(p => p.Client, false, IqlType.Unknown).ConfigureProperty(p => p.Client, p => {
+                p.PropertyName = "Client";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = true;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "Client";
+                p.Title = "Client";
+                p.FriendlyName = "Client";
+            }).DefineProperty(p => p.Category, false, IqlType.Unknown).ConfigureProperty(p => p.Category, p => {
+                p.PropertyName = "Category";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = true;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "Category";
+                p.Title = "Category";
+                p.FriendlyName = "Category";
+            });
+            builder.EntityType<ClientCategoryPivot>().HasOne(p => p.Client).WithMany(p => p.Categories).WithConstraint(p => p.ClientId, p => p.Id);
+            builder.EntityType<ClientCategoryPivot>().HasOne(p => p.Category).WithMany(p => p.Clients).WithConstraint(p => p.CategoryId, p => p.Id);
+            builder.EntityType<ClientCategoryPivot>().Configure(p => {
+                p.SetFriendlyName = "Client Categories Pivot";
+                p.SetName = "ClientCategoriesPivot";
+                p.Name = "ClientCategoryPivot";
+                p.Title = "ClientCategoryPivot";
+                p.FriendlyName = "Client Category Pivot";
             });
             builder.EntityType<DocumentCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
@@ -11941,6 +12035,14 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Type";
                     rel_cnf.FriendlyName = "Type";
                 });
+                rel.FindCollectionRelationship(rel_p => rel_p.Categories).Configure(rel_cnf => {
+                    rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "Categories";
+                    rel_cnf.Title = "Categories";
+                    rel_cnf.FriendlyName = "Categories";
+                });
                 rel.FindCollectionRelationship(rel_p => rel_p.People).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
@@ -11966,6 +12068,32 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Name = "Clients";
                     rel_cnf.Title = "Clients";
                     rel_cnf.FriendlyName = "Clients";
+                });
+            });
+            builder.EntityType<ClientCategory>().Configure(rel => {
+                rel.FindCollectionRelationship(rel_p => rel_p.Clients).Configure(rel_cnf => {
+                    rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "Clients";
+                    rel_cnf.Title = "Clients";
+                    rel_cnf.FriendlyName = "Clients";
+                });
+            });
+            builder.EntityType<ClientCategoryPivot>().Configure(rel => {
+                rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
+                    rel_cnf.CanWrite = true;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "Client";
+                    rel_cnf.Title = "Client";
+                    rel_cnf.FriendlyName = "Client";
+                });
+                rel.FindRelationship(rel_p => rel_p.Category).Configure(rel_cnf => {
+                    rel_cnf.CanWrite = true;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "Category";
+                    rel_cnf.Title = "Category";
+                    rel_cnf.FriendlyName = "Category";
                 });
             });
             builder.EntityType<DocumentCategory>().Configure(rel => {
@@ -12617,6 +12745,16 @@ namespace IqlSampleApp.ApiContext.Base
             set;
         }
         public ClientTypeSet ClientTypes
+        {
+            get;
+            set;
+        }
+        public ClientCategorySet ClientCategories
+        {
+            get;
+            set;
+        }
+        public ClientCategoryPivotSet ClientCategoriesPivot
         {
             get;
             set;

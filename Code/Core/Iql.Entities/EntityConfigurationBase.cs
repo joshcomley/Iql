@@ -168,7 +168,7 @@ namespace Iql.Entities
             var all = new List<IPropertyGroup>();
             all.AddRange(AllPropertyGroups());
             all.AddRange(Properties.Where(p =>
-                p.PropertyGroup == null || p.Kind.HasFlag(PropertyKind.Key)));
+                p.PropertyGroup == null || (p.Kind.HasFlag(PropertyKind.Key) && !p.Kind.HasFlag(PropertyKind.RelationshipKey))));
             var ordered = all.PrioritizeForReading().ToArray();
             return ordered;
         }

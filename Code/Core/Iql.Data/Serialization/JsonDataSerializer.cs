@@ -305,13 +305,13 @@ namespace Iql.Data.Serialization
 
             foreach (var property in propertiesToSerialize)
             {
-                if (property.EntityConfiguration.Key.Properties.Any(p => p == property))
-                {
-                    // Main keys are dealt with above
-                    continue;
-                }
+                //if (property.EntityConfiguration.Key.Properties.Any(p => p == property))
+                //{
+                //    // Main keys are dealt with above
+                //    continue;
+                //}
 
-                if (property.Kind.HasFlag(PropertyKind.Key) && !CanSendKey(property))
+                if (property.Kind.HasFlag(PropertyKind.Key) && !property.Kind.HasFlag(PropertyKind.RelationshipKey) && !CanSendKey(property))
                 {
                     continue;
                 }

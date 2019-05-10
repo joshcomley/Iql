@@ -41,7 +41,8 @@ namespace IqlSampleApp.Data
 
         public DbSet<ApplicationLog> ApplicationLogs { get; set; }
         public DbSet<Client> Clients { get; set; }
-
+        public DbSet<ClientCategory> ClientCategories { get; set; }
+        public DbSet<ClientCategoryPivot> ClientCategoriesPivot { get; set; }
         public DbSet<ClientType> ClientTypes { get; set; }
         public DbSet<DocumentCategory> DocumentCategories { get; set; }
         public DbSet<ReportActionsTaken> ReportActionsTaken { get; set; }
@@ -71,6 +72,8 @@ namespace IqlSampleApp.Data
         IQueryable<ApplicationLog> IIqlSampleAppService.ApplicationLogs => ApplicationLogs;
         IQueryable<ApplicationUser> IIqlSampleAppService.Users => Users;
         IQueryable<Client> IIqlSampleAppService.Clients => Clients;
+        IQueryable<ClientCategory> IIqlSampleAppService.ClientCategories => ClientCategories;
+        IQueryable<ClientCategoryPivot> IIqlSampleAppService.ClientCategoriesPivot => ClientCategoriesPivot;
         IQueryable<ClientType> IIqlSampleAppService.ClientTypes => ClientTypes;
         IQueryable<DocumentCategory> IIqlSampleAppService.DocumentCategories => DocumentCategories;
         IQueryable<ReportActionsTaken> IIqlSampleAppService.ReportActionsTaken => ReportActionsTaken;

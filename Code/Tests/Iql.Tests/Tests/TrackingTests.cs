@@ -836,7 +836,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(0, typeMap.PersonId);
             var entityState = Db.TemporalDataTracker.TrackingSet<PersonTypeMap>()
                 .FindMatchingEntityState(typeMap);
-            var currentKey = entityState.CurrentKey;
+            var currentKey = entityState.LocalKey;
             //var originalKey = entityState.RemoteKey;
             //Assert.AreEqual(1, originalKey.GetValue(nameof(PersonTypeMap.PersonId)));
             //Assert.AreEqual(1, originalKey.GetValue(nameof(PersonTypeMap.TypeId)));
@@ -1060,10 +1060,11 @@ namespace Iql.Tests.Tests
         {
             var client = await PrepLoadRelationshipsAsync();
             var result = await Db.LoadAllRelationshipsAsync(client);
-            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(6, result.Count);
             var clientConfig = Db.EntityConfigurationContext.EntityType<Client>();
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Users)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Sites)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Categories)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.CreatedByUser)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Type)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.People)));
@@ -1083,9 +1084,10 @@ namespace Iql.Tests.Tests
         {
             var client = await PrepLoadRelationshipsAsync();
             var result = await Db.LoadAllRelationshipsAsync(client, LoadRelationshipMode.Collections);
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(4, result.Count);
             var clientConfig = Db.EntityConfigurationContext.EntityType<Client>();
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Users)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Categories)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Sites)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.People)));
             Assert.IsNull(client.Type);

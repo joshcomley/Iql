@@ -120,6 +120,36 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task TestPostPivot()
+        {
+            await RequestLog.LogSessionAsync(async log =>
+            {
+                Assert.AreEqual(0, log.Posts.Count);
+                var db = NewDb();
+                var pivot = new ClientCategoryPivot
+                {
+                    ClientId = 7,
+                    CategoryId = 9
+                };
+                db.ClientCategoriesPivot.Add(pivot);
+                var result = await db.SaveChangesAsync();
+                Assert.AreEqual(true, result.Success);
+                var request = log.Posts.Pop();
+                var changes = db.TemporalDataTracker.GetUpdates();
+                Assert.AreEqual(0, changes.Count);
+                Assert.AreEqual("http://localhost:28000/odata/ClientCategoriesPivot", request.Uri);
+                var body = request.Body.Body;
+                var compressed = body.NormalizeJson();
+                Assert.AreEqual(@"{
+  ""ClientId"": 7,
+  ""CategoryId"": 9
+}".NormalizeJson(), compressed);
+                await db.SaveChangesAsync();
+                Assert.AreEqual(0, log.Posts.Count);
+            });
+        }
+
+        [TestMethod]
         public async Task TestPostGeographyTypes()
         {
             await RequestLog.LogSessionAsync(async log =>

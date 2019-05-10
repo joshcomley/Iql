@@ -9,6 +9,8 @@ namespace IqlSampleApp.Data.Contracts
         IQueryable<ApplicationLog> ApplicationLogs { get; }
         IQueryable<Client> Clients { get; }
         IQueryable<ClientType> ClientTypes { get; }
+        IQueryable<ClientCategory> ClientCategories { get; }
+        IQueryable<ClientCategoryPivot> ClientCategoriesPivot { get; }
         IQueryable<DocumentCategory> DocumentCategories { get; }
         IQueryable<SiteDocument> SiteDocuments { get; }
         IQueryable<ReportActionsTaken> ReportActionsTaken { get; }

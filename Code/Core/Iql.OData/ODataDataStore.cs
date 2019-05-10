@@ -213,7 +213,7 @@ namespace Iql.OData
                     var entityState = DataContext.FindEntityState(bindingParameter.Value);
                     var compositeKey = entityState == null
                         ? EntityConfigurationBuilder.GetEntityByType(entityType).GetCompositeKey(bindingParameter.Value)
-                        : entityState.CurrentKey;
+                        : entityState.LocalKey;
                     baseUri = ResolveEntityUriByType(compositeKey, bindingParameter.ValueType);
                     break;
                 case ODataMethodScopeKind.Global:

@@ -394,20 +394,20 @@ namespace IqlSampleApp.ApiContext.Base
         public Type TypeOf_Client => typeof(Client);
         private EntityConfiguration<Client>_configurationFor_Client = null;
         public EntityConfiguration<Client>ConfigurationFor_Client => _configurationFor_Client = _configurationFor_Client ?? Builder.EntityType<Client>();
-        private IProperty _Client_TypeId = null;
-        public IProperty Client_TypeId
-        {
-            get
-            {
-                return _Client_TypeId = _Client_TypeId ?? FindPropertyByName<Client>("TypeId");
-            }
-        }
         private IProperty _Client_Id = null;
         public IProperty Client_Id
         {
             get
             {
                 return _Client_Id = _Client_Id ?? FindPropertyByName<Client>("Id");
+            }
+        }
+        private IProperty _Client_TypeId = null;
+        public IProperty Client_TypeId
+        {
+            get
+            {
+                return _Client_TypeId = _Client_TypeId ?? FindPropertyByName<Client>("TypeId");
             }
         }
         private IProperty _Client_CreatedByUserId = null;
@@ -522,6 +522,14 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Client_CreatedByUser = _Client_CreatedByUser ?? FindPropertyByName<Client>("CreatedByUser");
             }
         }
+        private IProperty _Client_Categories = null;
+        public IProperty Client_Categories
+        {
+            get
+            {
+                return _Client_Categories = _Client_Categories ?? FindPropertyByName<Client>("Categories");
+            }
+        }
         private IProperty _Client_People = null;
         public IProperty Client_People
         {
@@ -563,6 +571,68 @@ namespace IqlSampleApp.ApiContext.Base
             get
             {
                 return _ClientType_Clients = _ClientType_Clients ?? FindPropertyByName<ClientType>("Clients");
+            }
+        }
+        public Type TypeOf_ClientCategory => typeof(ClientCategory);
+        private EntityConfiguration<ClientCategory>_configurationFor_ClientCategory = null;
+        public EntityConfiguration<ClientCategory>ConfigurationFor_ClientCategory => _configurationFor_ClientCategory = _configurationFor_ClientCategory ?? Builder.EntityType<ClientCategory>();
+        private IProperty _ClientCategory_Id = null;
+        public IProperty ClientCategory_Id
+        {
+            get
+            {
+                return _ClientCategory_Id = _ClientCategory_Id ?? FindPropertyByName<ClientCategory>("Id");
+            }
+        }
+        private IProperty _ClientCategory_Name = null;
+        public IProperty ClientCategory_Name
+        {
+            get
+            {
+                return _ClientCategory_Name = _ClientCategory_Name ?? FindPropertyByName<ClientCategory>("Name");
+            }
+        }
+        private IProperty _ClientCategory_Clients = null;
+        public IProperty ClientCategory_Clients
+        {
+            get
+            {
+                return _ClientCategory_Clients = _ClientCategory_Clients ?? FindPropertyByName<ClientCategory>("Clients");
+            }
+        }
+        public Type TypeOf_ClientCategoryPivot => typeof(ClientCategoryPivot);
+        private EntityConfiguration<ClientCategoryPivot>_configurationFor_ClientCategoryPivot = null;
+        public EntityConfiguration<ClientCategoryPivot>ConfigurationFor_ClientCategoryPivot => _configurationFor_ClientCategoryPivot = _configurationFor_ClientCategoryPivot ?? Builder.EntityType<ClientCategoryPivot>();
+        private IProperty _ClientCategoryPivot_ClientId = null;
+        public IProperty ClientCategoryPivot_ClientId
+        {
+            get
+            {
+                return _ClientCategoryPivot_ClientId = _ClientCategoryPivot_ClientId ?? FindPropertyByName<ClientCategoryPivot>("ClientId");
+            }
+        }
+        private IProperty _ClientCategoryPivot_CategoryId = null;
+        public IProperty ClientCategoryPivot_CategoryId
+        {
+            get
+            {
+                return _ClientCategoryPivot_CategoryId = _ClientCategoryPivot_CategoryId ?? FindPropertyByName<ClientCategoryPivot>("CategoryId");
+            }
+        }
+        private IProperty _ClientCategoryPivot_Client = null;
+        public IProperty ClientCategoryPivot_Client
+        {
+            get
+            {
+                return _ClientCategoryPivot_Client = _ClientCategoryPivot_Client ?? FindPropertyByName<ClientCategoryPivot>("Client");
+            }
+        }
+        private IProperty _ClientCategoryPivot_Category = null;
+        public IProperty ClientCategoryPivot_Category
+        {
+            get
+            {
+                return _ClientCategoryPivot_Category = _ClientCategoryPivot_Category ?? FindPropertyByName<ClientCategoryPivot>("Category");
             }
         }
         public Type TypeOf_DocumentCategory => typeof(DocumentCategory);

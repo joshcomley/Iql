@@ -1015,7 +1015,7 @@ namespace Iql.Tests.Tests.Offline
         private void AssertChangedProperties(IQueuedOperation[] changes, object entity, params string[] properties)
         {
             var findEntityState = DataContext.FindEntityState(entity);
-            var key = findEntityState.CurrentKey;
+            var key = findEntityState.LocalKey;
             var first = changes.FirstOrDefault(_ =>
                 _.Operation is IUpdateEntityOperation &&
                 (_.Operation as IUpdateEntityOperation).Entity.GetType() == findEntityState.EntityConfiguration.Type &&

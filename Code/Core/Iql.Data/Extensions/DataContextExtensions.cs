@@ -67,7 +67,7 @@ namespace Iql.Data.Extensions
 #if TypeScript
                 , entityType
 #endif
-            ).CurrentKey;
+            ).LocalKey;
         }
 
         public static bool EntityHasKey(this IDataContext dataContext, object entity, Type entityType)

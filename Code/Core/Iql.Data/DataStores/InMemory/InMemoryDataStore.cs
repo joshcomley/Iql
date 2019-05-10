@@ -246,14 +246,6 @@ namespace Iql.Data.DataStores.InMemory
             rootTrackingSet.SetKey(clone,
                 () =>
                 {
-                    if (!rootTrackingSet.IsMatchingEntityTracked(clone))
-                    {
-                        rootTrackingSet.AttachEntity(clone, false);
-                    }
-                    else
-                    {
-                        rootTrackingSet.FindMatchingEntityState(clone).IsNew = false;
-                    }
                     foreach (var property in configuration.Key.Properties)
                     {
                         if (property.Kind.HasFlag(PropertyKind.Key))
@@ -273,9 +265,18 @@ namespace Iql.Data.DataStores.InMemory
                             }
                         }
                     }
+                    if (!rootTrackingSet.IsMatchingEntityTracked(clone))
+                    {
+                        rootTrackingSet.AttachEntity(clone, false);
+                    }
+                    else
+                    {
+                        rootTrackingSet.FindMatchingEntityState(clone).IsNew = false;
+                    }
                 });
             data.Add(clone);
-            rootTrackingSet.GetEntityState(clone).HardReset();
+            var entityState = rootTrackingSet.GetEntityState(clone);
+            entityState.HardReset();
             operation.Result.Success = true;
             operation.Result.RemoteEntity = clone;
             return Task.FromResult(operation.Result);

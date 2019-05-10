@@ -18,7 +18,8 @@ namespace Iql.Data.Tracking.State
         object Entity { get; }
         object EntityBeforeChanges();
         IPropertyState[] PropertyStates { get; }
-        CompositeKey CurrentKey { get; set; }
+        CompositeKey LocalKey { get; set; }
+        CompositeKey RemoteKey { get; }
         bool MarkedForDeletion { get; set; }
         bool MarkedForCascadeDeletion { get; set; }
         Guid? PersistenceKey { get; set; }

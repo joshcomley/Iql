@@ -6,6 +6,7 @@ namespace IqlSampleApp.Data.Entities
 {
     public class Client : DbObject
     {
+        public List<ClientCategoryPivot> Categories { get; set; }
         public double AverageSales { get; set; }
         public double AverageIncome { get; set; }
         public int Category { get; set; }

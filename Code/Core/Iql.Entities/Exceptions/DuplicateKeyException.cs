@@ -5,7 +5,7 @@ namespace Iql.Entities.Exceptions
 {
     public class DuplicateKeyException : Exception
     {
-        public DuplicateKeyException()
+        public DuplicateKeyException(string message = null) : base(message)
         {
             EventEmitterExceptions.EnsureIsThrown<DuplicateKeyException>();
         }
