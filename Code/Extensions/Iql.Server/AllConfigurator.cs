@@ -7,6 +7,7 @@ using Brandless.Data.Entities;
 using Iql.Data.Contracts;
 using Iql.Entities;
 using Iql.Entities.InferredValues;
+using Iql.Forms;
 using Microsoft.AspNetCore.Identity;
 
 namespace Iql.Server
@@ -88,6 +89,18 @@ namespace Iql.Server
         }
 
         [ConfigureEntity]
+        public void ConfigureIdentityUser<T>(IEntityConfigurationBuilder builder)
+            where T : IdentityUser
+        {
+            builder.EntityType<T>().Configure(config =>
+            {
+                config.ConfigureProperty(p => p.EmailConfirmed, p => p.EditKind = PropertyEditKind.Display);
+                config.ConfigureProperty(p => p.PhoneNumberConfirmed, p => p.EditKind = PropertyEditKind.Display);
+                config.ConfigureProperty(p => p.TwoFactorEnabled, p => p.EditKind = PropertyEditKind.Display);
+            });
+        }
+
+        [ConfigureEntity]
         public void ConfigureIHasPersistenceKey<T>(IEntityConfigurationBuilder builder)
             where T : class, IHasPersistenceKey
         {
@@ -135,6 +148,7 @@ namespace Iql.Server
             {
                 config.ConfigureProperty(p => p.CreatedDate, p =>
                 {
+                    p.SetHint(FormHints.CreatedDate);
                     p.SetReadOnly();
                     p.IsInferredWith(_ => new IqlNowExpression(), true, InferredValueKind.IfNullOrEmpty);
                 });
@@ -174,6 +188,7 @@ namespace Iql.Server
             {
                 config.ConfigureProperty(p => p.CreatedByUser, p =>
                 {
+                    p.SetHint(FormHints.CreatedByUser);
                     p.SetReadOnly();
                 });
                 config.ConfigureProperty(

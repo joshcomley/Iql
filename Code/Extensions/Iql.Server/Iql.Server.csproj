@@ -18,5 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />
+    <ProjectReference Include="..\..\Forms\Iql.Forms\Iql.Forms.csproj" />
   </ItemGroup>
 </Project>
