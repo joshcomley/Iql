@@ -235,9 +235,10 @@ namespace Iql.Entities
             return FromPropertyExpression(typeResolver, entityConfigurationContext, propertyExpression);
         }
 
-        public static IqlPropertyPath FromProperty(IProperty property)
+        public static IqlPropertyPath FromProperty(IProperty property, string rootVariableName = null)
         {
-            return FromString(property.EntityConfiguration.Builder, property.Name, property.EntityConfiguration.TypeMetadata);
+            return FromString(
+                property.EntityConfiguration.Builder, property.Name, property.EntityConfiguration.TypeMetadata, null, rootVariableName);
         }
 
         public static IqlPropertyPath FromPropertyExpression(

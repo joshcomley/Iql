@@ -66,7 +66,8 @@ namespace Iql.Data.Queryable
             string search,
             IqlSearchKind searchKind = IqlSearchKind.Primary | IqlSearchKind.Secondary,
             bool splitIntoTerms = false,
-            IEnumerable<IqlPropertyPath> excludeProperties = null)
+            IEnumerable<IqlPropertyPath> excludeProperties = null,
+            string rootVariableName = null)
         {
             if (string.IsNullOrWhiteSpace(search))
             {
@@ -76,7 +77,7 @@ namespace Iql.Data.Queryable
             var excludePaths = excludeProperties == null
                 ? new string[] { }
                 : excludeProperties.Select(_ => _.PathToHere);
-            var resolveSearchProperties = entityConfiguration.ResolveSearchProperties(searchKind);
+            var resolveSearchProperties = entityConfiguration.ResolveSearchProperties(searchKind, rootVariableName);
             resolveSearchProperties = resolveSearchProperties.Where(_ => !excludePaths.Any(ex => _.PathToHere == ex || _.PathToHere.StartsWith(
                                                                                                      $"{ex}/"))).ToArray();
             return BuildSearchQueryForProperties(
@@ -185,6 +186,16 @@ namespace Iql.Data.Queryable
         }
 
         public static IqlExpression Or(this IEnumerable<IqlExpression> expressions)
+        {
+            return expressions.AndOr(false);
+        }
+
+        public static IqlExpression AndWith(params IqlExpression[] expressions)
+        {
+            return expressions.AndOr(true);
+        }
+
+        public static IqlExpression OrWith(params IqlExpression[] expressions)
         {
             return expressions.AndOr(false);
         }

@@ -145,7 +145,7 @@ namespace Iql.Data.Context
         }
 
         private async Task<IList> LoadRelationshipPropertyInternalAsync(
-            IProperty property, 
+            IProperty property,
             Func<IDbQueryable, IDbQueryable> queryFilter,
             object entity)
         {
@@ -235,9 +235,112 @@ namespace Iql.Data.Context
             return WhereEquals(EntityConfiguration.BuildSearchQuery(search, searchKind, splitIntoTerms ?? false, excludeProperties));
         }
 
-        IDbQueryable IDbQueryable.Search(string search, IqlSearchKind searchKind, bool? splitIntoTerms = null)
+        IDbQueryable IDbQueryable.Search(string search, IqlSearchKind searchKind, bool? splitIntoTerms = null, IEnumerable<IqlPropertyPath> excludeProperties = null)
         {
-            return Search(search, searchKind, splitIntoTerms ?? false);
+            return Search(search, searchKind, splitIntoTerms ?? false, excludeProperties);
+        }
+
+        public DbQueryable<T> SearchRemaining(ISourceRelationshipDetail relationship, object entity, string search, IqlSearchKind searchKind = IqlSearchKind.Primary, bool? splitIntoTerms = null, IEnumerable<IqlPropertyPath> excludeProperties = null, IEnumerable<object> explicitlyExclude = null)
+        {
+            var otherRelationship =
+                relationship.EntityConfiguration.Key.Properties
+                    .FirstOrDefault(p => p.Relationship.ThisEnd != relationship)
+                    .Relationship
+                    .ThisEnd;
+            var rootVariableName = "q";
+            var query = EntityConfiguration.BuildSearchQuery(search, searchKind, splitIntoTerms ?? false, excludeProperties, rootVariableName);
+            var entityToFilterKey = entity is CompositeKey ? (CompositeKey)entity : relationship.OtherSide.GetCompositeKey(entity, true);
+            var keyExpressions = new List<IqlIsEqualToExpression>();
+            for (var i = 0; i < entityToFilterKey.Keys.Length; i++)
+            {
+                var key = entityToFilterKey.Keys[i];
+                keyExpressions.Add(
+                    new IqlIsEqualToExpression(
+                        new IqlPropertyExpression(relationship.Constraints[i].PropertyName, new IqlRootReferenceExpression("child")),
+                        new IqlLiteralExpression(key.Value, key.ValueType.ToIqlType())));
+            }
+            var all = new IqlNotExpression(
+                new IqlAnyExpression("child",
+                    IqlPropertyPath.FromProperty(otherRelationship.OtherSide.Property, rootVariableName).Expression,
+                    keyExpressions.And()));
+            var excludeExpressions = new List<IqlExpression>();
+            var attachedEntities = entity is CompositeKey ? null : relationship.OtherSide.Property.GetValue(entity) as IEnumerable;
+            var exclude = new List<object>();
+            if (attachedEntities != null)
+            {
+                IDataContext db = null;
+                foreach (var item in attachedEntities)
+                {
+                    db = db ?? DataContextInternal.FindDataContextForEntity(item);
+                    if (db != null)
+                    {
+                        if (db.IsEntityNew(item) == true)
+                        {
+                            var excludeKey = otherRelationship.GetCompositeKey(item, true);
+                            exclude.Add(excludeKey);
+                        }
+                    }
+                }
+            }
+            if (explicitlyExclude != null)
+            {
+                var arr = explicitlyExclude.ToArray();
+                if (arr.Length > 0)
+                {
+                    exclude.AddRange(arr);
+                }
+            }
+
+            if (exclude.Count > 0)
+            {
+                AppendExcludeExpressions(exclude, excludeExpressions);
+            }
+            return WhereEquals(IqlQueryBuilder.AndWith(query, all, excludeExpressions.And()));
+        }
+
+        private static void AppendExcludeExpressions(List<object> arr, List<IqlExpression> excludeExpressions)
+        {
+            var dic = new Dictionary<string, string>();
+            for (var i = 0; i < arr.Count; i++)
+            {
+                var entityOrCompositeKey = arr[i];
+                CompositeKey compositeKey = null;
+                var explicitExcludeExpressions = new List<IqlIsEqualToExpression>();
+                if (!(entityOrCompositeKey is CompositeKey))
+                {
+                    var db = DataContextInternal.FindDataContextForEntity(entityOrCompositeKey);
+                    if (db == null || db.IsEntityNew(entityOrCompositeKey) == true)
+                    {
+                        continue;
+                    }
+
+                    compositeKey = db.GetCompositeKey(entityOrCompositeKey);
+                }
+                else
+                {
+                    compositeKey = (CompositeKey)entityOrCompositeKey;
+                }
+
+                if (compositeKey != null && !dic.ContainsKey(compositeKey.FullKeyString))
+                {
+                    dic.Add(compositeKey.FullKeyString, compositeKey.FullKeyString);
+                    for (var j = 0; j < compositeKey.Keys.Length; j++)
+                    {
+                        var key = compositeKey.Keys[j];
+                        explicitExcludeExpressions.Add(
+                            new IqlIsEqualToExpression(
+                                new IqlPropertyExpression(key.Name, new IqlRootReferenceExpression("child")),
+                                new IqlLiteralExpression(key.Value, key.ValueType.ToIqlType())));
+                    }
+
+                    excludeExpressions.Add(new IqlNotExpression(explicitExcludeExpressions.And()));
+                }
+            }
+        }
+
+        IDbQueryable IDbQueryable.SearchRemaining(ISourceRelationshipDetail relationship, object entity, string search, IqlSearchKind searchKind, bool? splitIntoTerms = null, IEnumerable<IqlPropertyPath> excludeProperties = null, IEnumerable<object> explicitlyExclude = null)
+        {
+            return SearchRemaining(relationship, entity, search, searchKind, splitIntoTerms ?? false, excludeProperties, explicitlyExclude);
         }
 
         public DbQueryable<T> SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter displayFormatter = null, bool? splitIntoTerms = null)

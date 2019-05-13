@@ -129,7 +129,7 @@ namespace Iql.Entities
             return this;
         }
 
-        public IqlPropertyPath[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary)
+        public IqlPropertyPath[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary, string rootVariableName = null)
         {
             var result = new List<IqlPropertyPath>();
             for (var i = 0; i < Properties.Count; i++)
@@ -137,12 +137,12 @@ namespace Iql.Entities
                 var property = Properties[i];
                 if (searchKind.HasFlag(IqlSearchKind.Primary) && property.SearchKind == PropertySearchKind.Primary)
                 {
-                    result.Add(IqlPropertyPath.FromProperty(property));
+                    result.Add(IqlPropertyPath.FromProperty(property, rootVariableName));
                 }
 
                 if (searchKind.HasFlag(IqlSearchKind.Secondary) && property.SearchKind == PropertySearchKind.Secondary)
                 {
-                    result.Add(IqlPropertyPath.FromProperty(property));
+                    result.Add(IqlPropertyPath.FromProperty(property, rootVariableName));
                 }
 
                 if (searchKind.HasFlag(IqlSearchKind.Relationships) && property.Relationship != null &&
@@ -156,7 +156,9 @@ namespace Iql.Entities
                         result.Add(IqlPropertyPath.FromString(
                             Builder,
                             $"{property.PropertyName}/{paths[j].PathToHere}",
-                            TypeMetadata));
+                            TypeMetadata,
+                            null,
+                            rootVariableName));
                     }
                 }
             }
@@ -388,7 +390,7 @@ namespace Iql.Entities
         public IEntityProperty<T> DefineAndGetPropertyInternal<TProperty>(string name, Expression<Func<T, TProperty>> property, string convertedFromType, bool nullable = true,
             IqlType? iqlType = null)
         {
-            if(name == "TypeId")
+            if (name == "TypeId")
             {
                 int a = 0;
             }
@@ -664,7 +666,7 @@ namespace Iql.Entities
             IqlType kind,
             IProperty countRelationship)
         {
-            if(propertyName == "TypeId")
+            if (propertyName == "TypeId")
             {
                 int a = 0;
             }
@@ -758,7 +760,7 @@ namespace Iql.Entities
         {
             return GetOrDefineDisplayConfiguration(kind, key, (configuration, displayConfiguration) =>
             {
-                if(configure != null)
+                if (configure != null)
                 {
                     configure((EntityConfiguration<TEntity>)(object)configuration, displayConfiguration);
                 }
@@ -902,7 +904,7 @@ namespace Iql.Entities
         public IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.EntityConfiguration;
         public PropertyGroupMetadata[] GetPropertyGroupMetadata()
         {
-            return new PropertyGroupMetadata[]{};
+            return new PropertyGroupMetadata[] { };
         }
     }
 }

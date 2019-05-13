@@ -52,7 +52,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
             throw new NotImplementedException();
         }
 
-        public IqlPropertyPath[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary)
+        public IqlPropertyPath[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary, string rootVariableName = null)
         {
             throw new NotImplementedException();
         }

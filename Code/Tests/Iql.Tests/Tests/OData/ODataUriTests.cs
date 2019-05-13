@@ -104,10 +104,73 @@ namespace Iql.Tests.Tests.OData
                 "abc",
                 IqlSearchKind.Primary | IqlSearchKind.Secondary | IqlSearchKind.Relationships,
                 null,
-                new[] {IqlPropertyPath.FromExpression<ClientCategoryPivot>(_ => _.Category, TypeResolver)});
+                new[] { IqlPropertyPath.FromExpression<ClientCategoryPivot>(_ => _.Category, TypeResolver) });
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/ClientCategoriesPivot?$filter=contains($it/Client/Name,'abc')", uri);
+        }
+
+        [TestMethod]
+        public async Task TestSearchPivotRemaining()
+        {
+            var key = CompositeKey.Ensure(7, Db.EntityConfigurationContext.EntityType<ClientCategory>());
+            var query = Db.Clients.SearchRemaining(
+                Db.EntityConfigurationContext.EntityType<ClientCategoryPivot>().FindRelationship(_ => _.Category),
+                key,
+                "abc"
+            );
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(contains($it/Name,'abc') and not(Categories/any(child:(child/CategoryId eq 7))))", uri);
+        }
+
+        [TestMethod]
+        public async Task TestSearchPivotRemainingWithSpecificExcludes()
+        {
+            var clientCategoryPivot = new ClientCategoryPivot();
+            clientCategoryPivot.CategoryId = 7;
+            clientCategoryPivot.ClientId = 9;
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 15
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 9
+            });
+            AppDbContext.InMemoryDb.ClientCategories.Add(new ClientCategory
+            {
+                Id = 7
+            });
+            var excludeClient = await Db.Clients.GetWithKeyAsync(15);
+            var categoryWithImplicitExcludes = await Db.ClientCategories.GetWithKeyAsync(7);
+            var excludeClientByKey = Db.EntityConfigurationContext.EntityType<Client>()
+                .GetCompositeKey(new Client
+                {
+                    Id = 26
+                });
+            categoryWithImplicitExcludes.Clients.Add(new ClientCategoryPivot
+            {
+                CategoryId = 7,
+                ClientId = 100
+            });
+            categoryWithImplicitExcludes.Clients.Add(new ClientCategoryPivot
+            {
+                CategoryId = 7,
+                ClientId = 103
+            });
+            Db.ClientCategoriesPivot.Add(clientCategoryPivot);
+            var query = Db.Clients.SearchRemaining(
+                Db.EntityConfigurationContext.EntityType<ClientCategoryPivot>().FindRelationship(_ => _.Category),
+                categoryWithImplicitExcludes,
+                "abc",
+                IqlSearchKind.Primary,
+                null,
+                new[] {IqlPropertyPath.FromExpression<ClientCategoryPivot>(_ => _.Category, TypeResolver)},
+                new object[] {excludeClient, excludeClientByKey});
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=((contains($it/Name,'abc') and not(Categories/any(child:(child/CategoryId eq 7)))) and ((((not(($it/Id eq 100)) and not(($it/Id eq 103))) and not(($it/Id eq 9))) and not(($it/Id eq 15))) and not(($it/Id eq 26))))", uri);
         }
 
         [TestMethod]

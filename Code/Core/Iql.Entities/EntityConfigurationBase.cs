@@ -22,6 +22,16 @@ namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
+        public bool IsPivot
+        {
+            get
+            {
+                return Key.Properties.Length == 2 &&
+                       Key.Properties.All(_ => _.Relationship != null && _.Relationship.ThisIsSource);
+            }
+        }
+
+
         private IIqlTypeMetadata _typeMetadata = null;
         public IIqlTypeMetadata TypeMetadata => _typeMetadata = _typeMetadata ?? new EntityConfigurationTypeProvider((IEntityConfiguration)this);
 

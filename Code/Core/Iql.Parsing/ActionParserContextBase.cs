@@ -186,18 +186,16 @@ namespace Iql.Parsing
             //}
             switch (expression?.Kind)
             {
+                case IqlExpressionKind.Any:
+                case IqlExpressionKind.All:
                 case IqlExpressionKind.Count:
                     var path = IqlPropertyPath.FromPropertyExpression(
                             TypeResolver,
                             TypeResolver.FindTypeByType(CurrentEntityType),
-                            (IqlPropertyExpression)((IqlCountExpression)expression).Parent,
+                            (IqlPropertyExpression)((IqlParentValueExpression)expression).Parent,
                             false)
                         ;
                     SetEntityType(path.PropertyEntityConfiguration.Type);
-                    break;
-                case IqlExpressionKind.Any:
-                    break;
-                case IqlExpressionKind.All:
                     break;
                 case IqlExpressionKind.Lambda:
                     break;
@@ -213,12 +211,10 @@ namespace Iql.Parsing
         {
             switch (expression?.Kind)
             {
-                case IqlExpressionKind.Any:
-                    break;
-                case IqlExpressionKind.All:
-                    break;
                 case IqlExpressionKind.Lambda:
                     break;
+                case IqlExpressionKind.Any:
+                case IqlExpressionKind.All:
                 case IqlExpressionKind.Count:
                 case IqlExpressionKind.DataSetQuery:
                     RemoveLastEntityType();

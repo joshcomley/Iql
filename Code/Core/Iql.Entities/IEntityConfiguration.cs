@@ -30,11 +30,12 @@ namespace Iql.Entities
         object GetVersion(object entity);
         bool HasNonKeyFields();
         bool HasRelationshipKeys { get; }
+        bool IsPivot { get; }
         EntityConfigurationBuilder Builder { get; }
         string GetDisplayText(object entity, string key = null);
         IEntityConfiguration SetDefaultSortExpression(string expression);
         IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration, bool? doNotAppendMissingProperties = null, bool? includeReadHiddenProperties = null);
-        IqlPropertyPath[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary);
+        IqlPropertyPath[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary, string rootVariableName = null);
         IProperty[] FindPropertiesByHint(string hint);
         IProperty FindPropertyByLambdaExpression(LambdaExpression property);
         IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression);

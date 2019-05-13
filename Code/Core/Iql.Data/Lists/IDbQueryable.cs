@@ -10,6 +10,7 @@ using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
+using Iql.Entities.Relationships;
 using Iql.Entities.Search;
 #if TypeScript
 using Iql.Parsing;
@@ -65,7 +66,8 @@ namespace Iql.Data.Lists
         IDbQueryable WithKey(object entityOrKey);
         IDbQueryable WithCompositeKeys(IEnumerable<CompositeKey> keys);
         IDbQueryable WithCompositeKey(CompositeKey key);
-        IDbQueryable Search(string search, IqlSearchKind searchKind, bool? splitIntoTerms = null);
+        IDbQueryable Search(string search, IqlSearchKind searchKind, bool? splitIntoTerms = null, IEnumerable<IqlPropertyPath> excludeProperties = null);
+        IDbQueryable SearchRemaining(ISourceRelationshipDetail relationship, object entity, string search, IqlSearchKind searchKind, bool? splitIntoTerms = null, IEnumerable<IqlPropertyPath> excludeProperties = null, IEnumerable<object> explicitlyExclude = null);
         IDbQueryable SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null, bool? splitIntoTerms = null);
         IDbQueryable SearchProperties(string search, IEnumerable<IqlPropertyPath> properties, bool? splitIntoTerms = null);
         IDbQueryable SearchWithTerms(IqlSearchText searchTerms, IqlSearchKind searchKind);
