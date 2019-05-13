@@ -6,6 +6,7 @@ namespace Iql.Entities
     public enum IqlSearchKind
     {
         Primary = 1,
-        Secondary = 2
+        Secondary = 2,
+        Relationships = 4
     }
 }

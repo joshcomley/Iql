@@ -566,6 +566,64 @@ namespace Iql.Data.Context
                 queryFilter);
         }
 
+        public IDbQueryable RelationshipPropertyQuery(object entity, IPropertyGroup property)
+        {
+            IRelationshipDetail relationship;
+            if (property is IProperty p)
+            {
+                relationship = p.Relationship.ThisEnd;
+            }
+            else
+            {
+                relationship = property as IRelationshipDetail;
+            }
+
+            if (relationship == null)
+            {
+                return null;
+            }
+            var thisEndConstraints = relationship.Constraints.ToArray();
+            var otherEndConstraints = relationship.OtherSide.Constraints.ToArray();
+            var compositeKey = entity as CompositeKey;
+            if (compositeKey == null)
+            {
+                compositeKey = new CompositeKey(relationship.EntityConfiguration.TypeName, thisEndConstraints.Length);
+                for (var i = 0; i < thisEndConstraints.Length; i++)
+                {
+                    compositeKey.Keys[i] = new KeyValue(otherEndConstraints[i].Name,
+                        thisEndConstraints[i].GetValue(entity),
+                        thisEndConstraints[i].TypeDefinition);
+                }
+            }
+            var otherDbSet = GetDbSetByEntityType(relationship.OtherSide.Type);
+            var root = new IqlRootReferenceExpression();
+            var expressions = new List<IqlExpression>();
+            for (var i = 0; i < compositeKey.Keys.Length; i++)
+            {
+                expressions.Add(new IqlIsEqualToExpression(
+                    new IqlPropertyExpression(compositeKey.Keys[i].Name, root),
+                    new IqlLiteralExpression(compositeKey.Keys[i].Value)
+                ));
+            }
+            var iqlLambdaExpression = new IqlLambdaExpression
+            {
+                Body = expressions.And(),
+                Parameters = new List<IqlRootReferenceExpression>()
+            };
+            iqlLambdaExpression.Parameters.Add(new IqlRootReferenceExpression());
+            var query = (IDbQueryable)otherDbSet.WhereEquals(iqlLambdaExpression);
+            return query;
+        }
+
+        public IDbQueryable RelationshipQuery<T>(T entity, Expression<Func<T, object>> relationship)
+        {
+            return RelationshipPropertyQuery(
+                entity,
+                EntityConfigurationContext.GetEntityByType(entity.GetType())
+                    .FindPropertyByLambdaExpression(relationship)
+            );
+        }
+
         private readonly Dictionary<Type, PropertyInfo> _dbSetsBySetType = new Dictionary<Type, PropertyInfo>();
         public IDbQueryable GetDbSetBySetType(Type setType)
         {

@@ -34,7 +34,7 @@ namespace Iql.Entities
         string GetDisplayText(object entity, string key = null);
         IEntityConfiguration SetDefaultSortExpression(string expression);
         IPropertyGroup[] BuildDisplayConfiguration(DisplayConfiguration configuration, bool? doNotAppendMissingProperties = null, bool? includeReadHiddenProperties = null);
-        IProperty[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary);
+        IqlPropertyPath[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary);
         IProperty[] FindPropertiesByHint(string hint);
         IProperty FindPropertyByLambdaExpression(LambdaExpression property);
         IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression);

@@ -20,7 +20,7 @@ namespace Iql.Data.Queryable
                 {
                     compositeKey = id as CompositeKey;
                 }
-                else if(entityConfiguration.Key.Properties.Length == 1 && id.GetType() == entityConfiguration.Key.Properties[0].TypeDefinition.Type)
+                else if (entityConfiguration.Key.Properties.Length == 1 && id.GetType() == entityConfiguration.Key.Properties[0].TypeDefinition.Type)
                 {
                     var primaryKey = entityConfiguration.Key.Properties[0];
                     compositeKey = new CompositeKey(entityConfiguration.TypeName, 1);
@@ -62,37 +62,46 @@ namespace Iql.Data.Queryable
         }
 
         public static IqlExpression BuildSearchQuery(
-            this IEntityConfiguration entityConfiguration, 
-            string search, 
-            IqlSearchKind searchKind = IqlSearchKind.Secondary, 
-            bool splitIntoTerms = false)
+            this IEntityConfiguration entityConfiguration,
+            string search,
+            IqlSearchKind searchKind = IqlSearchKind.Primary | IqlSearchKind.Secondary,
+            bool splitIntoTerms = false,
+            IEnumerable<IqlPropertyPath> excludeProperties = null)
         {
             if (string.IsNullOrWhiteSpace(search))
             {
                 return null;
             }
+
+            var excludePaths = excludeProperties == null
+                ? new string[] { }
+                : excludeProperties.Select(_ => _.PathToHere);
+            var resolveSearchProperties = entityConfiguration.ResolveSearchProperties(searchKind);
+            resolveSearchProperties = resolveSearchProperties.Where(_ => !excludePaths.Any(ex => _.PathToHere == ex || _.PathToHere.StartsWith(
+                                                                                                     $"{ex}/"))).ToArray();
             return BuildSearchQueryForProperties(
-                search, 
-                entityConfiguration.ResolveSearchProperties(searchKind), 
+                search,
+                resolveSearchProperties,
                 splitIntoTerms);
         }
 
         public static IqlExpression BuildSearchQueryForPropertyExpressions(
             string search,
-            IEnumerable<IqlPropertyExpression> propertyExpressions, 
+            IEnumerable<IqlPropertyExpression> propertyExpressions,
             bool splitIntoTerms = false)
         {
             if (string.IsNullOrWhiteSpace(search))
             {
                 return null;
             }
-            return BuildSearchQueryForPropertyExpressionsWithTerms(new IqlSearchText(search, splitIntoTerms),
+            return BuildSearchQueryForPropertyExpressionsWithTerms(
+                new IqlSearchText(search, splitIntoTerms),
                 propertyExpressions
                 );
         }
 
         public static IqlExpression BuildSearchQueryForPropertyPaths(
-            string search, 
+            string search,
             IEnumerable<IqlPropertyPath> searchFields,
             bool splitIntoTerms = false)
         {
@@ -105,17 +114,16 @@ namespace Iql.Data.Queryable
         }
 
         public static IqlExpression BuildSearchQueryForProperties(
-            string search, 
-            IEnumerable<IProperty> searchFields, 
+            string search,
+            IEnumerable<IqlPropertyPath> searchFields,
             bool splitIntoTerms = false)
         {
             if (string.IsNullOrWhiteSpace(search))
             {
                 return null;
             }
-            var root = new IqlRootReferenceExpression("root", "");
             return BuildSearchQueryForPropertyExpressions(search,
-                searchFields.Select(_ => new IqlPropertyExpression(_.Name, root)),
+                searchFields.Select(_ => _.Expression),
                 splitIntoTerms);
         }
 
@@ -131,12 +139,11 @@ namespace Iql.Data.Queryable
 
         public static IqlExpression BuildSearchQueryForPropertiesWithTerms(
             IqlSearchText terms,
-            IEnumerable<IProperty> searchFields)
+            IEnumerable<IqlPropertyPath> searchFields)
         {
-            var root = new IqlRootReferenceExpression("root", "");
             return BuildSearchQueryForPropertyExpressionsWithTerms(
                 terms,
-                searchFields.Select(_ => new IqlPropertyExpression(_.Name, root))
+                searchFields.Select(_ => _.Expression)
             );
         }
 

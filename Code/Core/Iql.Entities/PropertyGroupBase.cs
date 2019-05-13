@@ -38,9 +38,18 @@ namespace Iql.Entities
             return false;
         }
 
+        private static readonly Dictionary<string , string> SanitizedNames = new Dictionary<string, string>();
         private static string SanitizeName(string name)
         {
-            return Regex.Replace(name.ToLower(), "[^A-Za-z]", "").Trim();
+            string val;
+            if (SanitizedNames.TryGetValue(name, out val))
+            {
+                return val;
+            }
+
+            val = Regex.Replace(name.ToLower(), "[^A-Za-z]", "").Trim();
+            SanitizedNames.Add(name, val);
+            return val;
         }
 
         public bool ForceDecision { get; set; }

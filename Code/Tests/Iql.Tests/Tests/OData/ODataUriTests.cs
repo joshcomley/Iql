@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Iql.Entities;
 using Iql.Entities.Services;
 using Iql.OData;
 using Iql.OData.Extensions;
@@ -86,7 +87,31 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
-        public async Task TestNonRingPolygoinBecomesRing()
+        public async Task TestSearchPivot()
+        {
+            var query = Db.ClientCategoriesPivot.Search(
+                "abc",
+                IqlSearchKind.Primary | IqlSearchKind.Secondary | IqlSearchKind.Relationships);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/ClientCategoriesPivot?$filter=(contains($it/Client/Name,'abc') or contains($it/Category/Name,'abc'))", uri);
+        }
+
+        [TestMethod]
+        public async Task TestSearchPivotWithExclude()
+        {
+            var query = Db.ClientCategoriesPivot.Search(
+                "abc",
+                IqlSearchKind.Primary | IqlSearchKind.Secondary | IqlSearchKind.Relationships,
+                null,
+                new[] {IqlPropertyPath.FromExpression<ClientCategoryPivot>(_ => _.Category, TypeResolver)});
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/ClientCategoriesPivot?$filter=contains($it/Client/Name,'abc')", uri);
+        }
+
+        [TestMethod]
+        public async Task TestNonRingPolygonBecomesRing()
         {
             var polygon = new IqlPolygonExpression(
                 new IqlRingExpression(new IqlPointExpression[]
@@ -316,8 +341,8 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
-            public async Task TestLengthLiteral()
-            {
+        public async Task TestLengthLiteral()
+        {
             var line = new IqlLineExpression(
                 new IqlPointExpression[]
                 {

@@ -161,6 +161,10 @@ namespace Iql.Data.Context
         Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(object entity, IEnumerable<EntityRelationship> relationships, Type entityType = null);
         Task<IList> LoadRelationshipPropertyAsync(object entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
         Task<IList> LoadRelationshipAsync<T>(T entity, Expression<Func<T, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
+        //Dictionary<IProperty, IDbQueryable> AllRelationshipQueries(object entity, LoadRelationshipMode mode = LoadRelationshipMode.Both, Type entityType = null);
+        //Dictionary<IProperty, IList> RelationshipQueries(object entity, IEnumerable<EntityRelationship> relationships, Type entityType = null);
+        IDbQueryable RelationshipPropertyQuery(object entity, IPropertyGroup relationship);
+        IDbQueryable RelationshipQuery<T>(T entity, Expression<Func<T, object>> relationship);
         //void MarkAsDeletedByKey<TEntity>(CompositeKey entityKey) where TEntity : class;
         //void MarkAsDeletedByKeyAndType(CompositeKey entityKey, Type entityType);
         //void MarkAsDeleted<TEntity>(TEntity entity) where TEntity : class;

@@ -7,6 +7,7 @@ namespace Iql.Entities
     {
         public IRelationship Relationship { get; }
         public bool ThisIsTarget { get; }
+        public bool ThisIsSource => !ThisIsTarget;
         public IRelationshipDetail ThisEnd { get; }
         public IRelationshipDetail OtherEnd { get; }
 

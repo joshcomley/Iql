@@ -129,18 +129,35 @@ namespace Iql.Entities
             return this;
         }
 
-        public IProperty[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary)
+        public IqlPropertyPath[] ResolveSearchProperties(IqlSearchKind searchKind = IqlSearchKind.Primary)
         {
-            var result = new List<IProperty>();
-            foreach (var property in Properties)
+            var result = new List<IqlPropertyPath>();
+            for (var i = 0; i < Properties.Count; i++)
             {
+                var property = Properties[i];
                 if (searchKind.HasFlag(IqlSearchKind.Primary) && property.SearchKind == PropertySearchKind.Primary)
                 {
-                    result.Add(property);
+                    result.Add(IqlPropertyPath.FromProperty(property));
                 }
+
                 if (searchKind.HasFlag(IqlSearchKind.Secondary) && property.SearchKind == PropertySearchKind.Secondary)
                 {
-                    result.Add(property);
+                    result.Add(IqlPropertyPath.FromProperty(property));
+                }
+
+                if (searchKind.HasFlag(IqlSearchKind.Relationships) && property.Relationship != null &&
+                    property.Relationship.ThisIsSource
+                    && property.Kind.HasFlag(PropertyKind.Relationship))
+                {
+                    var paths = property.Relationship.OtherEnd.EntityConfiguration
+                        .ResolveSearchProperties();
+                    for (var j = 0; j < paths.Length; j++)
+                    {
+                        result.Add(IqlPropertyPath.FromString(
+                            Builder,
+                            $"{property.PropertyName}/{paths[j].PathToHere}",
+                            TypeMetadata));
+                    }
                 }
             }
 

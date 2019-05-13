@@ -105,12 +105,12 @@ namespace Iql.Data.Lists
             return (DbSet<T, TKey>)base.OrderByDefault(descending, orderKind);
         }
 
-        public new DbSet<T, TKey> Search(string search, IqlSearchKind searchKind = IqlSearchKind.Primary)
+        public new DbSet<T, TKey> Search(string search, IqlSearchKind searchKind = IqlSearchKind.Primary, bool? splitIntoTerms = null, IEnumerable<IqlPropertyPath> excludeProperties = null)
         {
-            return (DbSet<T, TKey>)base.Search(search, searchKind);
+            return (DbSet<T, TKey>)base.Search(search, searchKind, splitIntoTerms, excludeProperties);
         }
 
-        public new DbSet<T, TKey> SearchProperties(string search, IEnumerable<IProperty> properties)
+        public new DbSet<T, TKey> SearchProperties(string search, IEnumerable<IqlPropertyPath> properties)
         {
             return (DbSet<T, TKey>)base.SearchProperties(search, properties);
         }

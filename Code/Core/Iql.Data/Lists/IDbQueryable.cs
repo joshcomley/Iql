@@ -67,10 +67,10 @@ namespace Iql.Data.Lists
         IDbQueryable WithCompositeKey(CompositeKey key);
         IDbQueryable Search(string search, IqlSearchKind searchKind, bool? splitIntoTerms = null);
         IDbQueryable SearchForDisplayFormatter(string search, IEntityDisplayTextFormatter formatter = null, bool? splitIntoTerms = null);
-        IDbQueryable SearchProperties(string search, IEnumerable<IProperty> properties, bool? splitIntoTerms = null);
+        IDbQueryable SearchProperties(string search, IEnumerable<IqlPropertyPath> properties, bool? splitIntoTerms = null);
         IDbQueryable SearchWithTerms(IqlSearchText searchTerms, IqlSearchKind searchKind);
         IDbQueryable SearchForDisplayFormatterWithTerms(IqlSearchText searchTerms, IEntityDisplayTextFormatter formatter = null);
-        IDbQueryable SearchPropertiesWithTerms(IqlSearchText searchTerms, IEnumerable<IProperty> properties);
+        IDbQueryable SearchPropertiesWithTerms(IqlSearchText searchTerms, IEnumerable<IqlPropertyPath> properties);
         DataTracker DataTracker { get; }
         Func<IDataStore> DataStoreGetter { get; set; }
         IDataContext DataContext { get; set; }

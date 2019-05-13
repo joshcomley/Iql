@@ -141,51 +141,28 @@ namespace Iql.Data.Context
             {
                 return null;
             }
-            var thisEndConstraints = property.Relationship.ThisEnd.Constraints.ToArray();
-            var otherEndConstraints = property.Relationship.OtherEnd.Constraints.ToArray();
-            var compositeKey = new CompositeKey(EntityConfiguration.TypeName, thisEndConstraints.Length);
-            for (var i = 0; i < thisEndConstraints.Length; i++)
-            {
-                compositeKey.Keys[i] = new KeyValue(otherEndConstraints[i].Name,
-                    thisEndConstraints[i].GetValue(entity),
-                    thisEndConstraints[i].TypeDefinition);
-            }
-            return await LoadRelationshipPropertyInternalAsync(property, queryFilter, compositeKey);
+            return await LoadRelationshipPropertyInternalAsync(property, queryFilter, entity);
         }
 
         private async Task<IList> LoadRelationshipPropertyInternalAsync(
-            IProperty property, Func<IDbQueryable, IDbQueryable> queryFilter,
-            CompositeKey compositeKey)
+            IProperty property, 
+            Func<IDbQueryable, IDbQueryable> queryFilter,
+            object entity)
         {
-            var otherDbSet = DataContext.GetDbSetByEntityType(property.Relationship.OtherEnd.Type);
-            var root = new IqlRootReferenceExpression();
-            var expressions = new List<IqlExpression>();
-            for (var i = 0; i < compositeKey.Keys.Length; i++)
-            {
-                expressions.Add(new IqlIsEqualToExpression(
-                    new IqlPropertyExpression(compositeKey.Keys[i].Name, root),
-                    new IqlLiteralExpression(compositeKey.Keys[i].Value)
-                ));
-            }
-            var iqlLambdaExpression = new IqlLambdaExpression
-            {
-                Body = expressions.And(),
-                Parameters = new List<IqlRootReferenceExpression>()
-            };
-            iqlLambdaExpression.Parameters.Add(new IqlRootReferenceExpression());
-            var query = (IDbQueryable)otherDbSet.WhereEquals(iqlLambdaExpression);
+            var query = DataContext.RelationshipPropertyQuery(entity, property);
             if (queryFilter != null)
             {
                 query = queryFilter(query);
             }
-            return (IList)await query.ToListAsync();
+            return await query.ToListAsync();
         }
 
         async Task<IList> IDbQueryable.LoadRelationshipAsync(object entity, Expression<Func<object, object>> relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null)
         {
-            return await LoadRelationshipPropertyAsync((T)entity, DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType())
-                .FindPropertyByLambdaExpression(relationship),
-                queryFilter);
+            return await LoadRelationshipPropertyInternalAsync(
+                DataContext.EntityConfigurationContext.GetEntityByType(entity.GetType()).FindPropertyByLambdaExpression(relationship),
+                queryFilter,
+                entity);
         }
 
         public async Task<Dictionary<IProperty, IList>> LoadRelationshipsAsync(T entity, IEnumerable<EntityRelationship> relationships)
@@ -253,9 +230,9 @@ namespace Iql.Data.Context
             return WhereEquals(EntityConfiguration.BuildSearchKeyQuery(keys));
         }
 
-        public DbQueryable<T> Search(string search, IqlSearchKind searchKind = IqlSearchKind.Primary, bool? splitIntoTerms = null)
+        public DbQueryable<T> Search(string search, IqlSearchKind searchKind = IqlSearchKind.Primary, bool? splitIntoTerms = null, IEnumerable<IqlPropertyPath> excludeProperties = null)
         {
-            return WhereEquals(EntityConfiguration.BuildSearchQuery(search, searchKind, splitIntoTerms ?? false));
+            return WhereEquals(EntityConfiguration.BuildSearchQuery(search, searchKind, splitIntoTerms ?? false, excludeProperties));
         }
 
         IDbQueryable IDbQueryable.Search(string search, IqlSearchKind searchKind, bool? splitIntoTerms = null)
@@ -276,12 +253,12 @@ namespace Iql.Data.Context
             return SearchForDisplayFormatter(search, formatter, splitIntoTerms ?? false);
         }
 
-        public DbQueryable<T> SearchProperties(string search, IEnumerable<IProperty> searchFields, bool? splitIntoTerms = null)
+        public DbQueryable<T> SearchProperties(string search, IEnumerable<IqlPropertyPath> searchFields, bool? splitIntoTerms = null)
         {
             return WhereEquals(IqlQueryBuilder.BuildSearchQueryForProperties(search, searchFields, splitIntoTerms ?? false));
         }
 
-        IDbQueryable IDbQueryable.SearchProperties(string search, IEnumerable<IProperty> properties, bool? splitIntoTerms = null)
+        IDbQueryable IDbQueryable.SearchProperties(string search, IEnumerable<IqlPropertyPath> properties, bool? splitIntoTerms = null)
         {
             return SearchProperties(search, properties, splitIntoTerms ?? false);
         }
@@ -310,12 +287,12 @@ namespace Iql.Data.Context
             return SearchForDisplayFormatterWithTerms(searchTerms, formatter);
         }
 
-        public DbQueryable<T> SearchPropertiesWithTerms(IqlSearchText searchTerms, IEnumerable<IProperty> searchFields)
+        public DbQueryable<T> SearchPropertiesWithTerms(IqlSearchText searchTerms, IEnumerable<IqlPropertyPath> searchFields)
         {
             return WhereEquals(IqlQueryBuilder.BuildSearchQueryForPropertiesWithTerms(searchTerms, searchFields));
         }
 
-        IDbQueryable IDbQueryable.SearchPropertiesWithTerms(IqlSearchText searchTerms, IEnumerable<IProperty> properties)
+        IDbQueryable IDbQueryable.SearchPropertiesWithTerms(IqlSearchText searchTerms, IEnumerable<IqlPropertyPath> properties)
         {
             return SearchPropertiesWithTerms(searchTerms, properties);
         }
@@ -602,10 +579,10 @@ namespace Iql.Data.Context
                 : descending.Value;
             if (string.IsNullOrWhiteSpace(resolvedSort))
             {
-                var sortProperty = (EntityConfiguration.ResolveSearchProperties().FirstOrDefault() ??
-                                    EntityConfiguration.Key.Properties.FirstOrDefault() ??
-                                    EntityConfiguration.Properties.FirstOrDefault());
-                resolvedSort = sortProperty?.Name;
+                var sortProperty = (EntityConfiguration.ResolveSearchProperties().FirstOrDefault()?.PathToHere ??
+                                    EntityConfiguration.Key.Properties.FirstOrDefault()?.PropertyName ??
+                                    EntityConfiguration.Properties.FirstOrDefault()?.PropertyName);
+                resolvedSort = sortProperty;
             }
             if (string.IsNullOrWhiteSpace(resolvedSort))
             {

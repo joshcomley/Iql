@@ -1500,6 +1500,11 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 groupSb.Append(
                     $"{nameof(IEntityMetadata.Geographics)}[{entityMetadata.Geographics.IndexOf(propertyGroup as IGeographicPoint)}]");
             }
+            else if (propertyGroup is IFile)
+            {
+                groupSb.Append(
+                    $"{nameof(IEntityMetadata.Files)}[{entityMetadata.Files.IndexOf(propertyGroup as IFile)}]");
+            }
             else if (propertyGroup is INestedSet)
             {
                 groupSb.Append(
