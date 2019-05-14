@@ -48,7 +48,6 @@ namespace IqlSampleApp.Data.Configuration.Entities
                         _ => _.FindPropertyByExpression(s => s.Location)
                     );
                 });
-
             var areas = sites.FindCollectionRelationship(_ => _.Areas);
             //areas.CanWrite = true;
             areas.EditKind = PropertyEditKind.Edit;
