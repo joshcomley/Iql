@@ -736,6 +736,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
+                p.EditKind = PropertyEditKind.Display;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "EmailConfirmed";
                 p.Title = "EmailConfirmed";
@@ -754,6 +755,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
+                p.EditKind = PropertyEditKind.Display;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "PhoneNumberConfirmed";
                 p.Title = "PhoneNumberConfirmed";
@@ -763,6 +765,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
+                p.EditKind = PropertyEditKind.Display;
                 p.Kind = PropertyKind.Primitive;
                 p.Name = "TwoFactorEnabled";
                 p.Title = "TwoFactorEnabled";
@@ -1651,6 +1654,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -1742,6 +1749,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineCollectionProperty(p => p.Categories, p => p.CategoriesCount).ConfigureProperty(p => p.Categories, p => {
                 p.PropertyName = "Categories";
                 p.Nullable = false;
@@ -2352,6 +2363,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -2425,6 +2440,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineCollectionProperty(p => p.Documents, p => p.DocumentsCount).ConfigureProperty(p => p.Documents, p => {
                 p.PropertyName = "Documents";
                 p.Nullable = false;
@@ -2732,6 +2751,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -2823,6 +2846,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             });
             builder.EntityType<SiteDocument>().HasOne(p => p.Category).WithMany(p => p.Documents).WithConstraint(p => p.CategoryId, p => p.Id);
             builder.EntityType<SiteDocument>().HasOne(p => p.Site).WithMany(p => p.Documents).WithConstraint(p => p.SiteId, p => p.Id);
@@ -3114,6 +3141,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -3196,6 +3227,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefinePropertyValidation(p => p.Notes, entity => (((entity.Notes == null ? null : entity.Notes.ToUpper()) != null) || ((entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()))), "Please enter some actions taken notes", "6").DefinePropertyValidation(p => p.Notes, entity => (entity.Notes.Length > 5), "Please enter at least five characters for notes", "7");
             builder.EntityType<ReportActionsTaken>().HasOne(p => p.PersonReport).WithMany(p => p.ActionsTaken).WithConstraint(p => p.FaultReportId, p => p.Id);
             builder.EntityType<ReportActionsTaken>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultActionsTakenCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
@@ -3477,6 +3512,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -3550,6 +3589,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineCollectionProperty(p => p.ReportTypes, p => p.ReportTypesCount).ConfigureProperty(p => p.ReportTypes, p => {
                 p.PropertyName = "ReportTypes";
                 p.Nullable = false;
@@ -3848,6 +3891,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -3921,6 +3968,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineCollectionProperty(p => p.Recommendations, p => p.RecommendationsCount).ConfigureProperty(p => p.Recommendations, p => {
                 p.PropertyName = "Recommendations";
                 p.Nullable = false;
@@ -4228,6 +4279,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -4319,6 +4374,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             });
             builder.EntityType<ReportRecommendation>().HasOne(p => p.PersonReport).WithMany(p => p.Recommendations).WithConstraint(p => p.ReportId, p => p.Id);
             builder.EntityType<ReportRecommendation>().HasOne(p => p.Recommendation).WithMany(p => p.Recommendations).WithConstraint(p => p.RecommendationId, p => p.Id);
@@ -4610,6 +4669,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -4692,6 +4755,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineCollectionProperty(p => p.FaultReports, p => p.FaultReportsCount).ConfigureProperty(p => p.FaultReports, p => {
                 p.PropertyName = "FaultReports";
                 p.Nullable = false;
@@ -4991,6 +5058,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -5064,6 +5135,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             });
             builder.EntityType<Project>().HasOne(p => p.CreatedByUser).WithMany(p => p.ProjectCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<Project>().Configure(p => {
@@ -5353,6 +5428,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -5435,6 +5514,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             });
             builder.EntityType<ReportReceiverEmailAddress>().HasOne(p => p.Site).WithMany(p => p.AdditionalSendReportsTo).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<ReportReceiverEmailAddress>().HasOne(p => p.CreatedByUser).WithMany(p => p.ReportReceiverEmailAddressesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
@@ -5716,6 +5799,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -5798,6 +5885,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineProperty(p => p.RiskAssessmentSolution, false, IqlType.Unknown).ConfigureProperty(p => p.RiskAssessmentSolution, p => {
                 p.PropertyName = "RiskAssessmentSolution";
                 p.Nullable = false;
@@ -6088,6 +6179,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -6170,6 +6265,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             });
             builder.EntityType<RiskAssessmentSolution>().HasOne(p => p.RiskAssessment).WithOne(p => p.RiskAssessmentSolution).WithConstraint(p => p.RiskAssessmentId, p => p.Id);
             builder.EntityType<RiskAssessmentSolution>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentSolutionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
@@ -6362,6 +6461,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -6444,6 +6547,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             });
             builder.EntityType<RiskAssessmentAnswer>().HasOne(p => p.Question).WithMany(p => p.Answers).WithConstraint(p => p.QuestionId, p => p.Id);
             builder.EntityType<RiskAssessmentAnswer>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentAnswersCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
@@ -6725,6 +6832,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -6807,6 +6918,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             });
             builder.EntityType<RiskAssessmentQuestion>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentQuestionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<RiskAssessmentQuestion>().Configure(p => {
@@ -7746,6 +7861,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -7916,6 +8035,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineCollectionProperty(p => p.Types, p => p.TypesCount).ConfigureProperty(p => p.Types, p => {
                 p.PropertyName = "Types";
                 p.Nullable = false;
@@ -8291,6 +8414,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -8373,6 +8500,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             });
             builder.EntityType<PersonInspection>().HasOne(p => p.SiteInspection).WithMany(p => p.PersonInspections).WithConstraint(p => p.SiteInspectionId, p => p.Id);
             builder.EntityType<PersonInspection>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonInspectionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
@@ -8654,6 +8785,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -8736,6 +8871,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefinePropertyValidation(p => p.Name, entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()))), "Please enter a loading name", "3");
             builder.EntityType<PersonLoading>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonLoadingsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<PersonLoading>().Configure(p => {
@@ -9016,6 +9155,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -9098,6 +9241,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineCollectionProperty(p => p.PeopleMap, p => p.PeopleMapCount).ConfigureProperty(p => p.PeopleMap, p => {
                 p.PropertyName = "PeopleMap";
                 p.Nullable = false;
@@ -9358,6 +9505,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.Person, false, IqlType.Unknown).ConfigureProperty(p => p.Person, p => {
                 p.PropertyName = "Person";
                 p.Nullable = false;
@@ -9683,6 +9834,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -9792,6 +9947,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a valid report title", "4").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 5)), "Please enter less than five characters", "5");
             builder.EntityType<PersonReport>().HasOne(p => p.Person).WithMany(p => p.Reports).WithConstraint(p => p.PersonId, p => p.Id);
             builder.EntityType<PersonReport>().HasOne(p => p.Type).WithMany(p => p.FaultReports).WithConstraint(p => p.TypeId, p => p.Id);
@@ -10329,6 +10488,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -10456,6 +10619,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineCollectionProperty(p => p.Areas, p => p.AreasCount).ConfigureProperty(p => p.Areas, p => {
                 p.PropertyName = "Areas";
                 p.Nullable = false;
@@ -10772,6 +10939,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -10863,7 +11034,11 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
-            });
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
+            }).DefineDisplayFormatter(entity => (((entity.Site == null) ? "no site" : entity.Site.Name) + ((entity.CreatedByUser == null) ? "" : (" - " + entity.CreatedByUser.FullName))), "Default");
             builder.EntityType<SiteArea>().HasOne(p => p.Site).WithMany(p => p.Areas).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<SiteArea>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteAreasCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
             builder.EntityType<SiteArea>().Configure(p => {
@@ -11055,6 +11230,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -11155,6 +11334,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineDisplayFormatter(entity => (((((entity.Site.Name + " - ") + entity.EndTime) + " (") + ((entity.CreatedByUser == null) ? "no creator" : entity.CreatedByUser.FullName)) + ")"), "Default");
             builder.EntityType<SiteInspection>().HasOne(p => p.Site).WithMany(p => p.SiteInspections).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<SiteInspection>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteInspectionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
@@ -11470,6 +11653,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
                 p.FriendlyName = "Created Date";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedDate"
+                });
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
                 p.PropertyName = "RevisionKey";
                 p.Nullable = true;
@@ -11543,6 +11730,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
                 p.FriendlyName = "Created By User";
+                p.Hints = new List<string>(new[]
+                {
+                    "IsKnownProperty:CreatedByUser"
+                });
             }).DefineProperty(p => p.User, false, IqlType.Unknown).ConfigureProperty(p => p.User, p => {
                 p.PropertyName = "User";
                 p.Nullable = true;

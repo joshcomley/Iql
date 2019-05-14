@@ -67,6 +67,23 @@ namespace Iql.Tests.Tests.DisplayFormatting
         }
 
         [TestMethod]
+        public void TestDisplayFormatterWithDirectInterception()
+        {
+            var siteArea = new SiteArea();
+            siteArea.Id = 7;
+            siteArea.CreatedByUser = new ApplicationUser
+            {
+                FullName = "Name 1"
+            };
+            siteArea.Site = new Site {Name = "Site 1"};
+            // Type.CreatedByUser.Client.Name
+            var formatter = (IEntityDisplayTextFormatter)Db.EntityConfigurationContext.EntityType<SiteArea>().DisplayFormatting.Get();
+            var formatted = formatter
+                .FormatAndIntercept(siteArea, (context, expression, obj) => { return context.Format(expression, obj); });
+            Assert.AreEqual($"Site 1 - Name 1", formatted);
+        }
+
+        [TestMethod]
         public void TestDisplayFormatterWithInterceptionLongInline()
         {
             var person = new Person();
