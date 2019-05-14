@@ -28,7 +28,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             var isiteUrl = "http://localhost:48000/odata/$metadata";
             var iqlUrl = "http://localhost:28000/odata/$metadata";
             var hazceptionUrl = "http://localhost:58000/odata/$metadata";
-            switch ("todoot")
+            switch ("isite")
             {
                 case "todoot":
                     await GenerateWebAndMobile(
@@ -46,7 +46,9 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                 case "isite":
                     // D:\Code\Playgrounds\lazyNinjas
                     //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
-                    await GenerateWebAndMobile(isiteUrl, @"D:\Code\i-site\Code\Web", @"D:\Code\i-site\Code\Mobile\i-site");
+                    await GenerateWebAndMobile(isiteUrl,
+                        @"D:\Code\i-site\Code\Web\ClientApp\app\generated\DataContext",
+                        @"D:\Code\i-site\Code\Mobile\i-site\src\app\generated\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
                     //isiteSettings.GenerateCountProperties = false;
                     //isiteSettings.GenerateEntities = false;

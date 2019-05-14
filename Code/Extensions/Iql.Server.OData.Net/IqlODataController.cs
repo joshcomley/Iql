@@ -61,6 +61,17 @@ namespace Iql.Server.OData.Net
                                                                                          MediaManager,
                                                                                          Crud.Unsecured.Context);
 
+        private TUser _loggedInUser;
+        public virtual async Task<TUser> GetLoggedInUserAsync()
+        {
+            if (User?.Identity == null)
+            {
+                return null;
+            }
+            _loggedInUser = _loggedInUser ?? await UserManager.FindByNameAsync(User.Identity.Name);
+            return _loggedInUser;
+        }
+
         [ODataGenericAction(ForTypeTypeParameterName = nameof(TModel), BindingName = "keys")]
         public virtual async Task<IActionResult> IncrementVersion([ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] keys, [FromBody]IncrementVersionModel model)
         {
