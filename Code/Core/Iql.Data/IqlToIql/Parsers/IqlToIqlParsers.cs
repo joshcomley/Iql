@@ -12,14 +12,6 @@ namespace Iql.Data.IqlToIql.Parsers
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlLiteralExpression action, IqlToIqlParserContext parser)
         {
-            if (action.Kind == IqlExpressionKind.Variable)
-            {
-                var variableExpression = (IqlVariableExpression)action;
-                if (variableExpression.VariableName.Contains("CurrentUser"))
-                {
-                    int a = 0;
-                }
-            }
             var value = action.Value;
             if (value is IqlExpression)
             {

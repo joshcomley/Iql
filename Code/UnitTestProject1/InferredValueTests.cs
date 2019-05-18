@@ -10,12 +10,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Iql.Tests.Server
 {
     [TestClass]
-    public class InferredValueTests : ServerTestsBase
+    public class InferredValueTestsUserSetting : ServerTestsBase<UserSetting>
     {
         [TestMethod]
         public async Task InferValuesForUserSettings()
         {
-            var controller = ControllerContext<UserSetting>();
+            var controller = ControllerContext();
             var dbObject = new UserSetting
             {
                 Key1 = "Abc",
@@ -35,13 +35,23 @@ namespace Iql.Tests.Server
                     ResolveServiceProviderProvider());
             Assert.AreNotEqual(default(DateTimeOffset), dbObject.CreatedDate);
         }
+    }
 
+    [TestClass]
+    public class InferredValueTests : ServerTestsBase<Person>
+    {
         [TestMethod]
         public async Task InferValuesForPersonWithBirthdayNotSet()
         {
-            var controller = ControllerContext<Person>();
+            var client = Client;
+            var controller = ControllerContext();
             var dbObject = new Person();
             controller.ServerEvaluator.MarkAsUnsaved(dbObject);
+            ServerTestCurrentUserService.RegisterUser("testuser", new ApplicationUser
+            {
+                UserName = "testuser",
+                ClientId = client.Id
+            });
             Assert.AreEqual(default(DateTimeOffset), dbObject.CreatedDate);
             Assert.AreEqual(null, dbObject.Birthday);
             Assert.AreNotEqual(PersonCategory.Conventional, dbObject.Category);
@@ -55,6 +65,9 @@ namespace Iql.Tests.Server
                 ResolveServiceProviderProvider());
             Assert.AreNotEqual(default(DateTimeOffset), dbObject.CreatedDate);
             Assert.AreEqual(null, dbObject.Birthday);
+            Assert.AreEqual(client.Id, dbObject.InferredFromUserClientId);
+            Assert.IsNotNull(dbObject.InferredFromUserClient);
+            Assert.AreEqual(null, dbObject.Birthday);
             Assert.AreEqual(PersonSkills.Coder, dbObject.Skills);
             Assert.AreEqual(PersonCategory.Conventional, dbObject.Category);
         }
@@ -62,7 +75,7 @@ namespace Iql.Tests.Server
         [TestMethod]
         public async Task InferValuesForPersonWithBirthdaySet()
         {
-            var controller = ControllerContext<Person>();
+            var controller = ControllerContext();
             controller.EntityConfiguration.ConfigureProperty(p => p.Skills, p =>
             {
                 p.IsInferredWith(_ => PersonSkills.Coder,

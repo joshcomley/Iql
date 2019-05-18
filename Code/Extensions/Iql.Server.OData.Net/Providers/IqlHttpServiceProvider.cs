@@ -1,4 +1,5 @@
-﻿using Iql.Entities.Services;
+﻿using Iql.Data.Evaluation;
+using Iql.Entities.Services;
 
 namespace Iql.Server.OData.Net
 {
@@ -11,6 +12,8 @@ namespace Iql.Server.OData.Net
         {
             Context = context;
             RegisterInstance(new IqlHttpCurrentUserService<TUser>(context));
+            RegisterInstance(context.DataEvaluator);
+            RegisterInstance(context.CurrentUserService);
         }
     }
 }

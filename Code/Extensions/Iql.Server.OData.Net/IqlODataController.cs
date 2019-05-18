@@ -319,10 +319,19 @@ namespace Iql.Server.OData.Net
 
         public virtual IServiceProviderProvider ResolveServiceProviderProvider()
         {
-            return new IqlHttpServiceProviderProvider<TUser>(
-                new IqlHttpServiceProviderContext(
-                    HttpContext,
-                    ResolverUserIdByName));
+            var context = new IqlHttpServiceProviderContext(
+                HttpContext,
+                EntityConfiguration.Builder,
+                ResolverUserIdByName,
+                NewDataEvaluator(),
+                null);
+            context.CurrentUserService = NewCurrentUserService(context);
+            return new IqlHttpServiceProviderProvider<TUser>(context);
+        }
+
+        public virtual IqlCurrentUserService NewCurrentUserService(IqlHttpServiceProviderContext context)
+        {
+            return new IqlHttpCurrentUserService<TUser>(context);
         }
 
         public virtual Task<object> ResolverUserIdByName(string name)

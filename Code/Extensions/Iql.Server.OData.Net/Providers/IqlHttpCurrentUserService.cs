@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Iql.Data.Evaluation;
+using Iql.Entities;
 using Iql.Entities.Services;
 using Iql.Parsing.Evaluation;
 
@@ -16,9 +19,25 @@ namespace Iql.Server.OData.Net
             Context = context;
         }
 
-        public override Task<IqlObjectEvaluationResult> ResolveCurrentUserAsync(IqlServiceProvider serviceProvider)
+        public override async Task<IqlObjectEvaluationResult> ResolveCurrentUserAsync(IqlServiceProvider serviceProvider)
         {
-            throw new System.NotImplementedException();
+            var evaluator = serviceProvider.Resolve<IIqlDataEvaluator>();
+            var userIdResult = await ResolveCurrentUserIdAsync(serviceProvider);
+            if (!Equals(null, userIdResult) && !Equals(null, userIdResult.Result))
+            {
+                var entityConfiguration = Context.EntityConfigurationBuilder.EntityType<TUser>();
+                var user = await ResolveUserByIdAsync(evaluator, entityConfiguration, userIdResult.Result);
+                return new IqlObjectEvaluationResult(user != null, user);
+            }
+            return new IqlObjectEvaluationResult(false, null);
+        }
+
+        protected virtual async Task<object> ResolveUserByIdAsync(IIqlDataEvaluator evaluator, EntityConfiguration<TUser> entityConfiguration,
+            object userId)
+        {
+            var user = await evaluator.GetEntityByKeyAsync(entityConfiguration,
+                CompositeKey.Ensure(userId, entityConfiguration), new string[] { }, false);
+            return user;
         }
 
         public override async Task<IqlObjectEvaluationResult> ResolveCurrentUserIdAsync(IqlServiceProvider serviceProvider)

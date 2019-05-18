@@ -11,12 +11,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Iql.Tests.Server
 {
     [TestClass]
-    public class PermissionsTests : ServerTestsBase
+    public class PermissionsTests : ServerTestsBase<Client>
     {
         [TestMethod]
         public async Task TestSimplePermissionRule()
         {
-            var controller = ControllerContext<Client>();
+            var controller = ControllerContext();
             var clientConfiguration = controller.EntityConfiguration;
             var rule =
                 clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestSimplePermissionRule), _ => IqlUserPermission.Read);
@@ -36,7 +36,7 @@ namespace Iql.Tests.Server
         [TestMethod]
         public async Task TestComplexPermissionRule()
         {
-            var controller = ControllerContext<Client>();
+            var controller = ControllerContext();
             var clientConfiguration = controller.EntityConfiguration;
             var rule =
                 clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestComplexPermissionRule), context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None
@@ -69,7 +69,7 @@ namespace Iql.Tests.Server
         [TestMethod]
         public async Task TestConvolutedPermissionRuleOnNewEntity()
         {
-            var controller = ControllerContext<Client>();
+            var controller = ControllerContext();
             var clientConfiguration = controller.EntityConfiguration;
             var db = controller.CrudBase.NewUnsecuredDb();
             var cloudDb = controller.CrudBase.NewUnsecuredDb();
@@ -217,7 +217,7 @@ namespace Iql.Tests.Server
         [TestMethod]
         public async Task TestPermissionRuleOnChildCollectionOnExistingEntity()
         {
-            var controller = ControllerContext<Client>();
+            var controller = ControllerContext();
             var clientConfiguration = controller.EntityConfiguration;
             var db = controller.CrudBase.NewUnsecuredDb();
             var cloudDb = controller.CrudBase.NewUnsecuredDb();
@@ -323,7 +323,7 @@ namespace Iql.Tests.Server
         [TestMethod]
         public async Task TestPermissionRuleOnChildCollectionOnExistingEntity2()
         {
-            var controller = ControllerContext<Client>();
+            var controller = ControllerContext();
             var clientConfiguration = controller.EntityConfiguration;
             var db = controller.CrudBase.NewUnsecuredDb();
             var cloudDb = controller.CrudBase.NewUnsecuredDb();
