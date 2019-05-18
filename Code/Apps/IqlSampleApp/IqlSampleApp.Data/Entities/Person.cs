@@ -18,6 +18,8 @@ namespace IqlSampleApp.Data.Entities
     {
         public string PhotoUrl { get; set; }
         public string PhotoRevisionKey { get; set; }
+        public int? InferredFromUserClientId { get; set; }
+        public Client InferredFromUserClient { get; set; }
         public DateTimeOffset? Birthday { get; set; }
         public Site Site { get; set; }
         public int? SiteId { get; set; }

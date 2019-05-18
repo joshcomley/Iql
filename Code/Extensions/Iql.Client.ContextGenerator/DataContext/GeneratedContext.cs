@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Threading;
 
 namespace Iql.OData.TypeScript.Generator.DataContext
 {
@@ -40,23 +42,37 @@ namespace Iql.OData.TypeScript.Generator.DataContext
 
         private static void ClearFolder(string path)
         {
-            if (Directory.Exists(path))
+            while (true)
             {
-                var di = new DirectoryInfo(path);
-                foreach (FileInfo file in di.GetFiles())
+                try
                 {
-                    file.Delete();
-                }
+                    if (Directory.Exists(path))
+                    {
+                        var di = new DirectoryInfo(path);
+                        foreach (FileInfo file in di.GetFiles())
+                        {
+                            file.Delete();
+                        }
 
-                foreach (DirectoryInfo dir in di.GetDirectories())
+                        foreach (DirectoryInfo dir in di.GetDirectories())
+                        {
+                            dir.Delete(true);
+                        }
+                    }
+
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+
+                    break;
+                }
+                catch (IOException e)
                 {
-                    dir.Delete(true);
+                    Thread.Sleep(5000);
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Trying again in 5 seconds");
                 }
-            }
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
             }
         }
     }

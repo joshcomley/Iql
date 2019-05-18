@@ -2783,6 +2783,15 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "ClientId", _clientId, value, _propertyChanging, _propertyChanged, newValue => this._clientId = newValue);
             }
         }
+        protected int ? _inferredFromUserClientId;
+        public int ? InferredFromUserClientId
+        {
+            get => _inferredFromUserClientId;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "InferredFromUserClientId", _inferredFromUserClientId, value, _propertyChanging, _propertyChanged, newValue => this._inferredFromUserClientId = newValue);
+            }
+        }
         protected int ? _siteId;
         public int ? SiteId
         {
@@ -2979,6 +2988,15 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "Client", _client, value, _propertyChanging, _propertyChanged, newValue => this._client = newValue);
+            }
+        }
+        protected Client _inferredFromUserClient;
+        public Client InferredFromUserClient
+        {
+            get => _inferredFromUserClient;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "InferredFromUserClient", _inferredFromUserClient, value, _propertyChanging, _propertyChanged, newValue => this._inferredFromUserClient = newValue);
             }
         }
         protected Site _site;
@@ -4700,6 +4718,24 @@ namespace IqlSampleApp.Data.Entities
             set
             {
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "People", _people, value, _propertyChanging, _propertyChanged, newValue => this._people = newValue);
+            }
+        }
+        public Int64 InferredPeopleCount
+        {
+            get;
+            set;
+        }
+        protected RelatedList<Client, Person>_inferredPeople;
+        public RelatedList<Client, Person>InferredPeople
+        {
+            get
+            {
+                this._inferredPeople = this._inferredPeople ?? new RelatedList<Client, Person>(this, nameof(InferredPeople));
+                return _inferredPeople;
+            }
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "InferredPeople", _inferredPeople, value, _propertyChanging, _propertyChanged, newValue => this._inferredPeople = newValue);
             }
         }
         public Int64 SitesCount

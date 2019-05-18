@@ -251,8 +251,8 @@ namespace Iql.Entities
             var list = new List<IqlPropertyExpression>();
             list.Add(propertyExpression);
             var parent = propertyExpression.Parent;
-            IqlVariableExpression lastRootReference = null;
-            while (parent != null && (parent.Kind == IqlExpressionKind.Property || parent.Kind == IqlExpressionKind.RootReference || parent.Kind == IqlExpressionKind.Variable))
+            IqlLiteralExpression lastRootReference = null;
+            while (parent != null && (parent.Kind == IqlExpressionKind.Property || parent.Kind == IqlExpressionKind.RootReference || parent.Kind == IqlExpressionKind.Variable || parent.Kind == IqlExpressionKind.Literal))
             {
                 if (parent.Kind == IqlExpressionKind.RootReference)
                 {
@@ -274,6 +274,21 @@ namespace Iql.Entities
                     if (resolvedType != null)
                     {
                         lastRootReference = variableExpression;
+                    }
+                    break;
+                }
+                else if (parent.Kind == IqlExpressionKind.Literal)
+                {
+                    var literalExpression = (IqlLiteralExpression)parent;
+                    if (literalExpression.Value == null)
+                    {
+                        return null;
+                    }
+                    var resolvedType = typeResolver.FindTypeByType(literalExpression.Value.GetType());
+                    if (resolvedType != null)
+                    {
+                        entityConfigurationContext = resolvedType;
+                        lastRootReference = literalExpression;
                     }
                     break;
                 }

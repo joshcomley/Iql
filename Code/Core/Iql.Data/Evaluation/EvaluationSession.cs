@@ -200,7 +200,14 @@ namespace Iql.Data.Evaluation
             {
                 processResult.lookup[item] = item.Evaluate(entity) ?? ResolveNull(item, processResult.propertyExpressions.First(_ => _.Expression == item.Expression));
             }
-            var value = Finalise(entity, typeResolver, processResult.lookup, iql, processResult.propertyExpressions);
+            var value = await FinaliseAsync(
+                entity, 
+                entityType,
+                serviceProviderProvider,
+                typeResolver, 
+                processResult.lookup, 
+                iql, 
+                processResult.propertyExpressions);
             return new IqlObjectEvaluationResult(processResult.Success, value);
         }
 
@@ -328,7 +335,9 @@ namespace Iql.Data.Evaluation
         //    return ProcessIqlExpression(iql, entityType, dataContext, out propertyExpressions, out lookup);
         //}
 
-        private static object Finalise(object entity,
+        private static async Task<object> FinaliseAsync(object entity,
+            Type contextType,
+            IServiceProviderProvider serviceProviderProvider,
             ITypeResolver typeResolver,
             Dictionary<IqlPropertyPath, object> lookup,
             IqlExpression iql,
@@ -354,6 +363,12 @@ namespace Iql.Data.Evaluation
 
                 return iqlExpression;
             });
+            //var resolvedType = typeResolver.FindTypeByType(contextType);
+            //processedIql = (await processedIql.ProcessAsync(
+            //    resolvedType,
+            //    typeResolver,
+            //    serviceProviderProvider,
+            //    true)).Result;
             var processedLambda = IqlConverter.Instance.ConvertIqlToLambdaExpression(processedIql, typeResolver);
             var compiledLambda = processedLambda.Compile();
             object result = null;
@@ -529,9 +544,15 @@ namespace Iql.Data.Evaluation
             for (var i = 0; i < flattenedExpressions.Length; i++)
             {
                 var propertyPath = keys[i];
+                var root = flattenedExpressions[i].Expression.RootExpression();
+                var thisContext = context;
+                if (root != null && root.Kind == IqlExpressionKind.Literal)
+                {
+                    thisContext = ((IqlLiteralExpression) root).Value;
+                }
                 var evaluationResult = await EvaluateCustomAsync(
                     propertyPath,
-                    context,
+                    thisContext,
                     dataEvaluator,
                     populatePath,
                     replacements);
@@ -547,7 +568,13 @@ namespace Iql.Data.Evaluation
                 }
             }
 
-            var finalResult = Finalise(context, typeResolver, processResult.lookup, processResult.expression,
+            var finalResult = await FinaliseAsync(
+                context,
+                contextType,
+                serviceProviderProvider,
+                typeResolver, 
+                processResult.lookup, 
+                processResult.expression,
                 processResult.propertyExpressions);
             return new IqlExpressonEvaluationResult(success, finalResult, paths);
         }

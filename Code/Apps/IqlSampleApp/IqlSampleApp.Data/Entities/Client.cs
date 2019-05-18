@@ -16,6 +16,7 @@ namespace IqlSampleApp.Data.Entities
         public string Name { get; set; }
         public List<ApplicationUser> Users { get; set; }
         public List<Person> People { get; set; }
+        public List<Person> InferredPeople { get; set; }
         public List<Site> Sites { get; set; }
 
         [Required(ErrorMessage = "Please select a management type")]

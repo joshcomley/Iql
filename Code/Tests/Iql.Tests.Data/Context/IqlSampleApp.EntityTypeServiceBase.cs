@@ -538,6 +538,14 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Client_People = _Client_People ?? FindPropertyByName<Client>("People");
             }
         }
+        private IProperty _Client_InferredPeople = null;
+        public IProperty Client_InferredPeople
+        {
+            get
+            {
+                return _Client_InferredPeople = _Client_InferredPeople ?? FindPropertyByName<Client>("InferredPeople");
+            }
+        }
         private IProperty _Client_Sites = null;
         public IProperty Client_Sites
         {
@@ -1741,6 +1749,14 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Person_ClientId = _Person_ClientId ?? FindPropertyByName<Person>("ClientId");
             }
         }
+        private IProperty _Person_InferredFromUserClientId = null;
+        public IProperty Person_InferredFromUserClientId
+        {
+            get
+            {
+                return _Person_InferredFromUserClientId = _Person_InferredFromUserClientId ?? FindPropertyByName<Person>("InferredFromUserClientId");
+            }
+        }
         private IProperty _Person_SiteId = null;
         public IProperty Person_SiteId
         {
@@ -1915,6 +1931,14 @@ namespace IqlSampleApp.ApiContext.Base
             get
             {
                 return _Person_Client = _Person_Client ?? FindPropertyByName<Person>("Client");
+            }
+        }
+        private IProperty _Person_InferredFromUserClient = null;
+        public IProperty Person_InferredFromUserClient
+        {
+            get
+            {
+                return _Person_InferredFromUserClient = _Person_InferredFromUserClient ?? FindPropertyByName<Person>("InferredFromUserClient");
             }
         }
         private IProperty _Person_Site = null;

@@ -71,31 +71,79 @@ namespace Iql.DotNet.DotNetExpressionToIql
                 context.RootVariableNames.Add(parameterExpression.Name);
                 context.RootVariableTypes.Add(parameterExpression.Type);
             }
-            if (exp.NodeType != ExpressionType.Quote &&
-                exp.NodeType != ExpressionType.Convert &&
-                !context.ContainsRoot(exp))
+            IqlExpression result;
+            if (IsCurrentUserExpression(exp))
             {
-                var value = exp.GetValue();
-                var type = exp.Type;
-                if (value != null)
+                IqlReferenceExpression root = new IqlCurrentUserExpression();
+                var memberExpressions = new List<MemberExpression>();
+                while (exp is MemberExpression memberExpression)
                 {
-                    type = value.GetType();
+                    memberExpressions.Add(memberExpression);
+                    exp = memberExpression.Expression;
                 }
-                return new IqlLiteralExpression(value, type.ToIqlType());
+
+                memberExpressions.Reverse();
+                if (memberExpressions.Any())
+                {
+                    foreach (var memberExpression in memberExpressions)
+                    {
+                        root = new IqlPropertyExpression(memberExpression.Member.Name, root);
+                    }
+                }
+                result = root;
             }
-            var parser = parsers.FirstOrDefault(p => p.CanHandle(exp));
-            if (parser == null)
+            else
             {
-                throw Error.NotSupported("SRResources.UnsupportedExpressionNodeTypeWithName: {0}", exp.NodeType);
-            }
-            var result = parser.Parse(exp, context);
-            if (exp.NodeType == ExpressionType.Lambda)
-            {
-                context.RootVariableNames.RemoveAt(context.RootVariableNames.Count - 1);
-                context.RootVariableTypes.RemoveAt(context.RootVariableTypes.Count - 1);
+                if (exp.NodeType != ExpressionType.Quote &&
+                    exp.NodeType != ExpressionType.Convert &&
+                    !context.ContainsRoot(exp))
+                {
+                    var type = exp.Type;
+                    //try
+                    //{
+                    //    exp.GetValue();
+                    //}
+                    //catch
+                    //{
+                    //    IsCurrentUserExpression(exp);
+                    //}
+                    var value = exp.GetValue();
+                    if (value != null)
+                    {
+                        type = value.GetType();
+                    }
+                    return new IqlLiteralExpression(value, type.ToIqlType());
+                }
+                var parser = parsers.FirstOrDefault(p => p.CanHandle(exp));
+                if (parser == null)
+                {
+                    throw Error.NotSupported("SRResources.UnsupportedExpressionNodeTypeWithName: {0}", exp.NodeType);
+                }
+                result = parser.Parse(exp, context);
+                if (exp.NodeType == ExpressionType.Lambda)
+                {
+                    context.RootVariableNames.RemoveAt(context.RootVariableNames.Count - 1);
+                    context.RootVariableTypes.RemoveAt(context.RootVariableTypes.Count - 1);
+                }
             }
 
             return result;
+        }
+
+        private bool IsCurrentUserExpression(Expression exp)
+        {
+            while (exp is MemberExpression memberExpression)
+            {
+                exp = memberExpression.Expression;
+            }
+
+            var methodCallExpression = exp as MethodCallExpression;
+            if (methodCallExpression != null && methodCallExpression.Method.DeclaringType == typeof(IqlCurrentUser))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

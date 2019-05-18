@@ -1060,11 +1060,12 @@ namespace Iql.Tests.Tests
         {
             var client = await PrepLoadRelationshipsAsync();
             var result = await Db.LoadAllRelationshipsAsync(client);
-            Assert.AreEqual(6, result.Count);
+            Assert.AreEqual(7, result.Count);
             var clientConfig = Db.EntityConfigurationContext.EntityType<Client>();
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Users)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Sites)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Categories)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.InferredPeople)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.CreatedByUser)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Type)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.People)));
@@ -1084,9 +1085,10 @@ namespace Iql.Tests.Tests
         {
             var client = await PrepLoadRelationshipsAsync();
             var result = await Db.LoadAllRelationshipsAsync(client, LoadRelationshipMode.Collections);
-            Assert.AreEqual(4, result.Count);
+            Assert.AreEqual(5, result.Count);
             var clientConfig = Db.EntityConfigurationContext.EntityType<Client>();
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Users)));
+            Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.InferredPeople)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Categories)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.Sites)));
             Assert.IsTrue(result.ContainsKey(clientConfig.FindPropertyByExpression(c => c.People)));

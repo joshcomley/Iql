@@ -1771,6 +1771,15 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "People";
                 p.Title = "People";
                 p.FriendlyName = "People";
+            }).DefineCollectionProperty(p => p.InferredPeople, p => p.InferredPeopleCount).ConfigureProperty(p => p.InferredPeople, p => {
+                p.PropertyName = "InferredPeople";
+                p.Nullable = false;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = false;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "InferredPeople";
+                p.Title = "InferredPeople";
+                p.FriendlyName = "Inferred People";
             }).DefineCollectionProperty(p => p.Sites, p => p.SitesCount).ConfigureProperty(p => p.Sites, p => {
                 p.PropertyName = "Sites";
                 p.Nullable = false;
@@ -7097,6 +7106,59 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ClientId";
                 p.Title = "ClientId";
                 p.FriendlyName = "Client Id";
+            }).DefineProperty(p => p.InferredFromUserClientId, true, IqlType.Integer).ConfigureProperty(p => p.InferredFromUserClientId, p => {
+                p.PropertyName = "InferredFromUserClientId";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>
+                {
+                    new InferredValueConfiguration
+                    {
+                        Kind = InferredValueKind.InitializeOnly,
+                        CanOverride = false,
+                        ForNewOnly = true,
+                        InferredWithIql = new IqlLambdaExpression
+                        {
+                            Body = new IqlPropertyExpression
+                            {
+                                PropertyName = "Id",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlPropertyExpression
+                                {
+                                    PropertyName = "Client",
+                                    Kind = IqlExpressionKind.Property,
+                                    ReturnType = IqlType.Unknown,
+                                    Parent = new IqlCurrentUserExpression
+                                    {
+                                        CanFail = false,
+                                        Kind = IqlExpressionKind.CurrentUser,
+                                        ReturnType = IqlType.Unknown
+                                    }
+                                }
+                            },
+                            Parameters = new List<IqlRootReferenceExpression>
+                            {
+                                new IqlRootReferenceExpression
+                                {
+                                    EntityTypeName = "InferredValueContext<Person>",
+                                    VariableName = "_",
+                                    InferredReturnType = IqlType.Unknown,
+                                    Kind = IqlExpressionKind.RootReference,
+                                    ReturnType = IqlType.Unknown
+                                }
+                            },
+                            Kind = IqlExpressionKind.Lambda,
+                            ReturnType = IqlType.Unknown
+                        },
+                        OnPropertyChanges = new string[]
+                        {}
+                    }
+                };
+                p.CanWrite = true;
+                p.Kind = PropertyKind.RelationshipKey;
+                p.Name = "InferredFromUserClientId";
+                p.Title = "InferredFromUserClientId";
+                p.FriendlyName = "Inferred From User Client Id";
             }).DefineProperty(p => p.SiteId, true, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
                 p.PropertyName = "SiteId";
                 p.Nullable = true;
@@ -7990,6 +8052,15 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Client";
                 p.Title = "Client";
                 p.FriendlyName = "Client";
+            }).DefineProperty(p => p.InferredFromUserClient, true, IqlType.Unknown).ConfigureProperty(p => p.InferredFromUserClient, p => {
+                p.PropertyName = "InferredFromUserClient";
+                p.Nullable = true;
+                p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
+                p.CanWrite = true;
+                p.Kind = PropertyKind.Relationship;
+                p.Name = "InferredFromUserClient";
+                p.Title = "InferredFromUserClient";
+                p.FriendlyName = "Inferred From User Client";
             }).DefineProperty(p => p.Site, true, IqlType.Unknown).ConfigureProperty(p => p.Site, p => {
                 p.PropertyName = "Site";
                 p.Nullable = true;
@@ -8059,6 +8130,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.FriendlyName = "Reports";
             }).DefineEntityValidation(entity => ((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))) && (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))), "Please enter either a title or a description", "NoTitleOrDescription").DefineEntityValidation(entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == ("Josh" == null ? null : "Josh".ToUpper())) && ((entity.Description == null ? null : entity.Description.ToUpper()) != ("Josh" == null ? null : "Josh".ToUpper()))), "If the name is 'Josh' please match it in the description", "JoshCheck").DefineDisplayFormatter(entity => entity.Title, "Default").DefineDisplayFormatter(entity => (((entity.Title + " (") + entity.Id) + ")"), "Report").DefineRelationshipFilterRule(p => p.Site, entity => ((entity.Owner.ClientId == 0) ? (Expression<Func<Site, bool>>)(entity2 => true) : entity2 => (entity2.ClientId == entity.Owner.ClientId)), "1", "").DefineRelationshipFilterRule(p => p.Loading, entity => entity2 => ((entity2.Name == null ? null : entity2.Name.ToUpper()) == ("some constant" == null ? null : "some constant".ToUpper())), "2", "").DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person title", "EmptyTitle").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 50)), "Please enter less than fifty characters", "TitleMaxLength").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length < 3)), "Please enter at least three characters for the person's title", "TitleMinLength").DefinePropertyValidation(p => p.Description, entity => (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person description", "EmptyDescription");
             builder.EntityType<Person>().HasOne(p => p.Client).WithMany(p => p.People).WithConstraint(p => p.ClientId, p => p.Id);
+            builder.EntityType<Person>().HasOne(p => p.InferredFromUserClient).WithMany(p => p.InferredPeople).WithConstraint(p => p.InferredFromUserClientId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.Site).WithMany(p => p.People).WithConstraint(p => p.SiteId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.SiteArea).WithMany(p => p.People).WithConstraint(p => p.SiteAreaId, p => p.Id);
             builder.EntityType<Person>().HasOne(p => p.Type).WithMany(p => p.People).WithConstraint(p => p.TypeId, p => p.Id);
@@ -12242,6 +12314,14 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "People";
                     rel_cnf.FriendlyName = "People";
                 });
+                rel.FindCollectionRelationship(rel_p => rel_p.InferredPeople).Configure(rel_cnf => {
+                    rel_cnf.CanWrite = false;
+                    rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
+                    rel_cnf.EditKind = PropertyEditKind.Hidden;
+                    rel_cnf.Name = "InferredPeople";
+                    rel_cnf.Title = "Inferred People";
+                    rel_cnf.FriendlyName = "Inferred People";
+                });
                 rel.FindCollectionRelationship(rel_p => rel_p.Sites).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
@@ -12671,6 +12751,13 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Name = "Client";
                     rel_cnf.Title = "Client";
                     rel_cnf.FriendlyName = "Client";
+                });
+                rel.FindRelationship(rel_p => rel_p.InferredFromUserClient).Configure(rel_cnf => {
+                    rel_cnf.CanWrite = true;
+                    rel_cnf.EditKind = PropertyEditKind.Edit;
+                    rel_cnf.Name = "InferredFromUserClient";
+                    rel_cnf.Title = "Inferred From User Client";
+                    rel_cnf.FriendlyName = "Inferred From User Client";
                 });
                 rel.FindRelationship(rel_p => rel_p.Site).Configure(rel_cnf => {
                     rel_cnf.CanWrite = true;

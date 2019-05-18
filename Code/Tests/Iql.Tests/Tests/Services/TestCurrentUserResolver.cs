@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Iql.Entities.Services;
 using Iql.Parsing.Evaluation;
+using IqlSampleApp.Data.Entities;
 
 namespace Iql.Tests.Tests.Services
 {
@@ -11,7 +12,10 @@ namespace Iql.Tests.Tests.Services
 
         public override Task<IqlObjectEvaluationResult> ResolveCurrentUserAsync(IqlServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new IqlObjectEvaluationResult(true, new ApplicationUser()
+            {
+                ClientId = 77
+            }));
         }
 
         public override Task<IqlObjectEvaluationResult> ResolveCurrentUserIdAsync(IqlServiceProvider serviceProvider)

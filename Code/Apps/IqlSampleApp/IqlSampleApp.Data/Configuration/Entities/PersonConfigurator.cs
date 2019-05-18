@@ -90,6 +90,10 @@ namespace IqlSampleApp.Data.Configuration.Entities
             {
                 p.IsInferredWith(_ => PersonCategory.Conventional, true, InferredValueKind.InitializeOnly, true);
             });
+            model.ConfigureProperty(_ => _.InferredFromUserClientId, p =>
+            {
+                p.IsInferredWith(_ => IqlCurrentUser.Get<ApplicationUser>().Client.Id, true, InferredValueKind.InitializeOnly);
+            });
             model.ConfigureProperty(_ => _.InferredWhenKeyChanges, p =>
             {
                 p.IsInferredWith(_ => (_.PreviousEntityState == null || _.PreviousEntityState.Key == "ABC") && _.CurrentEntityState.Key == "DEF" ? "alphabet!" : _.CurrentEntityState.InferredWhenKeyChanges, false, InferredValueKind.Always, false, nameof(Person.Key));
@@ -142,6 +146,11 @@ namespace IqlSampleApp.Data.Configuration.Entities
                     s => s.Client,
                     (person, client) => person.ClientId == client.Id,
                     client => client.People);
+            builder.EntityType<Person>()
+                .HasOptional(
+                    s => s.InferredFromUserClient,
+                    (person, client) => person.InferredFromUserClientId == client.Id,
+                    client => client.InferredPeople);
             builder.EntityType<Person>()
                 .HasOptional(
                     s => s.Site,
