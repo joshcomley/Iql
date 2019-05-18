@@ -13,6 +13,12 @@ namespace Iql.Parsing.Reduction.Reducers
             {
                 return new IqlLiteralExpression(left?.Value?.ToString() + right, IqlType.String);
             }
+
+            if (left == null || right == null)
+            {
+                return null;
+            }
+
             var value = Expression.Add(Expression.Constant(left?.Value), Expression.Constant(right?.Value)).GetValue();
             return new IqlLiteralExpression(value, expression.Left.ReturnType);
         }
