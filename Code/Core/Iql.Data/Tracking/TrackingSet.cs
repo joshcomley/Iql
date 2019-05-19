@@ -786,7 +786,11 @@ namespace Iql.Data.Tracking
                             !DataTracker.RelationshipObserver.IsAttachedToAnotherEntity(changeEvent.Item,
                                 changeEvent.ItemType))
                         {
-                            DataTracker.DeleteEntity(changeEvent.Item);
+                            var relationship = this.EntityConfiguration.FindRelationshipByName(changeEvent.List.PropertyName);
+                            if (relationship.OtherEnd.Property.Nullable == false)
+                            {
+                                DataTracker.DeleteEntity(changeEvent.Item);
+                            }
                         }
 
                         break;

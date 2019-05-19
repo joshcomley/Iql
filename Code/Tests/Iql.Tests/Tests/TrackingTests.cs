@@ -20,6 +20,63 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task UpdatingNonNullableRemoteRelationshipFromSetToUnsetShouldMarkEntityForDelete()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2,
+                Name = "Test client type"
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 7,
+                Name = "Test client",
+                TypeId = 2
+            });
+            var client = await Db.Clients.Expand(_ => _.Type).GetWithKeyAsync(7);
+            Assert.IsTrue(client.Type.Clients.Contains(client));
+            var clientType = client.Type;
+            var clientState = Db.GetEntityState(client);
+            Assert.IsFalse(clientState.MarkedForAnyDeletion);
+            client.TypeId = 0;
+            var client2 = await Db.Clients.Expand(_ => _.Type).GetWithKeyAsync(7);
+            Assert.IsFalse(clientType.Clients.Contains(client));
+            Assert.AreEqual(client, client2);
+            Assert.IsNull(client.Type);
+            Assert.AreEqual(0, client.TypeId);
+            Assert.IsTrue(clientState.MarkedForAnyDeletion);
+        }
+
+        [TestMethod]
+        public async Task UpdatingNullableRemoteRelationshipFromSetToUnsetShouldNotMarkEntityForDelete()
+        {
+            var dbPerson = new Person
+            {
+                Id = 1,
+                Title = "Test",
+                ClientId = 7
+            };
+            AppDbContext.InMemoryDb.People.Add(dbPerson);
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 7,
+                Name = "Test client"
+            });
+            var person = await Db.People.Expand(_ => _.Client).GetWithKeyAsync(1);
+            Assert.IsTrue(person.Client.People.Contains(person));
+            var client = person.Client;
+            var personState = Db.GetEntityState(person);
+            Assert.IsFalse(personState.MarkedForAnyDeletion);
+            dbPerson.ClientId = null;
+            var person2 = await Db.People.Expand(_ => _.Client).GetWithKeyAsync(1);
+            Assert.IsFalse(client.People.Contains(person));
+            Assert.AreEqual(person, person2);
+            Assert.IsNull(person2.Client);
+            Assert.IsNull(person2.ClientId);
+            Assert.IsFalse(personState.MarkedForAnyDeletion);
+        }
+
+        [TestMethod]
         public async Task RetrievingLatestDataFromRemoteDatabaseDoesNotOverrideLocalChanges()
         {
             var unchanged = "Unchanged";
