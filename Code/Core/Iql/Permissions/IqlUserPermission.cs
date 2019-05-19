@@ -12,6 +12,7 @@ namespace Iql.Entities.Permissions
         Update = 8,
         Delete = 16,
         Full = Read | Create | Update | Delete,
-        ReadAndUpdate = Read | Update
+        ReadAndUpdate = Read | Update,
+        CreateAndReadAndUpdate = Create | Read | Update,
     }
 }
