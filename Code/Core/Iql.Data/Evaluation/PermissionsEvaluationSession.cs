@@ -186,6 +186,10 @@ namespace Iql.Data.Evaluation
             for (var i = 0; i < permissionsManager.Container.PermissionRules.Count; i++)
             {
                 var rule = permissionsManager.Container.PermissionRules[i];
+                if (entityType == null && rule.AcceptsEntity)
+                {
+                    continue;
+                }
                 if (permissionsCollection.Keys.All(_ => _ != rule.Key))
                 {
                     continue;
