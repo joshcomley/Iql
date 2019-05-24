@@ -77,30 +77,60 @@ namespace Iql.Data.Evaluation
                 dataContext.EntityConfigurationContext);
         }
 
-        public async Task<object> ResolveCurrentUserAsync(IDataContext db)
+        public async Task<object> ResolveCurrentUserAsync(IDataContext db, object user)
         {
-            var userId = await db.ServiceProvider.Resolve<IqlCurrentUserService>().ResolveCurrentUserIdAsync(db.ServiceProvider);
-            object user;
             var config = db.UsersManager.Definition.EntityConfiguration;
-            var preKey = config.GetCompositeKey(userId.Result);
+            CompositeKey preKey = null;
+            if (user != null)
+            {
+                if (!Session.EnforceLatest)
+                {
+                    return user;
+                }
+                var state = db.GetEntityState(user, config.Type);
+                if (state == null)
+                {
+                    var userDb = DataContextInternal.FindDataContextForEntity(user);
+                    if (userDb != null)
+                    {
+                        state = userDb.GetEntityState(user);
+                    }
+                }
+
+                if (state != null && !state.IsNew)
+                {
+                    preKey = config.GetCompositeKey(user);
+                }
+                else
+                {
+                    return user;
+                }
+            }
+            else
+            {
+                var userId = await db.ServiceProvider.Resolve<IqlCurrentUserService>().ResolveCurrentUserIdAsync(db.ServiceProvider);
+                preKey = config.GetCompositeKey(userId.Result);
+            }
+
+            object resolvedUser;
             var cachedUser = Session.GetCachedEntity(
                 config,
                 preKey
             );
             if (cachedUser == null || cachedUser.Exists == false)
             {
-                user = await db.GetDbSetByEntityType(db.UsersManager.Definition.EntityConfiguration.Type).GetWithKeyAsync(userId.Result);
-                var key = db.UsersManager.Definition.EntityConfiguration.GetCompositeKey(user);
+                resolvedUser = await db.GetDbSetByEntityType(db.UsersManager.Definition.EntityConfiguration.Type).GetWithKeyAsync(preKey);
+                var key = db.UsersManager.Definition.EntityConfiguration.GetCompositeKey(resolvedUser);
                 Session.SetCachedEntity(
                     config,
                     key,
-                    user);
+                    resolvedUser);
             }
             else
             {
-                user = cachedUser.Entity;
+                resolvedUser = cachedUser.Entity;
             }
-            return user;
+            return resolvedUser;
         }
 
         public async Task<IqlUserPermission> GetDbUserPermissionAsync(
@@ -112,10 +142,7 @@ namespace Iql.Data.Evaluation
             Type entityType = null
         )
         {
-            if (user == null)
-            {
-                user = await ResolveCurrentUserAsync(db);
-            }
+            user = await ResolveCurrentUserAsync(db, user);
 
             if (userType == null || userType == typeof(object))
             {
@@ -183,27 +210,65 @@ namespace Iql.Data.Evaluation
             typeResolver = typeResolver ?? permissionsManager.EntityConfigurationBuilder;
             serviceProviderProvider = serviceProviderProvider ?? permissionsManager.EntityConfigurationBuilder;
             IqlUserPermission result = inheritedPermission;
-            for (var i = 0; i < permissionsManager.Container.PermissionRules.Count; i++)
+            var allPermissionRules =
+                permissionsManager.Container.PermissionRules;
+            var permissionRules = new List<IqlUserPermissionRule>();
+            for (var i = 0; i < allPermissionRules.Count; i++)
             {
-                var rule = permissionsManager.Container.PermissionRules[i];
+                var rule = allPermissionRules[i];
                 if (entityType == null && rule.AcceptsEntity)
                 {
                     continue;
                 }
+
                 if (permissionsCollection.Keys.All(_ => _ != rule.Key))
                 {
                     continue;
                 }
+                permissionRules.Add(rule);
+            }
+
+            var lastUpPrecedentIndex = -1;
+            for (var i = permissionRules.Count - 1; i >= 0; i--)
+            {
+                if (permissionRules[i].Precedence == IqlUserPermissionRulePrecedenceDirection.Up)
+                {
+                    lastUpPrecedentIndex = i;
+                    break;
+                }
+            }
+            var lastDownPrecedentIndex = -1;
+            for (var i = permissionRules.Count - 1; i >= 0; i--)
+            {
+                if (permissionRules[i].Precedence == IqlUserPermissionRulePrecedenceDirection.Down)
+                {
+                    lastDownPrecedentIndex = i;
+                    break;
+                }
+            }
+            for (var i = 0; i < permissionRules.Count; i++)
+            {
+                var rule = permissionRules[i];
+                var hasUpPrecedenceRulesRemaining = lastUpPrecedentIndex > i;
+                var hasDownPrecedenceRulesRemaining = lastDownPrecedentIndex > i;
                 var task = (Task<IqlUserPermission>)EvaluateEntityPermissionsRuleCustomAsyncMethod.InvokeGeneric(
                     this,
                     new object[] { rule, user, entity, serviceProviderProvider, evaluationContext, typeResolver },
                     entityType ?? entity?.GetType() ?? typeof(object), userType ?? user.GetType());
                 var evaluatedResult = await task;
-                if (evaluatedResult == IqlUserPermission.None)
+                if (evaluatedResult == IqlUserPermission.None &&
+                    rule.Precedence == IqlUserPermissionRulePrecedenceDirection.Down && 
+                    !hasUpPrecedenceRulesRemaining)
                 {
                     return evaluatedResult;
                 }
 
+                if (evaluatedResult == IqlUserPermission.Full &&
+                    rule.Precedence == IqlUserPermissionRulePrecedenceDirection.Up && 
+                    !hasDownPrecedenceRulesRemaining)
+                {
+                    return evaluatedResult;
+                }
                 if (result == IqlUserPermission.Unset && evaluatedResult != IqlUserPermission.Unset)
                 {
                     result = evaluatedResult;
@@ -211,27 +276,57 @@ namespace Iql.Data.Evaluation
                 else if (result != IqlUserPermission.Unset &&
                          evaluatedResult != IqlUserPermission.Unset)
                 {
-                    if (!result.HasFlag(IqlUserPermission.Read))
+                    if (rule.Precedence == IqlUserPermissionRulePrecedenceDirection.Up)
                     {
-                        evaluatedResult &= ~IqlUserPermission.Read;
+                        if (result.HasFlag(IqlUserPermission.Read))
+                        {
+                            evaluatedResult |= IqlUserPermission.Read;
+                        }
+                        if (result.HasFlag(IqlUserPermission.Update))
+                        {
+                            evaluatedResult |= IqlUserPermission.Update;
+                        }
+                        if (result.HasFlag(IqlUserPermission.Delete))
+                        {
+                            evaluatedResult |= IqlUserPermission.Delete;
+                        }
+                        if (result.HasFlag(IqlUserPermission.Create))
+                        {
+                            evaluatedResult |= IqlUserPermission.Create;
+                        }
+                        if (evaluatedResult == IqlUserPermission.Full && !hasDownPrecedenceRulesRemaining)
+                        {
+                            return evaluatedResult;
+                        }
                     }
-                    if (!result.HasFlag(IqlUserPermission.Update))
+                    else
                     {
-                        evaluatedResult &= ~IqlUserPermission.Update;
+                        if (!result.HasFlag(IqlUserPermission.Read))
+                        {
+                            evaluatedResult &= ~IqlUserPermission.Read;
+                        }
+                        if (!result.HasFlag(IqlUserPermission.Update))
+                        {
+                            evaluatedResult &= ~IqlUserPermission.Update;
+                        }
+                        if (!result.HasFlag(IqlUserPermission.Delete))
+                        {
+                            evaluatedResult &= ~IqlUserPermission.Delete;
+                        }
+                        if (!result.HasFlag(IqlUserPermission.Create))
+                        {
+                            evaluatedResult &= ~IqlUserPermission.Create;
+                        }
+                        if (evaluatedResult == IqlUserPermission.None && !hasUpPrecedenceRulesRemaining)
+                        {
+                            return evaluatedResult;
+                        }
                     }
-                    if (!result.HasFlag(IqlUserPermission.Delete))
+
+                    if (evaluatedResult != IqlUserPermission.Unset)
                     {
-                        evaluatedResult &= ~IqlUserPermission.Delete;
+                        result = evaluatedResult;
                     }
-                    if (!result.HasFlag(IqlUserPermission.Create))
-                    {
-                        evaluatedResult &= ~IqlUserPermission.Create;
-                    }
-                    if (evaluatedResult == IqlUserPermission.None)
-                    {
-                        return evaluatedResult;
-                    }
-                    result = evaluatedResult;
                 }
             }
             // TODO: Evaluate the permissions

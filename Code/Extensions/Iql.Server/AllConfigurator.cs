@@ -94,9 +94,18 @@ namespace Iql.Server
         {
             builder.EntityType<T>().Configure(config =>
             {
-                config.ConfigureProperty(p => p.EmailConfirmed, p => p.EditKind = PropertyEditKind.Display);
-                config.ConfigureProperty(p => p.PhoneNumberConfirmed, p => p.EditKind = PropertyEditKind.Display);
-                config.ConfigureProperty(p => p.TwoFactorEnabled, p => p.EditKind = PropertyEditKind.Display);
+                foreach (var prop in new[]
+                {
+                    config.FindProperty(nameof(IdentityUser.EmailConfirmed)) ,
+                    config.FindProperty(nameof(IdentityUser.PhoneNumberConfirmed)),
+                    config.FindProperty(nameof(IdentityUser.TwoFactorEnabled))
+                })
+                {
+                    if (prop != null)
+                    {
+                        prop.EditKind = PropertyEditKind.Display;
+                    }
+                }
             });
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Conversion;
@@ -10,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace Iql.Entities
 {
+    [DebuggerDisplay("{Key}")]
     public class IqlUserPermissionRule
     {
         static IqlUserPermissionRule()
@@ -23,6 +25,8 @@ namespace Iql.Entities
             RunGenericWithEntityMethod = typeof(IqlUserPermissionRule).GetMethod(nameof(RunGenericWithEntity),
                 BindingFlags.Instance | BindingFlags.Public);
         }
+
+        public IqlUserPermissionRulePrecedenceDirection Precedence { get; set; }
 
         public static MethodInfo RunGenericWithEntityMethod { get; set; }
 
@@ -122,13 +126,16 @@ namespace Iql.Entities
             return (IqlUserPermission)result;
         }
 
-        public IqlUserPermissionRule(IEntityConfigurationBuilder entityConfigurationBuilder = null, string key = null, IqlLambdaExpression iqlExpression = null, string userTypeName = null, string entityTypeName = null)
+        public IqlUserPermissionRule(IEntityConfigurationBuilder entityConfigurationBuilder = null, string key = null,
+            IqlLambdaExpression iqlExpression = null, string userTypeName = null, string entityTypeName = null,
+            IqlUserPermissionRulePrecedenceDirection precedence = IqlUserPermissionRulePrecedenceDirection.Down)
         {
             EntityConfigurationBuilder = entityConfigurationBuilder;
             Key = key;
             IqlExpression = iqlExpression;
             UserTypeName = userTypeName;
             EntityTypeName = entityTypeName;
+            Precedence = precedence;
         }
 
         public IqlUserPermissionRule()

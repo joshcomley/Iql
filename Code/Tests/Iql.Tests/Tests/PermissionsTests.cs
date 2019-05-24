@@ -23,7 +23,7 @@ namespace Iql.Tests.Tests
         {
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
-                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestSimplePermissionRule), _ => IqlUserPermission.Read
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestSimplePermissionRule), _ => IqlUserPermission.Read, null
 #if TypeScript
             , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -69,7 +69,10 @@ namespace Iql.Tests.Tests
         {
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
-                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestComplexPermissionRule), context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(
+                    nameof(TestComplexPermissionRule), 
+                    context => context.User.FullName == "abc" ? IqlUserPermission.Read : IqlUserPermission.None,
+                    null
 #if TypeScript
             , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -110,7 +113,8 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Users.Add(cloudUser);
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
-                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestComplexPermissionRuleWithFetchOnlyCacheMode), context => context.User.Client.Description.Contains("abc") && context.User.EmailConfirmed == true ? IqlUserPermission.Read : IqlUserPermission.ReadAndUpdate
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestComplexPermissionRuleWithFetchOnlyCacheMode), context => context.User.Client.Description.Contains("abc") && context.User.EmailConfirmed == true ? IqlUserPermission.Read : IqlUserPermission.ReadAndUpdate,
+                    null
 #if TypeScript
             , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -199,7 +203,8 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Users.Add(cloudUser);
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
-                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestComplexPermissionRuleWithNoneCacheMode), context => context.User.Client.Description.Contains("abc") && context.User.EmailConfirmed == true ? IqlUserPermission.Read : IqlUserPermission.ReadAndUpdate
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestComplexPermissionRuleWithNoneCacheMode), context => context.User.Client.Description.Contains("abc") && context.User.EmailConfirmed == true ? IqlUserPermission.Read : IqlUserPermission.ReadAndUpdate,
+                    null
 #if TypeScript
             , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -240,7 +245,8 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Clients.Add(cloudUserClient);
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
-                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestConvolutedPermissionRuleOnNewEntity), context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndUpdate
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestConvolutedPermissionRuleOnNewEntity), context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndUpdate,
+                    null
 #if TypeScript
             , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -297,7 +303,8 @@ namespace Iql.Tests.Tests
             AppDbContext.InMemoryDb.Users.Add(cloudUser);
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
             var rule =
-                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestConvolutedPermissionRuleOnExistingEntity), context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndUpdate
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestConvolutedPermissionRuleOnExistingEntity), context => context.User.Client.Description.Contains("abc") && context.IsEntityNew && context.Entity.AverageSales > 100 ? IqlUserPermission.Read : IqlUserPermission.ReadAndUpdate,
+                    null
 #if TypeScript
             , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -332,6 +339,36 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(true, result.Success);
             permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
             Assert.AreEqual(IqlUserPermission.ReadAndUpdate, permission);
+        }
+
+        [TestMethod]
+        public async Task TestPermissionPrecedence()
+        {
+            var cloudLoggedInUser1 = new ApplicationUser
+            {
+                Id = "8877",
+                FullName = "User 1",
+                UserName = "PrecedenceTest"
+            };
+            var cloudUser2 = new ApplicationUser
+            {
+                Id = "8876",
+                FullName = "User 2"
+            };
+            AppDbContext.InMemoryDb.Users.Add(cloudLoggedInUser1);
+            AppDbContext.InMemoryDb.Users.Add(cloudUser2);
+            var loggedInUser = await Db.Users.GetWithKeyAsync("8877");
+            var userConfig = Db.EntityConfigurationContext.EntityType<ApplicationUser>();
+            var permissionsEvaluationSession = new PermissionsEvaluationSession(true, EvaluationCacheMode.FetchesOnly);
+            var permission = await permissionsEvaluationSession.GetDbUserPermissionAsync(Db, userConfig, loggedInUser);
+            Assert.AreEqual(IqlUserPermission.None, permission);
+            cloudLoggedInUser1.FullName = "PrecedenceShouldNotOverride";
+            permission = await permissionsEvaluationSession.GetDbUserPermissionAsync(Db, userConfig, loggedInUser);
+            Assert.AreEqual(IqlUserPermission.None, permission);
+            loggedInUser.FullName = "PrecedenceShouldOverride";
+            cloudLoggedInUser1.FullName = "PrecedenceShouldOverride";
+            permission = await permissionsEvaluationSession.GetDbUserPermissionAsync(Db, userConfig, loggedInUser);
+            Assert.AreEqual(IqlUserPermission.Full, permission);
         }
 
         [TestMethod]
@@ -371,7 +408,8 @@ namespace Iql.Tests.Tests
                         context.QueryAny<Client>(_ => _.Description.Contains(context.User.Id)) ||
                         context.User.UserType == UserType.Super
                             ? IqlUserPermission.ReadAndUpdate
-                            : IqlUserPermission.None
+                            : IqlUserPermission.None,
+                    null
 #if TypeScript
             , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif
@@ -447,7 +485,8 @@ namespace Iql.Tests.Tests
                 clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestPermissionRuleOnChildCollectionOnExistingEntity2), context =>
                         context.User.UserType == UserType.Super
                             ? IqlUserPermission.ReadAndUpdate
-                            : IqlUserPermission.None
+                            : IqlUserPermission.None,
+                    null
 #if TypeScript
             , new EvaluateContext(_ => Evaluator.Eval(_))
 #endif

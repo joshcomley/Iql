@@ -22,7 +22,30 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 context => context.User.UserType == UserType.Super
                     ? IqlUserPermission.ReadAndUpdate
                     : IqlUserPermission.None);
+            builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>("PrecedenceBase",
+                context =>
+                    context.User.UserName == "PrecedenceTest"
+                        ? context.User.Email == "PrecedenceBase"
+                            ? IqlUserPermission.Full
+                            : IqlUserPermission.None
+                        : IqlUserPermission.Unset);
+            builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>("PrecedenceShouldOverride",
+                context =>
+                    context.User.UserName == "PrecedenceTest"
+                        ? context.User.FullName == "PrecedenceShouldOverride"
+                            ? IqlUserPermission.Full
+                            : IqlUserPermission.Unset
+                        : IqlUserPermission.Unset,
+                IqlUserPermissionRulePrecedenceDirection.Up);
+            builder.PermissionManager.DefineUserPermissionRule<ApplicationUser>("PrecedenceShouldNotOverride",
+                context =>
+                    context.User.UserName == "PrecedenceTest"
+                        ? context.User.FullName == "PrecedenceShouldNotOverride"
+                            ? IqlUserPermission.Full
+                            : IqlUserPermission.Unset
+                        : IqlUserPermission.Unset);
             var users = builder.EntityType<ApplicationUser>();
+            users.Permissions.UseRule("PrecedenceBase").UseRule("PrecedenceShouldOverride").UseRule("PrecedenceShouldNotOverride");
             users.ConfigureProperty(_ => _.IsLockedOut, property => { property.Permissions.UseRule("SuperUser"); });
             builder.UsersDefinition = UsersDefinition.Define(users,
                 _ => _.Id,

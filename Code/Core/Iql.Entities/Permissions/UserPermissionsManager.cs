@@ -17,7 +17,8 @@ namespace Iql.Entities
         public IEntityConfigurationBuilder EntityConfigurationBuilder { get; }
 
         public IqlUserPermissionRule DefineUserPermissionRule<TUser>(string key,
-            Expression<Func<IqlUserPermissionContext<TUser>, IqlUserPermission>> rule
+            Expression<Func<IqlUserPermissionContext<TUser>, IqlUserPermission>> rule,
+            IqlUserPermissionRulePrecedenceDirection precedence = IqlUserPermissionRulePrecedenceDirection.Down
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -37,14 +38,17 @@ namespace Iql.Entities
                 EntityConfigurationBuilder,
                 key,
                 lambdaExpression,
-                EntityConfigurationBuilder.EntityType<TUser>().Name
+                EntityConfigurationBuilder.EntityType<TUser>().Name,
+                null,
+                precedence
             );
             Container.PermissionRules.Add(configuredRule);
             return configuredRule;
         }
 
         public IqlUserPermissionRule DefineEntityUserPermissionRule<TEntity, TUser>(string key,
-            Expression<Func<IqlEntityUserPermissionContext<TEntity, TUser>, IqlUserPermission>> rule
+            Expression<Func<IqlEntityUserPermissionContext<TEntity, TUser>, IqlUserPermission>> rule,
+            IqlUserPermissionRulePrecedenceDirection? precedence = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -82,7 +86,8 @@ namespace Iql.Entities
                 key,
                 lambdaExpression,
                 EntityConfigurationBuilder.EntityType<TUser>().Name,
-                EntityConfigurationBuilder.EntityType<TEntity>().Name
+                EntityConfigurationBuilder.EntityType<TEntity>().Name,
+                precedence ?? IqlUserPermissionRulePrecedenceDirection.Down
             );
             Container.PermissionRules.Add(configuredRule);
             return configuredRule;
