@@ -46,7 +46,7 @@ namespace Iql.Tests.Tests.JavaScript
             var instance = RelationshipFilterContextExpressions.Get();
             var converter = new JavaScriptExpressionConverter();
             var expression = converter.ConvertIqlToExpressionString(instance, TypeResolver);
-            Assert.AreEqual(@"function(entity, context) { return function(entity2, context) { return (entity2.ClientId == entity.Owner.ClientId); }; }",
+            Assert.AreEqual(@"function(entity, context) { return function(entity2, context) { return (entity2.ClientId === entity.Owner.ClientId); }; }",
                 expression);
         }
 
@@ -54,10 +54,10 @@ namespace Iql.Tests.Tests.JavaScript
         public void TestLambda()
         {
             var converter = new JavaScriptExpressionConverter();
-            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function(entity2) { return (entity2.ClientId == 1); }", TypeResolver);
+            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function(entity2) { return (entity2.ClientId === 1); }", TypeResolver);
             var javascript =
                 converter.ConvertIqlToExpressionStringByType(expression.Expression, TypeResolver, typeof(ApplicationUser));
-            Assert.AreEqual(@"function(entity, context) { return ((entity || {}).ClientId == 1); }",
+            Assert.AreEqual(@"function(entity, context) { return ((entity || {}).ClientId === 1); }",
                 javascript);
         }
 
@@ -121,7 +121,7 @@ namespace Iql.Tests.Tests.JavaScript
             };
             var javascript =
                 converter.ConvertIqlToExpressionStringAs<MyCustomReport>(expression, TypeResolver);
-            Assert.AreEqual(@"function(contextWrapper) { return contextWrapper.Where(function(entity) { return ((entity || {}).MyId == '9cac910f-6b7c-46b8-9de6-d4373a0063d8'); }); }",
+            Assert.AreEqual(@"function(contextWrapper) { return contextWrapper.Where(function(entity) { return ((entity || {}).MyId === '9cac910f-6b7c-46b8-9de6-d4373a0063d8'); }); }",
                 javascript);
         }
 
@@ -291,12 +291,12 @@ namespace Iql.Tests.Tests.JavaScript
                 typeof(Client));
 
 #if !TypeScript
-            var expected = @"function(contextWrapper) { return contextWrapper.Where(function(entity, context) { return ((((entity || {}).Name == null) ? null : ((entity || {}).Name || '').toUpperCase()) == 'A'); }, JSON.parse('{""Body"":{""Left"":{""PropertyName"":""Name"",""IsIqlExpression"":true,""Key"":null,""Kind"":30,""ReturnType"":1,""Parent"":{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""IsIqlExpression"":true,""Key"":null,""Kind"":26,""ReturnType"":4,""Parent"":null},""IsIqlExpression"":true,""Key"":null,""Kind"":10,""ReturnType"":7,""Parent"":null},""Parameters"":[{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Key"":null,""Kind"":55,""ReturnType"":7,""Parent"":null}'))
+            var expected = @"function(contextWrapper) { return contextWrapper.Where(function(entity, context) { return ((((entity || {}).Name == null) ? null : ((entity || {}).Name || '').toUpperCase()) === 'A'); }, JSON.parse('{""Body"":{""Left"":{""PropertyName"":""Name"",""IsIqlExpression"":true,""Key"":null,""Kind"":30,""ReturnType"":1,""Parent"":{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""IsIqlExpression"":true,""Key"":null,""Kind"":26,""ReturnType"":4,""Parent"":null},""IsIqlExpression"":true,""Key"":null,""Kind"":10,""ReturnType"":7,""Parent"":null},""Parameters"":[{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Key"":null,""Kind"":55,""ReturnType"":7,""Parent"":null}'))
 		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Type"",""IsIqlExpression"":true,""Key"":null,""Kind"":30,""ReturnType"":1,""Parent"":{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""ClientTypes"",""IsIqlExpression"":true,""Key"":null,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""IncludeCount"":null,""Skip"":null,""Take"":null,""EntityTypeName"":""ClientType"",""Expands"":null,""Filter"":null,""WithKey"":null,""Parameters"":[{""EntityTypeName"":""ClientType"",""VariableName"":null,""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Key"":null,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Key"":null,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
 		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Sites"",""IsIqlExpression"":true,""Key"":null,""Kind"":30,""ReturnType"":1,""Parent"":{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""Sites"",""IsIqlExpression"":true,""Key"":null,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""IncludeCount"":null,""Skip"":null,""Take"":null,""EntityTypeName"":""Site"",""Expands"":[{""NavigationProperty"":{""PropertyName"":""CreatedByUser"",""IsIqlExpression"":true,""Key"":null,""Kind"":30,""ReturnType"":1,""Parent"":{""EntityTypeName"":""Site"",""VariableName"":""s"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""Users"",""IsIqlExpression"":true,""Key"":null,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""IncludeCount"":null,""Skip"":null,""Take"":null,""EntityTypeName"":""ApplicationUser"",""Expands"":null,""Filter"":null,""WithKey"":null,""Parameters"":[{""EntityTypeName"":""ApplicationUser"",""VariableName"":null,""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Key"":null,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Key"":null,""Kind"":48,""ReturnType"":2,""Parent"":null}],""Filter"":null,""WithKey"":null,""Parameters"":[{""EntityTypeName"":""Site"",""VariableName"":null,""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Key"":null,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Key"":null,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Key"":null,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
 		.OrderBy(function(entity, context) { return (entity || {}).AverageSales; }, true); }";
 #else
-            var expected = @"function(contextWrapper) { return contextWrapper.Where(function(entity, context) { return ((((entity || {}).Name == null) ? null : ((entity || {}).Name || '').toUpperCase()) == 'A'); }, JSON.parse('{""Body"":{""Left"":{""PropertyName"":""Name"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":4,""Parent"":{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""IsIqlExpression"":true,""Kind"":26,""ReturnType"":4,""Parent"":null},""IsIqlExpression"":true,""Kind"":10,""ReturnType"":7,""Parent"":null},""Parameters"":[{""EntityTypeName"":null,""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Kind"":55,""ReturnType"":7,""Parent"":null}'))
+            var expected = @"function(contextWrapper) { return contextWrapper.Where(function(entity, context) { return ((((entity || {}).Name == null) ? null : ((entity || {}).Name || '').toUpperCase()) === 'A'); }, JSON.parse('{""Body"":{""Left"":{""PropertyName"":""Name"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":4,""Parent"":{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Right"":{""Value"":""a"",""InferredReturnType"":4,""IsIqlExpression"":true,""Kind"":26,""ReturnType"":4,""Parent"":null},""IsIqlExpression"":true,""Kind"":10,""ReturnType"":7,""Parent"":null},""Parameters"":[{""EntityTypeName"":null,""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Kind"":55,""ReturnType"":7,""Parent"":null}'))
 		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Type"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""ClientTypes"",""IsIqlExpression"":true,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""EntityTypeName"":""ClientType"",""Expands"":null,""Filter"":null,""WithKey"":null,""Parameters"":[{""EntityTypeName"":""ClientType"",""VariableName"":null,""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
 		.Expand(JSON.parse('{""NavigationProperty"":{""PropertyName"":""Sites"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""EntityTypeName"":""Client"",""VariableName"":""c"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""Sites"",""IsIqlExpression"":true,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""EntityTypeName"":""Site"",""Expands"":[{""NavigationProperty"":{""PropertyName"":""CreatedByUser"",""IsIqlExpression"":true,""Kind"":30,""ReturnType"":1,""Parent"":{""EntityTypeName"":""Site"",""VariableName"":""s"",""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}},""Query"":{""DataSet"":{""Name"":""Users"",""IsIqlExpression"":true,""Kind"":50,""ReturnType"":2,""Parent"":null},""OrderBys"":null,""EntityTypeName"":""ApplicationUser"",""Expands"":null,""Filter"":null,""WithKey"":null,""Parameters"":[{""EntityTypeName"":""ApplicationUser"",""VariableName"":null,""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Kind"":48,""ReturnType"":2,""Parent"":null}],""Filter"":null,""WithKey"":null,""Parameters"":[{""EntityTypeName"":""Site"",""VariableName"":null,""Value"":null,""InferredReturnType"":1,""IsIqlExpression"":true,""Kind"":28,""ReturnType"":1,""Parent"":null}],""IsIqlExpression"":true,""Kind"":49,""ReturnType"":3,""Parent"":null},""Count"":false,""IsIqlExpression"":true,""Kind"":48,""ReturnType"":2,""Parent"":null}'))
 		.OrderBy(function(entity, context) { return (entity || {}).AverageSales; }, true); }";
@@ -327,7 +327,7 @@ namespace Iql.Tests.Tests.JavaScript
                 TypeResolver,
                 typeof(Client));
             Assert.AreEqual(
-                @"function(contextWrapper) { return contextWrapper.Where(function(entity) { return ((entity || {}).Id == 7); }); }",
+                @"function(contextWrapper) { return contextWrapper.Where(function(entity) { return ((entity || {}).Id === 7); }); }",
                 javaScript);
         }
 
@@ -424,7 +424,7 @@ namespace Iql.Tests.Tests.JavaScript
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
                 "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == p.Title).length > 0))", TypeResolver);
             Assert.AreEqual(
-                @"function(entity, context) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) == 'TEST') || (((entity || {}).Types.filter(function(entity2) { return (((entity2 || {}).TypeId == 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) == (((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()))); }).length) > 0)); }",
+                @"function(entity, context) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) === 'TEST') || (((entity || {}).Types.filter(function(entity2) { return (((entity2 || {}).TypeId === 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) === (((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()))); }).length) > 0)); }",
                 js);
             //var iql3 = new DotNetExpressionConverter().ConvertLambdaToIql<Person>(p =>
             //    p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle"));
@@ -448,7 +448,7 @@ namespace Iql.Tests.Tests.JavaScript
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Client>(
                 "function(n){return n.Sites.filter(function(n){return!n.CreatedByUser.EmailConfirmed}).length>0}", TypeResolver);
             Assert.AreEqual(
-                @"function(entity, context) { return (((entity || {}).Sites.filter(function(entity) { return (((entity || {}).CreatedByUser || {}).EmailConfirmed == false); }).length) > 0); }",
+                @"function(entity, context) { return (((entity || {}).Sites.filter(function(entity) { return (((entity || {}).CreatedByUser || {}).EmailConfirmed === false); }).length) > 0); }",
                 js);
             //function(n){return n.CandidateResults.filter(function(n){return!n.Exam.IsTraining}).length>0}
         }
@@ -459,7 +459,7 @@ namespace Iql.Tests.Tests.JavaScript
             var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Site>(
                 "function(n){return 0==n.CreatedByUser.EmailConfirmed}", TypeResolver);
             var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iql.Expression, TypeResolver, typeof(Client));
-            Assert.AreEqual(@"function(entity, context) { return (false == ((entity || {}).CreatedByUser || {}).EmailConfirmed); }", js);
+            Assert.AreEqual(@"function(entity, context) { return (false === ((entity || {}).CreatedByUser || {}).EmailConfirmed); }", js);
             var odataFilter = new ODataExpressionConverter().ConvertIqlToExpressionStringAs<Client>(iql.Expression, TypeResolver);
             Assert.AreEqual(@"(false eq $it/CreatedByUser/EmailConfirmed)", odataFilter);
         }
@@ -498,7 +498,7 @@ namespace Iql.Tests.Tests.JavaScript
             //            , null
             //#endif
             //                     );
-            Assert.AreEqual(@"function(entity, context) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) == 'TEST') || (((entity || {}).Types.filter(function(entity2) { return (((entity2 || {}).TypeId == 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) == 'KETTLE')); }).length) > 0)); }",
+            Assert.AreEqual(@"function(entity, context) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) === 'TEST') || (((entity || {}).Types.filter(function(entity2) { return (((entity2 || {}).TypeId === 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) === 'KETTLE')); }).length) > 0)); }",
                 js1);
             //Assert.AreEqual(@"entity => (((((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()) == 'TEST') || (((entity || {})[""Types""].filter(function(entity2) { return (((entity2 || {})[""TypeId""] == 4) || ((((entity2 || {})[""Description""] == null) ? null : ((entity2 || {})[""Description""] || """").toUpperCase()) == 'KETTLE')); }).length) > 0))",
             //    js);
@@ -537,7 +537,7 @@ namespace Iql.Tests.Tests.JavaScript
                 IqlExpression.GetPropertyExpression(nameof(ApplicationUser.Id)),
                 new IqlLiteralExpression("a"));
             var js = new JavaScriptExpressionConverter().ConvertIqlToExpressionStringByType(iqlExpression, TypeResolver, typeof(ApplicationUser));
-            Assert.AreEqual(@"function(entity) { return ((entity || {}).Id == 'a'); }", js);
+            Assert.AreEqual(@"function(entity) { return ((entity || {}).Id === 'a'); }", js);
         }
 
 #if !TypeScript
@@ -560,7 +560,7 @@ namespace Iql.Tests.Tests.JavaScript
                                                  )
                .Expression;
             var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql, TypeResolver);
-            Assert.AreEqual(@"(entity, context) => ((((entity || {}).CreatedByUserId == null) || (((entity || {}).CreatedByUserId || '').trim() == '')) && ((entity || {}).CreatedByUser == null))", js);
+            Assert.AreEqual(@"(entity, context) => ((((entity || {}).CreatedByUserId == null) || (((entity || {}).CreatedByUserId || '').trim() === '')) && ((entity || {}).CreatedByUser == null))", js);
         }
 
         [TestMethod]
@@ -581,7 +581,7 @@ namespace Iql.Tests.Tests.JavaScript
                 )
                 .Expression;
             var js = new JavaScriptExpressionConverter().ConvertIqlToTypeScriptExpressionString(iql, TypeResolver);
-            Assert.AreEqual(@"(entity, context) => (((entity || {}).CreatedByUserId == null) || (((entity || {}).CreatedByUserId || '').trim() == ''))", js);
+            Assert.AreEqual(@"(entity, context) => (((entity || {}).CreatedByUserId == null) || (((entity || {}).CreatedByUserId || '').trim() === ''))", js);
         }
 #endif
 

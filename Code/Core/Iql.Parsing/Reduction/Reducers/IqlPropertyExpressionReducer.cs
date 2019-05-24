@@ -9,12 +9,11 @@ namespace Iql.Parsing.Reduction.Reducers
         {
             // We should never have a property without a parent
             var parent = reducer.Evaluate(expression.Parent);
-            object type = parent.Value.GetType();
             var returnType = expression.ReturnType;
             var container = parent.Value;
             if (parent is IqlEnumLiteralExpression)
             {
-                type = (parent as IqlEnumLiteralExpression).EnumType();
+                var type = (parent as IqlEnumLiteralExpression).EnumType();
                 returnType = IqlType.Enum;
                 container = type;
             }

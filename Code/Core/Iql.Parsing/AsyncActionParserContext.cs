@@ -167,7 +167,7 @@ namespace Iql.Parsing
 
                 if (result != null)
                 {
-                    if (result is IqlFinalExpressionBase)
+                    if (result.Kind == IqlExpressionKind.Final)
                     {
                         return (result as IqlFinalExpression<string>).Value;
                     }

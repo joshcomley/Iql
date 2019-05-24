@@ -1,4 +1,5 @@
-﻿using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
+﻿using System.Linq;
+using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
 
 namespace Iql.JavaScript
@@ -11,7 +12,7 @@ namespace Iql.JavaScript
             string originalCode,
             string cleanedCode)
         {
-            ParameterNames = signature.Split(',');
+            ParameterNames = signature.Split(',').Where(_ => !string.IsNullOrWhiteSpace(_)).ToArray();
             for (var i = 0; i < ParameterNames.Length; i++)
             {
                 ParameterNames[i] = ParameterNames[i].Trim();

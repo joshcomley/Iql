@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlFinalExpression<TValue> : IqlFinalExpressionBase
+    public class IqlFinalExpression<TValue> : IqlExpression, IFinalExpression
     {
         public IqlFinalExpression(
             TValue value = default(TValue)) : base(IqlExpressionKind.Final, null)
@@ -12,6 +12,12 @@ namespace Iql
         }
 
         public TValue Value { get; set; }
+
+        object IFinalExpression.Value
+        {
+            get => Value;
+            set => Value = (TValue) value;
+        }
 
 		public override IqlExpression Clone()
 		{
@@ -35,11 +41,6 @@ namespace Iql
 				context.Flatten(Parent);
 
 			// #FlattenEnd
-        }
-
-        public override object ResolveValue()
-        {
-            return Value;
         }
 
         internal override IqlExpression ReplaceExpressions(ReplaceContext context)

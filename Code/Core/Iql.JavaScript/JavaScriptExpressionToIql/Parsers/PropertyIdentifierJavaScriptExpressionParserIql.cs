@@ -30,34 +30,37 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
 
                 var rootReference = root as IqlRootReferenceExpression;
                 PropertyInfo property;
-                var rootEntityType = rootReference == null 
-                    ? null 
+                var rootEntityType = rootReference == null
+                    ? null
                     : context.RootEntities.Last(r => r.Name == rootReference.VariableName).Type;
-                switch (parent.Kind)
+                if (rootEntityType != null)
                 {
-                    case IqlExpressionKind.RootReference:
-                        //entityConfiguration = instance.EntityConfigurationContext.GetEntity<T>();
-                        property = rootEntityType.GetProperty(expression.Name);
-                        propertyType = property.PropertyType;
-                        break;
-                    case IqlExpressionKind.Variable:
-                        //debugger;
-                        break;
-                    case IqlExpressionKind.Property:
-                        var propertyParent = parent as IqlPropertyExpression;
-                        property = rootEntityType.GetProperty(propertyParent.PropertyName);
-                        if (property == null)
-                        {
-                            throw new Exception(
-                                $"No property \"{expression.Name}\" found on type \"{rootEntityType.Name}\"");
-                        }
-                        propertyType = property.PropertyType;
-                        break;
+                    switch (parent.Kind)
+                    {
+                        case IqlExpressionKind.RootReference:
+                            //entityConfiguration = instance.EntityConfigurationContext.GetEntity<T>();
+                            property = rootEntityType.GetProperty(expression.Name);
+                            propertyType = property.PropertyType;
+                            break;
+                        case IqlExpressionKind.Variable:
+                            //debugger;
+                            break;
+                        case IqlExpressionKind.Property:
+                            var propertyParent = parent as IqlPropertyExpression;
+                            property = rootEntityType.GetProperty(propertyParent.PropertyName);
+                            if (property == null)
+                            {
+                                throw new Exception(
+                                    $"No property \"{expression.Name}\" found on type \"{rootEntityType.Name}\"");
+                            }
+                            propertyType = property.PropertyType;
+                            break;
+                    }
                 }
 
                 if (propertyType == null)
                 {
-                    var resolvedType = context.TypeResolver.FindTypeByType(rootEntityType);
+                    var resolvedType = context.TypeResolver == null ? null : context.TypeResolver.FindTypeByType(rootEntityType);
                     if (resolvedType != null)
                     {
                         ITypeProperty configuredProperty = null;

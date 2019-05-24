@@ -138,8 +138,28 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             {
                 left = Expression.Convert(left, right.Type);
             }
+
+            Expression expression = null;
+            try
+            {
+                expression = Expression.MakeBinary(@operator, left, right, false, method);
+            }
+            catch (InvalidOperationException e)
+            {
+                switch (@operator)
+                {
+                    case ExpressionType.Equal:
+                        expression = Expression.Constant(false);
+                        break;
+                    case ExpressionType.NotEqual:
+                        expression = Expression.Constant(true);
+                        break;
+                    default:
+                        throw;
+                }
+            }
             return new IqlFinalExpression<Expression>(
-                Expression.MakeBinary(@operator, left, right, false, method));
+                expression);
         }
 
         private static readonly Dictionary<Type, MethodInfo> ToStringMethods = new Dictionary<Type, MethodInfo>();

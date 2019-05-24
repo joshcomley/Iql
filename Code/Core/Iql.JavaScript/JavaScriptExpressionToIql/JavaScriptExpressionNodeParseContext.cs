@@ -48,15 +48,17 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             Evaluate = key =>
             {
 #if TypeScript
-                if (key == "_this" || key == "this")
+                if(ctx.EvaluateContext != null)
                 {
-                    return ctx.EvaluateContext.Context;
+                    if (key == "_this" || key == "this")
+                    {
+                        return ctx.EvaluateContext.Context;
+                    }
+                    var result = ctx.EvaluateContext.Evaluate(key);
+                    return result;
                 }
-                var result = evaluateContext.Evaluate(key);
-                return result;
-#else
-                return null;
 #endif
+                return null;
             };
         }
 

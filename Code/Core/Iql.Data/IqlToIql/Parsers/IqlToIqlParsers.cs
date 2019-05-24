@@ -5,6 +5,7 @@ using Iql.Data.Queryable;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.Services;
+using Iql.Serialization;
 
 namespace Iql.Data.IqlToIql.Parsers
 {
@@ -20,9 +21,9 @@ namespace Iql.Data.IqlToIql.Parsers
 
             while (true)
             {
-                if (value is IqlFinalExpressionBase)
+                if (value != null && value.ClaimedIqlKind() == IqlExpressionKind.Final)
                 {
-                    value = (value as IqlFinalExpressionBase).ResolveValue();
+                    value = ((IFinalExpression)value).Value;
                 }
                 else if (value is IqlLiteralExpression)
                 {

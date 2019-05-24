@@ -87,6 +87,10 @@ namespace Iql.DotNet.IqlToDotNetExpression
             if (!lookup.ContainsKey(parameterVariableName))
             {
                 var parameterType = ResolveParameterType(parameterVariableName);
+                if (parameterType == null)
+                {
+                    parameterType = typeof(object);
+                }
                 lookup.Add(parameterVariableName, System.Linq.Expressions.Expression.Parameter(parameterType, parameterVariableName));
             }
 
@@ -230,7 +234,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
 
                 if (result != null)
                 {
-                    if (result is IqlFinalExpressionBase)
+                    if (result.Kind == IqlExpressionKind.Final)
                     {
                         return (result as IqlFinalExpression<Expression>).Value;
                     }

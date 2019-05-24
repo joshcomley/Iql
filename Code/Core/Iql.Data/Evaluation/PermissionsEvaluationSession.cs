@@ -426,14 +426,13 @@ namespace Iql.Data.Evaluation
                         // Construct fake lambda
                         var evaluatedResult = await Session.EvaluateIqlCustomAsync(
                             flattenedExpression.Expression,
-                            serviceProviderProvider,
                             context,
+                            serviceProviderProvider,
                             evaluator,
                             typeResolver,
                             entity == null
                                 ? typeof(IqlUserPermissionContext<TUser>)
-                                : typeof(IqlEntityUserPermissionContext<TEntity, TUser>),
-                            false);
+                                : typeof(IqlEntityUserPermissionContext<TEntity, TUser>), false);
                         if (evaluatedResult.Success)
                         {
                             iqlExpression.ReplaceExpression(
@@ -481,11 +480,10 @@ namespace Iql.Data.Evaluation
             }
             var result = await Session.EvaluateIqlCustomAsync(
                 iqlExpression,
-                serviceProviderProvider,
                 context,
+                serviceProviderProvider,
                 evaluator,
-                typeResolver,
-                entity == null ? typeof(IqlUserPermissionContext<TUser>) : typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
+                typeResolver, entity == null ? typeof(IqlUserPermissionContext<TUser>) : typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
             var permission = (IqlUserPermission)Convert.ToInt32(result.Result);
             var currentEntityKey = GetEntityKey(entity, typeof(TEntity), typeResolver, ResultsCachingKind);
             var currentUserKey = GetEntityKey(user, typeof(TUser), typeResolver, ResultsCachingKind);
@@ -652,11 +650,10 @@ namespace Iql.Data.Evaluation
             var context = new IqlUserPermissionContext<TUser>(user);
             var result = await Session.EvaluateIqlCustomAsync(
                 rule.IqlExpression,
-                serviceProviderProvider,
                 context,
+                serviceProviderProvider,
                 evaluator,
-                typeResolver,
-                typeof(IqlUserPermissionContext<TUser>));
+                typeResolver, typeof(IqlUserPermissionContext<TUser>));
             var permission = (IqlUserPermission)result.Result;
             return permission;
         }

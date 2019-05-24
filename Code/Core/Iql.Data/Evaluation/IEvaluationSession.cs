@@ -35,7 +35,8 @@ namespace Iql.Data.Evaluation
             IIqlDataEvaluator dataEvaluator,
             bool populate,
             Dictionary<object, object> replacements = null,
-            bool? trackResults = null);
+            bool? trackResults = null,
+            string rootName = null);
 
         Task<T> EvaluateAsAsync<T>(IqlPropertyPath propertyPath, object entity, IDataContext dataContext, bool populate);
 
@@ -75,14 +76,12 @@ namespace Iql.Data.Evaluation
             bool populatePath = false
         );
 
-        Task<IqlExpressonEvaluationResult> EvaluateIqlCustomAsync(
-            IqlExpression expression,
-            IServiceProviderProvider serviceProviderProvider,
+        Task<IqlExpressonEvaluationResult> EvaluateIqlCustomAsync(IqlExpression expression,
             object context,
+            IServiceProviderProvider serviceProviderProvider,
             IIqlDataEvaluator dataEvaluator,
             ITypeResolver typeResolver,
             Type contextType = null,
-            bool populatePath = false
-        );
+            bool populatePath = false);
     }
 }

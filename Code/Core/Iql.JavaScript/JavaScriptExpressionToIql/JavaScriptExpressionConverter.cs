@@ -56,7 +56,6 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             return javascript;
         }
 
-
         public ExpressionResult<IqlExpression> ConvertJavaScriptStringToIql<TEntity>(string code
             , ITypeResolver typeResolver
 #if TypeScript
@@ -90,35 +89,41 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             expressionResult.Expression = expression2(null);
             
             // Now try to correct any property types
-            var entityConfig = typeResolver.FindType<TEntity>();
-            var reducer = new IqlReducer();
-            var flattened = reducer.Traverse(expressionResult.Expression);
-            for (var i = 0; i < flattened.Length; i++)
+            if (typeResolver != null)
             {
-                var expression = flattened[i];
-                if (expression is IqlPropertyExpression)
+                var entityConfig = typeResolver.FindType<TEntity>();
+                var reducer = new IqlReducer();
+                var flattened = reducer.Traverse(expressionResult.Expression);
+                for (var i = 0; i < flattened.Length; i++)
                 {
-                    var propertyExpression = expression as IqlPropertyExpression;
-                    if (propertyExpression.IsOrHasRootEntity())
+                    var expression = flattened[i];
+                    if (expression is IqlPropertyExpression)
                     {
-                        var path = IqlPropertyPath.FromPropertyExpression(
-                            typeResolver,
-                            entityConfig, 
-                            propertyExpression);
-                        if (path != null && path.Property != null)
+                        var propertyExpression = expression as IqlPropertyExpression;
+                        if (propertyExpression.IsOrHasRootEntity())
                         {
-                            propertyExpression.ReturnType = path.Property.ToIqlType();
+                            var path = IqlPropertyPath.FromPropertyExpression(
+                                typeResolver,
+                                entityConfig,
+                                propertyExpression);
+                            if (path != null && path.Property != null)
+                            {
+                                propertyExpression.ReturnType = path.Property.ToIqlType();
+                            }
                         }
                     }
                 }
             }
 
-            var iqlRedudcer = new IqlReducer(
+            if (typeResolver != null)
+            {
+                var iqlRedudcer = new IqlReducer(
 #if TypeScript
                     evaluateContext
 #endif
                 );
-            expressionResult.Expression = iqlRedudcer.ReduceStaticContent(expressionResult.Expression);
+                expressionResult.Expression = iqlRedudcer.ReduceStaticContent(expressionResult.Expression);
+            }
             var lambdaExpression = new IqlLambdaExpression(IqlType.Unknown);
             lambdaExpression.Body = expressionResult.Expression;
             for (var i = 0; i < body.ParameterNames.Length; i++)

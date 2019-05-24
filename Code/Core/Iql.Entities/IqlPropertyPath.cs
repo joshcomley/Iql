@@ -65,7 +65,7 @@ namespace Iql.Entities
 
         public string GetPathToHere(string separator)
         {
-            return string.Join(separator, PropertyPath.Select(p => p.Property.PropertyName));
+            return string.Join(separator, PropertyPath.Select(p => p.PropertyName));
         }
 
         public bool HasRootEntity => RootEntity != null;
@@ -111,9 +111,15 @@ namespace Iql.Entities
         }
         public string GetRelationshipPathToHere(string separator)
         {
+            if (Property != null)
+            {
+                return string.Join(separator,
+                    PropertyPath.Where(p => p.Property != null && p.Property.Kind.HasFlag(PropertyKind.Relationship))
+                        .Select(p => p.PropertyName));
+            }
+
             return string.Join(separator,
-                PropertyPath.Where(p => p.Property.Kind.HasFlag(PropertyKind.Relationship))
-                    .Select(p => p.Property.PropertyName));
+                PropertyPath.Select(p => p.PropertyName));
         }
 
         public string PathFromHere => GetPathFromHere(Separator);
@@ -137,22 +143,21 @@ namespace Iql.Entities
         public string GetRelationshipPathFromHere(string separator)
         {
             var parts = new List<string>();
-            if (Property.Kind.HasFlag(PropertyKind.Relationship))
+            if (Property == null || Property.Kind.HasFlag(PropertyKind.Relationship))
             {
                 parts.Add(PropertyName);
                 var child = Child;
-                while (child != null && child.Property.Kind.HasFlag(PropertyKind.Relationship))
+                while (child != null && (child.Property == null || child.Property.Kind.HasFlag(PropertyKind.Relationship)))
                 {
                     parts.Add(child.PropertyName);
                     child = child.Child;
                 }
             }
-
             return string.Join(separator, parts);
         }
 
         public IqlPropertyPath Parent { get; }
-        public string PropertyName => Property?.PropertyName;
+        public string PropertyName => Property?.PropertyName ?? Expression?.PropertyName;
         public ITypeResolver TypeResolver { get; }
         public ITypeProperty Property { get; }
         public IqlPropertyExpression Expression { get; }
@@ -270,7 +275,7 @@ namespace Iql.Entities
                 else if (parent.Kind == IqlExpressionKind.Variable)
                 {
                     var variableExpression = (IqlVariableExpression)parent;
-                    var resolvedType = typeResolver.ResolveTypeFromTypeName(variableExpression.EntityTypeName);
+                    var resolvedType = typeResolver?.ResolveTypeFromTypeName(variableExpression.EntityTypeName);
                     if (resolvedType != null)
                     {
                         lastRootReference = variableExpression;
@@ -301,15 +306,15 @@ namespace Iql.Entities
 
             var entityConfig = entityConfigurationContext;
 
-            if (lastRootReference != null)
+            if (lastRootReference != null || typeResolver == null)
             {
                 for (var i = list.Count - 1; i >= 0; i--)
                 {
-                    var property = entityConfig.FindProperty(list[i].PropertyName);
+                    var property = entityConfig?.FindProperty(list[i].PropertyName);
 
                     // We might be trying to get a path from a method on a property, like:
                     // t.Description.ToString()
-                    if (property == null)
+                    if (property == null && typeResolver != null)
                     {
                         continue;
                     }
@@ -325,7 +330,7 @@ namespace Iql.Entities
                         break;
                     }
 
-                    var entityProperty = property.EntityProperty();
+                    var entityProperty = property?.EntityProperty();
                     if (entityProperty != null)
                     {
                         if (entityProperty.Relationship == null)
@@ -337,7 +342,7 @@ namespace Iql.Entities
                             entityConfig = entityProperty.Relationship.OtherEnd.Property.EntityConfiguration.TypeMetadata;
                         }
                     }
-                    else
+                    else if (property != null)
                     {
                         var type = property.Type;
                         for (var j = 0; j < property.TypeMetadata.GenericTypeParameters.Length; j++)

@@ -161,10 +161,9 @@ namespace Iql.Data.Evaluation
 
                         var conditionResult = await Session.EvaluateIqlCustomAsync(
                             inferredValueConfiguration.InferredWithConditionIql,
-                            serviceProviderProvider,
                             NewInferredValueContext(entity, entity, property.EntityConfiguration.Type),
-                            dataContext,
-                            typeResolver);
+                            serviceProviderProvider,
+                            dataContext, typeResolver);
 
                         if (conditionResult.Success && Equals(conditionResult.Result, true))
                         {
@@ -228,13 +227,11 @@ namespace Iql.Data.Evaluation
                         var conditionResult = await Session
                             .EvaluateIqlCustomAsync(
                                 inferredWith.InferredWithConditionIql,
-                                serviceProviderProvider,
                                 NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
+                                serviceProviderProvider,
                                 dataEvaluator,
                                 property.EntityConfiguration.Builder,
-                                typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type),
-                                false
-                                );
+                                typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type), false);
 
                         if (!Equals(conditionResult.Result, true))
                         {
@@ -270,11 +267,10 @@ namespace Iql.Data.Evaluation
                     var inferredWithIql = inferredWith.InferredWithIql;
                     var result = await Session.EvaluateIqlCustomAsync(
                         inferredWithIql,
-                        serviceProviderProvider,
                         NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
+                        serviceProviderProvider,
                         dataEvaluator,
-                        property.EntityConfiguration.Builder,
-                        typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type));
+                        property.EntityConfiguration.Builder, typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type));
 
                     if (!result.Success)
                     {

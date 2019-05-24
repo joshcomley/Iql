@@ -8,6 +8,24 @@ namespace Iql.Tests.Tests.JavaScript
     public class JavaScriptCodeExtractorTests
     {
         [TestMethod]
+        public void TestParameterless()
+        {
+            var expression = "something.Owner.Name == somethingElse.Description";
+            var fn = $"function () {{ return {expression}; }}";
+            var body = JavaScriptCodeExtractor.ExtractBody(fn);
+            Assert.AreEqual(0, body.ParameterNames.Length);
+        }
+
+        [TestMethod]
+        public void TestParameterlessEs6()
+        {
+            var expression = "something.Owner.Name == somethingElse.Description";
+            var fn = $"() => {expression};";
+            var body = JavaScriptCodeExtractor.ExtractBody(fn);
+            Assert.AreEqual(0, body.ParameterNames.Length);
+        }
+
+        [TestMethod]
         public void TestEs2015()
         {
             var body = @"var yourNameIs = ""Marta"";
@@ -19,7 +37,6 @@ var myNameIs = ""Paulina""";
                 body, "a, b, c", code, $@"function (a, b, c) {{ {body}; }}");
             var actualResult = JavaScriptCodeExtractor.ExtractBody(code, false);
             AssertResult(expectedResult, actualResult);
-
         }
 
         [TestMethod]

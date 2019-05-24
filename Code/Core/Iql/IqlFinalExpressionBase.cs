@@ -1,11 +1,7 @@
 namespace Iql
 {
-    public abstract class IqlFinalExpressionBase : IqlExpression
+    public interface IFinalExpression
     {
-        protected IqlFinalExpressionBase(IqlExpressionKind kind, IqlType? returnType, IqlExpression parent = null) : base(kind, returnType, parent)
-        {
-        }
-
-        public abstract object ResolveValue();
+        object Value { get; set; }
     }
 }

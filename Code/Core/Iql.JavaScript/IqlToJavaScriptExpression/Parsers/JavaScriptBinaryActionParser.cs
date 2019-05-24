@@ -62,7 +62,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 new IqlAggregateExpression(
                     left,
                     spacer,
-                    new IqlFinalExpression<string>(ResolveOperator(action)),
+                    new IqlFinalExpression<string>(ResolveOperator(action, left, right)),
                     spacer,
                     right
                 )
@@ -94,8 +94,9 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 );
         }
 
-        public string ResolveOperator(IqlBinaryExpression action)
+        public string ResolveOperator(IqlBinaryExpression action, IqlExpression left, IqlExpression right)
         {
+            var strict = !IsNull(left) && !IsNull(right);
             switch (action.Kind)
             {
                 case IqlExpressionKind.And:
@@ -111,9 +112,9 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 case IqlExpressionKind.IsLessThanOrEqualTo:
                     return "<=";
                 case IqlExpressionKind.IsEqualTo:
-                    return "==";
+                    return strict ? "===" : "==";
                 case IqlExpressionKind.IsNotEqualTo:
-                    return "!=";
+                    return strict ? "!==" : "!=";
                 case IqlExpressionKind.Modulo:
                     return "%";
                 case IqlExpressionKind.Add:
@@ -137,6 +138,21 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             }
             JavaScriptErrors.OperationNotSupported(action.Kind);
             return null;
+        }
+
+        private bool IsNull(IqlExpression expression)
+        {
+            if (expression.Kind == IqlExpressionKind.Final)
+            {
+                return ((IFinalExpression)expression).Value == "null";
+            }
+
+            if (expression.Kind == IqlExpressionKind.Literal)
+            {
+                return ((IqlLiteralExpression) expression).Value == null;
+            }
+
+            return false;
         }
     }
 }
