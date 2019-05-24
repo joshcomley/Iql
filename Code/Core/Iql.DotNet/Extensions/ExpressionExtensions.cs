@@ -9,14 +9,19 @@ namespace Iql.DotNet.Extensions
     {
         public static Expression GetBody(this Expression expression)
         {
-            if (expression is UnaryExpression)
+            if (expression is UnaryExpression unaryExpression)
             {
-                expression = (expression as UnaryExpression).Operand;
+                expression = unaryExpression.Operand;
+                if (expression.NodeType == ExpressionType.Constant &&
+                    (unaryExpression.NodeType == ExpressionType.Negate || unaryExpression.NodeType == ExpressionType.NegateChecked))
+                {
+                    expression = Expression.Constant(Expression.Lambda(unaryExpression).Compile().DynamicInvoke());
+                }
             }
 
-            if (expression is LambdaExpression)
+            if (expression is LambdaExpression lambdaExpression)
             {
-                expression = (expression as LambdaExpression).Body;
+                expression = lambdaExpression.Body;
             }
 
             return expression;

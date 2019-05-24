@@ -21,6 +21,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                 var fn = $"function () {{ return {expression}; }}";
                 var conversionResult = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<object>(fn, null);
                 iql = conversionResult.Expression;
+                IqlLookup.Add(expression, iql);
             }
             else
             {

@@ -42,29 +42,19 @@ namespace Iql.Tests.Tests.JavaScript
         }
 
         [TestMethod]
-        public async Task ConditionalEqualsExpression()
+        public async Task MethodExpression()
         {
             InitConverter();
-            var expression = "something.Owner.Name == somethingElse.Description";
+            var expression = "something.Owner.Name.indexOf(somethingElse.Description) == -1";
             var result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
                 new Evaluator("abc", "def"));
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(false, result.Result);
-
-            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
-                new Evaluator("123", "123"));
-            Assert.IsTrue(result.Success);
             Assert.AreEqual(true, result.Result);
 
             result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
-                new Evaluator("123", 123));
+                new Evaluator("abc123def", "123"));
             Assert.IsTrue(result.Success);
             Assert.AreEqual(false, result.Result);
-
-            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
-                new Evaluator(123, 123));
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(true, result.Result);
         }
 
         private static void InitConverter()

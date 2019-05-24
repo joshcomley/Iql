@@ -94,18 +94,51 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                     }
                 }
             }
+            List<Type> typePrecedence = new List<Type>(new Type[]
+            {
+                typeof(ushort),
+                typeof(uint),
+                typeof(ulong),
+                typeof(short),
+                typeof(int),
+                typeof(long),
+                typeof(decimal),
+                typeof(float),
+                typeof(double),
+            });
 
-            EnsureCompatibleType(typeof(uint), typeof(int));
-            EnsureCompatibleType(typeof(ulong), typeof(long));
-            EnsureCompatibleType(typeof(ushort), typeof(short));
+            var leftIndex = typePrecedence.IndexOf(left.Type);
+            var rightIndex = typePrecedence.IndexOf(right.Type);
+            if (leftIndex != -1 && rightIndex != -1)
+            {
+                if (rightIndex < leftIndex)
+                {
+                    right = Expression.Convert(right, left.Type);
+                }
+                else if (leftIndex < rightIndex)
+                {
+                    left = Expression.Convert(left, right.Type);
+                }
+            }
+            //EnsureCompatibleType(typeof(uint), typeof(int));
+            //EnsureCompatibleType(typeof(ulong), typeof(long));
+            //EnsureCompatibleType(typeof(ushort), typeof(short));
 
-            EnsureCompatibleType(typeof(int), typeof(long));
-            EnsureCompatibleType(typeof(short), typeof(int));
-            EnsureCompatibleType(typeof(short), typeof(long));
+            //EnsureCompatibleType(typeof(int), typeof(long));
+            //EnsureCompatibleType(typeof(short), typeof(int));
+            //EnsureCompatibleType(typeof(short), typeof(long));
 
-            EnsureCompatibleType(typeof(float), typeof(double));
-            EnsureCompatibleType(typeof(decimal), typeof(float));
-            EnsureCompatibleType(typeof(decimal), typeof(double));
+            //EnsureCompatibleType(typeof(uint), typeof(float));
+            //EnsureCompatibleType(typeof(ulong), typeof(float));
+            //EnsureCompatibleType(typeof(ushort), typeof(float));
+
+            //EnsureCompatibleType(typeof(int), typeof(double));
+            //EnsureCompatibleType(typeof(short), typeof(double));
+            //EnsureCompatibleType(typeof(long), typeof(double));
+
+            //EnsureCompatibleType(typeof(float), typeof(double));
+            //EnsureCompatibleType(typeof(decimal), typeof(float));
+            //EnsureCompatibleType(typeof(decimal), typeof(double));
 
             EnsureCompatibleType(typeof(object), typeof(int), typeof(int?));
             EnsureCompatibleType(typeof(object), typeof(long), typeof(int?));
