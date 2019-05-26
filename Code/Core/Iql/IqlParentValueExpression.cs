@@ -1,9 +1,17 @@
 namespace Iql
 {
-    public abstract class IqlParentValueExpression : IqlReferenceExpression
+    public abstract class IqlParentValueExpression : IqlParentValueExpressionBase<IqlExpression>
     {
-        protected IqlParentValueExpression(IqlReferenceExpression parent,
-            IqlExpression value,
+        protected IqlParentValueExpression(IqlReferenceExpression parent, IqlExpression value, IqlExpressionKind kind, IqlType returnType) : base(parent, value, kind, returnType)
+        {
+        }
+    }
+
+    public abstract class IqlParentValueExpressionBase<TExpression> : IqlReferenceExpression
+        where TExpression : IqlExpression
+    {
+        protected IqlParentValueExpressionBase(IqlReferenceExpression parent,
+            TExpression value,
             IqlExpressionKind kind,
             IqlType returnType)
             : base(kind, returnType, parent)
@@ -11,6 +19,6 @@ namespace Iql
             Value = value;
         }
 
-        public IqlExpression Value { get; set; }
+        public TExpression Value { get; set; }
     }
 }

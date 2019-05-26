@@ -1,9 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Data.Types;
 using Iql.Entities;
 using Iql.Entities.Extensions;
+using Iql.Extensions;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Types;
 
@@ -17,6 +21,17 @@ namespace Iql.Parsing
         where TParserContext : ActionParserContextBase<TRegistry, TIqlData, TQueryAdapter, TOutput, TParserOutput, TParserContext, TConverter, TActionParserBase>
         where TConverter : IExpressionConverter
     {
+        class RootReferenceTypeMap
+        {
+            public string Name { get; }
+            public Type Type { get; }
+
+            public RootReferenceTypeMap(string name, Type type)
+            {
+                Name = name;
+                Type = type;
+            }
+        }
         public TConverter Converter { get; set; }
 
         public bool Nested => TypeStack.Count > 1 || Ancestors.Any(a =>
@@ -29,9 +44,9 @@ namespace Iql.Parsing
         protected ActionParserContextBase(TQueryAdapter adapter, Type currentEntityType, TConverter converter, ITypeResolver typeResolver)
         {
             Adapter = adapter;
-            SetEntityType(currentEntityType);
+            SetEntityType(currentEntityType, Expression);
             Converter = converter;
-            TypeResolver = typeResolver;
+            TypeResolver = typeResolver;// ?? new TypeResolver();
             Data = Adapter.NewData();
         }
 
@@ -42,7 +57,9 @@ namespace Iql.Parsing
         public bool IsTypeRoot => TypeStack.Count == 1;
         public List<Type> TypeStack { get; } = new List<Type>();
         public Type RootEntityType { get; }
-        protected virtual void SetEntityType(Type type)
+        private Dictionary<IqlExpression, Type> _foundTypes = new Dictionary<IqlExpression, Type>();
+        private List<RootReferenceTypeMap> _rootReferenceResolvedTypes = new List<RootReferenceTypeMap>();
+        protected virtual void SetEntityType(Type type, IqlExpression expression)
         {
             if (IsRoot)
             {
@@ -53,7 +70,39 @@ namespace Iql.Parsing
                 }
             }
             TypeStack.Add(type);
+            if (expression != null && !_foundTypes.ContainsKey(expression))
+            {
+                _foundTypes.Add(expression, type);
+                var rootVariableName = TryResolveRootVariableName(expression);
+                if (rootVariableName != null)
+                {
+                    _rootReferenceResolvedTypes.Add(new RootReferenceTypeMap(rootVariableName, type));
+                }
+            }
         }
+
+        private static string TryResolveRootVariableName(IqlExpression expression)
+        {
+            string rootVariableName = null;
+            switch (expression.Kind)
+            {
+                case IqlExpressionKind.RootReference:
+                    rootVariableName = ((IqlRootReferenceExpression)expression).VariableName;
+                    break;
+                case IqlExpressionKind.Any:
+                case IqlExpressionKind.All:
+                case IqlExpressionKind.Count:
+                    var iqlLambdaExpression = ((IqlParentValueLambdaExpression)expression).Value;
+                    if (iqlLambdaExpression != null)
+                    {
+                        rootVariableName = iqlLambdaExpression.Parameters[0].VariableName;
+                    }
+                    break;
+            }
+
+            return rootVariableName;
+        }
+
         public ITypeResolver TypeResolver { get; }
         private readonly Dictionary<string, string> _rootEntityNames = new Dictionary<string, string>();
         private string _rootEntityName;
@@ -127,6 +176,11 @@ namespace Iql.Parsing
         public Type ResolveParameterType(string name)
         {
             var typeName = ResolveParameterTypeName(name);
+            var match = _rootReferenceResolvedTypes.FirstOrDefault(_ => _.Name == name);
+            if (match != null)
+            {
+                return match.Type;
+            }
             if (string.IsNullOrWhiteSpace(typeName))
             {
                 return CurrentEntityType;
@@ -143,7 +197,12 @@ namespace Iql.Parsing
         public string ResolveParameterTypeName(string name)
         {
             var lambda = ResolveLambdaExpressionForParameter(name);
-            return lambda.ParameterExpression?.EntityTypeName;
+            var typeName = lambda.ParameterExpression?.EntityTypeName;
+            if (string.IsNullOrWhiteSpace(typeName))
+            {
+            }
+
+            return typeName;
         }
 
         public LambdaAndParameter ResolveLambdaExpressionForParameter(string name)
@@ -178,36 +237,161 @@ namespace Iql.Parsing
 
         //protected IqlPropertyPath Path { get; } = new IqlPropertyPath();
         protected string EntityPath { get; } = "";
-        protected void IncrementPath(IqlExpression expression)
+        protected void IncrementPath(IqlExpression expression, Action action)
         {
-            //if (Path == null || Path.IsEmpty)
-            //{
-            //    EntityConfigurationBuilder.FindConfigurationBuilderForEntityType()
-            //}
-            switch (expression?.Kind)
+            var resolved = IncrementPathInternal(expression);
+            action();
+            if (resolved)
             {
-                case IqlExpressionKind.Any:
-                case IqlExpressionKind.All:
-                case IqlExpressionKind.Count:
-                    var path = IqlPropertyPath.FromPropertyExpression(
-                            TypeResolver,
-                            TypeResolver.FindTypeByType(CurrentEntityType),
-                            (IqlPropertyExpression)((IqlParentValueExpression)expression).Parent,
-                            false)
-                        ;
-                    SetEntityType(path.PropertyEntityConfiguration.Type);
-                    break;
-                case IqlExpressionKind.Lambda:
-                    break;
-                case IqlExpressionKind.DataSetQuery:
-                    var typeName = ((IqlDataSetQueryExpression)expression).Parameters.First().EntityTypeName;
-                    SetEntityType(TypeResolver.ResolveTypeFromTypeName(typeName).Type);
-                    break;
+                DecrementPath(expression);
+            }
+        }
+        protected async Task IncrementPathAsync(IqlExpression expression, Func<Task> action)
+        {
+            var resolved = IncrementPathInternal(expression);
+            await action();
+            if (resolved)
+            {
+                DecrementPath(expression);
             }
         }
 
+        private bool IncrementPathInternal(IqlExpression expression)
+        {
+            var resolved = false;
+            if (TypeResolver != null)
+            {
+                switch (expression?.Kind)
+                {
+                    case IqlExpressionKind.Any:
+                    case IqlExpressionKind.All:
+                    case IqlExpressionKind.Count:
+                    case IqlExpressionKind.RootReference:
+                        var parent = expression.Parent;
+                        if (parent != null && parent.Kind == IqlExpressionKind.Property && CurrentEntityType != null)
+                        {
+                            var path = IqlPropertyPath.FromPropertyExpression(
+                                    TypeResolver,
+                                    TypeResolver.FindTypeByType(CurrentEntityType),
+                                    (IqlPropertyExpression)parent,
+                                    false)
+                                ;
+                            if (path != null)
+                            {
+                                var type = path.PropertyEntityConfiguration?.Type ?? path.Property?.Type;
+                                if (type != null)
+                                {
+                                    SetEntityType(type, expression);
+                                    resolved = true;
+                                }
+                            }
+                        }
+
+                        if (!resolved && parent != null)
+                        {
+                            // Check to see if we have a literal value to trace the type from
+                            resolved = TrySetRuntimeType(expression);
+                        }
+                        break;
+                    case IqlExpressionKind.Lambda:
+                        break;
+                    case IqlExpressionKind.DataSetQuery:
+                        var typeName = ((IqlDataSetQueryExpression)expression).Parameters.First().EntityTypeName;
+                        var typeMetadata = TypeResolver.ResolveTypeFromTypeName(typeName);
+                        if (typeMetadata?.Type != null)
+                        {
+                            resolved = true;
+                            SetEntityType(typeMetadata.Type, expression);
+                        }
+
+                        break;
+                }
+            }
+
+            return resolved;
+        }
+
+        private bool TrySetRuntimeType(IqlExpression expression)
+        {
+            var parent = expression.Parent;
+            var resolved = false;
+            var value = parent.TryResolveRuntimeValue();
+            if (value?.Success == true)
+            {
+                if (value.Value is IEnumerable)
+                {
+                    // TODO: Resolve base enumerable type for types with multiple
+                    // generic parameters that inherit from IEnumerable
+                    var genericArguments = value.Value.GetType().GenericTypeArguments;
+                    if (genericArguments.Length == 0)
+                    {
+                        object firstValue = null;
+                        foreach (var val in (IEnumerable)value.Value)
+                        {
+                            if (val != null)
+                            {
+                                firstValue = val;
+                                break;
+                            }
+                        }
+
+                        if (firstValue != null)
+                        {
+                            resolved = true;
+                            SetEntityType(firstValue.GetType(), expression);
+                        }
+                    }
+                    else
+                    {
+                        resolved = true;
+                        SetEntityType(genericArguments[0], expression);
+                    }
+                }
+            }
+            else
+            {
+                var path = new List<IqlPropertyExpression>();
+                while (parent != null)
+                {
+                    if (parent.Kind == IqlExpressionKind.RootReference)
+                    {
+                        var variableName = ((IqlRootReferenceExpression)parent).VariableName;
+                        var match = _rootReferenceResolvedTypes.FirstOrDefault(_ => _.Name == variableName);
+                        if (match != null)
+                        {
+                            var type = match.Type;
+                            for (var i = path.Count - 1; i >= 0; i--)
+                            {
+                                var propertyInfo = type.GetProperty(path[i].PropertyName);
+                                if (propertyInfo == null)
+                                {
+                                    return false;
+                                }
+                                type = propertyInfo.PropertyType;
+                                if (typeof(IEnumerable).IsAssignableFrom(type))
+                                {
+                                    type = type.GenericTypeArguments[0];
+                                }
+                            }
+
+                            resolved = true;
+                            SetEntityType(type, expression);
+                            break;
+                        }
+                    }
+                    else if (parent.Kind == IqlExpressionKind.Property)
+                    {
+                        path.Add((IqlPropertyExpression)parent);
+                    }
+                    parent = parent.Parent;
+                }
+            }
+
+            return resolved;
+        }
+
         public bool IsRoot => Ancestors.Count == 1;
-        protected void DecrementPath(IqlExpression expression)
+        private void DecrementPath(IqlExpression expression)
         {
             switch (expression?.Kind)
             {
@@ -219,6 +403,19 @@ namespace Iql.Parsing
                 case IqlExpressionKind.DataSetQuery:
                     RemoveLastEntityType();
                     break;
+            }
+
+            if (expression != null)
+            {
+                if (_foundTypes.ContainsKey(expression))
+                {
+                    _foundTypes.Remove(expression);
+                }
+                var rootVariableName = TryResolveRootVariableName(expression);
+                if (rootVariableName != null)
+                {
+                    _rootReferenceResolvedTypes.RemoveAt(_rootReferenceResolvedTypes.Count - 1);
+                }
             }
         }
 

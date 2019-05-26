@@ -983,14 +983,15 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task AnyCheck()
         {
-            var query = Db.Users.WhereEquals(new IqlAnyExpression("_",
+            var rootVariableName = "_";
+            var query = Db.Users.WhereEquals(new IqlAnyExpression(rootVariableName,
                 new IqlPropertyExpression(
                     nameof(ApplicationUser.ClientsCreated),
                     new IqlRootReferenceExpression()),
-                new IqlIsEqualToExpression(new IqlPropertyExpression(
+                IqlLambdaExpression.Create(new IqlIsEqualToExpression(new IqlPropertyExpression(
                         nameof(Client.Name),
-                        new IqlRootReferenceExpression("_")),
-                    new IqlLiteralExpression("jimbo", IqlType.String))));
+                        new IqlRootReferenceExpression(rootVariableName)),
+                    new IqlLiteralExpression("jimbo", IqlType.String)), IqlType.Boolean, rootVariableName)));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/any(_:(_/Name eq 'jimbo'))",
                 uri);
@@ -999,14 +1000,15 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task AnyCheck2()
         {
-            var query = Db.Users.WhereEquals(new IqlAnyExpression("_",
+            var rootVariableName = "_";
+            var query = Db.Users.WhereEquals(new IqlAnyExpression(rootVariableName,
                 new IqlPropertyExpression(
                     nameof(ApplicationUser.ClientsCreated),
                     new IqlRootReferenceExpression()),
-                new IqlStringIncludesExpression(new IqlPropertyExpression(
+                IqlLambdaExpression.Create(new IqlStringIncludesExpression(new IqlPropertyExpression(
                         nameof(Client.Name),
-                        new IqlRootReferenceExpression("_")),
-                    new IqlLiteralExpression("jimbo", IqlType.String))));
+                        new IqlRootReferenceExpression(rootVariableName)),
+                    new IqlLiteralExpression("jimbo", IqlType.String)), IqlType.Boolean, rootVariableName)));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/any(_:contains(_/Name,'jimbo'))",
                 uri);
@@ -1015,14 +1017,15 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task AllCheck()
         {
-            var query = Db.Users.WhereEquals(new IqlAllExpression("_",
+            var rootVariableName = "_";
+            var query = Db.Users.WhereEquals(new IqlAllExpression(rootVariableName,
                 new IqlPropertyExpression(
                     nameof(ApplicationUser.ClientsCreated),
                     new IqlRootReferenceExpression()),
-                new IqlIsEqualToExpression(new IqlPropertyExpression(
+                IqlLambdaExpression.Create(new IqlIsEqualToExpression(new IqlPropertyExpression(
                         nameof(Client.Name),
-                        new IqlRootReferenceExpression("_")),
-                    new IqlLiteralExpression("jimbo", IqlType.String))));
+                        new IqlRootReferenceExpression(rootVariableName)),
+                    new IqlLiteralExpression("jimbo", IqlType.String)), IqlType.Boolean, rootVariableName)));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/all(_:(_/Name eq 'jimbo'))",
                 uri);
@@ -1031,14 +1034,15 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task AllCheck2()
         {
-            var query = Db.Users.WhereEquals(new IqlAllExpression("_",
+            var rootVariableName = "_";
+            var query = Db.Users.WhereEquals(new IqlAllExpression(rootVariableName,
                 new IqlPropertyExpression(
                     nameof(ApplicationUser.ClientsCreated),
                     new IqlRootReferenceExpression()),
-                new IqlStringIncludesExpression(new IqlPropertyExpression(
+                IqlLambdaExpression.Create(new IqlStringIncludesExpression(new IqlPropertyExpression(
                         nameof(Client.Name),
-                        new IqlRootReferenceExpression("_")),
-                    new IqlLiteralExpression("jimbo", IqlType.String))));
+                        new IqlRootReferenceExpression(rootVariableName)),
+                    new IqlLiteralExpression("jimbo", IqlType.String)), IqlType.Boolean, rootVariableName)));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/all(_:contains(_/Name,'jimbo'))",
                 uri);

@@ -8,7 +8,7 @@ namespace Iql
         public IqlAllExpression(
             string rootVariableName = null,
             IqlReferenceExpression parent = null,
-            IqlExpression expression = null) : base(rootVariableName, IqlExpressionKind.All, parent, expression)
+            IqlLambdaExpression expression = null) : base(rootVariableName, IqlExpressionKind.All, parent, expression)
         {
         }
 
@@ -22,7 +22,7 @@ namespace Iql
 
 			var expression = new IqlAllExpression();
 			expression.RootVariableName = RootVariableName;
-			expression.Value = Value?.Clone();
+			expression.Value = Value?.Clone() as IqlLambdaExpression;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
@@ -46,7 +46,7 @@ namespace Iql
 		{
 			// #ReplaceStart
 
-			Value = context.Replace(this, nameof(Value), null, Value);
+			Value = context.Replace(this, nameof(Value), null, Value) as IqlLambdaExpression;
 			Parent = context.Replace(this, nameof(Parent), null, Parent);
 			var replaced = context.Replacer(context, this);
 			if(replaced != this)

@@ -162,8 +162,10 @@ namespace Iql.Data.Evaluation
                         var conditionResult = await Session.EvaluateIqlCustomAsync(
                             inferredValueConfiguration.InferredWithConditionIql,
                             NewInferredValueContext(entity, entity, property.EntityConfiguration.Type),
+                            null,
                             serviceProviderProvider,
-                            dataContext, typeResolver);
+                            dataContext, 
+                            typeResolver);
 
                         if (conditionResult.Success && Equals(conditionResult.Result, true))
                         {
@@ -228,6 +230,7 @@ namespace Iql.Data.Evaluation
                             .EvaluateIqlCustomAsync(
                                 inferredWith.InferredWithConditionIql,
                                 NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
+                                null,
                                 serviceProviderProvider,
                                 dataEvaluator,
                                 property.EntityConfiguration.Builder,
@@ -268,6 +271,7 @@ namespace Iql.Data.Evaluation
                     var result = await Session.EvaluateIqlCustomAsync(
                         inferredWithIql,
                         NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
+                        null,
                         serviceProviderProvider,
                         dataEvaluator,
                         property.EntityConfiguration.Builder, typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type));

@@ -427,6 +427,7 @@ namespace Iql.Data.Evaluation
                         var evaluatedResult = await Session.EvaluateIqlCustomAsync(
                             flattenedExpression.Expression,
                             context,
+                            null,
                             serviceProviderProvider,
                             evaluator,
                             typeResolver,
@@ -481,6 +482,7 @@ namespace Iql.Data.Evaluation
             var result = await Session.EvaluateIqlCustomAsync(
                 iqlExpression,
                 context,
+                null,
                 serviceProviderProvider,
                 evaluator,
                 typeResolver, entity == null ? typeof(IqlUserPermissionContext<TUser>) : typeof(IqlEntityUserPermissionContext<TEntity, TUser>));
@@ -651,6 +653,7 @@ namespace Iql.Data.Evaluation
             var result = await Session.EvaluateIqlCustomAsync(
                 rule.IqlExpression,
                 context,
+                null,
                 serviceProviderProvider,
                 evaluator,
                 typeResolver, typeof(IqlUserPermissionContext<TUser>));

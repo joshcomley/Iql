@@ -142,6 +142,14 @@ namespace Iql.Data.IqlToIql.Parsers
         }
     }
 
+    public class IqlToIqlVariableParser : IqlToIqlActionParserBase<IqlVariableExpression>
+    {
+        public override Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlVariableExpression action, IqlToIqlParserContext parser)
+        {
+            return Task.FromResult<IqlExpression>(action);
+        }
+    }
+
     public class IqlToIqlIntersectsParser : IqlToIqlActionParserBase<IqlIntersectsExpression>
     {
         public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlIntersectsExpression action, IqlToIqlParserContext parser)
@@ -472,7 +480,8 @@ namespace Iql.Data.IqlToIql.Parsers
                 var processed = await action.Query.ProcessAsync(
                     parser.Adapter.TypeResolver.FindTypeByType(path.Property.ElementType),
                     parser.TypeResolver,
-                    parser);
+                    parser,
+                    parser.ContextEvaluator);
                 action.Query = (IqlCollectitonQueryExpression)processed.Result;
             }
 

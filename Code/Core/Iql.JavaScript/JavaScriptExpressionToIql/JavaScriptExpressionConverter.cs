@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Iql.Conversion;
+using Iql.Data.Evaluation;
 using Iql.Data.IqlToIql;
 using Iql.Data.Types;
 using Iql.Entities;

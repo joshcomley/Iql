@@ -14,6 +14,7 @@ namespace Iql.Data.IqlToIql
             //Registry.Register(typeof(IqlExpression), () => new JavaScriptActionParser());
             Registry.Register(typeof(IqlLiteralExpression), () => new IqlToIqlLiteralParser());
             //Registry.Register(typeof(IqlDistanceExpression), () => new IqlToIqlDistanceParser());
+            //Registry.Register(typeof(IqlVariableExpression), () => new IqlToIqlVariableParser());
             Registry.Register(typeof(IqlSpecialValueExpression), () => new IqlToIqlSpecialValueParser());
             Registry.Register(typeof(IqlIntersectsExpression), () => new IqlToIqlIntersectsParser());
             Registry.Register(typeof(IqlLambdaExpression), () => new IqlToIqlLambdaParser());

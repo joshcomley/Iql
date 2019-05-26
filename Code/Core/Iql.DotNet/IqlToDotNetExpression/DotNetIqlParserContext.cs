@@ -47,9 +47,9 @@ namespace Iql.DotNet.IqlToDotNetExpression
         {
         }
 
-        protected override void SetEntityType(Type type)
+        protected override void SetEntityType(Type type, IqlExpression expression)
         {
-            base.SetEntityType(type);
+            base.SetEntityType(type, expression);
             if (CurrentEntityType != null)
             {
                 ContextParameter = ContextParameter ?? System.Linq.Expressions.Expression.Parameter(

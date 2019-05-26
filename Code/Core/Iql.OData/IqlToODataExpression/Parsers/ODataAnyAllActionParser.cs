@@ -24,20 +24,24 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             }
             // https://localhost:44306/odata/Users?$filter=ScaffoldsCreated/all(d:((d/Description ne null) and (d/Description ne '')))
             var arr = new List<IqlExpression>();
-            arr.Add(action.Parent);
             var actionRootVariableName = action.RootVariableName;
-            if (string.IsNullOrWhiteSpace(actionRootVariableName))
-            {
-                throw new ArgumentException($"A {nameof(IqlAnyAllExpression.RootVariableName)} is required for any/all operations in OData");
-            }
-            arr.Add(new IqlFinalExpression<string>($"/{methodName}("));
             var parsed = parser.ParseWithValidRootReferenceVariable(action.Value, actionRootVariableName).ToCodeString();
-            if (!string.IsNullOrWhiteSpace(parsed))
+            var lambdaIsEmpty = string.IsNullOrWhiteSpace(parsed);
+            if (!lambdaIsEmpty || action.Kind == IqlExpressionKind.Any)
             {
-                arr.Add(new IqlFinalExpression<string>($"{actionRootVariableName}:"));
+                arr.Add(action.Parent);
+                if (string.IsNullOrWhiteSpace(actionRootVariableName))
+                {
+                    throw new ArgumentException($"A {nameof(IqlAnyAllExpression.RootVariableName)} is required for any/all operations in OData");
+                }
+                arr.Add(new IqlFinalExpression<string>($"/{methodName}("));
+                if (!string.IsNullOrWhiteSpace(parsed))
+                {
+                    arr.Add(new IqlFinalExpression<string>($"{actionRootVariableName}:"));
+                }
+                arr.Add(new IqlFinalExpression<string>(parsed));
+                arr.Add(new IqlFinalExpression<string>(")"));
             }
-            arr.Add(new IqlFinalExpression<string>(parsed));
-            arr.Add(new IqlFinalExpression<string>(")"));
             return new IqlAggregateExpression(arr.ToArray());
         }
     }

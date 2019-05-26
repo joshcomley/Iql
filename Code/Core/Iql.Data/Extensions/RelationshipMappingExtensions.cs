@@ -153,6 +153,7 @@ namespace Iql.Data.Extensions
                 ctx,
                 dataContext,
                 typeof(RelationshipFilterContext<TParent>),
+                null,
                 dataContext.EntityConfigurationContext,
                 true);
             if (result.Result is LambdaExpression)

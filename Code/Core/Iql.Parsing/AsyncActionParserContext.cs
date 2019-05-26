@@ -94,23 +94,26 @@ namespace Iql.Parsing
             {
                 Ancestors.Add(expression);
             }
-            IncrementPath(expression);
-            var index = appendToAncestors ? Ancestors.Count - 1 : -1;
-            var result = await ParseExpressionAsync(expression);
-            if (expression != null)
-            {
-                if (!OutputMap.ContainsKey(expression))
-                {
-                    OutputMap.Add(expression, new List<TParserOutput>());
-                }
-                OutputMap[expression].Add(result);
-            }
 
-            if (index != -1)
+            TParserOutput result = default(TParserOutput);
+            await IncrementPathAsync(expression, async () =>
             {
-                Ancestors.RemoveAt(index);
-            }
-            DecrementPath(expression);
+                var index = appendToAncestors ? Ancestors.Count - 1 : -1;
+                result = await ParseExpressionAsync(expression);
+                if (expression != null)
+                {
+                    if (!OutputMap.ContainsKey(expression))
+                    {
+                        OutputMap.Add(expression, new List<TParserOutput>());
+                    }
+                    OutputMap[expression].Add(result);
+                }
+
+                if (index != -1)
+                {
+                    Ancestors.RemoveAt(index);
+                }
+            });
             return result;
         }
 

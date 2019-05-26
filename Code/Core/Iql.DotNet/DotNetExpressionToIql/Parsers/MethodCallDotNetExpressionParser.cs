@@ -98,24 +98,23 @@ namespace Iql.DotNet.DotNetExpressionToIql.Parsers
                     return new IqlCountExpression(
                         (node.Arguments[1] as LambdaExpression).Parameters[0].Name,
                         context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
-                        context.Parse(node.Arguments[1], context)
+                        context.Parse(node.Arguments[1], context) as IqlLambdaExpression
                     );
                 case nameof(Enumerable.Where):
                     return new IqlFilterExpression(
-                        (node.Arguments[1] as LambdaExpression).Parameters[0].Name,
                         context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
-                        context.Parse(node.Arguments[1], context)
+                        context.Parse(node.Arguments[1], context) as IqlLambdaExpression
                     );
                 case nameof(Enumerable.Any):
                     return new IqlIsGreaterThanExpression(
                         new IqlCountExpression(
                             (node.Arguments[1] as LambdaExpression).Parameters[0].Name, 
                             context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
-                            context.Parse(node.Arguments[1], context)),
+                            context.Parse(node.Arguments[1], context) as IqlLambdaExpression),
                         new IqlLiteralExpression(0, IqlType.Integer));
                 case nameof(Enumerable.All):
                     return new IqlAllExpression((node.Arguments[1] as LambdaExpression).Parameters[0].Name, context.Parse(node.Arguments[0], context) as IqlReferenceExpression,
-                        context.Parse(node.Arguments[1], context));
+                        context.Parse(node.Arguments[1], context) as IqlLambdaExpression);
                 case nameof(IqlPointExpression.Intersects):
                     parent = context.Parse(node.Object, context) as IqlReferenceExpression;
                     var iqlIntersectsExpression = new IqlIntersectsExpression(parent, context.Parse(node.Arguments[0], context) as IqlReferenceExpression);

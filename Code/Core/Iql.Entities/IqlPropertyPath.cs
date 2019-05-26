@@ -250,7 +250,8 @@ namespace Iql.Entities
             ITypeResolver typeResolver,
             IIqlTypeMetadata entityConfigurationContext,
             IqlPropertyExpression propertyExpression,
-            bool traverseNestedRootReferences = true)
+            bool traverseNestedRootReferences = true,
+            bool allowUnresolvedTypes = false)
         {
             IqlPropertyPath propertyPath = null;
             var list = new List<IqlPropertyExpression>();
@@ -276,7 +277,7 @@ namespace Iql.Entities
                 {
                     var variableExpression = (IqlVariableExpression)parent;
                     var resolvedType = typeResolver?.ResolveTypeFromTypeName(variableExpression.EntityTypeName);
-                    if (resolvedType != null)
+                    if (resolvedType != null || allowUnresolvedTypes)
                     {
                         lastRootReference = variableExpression;
                     }
@@ -290,7 +291,7 @@ namespace Iql.Entities
                         return null;
                     }
                     var resolvedType = typeResolver.FindTypeByType(literalExpression.Value.GetType());
-                    if (resolvedType != null)
+                    if (resolvedType != null || allowUnresolvedTypes)
                     {
                         entityConfigurationContext = resolvedType;
                         lastRootReference = literalExpression;

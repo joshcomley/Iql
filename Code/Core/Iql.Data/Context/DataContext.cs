@@ -1466,6 +1466,7 @@ namespace Iql.Data.Context
                                 inferredWith.InferredWithConditionIql,
                                 new InferredValueContext<T>((T)oldEntity, entity),
                                 this,
+                                null,
                                 typeof(InferredValueContext<T>));
                             if (!Equals(result.Result, true))
                             {

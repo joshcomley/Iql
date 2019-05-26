@@ -262,7 +262,7 @@ namespace Iql.Data.Context
             var all = new IqlNotExpression(
                 new IqlAnyExpression("child",
                     IqlPropertyPath.FromProperty(otherRelationship.OtherSide.Property, rootVariableName).Expression,
-                    keyExpressions.And()));
+                    IqlLambdaExpression.Create(keyExpressions.And())));
             var excludeExpressions = new List<IqlExpression>();
             var attachedEntities = entity is CompositeKey ? null : relationship.OtherSide.Property.GetValue(entity) as IEnumerable;
             var exclude = new List<object>();
@@ -1636,7 +1636,7 @@ namespace Iql.Data.Context
                 )
                 .ReduceStaticContent(queryExpression);
 
-            await result.ProcessAsync(typeMetadata, EntityConfigurationBuilder, DataContext, false, MappedFrom);
+            await result.ProcessAsync(typeMetadata, EntityConfigurationBuilder, DataContext, null, false, MappedFrom);
             return result;
         }
     }

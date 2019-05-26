@@ -9,6 +9,7 @@ using Iql.Data.Context;
 using Iql.Data.DataStores.InMemory;
 #endif
 using Iql.Data.IqlToIql;
+using Iql.Data.Types;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.Services;
@@ -136,7 +137,12 @@ namespace Iql.Data.Evaluation
             object result = entity;
             if (contextEvaluator != null && rootName != null)
             {
-                result = contextEvaluator.ResolveVariable(rootName);
+                var contextResult = contextEvaluator.ResolveVariable(rootName);
+                if (!contextResult.Success)
+                {
+                    throw new Exception($@"Unable to find variable ""{rootName}"".");
+                }
+                result = contextResult.Value;
             }
             for (var i = 0; i < propertyPath.PropertyPath.Length; i++)
             {
@@ -155,7 +161,13 @@ namespace Iql.Data.Evaluation
                 {
                     if (contextEvaluator != null)
                     {
-                        result = contextEvaluator.ResolveProperty(result, part.PropertyName);
+                        var contextResult = contextEvaluator.ResolveProperty(result, part.PropertyName);
+                        if (!contextResult.Success)
+                        {
+                            throw new Exception($@"Unable to find property ""{part.PropertyName}"".");
+                        }
+
+                        result = contextResult.Value;
                     }
                     else
                     {
@@ -216,11 +228,12 @@ namespace Iql.Data.Evaluation
             object entity,
             ITypeResolver typeResolver,
             IServiceProviderProvider serviceProviderProvider,
-            Type entityType = null
+            Type entityType = null,
+            IContextEvaluator contextEvaluator = null
             )
         {
             var iql = Converter.ConvertLambdaExpressionToIqlByType(expression, typeResolver, entityType).Expression;
-            var processResult = await ProcessIqlExpressionAsync(iql, entityType, typeResolver, serviceProviderProvider);
+            var processResult = await ProcessIqlExpressionAsync(iql, entityType, typeResolver, serviceProviderProvider, contextEvaluator);
             foreach (var item in processResult.lookup.Keys.ToArray())
             {
                 processResult.lookup[item] = item.Evaluate(entity) ?? ResolveNull(item, processResult.propertyExpressions.First(_ => _.Expression == item.Expression));
@@ -239,17 +252,20 @@ namespace Iql.Data.Evaluation
         public Task<IqlObjectEvaluationResult> EvaluateExpressionWithDbAsync<T>(
             Expression<Func<T, object>> expression,
             T entity,
-            IDataContext dataContext)
+            IDataContext dataContext,
+            IContextEvaluator contextEvaluator = null)
             where T : class
         {
-            return EvaluateLambdaWithDbAsync(expression, entity, dataContext);
+            return EvaluateLambdaWithDbAsync(expression, entity, dataContext, typeof(T), contextEvaluator);
         }
 
         public async Task<IqlObjectEvaluationResult> EvaluateLambdaWithDbAsync(
             LambdaExpression expression,
             object entity,
             IDataContext dataContext,
-            Type entityType = null)
+            Type entityType = null,
+            IContextEvaluator contextEvaluator = null
+            )
         {
             entityType = entityType ?? entity.GetType();
             var iql = Converter.ConvertLambdaExpressionToIqlByType(expression, dataContext.EntityConfigurationContext, entityType).Expression;
@@ -257,6 +273,7 @@ namespace Iql.Data.Evaluation
                 iql,
                 entity,
                 dataContext,
+                contextEvaluator,
                 entityType);
         }
 
@@ -264,12 +281,14 @@ namespace Iql.Data.Evaluation
             IqlExpression expression,
             object entity,
             IDataContext dataContext,
+            IContextEvaluator contextEvaluator = null,
             Type contextType = null,
             ITypeResolver typeResolver = null)
         {
             return EvaluateIqlCustomAsync(
                 expression,
                 entity,
+                contextEvaluator,
                 (IServiceProviderProvider)dataContext ?? DataContext.FindBuilderForEntityType(contextType),
                 dataContext,
                 typeResolver ?? dataContext.EntityConfigurationContext, contextType);
@@ -280,6 +299,7 @@ namespace Iql.Data.Evaluation
             object context,
             IDataContext dataContext,
             Type contextType,
+            IContextEvaluator contextEvaluator = null,
             ITypeResolver typeResolver = null,
             bool populatePath = false
             )
@@ -287,6 +307,7 @@ namespace Iql.Data.Evaluation
             var value = await EvaluateIqlCustomAsync(
                 expression,
                 context,
+                contextEvaluator,
                 dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(contextType),
                 dataContext,
                 typeResolver ?? dataContext.EntityConfigurationContext,
@@ -366,6 +387,7 @@ namespace Iql.Data.Evaluation
             IqlExpression iql,
             IqlFlattenedExpression[] propertyExpressions)
         {
+            typeResolver = typeResolver ?? new TypeResolver();
             var expressionResultLookup = new Dictionary<IqlExpression, object>();
             foreach (var item in lookup)
             {
@@ -421,21 +443,56 @@ namespace Iql.Data.Evaluation
         public async Task<IqlExpressonEvaluationResult> EvaluateIqlCustomAsync(
             IqlExpression expression,
             object context,
+            IContextEvaluator contextEvaluator = null,
             IServiceProviderProvider serviceProviderProvider = null,
             IIqlDataEvaluator dataEvaluator = null,
             ITypeResolver typeResolver = null,
             Type contextType = null,
             bool populatePath = false)
         {
+            expression = expression.Clone();
+            //if (typeResolver == null)
+            //{
+            //    typeResolver = new TypeResolver
+            //    {
+            //        ContextEvaluator = contextEvaluator
+            //    };
+            //}
+            if (typeResolver == null)
+            {
+                typeResolver = new TypeResolver();
+                typeResolver.ResolvingType.Subscribe(_ =>
+                {
+                    int a = 0;
+                });
+            }
             var success = true;
             var paths = new List<IqlPropertyPathEvaluationResult>();
             contextType = contextType ?? context.GetType();
-            var clone = expression.Clone();
+            if (contextEvaluator != null)
+            {
+                var flattened = expression.Flatten();
+                foreach (var item in flattened)
+                {
+                    if (item.Expression.Kind == IqlExpressionKind.Variable)
+                    {
+                        var result = contextEvaluator.ResolveVariable(((IqlVariableExpression)item.Expression)
+                            .VariableName);
+                        if (result.Success && result.CanBeLiteral)
+                        {
+                            expression = expression.ReplaceExpression(item.Expression,
+                                new IqlLiteralExpression(result.Value,
+                                    result.Value == null ? IqlType.Unknown : result.Value.GetType().ToIqlType()));
+                        }
+                    }
+                }
+            }
             var processResult = await ProcessIqlExpressionAsync(
-                clone,
+                expression.Clone(),
                 contextType,
                 typeResolver,
-                serviceProviderProvider);
+                serviceProviderProvider,
+                contextEvaluator);
             success = processResult.Success;
             var flattenedExpressions = processResult.propertyExpressions.ToArray();
 
@@ -614,7 +671,8 @@ namespace Iql.Data.Evaluation
             IqlExpression iql,
             Type entityType,
             ITypeResolver typeResolver,
-            IServiceProviderProvider serviceProviderProvider)
+            IServiceProviderProvider serviceProviderProvider,
+            IContextEvaluator contextEvaluator)
         {
             serviceProviderProvider = serviceProviderProvider ?? DataContext.FindBuilderForEntityType(entityType);
 
@@ -625,7 +683,7 @@ namespace Iql.Data.Evaluation
             var resolvedType = typeResolver?.FindTypeByType(entityType);
             if (resolvedType != null)
             {
-                var processResult = await iql.ProcessAsync(resolvedType, typeResolver, serviceProviderProvider, true);
+                var processResult = await iql.ProcessAsync(resolvedType, typeResolver, serviceProviderProvider, contextEvaluator, true);
                 iql = processResult.Result;
                 success = processResult.Success;
             }
@@ -635,7 +693,9 @@ namespace Iql.Data.Evaluation
                 var path = IqlPropertyPath.FromPropertyExpression(
                     typeResolver,
                     resolvedType,
-                    propertyExpression.Expression as IqlPropertyExpression);
+                    propertyExpression.Expression as IqlPropertyExpression,
+                    true,
+                    true);
                 if (path != null)
                 {
                     lookup.Add(path, null);

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Iql.Data.Evaluation;
 using Iql.Entities;
 using Iql.Entities.Services;
 using Iql.Parsing.Types;
@@ -12,6 +13,7 @@ namespace Iql.Data.IqlToIql
             IIqlTypeMetadata resolvedType,
             ITypeResolver typeResolver,
             IServiceProviderProvider serviceProvider,
+            IContextEvaluator contextEvaluator = null,
             bool resolveSpecialValues = false, 
             Type mappedFrom = null)
         {
@@ -20,7 +22,8 @@ namespace Iql.Data.IqlToIql
                 typeResolver,
                 serviceProvider?.ServiceProvider,
                 resolveSpecialValues,
-                mappedFrom);
+                mappedFrom,
+                contextEvaluator);
             var result = await parser.ParseAsync(expression);
             return new IqlExpessionResult(parser.Success, result.Expression);
         }

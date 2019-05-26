@@ -121,14 +121,22 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                             var property = member.Property as PropertyIdentifierJavaScriptExpressionNode;
                             if (property.Name == "length")
                             {
-                                if (binary.Operator == OperatorType.GreaterThan &&
+                                if ((binary.Operator == OperatorType.EqualsEquals ||
+                                     binary.Operator == OperatorType.EqualsEqualsEquals ||
+                                     binary.Operator == OperatorType.NotEquals ||
+                                     binary.Operator == OperatorType.NotEqualsEquals ||
+                                     binary.Operator == OperatorType.GreaterThan ||
+                                     binary.Operator == OperatorType.GreaterThanOrEqualTo ||
+                                     binary.Operator == OperatorType.LessThan ||
+                                     binary.Operator == OperatorType.LessThanOrEqualTo
+                                     ) &&
                                     expression.Args.Count == 1 &&
                                     expression.Args[0] is LambdaJavaScriptExpressionNode)
                                 {
                                     var calleeIql = context.Parse((expression.Callee as MemberJavaScriptExpressionNode).Owner);
                                     var currentRootEntityType = context.RootEntities.Last().Type;
                                     Type newRootEntityType = null;
-                                    if (currentRootEntityType != null && calleeIql.Value is IqlPropertyExpression)
+                                    if (context.TypeResolver != null && currentRootEntityType != null && calleeIql.Value is IqlPropertyExpression)
                                     {
                                         var currentRootEntityConfiguration =
                                             context.TypeResolver.FindTypeByType(currentRootEntityType);
@@ -153,18 +161,45 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                                             calleeIql.Value as IqlPropertyExpression)).Value;
                                     var countExpression = new IqlCountExpression(lambdaJavaScriptExpressionNode.ParameterName,
                                         null,
-                                        lambdaFunc);
+                                        IqlLambdaExpression.Create(lambdaFunc, IqlType.Boolean, lambdaJavaScriptExpressionNode.ParameterName));
                                     //lambdaFunc.Parent = countExpression;
                                     countExpression.Parent = calleeIql.Value;
-                                    method = new IqlIsGreaterThanExpression(
-                                        countExpression,
-                                        context.Parse(binary.Right).Value);
-                                    break;
-                                }
-                                else if (
-                                   (binary.Operator == OperatorType.EqualsEquals ||
-                                    binary.Operator == OperatorType.EqualsEqualsEquals))
-                                {
+                                    var right = context.Parse(binary.Right).Value;
+                                    switch (binary.Operator)
+                                    {
+                                        case OperatorType.EqualsEquals:
+                                        case OperatorType.EqualsEqualsEquals:
+                                            method = new IqlIsEqualToExpression(
+                                                countExpression,
+                                                right);
+                                            break;
+                                        case OperatorType.NotEquals:
+                                        case OperatorType.NotEqualsEquals:
+                                            method = new IqlIsNotEqualToExpression(
+                                                countExpression,
+                                                right);
+                                            break;
+                                        case OperatorType.LessThan:
+                                            method = new IqlIsLessThanExpression(
+                                                countExpression,
+                                                right);
+                                            break;
+                                        case OperatorType.LessThanOrEqualTo:
+                                            method = new IqlIsLessThanOrEqualToExpression(
+                                                countExpression,
+                                                right);
+                                            break;
+                                        case OperatorType.GreaterThan:
+                                            method = new IqlIsGreaterThanExpression(
+                                                countExpression,
+                                                right);
+                                            break;
+                                        case OperatorType.GreaterThanOrEqualTo:
+                                            method = new IqlIsGreaterThanOrEqualToExpression(
+                                                countExpression,
+                                                right);
+                                            break;
+                                    }
                                     break;
                                 }
                             }

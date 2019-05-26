@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Data;
 using Iql.Data.Evaluation;
+using Iql.Data.Types;
 
 namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
@@ -27,8 +28,10 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             {
                 iql = IqlLookup[expression];
             }
+            //var typeResolver = new TypeResolver();
+            //typeResolver.ContextEvaluator = evaluator;
             var evaluationSession = new EvaluationSession(true, EvaluationCacheMode.None, converter);
-            var result = await evaluationSession.EvaluateIqlCustomAsync(iql, evaluator);
+            var result = await evaluationSession.EvaluateIqlCustomAsync(iql, evaluator, evaluator);
             return result;
         }
 

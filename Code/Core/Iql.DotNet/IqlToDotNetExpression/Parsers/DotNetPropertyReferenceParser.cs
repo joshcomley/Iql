@@ -22,6 +22,10 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 #endif
             );
             var property = dotNetOutput.Expression.Type.GetProperty(action.PropertyName);
+            if(property == null)
+            {
+                return null;
+            }
             IqlExpression expression =
                 new IqlFinalExpression<Expression>(
                     DotNetExpressionConverter.DisableNullPropagation 

@@ -45,25 +45,30 @@ namespace Iql.Data.Evaluation
             object entity,
             ITypeResolver typeResolver,
             IServiceProviderProvider serviceProviderProvider,
-            Type entityType = null
-        );
+            Type entityType = null,
+            IContextEvaluator contextEvaluator = null
+            );
 
         Task<IqlObjectEvaluationResult> EvaluateExpressionWithDbAsync<T>(
             Expression<Func<T, object>> expression,
             T entity,
-            IDataContext dataContext)
+            IDataContext dataContext,
+            IContextEvaluator contextEvaluator = null)
             where T : class;
 
         Task<IqlObjectEvaluationResult> EvaluateLambdaWithDbAsync(
             LambdaExpression expression,
             object entity,
             IDataContext dataContext,
-            Type entityType = null);
+            Type entityType = null,
+            IContextEvaluator contextEvaluator = null
+            );
 
         Task<IqlExpressonEvaluationResult> EvaluateIqlAsync(
             IqlExpression expression,
             object entity,
             IDataContext dataContext,
+            IContextEvaluator contextEvaluator = null,
             Type contextType = null,
             ITypeResolver typeResolver = null);
 
@@ -72,15 +77,18 @@ namespace Iql.Data.Evaluation
             object context,
             IDataContext dataContext,
             Type contextType,
+            IContextEvaluator contextEvaluator = null,
             ITypeResolver typeResolver = null,
             bool populatePath = false
         );
 
-        Task<IqlExpressonEvaluationResult> EvaluateIqlCustomAsync(IqlExpression expression,
+        Task<IqlExpressonEvaluationResult> EvaluateIqlCustomAsync(
+            IqlExpression expression,
             object context,
-            IServiceProviderProvider serviceProviderProvider,
-            IIqlDataEvaluator dataEvaluator,
-            ITypeResolver typeResolver,
+            IContextEvaluator contextEvaluator = null,
+            IServiceProviderProvider serviceProviderProvider = null,
+            IIqlDataEvaluator dataEvaluator = null,
+            ITypeResolver typeResolver = null,
             Type contextType = null,
             bool populatePath = false);
     }

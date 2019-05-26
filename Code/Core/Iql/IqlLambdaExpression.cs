@@ -5,6 +5,18 @@ namespace Iql
 {
     public class IqlLambdaExpression : IqlParameteredLambdaExpression
     {
+        public static IqlLambdaExpression Create(IqlExpression body, IqlType returnType = IqlType.Boolean, string rootReference = "_")
+        {
+            var parameters = new List<IqlRootReferenceExpression>();
+            parameters.Add(new IqlRootReferenceExpression(rootReference));
+            return new IqlLambdaExpression
+            {
+                Body = body,
+                Parameters = parameters,
+                ReturnType = returnType
+            };
+        }
+
         private IqlExpression _body;
 
         public IqlLambdaExpression AddParameter(string name = null)

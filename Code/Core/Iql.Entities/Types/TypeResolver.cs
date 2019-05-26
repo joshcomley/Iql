@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Iql.Data.Evaluation;
 using Iql.Entities;
 using Iql.Entities.InferredValues;
 using Iql.Entities.Permissions;
 using Iql.Entities.Rules.Relationship;
 using Iql.Entities.SpecialTypes;
+using Iql.Events;
 using Iql.Extensions;
 using Iql.Parsing.Types;
 
@@ -15,6 +17,8 @@ namespace Iql.Data.Types
 {
     public class TypeResolver : ITypeResolver
     {
+        public EventEmitter<string> ResolvingType { get; } = new EventEmitter<string>();
+        public IContextEvaluator ContextEvaluator { get; set; }
         public TypeResolver()
         {
 
@@ -25,13 +29,13 @@ namespace Iql.Data.Types
         static TypeResolver()
         {
             KnownTypes = new Dictionary<string, IIqlTypeMetadata>();
-            RegisterKnownType(typeof(RelationshipFilterContext<>), "TOwner");
-            RegisterKnownType(typeof(InferredValueContext<>), "T");
-            RegisterKnownType(typeof(IqlEntityUserPermissionContext<,>), "TEntity", "TUser");
-            RegisterKnownType(typeof(IqlUserPermissionContext<>), "TUser");
+            RegisterKnownType(typeof(RelationshipFilterContext<>));
+            RegisterKnownType(typeof(InferredValueContext<>));
+            RegisterKnownType(typeof(IqlEntityUserPermissionContext<,>));
+            RegisterKnownType(typeof(IqlUserPermissionContext<>));
         }
 
-        public static void RegisterKnownType(Type type, params string[] genericParameters)
+        public static void RegisterKnownType(Type type)
         {
             KnownTypes.Add(CleanTypeName(type.Name), new StandardTypeMetadata(type, type.GetTypeInfo().GenericTypeParameters.Select(gt => new GenericTypeParameter(gt.Name, null)).ToArray()));
         }
@@ -51,6 +55,22 @@ namespace Iql.Data.Types
             return typeName;
         }
 
+        public virtual IIqlTypeMetadata FindVariableType(string variableName)
+        {
+            if(ContextEvaluator != null)
+            {
+                var value = ContextEvaluator.ResolveVariable(variableName);
+                if (value?.Success == true && value.Value != null)
+                {
+                    return FindTypeByType(value.Value.GetType());
+                }
+
+                return null;
+            }
+
+            return null;
+        }
+
         public virtual IIqlTypeMetadata FindType<T>()
         {
             return FindTypeByType(typeof(T));
@@ -59,10 +79,26 @@ namespace Iql.Data.Types
         public virtual IIqlTypeMetadata FindTypeByType(Type type)
         {
             return ResolveTypeFromTypeName(type.GetFullName());
+            //if (type == null)
+            //{
+            //    return null;
+            //}
+            //var typeNames = new[]{ CleanTypeName(type.Name), type.GetFullName() };
+            //foreach(var typeName in typeNames)
+            //{
+            //    var result = ResolveTypeFromTypeName(typeName);
+            //    if (result != null)
+            //    {
+            //        return result;
+            //    }
+            //}
+            //RegisterKnownType(type);
+            //return FindTypeByType(type);
         }
 
         public virtual IIqlTypeMetadata ResolveTypeFromTypeName(string fullTypeName)
         {
+            ResolvingType.Emit(() => fullTypeName);
             var typeName = CleanTypeName(fullTypeName);
             if (string.IsNullOrWhiteSpace(typeName))
             {

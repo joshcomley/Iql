@@ -9,6 +9,7 @@ using Iql.Entities.Functions;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
+using Iql.Events;
 
 namespace Iql.Entities
 {
@@ -239,6 +240,8 @@ namespace Iql.Entities
         //{
         //    return this.FlattenDependencyGraphsInternal(entityType, entities);
         //}
+
+        public EventEmitter<string> ResolvingType { get; } = new EventEmitter<string>();
 
         public IIqlTypeMetadata FindType<T>()
         {

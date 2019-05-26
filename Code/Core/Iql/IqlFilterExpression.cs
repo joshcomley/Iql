@@ -3,15 +3,12 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlFilterExpression : IqlParentValueExpression
+    public class IqlFilterExpression : IqlParentValueLambdaExpression
     {
-        public string RootVariableName { get; set; }
         public IqlFilterExpression(
-            string rootVariableName = null,
             IqlReferenceExpression parent = null,
-            IqlExpression expression = null) : base(parent, expression, IqlExpressionKind.Count, IqlType.Integer)
+            IqlLambdaExpression expression = null) : base(parent, expression, IqlExpressionKind.Count, IqlType.Integer)
         {
-            RootVariableName = rootVariableName;
         }
 
         public IqlFilterExpression()
@@ -26,7 +23,7 @@ namespace Iql
 
 			var expression = new IqlFilterExpression();
 			expression.RootVariableName = RootVariableName;
-			expression.Value = Value?.Clone();
+			expression.Value = Value?.Clone() as IqlLambdaExpression;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
@@ -50,7 +47,7 @@ namespace Iql
         {
             // #ReplaceStart
 
-			Value = context.Replace(this, nameof(Value), null, Value);
+			Value = context.Replace(this, nameof(Value), null, Value) as IqlLambdaExpression;
 			Parent = context.Replace(this, nameof(Parent), null, Parent);
 			var replaced = context.Replacer(context, this);
 			if(replaced != this)

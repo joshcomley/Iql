@@ -3,13 +3,20 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlCountExpression : IqlParentValueExpression
+    public abstract class IqlParentValueLambdaExpression : IqlParentValueExpressionBase<IqlLambdaExpression>
     {
         public string RootVariableName { get; set; }
+
+        protected IqlParentValueLambdaExpression(IqlReferenceExpression parent, IqlLambdaExpression value, IqlExpressionKind kind, IqlType returnType) : base(parent, value, kind, returnType)
+        {
+        }
+    }
+    public class IqlCountExpression : IqlParentValueLambdaExpression
+    {
         public IqlCountExpression(
             string rootVariableName = null,
             IqlReferenceExpression parent = null,
-            IqlExpression expression = null) : base(parent, expression, IqlExpressionKind.Count, IqlType.Integer)
+            IqlLambdaExpression expression = null) : base(parent, expression, IqlExpressionKind.Count, IqlType.Integer)
         {
             RootVariableName = rootVariableName;
         }
@@ -26,7 +33,7 @@ namespace Iql
 
 			var expression = new IqlCountExpression();
 			expression.RootVariableName = RootVariableName;
-			expression.Value = Value?.Clone();
+			expression.Value = Value?.Clone() as IqlLambdaExpression;
 			expression.Key = Key;
 			expression.Kind = Kind;
 			expression.ReturnType = ReturnType;
@@ -50,7 +57,7 @@ namespace Iql
         {
             // #ReplaceStart
 
-			Value = context.Replace(this, nameof(Value), null, Value);
+			Value = context.Replace(this, nameof(Value), null, Value) as IqlLambdaExpression; ;
 			Parent = context.Replace(this, nameof(Parent), null, Parent);
 			var replaced = context.Replacer(context, this);
 			if(replaced != this)

@@ -50,7 +50,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                         , null
 #endif
             );
-            var lambda = Expression.Lambda(predicate.Expression, null);
+            var lambda = predicate.Expression;
             method = method.MakeGenericMethod(entityType);
             var methodCallExpression =
                 Expression.Call(

@@ -329,16 +329,6 @@ namespace Iql
         }
         internal abstract IqlExpression ReplaceExpressions(ReplaceContext context);
 
-        public IqlExpression RootExpression()
-        {
-            var parent = this;
-            while (parent.Parent != null)
-            {
-                parent = parent.Parent;
-            }
-            return parent;
-        }
-
         public IqlFlattenedExpression[] TopLevelPropertyExpressions()
         {
             var expressions = Flatten()
@@ -348,28 +338,46 @@ namespace Iql
                     })
                 .ToArray();
             return expressions.Where(_ =>
-            {
-                for (var i = 0; i < expressions.Length; i++)
                 {
-                    var expression = expressions[i].Expression;
-                    if (expression == _.Expression)
+                    for (var i = 0; i < expressions.Length; i++)
                     {
-                        continue;
+                        var expression = expressions[i].Expression;
+                        if (expression == _.Expression)
+                        {
+                            continue;
+                        }
+
+                        var parent = expression.Parent;
+                        while (parent != null)
+                        {
+                            if (parent == _.Expression)
+                            {
+                                return false;
+                            }
+
+                            parent = parent.Parent;
+                        }
                     }
 
-                    var parent = expression.Parent;
-                    while (parent != null)
+                    return true;
+                })
+                .Where(_ =>
+                {
+                    var expression = _.Expression;
+                    while (expression != null)
                     {
-                        if (parent == _.Expression)
+                        if (expression.Kind == IqlExpressionKind.RootReference && expression.Parent != null)
                         {
                             return false;
                         }
-                        parent = parent.Parent;
-                    }
-                }
 
-                return true;
-            }).ToArray();
+                        expression = expression.Parent;
+                    }
+
+                    return true;
+
+                })
+                .ToArray();
         }
 
         public virtual IqlFlattenedExpression[] Flatten(Func<IqlExpression, FlattenReactionKind> checker = null)

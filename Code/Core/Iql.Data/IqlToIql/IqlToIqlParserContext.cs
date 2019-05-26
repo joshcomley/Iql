@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Iql.Conversion;
+using Iql.Data.Evaluation;
 using Iql.Data.Types;
 using Iql.Entities;
 using Iql.Entities.Extensions;
@@ -18,17 +19,20 @@ namespace Iql.Data.IqlToIql
         public IqlServiceProvider ServiceProvider { get; }
         public bool ResolveSpecialValues { get; }
         public Type MappedFrom { get; }
+        public IContextEvaluator ContextEvaluator { get; }
 
         public IqlToIqlParserContext(IIqlTypeMetadata resolvedType,
             ITypeResolver resolver,
             IqlServiceProvider serviceProvider,
             bool resolveSpecialValues = false, 
-            Type mappedFrom = null) : base(
+            Type mappedFrom = null,
+            IContextEvaluator contextEvaluator = null) : base(
             new IqlToIqlExpressionAdapter(resolver), resolvedType.Type, null, resolver)
         {
             ServiceProvider = serviceProvider;
             ResolveSpecialValues = resolveSpecialValues;
             MappedFrom = mappedFrom;
+            ContextEvaluator = contextEvaluator;
         }
 
         public override async Task<IqlToIqlIqlOutput> ParseExpressionAsync(IqlExpression expression
