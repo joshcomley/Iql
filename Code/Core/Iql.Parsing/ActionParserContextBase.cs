@@ -34,7 +34,7 @@ namespace Iql.Parsing
         }
         public TConverter Converter { get; set; }
 
-        public bool Nested => TypeStack.Count > 1 || Ancestors.Any(a =>
+        public bool Nested => Ancestors.Any(a =>
                                   a.Kind == IqlExpressionKind.Expand ||
                                   a.Kind == IqlExpressionKind.Count ||
                                   a.Kind == IqlExpressionKind.Any ||
