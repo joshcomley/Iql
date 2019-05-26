@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Iql.Extensions;
+using Iql.Serialization;
 using Newtonsoft.Json;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
@@ -78,7 +79,10 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             if (action.Value != null)
             {
                 var type = action.Value.GetType().ToIqlType();
-                if (type == IqlType.Unknown || action.Value is IqlExpression)
+                if (type == IqlType.Unknown ||
+                    type == IqlType.Class ||
+                    type == IqlType.Collection ||
+                    action.Value.ClaimsToBeIql())
                 {
                     var guid = Guid.NewGuid().ToString();
                     GlobalObjects.Add(guid, action.Value);

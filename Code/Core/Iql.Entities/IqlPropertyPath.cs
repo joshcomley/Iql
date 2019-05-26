@@ -315,7 +315,7 @@ namespace Iql.Entities
 
                     // We might be trying to get a path from a method on a property, like:
                     // t.Description.ToString()
-                    if (property == null && typeResolver != null)
+                    if (property == null && typeResolver != null && allowUnresolvedTypes == false)
                     {
                         continue;
                     }

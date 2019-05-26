@@ -451,20 +451,9 @@ namespace Iql.Data.Evaluation
             bool populatePath = false)
         {
             expression = expression.Clone();
-            //if (typeResolver == null)
-            //{
-            //    typeResolver = new TypeResolver
-            //    {
-            //        ContextEvaluator = contextEvaluator
-            //    };
-            //}
             if (typeResolver == null)
             {
                 typeResolver = new TypeResolver();
-                typeResolver.ResolvingType.Subscribe(_ =>
-                {
-                    int a = 0;
-                });
             }
             var success = true;
             var paths = new List<IqlPropertyPathEvaluationResult>();
@@ -633,7 +622,12 @@ namespace Iql.Data.Evaluation
                     }
                     else if (root.Kind == IqlExpressionKind.Variable)
                     {
-                        rootName = ((IqlVariableExpression)root).VariableName;
+                        var variableExpression = (IqlVariableExpression)root;
+                        rootName = variableExpression.VariableName;
+                        if(variableExpression.Value != null)
+                        {
+                            thisContext = variableExpression.Value;
+                        }
                     }
                 }
                 var evaluationResult = await EvaluateCustomAsync(
