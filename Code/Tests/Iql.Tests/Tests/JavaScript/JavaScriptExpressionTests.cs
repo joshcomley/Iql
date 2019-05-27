@@ -424,7 +424,7 @@ namespace Iql.Tests.Tests.JavaScript
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Person>(
                 "p => p.Title == `Test` || ((p.Types.filter(t => t.TypeId == 4 || t.Description == p.Title).length > 0))", TypeResolver);
             Assert.AreEqual(
-                @"function(entity, context) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) === 'TEST') || (((entity || {}).Types.filter(function(entity2) { return (((entity2 || {}).TypeId === 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) === (((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()))); }).length) > 0)); }",
+                @"function(entity, context) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) === 'TEST') || ((((entity || {}).Types || []).filter(function(entity2) { return (((entity2 || {}).TypeId === 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) === (((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()))); }).length) > 0)); }",
                 js);
             //var iql3 = new DotNetExpressionConverter().ConvertLambdaToIql<Person>(p =>
             //    p.Title == "Test" || p.Types.Any(t => t.TypeId == 4 || t.Description == "Kettle"));
@@ -437,7 +437,7 @@ namespace Iql.Tests.Tests.JavaScript
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Client>(
                 "function(n){return n.Sites.filter(function(n){return n.UsersCount>0}).length>0}", TypeResolver);
             Assert.AreEqual(
-                @"function(entity, context) { return (((entity || {}).Sites.filter(function(entity) { return ((entity || {}).UsersCount > 0); }).length) > 0); }",
+                @"function(entity, context) { return ((((entity || {}).Sites || []).filter(function(entity) { return ((entity || {}).UsersCount > 0); }).length) > 0); }",
                 js);
             //function(n){return n.CandidateResults.filter(function(n){return!n.Exam.IsTraining}).length>0}
         }
@@ -448,7 +448,7 @@ namespace Iql.Tests.Tests.JavaScript
             var js = new JavaScriptExpressionConverter().ConvertJavaScriptStringToJavaScriptString<Client>(
                 "function(n){return n.Sites.filter(function(n){return!n.CreatedByUser.EmailConfirmed}).length>0}", TypeResolver);
             Assert.AreEqual(
-                @"function(entity, context) { return (((entity || {}).Sites.filter(function(entity) { return (((entity || {}).CreatedByUser || {}).EmailConfirmed === false); }).length) > 0); }",
+                @"function(entity, context) { return ((((entity || {}).Sites || []).filter(function(entity) { return (((entity || {}).CreatedByUser || {}).EmailConfirmed === false); }).length) > 0); }",
                 js);
             //function(n){return n.CandidateResults.filter(function(n){return!n.Exam.IsTraining}).length>0}
         }
@@ -498,7 +498,7 @@ namespace Iql.Tests.Tests.JavaScript
             //            , null
             //#endif
             //                     );
-            Assert.AreEqual(@"function(entity, context) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) === 'TEST') || (((entity || {}).Types.filter(function(entity2) { return (((entity2 || {}).TypeId === 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) === 'KETTLE')); }).length) > 0)); }",
+            Assert.AreEqual(@"function(entity, context) { return (((((entity || {}).Title == null) ? null : ((entity || {}).Title || '').toUpperCase()) === 'TEST') || ((((entity || {}).Types || []).filter(function(entity2) { return (((entity2 || {}).TypeId === 4) || ((((entity2 || {}).Description == null) ? null : ((entity2 || {}).Description || '').toUpperCase()) === 'KETTLE')); }).length) > 0)); }",
                 js1);
             //Assert.AreEqual(@"entity => (((((entity || {})[""Title""] == null) ? null : ((entity || {})[""Title""] || """").toUpperCase()) == 'TEST') || (((entity || {})[""Types""].filter(function(entity2) { return (((entity2 || {})[""TypeId""] == 4) || ((((entity2 || {})[""Description""] == null) ? null : ((entity2 || {})[""Description""] || """").toUpperCase()) == 'KETTLE')); }).length) > 0))",
             //    js);

@@ -9,7 +9,9 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
             JavaScriptIqlParserContext parser)
         {
             var expressions = new List<IqlExpression>();
+            expressions.Add(new IqlFinalExpression<string>("("));
             expressions.Add(action.Parent);
+            expressions.Add(new IqlFinalExpression<string>(" || [])"));
             if (action.Value != null)
             {
                 var lambda = parser.Parse(action.Value);

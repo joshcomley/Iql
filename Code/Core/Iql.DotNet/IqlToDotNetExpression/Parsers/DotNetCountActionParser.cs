@@ -12,13 +12,23 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             var entityType = parser.CurrentEntityType;
             if (entityType == null)
             {
-                return new IqlFinalExpression<Expression>(Expression.Constant(0));
+                return Zero();
             }
             var parentExpression = parser.Parse(action.Parent
 #if TypeScript
                         , null
 #endif
             );
+            if (parentExpression.Expression == null)
+            {
+                return Zero();
+            }
+
+            if (parentExpression.Expression is ConstantExpression constantExpression &&
+                constantExpression.Value == null)
+            {
+                return Zero();
+            }
             //var expressionType = parentExpression.Expression.Type;
             //var elementType = expressionType;
             //expressionType.TryGetBaseType(typeof(IEnumerable<>), type =>
@@ -47,6 +57,11 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                     methodCallExpression
                 );
             return expression;
+        }
+
+        private static IqlExpression Zero()
+        {
+            return new IqlFinalExpression<Expression>(Expression.Constant(0));
         }
 
         //private static string[] ResolveAccessors(IqlPropertyExpression propertyExpression)

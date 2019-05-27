@@ -25,6 +25,10 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 
             var accessors = ResolveAccessors(action.Parent as IqlPropertyExpression);
             var entityType = parser.CurrentEntityType;
+            if (entityType == null)
+            {
+                return False();
+            }
             foreach (var accessor in accessors)
             {
                 entityType = entityType.GetProperty(accessor).PropertyType;
@@ -39,6 +43,16 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                         , null
 #endif
             );
+            if (parentExpression.Expression == null)
+            {
+                return False();
+            }
+
+            if (parentExpression.Expression is ConstantExpression constantExpression &&
+                constantExpression.Value == null)
+            {
+                return False();
+            }
             //var expressionType = parentExpression.Expression.Type;
             //var elementType = expressionType;
             //expressionType.TryGetBaseType(typeof(IEnumerable<>), type =>
@@ -63,6 +77,11 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                     methodCallExpression
                 );
             return expression;
+        }
+
+        private IqlExpression False()
+        {
+            return new IqlFinalExpression<Expression>(Expression.Constant(false));
         }
 
         private static string[] ResolveAccessors(IqlPropertyExpression propertyExpression)
