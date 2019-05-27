@@ -69,6 +69,27 @@ namespace Iql.Tests.Tests.JavaScript
                 new NameDescriptionTestEvaluator("abc123def", "123"));
             Assert.IsTrue(result.Success);
             Assert.AreEqual(false, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+                new NameDescriptionTestEvaluator(null, "123"));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+
+            expression = "something.Owner.Name.includes(somethingElse.Description)";
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+               new NameDescriptionTestEvaluator("abc", "def"));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+                new NameDescriptionTestEvaluator("abc123def", "123"));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+                new NameDescriptionTestEvaluator(null, "123"));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
         }
 
         class FilterClass
