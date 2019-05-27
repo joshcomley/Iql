@@ -95,6 +95,7 @@ namespace Iql.Tests.Tests.JavaScript
         class FilterClass
         {
             public List<FilterClassEntity> SomeList { get; set; }
+            public string SomeName { get; set; }
         }
 
         class FilterClassEntity
@@ -182,6 +183,70 @@ namespace Iql.Tests.Tests.JavaScript
                 });
             var expression = "something.SomeList.filter(_ => _.Name == 'abc').length > 0";
             var result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+                new TestEvaluator().RegisterVariable("something", context));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+        }
+
+        [TestMethod]
+        public async Task StringMethodCall()
+        {
+            InitConverter();
+            var context = new FilterClass();
+            context.SomeList = new List<FilterClassEntity>(
+                new FilterClassEntity[]
+                {
+                });
+            var expression = "something.SomeName.includes('a')";
+            var result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+                new TestEvaluator().RegisterVariable("something", context));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            context.SomeName = "my name";
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+                new TestEvaluator().RegisterVariable("something", context));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+        }
+
+        [TestMethod]
+        public async Task StringNestedMethodCall()
+        {
+            InitConverter();
+            var context = new FilterClass();
+            context.SomeList = new List<FilterClassEntity>(
+                new FilterClassEntity[]
+                {
+                });
+
+            var expression = "something.SomeList.filter(_ => _.Name.includes('a')).length > 0";
+            var result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+                new TestEvaluator().RegisterVariable("something", context));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            context.SomeList.Add(new FilterClassEntity
+            {
+                Name = "b"
+            });
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+                new TestEvaluator().RegisterVariable("something", context));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            context.SomeList.Add(new FilterClassEntity
+            {
+                Name = "a"
+            });
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
+                new TestEvaluator().RegisterVariable("something", context));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+
+            context.SomeList = null;
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(expression,
                 new TestEvaluator().RegisterVariable("something", context));
             Assert.IsTrue(result.Success);
             Assert.AreEqual(false, result.Result);

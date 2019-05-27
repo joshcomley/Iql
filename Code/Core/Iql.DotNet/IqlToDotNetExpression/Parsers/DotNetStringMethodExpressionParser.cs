@@ -61,13 +61,17 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             return expression;
         }
 
-        private Expression EnsureString(Expression left)
+        private Expression EnsureString(Expression expression)
         {
-            if (left.NodeType == ExpressionType.Constant && left.Type != typeof(string))
+            if (expression == null)
             {
-                return Expression.Constant(((ConstantExpression)left).Value, typeof(string));
+                return Expression.Constant(null, typeof(string));
             }
-            return left;
+            if (expression.NodeType == ExpressionType.Constant && expression.Type != typeof(string))
+            {
+                return Expression.Constant(((ConstantExpression)expression).Value, typeof(string));
+            }
+            return expression;
         }
     }
 }

@@ -10,6 +10,10 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             var method = typeof(Enumerable).GetMethods().Single(m =>
                 m.Name == nameof(Enumerable.LongCount) && m.GetParameters().Length == 2);
             var entityType = parser.CurrentEntityType;
+            if (entityType == null)
+            {
+                return new IqlFinalExpression<Expression>(Expression.Constant(0));
+            }
             var parentExpression = parser.Parse(action.Parent
 #if TypeScript
                         , null
