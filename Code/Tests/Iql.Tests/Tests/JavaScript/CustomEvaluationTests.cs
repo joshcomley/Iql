@@ -338,7 +338,7 @@ namespace Iql.Tests.Tests.JavaScript
         public async Task EvaluateFromJson()
         {
             InitConverter();
-            var data = JObject.Parse(@"{ post: { name: 'Alon Bar', text: 'Very important\ntext here!', age: 22, fans: [{name: 'Leonard', age: 10 }, {name: 'John', age: 11 }, {name: 'Rufus', age: 12}] } }");
+            var data = JObject.Parse(@"{ ""post"": { ""name"": ""Alon Bar"", ""text"": ""Very important\\ntext here!"", ""age"": 22, ""fans"": [{""name"": ""Leonard"", ""age"": 10 }, {""name"": ""John"", ""age"": 11 }, {""name"": ""Rufus"", ""age"": 12}] } }");
 
             var result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.name.includes('o')).length > 0",
                 new JsonEvaluator(data));
@@ -380,7 +380,23 @@ namespace Iql.Tests.Tests.JavaScript
             Assert.IsTrue(result.Success);
             Assert.AreEqual(false, result.Result);
 
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.age == null).length > 0",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            data = JObject.Parse(@"{ ""post"": { ""name"": ""Alon Bar"", ""text"": ""Very important\\ntext here!"", ""age"": 22, ""fans"": [{""name"": ""Leonard"", ""age"": 10 }, {""name"": ""John"", ""age"": 11 }, {""name"": ""Rufus""}] } }");
             result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.name.includes('b')",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.age < 5).length > 0",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.age == null).length > 0",
                 new JsonEvaluator(data));
             Assert.IsTrue(result.Success);
             Assert.AreEqual(true, result.Result);

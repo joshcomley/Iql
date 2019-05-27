@@ -11,10 +11,13 @@ namespace Iql.Parsing.Extensions
                 return default(T);
             }
 
+#if !TypeScript
             if (source is JToken)
             {
-                return (source as JToken)[propertyName].Value<T>();
+                var jToken = (source as JToken)[propertyName];
+                return jToken == null ? default(T) : jToken.Value<T>();
             }
+#endif
             return (T)source.GetType().GetProperty(propertyName).GetValue(source);
         }
     }

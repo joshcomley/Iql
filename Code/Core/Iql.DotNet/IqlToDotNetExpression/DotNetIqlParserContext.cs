@@ -273,12 +273,25 @@ namespace Iql.DotNet.IqlToDotNetExpression
             {
                 return System.Linq.Expressions.Expression.Call(
                     null,
-                    typeof(Newtonsoft.Json.Linq.Extensions).GetMethods().Single(m => m.Name == nameof(JToken.Value) && m.GetParameters().Length == 1 && m.GetGenericArguments().Length == 1).MakeGenericMethod(type),
+                    typeof(JsonExtensions).GetMethods().Single(m => m.Name == nameof(JsonExtensions.ValueOf) && m.GetParameters().Length == 1 && m.GetGenericArguments().Length == 1).MakeGenericMethod(type),
                     expression
                 );
             }
 
             return expression;
+        }
+    }
+
+    public static class JsonExtensions
+    {
+        public static T ValueOf<T>(this JToken token)
+        {
+            if(token == null)
+            {
+                return default(T);
+            }
+
+            return token.Value<T>();
         }
     }
 }
