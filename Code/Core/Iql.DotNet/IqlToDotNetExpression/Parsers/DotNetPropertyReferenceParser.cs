@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using Iql.Parsing.Extensions;
+using Newtonsoft.Json.Linq;
 
 namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 {
@@ -21,6 +22,16 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                         , null
 #endif
             );
+            if (typeof(JToken).IsAssignableFrom(dotNetOutput.Expression.Type))
+            {
+                IqlExpression jsonExpression =
+                    new IqlFinalExpression<Expression>(
+                        DotNetExpressionConverter.DisableNullPropagation
+                            ? Expression.Call(dotNetOutput.Expression, typeof(JToken).GetMethod("get_Item"))
+                            : (Expression)Expression.Call(NullPropagateMethod.MakeGenericMethod(dotNetOutput.Expression.Type), dotNetOutput.Expression, Expression.Constant(action.PropertyName))
+                    );
+                return jsonExpression;
+            }
             var property = dotNetOutput.Expression.Type.GetProperty(action.PropertyName);
             if(property == null)
             {

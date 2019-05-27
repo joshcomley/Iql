@@ -7,6 +7,7 @@ using Iql.Data.Types;
 using Iql.Parsing;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Types;
+using Newtonsoft.Json.Linq;
 
 namespace Iql.DotNet.IqlToDotNetExpression
 {
@@ -244,6 +245,40 @@ namespace Iql.DotNet.IqlToDotNetExpression
                 Expression = oldExpression;
                 return null;
             }
+        }
+
+        public ConstantExpression Constant(object value)
+        {
+            if (value is ConstantExpression constantExpression)
+            {
+                value = constantExpression.Value;
+            }
+            if (IsJToken && !(value is JToken))
+            {
+                value = new JValue(value);
+            }
+            return System.Linq.Expressions.Expression.Constant(value);
+        }
+
+        private bool IsJToken => typeof(JToken).IsAssignableFrom(CurrentEntityType);
+
+        public Expression ValueOf<T>(Expression expression)
+        {
+            return ValueOf(expression, typeof(T));
+        }
+
+        public Expression ValueOf(Expression expression, Type type)
+        {
+            if (IsJToken && typeof(JToken).IsAssignableFrom(expression.Type))
+            {
+                return System.Linq.Expressions.Expression.Call(
+                    null,
+                    typeof(Newtonsoft.Json.Linq.Extensions).GetMethods().Single(m => m.Name == nameof(JToken.Value) && m.GetParameters().Length == 1 && m.GetGenericArguments().Length == 1).MakeGenericMethod(type),
+                    expression
+                );
+            }
+
+            return expression;
         }
     }
 }

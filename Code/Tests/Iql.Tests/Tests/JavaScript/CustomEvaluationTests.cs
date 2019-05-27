@@ -8,6 +8,7 @@ using Iql.DotNet;
 #endif
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 
 namespace Iql.Tests.Tests.JavaScript
 {
@@ -331,6 +332,89 @@ namespace Iql.Tests.Tests.JavaScript
                 new NameDescriptionTestEvaluator(123, 123));
             Assert.IsTrue(result.Success);
             Assert.AreEqual(false, result.Result);
+        }
+
+        [TestMethod]
+        public async Task EvaluateFromJson()
+        {
+            InitConverter();
+            var data = JObject.Parse(@"{ post: { name: 'Alon Bar', text: 'Very important\ntext here!', age: 22, fans: [{name: 'Leonard', age: 10 }, {name: 'John', age: 11 }, {name: 'Rufus', age: 12}] } }");
+
+            var result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.name.includes('o')).length > 0",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.name.includes('x')).length > 0",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.age > 20).length > 0",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.age > 20).length == 0",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.age > 20).length == 1",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.age < 20).length > 0",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.fans.filter(_ => _.age > 20 || _.name.includes('o')).length > 0",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.name.includes('x')",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+
+            result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"post.name.includes('b')",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(true, result.Result);
+        }
+    }
+
+    public class JsonEvaluator : IContextEvaluator
+    {
+        public JObject Data { get; }
+
+        public JsonEvaluator(JObject data)
+        {
+            Data = data;
+        }
+
+        public ResolvedValue ResolveVariable(string path)
+        {
+            if (Data[path] == null)
+            {
+                return new ResolvedValue(null, false);
+            }
+
+            return new ResolvedValue(Data[path], true);
+        }
+
+        public ResolvedValue ResolveProperty(object entity, string propertyName)
+        {
+            var data = entity as JObject;
+            if (data == null || data[propertyName] == null)
+            {
+                return new ResolvedValue(null, false);
+            }
+
+            return new ResolvedValue(data[propertyName], true);
         }
     }
 }

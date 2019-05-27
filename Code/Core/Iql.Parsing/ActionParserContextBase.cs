@@ -10,6 +10,7 @@ using Iql.Entities.Extensions;
 using Iql.Extensions;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Types;
+using Newtonsoft.Json.Linq;
 
 namespace Iql.Parsing
 {
@@ -61,6 +62,12 @@ namespace Iql.Parsing
         private List<RootReferenceTypeMap> _rootReferenceResolvedTypes = new List<RootReferenceTypeMap>();
         protected virtual void SetEntityType(Type type, IqlExpression expression)
         {
+#if !TypeScript
+            if (type == typeof(JObject))
+            {
+                type = typeof(JToken);
+            }
+#endif
             if (IsRoot)
             {
                 if (TypeStack.Count == 1)

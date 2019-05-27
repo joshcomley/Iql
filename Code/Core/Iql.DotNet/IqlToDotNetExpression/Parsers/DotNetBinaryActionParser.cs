@@ -61,6 +61,16 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
                     left = AsToString(left);
                 }
             }
+            switch (@operator)
+            {
+                case ExpressionType.GreaterThan:
+                case ExpressionType.GreaterThanOrEqual:
+                case ExpressionType.LessThan:
+                case ExpressionType.LessThanOrEqual:
+                    left = parser.ValueOf<float?>(left);
+                    right = parser.ValueOf<float?>(right);
+                    break;
+            }
 
             var leftIsNullableWrapped = Nullable.GetUnderlyingType(left.Type) != null;
             var rightIsNullableWrapped = Nullable.GetUnderlyingType(right.Type) != null;

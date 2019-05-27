@@ -16,19 +16,22 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 #endif
             );
             var left = EnsureString(parent.Expression);
+            var empty = "";
             var parentExpression =
                 DotNetExpressionConverter.DisableNullPropagation
                     ? left
-                    : Expression.Coalesce(left, Expression.Constant(""));
+                    : Expression.Coalesce(left, parser.Constant(empty));
             var valueExpression = parser.Parse(action.Value
 #if TypeScript
                         , null
 #endif
             ).Expression;
+            valueExpression = parser.ValueOf<string>(valueExpression);
+            parentExpression = parser.ValueOf<string>(parentExpression);
             valueExpression =
                 DotNetExpressionConverter.DisableNullPropagation
                     ? valueExpression
-                    : Expression.Coalesce(valueExpression, Expression.Constant(""));
+                    : Expression.Coalesce(valueExpression, Expression.Constant(empty));
             MethodCallExpression methodCallExpression;
             if (action.Value != null)
             {
