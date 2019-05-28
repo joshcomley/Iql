@@ -401,6 +401,19 @@ namespace Iql.Tests.Tests.JavaScript
             Assert.IsTrue(result.Success);
             Assert.AreEqual(true, result.Result);
         }
+
+        [TestMethod]
+        public async Task TestComplicatedIf()
+        {
+            //((fan.latitude && fan.longitude) || fan.locations.filter(_ => _.latitude && _.longitude).length > 0)
+            InitConverter();
+            var data = JObject.Parse(@"{ ""fan"": {""name"": ""Leonard"", ""age"": 10 } }");
+
+            var result = await JavaScriptEvaluator.EvaluateJavaScriptAsync(@"((fan.latitude != null && fan.longitude != null) || fan.locations.filter(_ => _.latitude != null && _.longitude != null).length > 0)",
+                new JsonEvaluator(data));
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(false, result.Result);
+        }
     }
 
     public class JsonEvaluator : IContextEvaluator
