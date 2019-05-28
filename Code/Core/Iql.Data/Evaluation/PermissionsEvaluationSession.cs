@@ -77,7 +77,7 @@ namespace Iql.Data.Evaluation
                 dataContext.EntityConfigurationContext);
         }
 
-        public async Task<object> ResolveCurrentUserAsync(IDataContext db, object user)
+        public async Task<object> ResolveCurrentUserAsync(IDataContext db, object user = null)
         {
             var config = db.UsersManager.Definition.EntityConfiguration;
             CompositeKey preKey = null;
