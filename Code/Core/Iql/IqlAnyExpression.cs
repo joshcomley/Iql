@@ -20,14 +20,14 @@ namespace Iql
         {
             // #CloneStart
 
-            var expression = new IqlAnyExpression();
-            expression.RootVariableName = RootVariableName;
-            expression.Value = Value?.Clone() as IqlLambdaExpression;
-            expression.Key = Key;
-            expression.Kind = Kind;
-            expression.ReturnType = ReturnType;
-            expression.Parent = Parent?.Clone();
-            return expression;
+			var expression = new IqlAnyExpression();
+			expression.RootVariableName = RootVariableName;
+			expression.Value = (IqlLambdaExpression)Value?.Clone();
+			expression.Key = Key;
+			expression.Kind = Kind;
+			expression.ReturnType = ReturnType;
+			expression.Parent = Parent?.Clone();
+			return expression;
 
             // #CloneEnd
         }
@@ -36,8 +36,8 @@ namespace Iql
         {
             // #FlattenStart
 
-            context.Flatten(Value);
-            context.Flatten(Parent);
+				context.Flatten(Value);
+				context.Flatten(Parent);
 
             // #FlattenEnd
         }
@@ -46,14 +46,14 @@ namespace Iql
         {
             // #ReplaceStart
 
-            Value = context.Replace(this, nameof(Value), null, Value) as IqlLambdaExpression; ;
-            Parent = context.Replace(this, nameof(Parent), null, Parent);
-            var replaced = context.Replacer(context, this);
-            if (replaced != this)
-            {
-                return replaced;
-            }
-            return this;
+			Value = (IqlLambdaExpression)context.Replace(this, nameof(Value), null, Value);
+			Parent = context.Replace(this, nameof(Parent), null, Parent);
+			var replaced = context.Replacer(context, this);
+			if(replaced != this)
+			{
+				return replaced;	
+			}
+			return this;
 
             // #ReplaceEnd
         }
