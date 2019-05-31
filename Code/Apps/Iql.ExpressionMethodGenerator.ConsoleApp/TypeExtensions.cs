@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Iql.Extensions;
 
 namespace Iql.ExpressionMethodGenerator.ConsoleApp
 {
@@ -74,16 +75,6 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
                 generics = "<" + string.Join(", ", genericParameters.Select(g => g.Name)) + ">";
             }
             return $"{simpleName}{generics}";
-        }
-
-        public static string SimpleName(this Type type)
-        {
-            var simpleName = type.Name;
-            if (simpleName.Contains("`"))
-            {
-                simpleName = simpleName.Substring(0, simpleName.LastIndexOf("`"));
-            }
-            return simpleName;
         }
     }
 }

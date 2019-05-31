@@ -82,7 +82,7 @@ namespace Iql.Entities.Relationships
             {
                 var thisEndConstraint = mapping.Property.Constraints[i];
                 var otherEndConstraint = path.Property.EntityProperty().Relationship.ThisEnd.Constraints[i];
-                var p = propertyExpression.Clone() as IqlPropertyExpression;
+                var p = propertyExpression.Clone();
                 p.Parent = rootRefBackup ?? p.Parent;
                 p.PropertyName = otherEndConstraint.PropertyName;
                 equalityExpessions.Add(GetEqualityExpression(

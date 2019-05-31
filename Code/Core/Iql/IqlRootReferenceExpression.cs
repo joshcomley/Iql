@@ -23,23 +23,6 @@ namespace Iql
             return true;
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlRootReferenceExpression();
-			expression.EntityTypeName = EntityTypeName;
-			expression.VariableName = VariableName;
-			expression.Value = Value?.TryCloneIql();
-			expression.InferredReturnType = InferredReturnType;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -63,6 +46,24 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlRootReferenceExpression Clone(IqlRootReferenceExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlRootReferenceExpression();
+			expression.EntityTypeName = source.EntityTypeName;
+			expression.VariableName = source.VariableName;
+			expression.Value = source.Value?.TryCloneIql();
+			expression.InferredReturnType = source.InferredReturnType;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

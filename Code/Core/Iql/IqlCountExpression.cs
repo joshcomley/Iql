@@ -27,21 +27,6 @@ namespace Iql
 
         }
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlCountExpression();
-			expression.RootVariableName = RootVariableName;
-			expression.Value = (IqlLambdaExpression)Value?.Clone();
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
         internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -68,5 +53,21 @@ namespace Iql
 
             // #ReplaceEnd
         }
+
+		public static IqlCountExpression Clone(IqlCountExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlCountExpression();
+			expression.RootVariableName = source.RootVariableName;
+			expression.Value = (IqlLambdaExpression)source.Value?.Clone();
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
+		}
     }
 }

@@ -4,12 +4,27 @@ using Iql.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Iql.Extensions;
 using Iql.Serialization;
 
-namespace Iql.Extensions
+namespace Iql
 {
     public static class IqlExpressionExtensions
     {
+        public static T Clone<T>(this T expression)
+            where T : IqlExpression
+        {
+            //return (T)typeof(T).GetMethod(nameof(IqlExpression.CloneDeprecated)).Invoke(expression, null);
+            var type = expression.GetType();
+            if (!typeof(IqlExpression).IsAssignableFrom(type))
+            {
+                type = IqlExpression.ResolveExpressionTypeFromKind(expression.ClaimedIqlKind().Value);
+            }
+            var methodInfo = type.GetMethod(nameof(IqlIsEqualToExpression.Clone), BindingFlags.Static | BindingFlags.Public);
+            return (T)methodInfo.Invoke(null, new object[] {expression});
+        }
+
         public static object TryCloneIql(this object potentialExpression)
         {
             if (potentialExpression != null)
@@ -139,7 +154,7 @@ namespace Iql.Extensions
         }
     }
 
-    public class ResolvedRuntimeValue   
+    public class ResolvedRuntimeValue
     {
         public bool Success { get; }
         public object Value { get; }

@@ -11,20 +11,6 @@ namespace Iql
         {
         }
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlNewGuidExpression();
-			expression.CanFail = CanFail;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
         internal override IqlExpression ReplaceExpressions(ReplaceContext context)
         {
@@ -49,5 +35,20 @@ namespace Iql
 
             // #FlattenEnd
         }
+
+		public static IqlNewGuidExpression Clone(IqlNewGuidExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlNewGuidExpression();
+			expression.CanFail = source.CanFail;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
+		}
     }
 }

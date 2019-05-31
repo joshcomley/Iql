@@ -57,33 +57,6 @@ namespace Iql
             return Body.IsOrHas(matches);
         }
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlLambdaExpression();
-			expression.Body = Body?.Clone();
-			if(Parameters == null)
-			{
-				expression.Parameters = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlRootReferenceExpression>();
-				for(var i = 0; i < Parameters.Count; i++)
-				{
-					listCopy.Add((IqlRootReferenceExpression)Parameters[i]?.Clone());
-				}
-				expression.Parameters = listCopy;
-			}
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
         internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -123,6 +96,34 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlLambdaExpression Clone(IqlLambdaExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlLambdaExpression();
+			expression.Body = source.Body?.Clone();
+			if(source.Parameters == null)
+			{
+				expression.Parameters = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlRootReferenceExpression>();
+				for(var i = 0; i < source.Parameters.Count; i++)
+				{
+					listCopy.Add((IqlRootReferenceExpression)source.Parameters[i]?.Clone());
+				}
+				expression.Parameters = listCopy;
+			}
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

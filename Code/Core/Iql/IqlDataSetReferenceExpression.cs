@@ -17,20 +17,6 @@ namespace Iql
 
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlDataSetReferenceExpression();
-			expression.Name = Name;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -54,6 +40,21 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlDataSetReferenceExpression Clone(IqlDataSetReferenceExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlDataSetReferenceExpression();
+			expression.Name = source.Name;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

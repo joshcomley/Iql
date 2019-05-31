@@ -26,26 +26,26 @@ namespace Iql.CloneMethodGenerator.ConsoleApp
                 var files = Directory.GetFiles(path, simpleName + ".cs");
                 var file = files[0];
                 var lines = File.ReadAllLines(file).ToList();
-                if (!lines.Any(l => l.Contains("public override IqlExpression Clone()")))
+                if (!lines.Any(l => l.Contains("public IqlExpression CloneDeprecated()")))
                 {
                     files[0].Dump("Adding stub");
                     lines.Insert(lines.Count - 2, @"
-		public override IqlExpression Clone()
+		public IqlExpression CloneDeprecated()
 		{
-			// #CloneStart
+			// #CloneDeprecatedStart
 			return null;
-			// #CloneEnd
+			// #CloneDeprecatedEnd
 		}");
                     File.WriteAllLines(file, lines.ToArray());
                 }
 
                 lines = File.ReadAllLines(file).ToList();
-                var startIndex = lines.IndexOf(lines.Single(l => l.Contains("#CloneStart")));
+                var startIndex = lines.IndexOf(lines.Single(l => l.Contains("#CloneDeprecatedStart")));
                 file.Dump();
-                var endIndex = lines.IndexOf(lines.Single(l => l.Contains("#CloneEnd"))).Dump();
+                var endIndex = lines.IndexOf(lines.Single(l => l.Contains("#CloneDeprecatedEnd"))).Dump();
                 var linesList = lines.ToList();
                 linesList.RemoveRange(startIndex + 1, endIndex - startIndex - 1);
-                endIndex = linesList.IndexOf(lines.Single(l => l.Contains("#CloneEnd"))).Dump();
+                endIndex = linesList.IndexOf(lines.Single(l => l.Contains("#CloneDeprecatedEnd"))).Dump();
                 var hasList = false;
                 var propertyAssignments = new StringBuilder();
                 foreach (var property in type.GetProperties())

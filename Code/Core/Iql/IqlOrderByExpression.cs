@@ -18,21 +18,6 @@ namespace Iql
         public IqlExpression OrderExpression { get; set; }
         public bool Descending { get; set; }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlOrderByExpression();
-			expression.OrderExpression = OrderExpression?.Clone();
-			expression.Descending = Descending;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -58,6 +43,22 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlOrderByExpression Clone(IqlOrderByExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlOrderByExpression();
+			expression.OrderExpression = source.OrderExpression?.Clone();
+			expression.Descending = source.Descending;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

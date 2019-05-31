@@ -19,20 +19,6 @@ namespace Iql
             set => Value = (TValue) value;
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlFinalExpression<TValue>();
-			expression.Value = Value;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -56,6 +42,21 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlFinalExpression<TValue> Clone(IqlFinalExpression<TValue> source)
+		{
+			// #CloneStart
+
+			var expression = new IqlFinalExpression<TValue>();
+			expression.Value = source.Value;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

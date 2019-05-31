@@ -305,8 +305,6 @@ namespace Iql
             throw new NotSupportedException($"Unable to resolve type for expression kind {kind.ToString()}");
         }
 
-        public abstract IqlExpression Clone();
-
         public IqlExpression ReplaceWith(Func<ReplaceContext, IqlExpression, IqlExpression> replacer)
         {
             return Replace(new ReplaceContext(replacer));

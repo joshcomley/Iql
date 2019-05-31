@@ -19,22 +19,6 @@ namespace Iql
         public IqlCollectitonQueryExpression Query { get; set; }
         public bool Count { get; set; }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlExpandExpression();
-			expression.NavigationProperty = (IqlPropertyExpression)NavigationProperty?.Clone();
-			expression.Query = (IqlCollectitonQueryExpression)Query?.Clone();
-			expression.Count = Count;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -62,6 +46,23 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlExpandExpression Clone(IqlExpandExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlExpandExpression();
+			expression.NavigationProperty = (IqlPropertyExpression)source.NavigationProperty?.Clone();
+			expression.Query = (IqlCollectitonQueryExpression)source.Query?.Clone();
+			expression.Count = source.Count;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

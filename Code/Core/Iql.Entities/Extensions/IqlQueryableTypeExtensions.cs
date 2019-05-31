@@ -19,18 +19,6 @@ namespace Iql.Entities.Extensions
         }
 #endif
 
-        public static string SimpleName(this Type type)
-        {
-            var name = type.Name;
-            var index = name.IndexOf("`");
-            if (index != -1)
-            {
-                return name.Substring(0, index);
-            }
-
-            return name;
-        }
-
         private static readonly Dictionary<Type, object> DefaultValues = new Dictionary<Type, object>();
         public static object DefaultValue(this ITypeDefinition type, bool ignoreNullable = false)
         {            

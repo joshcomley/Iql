@@ -16,20 +16,6 @@ namespace Iql
         {
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlStringConcatExpression();
-			expression.Value = Value?.Clone();
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -55,6 +41,21 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlStringConcatExpression Clone(IqlStringConcatExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlStringConcatExpression();
+			expression.Value = source.Value?.Clone();
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

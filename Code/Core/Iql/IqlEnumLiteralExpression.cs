@@ -51,34 +51,6 @@ namespace Iql
 
         public string Namespace { get; set; }
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlEnumLiteralExpression();
-			expression.Namespace = Namespace;
-			if(Value == null)
-			{
-				expression.Value = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlEnumValueExpression>();
-				for(var i = 0; i < Value.Length; i++)
-				{
-					listCopy.Add((IqlEnumValueExpression)Value[i]?.Clone());
-				}
-				expression.Value = listCopy.ToArray();
-			}
-			expression.InferredReturnType = InferredReturnType;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
         internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -117,5 +89,34 @@ namespace Iql
 
             // #ReplaceEnd
         }
+
+		public static IqlEnumLiteralExpression Clone(IqlEnumLiteralExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlEnumLiteralExpression();
+			expression.Namespace = source.Namespace;
+			if(source.Value == null)
+			{
+				expression.Value = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlEnumValueExpression>();
+				for(var i = 0; i < source.Value.Length; i++)
+				{
+					listCopy.Add((IqlEnumValueExpression)source.Value[i]?.Clone());
+				}
+				expression.Value = listCopy.ToArray();
+			}
+			expression.InferredReturnType = source.InferredReturnType;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
+		}
     }
 }

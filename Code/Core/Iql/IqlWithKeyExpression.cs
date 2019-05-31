@@ -20,32 +20,6 @@ namespace Iql
 
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlWithKeyExpression();
-			if(KeyEqualToExpressions == null)
-			{
-				expression.KeyEqualToExpressions = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlIsEqualToExpression>();
-				for(var i = 0; i < KeyEqualToExpressions.Count; i++)
-				{
-					listCopy.Add((IqlIsEqualToExpression)KeyEqualToExpressions[i]?.Clone());
-				}
-				expression.KeyEqualToExpressions = listCopy;
-			}
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -83,6 +57,33 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlWithKeyExpression Clone(IqlWithKeyExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlWithKeyExpression();
+			if(source.KeyEqualToExpressions == null)
+			{
+				expression.KeyEqualToExpressions = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlIsEqualToExpression>();
+				for(var i = 0; i < source.KeyEqualToExpressions.Count; i++)
+				{
+					listCopy.Add((IqlIsEqualToExpression)source.KeyEqualToExpressions[i]?.Clone());
+				}
+				expression.KeyEqualToExpressions = listCopy;
+			}
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

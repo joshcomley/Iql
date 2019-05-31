@@ -9,20 +9,6 @@ namespace Iql
         {
         }
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlCurrentLocationExpression();
-			expression.CanFail = CanFail;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
         internal override IqlExpression ReplaceExpressions(ReplaceContext context)
         {
@@ -47,5 +33,20 @@ namespace Iql
 
             // #FlattenEnd
         }
+
+		public static IqlCurrentLocationExpression Clone(IqlCurrentLocationExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlCurrentLocationExpression();
+			expression.CanFail = source.CanFail;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
+		}
     }
 }

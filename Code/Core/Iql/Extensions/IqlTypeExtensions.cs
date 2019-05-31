@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Iql.Extensions
 {
@@ -77,18 +78,35 @@ namespace Iql.Extensions
             }
 
 #if !TypeScript
-            if (type.IsGenericType)
+            var genericTypeArguments = type.GenericTypeArguments;
+            if (genericTypeArguments != null && genericTypeArguments.Length > 0)
             {
-                return type.Name.Split('`')[0] + "<" + string.Join(", ", type.GetGenericArguments().Select(_ => GetFullName(_)).ToArray()) + ">";
+                return
+                    $"{type.SimpleName()}<{string.Join(", ", genericTypeArguments.Select(GetFullName).ToArray())}>";
+            }
+            var genericTypeParameters = type.GetTypeInfo().GenericTypeParameters;
+            if (genericTypeParameters != null && genericTypeParameters.Length > 0)
+            {
+                return
+                    $"{type.SimpleName()}<{string.Join(", ", genericTypeParameters.Select(GetFullName).ToArray())}>";
             }
 #endif
-
             if (type == typeof(object))
             {
                 return "object";
             }
 
             return type.Name;
+        }
+
+        public static string SimpleName(this Type type)
+        {
+            var simpleName = type.Name;
+            if (simpleName.Contains("`"))
+            {
+                simpleName = simpleName.Substring(0, simpleName.LastIndexOf("`"));
+            }
+            return simpleName;
         }
 
         public static object ActivateGeneric(

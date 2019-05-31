@@ -25,22 +25,6 @@ namespace Iql
 
         }
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlConditionExpression();
-			expression.Test = Test?.Clone();
-			expression.IfTrue = IfTrue?.Clone();
-			expression.IfFalse = IfFalse?.Clone();
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -70,6 +54,23 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlConditionExpression Clone(IqlConditionExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlConditionExpression();
+			expression.Test = source.Test?.Clone();
+			expression.IfTrue = source.IfTrue?.Clone();
+			expression.IfFalse = source.IfFalse?.Clone();
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

@@ -17,22 +17,6 @@ namespace Iql
             ReturnType = IqlType.Decimal;
         }
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlDistanceExpression();
-			expression.Srid = Srid;
-			expression.Left = Left?.Clone();
-			expression.Right = Right?.Clone();
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
         internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -63,5 +47,22 @@ namespace Iql
         }
 
         public int? Srid { get; set; }
+
+		public static IqlDistanceExpression Clone(IqlDistanceExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlDistanceExpression();
+			expression.Srid = source.Srid;
+			expression.Left = source.Left?.Clone();
+			expression.Right = source.Right?.Clone();
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
+		}
     }
 }

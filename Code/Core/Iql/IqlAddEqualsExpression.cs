@@ -15,23 +15,8 @@ namespace Iql
         {
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
 
-			var expression = new IqlAddEqualsExpression();
-			expression.Left = Left?.Clone();
-			expression.Right = Right?.Clone();
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
-
-		internal override void FlattenInternal(IqlFlattenContext context)
+        internal override void FlattenInternal(IqlFlattenContext context)
         {
 			// #FlattenStart
 
@@ -57,6 +42,22 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlAddEqualsExpression Clone(IqlAddEqualsExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlAddEqualsExpression();
+			expression.Left = source.Left?.Clone();
+			expression.Right = source.Right?.Clone();
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

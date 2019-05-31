@@ -32,34 +32,6 @@ namespace Iql
             return polygon;
         }
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlPolygonExpression();
-			expression.OuterRing = (IqlRingExpression)OuterRing?.Clone();
-			if(InnerRings == null)
-			{
-				expression.InnerRings = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlRingExpression>();
-				for(var i = 0; i < InnerRings.Count; i++)
-				{
-					listCopy.Add((IqlRingExpression)InnerRings[i]?.Clone());
-				}
-				expression.InnerRings = listCopy;
-			}
-			expression.Srid = Srid;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
         internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -100,5 +72,34 @@ namespace Iql
 
             // #ReplaceEnd
         }
+
+		public static IqlPolygonExpression Clone(IqlPolygonExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlPolygonExpression();
+			expression.OuterRing = (IqlRingExpression)source.OuterRing?.Clone();
+			if(source.InnerRings == null)
+			{
+				expression.InnerRings = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlRingExpression>();
+				for(var i = 0; i < source.InnerRings.Count; i++)
+				{
+					listCopy.Add((IqlRingExpression)source.InnerRings[i]?.Clone());
+				}
+				expression.InnerRings = listCopy;
+			}
+			expression.Srid = source.Srid;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
+		}
     }
 }

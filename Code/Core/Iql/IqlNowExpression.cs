@@ -10,20 +10,6 @@ namespace Iql
             ReturnType = IqlType.Date;
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlNowExpression();
-			expression.CanFail = CanFail;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -47,6 +33,21 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlNowExpression Clone(IqlNowExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlNowExpression();
+			expression.CanFail = source.CanFail;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

@@ -45,65 +45,6 @@ namespace Iql
 
         public IqlDataSetReferenceExpression DataSet { get; set; }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlDataSetQueryExpression();
-			expression.DataSet = (IqlDataSetReferenceExpression)DataSet?.Clone();
-			if(OrderBys == null)
-			{
-				expression.OrderBys = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlOrderByExpression>();
-				for(var i = 0; i < OrderBys.Count; i++)
-				{
-					listCopy.Add((IqlOrderByExpression)OrderBys[i]?.Clone());
-				}
-				expression.OrderBys = listCopy;
-			}
-			expression.IncludeCount = IncludeCount;
-			expression.Skip = Skip;
-			expression.Take = Take;
-			expression.EntityTypeName = EntityTypeName;
-			if(Expands == null)
-			{
-				expression.Expands = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlExpandExpression>();
-				for(var i = 0; i < Expands.Count; i++)
-				{
-					listCopy.Add((IqlExpandExpression)Expands[i]?.Clone());
-				}
-				expression.Expands = listCopy;
-			}
-			expression.Filter = Filter?.Clone();
-			expression.WithKey = (IqlWithKeyExpression)WithKey?.Clone();
-			if(Parameters == null)
-			{
-				expression.Parameters = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlRootReferenceExpression>();
-				for(var i = 0; i < Parameters.Count; i++)
-				{
-					listCopy.Add((IqlRootReferenceExpression)Parameters[i]?.Clone());
-				}
-				expression.Parameters = listCopy;
-			}
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -175,6 +116,66 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlDataSetQueryExpression Clone(IqlDataSetQueryExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlDataSetQueryExpression();
+			expression.DataSet = (IqlDataSetReferenceExpression)source.DataSet?.Clone();
+			if(source.OrderBys == null)
+			{
+				expression.OrderBys = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlOrderByExpression>();
+				for(var i = 0; i < source.OrderBys.Count; i++)
+				{
+					listCopy.Add((IqlOrderByExpression)source.OrderBys[i]?.Clone());
+				}
+				expression.OrderBys = listCopy;
+			}
+			expression.IncludeCount = source.IncludeCount;
+			expression.Skip = source.Skip;
+			expression.Take = source.Take;
+			expression.EntityTypeName = source.EntityTypeName;
+			if(source.Expands == null)
+			{
+				expression.Expands = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlExpandExpression>();
+				for(var i = 0; i < source.Expands.Count; i++)
+				{
+					listCopy.Add((IqlExpandExpression)source.Expands[i]?.Clone());
+				}
+				expression.Expands = listCopy;
+			}
+			expression.Filter = source.Filter?.Clone();
+			expression.WithKey = (IqlWithKeyExpression)source.WithKey?.Clone();
+			if(source.Parameters == null)
+			{
+				expression.Parameters = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlRootReferenceExpression>();
+				for(var i = 0; i < source.Parameters.Count; i++)
+				{
+					listCopy.Add((IqlRootReferenceExpression)source.Parameters[i]?.Clone());
+				}
+				expression.Parameters = listCopy;
+			}
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }

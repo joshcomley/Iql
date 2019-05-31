@@ -27,33 +27,6 @@ namespace Iql
             return Lines.Sum(_ => _.Length());
         }
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlMultiLineExpression();
-			if(Lines == null)
-			{
-				expression.Lines = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlLineExpression>();
-				for(var i = 0; i < Lines.Count; i++)
-				{
-					listCopy.Add((IqlLineExpression)Lines[i]?.Clone());
-				}
-				expression.Lines = listCopy;
-			}
-			expression.Srid = Srid;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
         internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -92,5 +65,33 @@ namespace Iql
 
             // #ReplaceEnd
         }
+
+		public static IqlMultiLineExpression Clone(IqlMultiLineExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlMultiLineExpression();
+			if(source.Lines == null)
+			{
+				expression.Lines = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlLineExpression>();
+				for(var i = 0; i < source.Lines.Count; i++)
+				{
+					listCopy.Add((IqlLineExpression)source.Lines[i]?.Clone());
+				}
+				expression.Lines = listCopy;
+			}
+			expression.Srid = source.Srid;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
+		}
     }
 }

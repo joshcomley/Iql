@@ -13,22 +13,24 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
         public static void Generate()
         {
             var iqlTypes = typeof(IqlExpression).Assembly.GetTypes().Where(t => typeof(IqlExpression).IsAssignableFrom(t) && !t.IsAbstract);
+            var sourceName = "source";
+            var targetName = "expression";
             foreach (var type in iqlTypes)
             {
-                var simpleName = type.SimpleName();
-                var files = Directory.GetFiles(ResolveIqlDirectory(), simpleName + ".cs");
+                var typeName = type.GetFullName();
+                var files = Directory.GetFiles(ResolveIqlDirectory(), $"{type.SimpleName()}.cs");
                 var file = files[0];
                 var lines = File.ReadAllLines(file).ToList();
-                if (!lines.Any(l => l.Contains("public override IqlExpression Clone()")))
+                if (!lines.Any(l => l.Contains($"public static {typeName} Clone({typeName} {sourceName})")))
                 {
                     files[0].Dump("Adding stub");
-                    lines.Insert(lines.Count - 2, @"
-		public override IqlExpression Clone()
-		{
+                    lines.Insert(lines.Count - 2, $@"
+		public static {typeName} Clone({typeName} {sourceName})
+		{{
 			// #CloneStart
 			return null;
 			// #CloneEnd
-		}");
+		}}");
                     File.WriteAllLines(file, lines.ToArray());
                 }
 
@@ -46,9 +48,11 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
                 {
                     var clone = "";
                     var cast = "";
+                    var sourceProperty = $"{sourceName}.{property.Name}";
+                    var targetProperty = $"{targetName}.{property.Name}";
                     if (typeof(IqlExpression).IsAssignableFrom(property.PropertyType))
                     {
-                        clone = $"?.{nameof(IqlExpression.Clone)}()";
+                        clone = $"?.{nameof(IqlExpressionExtensions.Clone)}()";
                         cast = property.PropertyType == typeof(IqlExpression) ? "" : $"({property.PropertyType.Name})";
                     }
                     else if ((typeof(IqlLiteralExpression).IsAssignableFrom(type) ||
@@ -63,9 +67,9 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
                         if (typeof(IEnumerable<IqlExpression>).IsAssignableFrom(property.PropertyType))
                         {
                             hasList = true;
-                            propertyAssignments.AppendLine($"if({property.Name} == null)");
+                            propertyAssignments.AppendLine($"if({sourceProperty} == null)");
                             propertyAssignments.AppendLine("{");
-                            propertyAssignments.AppendLine($"expression.{property.Name} = null;".Indent());
+                            propertyAssignments.AppendLine($"{targetProperty} = null;".Indent());
                             propertyAssignments.AppendLine("}");
                             propertyAssignments.AppendLine("else");
                             propertyAssignments.AppendLine("{");
@@ -76,7 +80,7 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
                                 copyType = typeof(List<>).MakeGenericType(copyType.ArrayItemType());
                             }
                             propertyAssignments.AppendLine($"var listCopy = {copyType.New()};".Indent());
-                            propertyAssignments.AppendLine($"for(var i = 0; i < {property.Name}.{(property.PropertyType.IsArray ? "Length" : "Count")}; i++)".Indent());
+                            propertyAssignments.AppendLine($"for(var i = 0; i < {sourceProperty}.{(property.PropertyType.IsArray ? "Length" : "Count")}; i++)".Indent());
                             propertyAssignments.AppendLine("{".Indent());
                             var toArray = "";
                             Type itemType = null;
@@ -92,22 +96,22 @@ namespace Iql.ExpressionMethodGenerator.ConsoleApp
                                 itemType = genericArguments[0];
                             }
                             itemCast = itemType == typeof(IqlExpression) ? "" : $"({itemType.InstantiateName()})";
-                            propertyAssignments.AppendLine($"{listCopyName}.Add({itemCast}{property.Name}[i]?.Clone());".Indent(2));
+                            propertyAssignments.AppendLine($"{listCopyName}.Add({itemCast}{sourceProperty}[i]?.Clone());".Indent(2));
                             propertyAssignments.AppendLine("}".Indent());
-                            propertyAssignments.AppendLine($"expression.{property.Name} = {listCopyName}{toArray};".Indent());
+                            propertyAssignments.AppendLine($"{targetProperty} = {listCopyName}{toArray};".Indent());
                             propertyAssignments.AppendLine("}");
                         }
                         else
                         {
-                            propertyAssignments.AppendLine($"expression.{property.Name} = {cast}{property.Name}{clone};");
+                            propertyAssignments.AppendLine($"{targetProperty} = {cast}{sourceProperty}{clone};");
                         }
                     }
                 }
 
                 var implementation = $@"
-		var expression = {type.New(true)};
+		var {targetName} = {type.New(true)};
 		{propertyAssignments}
-		return expression;";
+		return {targetName};";
 
                 var indent = "			";
                 implementation = Regex.Replace(implementation.Trim(), @"^\s*", indent, RegexOptions.Multiline);

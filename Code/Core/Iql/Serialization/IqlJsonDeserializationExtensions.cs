@@ -24,8 +24,7 @@ namespace Iql.Serialization
 
         public static IqlExpression EnsureIsIql(this IqlExpression expression)
         {
-            var instance = new IqlJsonDeserializerInstance<IqlExpression>(JsonConvert.SerializeObject(expression));
-            return instance.Deserialize();
+            return expression.Clone();
         }
     }
 }

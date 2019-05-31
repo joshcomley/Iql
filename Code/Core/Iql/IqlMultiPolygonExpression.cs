@@ -23,33 +23,6 @@ namespace Iql
         }
 
 
-        public override IqlExpression Clone()
-        {
-            // #CloneStart
-
-			var expression = new IqlMultiPolygonExpression();
-			if(Polygons == null)
-			{
-				expression.Polygons = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlPolygonExpression>();
-				for(var i = 0; i < Polygons.Count; i++)
-				{
-					listCopy.Add((IqlPolygonExpression)Polygons[i]?.Clone());
-				}
-				expression.Polygons = listCopy;
-			}
-			expression.Srid = Srid;
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-            // #CloneEnd
-        }
 
         internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -88,5 +61,33 @@ namespace Iql
 
             // #ReplaceEnd
         }
+
+		public static IqlMultiPolygonExpression Clone(IqlMultiPolygonExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlMultiPolygonExpression();
+			if(source.Polygons == null)
+			{
+				expression.Polygons = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlPolygonExpression>();
+				for(var i = 0; i < source.Polygons.Count; i++)
+				{
+					listCopy.Add((IqlPolygonExpression)source.Polygons[i]?.Clone());
+				}
+				expression.Polygons = listCopy;
+			}
+			expression.Srid = source.Srid;
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
+		}
     }
 }

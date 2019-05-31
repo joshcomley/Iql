@@ -24,32 +24,6 @@ namespace Iql
             return Expressions.Any(e => e != null && e.IsOrHas(matches));
         }
 
-		public override IqlExpression Clone()
-		{
-			// #CloneStart
-
-			var expression = new IqlAggregateExpression(null);
-			if(Expressions == null)
-			{
-				expression.Expressions = null;
-			}
-			else
-			{
-				var listCopy = new List<IqlExpression>();
-				for(var i = 0; i < Expressions.Count; i++)
-				{
-					listCopy.Add(Expressions[i]?.Clone());
-				}
-				expression.Expressions = listCopy;
-			}
-			expression.Key = Key;
-			expression.Kind = Kind;
-			expression.ReturnType = ReturnType;
-			expression.Parent = Parent?.Clone();
-			return expression;
-
-			// #CloneEnd
-		}
 
 		internal override void FlattenInternal(IqlFlattenContext context)
         {
@@ -87,6 +61,33 @@ namespace Iql
 			return this;
 
 			// #ReplaceEnd
+		}
+
+		public static IqlAggregateExpression Clone(IqlAggregateExpression source)
+		{
+			// #CloneStart
+
+			var expression = new IqlAggregateExpression(null);
+			if(source.Expressions == null)
+			{
+				expression.Expressions = null;
+			}
+			else
+			{
+				var listCopy = new List<IqlExpression>();
+				for(var i = 0; i < source.Expressions.Count; i++)
+				{
+					listCopy.Add(source.Expressions[i]?.Clone());
+				}
+				expression.Expressions = listCopy;
+			}
+			expression.Key = source.Key;
+			expression.Kind = source.Kind;
+			expression.ReturnType = source.ReturnType;
+			expression.Parent = source.Parent?.Clone();
+			return expression;
+
+			// #CloneEnd
 		}
     }
 }
