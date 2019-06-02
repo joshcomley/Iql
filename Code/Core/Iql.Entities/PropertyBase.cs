@@ -142,6 +142,8 @@ namespace Iql.Entities
         //    return _inferredWithPath;
         //}
 
+        public IqlCanTranslateKind CanTranslate { get; set; }
+        public string CanTranslateProperty { get; set; }
         public IEnumerable<IRelationship> Relationships => RelationshipSources.Where(r => !r.ThisIsTarget).Select(r => r.Relationship);
         public ITypeDefinition TypeDefinition { get; set; }
 

@@ -142,6 +142,26 @@ namespace Iql.Data.Evaluation
             Type entityType = null
         )
         {
+            var permission = await GetDbUserPermissionPathAsync(
+                db,
+                permissionsContainer,
+                user,
+                userType,
+                entity,
+                entityType
+            );
+            return permission.Result;
+        }
+
+        public async Task<PermissionResultPath> GetDbUserPermissionPathAsync(
+            IDataContext db,
+            IUserPermission permissionsContainer,
+            object user = null,
+            Type userType = null,
+            object entity = null,
+            Type entityType = null
+        )
+        {
             user = await ResolveCurrentUserAsync(db, user);
 
             if (userType == null || userType == typeof(object))
@@ -154,7 +174,7 @@ namespace Iql.Data.Evaluation
                 userType = db.EntityConfigurationContext.UsersDefinition.EntityConfiguration.Type;
             }
 
-            var permission = await GetUserPermissionAsync(
+            var permission = await GetUserPermissionPathAsync(
                 db.EntityConfigurationContext.PermissionManager,
                 permissionsContainer,
                 db,
@@ -180,10 +200,68 @@ namespace Iql.Data.Evaluation
             ITypeResolver typeResolver = null
         )
         {
+            return (await GetUserPermissionPathAsync(permissionsManager,
+                permissionsContainer,
+                evaluationContext,
+                user,
+                userType,
+                entity,
+                entityType,
+                serviceProviderProvider,
+                typeResolver)).Result;
+        }
+
+        public async Task<PermissionResultPath> GetUserPermissionPathAsync(
+            UserPermissionsManager permissionsManager,
+            IUserPermission permissionsContainer,
+            IIqlDataEvaluator evaluationContext,
+            object user,
+            Type userType,
+            object entity = null,
+            Type entityType = null,
+            IServiceProviderProvider serviceProviderProvider = null,
+            ITypeResolver typeResolver = null
+        )
+        {
+            var path = new PermissionResultPath(
+                permissionsManager,
+                permissionsContainer,
+                user,
+                userType,
+                entity,
+                entityType);
+            var result = await GetUserPermissionInternalAsync(
+                path,
+                permissionsManager,
+                permissionsContainer,
+                evaluationContext,
+                user,
+                userType,
+                entity,
+                entityType,
+                serviceProviderProvider,
+                typeResolver);
+            return result;
+        }
+
+        private async Task<PermissionResultPath> GetUserPermissionInternalAsync(
+            PermissionResultPath path,
+            UserPermissionsManager permissionsManager,
+            IUserPermission permissionsContainer,
+            IIqlDataEvaluator evaluationContext,
+            object user,
+            Type userType,
+            object entity = null,
+            Type entityType = null,
+            IServiceProviderProvider serviceProviderProvider = null,
+            ITypeResolver typeResolver = null
+        )
+        {
             var inheritedPermission = IqlUserPermission.Unset;
             if (permissionsContainer != null && permissionsContainer.ParentPermissions != null)
             {
-                inheritedPermission = await GetUserPermissionAsync(
+                inheritedPermission = (await GetUserPermissionInternalAsync(
+                    path,
                     permissionsManager,
                     permissionsContainer.ParentPermissions,
                     evaluationContext,
@@ -192,19 +270,19 @@ namespace Iql.Data.Evaluation
                     entity,
                     entityType,
                     serviceProviderProvider,
-                    typeResolver);
+                    typeResolver)).Result;
             }
             var permissionsCollection = permissionsContainer?.Permissions;
             if (permissionsCollection == null ||
                 permissionsCollection.Keys == null ||
                 permissionsCollection.Keys.Count == 0)
             {
-                return inheritedPermission;
+                return path;
             }
 
             if (inheritedPermission.HasFlag(IqlUserPermission.None))
             {
-                return inheritedPermission;
+                return path;
             }
 
             typeResolver = typeResolver ?? permissionsManager.EntityConfigurationBuilder;
@@ -256,18 +334,19 @@ namespace Iql.Data.Evaluation
                     new object[] { rule, user, entity, serviceProviderProvider, evaluationContext, typeResolver },
                     entityType ?? entity?.GetType() ?? typeof(object), userType ?? user.GetType());
                 var evaluatedResult = await task;
+                var originalResult = evaluatedResult;
                 if (evaluatedResult == IqlUserPermission.None &&
                     rule.Precedence == IqlUserPermissionRulePrecedenceDirection.Down && 
                     !hasUpPrecedenceRulesRemaining)
                 {
-                    return evaluatedResult;
+                    return path.Add(permissionsContainer, rule, originalResult, evaluatedResult);
                 }
 
                 if (evaluatedResult == IqlUserPermission.Full &&
                     rule.Precedence == IqlUserPermissionRulePrecedenceDirection.Up && 
                     !hasDownPrecedenceRulesRemaining)
                 {
-                    return evaluatedResult;
+                    return path.Add(permissionsContainer, rule, originalResult, evaluatedResult);
                 }
                 if (result == IqlUserPermission.Unset && evaluatedResult != IqlUserPermission.Unset)
                 {
@@ -296,7 +375,7 @@ namespace Iql.Data.Evaluation
                         }
                         if (evaluatedResult == IqlUserPermission.Full && !hasDownPrecedenceRulesRemaining)
                         {
-                            return evaluatedResult;
+                            return path.Add(permissionsContainer, rule, originalResult, evaluatedResult);
                         }
                     }
                     else
@@ -319,7 +398,7 @@ namespace Iql.Data.Evaluation
                         }
                         if (evaluatedResult == IqlUserPermission.None && !hasUpPrecedenceRulesRemaining)
                         {
-                            return evaluatedResult;
+                            return path.Add(permissionsContainer, rule, originalResult, evaluatedResult);
                         }
                     }
 
@@ -328,9 +407,10 @@ namespace Iql.Data.Evaluation
                         result = evaluatedResult;
                     }
                 }
+                path.Add(permissionsContainer, rule, originalResult, result);
             }
             // TODO: Evaluate the permissions
-            return result;
+            return path;
         }
 
         public async Task<IqlUserPermission> EvaluateEntityPermissionsRuleCustomAsync<TEntity, TUser>(

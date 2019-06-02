@@ -125,7 +125,7 @@ namespace Iql.Entities
 
         public virtual IEntityConfiguration EntityConfiguration { get; protected set; }
         public string GroupPath { get; set; }
-        public int GroupOrder { get; set; }
+        public float GroupOrder { get; set; }
 
         public string Description { get; set; }
         public List<string> Hints { get; set; } = new List<string>();

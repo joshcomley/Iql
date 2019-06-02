@@ -25,6 +25,13 @@ namespace Iql.Entities
 {
     public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {
+        public EntityConfiguration<T> SetGroupPath(string path = null, int order = 0)
+        {
+            GroupPath = path;
+            GroupOrder = order;
+            return this;
+        }
+
         public override IUserPermission ParentPermissions => Builder;
         public virtual EntityConfigurationBuilder Builder { get; }
         IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;

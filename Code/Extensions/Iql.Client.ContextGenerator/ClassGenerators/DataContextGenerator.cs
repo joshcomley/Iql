@@ -1305,7 +1305,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                     {
                         sb.Append("\r\n");
                         sb.Append(GetIndentPlusOne());
-                        sb.Append($"// {lambdaKey}.{metadataProperty.Name} = ???;");
+                        sb.Append($"// {lambdaKey}.{metadataProperty.Name} = ???;\r\n");
                     }
                 }
 

@@ -6,7 +6,7 @@ namespace Iql.Entities
     public interface IMetadata : IUserPermission, IEntityConfigurationItem
     {
         string GroupPath { get; set; }
-        int GroupOrder { get; set; }
+        float GroupOrder { get; set; }
         string Description { get; set; }
         string FriendlyName { get; set; }
         List<string> Hints { get; set; }
