@@ -61,7 +61,7 @@ namespace Iql.Entities.Search
             UpdateSearchText();
         }
 
-        public IqlSearchTerm[] ExtractSearchTerms(string text)
+        private IqlSearchTerm[] ExtractSearchTerms(string text)
         {
             bool quoteBegin = false;
             var term = "";

@@ -1250,7 +1250,7 @@ namespace Iql.Data.Context
             string propertyName)
         {
             var expandOperation = DataContext.BuildExpandOperation(typeof(T), propertyName);
-            return Then(expandOperation);
+            return expandOperation == null ? this : Then(expandOperation);
         }
 
         //public IqlPropertyExpression PropertyExpression(string propertyName)

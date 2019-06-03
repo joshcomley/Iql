@@ -21,8 +21,13 @@ namespace Iql.Data.Extensions
 
             var expandOperation = new ExpandOperation();
             var returnOperation = expandOperation;
+            var property = entityConfiguration.FindProperty(path.PropertyName);
+            if (property == null)
+            {
+                return null;
+            }
             var expandedDbSet = dataContext.GetDbSetByEntityType(
-                entityConfiguration.FindProperty(path.PropertyName).Relationship.OtherEnd.Type);
+                property.Relationship.OtherEnd.Type);
             if (path.Child != null && path.Child.Property.Kind.HasFlag(PropertyKind.Relationship))
             {
                 expandedDbSet = expandedDbSet.ExpandRelationship(path.Child.PathFromHere);
