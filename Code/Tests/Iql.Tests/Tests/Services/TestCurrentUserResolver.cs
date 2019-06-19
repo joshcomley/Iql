@@ -9,11 +9,13 @@ namespace Iql.Tests.Tests.Services
     public class TestCurrentUserResolver : IqlCurrentUserService
     {
         public static string TestCurrentUserId { get; } = "testuserid";
+        public static string TestCurrentUserName { get; } = "current user";
 
         public override Task<IqlObjectEvaluationResult> ResolveCurrentUserAsync(IqlServiceProvider serviceProvider)
         {
             return Task.FromResult(new IqlObjectEvaluationResult(true, new ApplicationUser()
             {
+                UserName = TestCurrentUserName,
                 ClientId = 77
             }));
         }

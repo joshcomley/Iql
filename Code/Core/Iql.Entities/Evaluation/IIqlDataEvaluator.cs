@@ -11,6 +11,7 @@ namespace Iql.Data.Evaluation
 {
     public interface IIqlDataEvaluator
     {
+        bool IsTracked(object entity);
         Task<bool> QueryAnyAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null
 #if TypeScript
             , EvaluateContext evaluateContext = null

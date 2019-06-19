@@ -47,11 +47,13 @@ namespace Iql.Tests.Tests.Properties
                 SnapshotOrdering.Standard
             );
             var xx = GetAsserts<Site>(instance);
-            Assert.AreEqual(23, instance.ChildProperties.Length);
+            Assert.AreEqual(25, instance.ChildProperties.Length);
             var expectedIndex = 0;
 
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromSelf), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromUserName), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Address), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.PostCode), true);
@@ -88,11 +90,13 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKind.Edit,
                 DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.Standard);
-            Assert.AreEqual(24, instance.ChildProperties.Length);
+            Assert.AreEqual(26, instance.ChildProperties.Length);
             var expectedIndex = 0;
             var xx = GetAsserts<Site>(instance);
             // N.B. "Parent" should be in here twice, as it is specified twice in the configuration
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromSelf), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromUserName), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Guid), false, false);
@@ -180,7 +184,7 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration);
             var flattened = instance.Flattened();
-            Assert.AreEqual(25, flattened.Length);
+            Assert.AreEqual(27, flattened.Length);
         }
 
         [TestMethod]
@@ -194,7 +198,7 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKind.Edit,
                 DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration);
-            Assert.AreEqual(24, instance.ChildProperties.Length);
+            Assert.AreEqual(26, instance.ChildProperties.Length);
             var xxx = GetAsserts<Site>(instance);
             var expectedIndex = 0;
 
@@ -207,6 +211,8 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromSelf), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromUserName), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false, false);
@@ -243,7 +249,7 @@ namespace Iql.Tests.Tests.Properties
                 DisplayConfigurationKeys.Default);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.Default, false, null, null, editKindOverrides);
             var xxx = GetAsserts<Site>(instance);
-            Assert.AreEqual(24, instance.ChildProperties.Length);
+            Assert.AreEqual(26, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Client), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Name), true);
@@ -256,6 +262,8 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromSelf), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromUserName), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false, false);
@@ -287,9 +295,11 @@ namespace Iql.Tests.Tests.Properties
             Assert.IsFalse(displayConfiguration.AutoGenerated);
             var instance = await detail.GetSnapshotAsync(site, typeof(Site), currentUser, typeof(ApplicationUser), Db, displayConfiguration, SnapshotOrdering.ReadOnlyFirst);
             var xxx = GetAsserts<Person>(instance);
-            Assert.AreEqual(24, instance.ChildProperties.Length);
+            Assert.AreEqual(26, instance.ChildProperties.Length);
             var expectedIndex = 0;
             AssertProperty(expectedIndex++, instance, nameof(Site.Id), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromSelf), false);
+            AssertProperty(expectedIndex++, instance, nameof(Site.InferredChainFromUserName), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.FullAddress), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.CreatedByUser), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Documents), false, false);

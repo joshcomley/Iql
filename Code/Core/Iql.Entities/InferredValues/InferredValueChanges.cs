@@ -8,7 +8,7 @@ namespace Iql.Entities.InferredValues
         public IEntityConfiguration EntityConfiguration => SourceProperty.EntityConfiguration;
         public InferredValueChange[] Changes { get; }
         public IProperty SourceProperty { get; }
-        public InferredValueChanges( object oldEntity, object currentEntity, IProperty sourceProperty, InferredValueChange[] changes)
+        public InferredValueChanges(object oldEntity, object currentEntity, IProperty sourceProperty, InferredValueChange[] changes)
         {
             OldEntity = oldEntity;
             CurrentEntity = currentEntity;

@@ -99,16 +99,16 @@ namespace Iql.OData
                 parameters.Add(new ODataParameter(args[i].Value, p.Type.Type, p.Name, p.IsBindingParameter));
             }
             return Method(
-                parameters, 
-                ODataMethodType.Action, 
-                method.ScopeKind.ToODataMethodScope(), 
-                method.NameSpace, 
-                method.Name, 
+                parameters,
+                ODataMethodType.Action,
+                method.ScopeKind.ToODataMethodScope(),
+                method.NameSpace,
+                method.Name,
                 method.EntityConfiguration?.Type);
         }
 
         public virtual ODataDataMethodRequest<TResult> IqlMethodWithResponse<TResult>(
-            IqlMethod method, 
+            IqlMethod method,
             Type responseType,
             params IqlMethodArgument[] args)
         {
@@ -332,12 +332,34 @@ namespace Iql.OData
         {
             var isValueResult = EntityConfigurationBuilder.GetEntityByType(typeof(TResult)) == null;
             var json = await httpResult.GetResponseTextAsync();
-            var result = JsonDataSerializer.DeserializeEntity<TResult>(
-                json,
-                EntityConfigurationBuilder.GetEntityByType(typeof(TResult)));
-            var value = isValueResult ? result.Root["value"] : result.Root;
-            var oDataGetResult = value.ToObject<TResult>();
-            return oDataGetResult;
+            if (!isValueResult)
+            {
+                var result = JsonDataSerializer.DeserializeEntity<TResult>(
+                    json,
+                    EntityConfigurationBuilder.GetEntityByType(typeof(TResult)));
+                var value = result.Root;
+                return value.ToObject<TResult>();
+            }
+
+            try
+            {
+                var obj = JsonConvert.DeserializeObject(json);
+                if (obj is JObject)
+                {
+                    var jobj = (JObject)obj;
+                    if (jobj["value"] != null)
+                    {
+                        return (TResult)(object)jobj["value"];
+                    }
+                    return (TResult)(object)jobj;
+                }
+                return (TResult)obj;
+            }
+            catch
+            {
+
+            }
+            return (TResult)(object)json;
         }
 
         private Task<IODataCollectionResult> GetODataCollectionResponseByTypeAsync(Type entityType, IHttpResult httpResult)
@@ -481,7 +503,7 @@ namespace Iql.OData
             return entityUri;
         }
 
-#region Validation
+        #region Validation
         private void ParseValidation<TEntity>(IEntityCrudResult result, TEntity entity, string responseData) where TEntity : class
         {
             if (!result.Success)
@@ -637,7 +659,7 @@ namespace Iql.OData
             }
             return null;
         }
-#endregion Validation
+        #endregion Validation
 
         public ODataDataStore(string name = null) : base(name ?? nameof(ODataDataStore))
         {

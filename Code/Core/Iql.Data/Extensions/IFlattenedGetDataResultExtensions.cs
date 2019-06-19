@@ -36,7 +36,10 @@ namespace Iql.Data.Extensions
         {
             var dbList = new DbList<T>();
             dbList.SourceQueryable = (DbQueryable<T>)response.Queryable;
-            dbList.AddRange(response.Root);
+            if (response.Root != null)
+            {
+                dbList.AddRange(response.Root);
+            }
             dbList.Success = response.IsSuccessful();
             return dbList;
         }

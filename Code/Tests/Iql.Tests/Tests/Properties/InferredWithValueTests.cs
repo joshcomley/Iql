@@ -14,6 +14,20 @@ namespace Iql.Tests.Tests.Properties
     public class InferredWithValueTests : TestsBase
     {
         [TestMethod]
+        public async Task InferValueChain()
+        {
+            Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
+            var site = new Site();
+            var session = new InferredValueEvaluationSession();
+            var inferredValuesResult = await session
+                .TrySetInferredValuesAsync(
+                    Db,
+                    site);
+            Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserName, site.InferredChainFromUserName);
+            Assert.AreEqual(TestCurrentUserResolver.TestCurrentUserName, site.InferredChainFromSelf);
+        }
+
+        [TestMethod]
         public async Task InferRelationshipByKey()
         {
             Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());

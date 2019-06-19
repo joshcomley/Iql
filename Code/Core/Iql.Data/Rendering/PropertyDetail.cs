@@ -100,21 +100,27 @@ namespace Iql.Data.Rendering
             InferredValueEvaluationSession inferredValueEvaluationSession = null,
             Dictionary<IPropertyContainer, PropertyEditKind> editKindOverrides = null
         )
-        { 
+        {
             permissionsEvaluationSession = permissionsEvaluationSession ?? new PermissionsEvaluationSession();
             inferredValueEvaluationSession = inferredValueEvaluationSession ??
                                              new InferredValueEvaluationSession(permissionsEvaluationSession.Session);
             var canEditAltersPosition = true;
             //var isInferredReadOnly =
             //    await inferredValueEvaluationSession.IsReadOnlyAsync(PropertyAsSimpleProperty, entity, dataContext);
-            var canEdit = !IsSimpleProperty;
-            if (IsSimpleProperty)
+            var canEdit = true;
+            var canShow = true;
+            if (IsPropertyGroup && PropertyAsPropertyGroup.IsHiddenFromEdit)
             {
-                var isInferredReadOnly = await inferredValueEvaluationSession.IsReadOnlyWithDataContextAsync(PropertyAsSimpleProperty, entity,
+                canEdit = false;
+                canShow = false;
+            }
+            if(canEdit)
+            {
+                var isInferredReadOnly = await inferredValueEvaluationSession.IsReadOnlyWithDataContextAsync(Property, entity,
                     dataContext);
                 canEdit = !isInferredReadOnly;
             }
-            var canShow = CanShow(entity, configuration);
+            canShow = canShow && CanShow(entity, configuration);
             var canShowReason = SnapshotReasonKind.Configuration;
             var canEditReason = SnapshotReasonKind.Configuration;
             if (editKindOverrides != null && editKindOverrides.ContainsKey(Property))
@@ -290,7 +296,7 @@ namespace Iql.Data.Rendering
                 }
             }
 
-            if (canEdit && 
+            if (canEdit &&
                 kids.Any() &&
                 !Property.IsTypeGroup)
             {

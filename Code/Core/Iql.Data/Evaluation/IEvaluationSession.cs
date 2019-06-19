@@ -36,7 +36,8 @@ namespace Iql.Data.Evaluation
             bool populate,
             Dictionary<object, object> replacements = null,
             bool? trackResults = null,
-            string rootName = null);
+            string rootName = null,
+            Func<object, string, Task<object>> propertyValueResolverAsync = null);
 
         Task<T> EvaluateAsAsync<T>(IqlPropertyPath propertyPath, object entity, IDataContext dataContext, bool populate);
 
@@ -70,7 +71,8 @@ namespace Iql.Data.Evaluation
             IDataContext dataContext,
             IContextEvaluator contextEvaluator = null,
             Type contextType = null,
-            ITypeResolver typeResolver = null);
+            ITypeResolver typeResolver = null,
+            bool? trackResults = null);
 
         Task<IqlExpressonEvaluationResult> EvaluateIqlPathAsync(
             IqlExpression expression,
@@ -79,7 +81,8 @@ namespace Iql.Data.Evaluation
             Type contextType,
             IContextEvaluator contextEvaluator = null,
             ITypeResolver typeResolver = null,
-            bool populatePath = false
+            bool populatePath = false,
+            bool? trackResults = null
         );
 
         Task<IqlExpressonEvaluationResult> EvaluateIqlCustomAsync(
@@ -90,6 +93,8 @@ namespace Iql.Data.Evaluation
             IIqlDataEvaluator dataEvaluator = null,
             ITypeResolver typeResolver = null,
             Type contextType = null,
-            bool populatePath = false);
+            bool populatePath = false,
+            bool? trackResults = null,
+            Func<object, string, Task<object>> propertyValueResolverAsync = null);
     }
 }

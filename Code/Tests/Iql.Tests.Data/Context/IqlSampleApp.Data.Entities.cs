@@ -1877,6 +1877,24 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "CreatedByUserId", _createdByUserId, value, _propertyChanging, _propertyChanged, newValue => this._createdByUserId = newValue);
             }
         }
+        protected string _inferredChainFromSelf;
+        public string InferredChainFromSelf
+        {
+            get => _inferredChainFromSelf;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "InferredChainFromSelf", _inferredChainFromSelf, value, _propertyChanging, _propertyChanged, newValue => this._inferredChainFromSelf = newValue);
+            }
+        }
+        protected string _inferredChainFromUserName;
+        public string InferredChainFromUserName
+        {
+            get => _inferredChainFromUserName;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "InferredChainFromUserName", _inferredChainFromUserName, value, _propertyChanging, _propertyChanged, newValue => this._inferredChainFromUserName = newValue);
+            }
+        }
         protected string _fullAddress;
         public string FullAddress
         {

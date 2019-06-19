@@ -123,6 +123,14 @@ namespace Iql.Tests.Server
             return context;
         }
 
+        public FakeControllerContext<TController> ControllerContext<TController>(Action<FakeControllerContext<TController>> action = null)
+            where TController: class
+        {
+            var context = new FakeControllerContext<TController>(Host.Services);
+            action?.Invoke(context);
+            return context;
+        }
+
         public async Task<FakeControllerContext<T>> ControllerContextAsync(Func<FakeControllerContext<T>, Task> action = null)
         {
             var context = new FakeControllerContext<T>(Host.Services);

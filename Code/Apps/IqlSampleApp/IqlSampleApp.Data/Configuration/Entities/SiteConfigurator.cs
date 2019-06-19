@@ -1,5 +1,6 @@
 using System.Linq;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
+using Iql;
 using Iql.Entities;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
@@ -16,6 +17,16 @@ namespace IqlSampleApp.Data.Configuration.Entities
             sites.HasNestedSet(s => s.Left, s => s.Right, s => s.LeftOf, s => s.RightOf,
                 s => s.Key, s => s.Level, s => s.ParentId, s => s.Parent, s => s.Id);
             sites
+                .ConfigureProperty(_ => _.InferredChainFromSelf,
+                    _ =>
+                    {
+                        _.IsInferredWith(site => site.CurrentEntityState.InferredChainFromUserName);
+                    })
+                .ConfigureProperty(_ => _.InferredChainFromUserName,
+                    _ =>
+                    {
+                        _.IsInferredWith(site => IqlCurrentUser.Get<ApplicationUser>().UserName);
+                    })
                 .ConfigureProperty(_ => _.Key,
                     _ =>
                     {

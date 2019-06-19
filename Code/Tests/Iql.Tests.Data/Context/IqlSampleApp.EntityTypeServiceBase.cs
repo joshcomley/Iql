@@ -2535,6 +2535,22 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Site_CreatedByUserId = _Site_CreatedByUserId ?? FindPropertyByName<Site>("CreatedByUserId");
             }
         }
+        private IProperty _Site_InferredChainFromSelf = null;
+        public IProperty Site_InferredChainFromSelf
+        {
+            get
+            {
+                return _Site_InferredChainFromSelf = _Site_InferredChainFromSelf ?? FindPropertyByName<Site>("InferredChainFromSelf");
+            }
+        }
+        private IProperty _Site_InferredChainFromUserName = null;
+        public IProperty Site_InferredChainFromUserName
+        {
+            get
+            {
+                return _Site_InferredChainFromUserName = _Site_InferredChainFromUserName ?? FindPropertyByName<Site>("InferredChainFromUserName");
+            }
+        }
         private IProperty _Site_FullAddress = null;
         public IProperty Site_FullAddress
         {

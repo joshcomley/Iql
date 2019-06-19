@@ -44,7 +44,8 @@ namespace Iql.Data.Evaluation
         public async Task<InferredValuesResult> TryGetInferredValuesAsync(
             IDataContext dataContext,
             object entity,
-            bool isInitialize = false)
+            bool isInitialize = false,
+            bool? trackResults = null)
         {
             var config = dataContext.EntityConfigurationContext.GetEntityByType(entity.GetType());
             var oldEntity = dataContext.GetEntityState(entity)?.EntityBeforeChanges();
@@ -54,7 +55,8 @@ namespace Iql.Data.Evaluation
                 entity,
                 isInitialize,
                 dataContext,
-                dataContext);
+                dataContext,
+                trackResults);
         }
 
         public async Task<InferredValuesResult> TrySetInferredValuesCustomAsync(
@@ -65,7 +67,7 @@ namespace Iql.Data.Evaluation
             IIqlDataEvaluator dataEvaluator,
             IServiceProviderProvider serviceProviderProvider = null)
         {
-            var result = await TryGetInferredValuesCustomAsync(config, oldEntity, entity, isInitialize, dataEvaluator, serviceProviderProvider);
+            var result = await TryGetInferredValuesCustomAsync(config, oldEntity, entity, isInitialize, dataEvaluator, serviceProviderProvider, true);
             result.ApplyChanges();
             return result;
         }
@@ -76,20 +78,25 @@ namespace Iql.Data.Evaluation
             object entity,
             bool isInitialize,
             IIqlDataEvaluator dataEvaluator,
-            IServiceProviderProvider serviceProviderProvider)
+            IServiceProviderProvider serviceProviderProvider,
+            bool? trackResults = null)
         {
+            trackResults = trackResults == null ? dataEvaluator.IsTracked(entity) : trackResults.Value;
             serviceProviderProvider = serviceProviderProvider ?? config.Builder;
             var changes = new List<InferredValueChanges>();
+            var alreadyInferredLookup = new Dictionary<string, InferredValueChanges>();
             for (var i = 0; i < config.Properties.Count; i++)
             {
                 var property = config.Properties[i];
-                var inferredValueChanges = await TryGetInferredValueCustomAsync(
+                var inferredValueChanges = await TryGetInferredValueCustomInternalAsync(
+                    alreadyInferredLookup, 
                     property,
                     oldEntity,
                     entity,
                     isInitialize,
                     dataEvaluator,
-                    serviceProviderProvider);
+                    serviceProviderProvider,
+                    trackResults);
                 changes.Add(inferredValueChanges);
             }
 
@@ -202,8 +209,38 @@ namespace Iql.Data.Evaluation
             object entity,
             bool isInitialize,
             IIqlDataEvaluator dataEvaluator,
-            IServiceProviderProvider serviceProviderProvider = null)
+            IServiceProviderProvider serviceProviderProvider = null,
+            bool? trackResults = null)
         {
+            var alreadyInferredLookup = new Dictionary<string, InferredValueChanges>();
+            return await TryGetInferredValueCustomInternalAsync(
+                alreadyInferredLookup,
+                property,
+                oldEntity,
+                entity,
+                isInitialize,
+                dataEvaluator,
+                serviceProviderProvider,
+                trackResults);
+        }
+
+        private async Task<InferredValueChanges> TryGetInferredValueCustomInternalAsync(
+            Dictionary<string, InferredValueChanges> alreadyInferredLookup,
+            IProperty property,
+            object oldEntity,
+            object entity,
+            bool isInitialize,
+            IIqlDataEvaluator dataEvaluator,
+            IServiceProviderProvider serviceProviderProvider = null,
+            bool? trackResults = null
+            )
+        {
+            alreadyInferredLookup = alreadyInferredLookup ?? new Dictionary<string, InferredValueChanges>();
+            if (alreadyInferredLookup.ContainsKey(property.PropertyName))
+            {
+                return alreadyInferredLookup[property.PropertyName];
+            }
+            trackResults = trackResults == null ? dataEvaluator.IsTracked(entity) : trackResults.Value;
             //Func<InferredValueChanges> noChangeResult = () => new InferredValueChanges(
             //    false,
             //    true, 
@@ -219,6 +256,43 @@ namespace Iql.Data.Evaluation
             {
                 serviceProviderProvider = dataEvaluator as IServiceProviderProvider;
             }
+            Func<object, string, Task<object>> propertyValueResolverAsync = async (obj, propertyName) =>
+            {
+                if (obj != entity || propertyName == property.PropertyName)
+                {
+                    return obj.GetPropertyValueByName(propertyName);
+                }
+                var prop = property.EntityConfiguration.FindProperty(propertyName);
+                if (prop == null)
+                {
+                    return obj.GetPropertyValueByName(propertyName);
+                }
+
+                if (!alreadyInferredLookup.ContainsKey(propertyName))
+                {
+                    var propChanges = await TryGetInferredValueCustomInternalAsync(
+                        alreadyInferredLookup,
+                        prop,
+                        oldEntity,
+                        entity,
+                        isInitialize,
+                        dataEvaluator,
+                        serviceProviderProvider,
+                        trackResults);
+                    if (!alreadyInferredLookup.ContainsKey(propertyName))
+                    {
+                        alreadyInferredLookup.Add(propertyName, propChanges);
+                    }
+                }
+
+                var c = alreadyInferredLookup[propertyName];
+                if (!c.Success || c.Changes == null ||
+                    c.Changes.Length == 0)
+                {
+                    return obj.GetPropertyValueByName(propertyName);
+                }
+                return c.Changes[c.Changes.Length - 1].NewValue;
+            };
             if (property.HasInferredWith)
             {
                 for (var i = 0; i < property.InferredValueConfigurations.Count; i++)
@@ -234,7 +308,10 @@ namespace Iql.Data.Evaluation
                                 serviceProviderProvider,
                                 dataEvaluator,
                                 property.EntityConfiguration.Builder,
-                                typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type), false);
+                                typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type), 
+                                false,
+                                trackResults,
+                                propertyValueResolverAsync);
 
                         if (!Equals(conditionResult.Result, true))
                         {
@@ -274,7 +351,10 @@ namespace Iql.Data.Evaluation
                         null,
                         serviceProviderProvider,
                         dataEvaluator,
-                        property.EntityConfiguration.Builder, typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type));
+                        property.EntityConfiguration.Builder, typeof(InferredValueContext<>).MakeGenericType(property.EntityConfiguration.Type),
+                        false,
+                        trackResults,
+                        propertyValueResolverAsync);
 
                     if (!result.Success)
                     {
@@ -349,7 +429,13 @@ namespace Iql.Data.Evaluation
                 }
             }
 
-            return new InferredValueChanges(oldEntity, entity, property, changes.ToArray());
+
+            var inferredValueChanges = new InferredValueChanges(oldEntity, entity, property, changes.ToArray());
+            if (!alreadyInferredLookup.ContainsKey(property.Name))
+            {
+                alreadyInferredLookup.Add(property.PropertyName, inferredValueChanges);
+            }
+            return inferredValueChanges;
         }
 
         private static object NewInferredValueContext(object oldEntity, object entity, Type entityType)

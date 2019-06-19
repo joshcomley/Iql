@@ -94,13 +94,15 @@ namespace Iql.Data.Evaluation
             return await EvaluateCustomAsync(propertyPath, entity, dataContext, populate);
         }
 
-        public async Task<IqlPropertyPathEvaluationResult> EvaluateCustomAsync(IqlPropertyPath propertyPath,
+        public async Task<IqlPropertyPathEvaluationResult> EvaluateCustomAsync(
+            IqlPropertyPath propertyPath,
             object entity,
             IIqlDataEvaluator dataEvaluator,
             bool populate,
             Dictionary<object, object> replacements = null,
             bool? trackResults = null,
-            string rootName = null)
+            string rootName = null,
+            Func<object, string, Task<object>> propertyValueResolverAsync = null)
         {
             IContextEvaluator contextEvaluator = null;
             if (entity is IContextEvaluator ce)
@@ -171,7 +173,14 @@ namespace Iql.Data.Evaluation
                     }
                     else
                     {
-                        result = result.GetPropertyValueByName(part.PropertyName);
+                        if(propertyValueResolverAsync != null)
+                        {
+                            result = await propertyValueResolverAsync(result, part.PropertyName);
+                        }
+                        else
+                        {
+                            result = result.GetPropertyValueByName(part.PropertyName);
+                        }
                     }
                 }
                 if (part.Property != null && part.Property.Kind.HasFlag(PropertyKind.Relationship))
@@ -283,7 +292,8 @@ namespace Iql.Data.Evaluation
             IDataContext dataContext,
             IContextEvaluator contextEvaluator = null,
             Type contextType = null,
-            ITypeResolver typeResolver = null)
+            ITypeResolver typeResolver = null,
+            bool? trackResults = null)
         {
             return EvaluateIqlCustomAsync(
                 expression,
@@ -291,7 +301,9 @@ namespace Iql.Data.Evaluation
                 contextEvaluator,
                 (IServiceProviderProvider)dataContext ?? DataContext.FindBuilderForEntityType(contextType),
                 dataContext,
-                typeResolver ?? dataContext.EntityConfigurationContext, contextType);
+                typeResolver ?? dataContext.EntityConfigurationContext, contextType,
+                false,
+                trackResults);
         }
 
         public async Task<IqlExpressonEvaluationResult> EvaluateIqlPathAsync(
@@ -301,7 +313,8 @@ namespace Iql.Data.Evaluation
             Type contextType,
             IContextEvaluator contextEvaluator = null,
             ITypeResolver typeResolver = null,
-            bool populatePath = false
+            bool populatePath = false,
+            bool? trackResults = null
             )
         {
             var value = await EvaluateIqlCustomAsync(
@@ -311,7 +324,9 @@ namespace Iql.Data.Evaluation
                 dataContext?.EntityConfigurationContext ?? DataContext.FindBuilderForEntityType(contextType),
                 dataContext,
                 typeResolver ?? dataContext.EntityConfigurationContext,
-                contextType, populatePath);
+                contextType, 
+                populatePath,
+                trackResults);
             value.Result = value.Result is IqlPropertyPathEvaluationResult
                 ? (value.Result as IqlPropertyPathEvaluationResult).Value
                 : value.Result;
@@ -448,7 +463,9 @@ namespace Iql.Data.Evaluation
             IIqlDataEvaluator dataEvaluator = null,
             ITypeResolver typeResolver = null,
             Type contextType = null,
-            bool populatePath = false)
+            bool populatePath = false,
+            bool? trackResults = null,
+            Func<object, string, Task<object>> propertyValueResolverAsync = null)
         {
             expression = expression.Clone();
             if (typeResolver == null)
@@ -501,7 +518,11 @@ namespace Iql.Data.Evaluation
                             root,
                             context,
                             dataEvaluator,
-                            populatePath)).Value;
+                            populatePath,
+                            null,
+                            null,
+                            null,
+                            propertyValueResolverAsync)).Value;
                     }
                     else
                     {
@@ -535,7 +556,11 @@ namespace Iql.Data.Evaluation
                         root,
                         context,
                         dataEvaluator,
-                        populatePath)).Value;
+                        populatePath,
+                        null,
+                        null,
+                        null,
+                        propertyValueResolverAsync)).Value;
                     if (rootEntity != null && !expands.ContainsKey(rootEntity))
                     {
                         var entityConfigurationTypeProvider =
@@ -570,11 +595,12 @@ namespace Iql.Data.Evaluation
                     else
                     {
                         var compositeKey = expandGroup.Value.EntityConfiguration.GetCompositeKey(entity);
+                        trackResults = trackResults == null ? dataEvaluator.IsTracked(entity) : trackResults.Value;
                         newEntity = await dataEvaluator.GetEntityByKeyAsync(
                             expandGroup.Value.EntityConfiguration,
                             compositeKey,
                             expandPaths,
-                            false);
+                            trackResults.Value);
                         switch (CacheMode)
                         {
                             case EvaluationCacheMode.All:
@@ -636,8 +662,9 @@ namespace Iql.Data.Evaluation
                     dataEvaluator,
                     populatePath,
                     replacements,
-                    null,
-                    rootName);
+                    trackResults,
+                    rootName,
+                    propertyValueResolverAsync);
                 paths.Add(evaluationResult);
                 var flattenedExpression =
                     processResult.propertyExpressions.First(_ => _.Expression == flattenedExpressions[i].Expression);

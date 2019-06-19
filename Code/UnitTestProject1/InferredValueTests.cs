@@ -13,8 +13,31 @@ namespace Iql.Tests.Server
     public class InferredValueTestsUserSetting : ServerTestsBase<UserSetting>
     {
         [TestMethod]
-        public async Task InferValuesForUserSettings()
+        public async Task InferValueChain()
         {
+            var controller = ControllerContext<Site>();
+            var site = new Site();
+            var clone = (Site)site.Clone(Builder, typeof(Site));
+            ServerTestCurrentUserService.RegisterUser("testuser", new ApplicationUser
+            {
+                UserName = "testuser"
+            });
+            var session = new InferredValueEvaluationSession();
+            var inferredValuesResult = await session
+                .TrySetInferredValuesCustomAsync(
+                    controller.EntityConfiguration,
+                    clone,
+                    site,
+                    true,
+                    controller.ServerEvaluator,
+                    ResolveServiceProviderProvider());
+            Assert.AreEqual(site.InferredChainFromUserName, "testuser");
+            Assert.AreEqual(site.InferredChainFromSelf, "testuser");
+        }
+
+        [TestMethod]
+            public async Task InferValuesForUserSettings()
+            {
             var controller = ControllerContext();
             var dbObject = new UserSetting
             {
@@ -110,8 +133,9 @@ namespace Iql.Tests.Server
                 true,
                 controller.ServerEvaluator,
                 ResolveServiceProviderProvider());
+            Assert.AreEqual(PersonCategory.Conventional, dbObjectInitialize.Category);
             Assert.AreNotEqual(default(DateTimeOffset), dbObjectInitialize.CreatedDate);
-            Assert.IsNotNull(dbObjectInitialize.Birthday);
+            Assert.IsNull(dbObjectInitialize.Birthday);
             Assert.AreEqual(PersonSkills.Coder, dbObjectInitialize.Skills);
             Assert.AreEqual(PersonCategory.Conventional, dbObjectInitialize.Category);
 

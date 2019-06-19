@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Brandless.Data.EntityFramework.Crud;
 using Iql.Conversion;
+using Iql.Data.Context;
 using Iql.Data.Evaluation;
 using Iql.DotNet;
 using Iql.Entities;
@@ -22,8 +23,11 @@ namespace Iql.Server.OData.Net
                 BindingFlags.Instance | BindingFlags.NonPublic);
             GetEntityByKeyTypedAsyncMethod = typeof(IqlServerEvaluator).GetMethod(nameof(GetEntityByKeyTypedAsync),
                 BindingFlags.Instance | BindingFlags.NonPublic);
+            IsTrackedTypedMethod = typeof(IqlServerEvaluator).GetMethod(nameof(IsTrackedTyped),
+                BindingFlags.Instance | BindingFlags.Public);
         }
 
+        private static MethodInfo IsTrackedTypedMethod { get; set; }
         private static MethodInfo GetEntityByKeyTypedAsyncMethod { get; set; }
         private static MethodInfo QueryAnyTypedAsyncMethod { get; set; }
 
@@ -45,10 +49,13 @@ namespace Iql.Server.OData.Net
 
         public IqlServerEvaluator(CrudManager crudManager, Func<DbContext> newDbContext, params object[] unsavedEntities)
         {
+            DataContext = newDbContext();
             CrudManager = crudManager;
             NewDbContext = newDbContext;
             UnsavedEntities = unsavedEntities;
         }
+
+        public DbContext DataContext { get; set; }
 
         private async Task<object> GetEntityByKeyTypedAsync<TEntity>(
             EntityConfiguration<TEntity> entityConfiguration,
@@ -67,10 +74,10 @@ namespace Iql.Server.OData.Net
 
             try
             {
-                IQueryable<TEntity> dbSet = NewDbContext().Set<TEntity>();
+                IQueryable<TEntity> dbSet = DataContext.Set<TEntity>();
                 if (!trackResult)
                 {
-                    dbSet = dbSet.AsNoTracking();
+                    dbSet = NewDbContext().Set<TEntity>().AsNoTracking();
                 }
 
                 var keyEqualsExpression = CrudManager.KeyEqualsExpression<TEntity>(dic);
@@ -90,6 +97,17 @@ namespace Iql.Server.OData.Net
             }
 
             return null;
+        }
+
+        public bool IsTracked(object entity)
+        {
+            return (bool) IsTrackedTypedMethod.MakeGenericMethod(entity.GetType()).Invoke(this, new object[] {entity});
+        }
+
+        public bool IsTrackedTyped<T>(T entity)
+            where T : class
+        {
+            return DataContext.Set<T>().Local.Any(_ => _ == entity);
         }
 
         public Task<bool> QueryAnyAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null)

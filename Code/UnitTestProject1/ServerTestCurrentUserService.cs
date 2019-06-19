@@ -14,7 +14,14 @@ namespace Iql.Tests.Server
         private static readonly Dictionary<object, ApplicationUser> Users = new Dictionary<object, ApplicationUser>();
         public static void RegisterUser(object id, ApplicationUser user)
         {
-            Users.Add(id, user);
+            if (!Users.ContainsKey(id))
+            {
+                Users.Add(id, user);
+            }
+            else
+            {
+                Users[id] = user;
+            }
         }
 
         public ServerTestCurrentUserService(IqlHttpServiceProviderContext context) : base(context)
