@@ -16,6 +16,8 @@ namespace IqlSampleApp.Data.Configuration.Entities
             var sites = builder.EntityType<Site>();
             sites.HasNestedSet(s => s.Left, s => s.Right, s => s.LeftOf, s => s.RightOf,
                 s => s.Key, s => s.Level, s => s.ParentId, s => s.Parent, s => s.Id);
+            // sites.ConfigureProperty(_ => _.ClientId, _ => _.IsConditionallyInferredWith(p => p.CurrentEntityState.ClientId, p => IqlCurrentUser.Get<ApplicationUser>().ClientId != null));
+            sites.DefinePropertyDisplayRule(sites.NestedSets[0], _ => _.ClientId != 0);
             sites
                 .ConfigureProperty(_ => _.InferredChainFromSelf,
                     _ =>

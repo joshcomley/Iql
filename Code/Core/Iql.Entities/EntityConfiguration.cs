@@ -482,17 +482,22 @@ namespace Iql.Entities
             return this;
         }
 
-        public EntityConfiguration<T> RemovePropertyDisplayRule<TProperty>(
+        public EntityConfiguration<T> RemovePropertyDisplayRuleByExpression<TProperty>(
             Expression<Func<T, TProperty>> property,
             string key)
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
-            var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.ResolvePrimaryProperty().DisplayRules;
-            ruleCollection.Remove(key);
+            return RemovePropertyDisplayRule(propertyDefinition, key);
+        }
+
+        public EntityConfiguration<T> RemovePropertyDisplayRule(IPropertyGroup propertyDefinition, string key)
+        {
+            var ruleCollection = (DisplayRuleCollection<T>) propertyDefinition.ResolvePrimaryProperty().DisplayRules;
+            ruleCollection?.Remove(key);
             return this;
         }
 
-        public EntityConfiguration<T> DefinePropertyDisplayRule<TProperty>(
+        public EntityConfiguration<T> DefinePropertyDisplayRuleByExpression<TProperty>(
             Expression<Func<T, TProperty>> property,
             Expression<Func<T, bool>> displayRule,
             string key = null,
@@ -501,7 +506,23 @@ namespace Iql.Entities
             DisplayRuleAppliesToKind appliesToKind = DisplayRuleAppliesToKind.NewAndEdit)
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
-            var ruleCollection = (DisplayRuleCollection<T>)propertyDefinition.ResolvePrimaryProperty().DisplayRules;
+            return DefinePropertyDisplayRule(propertyDefinition, displayRule, key, message, kind, appliesToKind);
+        }
+
+        public EntityConfiguration<T> DefinePropertyDisplayRule(
+            IPropertyGroup propertyDefinition, 
+            Expression<Func<T, bool>> displayRule,
+            string key = null, 
+            string message = null, 
+            DisplayRuleKind kind = DisplayRuleKind.DisplayIf, 
+            DisplayRuleAppliesToKind appliesToKind = DisplayRuleAppliesToKind.NewAndEdit)
+        {
+            var primaryProperty = propertyDefinition.ResolvePrimaryProperty();
+            if(primaryProperty.DisplayRules == null)
+            {
+                primaryProperty.DisplayRules = new DisplayRuleCollection<T>();
+            }
+            var ruleCollection = (DisplayRuleCollection<T>) primaryProperty.DisplayRules;
             var rule = ruleCollection.Add(new DisplayRule<T>(displayRule, key, message));
             rule.AppliesToKind = appliesToKind;
             rule.Kind = kind;

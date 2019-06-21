@@ -72,10 +72,10 @@ namespace Iql.Tests.Tests.EntityConfiguration
             var clientProperty = site.FindProperty(nameof(Site.Client));
             Assert.AreEqual(0, clientProperty.DisplayRules.All.Count());
             Assert.AreEqual(0, clientProperty.Relationship.ThisEnd.DisplayRules.All.Count());
-            site.DefinePropertyDisplayRule(p => p.Client, _ => _.Id == 17, "temp");
+            site.DefinePropertyDisplayRuleByExpression(p => p.Client, _ => _.Id == 17, "temp");
             Assert.AreEqual(1, clientProperty.DisplayRules.All.Count());
             Assert.AreEqual(1, clientProperty.Relationship.ThisEnd.DisplayRules.All.Count());
-            site.RemovePropertyDisplayRule(p => p.Client, "temp");
+            site.RemovePropertyDisplayRuleByExpression(p => p.Client, "temp");
         }
 
         [TestMethod]

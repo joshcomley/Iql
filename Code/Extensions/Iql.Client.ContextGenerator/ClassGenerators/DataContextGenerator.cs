@@ -423,7 +423,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                         propertyExpression.Parent = iqlRootReference;
                                                         AppendLine();
                                                         Dot();
-                                                        MethodCall(nameof(EntityConfiguration<object>.DefinePropertyDisplayRule),
+                                                        MethodCall(nameof(EntityConfiguration<object>.DefinePropertyDisplayRuleByExpression),
                                                             false,
                                                             new[]
                                                             {

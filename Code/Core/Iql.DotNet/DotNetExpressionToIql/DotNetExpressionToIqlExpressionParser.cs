@@ -92,10 +92,11 @@ namespace Iql.DotNet.DotNetExpressionToIql
                 }
                 result = root;
             }
-            else
+            else 
             {
                 if (exp.NodeType != ExpressionType.Quote &&
                     exp.NodeType != ExpressionType.Convert &&
+                    !(exp is BinaryExpression) &&
                     !context.ContainsRoot(exp))
                 {
                     var type = exp.Type;
@@ -128,6 +129,22 @@ namespace Iql.DotNet.DotNetExpressionToIql
             }
 
             return result;
+        }
+
+        private bool IsFromCurrentUserExpression(Expression exp)
+        {
+            while (exp is MemberExpression memberExpression)
+            {
+                exp = memberExpression.Expression;
+            }
+
+            var methodCallExpression = exp as MethodCallExpression;
+            if (methodCallExpression != null && methodCallExpression.Method.DeclaringType == typeof(IqlCurrentUser))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private bool IsCurrentUserExpression(Expression exp)
