@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Iql.Entities.Functions;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
@@ -10,7 +11,9 @@ namespace Iql.Entities
     public interface IEntityConfiguration : IEntityMetadata, IPropertyContainer, IIqlTypeMetadataProvider
     {
         string TypeName { get; }
-        IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null);
+        IFile ResolvePreviewProperty();
+        IFile CalculatePreviewProperty();
+		IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null);
         IEntityConfiguration AddMethod(IqlMethod method);
         IProperty[] TryMatchProperty(params string[] names);
         IEnumerable<DisplayConfiguration> DisplayConfigurationsFor(DisplayConfigurationKind kind);
@@ -21,7 +24,7 @@ namespace Iql.Entities
             where T : class;
         SpecialTypeDefinition SpecialTypeDefinition { get; set; }
         IProperty TitleProperty { get; }
-        IProperty PreviewProperty { get; }
+        IFile PreviewProperty { get; }
         IEntityConfiguration SetManageKind(EntityManageKind manageKind);
         /// <summary>
         /// Determines whether this entity type has any fields that aren't key fields

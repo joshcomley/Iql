@@ -2,7 +2,7 @@ using Iql.Extensions;
 
 namespace Iql.Parsing.Reduction.Reducers
 {
-    public class IqlIsNotEqualToExpressionReducer : IqlReducerBase<IqlIsNotEqualToExpression>
+    public class IqlIsNotEqualToExpressionReducer : IqlBinaryExpressionReducerBase<IqlIsNotEqualToExpression>
     {
         //public override IIqlLiteralExpression Evaluate(IqlBinaryExpression expression, IqlReducer reducer)
         //{

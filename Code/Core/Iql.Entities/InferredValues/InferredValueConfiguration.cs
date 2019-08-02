@@ -30,7 +30,7 @@ namespace Iql.Entities.InferredValues
                     _inferredWithConditionIql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
                         _inferredWithConditionExpression,
                         Property.EntityConfiguration.Builder, 
-                        Property.EntityConfiguration.Type).Expression;
+                        typeof(InferredValueContext<>).MakeGenericType(Property.EntityConfiguration.Type)).Expression;
                     _inferredWithConditionExpression = null;
                 }
                 return _inferredWithConditionIql;
@@ -52,7 +52,7 @@ namespace Iql.Entities.InferredValues
                     _inferredWithIql = IqlConverter.Instance.ConvertLambdaExpressionToIqlByType(
                         _inferredWithExpression,
                         Property.EntityConfiguration.Builder,
-                        Property.EntityConfiguration.Type).Expression;
+                        typeof(InferredValueContext<>).MakeGenericType(Property.EntityConfiguration.Type)).Expression;
                     _inferredWithExpression = null;
                 }
                 return _inferredWithIql;

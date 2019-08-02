@@ -4,6 +4,7 @@ using Iql.Data;
 using Iql.Data.Evaluation;
 using Iql.Data.Extensions;
 using Iql.Entities.InferredValues;
+using Iql.Server.Serialization.Serialization;
 using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -93,6 +94,42 @@ namespace Iql.Tests.Server
             Assert.AreEqual(null, dbObject.Birthday);
             Assert.AreEqual(PersonSkills.Coder, dbObject.Skills);
             Assert.AreEqual(PersonCategory.Conventional, dbObject.Category);
+        }
+
+        [TestMethod]
+        public async Task CreateInferredWithConditionUsingIsInitialized()
+        {
+            var controller = ControllerContext();
+            controller.EntityConfiguration.ConfigureProperty(p => p.HasPaid, p =>
+                p.IsConditionallyInferredWith(_ => true, _ => _.IsInitialize == true));
+            var dbObjectNoInitialize = new Person();
+            controller.ServerEvaluator.MarkAsUnsaved(dbObjectNoInitialize);
+            dbObjectNoInitialize.Category = PersonCategory.AutoDescription;
+            var result = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+                controller.EntityConfiguration,
+                null,
+                dbObjectNoInitialize,
+                false,
+                controller.ServerEvaluator,
+                ResolveServiceProviderProvider());
+            Assert.AreEqual(dbObjectNoInitialize.HasPaid, null);
+             result = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+                controller.EntityConfiguration,
+                null,
+                dbObjectNoInitialize,
+                false,
+                controller.ServerEvaluator,
+                ResolveServiceProviderProvider());
+             Assert.AreEqual(dbObjectNoInitialize.HasPaid, null);
+             result = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+                 controller.EntityConfiguration,
+                 null,
+                 dbObjectNoInitialize,
+                 true,
+                 controller.ServerEvaluator,
+                 ResolveServiceProviderProvider());
+             Assert.AreEqual(dbObjectNoInitialize.HasPaid, true);
+             var json = controller.EntityConfiguration.Builder.ToJson();
         }
 
         [TestMethod]

@@ -17,6 +17,12 @@ namespace Iql.Parsing.Types
             var type = TypeMetadata.Type;
             if (GenericTypeParameters.Any())
             {
+#if !TypeScript
+                if(type.IsGenericType)
+                {
+                    type = type.GetGenericTypeDefinition();
+                }
+#endif
                 type = type.MakeGenericType(genericTypeParameters.Select(_ => _.Type.Type).ToArray());
             }
             Type = type;

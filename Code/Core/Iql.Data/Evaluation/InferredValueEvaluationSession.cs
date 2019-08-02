@@ -106,14 +106,16 @@ namespace Iql.Data.Evaluation
         public async Task<bool> IsReadOnlyWithDataContextAsync(
             IPropertyContainer property,
             object entity,
-            IDataContext dataContext)
+            IDataContext dataContext,
+            bool isInitialize = false)
         {
             return await IsReadOnlyAsync(
                 property,
                 entity,
                 dataContext,
                 dataContext,
-                dataContext.EntityConfigurationContext);
+                dataContext.EntityConfigurationContext,
+                isInitialize);
         }
 
         public async Task<bool> IsReadOnlyAsync(
@@ -121,7 +123,8 @@ namespace Iql.Data.Evaluation
             object entity,
             IIqlDataEvaluator dataContext,
             IServiceProviderProvider serviceProviderProvider,
-            ITypeResolver typeResolver)
+            ITypeResolver typeResolver,
+            bool isInitialize)
         {
             var sourceProperty = property;
             var basicProperty = property as IProperty;
@@ -168,7 +171,7 @@ namespace Iql.Data.Evaluation
 
                         var conditionResult = await Session.EvaluateIqlCustomAsync(
                             inferredValueConfiguration.InferredWithConditionIql,
-                            NewInferredValueContext(entity, entity, property.EntityConfiguration.Type),
+                            NewInferredValueContext(entity, entity, isInitialize, property.EntityConfiguration.Type),
                             null,
                             serviceProviderProvider,
                             dataContext, 
@@ -303,7 +306,7 @@ namespace Iql.Data.Evaluation
                         var conditionResult = await Session
                             .EvaluateIqlCustomAsync(
                                 inferredWith.InferredWithConditionIql,
-                                NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
+                                NewInferredValueContext(oldEntity, entity, isInitialize, property.EntityConfiguration.Type),
                                 null,
                                 serviceProviderProvider,
                                 dataEvaluator,
@@ -347,7 +350,7 @@ namespace Iql.Data.Evaluation
                     var inferredWithIql = inferredWith.InferredWithIql;
                     var result = await Session.EvaluateIqlCustomAsync(
                         inferredWithIql,
-                        NewInferredValueContext(oldEntity, entity, property.EntityConfiguration.Type),
+                        NewInferredValueContext(oldEntity, entity, isInitialize, property.EntityConfiguration.Type),
                         null,
                         serviceProviderProvider,
                         dataEvaluator,
@@ -438,15 +441,15 @@ namespace Iql.Data.Evaluation
             return inferredValueChanges;
         }
 
-        private static object NewInferredValueContext(object oldEntity, object entity, Type entityType)
+        private static object NewInferredValueContext(object oldEntity, object entity, bool isInitialize, Type entityType)
         {
-            return NewInferredValueContextTypedMethod.InvokeGeneric(null, new[] { oldEntity, entity }, entityType);
+            return NewInferredValueContextTypedMethod.InvokeGeneric(null, new[] { oldEntity, entity, isInitialize }, entityType);
         }
 
-        private static object NewInferredValueContextTyped<T>(T oldEntity, T entity)
+        private static object NewInferredValueContextTyped<T>(T oldEntity, T entity, bool isInitialize)
             where T : class
         {
-            return new InferredValueContext<T>(oldEntity, entity);
+            return new InferredValueContext<T>(oldEntity, entity, isInitialize);
         }
     }
 }

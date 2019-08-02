@@ -98,7 +98,8 @@ namespace Iql.Data.Rendering
             bool doNotAppendNonConfiguredProperties = false,
             PermissionsEvaluationSession permissionsEvaluationSession = null,
             InferredValueEvaluationSession inferredValueEvaluationSession = null,
-            Dictionary<IPropertyContainer, PropertyEditKind> editKindOverrides = null
+            Dictionary<IPropertyContainer, PropertyEditKind> editKindOverrides = null,
+            bool isInitialize = false
         )
         {
             permissionsEvaluationSession = permissionsEvaluationSession ?? new PermissionsEvaluationSession();
@@ -116,8 +117,11 @@ namespace Iql.Data.Rendering
             }
             if(canEdit)
             {
-                var isInferredReadOnly = await inferredValueEvaluationSession.IsReadOnlyWithDataContextAsync(Property, entity,
-                    dataContext);
+                var isInferredReadOnly = await inferredValueEvaluationSession.IsReadOnlyWithDataContextAsync(
+                    Property, 
+                    entity,
+                    dataContext, 
+                    isInitialize);
                 canEdit = !isInferredReadOnly;
             }
             canShow = canShow && CanShow(entity, configuration);

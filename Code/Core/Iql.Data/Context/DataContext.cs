@@ -1464,7 +1464,7 @@ namespace Iql.Data.Context
                         {
                             var result = await new EvaluationSession().EvaluateIqlAsync(
                                 inferredWith.InferredWithConditionIql,
-                                new InferredValueContext<T>((T)oldEntity, entity),
+                                new InferredValueContext<T>((T)oldEntity, entity, false),
                                 this,
                                 null,
                                 typeof(InferredValueContext<T>));

@@ -9,6 +9,10 @@ namespace Iql.Parsing.Reduction.Reducers
         {
             // We should never have a property without a parent
             var parent = reducer.Evaluate(expression.Parent);
+            if (parent == null)
+            {
+                return null;
+            }
             var returnType = expression.ReturnType;
             var container = parent.Value;
             if (parent is IqlEnumLiteralExpression)

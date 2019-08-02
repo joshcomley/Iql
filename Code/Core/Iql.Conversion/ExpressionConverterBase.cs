@@ -82,7 +82,7 @@ namespace Iql.Conversion
                 IqlPropertyExpression property = null;
                 var parts = match.Groups[2].Value.Split('.');
                 var iqlRootReferenceExpression = new IqlRootReferenceExpression(match.Groups[1].Value);
-                iqlRootReferenceExpression.EntityTypeName = typeof(TEntity).Name;
+                iqlRootReferenceExpression.EntityTypeName = typeof(TEntity).GetFullName();
                 for (var j = 0; j < parts.Length; j++)
                 {
                     var part = parts[j];

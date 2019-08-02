@@ -22,7 +22,27 @@ namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
-        public bool IsPivot
+	    private bool _thumbnailPropertyResolved = false;
+	    private IFile _resolvedThumbnailProperty = null;
+	    public IFile ResolvePreviewProperty()
+	    {
+		    if (!_thumbnailPropertyResolved)
+		    {
+			    CalculatePreviewProperty();
+		    }
+		    return _resolvedThumbnailProperty;
+	    }
+
+	    public IFile CalculatePreviewProperty()
+	    {
+		    _thumbnailPropertyResolved = true;
+		    _resolvedThumbnailProperty = PreviewProperty ?? Properties.OrderBy(_ => _.GroupOrder).Where(_ => _.File != null)
+			    .Select(_ => _.File)
+			    .FirstOrDefault();
+		    return _resolvedThumbnailProperty;
+	    }
+
+	    public bool IsPivot
         {
             get
             {
@@ -74,7 +94,7 @@ namespace Iql.Entities
         }
         protected virtual IEntityConfigurationContainer ConfigurationContainer { get; }
         protected readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
-        private IProperty _previewProperty;
+        private IFile _previewProperty;
         private string _titlePropertyName;
         private string _previewPropertyName;
         public IList<IProperty> Properties { get; set; }
@@ -349,14 +369,15 @@ namespace Iql.Entities
             }
         }
 
-        public IProperty PreviewProperty
+        public IFile PreviewProperty
         {
             get
             {
                 if (_previewPropertyNameChanged)
                 {
                     _previewPropertyNameChanged = false;
-                    _previewProperty = Properties.SingleOrDefault(p => p.Name == PreviewPropertyName);
+                    var prop = Properties.FirstOrDefault(p => p.File != null && p.File.Name == PreviewPropertyName);
+					_previewProperty = prop?.File;
                 }
 
                 return _previewProperty;

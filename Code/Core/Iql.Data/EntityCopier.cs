@@ -131,7 +131,7 @@ namespace Iql.Data
                 {
                     continue;
                 }
-                if (await inferredValueEvaluationSession.IsReadOnlyWithDataContextAsync(property, copy, dataContext))
+                if (await inferredValueEvaluationSession.IsReadOnlyWithDataContextAsync(property, copy, dataContext, false))
                 {
                     continue;
                 }

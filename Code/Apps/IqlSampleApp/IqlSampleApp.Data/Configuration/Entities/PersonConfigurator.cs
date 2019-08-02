@@ -55,6 +55,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 //f.SetHint(KnownHints.Video);
                 f.FriendlyName = "Photo";
             });
+            model.PreviewPropertyName = model.FindPropertyByExpression(_ => _.PhotoUrl).File.Name;
             model.ConfigureProperty(_ => _.Client, p =>
             {
                 p.IsInferredWith(_ => _.CurrentEntityState.Site.Client);

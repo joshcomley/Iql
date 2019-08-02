@@ -22,10 +22,10 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             //outputSubFolder = "";
             //outputType = OutputType.CSharp;
             //url = "http://localhost:28000/odata/$metadata";
-
-            var iqlSampleUrl = "http://localhost:64000/odata/$metadata";
             var scopeUrl = "http://localhost:46000/odata/$metadata";
+            var iqlSampleUrl = "http://localhost:64000/odata/$metadata";
             var isiteUrl = "http://localhost:48000/odata/$metadata";
+
             var iqlUrl = "http://localhost:28000/odata/$metadata";
             var hazceptionUrl = "http://localhost:58000/odata/$metadata";
             switch ("isite")
