@@ -335,10 +335,6 @@ namespace Iql.Entities
                     }
                 }
             }
-            else
-            {
-                int a = 0;
-            }
 
             return properties.ToArray();
         }
@@ -460,10 +456,6 @@ namespace Iql.Entities
                     }
 
                     return null;
-                    //if (_titlePropertyName == "Description")
-                    //{
-                    //    int a = 0;
-                    //}
                 }
 
                 return _titlePropertyName;

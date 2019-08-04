@@ -15,14 +15,18 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : SimplePropertyGroupBase<IProperty>, IPropertyMetadata, IPropertyMetadataProvider
     {
-        public override IPropertyGroup ResolvePrimaryProperty()
+        public override IProperty PrimaryProperty
         {
-            var propertyGroup = PropertyGroup;
-            if (propertyGroup == null)
+            get
             {
-                return this;
+                var propertyGroup = PropertyGroup;
+                if (propertyGroup == null)
+                {
+                    return (IProperty) this;
+                }
+
+                return propertyGroup.PrimaryProperty;
             }
-            return propertyGroup;
         }
 
         public override IPropertyGroup PropertyGroup

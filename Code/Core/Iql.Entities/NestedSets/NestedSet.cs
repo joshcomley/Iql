@@ -4,6 +4,11 @@ namespace Iql.Entities.NestedSets
 {
     public class NestedSet : SimplePropertyGroupBase<INestedSet>, INestedSet
     {
+        public override IProperty PrimaryProperty
+        {
+            get { return IdProperty; }
+        }
+
         protected override string ResolveName()
         {
             return "Hierarchy";

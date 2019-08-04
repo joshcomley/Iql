@@ -32,7 +32,6 @@ namespace Iql.Server.Serialization.Serialization
             }
             catch (Exception e)
             {
-                int a = 0;
             }
             return null;
         }

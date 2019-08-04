@@ -446,10 +446,6 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             //    name = validateEntityMethodName + "Custom";
             //}
             var returnType = TypeResolver.ResolveTypeNameFromODataName(method.ReturnType);
-            //if (returnType.IsCollection == false && returnType.ElementName == null && returnType.Name == null)
-            //{
-            //    int a = 0;
-            //}
             var typeScriptReturnType =
                 returnType.Name;
             var typeScriptReturnTypeParameter =
@@ -496,10 +492,6 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     keyParam);
             }
 
-            if (name == "ForClient")
-            {
-                int a = 0;
-            }
             Method(
                 name,
                 methodParameters,

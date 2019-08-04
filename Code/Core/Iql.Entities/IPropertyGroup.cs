@@ -27,7 +27,6 @@ namespace Iql.Entities
         ReadOnlyEditDisplayKind ResolvedReadOnlyEditDisplayKind { get; }
         PropertyReadKind ReadKind { get; set; }
         PropertyEditKind EditKind { get; set; }
-        IPropertyGroup ResolvePrimaryProperty();
         IPropertyGroup PropertyGroup { get; }
         string GroupKey { get; }
         string Key { get; set; }

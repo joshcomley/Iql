@@ -18,6 +18,11 @@ namespace Iql.Entities.Relationships
         ISourceRelationshipDetail
         where T : class
     {
+        public override IProperty PrimaryProperty
+        {
+            get { return Property; }
+        }
+
         public RelationshipDetail(
             IRelationship relationship,
             RelationshipSide relationshipSide,

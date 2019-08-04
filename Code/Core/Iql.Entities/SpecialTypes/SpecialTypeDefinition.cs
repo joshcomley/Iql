@@ -32,6 +32,11 @@ namespace Iql.Entities.SpecialTypes
 
         public abstract PropertyMap[] PropertyMaps { get; }
 
+        public IProperty PrimaryProperty
+        {
+            get { return IdProperty; }
+        }
+
         public IPropertyGroup[] GetGroupProperties()
         {
             if (_cachedProperties != null)

@@ -4,6 +4,11 @@ namespace Iql.Entities.Geography
 {
     public class GeographicPoint : SimplePropertyGroupBase<IGeographicPoint>, IGeographicPoint
     {
+        public override IProperty PrimaryProperty
+        {
+            get { return LatitudeProperty; }
+        }
+
         protected override string ResolveName()
         {
             return "Location";

@@ -2,9 +2,9 @@ namespace Iql.Entities
 {
     public class PropertyPath : SimplePropertyGroupBase<IPropertyPath>, IPropertyPath
     {
-        public override IPropertyGroup ResolvePrimaryProperty()
+        public override IProperty PrimaryProperty
         {
-            return Property;
+            get { return Property.PrimaryProperty; }
         }
 
         protected ISimpleProperty _property;

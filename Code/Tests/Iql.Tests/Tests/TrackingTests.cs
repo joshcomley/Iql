@@ -367,7 +367,6 @@ namespace Iql.Tests.Tests
             Assert.AreEqual("My name", propertyState.LocalValue);
             propertyState.RemoteValueChanged.Subscribe(_ =>
             {
-                int a = 0;
             });
             await Db.Clients.GetWithKeyAsync(1);
             Assert.AreEqual("New Remote Name", propertyState.RemoteValue);

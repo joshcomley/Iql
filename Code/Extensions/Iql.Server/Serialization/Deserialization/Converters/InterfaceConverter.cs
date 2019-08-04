@@ -93,10 +93,6 @@ namespace Iql.Server.Serialization.Deserialization.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var path = reader.Path;
-            if (path == "UserSettingsDefinition.Permissions")
-            {
-                int a = 0;
-            }
             var value = reader.Value;
             var existingValue2 = existingValue;
             var isConvertedProperty = (objectType == typeof(IRelationshipDetail) || objectType == typeof(IProperty) || objectType == typeof(IPropertyGroup)) && reader.Value is string &&
@@ -135,11 +131,6 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                 typeMapping = typeof(UserSettingsDefinition);
             }
 
-            //if (typeMapping == typeof(File) && existingValue != null && (existingValue as IFile).Previews != null &&
-            //    (existingValue as IFile).Previews.Any())
-            //{
-            //    int a = 0;
-            //}
             object result = null;
             if (objectType == typeof(UserPermissionsCollection))
             {
@@ -150,10 +141,6 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                 }
                 else
                 {
-                    //if (jobj.ToString() != "{\r\n  \"Keys\": []\r\n}")
-                    //{
-                    //    int a = 0;
-                    //}
                     result = JsonConvert.DeserializeObject<UserPermissionsCollection>(jobj.ToString());
                 }
             }

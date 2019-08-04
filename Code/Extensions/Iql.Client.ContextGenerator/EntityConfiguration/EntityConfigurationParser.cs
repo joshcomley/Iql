@@ -50,10 +50,6 @@ namespace Iql.OData.TypeScript.Generator.EntityConfiguration
             //    foreach (var property in properties)
             //    {
             //        var propertyName = property.Attribute("Name").Value;
-            //        if (propertyName == "Description")
-            //        {
-            //            int a = 0;
-            //        }
             //        var propertyConfigurationItem = new PropertyConfiguration();
             //        var propertyConfigurationAnnotation = property.Elements().SingleOrDefault(e => e.Attributes().Any(a => a.Name.LocalName == "Term" && a.Value == "Iql.Configuration"));
             //        if (propertyConfigurationAnnotation != null)
@@ -87,7 +83,6 @@ namespace Iql.OData.TypeScript.Generator.EntityConfiguration
         //        switch (coll.Name)
         //        {
         //            case "HelpTexts":
-        //                int a = 0;
         //                break;
         //            case "Rules":
         //                foreach (var rule in coll.Collection)

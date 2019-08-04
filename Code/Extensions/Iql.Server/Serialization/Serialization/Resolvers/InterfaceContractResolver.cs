@@ -195,19 +195,6 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             //{
             //    return base.CreateProperties(typeof(IRuleCollection<IBinaryRule>), memberSerialization);
             //}
-            //if (typeof(IRuleCollection<IDisplayRule>).IsAssignableFrom(type))
-            //{
-            //    int a = 0;
-            //}
-            //if (typeof(IRuleCollection<IRelationshipRule>).IsAssignableFrom(type))
-            //{
-            //    int a = 0;
-            //}
-
-            //if (resolvedType == typeof(IBinaryRule))
-            //{
-            //    int a = 0;
-            //}
             //IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
             var jsonProperties = base.CreateProperties(resolvedType, memberSerialization)
                 .Where(p => !ignoreProperties.Contains(p.PropertyName))

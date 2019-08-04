@@ -397,10 +397,6 @@ namespace Iql.Entities
         public IEntityProperty<T> DefineAndGetPropertyInternal<TProperty>(string name, Expression<Func<T, TProperty>> property, string convertedFromType, bool nullable = true,
             IqlType? iqlType = null)
         {
-            if (name == "TypeId")
-            {
-                int a = 0;
-            }
 #if !TypeScript
             if (typeof(TProperty).IsEnumerableType())
             {
@@ -477,7 +473,7 @@ namespace Iql.Entities
             )
         {
             var propertyDefinition = FindOrDefineProperty<TProperty>(ResolvePropertyIql(property).PropertyName, typeof(TProperty), null);
-            var validationCollection = (ValidationCollection<T>)propertyDefinition.ResolvePrimaryProperty().ValidationRules;
+            var validationCollection = (ValidationCollection<T>)propertyDefinition.PrimaryProperty.ValidationRules;
             validationCollection.Add(new ValidationRule<T>(failIf, key, message));
             return this;
         }
@@ -492,7 +488,7 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> RemovePropertyDisplayRule(IPropertyGroup propertyDefinition, string key)
         {
-            var ruleCollection = (DisplayRuleCollection<T>) propertyDefinition.ResolvePrimaryProperty().DisplayRules;
+            var ruleCollection = (DisplayRuleCollection<T>) propertyDefinition.PrimaryProperty.DisplayRules;
             ruleCollection?.Remove(key);
             return this;
         }
@@ -517,7 +513,7 @@ namespace Iql.Entities
             DisplayRuleKind kind = DisplayRuleKind.DisplayIf, 
             DisplayRuleAppliesToKind appliesToKind = DisplayRuleAppliesToKind.NewAndEdit)
         {
-            var primaryProperty = propertyDefinition.ResolvePrimaryProperty();
+            var primaryProperty = propertyDefinition.PrimaryProperty;
             if(primaryProperty.DisplayRules == null)
             {
                 primaryProperty.DisplayRules = new DisplayRuleCollection<T>();
@@ -536,7 +532,7 @@ namespace Iql.Entities
             string message = null
             )
         {
-            var primaryProperty = propertyDefinition.ResolvePrimaryProperty();
+            var primaryProperty = propertyDefinition.PrimaryProperty;
             var ruleCollection = (RelationshipRuleCollection<T, TProperty>)primaryProperty.RelationshipFilterRules;
             ruleCollection.Add(new RelationshipFilterRule<T, TProperty>(filterRule, key, message));
         }
@@ -694,10 +690,6 @@ namespace Iql.Entities
             IqlType kind,
             IProperty countRelationship)
         {
-            if (propertyName == "TypeId")
-            {
-                int a = 0;
-            }
             var definition = FindProperty(propertyName) as Property<T, TPropertyType, TElementType>;
             if (definition == null)
             {
@@ -925,6 +917,11 @@ namespace Iql.Entities
                 configure(nestedSet);
             }
             return this;
+        }
+
+        public IProperty PrimaryProperty
+        {
+            get { return null; }
         }
 
         public bool IsTypeGroup => true;

@@ -5,6 +5,11 @@ namespace Iql.Entities.PropertyGroups.Files
 {
     public class FileBase : SimplePropertyGroupBase<IFile>, IFile
     {
+        public override IProperty PrimaryProperty
+        {
+            get { return UrlProperty; }
+        }
+
         protected override string ResolveName()
         {
             return UrlPropertyInternal?.Name ?? "File";

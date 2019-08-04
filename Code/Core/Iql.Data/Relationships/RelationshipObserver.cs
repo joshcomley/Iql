@@ -482,10 +482,6 @@ namespace Iql.Data.Relationships
 
         private void ProcessTargetKeyChange(object entity, IEntityConfiguration entityConfiguration)
         {
-            if (DataTracker?.Kind == DataTrackerKind.Offline)
-            {
-                int a = 0;
-            }
             foreach (var relationship in entityConfiguration.AllRelationships())
             {
                 if (relationship.ThisIsTarget)
@@ -691,23 +687,6 @@ namespace Iql.Data.Relationships
                                         null,
                                         targetKeyString,
                                         item);
-                                }
-                            }
-
-                            var key = GetTargetKeyString(entity, relationship.Relationship);
-                            if (_oneToSourceRelationshipKeyMaps.ContainsKey(relationship.Relationship))
-                            {
-                                var mapping = _oneToSourceRelationshipKeyMaps[relationship.Relationship];
-                                if (mapping.ContainsKey(key))
-                                {
-                                    if (relationship.Relationship.Source.Property.PropertyName == "Client" &&
-                                        relationship.Relationship.Target.Property.PropertyName == "Sites")
-                                    {
-                                        int b = 0;
-                                    }
-                                    var rrr = mapping[key];
-                                    //ProcessRelationshipKeyChange(mapping[key][],);
-                                    int a = 0;
                                 }
                             }
                         }

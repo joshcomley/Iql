@@ -836,14 +836,6 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 var entityMetadata = metadata as IEntityMetadata;
                 foreach (var metadataProperty in metadataProperties)
                 {
-                    if (metadata.Name == "Documents" && metadataProperty.Name == "EditKind")
-                    {
-                        int a = 0;
-                    }
-                    if (metadataProperty.Name == "Methods")
-                    {
-                        int a = 0;
-                    }
                     var dealtWith = false;
                     string assign = null;
                     var assignIsAssign = true;
@@ -1445,10 +1437,6 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                     ? nameof(EntityConfiguration<object>.FindCollectionRelationship)
                                     : nameof(EntityConfiguration<object>.FindRelationship)
                             ;
-                        if (method == "FindCollectionRelationship" && detail.Property.Name == "Documents")
-                        {
-                            int a = 0;
-                        }
                         var configured = await ConfigureMetadataAsync(detail, null, $"{lambdaKey}_cnf", false, entityConfig);
                         if (!string.IsNullOrWhiteSpace(configured))
                         {

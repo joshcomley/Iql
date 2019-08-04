@@ -15,6 +15,12 @@ namespace Iql.Entities
     {
         public bool Enclose { get; set; } = true;
         public ContentAlignment ContentAlignment { get; set; } = ContentAlignment.Vertical;
+
+        public override IProperty PrimaryProperty
+        {
+            get { return null; }
+        }
+
         public override PropertyKind Kind
         {
             get => PropertyKind.GroupCollection;

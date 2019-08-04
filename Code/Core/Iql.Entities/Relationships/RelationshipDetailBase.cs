@@ -9,6 +9,11 @@ namespace Iql.Entities.Relationships
 {
     public abstract class RelationshipDetailBase : SimplePropertyGroupBase<IRelationshipDetail>, IRelationshipDetail
     {
+        public override IProperty PrimaryProperty
+        {
+            get { return Property; }
+        }
+
         private IProperty[] _constraints;
 
         private bool _readKindSet;

@@ -9,6 +9,7 @@ namespace Iql.Data.Rendering
     public class EntityPropertySnapshot
     {
         public PropertyDetail Detail { get; set; }
+
         public string Kind { get; set; }
         public bool IsEnum => Kind == PropertyRenderingKind.Enum;
         public bool IsString => Kind == PropertyRenderingKind.String;

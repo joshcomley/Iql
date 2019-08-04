@@ -6,8 +6,6 @@ namespace Iql
 {
     public class IqlVariableExpression : IqlLiteralExpression
     {
-        private string _entityTypeName;
-
         public IqlVariableExpression(
             string variableName = null,
             object value = null,
@@ -23,18 +21,7 @@ namespace Iql
         {
         }
 
-        public string EntityTypeName
-        {
-            get => _entityTypeName;
-            set
-            {
-                if (value == "InferredValueContext`1")
-                {
-                    int a = 0;
-                }
-                _entityTypeName = value;
-            }
-        }
+        public string EntityTypeName { get; set; }
 
         public string VariableName { get; set; }
 

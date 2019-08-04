@@ -951,10 +951,6 @@ namespace Iql.Data.Tracking
                 }
                 else
                 {
-                    if (keyString == "0")
-                    {
-                        int a = 0;
-                    }
                     EntitiesByRemoteKey.Add(keyString, new RemoteKeyMap(state, state.LocalKey));
                 }
 
