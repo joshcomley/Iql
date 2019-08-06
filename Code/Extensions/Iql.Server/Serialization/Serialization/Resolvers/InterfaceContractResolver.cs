@@ -80,6 +80,10 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
             {
                 ignoreProperties.AddRange(new[] { nameof(IInferredValueConfiguration.Property) });
             }
+            if (typeof(IPropertyContainer).IsAssignableFrom(type))
+            {
+                ignoreProperties.AddRange(new[] { nameof(IPropertyContainer.PrimaryProperty) });
+            }
             if (typeof(IqlUserPermissionRule).IsAssignableFrom(type))
             {
                 ignoreProperties.AddRange(new[]

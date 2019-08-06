@@ -240,12 +240,12 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                     {
                                         hasKeyParameters.Insert(0, new PropertyDefinition($"{entityConfiguration.Key.CanWrite.ToString().ToLower()}"));
                                     }
-                                  // Currently only support types with single property keys
-                                  MethodCall(
-                                          compositeKey ? nameof(EntityConfiguration<object>.HasCompositeKey) : nameof(EntityConfiguration<object>.HasKey),
-                                          false,
-                                          hasKeyParameters.ToArray()
-                                      );
+                                    // Currently only support types with single property keys
+                                    MethodCall(
+                                            compositeKey ? nameof(EntityConfiguration<object>.HasCompositeKey) : nameof(EntityConfiguration<object>.HasKey),
+                                            false,
+                                            hasKeyParameters.ToArray()
+                                        );
                                     foreach (var property in entityDefinition.Type.Properties)
                                     {
                                         AppendLine();
@@ -300,15 +300,15 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                     ? nameof(EntityConfiguration<object>.DefineConvertedProperty)
                                                     : nameof(EntityConfiguration<object>.DefineProperty))
                                             ;
-                                      //if (propertyType.IsCollection && OutputType == OutputType.CSharp)
-                                      //{
-                                      //    name += $"<{propertyEntityType.Name}>";
-                                      //}
-                                      MethodCall(
-                                            name,
-                                            false,
-                                            parameters.ToArray()
-                                        );
+                                        //if (propertyType.IsCollection && OutputType == OutputType.CSharp)
+                                        //{
+                                        //    name += $"<{propertyEntityType.Name}>";
+                                        //}
+                                        MethodCall(
+                                              name,
+                                              false,
+                                              parameters.ToArray()
+                                          );
                                         if (entityConfiguration != null)
                                         {
                                             IMetadata propertyMetadata =
@@ -521,32 +521,32 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                         Append(";");
                                         AppendLine();
 
-                                      //if (entityConfiguration != null)
-                                      //{
-                                      //    var parameters = new List<IVariable>();
-                                      //    parameters.Add(propertyLambda);
-                                      //    var typeParameter = GetAndAddTypeScriptTypeParameter(type, parameters);
-                                      //    IMetadata propertyMetadata =
-                                      //        entityConfiguration.PropertyConfigurations?.ContainsKey(property.Name) ==
-                                      //        true
-                                      //            ? entityConfiguration.PropertyConfigurations[property.Name].Metadata
-                                      //            : null;
-                                      //    if (propertyMetadata != null)
-                                      //    {
-                                      //        AppendLine();
-                                      //        VariableAccessor(builder, () =>
-                                      //        {
-                                      //            MethodCall(
-                                      //                defineEntityName,
-                                      //                false,
-                                      //                defineEntityParameters
-                                      //            );
-                                      //            AppendLine();
-                                      //            ConfigreMetadata(propertyMetadata, typeParameter, parameters.First());
-                                      //        });
-                                      //    }
-                                      //}
-                                  });
+                                        //if (entityConfiguration != null)
+                                        //{
+                                        //    var parameters = new List<IVariable>();
+                                        //    parameters.Add(propertyLambda);
+                                        //    var typeParameter = GetAndAddTypeScriptTypeParameter(type, parameters);
+                                        //    IMetadata propertyMetadata =
+                                        //        entityConfiguration.PropertyConfigurations?.ContainsKey(property.Name) ==
+                                        //        true
+                                        //            ? entityConfiguration.PropertyConfigurations[property.Name].Metadata
+                                        //            : null;
+                                        //    if (propertyMetadata != null)
+                                        //    {
+                                        //        AppendLine();
+                                        //        VariableAccessor(builder, () =>
+                                        //        {
+                                        //            MethodCall(
+                                        //                defineEntityName,
+                                        //                false,
+                                        //                defineEntityParameters
+                                        //            );
+                                        //            AppendLine();
+                                        //            ConfigreMetadata(propertyMetadata, typeParameter, parameters.First());
+                                        //        });
+                                        //    }
+                                        //}
+                                    });
                                 }
 
                                 await VariableAccessorAsync(builder, async () =>
@@ -561,32 +561,32 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                     Append(";");
                                     AppendLine();
 
-                                  //if (entityConfiguration != null)
-                                  //{
-                                  //    var parameters = new List<IVariable>();
-                                  //    parameters.Add(propertyLambda);
-                                  //    var typeParameter = GetAndAddTypeScriptTypeParameter(type, parameters);
-                                  //    IMetadata propertyMetadata =
-                                  //        entityConfiguration.PropertyConfigurations?.ContainsKey(property.Name) ==
-                                  //        true
-                                  //            ? entityConfiguration.PropertyConfigurations[property.Name].Metadata
-                                  //            : null;
-                                  //    if (propertyMetadata != null)
-                                  //    {
-                                  //        AppendLine();
-                                  //        VariableAccessor(builder, () =>
-                                  //        {
-                                  //            MethodCall(
-                                  //                defineEntityName,
-                                  //                false,
-                                  //                defineEntityParameters
-                                  //            );
-                                  //            AppendLine();
-                                  //            ConfigreMetadata(propertyMetadata, typeParameter, parameters.First());
-                                  //        });
-                                  //    }
-                                  //}
-                              });
+                                    //if (entityConfiguration != null)
+                                    //{
+                                    //    var parameters = new List<IVariable>();
+                                    //    parameters.Add(propertyLambda);
+                                    //    var typeParameter = GetAndAddTypeScriptTypeParameter(type, parameters);
+                                    //    IMetadata propertyMetadata =
+                                    //        entityConfiguration.PropertyConfigurations?.ContainsKey(property.Name) ==
+                                    //        true
+                                    //            ? entityConfiguration.PropertyConfigurations[property.Name].Metadata
+                                    //            : null;
+                                    //    if (propertyMetadata != null)
+                                    //    {
+                                    //        AppendLine();
+                                    //        VariableAccessor(builder, () =>
+                                    //        {
+                                    //            MethodCall(
+                                    //                defineEntityName,
+                                    //                false,
+                                    //                defineEntityParameters
+                                    //            );
+                                    //            AppendLine();
+                                    //            ConfigreMetadata(propertyMetadata, typeParameter, parameters.First());
+                                    //        });
+                                    //    }
+                                    //}
+                                });
 
                                 if (entityDefinition.Functions?.Any() == true && entityConfiguration.Methods?.Any() == true)
                                 {
@@ -756,6 +756,24 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         }
 
         private const string DefaultLambdaKey = "p";
+        private static Type[] NumberTypes = new[]
+        {
+            typeof(byte),
+            typeof(short),
+            typeof(int),
+            typeof(long),
+            typeof(decimal),
+            typeof(float),
+            typeof(double),
+
+            typeof(byte?),
+            typeof(short?),
+            typeof(int?),
+            typeof(long?),
+            typeof(decimal?),
+            typeof(float?),
+            typeof(double?)
+        };
 
         private async Task<string> ConfigureMetadataAsync(
             IMetadata metadata,
@@ -1072,6 +1090,14 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             }
                             dealtWith = true;
                         }
+                        else if (metadataProperty.CanWrite && NumberTypes.Contains(metadataProperty.PropertyType))
+                        {
+                            if (!useAutoResolve || !IsDefaultValue(metadataProperty, value, metadataSolidType))
+                            {
+                                assign = Equals(value, null) ? "null" : value.ToString().ToLower();
+                            }
+                            dealtWith = true;
+                        }
                         else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool))
                         {
                             if (!useAutoResolve || !IsDefaultValue(metadataProperty, value, metadataSolidType))
@@ -1227,7 +1253,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 sb.Append($"{string.Join(".", items)};");
                             }
                         }
-                        else if (metadata is IFileUrlBase &&
+                        else if (metadataProperty.CanWrite && metadata is IFileUrlBase &&
                                  typeof(IProperty).IsAssignableFrom(metadataProperty.PropertyType))
                         {
                             dealtWith = true;
@@ -1282,7 +1308,10 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             }
                         }
                     }
-
+                    if (assignIsAssign && !metadataProperty.CanWrite)
+                    {
+                        continue;
+                    }
                     if (assign != null)
                     {
                         sb.Append("\r\n");
