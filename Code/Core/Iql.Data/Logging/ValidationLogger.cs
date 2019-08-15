@@ -42,11 +42,11 @@ namespace Iql.Data.Logging
         public void ParseValidationResult(IEntityCrudResult validationResult)
         {
             var config = TypeResolver.FindTypeByType(validationResult.LocalEntity.GetType());
-            _sb.AppendLine($"{config.EntityConfiguration().FriendlyName}:");
-            _sb.AppendLine($"Key: {config.EntityConfiguration().GetCompositeKeyString(validationResult.LocalEntity)}");
-            for (var i = 0; i < validationResult.EntityValidationResults.Count; i++)
+            _sb.AppendLine($"Entity type: {config.EntityConfiguration().FriendlyName}");
+            _sb.AppendLine($"Entity key: {config.EntityConfiguration().GetCompositeKeyString(validationResult.LocalEntity)}");
+            foreach (var item in validationResult.EntityValidationResults)
             {
-                ParseEntityValidationResult(validationResult.EntityValidationResults[i]);
+                ParseEntityValidationResult(item.Value);
             }
         }
 
@@ -100,7 +100,8 @@ namespace Iql.Data.Logging
 
         private void ParseValidationFailure(ValidationError validationFailure)
         {
-            _sb.AppendLine($"{validationFailure.Key}:");
+            _sb.AppendLine($"Validation key: {validationFailure.Key}");
+            _sb.AppendLine($"Validation message:");
             _sb.AppendLine($"{validationFailure.Message}");
         }
     }
