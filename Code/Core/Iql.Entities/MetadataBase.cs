@@ -129,19 +129,19 @@ namespace Iql.Entities
 
         public string Description { get; set; }
         public List<string> Hints { get; set; } = new List<string>();
-        public MetadataHint FindHint(string name)
+        public MetadataHint FindHint(string name, bool? onlySelf = false)
         {
-            return HintHelper.FindHint(this, name);
+            return HintHelper.FindHint(this, name, onlySelf);
         }
 
-        public bool HasHint(string name)
+        public bool HasHint(string name, bool? onlySelf = null)
         {
-            return HintHelper.HasHint(this, name);
+            return HintHelper.HasHint(this, name, onlySelf);
         }
 
-        public IConfiguration RemoveHint(string name)
+        public IConfiguration RemoveHint(string name, bool? onlySelf = null)
         {
-            HintHelper.RemoveHint(this, name);
+            HintHelper.RemoveHint(this, name, onlySelf);
             return this;
         }
 

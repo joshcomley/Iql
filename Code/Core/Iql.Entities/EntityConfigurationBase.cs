@@ -644,11 +644,15 @@ namespace Iql.Entities
 
         public IProperty FindNestedPropertyByIqlExpression(IqlPropertyExpression propertyExpression)
         {
-            return IqlPropertyPath.FromPropertyExpression(
+            var iqlPropertyPath = IqlPropertyPath.FromPropertyExpression(
                 (this as IEntityConfiguration).Builder,
                 (this as IEntityConfiguration).TypeMetadata,
-                propertyExpression)
-                .Property.EntityProperty();
+                propertyExpression);
+            if (iqlPropertyPath.Property == null)
+            {
+                throw new Exception($"Unable to find property: {iqlPropertyPath.PathToHere}");
+            }
+            return iqlPropertyPath.Property.EntityProperty();
         }
 
         public IProperty FindNestedProperty(string name)
