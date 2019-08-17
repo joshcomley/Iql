@@ -1012,14 +1012,14 @@ namespace Iql.Tests.Tests.Offline
          * Deleting an entity
          */
 
-        private void AssertChangedProperties(IQueuedOperation[] changes, object entity, params string[] properties)
+        private void AssertChangedProperties(IQueuedEntityCrudOperation[] changes, object entity, params string[] properties)
         {
             var findEntityState = DataContext.FindEntityState(entity);
             var key = findEntityState.LocalKey;
             var first = changes.FirstOrDefault(_ =>
                 _.Operation is IUpdateEntityOperation &&
-                (_.Operation as IUpdateEntityOperation).Entity.GetType() == findEntityState.EntityConfiguration.Type &&
-                findEntityState.EntityConfiguration.GetCompositeKey((_.Operation as IUpdateEntityOperation).Entity).Matches(key));
+                (_.Operation as IUpdateEntityOperation).EntityState.Entity.GetType() == findEntityState.EntityConfiguration.Type &&
+                findEntityState.EntityConfiguration.GetCompositeKey((_.Operation as IUpdateEntityOperation).EntityState.Entity).Matches(key));
             Assert.IsNotNull(first);
             var updateEntityOperation = first.Operation as IUpdateEntityOperation;
             var changedProperties = updateEntityOperation.GetChangedProperties().Where(_ => !_.Property.Kind.HasFlag(PropertyKind.Relationship))

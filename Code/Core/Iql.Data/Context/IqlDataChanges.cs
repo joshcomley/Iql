@@ -15,13 +15,13 @@ namespace Iql.Data.Context
         public int Count => AllChanges.Length;
         public bool HasChanges => AllChanges.Length > 0;
 
-        public IqlDataChanges(SaveChangesOperation operation, IQueuedOperation[] allChanges)
+        public IqlDataChanges(SaveChangesOperation operation, IQueuedEntityCrudOperation[] allChanges)
         {
             Operation = operation;
-            AllChanges = allChanges ?? new IQueuedOperation[] { };
+            AllChanges = allChanges ?? new IQueuedEntityCrudOperation[] { };
         }
 
-        public IQueuedOperation[] AllChanges { get; }
+        public IQueuedEntityCrudOperation[] AllChanges { get; }
 
         public IQueuedAddEntityOperation[] Additions
         {

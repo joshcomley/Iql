@@ -11,5 +11,6 @@
         public static string WizardTitle = Prefix + nameof(WizardTitle);
         public static string WizardAlways = Prefix + nameof(WizardAlways);
         public static string WizardKey = Prefix + nameof(WizardKey);
+        public static string WizardKeyOrder = Prefix + nameof(WizardKeyOrder);
     }
 }

@@ -39,12 +39,12 @@ namespace Iql.Data.Context
             where TOperation : EntityCrudOperation<TEntity>
         {
             var dataTracker = isOffline ? DataContext.OfflineDataTracker : DataContext.TemporalDataTracker;
-            if (dataTracker.GetPendingDependencyCount(operation.Entity, operation.EntityType) > 0)
+            if (dataTracker.GetPendingDependencyCount(operation.EntityState.Entity, operation.EntityType) > 0)
             {
                 result.Success = false;
                 result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
-                result.EntityValidationResults.Add(operation.Entity,
-                    new EntityValidationResult<TEntity>(operation.Entity)
+                result.EntityValidationResults.Add(operation.EntityState.Entity,
+                    new EntityValidationResult<TEntity>(operation.EntityState.Entity)
                         .AddFailure("PendingDependency",
                             "Unable to save this entity because it has remaining, unsaved dependencies"));
                 return false;
@@ -58,8 +58,8 @@ namespace Iql.Data.Context
             SaveChangesResult saveChangesResult,
             bool isOfflineResync) where TEntity : class
         {
-            await DataContext.Events.EntityEvents.EmitSavingStartedAsync(() => operation);
-            await operation.Events.EmitSavingStartedAsync(() => operation);
+            await DataContext.Events.EntityEvents.EmitStartedAsync(() => operation);
+            await operation.Events.EmitStartedAsync(() => operation);
             var allowOnline = isOfflineResync || !DataContext.HasOfflineChanges();
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
             var isOffline = !allowOnline;
@@ -79,22 +79,22 @@ namespace Iql.Data.Context
             {
                 case IqlOperationKind.Add:
                     var addEntityOperation = (QueuedAddEntityOperation<TEntity>)operation;
-                    await DataContext.Events.AddEvents.EmitSavingStartedAsync(() => addEntityOperation);
-                    var addEntityValidationResult = await DataContext.ValidateEntityAsync<TEntity>(addEntityOperation.Operation.Entity, true);
+                    await DataContext.Events.AddEvents.EmitStartedAsync(() => addEntityOperation);
+                    var addEntityValidationResult = await DataContext.ValidateEntityAsync<TEntity>(addEntityOperation.Operation.EntityState.Entity, true);
                     if (!isOfflineResync && addEntityValidationResult.HasValidationFailures())
                     {
                         addEntityOperation.Result.Success = false;
                         addEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
-                        addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.Entity, addEntityValidationResult);
+                        addEntityOperation.Result.EntityValidationResults.Add(addEntityOperation.Operation.EntityState.Entity, addEntityValidationResult);
                     }
                     else if (CheckPendingDependencies(isOfflineResync, addEntityOperation.Operation, addEntityOperation.Result) &&
                              (isOfflineResync || await CheckNotAlreadyExistsAsync(addEntityOperation)))
                     {
                         inferredValuesResult = await new InferredValueEvaluationSession().TrySetInferredValuesAsync(
                             DataContext,
-                            addEntityOperation.Operation.Entity,
+                            addEntityOperation.Operation.EntityState.Entity,
                             false);
-                        var localEntity = addEntityOperation.Operation.Entity;
+                        var localEntity = addEntityOperation.Operation.EntityState.Entity;
 
                         var specialTypeMap = EntityConfigurationContext.GetSpecialTypeMap(typeof(TEntity).Name);
 
@@ -193,18 +193,18 @@ namespace Iql.Data.Context
                             {
                                 await DataContext.OfflineDataStore.ApplyAddAsync(addEntityOperation);
                             }
-                            await operation.Events.EmitSavedSuccessfullyAsync(() => addEntityOperation.Result);
-                            await DataContext.Events.AddEvents.EmitSavedSuccessfullyAsync(() => addEntityOperation.Result);
-                            await DataContext.Events.EntityEvents.EmitSavedSuccessfullyAsync(() => result);
+                            await operation.Events.EmitSuccessAsync(() => addEntityOperation.Result);
+                            await DataContext.Events.AddEvents.EmitSuccessAsync(() => addEntityOperation.Result);
+                            await DataContext.Events.EntityEvents.EmitSuccessAsync(() => result);
                         }
                         //GetTracking().TrackingSetByType(typeof(TEntity)).TrackEntity(addEntityOperation.Operation.Entity);
                     }
-                    await DataContext.Events.AddEvents.EmitSavingCompletedAsync(() => addEntityOperation.Result);
+                    await DataContext.Events.AddEvents.EmitCompletedAsync(() => addEntityOperation.Result);
                     break;
                 case IqlOperationKind.Update:
                     var updateEntityOperation = (QueuedUpdateEntityOperation<TEntity>)operation;
-                    await DataContext.Events.UpdateEvents.EmitSavingStartedAsync(() => updateEntityOperation);
-                    var isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.Entity
+                    await DataContext.Events.UpdateEvents.EmitStartedAsync(() => updateEntityOperation);
+                    var isEntityNew = DataContext.IsEntityNew(updateEntityOperation.Operation.EntityState.Entity
 #if TypeScript
                                             , typeof(TEntity)
 #endif
@@ -212,7 +212,7 @@ namespace Iql.Data.Context
                     if (isEntityNew == true)
                     {
                         operation.Result.Success = false;
-                        var failure = new EntityValidationResult<TEntity>(updateEntityOperation.Operation.Entity);
+                        var failure = new EntityValidationResult<TEntity>(updateEntityOperation.Operation.EntityState.Entity);
                         failure.AddFailure("", "This entity has not yet been saved so it cannot be updated.");
                         updateEntityOperation.Result.RootEntityValidationResult = failure;
                     }
@@ -220,14 +220,14 @@ namespace Iql.Data.Context
                     {
                         inferredValuesResult = await new InferredValueEvaluationSession().TrySetInferredValuesAsync(
                             DataContext,
-                            updateEntityOperation.Operation.Entity,
+                            updateEntityOperation.Operation.EntityState.Entity,
                             false);
-                        var updateEntityValidationResult = await DataContext.ValidateEntityAsync(updateEntityOperation.Operation.Entity, true);
+                        var updateEntityValidationResult = await DataContext.ValidateEntityAsync(updateEntityOperation.Operation.EntityState.Entity, true);
                         if (!isOfflineResync && updateEntityValidationResult.HasValidationFailures())
                         {
                             updateEntityOperation.Result.Success = false;
                             updateEntityOperation.Result.EntityValidationResults = new Dictionary<object, IEntityValidationResult>();
-                            updateEntityOperation.Result.EntityValidationResults.Add(updateEntityOperation.Operation.Entity, updateEntityValidationResult);
+                            updateEntityOperation.Result.EntityValidationResults.Add(updateEntityOperation.Operation.EntityState.Entity, updateEntityValidationResult);
                             inferredValuesResult?.UndoChanges();
                         }
                         else
@@ -271,6 +271,7 @@ namespace Iql.Data.Context
                             }
                             var operationEntity = updateEntityOperation
                                 .Operation
+                                .EntityState
                                 .Entity;
                             if (!result.Success && inferredValuesResult != null)
                             {
@@ -293,16 +294,16 @@ namespace Iql.Data.Context
                                         {
                                             dataContext.TemporalDataTracker.TrackingSet<TEntity>()
                                                 .Merge(
-                                                    updateEntityOperation.Operation.Entity,
-                                                    updateEntityOperation.Operation.Entity,
+                                                    updateEntityOperation.Operation.EntityState.Entity,
+                                                    updateEntityOperation.Operation.EntityState.Entity,
                                                     true,
                                                     true);
                                             if (dataContext.SupportsOffline && dataContext.OfflineDataTracker != null)
                                             {
                                                 dataContext.OfflineDataTracker.TrackingSet<TEntity>()
                                                     .Merge(
-                                                        updateEntityOperation.Operation.Entity,
-                                                        updateEntityOperation.Operation.Entity,
+                                                        updateEntityOperation.Operation.EntityState.Entity,
+                                                        updateEntityOperation.Operation.EntityState.Entity,
                                                         true,
                                                         true);
                                             }
@@ -326,9 +327,9 @@ namespace Iql.Data.Context
                                         changedProperties);
                                 }
 
-                                await operation.Events.EmitSavedSuccessfullyAsync(() => updateEntityOperation.Result);
-                                await DataContext.Events.UpdateEvents.EmitSavedSuccessfullyAsync(() => updateEntityOperation.Result);
-                                await DataContext.Events.EntityEvents.EmitSavedSuccessfullyAsync(() => result);
+                                await operation.Events.EmitSuccessAsync(() => updateEntityOperation.Result);
+                                await DataContext.Events.UpdateEvents.EmitSuccessAsync(() => updateEntityOperation.Result);
+                                await DataContext.Events.EntityEvents.EmitSuccessAsync(() => result);
                             }
                             else
                             {
@@ -336,12 +337,12 @@ namespace Iql.Data.Context
                             }
                         }
                     }
-                    await DataContext.Events.UpdateEvents.EmitSavingCompletedAsync(() => updateEntityOperation.Result);
+                    await DataContext.Events.UpdateEvents.EmitCompletedAsync(() => updateEntityOperation.Result);
                     break;
                 case IqlOperationKind.Delete:
                     var deleteEntityOperation = (QueuedDeleteEntityOperation<TEntity>)operation;
-                    await DataContext.Events.DeleteEvents.EmitSavingStartedAsync(() => deleteEntityOperation);
-                    var entity = deleteEntityOperation.Operation.Entity;
+                    await DataContext.Events.DeleteEvents.EmitStartedAsync(() => deleteEntityOperation);
+                    var entity = deleteEntityOperation.Operation.EntityState.Entity;
                     bool? entityNew = null;
                     if (entity != null)
                     {
@@ -355,7 +356,7 @@ namespace Iql.Data.Context
                     {
                         operation.Result.Success = false;
                         var failure = new EntityValidationResult<TEntity>(
-                            deleteEntityOperation.Operation.Entity);
+                            deleteEntityOperation.Operation.EntityState.Entity);
                         failure.AddFailure("", "This entity has not yet been saved so it cannot be deleted.");
                         deleteEntityOperation.Result.RootEntityValidationResult = failure;
                     }
@@ -415,16 +416,16 @@ namespace Iql.Data.Context
                             {
                                 await DataContext.OfflineDataStore.ApplyDeleteAsync(deleteEntityOperation);
                             }
-                            await operation.Events.EmitSavedSuccessfullyAsync(() => deleteEntityOperation.Result);
-                            await DataContext.Events.DeleteEvents.EmitSavedSuccessfullyAsync(() => deleteEntityOperation.Result);
-                            await DataContext.Events.EntityEvents.EmitSavedSuccessfullyAsync(() => result);
+                            await operation.Events.EmitSuccessAsync(() => deleteEntityOperation.Result);
+                            await DataContext.Events.DeleteEvents.EmitSuccessAsync(() => deleteEntityOperation.Result);
+                            await DataContext.Events.EntityEvents.EmitSuccessAsync(() => result);
                         }
                         else
                         {
-                            await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore(deleteEntityOperation.Operation.Entity);
+                            await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore(deleteEntityOperation.Operation.EntityState.Entity);
                         }
                     }
-                    await DataContext.Events.DeleteEvents.EmitSavingCompletedAsync(() => deleteEntityOperation.Result);
+                    await DataContext.Events.DeleteEvents.EmitCompletedAsync(() => deleteEntityOperation.Result);
                     break;
             }
 
@@ -439,8 +440,8 @@ namespace Iql.Data.Context
                 await DataContext.SaveOfflineStateAsync();
             }
 
-            await operation.Events.EmitSavingCompletedAsync(() => entityCrudResult);
-            await DataContext.Events.EntityEvents.EmitSavingCompletedAsync(() => entityCrudResult);
+            await operation.Events.EmitCompletedAsync(() => entityCrudResult);
+            await DataContext.Events.EntityEvents.EmitCompletedAsync(() => entityCrudResult);
         }
 
         private async Task<AddEntityResult<TEntity>> PerformMappedAddAsync<TEntity, TMap>(
@@ -451,7 +452,8 @@ namespace Iql.Data.Context
         where TEntity : class
         {
             var mappedEntity = (TMap)Activator.CreateInstance(typeof(TMap));
-            var addEntityOperation = new AddEntityOperation<TMap>(mappedEntity, DataContext);
+            var dummyEntityState = ConstructDummyEntityState<TEntity, TMap>(add, mappedEntity);
+            var addEntityOperation = new AddEntityOperation<TMap>(dummyEntityState, DataContext);
             var mappedAdd = new QueuedAddEntityOperation<TMap>(
                 add.SaveChangesOperation,
                 addEntityOperation,
@@ -464,7 +466,7 @@ namespace Iql.Data.Context
                 var property = properties[i];
                 var mappedProperty = definition.ResolvePropertyMap(property.PropertyName);
                 mappedProperty.CustomProperty.SetValue(mappedEntity,
-                    property.GetValue(add.Operation.Entity));
+                    property.GetValue(add.Operation.EntityState.Entity));
             }
 
             var saveChangesResult = new SaveChangesResult(add.SaveChangesOperation, SaveChangeKind.Success);
@@ -478,7 +480,7 @@ namespace Iql.Data.Context
             {
                 if (validationResult.Key == mappedEntity)
                 {
-                    unmappedResult.EntityValidationResults.Add(add.Operation.Entity, validationResult.Value);
+                    unmappedResult.EntityValidationResults.Add(add.Operation.EntityState.Entity, validationResult.Value);
                 }
             }
 
@@ -502,6 +504,7 @@ namespace Iql.Data.Context
             QueuedDeleteEntityOperation<TEntity> deleteOperation,
             SpecialTypeDefinition definition,
             bool forceOnline)
+            where TEntity : class
             where TMap : class
         {
             var mappedEntity = (TMap)Activator.CreateInstance(typeof(TMap));
@@ -516,7 +519,8 @@ namespace Iql.Data.Context
                 mappedEntity.SetPropertyValueByName(remappedCompositeKey.Keys[i].Name,
                     remappedCompositeKey.Keys[i].Value);
             }
-            var deleteEntityOperation = new DeleteEntityOperation<TMap>(remappedCompositeKey, mappedEntity, DataContext);
+            var dummyEntityState = ConstructDummyEntityState<TEntity, TMap>(deleteOperation, mappedEntity);
+            var deleteEntityOperation = new DeleteEntityOperation<TMap>(remappedCompositeKey, dummyEntityState, DataContext);
             var mappedDelete = new QueuedDeleteEntityOperation<TMap>(
                 deleteOperation.SaveChangesOperation,
                 deleteEntityOperation,
@@ -533,20 +537,18 @@ namespace Iql.Data.Context
             QueuedUpdateEntityOperation<TEntity> update,
             SpecialTypeDefinition definition,
             bool forceOnline)
+            where TEntity : class
             where TMap : class
         {
             var mappedEntity = (TMap)Activator.CreateInstance(typeof(TMap));
-            var updateEntityOperation = new UpdateEntityOperation<TMap>(mappedEntity, DataContext);
+            var dummyEntityState = ConstructDummyEntityState<TEntity, TMap>(update, mappedEntity);
+            var updateEntityOperation = new UpdateEntityOperation<TMap>(dummyEntityState, DataContext);
             var mappedUpdate = new QueuedUpdateEntityOperation<TMap>(
                 update.SaveChangesOperation,
                 updateEntityOperation,
                 new UpdateEntityResult<TMap>(true, updateEntityOperation))
                 .ReplaceEventsWith(update.Events);
 
-            var dummyEntityState = new EntityState<TMap>(
-                update.Operation.EntityState.DataTracker,
-                mappedEntity, typeof(TMap),
-                DataContext.EntityConfigurationContext.EntityType<TMap>());
             updateEntityOperation.EntityState = dummyEntityState;
             for (var i = 0; i < update.Operation.EntityState.PropertyStates.Length; i++)
             {
@@ -569,11 +571,22 @@ namespace Iql.Data.Context
             {
                 if (validationResult.Key == mappedEntity)
                 {
-                    unmappedResult.EntityValidationResults.Add(update.Operation.Entity, validationResult.Value);
+                    unmappedResult.EntityValidationResults.Add(update.Operation.EntityState.Entity, validationResult.Value);
                 }
             }
 
             return unmappedResult;
+        }
+
+        private EntityState<TMap> ConstructDummyEntityState<TEntity, TMap>(IQueuedEntityCrudOperation update, TMap mappedEntity)
+            where TEntity : class where TMap : class
+        {
+            var dummyEntityState = new EntityState<TMap>(
+                update.Operation.EntityState.DataTracker,
+                mappedEntity,
+                typeof(TMap),
+                DataContext.EntityConfigurationContext.EntityType<TMap>());
+            return dummyEntityState;
         }
 
         private async Task<bool> EntityWithKeyAlreadyExists<TEntity>(TEntity entity) where TEntity : class
@@ -602,13 +615,13 @@ namespace Iql.Data.Context
         private async Task<bool> CheckNotAlreadyExistsAsync<TEntity>(
             QueuedAddEntityOperation<TEntity> operation) where TEntity : class
         {
-            var entityWithKeyAlreadyExists = await EntityWithKeyAlreadyExists(operation.Operation.Entity);
+            var entityWithKeyAlreadyExists = await EntityWithKeyAlreadyExists(operation.Operation.EntityState.Entity);
             if (entityWithKeyAlreadyExists)
             {
                 operation.Result.EntityValidationResults = operation.Result.EntityValidationResults ??
                                                            new Dictionary<object, IEntityValidationResult>();
                 operation.Result.EntityValidationResults.Add("",
-                    new EntityValidationResult<TEntity>(operation.Operation.Entity)
+                    new EntityValidationResult<TEntity>(operation.Operation.EntityState.Entity)
                         .AddFailure("EntityWithKeyAlreadyExists", "An entity with this key already exists"));
                 return false;
             }

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Iql.Events
 {
-    public class EventEmitterBase<TEvent, TSubscriptionAction> : IEventUnsubscriber, IEventSubscriberSubscriber
+    public class EventEmitterBase<TEvent, TSubscriptionAction> : IEventSubscriberRoot
     {
         public EventEmitterBase(BackfireMode backfireMode = BackfireMode.None)
         {

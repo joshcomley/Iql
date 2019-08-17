@@ -5,6 +5,7 @@ using Iql.Entities;
 namespace Iql.Data.Crud.Operations
 {
     public class UpdateEntityOperation<T> : EntityCrudOperation<T>, IUpdateEntityOperation
+        where T : class
     {
         public IProperty[] Properties { get; }
 
@@ -13,8 +14,8 @@ namespace Iql.Data.Crud.Operations
             return EntityState.GetChangedProperties(Properties);
         }
 
-        public UpdateEntityOperation(T entity, IDataContext dataContext, IEntityState<T> entityState = null, IProperty[] properties = null)
-            : base(IqlOperationKind.Update, entity, dataContext, entityState)
+        public UpdateEntityOperation(IEntityState<T> entityState, IDataContext dataContext, IProperty[] properties = null)
+            : base(IqlOperationKind.Update, entityState, dataContext)
         {
             Properties = properties;
         }

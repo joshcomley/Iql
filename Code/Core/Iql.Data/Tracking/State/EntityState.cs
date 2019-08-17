@@ -5,19 +5,21 @@ using System.Linq;
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Context;
+using Iql.Data.Crud;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Queued;
+using Iql.Data.Crud.Operations.Results;
 using Iql.Data.Events;
 using Iql.Data.Extensions;
 using Iql.Entities;
-using Iql.Entities.Extensions;
 using Iql.Entities.Relationships;
 using Iql.Events;
-using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking.State
 {
     [DebuggerDisplay("{EntityType.Name}")]
     public class EntityState<T> : IEntityState<T>
+        where T : class
     {
         private bool _markedForDeletion;
         private bool _isNew = true;
@@ -70,21 +72,20 @@ namespace Iql.Data.Tracking.State
         public void AbandonChanges()
         {
             var ev = new AbandonChangeEvent(this, null);
-            AbandoningChanges.Emit(() => ev);
+            AbandonEvents.EmitStartedAsync(() => ev);
             StateEvents.AbandoningEntityChanges.Emit(() => ev);
             for (var i = 0; i < Properties.Count; i++)
             {
                 var state = Properties[i];
-                state.AbandonChange();
+                state.AbandonChanges();
             }
             MarkedForDeletion = false;
             MarkedForCascadeDeletion = false;
-            AbandonedChanges.Emit(() => ev);
+            AbandonEvents.EmitCompletedAsync(() => ev);
+            AbandonEvents.EmitSuccessAsync(() => ev);
+            StatefulSaveEvents.UnsubscribeAll();
             StateEvents.AbandonedEntityChanges.Emit(() => ev);
         }
-
-        public EventEmitter<AbandonChangeEvent> AbandoningChanges { get; } = new EventEmitter<AbandonChangeEvent>();
-        public EventEmitter<AbandonChangeEvent> AbandonedChanges { get; } = new EventEmitter<AbandonChangeEvent>();
 
         public void MarkForCascadeDeletion(object from, IRelationship relationship)
         {
@@ -146,6 +147,17 @@ namespace Iql.Data.Tracking.State
 
         public Guid? PersistenceKey { get; set; }
         public List<CascadeDeletion> CascadeDeletedBy { get; } = new List<CascadeDeletion>();
+
+        //private readonly AsyncEventEmitter<IqlEntityEvent<T>> _savingEmitter = new AsyncEventEmitter<IqlEntityEvent<T>>();
+        //public IAsyncEventSubscriber<IqlEntityEvent<T>> SavingAsync => _savingEmitter;
+        //IAsyncEventSubscriber<IEntityEventBase> IEntityStateBase.SavingAsync => SavingAsync;
+
+
+        //private readonly AsyncEventEmitter<IqlEntityEvent<T>> _savedEmitter = new AsyncEventEmitter<IqlEntityEvent<T>>();
+        //public IAsyncEventSubscriber<IqlEntityEvent<T>> SavedAsync => _savedEmitter;
+        //IAsyncEventSubscriber<IEntityEventBase> IEntityStateBase.SavedAsync => SavedAsync;
+
+
         public void Restore(SerializedEntityState state)
         {
             for (var i = 0; i < state.PropertyStates.Length; i++)
@@ -173,6 +185,12 @@ namespace Iql.Data.Tracking.State
 
         public bool Floating { get; set; }
         public DataTracker DataTracker { get; }
+        public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> StatefulSaveEvents { get; } = new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
+        IOperationEventsBase IStateful.StatefulSaveEvents => StatefulSaveEvents;
+        public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> SaveEvents { get; } = new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
+        IOperationEventsBase IStateful.SaveEvents => SaveEvents;
+        public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents { get; } = new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
+        IOperationEventsBase IStateful.AbandonEvents => AbandonEvents;
         public T Entity { get; }
         object IEntityStateBase.Entity => Entity;
         public Type EntityType { get; }

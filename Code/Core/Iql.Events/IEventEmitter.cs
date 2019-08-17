@@ -48,7 +48,12 @@ namespace Iql.Events
         EventEmitter<EventSubscription> OnSubscribe { get; }
     }
 
-    public interface IEventSubscriberBase : IEventUnsubscriber, IEventSubscriberSubscriber
+    public interface IEventSubscriberRoot : IEventUnsubscriber, IEventSubscriberSubscriber
+    {
+
+    }
+
+    public interface IEventSubscriberBase : IEventSubscriberRoot
     {
         int SubscriptionCount { get; }
         EventSubscription Subscribe(Action<object> propertyChangeEvent);

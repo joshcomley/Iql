@@ -849,15 +849,27 @@ namespace Iql.Data.Context
 
         private async Task<SaveChangesResult> CommitQueueAsync(
             SaveChangesOperation saveChangesOperation,
-            IEnumerable<IQueuedOperation> queue, 
+            IEnumerable<IQueuedEntityCrudOperation> queue,
             bool forceOnline)
         {
-            await Events.ContextEvents.EmitSavingStartedAsync(() => saveChangesOperation);
-            await saveChangesOperation.Events.EmitSavingStartedAsync(() => saveChangesOperation);
+            await Events.ContextEvents.EmitStartedAsync(() => saveChangesOperation);
+            await saveChangesOperation.Events.EmitStartedAsync(() => saveChangesOperation);
+#if !TypeScript
+            var operations = queue as IQueuedEntityCrudOperation[] ?? queue.ToArray();
+#else
+            var operations = queue;
+#endif
+            foreach (var queuedOperation in operations)
+            {
+                var state = queuedOperation.Operation.EntityState;
+                await state.StatefulSaveEvents.EmitStartedAsync(() => queuedOperation);
+                await state.SaveEvents.EmitStartedAsync(() => queuedOperation);
+            }
+
             var offlineChangesBefore = OfflineDataTracker?.SerializeToJson();
             var saveChangesResult = new SaveChangesResult(saveChangesOperation, SaveChangeKind.NoAction);
             var hasAny = false;
-            var queuedOperations = queue as IQueuedOperation[] ?? queue.ToArray();
+            var queuedOperations = queue as IQueuedEntityCrudOperation[] ?? operations.ToArray();
             for (var i = 0; i < queuedOperations.Length; i++)
             {
                 var queuedOperation = queuedOperations[i];
@@ -888,13 +900,29 @@ namespace Iql.Data.Context
                 }
             }
 
+            for (var i = 0; i < saveChangesResult.Results.Count; i++)
+            {
+                var result = saveChangesResult.Results[i];
+                if (result.Success)
+                {
+                    await result.EntityState.StatefulSaveEvents.EmitSuccessAsync(() => result);
+                    await result.EntityState.SaveEvents.EmitSuccessAsync(() => result);
+                }
+            }
+
             if (saveChangesResult.Results.Any(_ => _.Success))
             {
-                await saveChangesOperation.Events.EmitSavedSuccessfullyAsync(() => saveChangesResult);
-                await Events.ContextEvents.EmitSavedSuccessfullyAsync(() => saveChangesResult);
+                await saveChangesOperation.Events.EmitSuccessAsync(() => saveChangesResult);
+                await Events.ContextEvents.EmitSuccessAsync(() => saveChangesResult);
             }
-            await saveChangesOperation.Events.EmitSavingCompletedAsync(() => saveChangesResult);
-            await Events.ContextEvents.EmitSavingCompletedAsync(() => saveChangesResult);
+            await saveChangesOperation.Events.EmitCompletedAsync(() => saveChangesResult);
+            await Events.ContextEvents.EmitCompletedAsync(() => saveChangesResult);
+            for (var i = 0; i < saveChangesResult.Results.Count; i++)
+            {
+                var result = saveChangesResult.Results[i];
+                await result.EntityState.StatefulSaveEvents.EmitCompletedAsync(() => result);
+                await result.EntityState.SaveEvents.EmitCompletedAsync(() => result);
+            }
             return saveChangesResult;
         }
 
@@ -1203,7 +1231,7 @@ namespace Iql.Data.Context
 
         public IqlDataChanges GetOfflineChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return OfflineDataTracker?.GetChanges(new SaveChangesOperation(this, entities, properties)) ?? new IqlDataChanges(new SaveChangesOperation(this),  null);
+            return OfflineDataTracker?.GetChanges(new SaveChangesOperation(this, entities, properties)) ?? new IqlDataChanges(new SaveChangesOperation(this), null);
         }
 
         public SaveChangesOperation GetSaveChangesOperation(object[] entities = null, IProperty[] properties = null)

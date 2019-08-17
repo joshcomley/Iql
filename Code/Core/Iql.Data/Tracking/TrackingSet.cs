@@ -358,7 +358,7 @@ namespace Iql.Data.Tracking
                 var entityState = GetEntityState(entity);
                 if (entityState.IsNew && !entityState.MarkedForAnyDeletion)
                 {
-                    inserts.Add(new AddEntityOperation<T>((T)entity, dataContext));
+                    inserts.Add(new AddEntityOperation<T>((IEntityState<T>) entityState, dataContext));
                 }
             }
 
@@ -383,7 +383,7 @@ namespace Iql.Data.Tracking
 
                 deletions.Add(new DeleteEntityOperation<T>(
                     key.Value.Key,
-                    (T)key.Value.State.Entity,
+                    (IEntityState<T>) key.Value.State,
                     dataContext));
             }
 
@@ -394,12 +394,12 @@ namespace Iql.Data.Tracking
                     continue;
                 }
 
-                if (deletions.All(_ => _.Entity != entity))
+                if (deletions.All(_ => _.EntityState.Entity != entity))
                 {
                     var entityState = GetEntityState(entity);
                     if (entityState.MarkedForAnyDeletion && !entityState.IsNew)
                     {
-                        deletions.Add(new DeleteEntityOperation<T>(entityState.LocalKey, (T)entity, dataContext));
+                        deletions.Add(new DeleteEntityOperation<T>(entityState.LocalKey, (IEntityState<T>)entityState, dataContext));
                     }
                 }
             }
@@ -427,7 +427,7 @@ namespace Iql.Data.Tracking
                     !entityState.MarkedForAnyDeletion &&
                     entityState.GetChangedProperties().Any())
                 {
-                    updates.Add(new UpdateEntityOperation<T>((T)entity, dataContext, (IEntityState<T>)entityState,
+                    updates.Add(new UpdateEntityOperation<T>((IEntityState<T>)entityState, dataContext,
                         properties?.Where(p => p.EntityConfiguration == EntityConfiguration).ToArray()));
                 }
             }

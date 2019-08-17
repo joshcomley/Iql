@@ -4,21 +4,24 @@ using Iql.Data.Tracking.State;
 namespace Iql.Data.Crud.Operations
 {
     public class EntityCrudOperation<T> : EntitySetCrudOperation<T>, IEntityCrudOperation<T>
+        where T : class
     {
-        public EntityCrudOperation(IqlOperationKind kind, T entity, IDataContext dataContext, IEntityState<T> entityState = null)
+        public EntityCrudOperation(IqlOperationKind kind, IEntityState<T> entityState, IDataContext dataContext)
             : base(kind, dataContext)
         {
-            Entity = entity;
-            EntityState = entityState ?? (EntityState<T>)dataContext?.GetEntityState(entity, typeof(T));
+            EntityState = entityState;
             KeyBeforeSave = EntityState?.KeyBeforeChanges();
+            if (EntityState == null)
+            {
+                int a = 0;
+            }
         }
 
-        object IEntityCrudOperationBase.Entity
+        public IEntityState<T> EntityState { get; set; }
+        IEntityStateBase IEntityCrudOperationBase.EntityState
         {
-            get => Entity;
-            set => Entity = (T)value;
+            get { return EntityState; }
+            set { EntityState = (IEntityState<T>)value; }
         }
-
-        public T Entity { get; set; }
     }
 }

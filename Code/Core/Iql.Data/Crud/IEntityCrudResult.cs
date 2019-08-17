@@ -11,7 +11,7 @@ namespace Iql.Data.Crud
     public interface IEntityCrudResult : ICrudResult
     {
         CompositeKey KeyBeforeSave { get; }
-        IEntityStateBase EntityState { get; set; }
+        IEntityStateBase EntityState { get; }
         IDataContext DataContext { get; }
         Type EntityType { get; }
         IqlOperationKind Kind { get; }

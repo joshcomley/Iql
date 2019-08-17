@@ -1,6 +1,6 @@
 namespace Iql.Data.Context
 {
-    public class SaveEventsBase : ISaveEventsInternal
+    public class OperationEventsBase : ISaveEventsInternal
     {
         private static int _activeCount = 0;
         public static int ActiveCount => _activeCount;

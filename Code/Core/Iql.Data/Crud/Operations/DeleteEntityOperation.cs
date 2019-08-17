@@ -5,10 +5,11 @@ using Iql.Entities;
 namespace Iql.Data.Crud.Operations
 {
     public class DeleteEntityOperation<T> : EntityCrudOperation<T>, IDeleteEntityOperation
+        where T : class
     {
         public CompositeKey Key { get; set; }
-        public DeleteEntityOperation(CompositeKey key, T entity, IDataContext dataContext)
-            : base(IqlOperationKind.Delete, entity, dataContext)
+        public DeleteEntityOperation(CompositeKey key, IEntityState<T> entityState, IDataContext dataContext)
+            : base(IqlOperationKind.Delete, entityState, dataContext)
         {
             Key = key;
         }

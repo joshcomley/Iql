@@ -8,17 +8,13 @@ using Iql.Entities.Validation.Validation;
 namespace Iql.Data.Crud
 {
     public class EntityCrudResult<T, TOperation> : CrudResult<T, TOperation>, IEntityCrudResult
-        where TOperation : IEntitySetCrudOperationBase
+        where TOperation : IEntityCrudOperationBase
+        where T : class
     {
         public T LocalEntity { get; }
         public CompositeKey KeyBeforeSave { get; }
-        public IEntityState<T> EntityState { get; set; }
-
-        IEntityStateBase IEntityCrudResult.EntityState
-        {
-            get => EntityState;
-            set => EntityState = (IEntityState<T>) value;
-        }
+        public IEntityState<T> EntityState => (IEntityState<T>)Operation.EntityState;
+        IEntityStateBase IEntityCrudResult.EntityState => EntityState;
         public Dictionary<object, IEntityValidationResult> EntityValidationResults { get; set; } = new Dictionary<object, IEntityValidationResult>();
         public IDataContext DataContext { get; }
         public IqlOperationKind Kind => Operation.Kind;
@@ -35,7 +31,6 @@ namespace Iql.Data.Crud
         {
             LocalEntity = localEntity;
             DataContext = operation.DataContext;
-            EntityState = (EntityState<T>)DataContext?.GetEntityState(localEntity, typeof(T));
             KeyBeforeSave = operation?.KeyBeforeSave;
         }
     }

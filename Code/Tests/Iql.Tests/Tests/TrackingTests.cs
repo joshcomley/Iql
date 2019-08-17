@@ -1274,7 +1274,7 @@ namespace Iql.Tests.Tests
             for (var i = 0; i < operations.Count; i++)
             {
                 var operation = operations.AllChanges[i];
-                Assert.AreEqual(order[i], (operation.Operation as IEntityCrudOperationBase).Entity);
+                Assert.AreEqual(order[i], (operation.Operation as IEntityCrudOperationBase).EntityState.Entity);
             }
         }
 

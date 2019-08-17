@@ -1,5 +1,6 @@
 ﻿using Iql.Conversion;
 using Iql.Conversion.State;
+using Iql.Data.Events;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
@@ -7,8 +8,9 @@ using Iql.Events;
 
 namespace Iql.Data.Crud.Operations
 {
-    public interface IPropertyState : IJsonSerializable, IAbandonChanges
+    public interface IPropertyState : IJsonSerializable, IStateful
     {
+        //IEntityPropertyEvent
         EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; }
         EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; }
         EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; }
@@ -21,7 +23,7 @@ namespace Iql.Data.Crud.Operations
         void HardReset();
         void SoftReset();
         IPropertyState Copy();
-        void AbandonChange();
+        void AbandonChanges();
         void Restore(SerializedPropertyState state);
     }
 }

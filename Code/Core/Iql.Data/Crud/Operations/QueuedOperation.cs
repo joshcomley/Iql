@@ -19,6 +19,6 @@ namespace Iql.Data.Crud.Operations
         public QueuedOperationKind Kind { get; }
         public TResult Result { get; }
         ICrudResult IQueuedOperation.Result => Result;
-        IEntitySetCrudOperationBase IQueuedOperation.Operation => Operation;
+        ICrudOperation IQueuedOperation.Operation => Operation;
     }
 }

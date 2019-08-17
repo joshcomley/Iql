@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Events;
 using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
@@ -31,6 +32,13 @@ namespace Iql.Data.Tracking.State
             }
         }
 
+        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> StatefulSaveEvents { get; } = new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
+        IOperationEventsBase IStateful.StatefulSaveEvents => StatefulSaveEvents;
+        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> SaveEvents { get; } = new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
+        IOperationEventsBase IStateful.SaveEvents => SaveEvents;
+        public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents { get; } = new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
+        IOperationEventsBase IStateful.AbandonEvents => AbandonEvents;
+        
         private PropertyChanger _propertyChanger;
         private object _remoteValue;
 
@@ -221,20 +229,19 @@ namespace Iql.Data.Tracking.State
             };
         }
 
-        public EventEmitter<AbandonChangeEvent> AbandoningChanges { get; } = new EventEmitter<AbandonChangeEvent>();
-        public EventEmitter<AbandonChangeEvent> AbandonedChanges { get; } = new EventEmitter<AbandonChangeEvent>();
-
-        public void AbandonChange()
+        public void AbandonChanges()
         {
             if (HasChanged)
             {
                 var ev = new AbandonChangeEvent(EntityState, this);
-                AbandoningChanges.Emit(() => ev);
+                AbandonEvents.EmitStartedAsync(() => ev);
                 StateEvents.AbandoningPropertyChange.Emit(() => ev);
                 EntityState.Entity.SetPropertyValue(Property, _remoteValueClone);
                 HardReset();
-                AbandonedChanges.Emit(() => ev);
+                AbandonEvents.EmitSuccessAsync(() => ev);
+                AbandonEvents.EmitCompletedAsync(() => ev);
                 StateEvents.AbandonedPropertyChange.Emit(() => ev);
+                StatefulSaveEvents.UnsubscribeAll();
                 //PropertyChanger.ApplyTo(_oldObjectClone, _oldObject);
             }
             //_hasChanged = false;

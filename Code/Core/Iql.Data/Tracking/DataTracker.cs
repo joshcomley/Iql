@@ -178,7 +178,7 @@ namespace Iql.Data.Tracking
             }
 
             inserts = inserts
-                .OrderBy(operation => GetPendingDependencyCount(operation.Entity, operation.EntityType))
+                .OrderBy(operation => GetPendingDependencyCount(operation.EntityState.Entity, operation.EntityType))
                 .ToList();
             return inserts;
         }
@@ -457,7 +457,7 @@ namespace Iql.Data.Tracking
         {
             var changedProperties = operation.Operation.GetChangedProperties();
             var trackingSet = TrackingSet<TEntity>();
-            var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
+            var ourState = trackingSet.FindMatchingEntityState(operation.Operation.EntityState.Entity);
             foreach (var property in changedProperties)
             {
                 property.Property.SetValue(ourState.Entity, property.LocalValue);
@@ -476,14 +476,14 @@ namespace Iql.Data.Tracking
             var trackingSet = TrackingSet<TEntity>();
             if (isOffline)
             {
-                var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
+                var ourState = trackingSet.FindMatchingEntityState(operation.Operation.EntityState.Entity);
                 var theirState = operation.Operation.EntityState;
                 ourState.MarkedForDeletion = theirState.MarkedForDeletion;
                 ourState.MarkedForCascadeDeletion = theirState.MarkedForCascadeDeletion;
             }
             else
             {
-                var ourState = trackingSet.FindMatchingEntityState(operation.Operation.Entity);
+                var ourState = trackingSet.FindMatchingEntityState(operation.Operation.EntityState.Entity);
                 trackingSet.RemoveEntity((TEntity)ourState.Entity);
             }
 
@@ -494,15 +494,16 @@ namespace Iql.Data.Tracking
         {
             getChangesOperation = getChangesOperation ?? new SaveChangesOperation(null);
             return new IqlDataChanges(
-                (SaveChangesOperation)getChangesOperation,
+                (SaveChangesOperation) getChangesOperation,
                 this.GetQueuedChanges(getChangesOperation).OrderBy(_ =>
-            {
-                if (_.Operation is IEntityCrudOperationBase op)
                 {
-                    return GetPendingDependencyCount(op.Entity, op.EntityType);
-                }
-                return 0;
-            }).ToArray());
+                    if (_.Operation is IEntityCrudOperationBase op)
+                    {
+                        return GetPendingDependencyCount(op.EntityState.Entity, op.EntityType);
+                    }
+
+                    return 0;
+                }).Select(_ => (IQueuedEntityCrudOperation) _).ToArray());
         }
 
         private class TrackCollectionResult

@@ -231,7 +231,7 @@ namespace Iql.Data.DataStores.InMemory
         {
             var data = DataSetByType(operation.Operation.EntityType);
 
-            var clone = operation.Operation.Entity.CloneAs(
+            var clone = operation.Operation.EntityState.Entity.CloneAs(
                 EntityConfigurationBuilder,
                 typeof(TEntity),
                 _cloneMap);
@@ -287,7 +287,7 @@ namespace Iql.Data.DataStores.InMemory
             return FindEntityIndex(
                 operation.DataContext.EntityConfigurationContext,
                 operation.EntityType,
-                operation.Entity,
+                operation.EntityState.Entity,
                 DataSet<TEntity>()
             );
         }
@@ -304,7 +304,7 @@ namespace Iql.Data.DataStores.InMemory
                 new SimplePropertyMerger(EntityConfigurationBuilder.EntityType<TEntity>())
                     .MergeAllProperties(
                         entity,
-                        operation.Operation.Entity,
+                        operation.Operation.EntityState.Entity,
                         operation.Operation.Properties);
                 operation.Result.Success = true;
             }
@@ -597,7 +597,7 @@ namespace Iql.Data.DataStores.InMemory
 
         public Task ApplyAddAsync<TEntity>(QueuedAddEntityOperation<TEntity> operation) where TEntity : class
         {
-            var operationEntity = operation.Operation.Entity;
+            var operationEntity = operation.Operation.EntityState.Entity;
             TrackEntity(operationEntity);
             return Task.FromResult<object>(null);
         }
@@ -613,7 +613,7 @@ namespace Iql.Data.DataStores.InMemory
             QueuedUpdateEntityOperation<TEntity> operation,
             IPropertyState[] changedProperties) where TEntity : class
         {
-            var match = TryFindEntity(operation.Operation.Entity, out var source);
+            var match = TryFindEntity(operation.Operation.EntityState.Entity, out var source);
             if (match != null)
             {
                 for (var i = 0; i < changedProperties.Length; i++)
@@ -624,14 +624,14 @@ namespace Iql.Data.DataStores.InMemory
             }
             else
             {
-                TrackEntity(operation.Operation.Entity);
+                TrackEntity(operation.Operation.EntityState.Entity);
             }
             return Task.FromResult<object>(null);
         }
 
         public Task ApplyDeleteAsync<TEntity>(QueuedDeleteEntityOperation<TEntity> operation) where TEntity : class
         {
-            var match = TryFindEntity(operation.Operation.Entity, out var source);
+            var match = TryFindEntity(operation.Operation.EntityState.Entity, out var source);
             if (match != null)
             {
                 source.Remove(match);

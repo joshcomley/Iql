@@ -631,7 +631,7 @@ namespace Iql.Tests.Tests
                 Assert.AreEqual(1, queuedOperations.Count);
                 var addOperation = queuedOperations.AllChanges.First() as QueuedAddEntityOperation<Client>;
                 Assert.IsNotNull(addOperation);
-                Assert.AreEqual(clientType1NewClient, addOperation.Operation.Entity);
+                Assert.AreEqual(clientType1NewClient, addOperation.Operation.EntityState.Entity);
             }
 
             for (var i = 0; i < assignCount; i++)
@@ -710,7 +710,7 @@ namespace Iql.Tests.Tests
             Assert.IsNotNull(changeOperation);
             Assert.AreEqual(QueuedOperationKind.Update, change.Kind);
             Assert.AreEqual(existingClient, changeOperation.EntityState.Entity);
-            Assert.AreEqual(existingClient, changeOperation.Entity);
+            Assert.AreEqual(existingClient, changeOperation.EntityState.Entity);
             var propertyChanges = changeOperation.EntityState.GetChangedProperties();
             Assert.AreEqual(1, propertyChanges.Length);
 
@@ -877,7 +877,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, queuedOperations.Count);
             var deleteOperation = queuedOperations.AllChanges.First() as QueuedDeleteEntityOperation<Client>;
             Assert.IsNotNull(deleteOperation);
-            Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);
+            Assert.AreEqual(clientToDelete, deleteOperation.Operation.EntityState.Entity);
 
             await Db.SaveChangesAsync();
             Assert.AreEqual(0, clientTypes.ClientType1.Clients.Count);
@@ -909,10 +909,10 @@ namespace Iql.Tests.Tests
             var deleteOperation = Db.GetChanges().AllChanges.First() as QueuedDeleteEntityOperation<Client>;
 
             Assert.IsNotNull(deleteOperation);
-            Assert.AreEqual(clientToDelete, deleteOperation.Operation.Entity);
+            Assert.AreEqual(clientToDelete, deleteOperation.Operation.EntityState.Entity);
 
             // Reinstate the deleted entity
-            clients.ClientType2.Clients.Add(deleteOperation.Operation.Entity);
+            clients.ClientType2.Clients.Add(deleteOperation.Operation.EntityState.Entity);
 
             Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion.");
             Assert.AreEqual(false, entityState.MarkedForCascadeDeletion, "Entity is incorrectly marked for cascade deletion.");

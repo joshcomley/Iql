@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Iql.Data.Crud;
-using Iql.Data.Types;
-using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.Validation.Validation;
 using Iql.Parsing.Types;
@@ -50,7 +48,7 @@ namespace Iql.Data.Logging
             }
         }
 
-        private void ParseEntityValidationResult(IEntityValidationResult validationResult)
+        public void ParseEntityValidationResult(IEntityValidationResult validationResult)
         {
             if (validationResult == null)
             {
@@ -75,7 +73,7 @@ namespace Iql.Data.Logging
             }
         }
 
-        private void ParsePropertyValidationResult(IPropertyValidationResult validationResult)
+        public void ParsePropertyValidationResult(IPropertyValidationResult validationResult)
         {
             if (validationResult == null)
             {
@@ -86,7 +84,7 @@ namespace Iql.Data.Logging
                 validationResult.ValidationFailures);
         }
 
-        private void ParseValidationFailures(IReadOnlyList<ValidationError> validationFailures)
+        public void ParseValidationFailures(IReadOnlyList<ValidationError> validationFailures)
         {
             if (validationFailures == null)
             {
@@ -98,11 +96,16 @@ namespace Iql.Data.Logging
             }
         }
 
-        private void ParseValidationFailure(ValidationError validationFailure)
+        public void ParseValidationFailure(ValidationError validationFailure)
         {
             _sb.AppendLine($"Validation key: {validationFailure.Key}");
             _sb.AppendLine($"Validation message:");
             _sb.AppendLine($"{validationFailure.Message}");
+        }
+
+        public string AsString()
+        {
+            return _sb.ToString();
         }
     }
 }

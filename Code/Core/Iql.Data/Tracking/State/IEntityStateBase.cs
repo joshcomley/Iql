@@ -10,8 +10,10 @@ using Iql.Events;
 
 namespace Iql.Data.Tracking.State
 {
-    public interface IEntityStateBase : IJsonSerializable, IAbandonChanges
+    public interface IEntityStateBase : IJsonSerializable, IStateful
     {
+        //IAsyncEventSubscriber<IEntityEvent> SavingAsync { get; }
+        //IAsyncEventSubscriber<IEntityEvent> SavedAsync { get; }
         void Restore(SerializedEntityState state);
         bool Floating { get; set; }
         DataTracker DataTracker { get; }

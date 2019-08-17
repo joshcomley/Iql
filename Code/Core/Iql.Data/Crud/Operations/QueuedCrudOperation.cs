@@ -7,18 +7,20 @@ namespace Iql.Data.Crud.Operations
         where TOperation : IEntitySetCrudOperationBase
         where TResult : ICrudResult
     {
-        private ISaveEvents<IQueuedCrudOperation, IEntityCrudResult> _events;
+        private IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> _events;
 
         public QueuedCrudOperation(SaveChangesOperation saveChangesOperation, QueuedOperationKind kind, TOperation operation, TResult result) : base(kind, operation, result)
         {
             SaveChangesOperation = saveChangesOperation;
         }
 
-        public ISaveEvents<IQueuedCrudOperation, IEntityCrudResult> Events => _events = _events ?? new SaveEvents<IQueuedCrudOperation, IEntityCrudResult>();
+        public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> Events => _events = _events ?? new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
+
+        IEntitySetCrudOperationBase IQueuedCrudOperation.Operation => Operation;
 
         public SaveChangesOperation SaveChangesOperation { get; }
 
-        internal QueuedCrudOperation<TOperation, TResult> ReplaceEventsWith(ISaveEvents<IQueuedCrudOperation, IEntityCrudResult> events)
+        internal QueuedCrudOperation<TOperation, TResult> ReplaceEventsWith(IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> events)
         {
             _events = events;
             return this;

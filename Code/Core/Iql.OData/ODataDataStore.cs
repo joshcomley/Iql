@@ -394,7 +394,7 @@ namespace Iql.OData
             var configuration = Configuration;
             var http = configuration.HttpProvider;
             var entitySetUri = Configuration.ResolveEntitySetUri<TEntity>();
-            var json = JsonDataSerializer.SerializeEntityPropertiesToJson(operation.Operation.Entity, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), true, false);
+            var json = JsonDataSerializer.SerializeEntityPropertiesToJson(operation.Operation.EntityState.Entity, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), true, false);
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             var responseData = await httpResult.GetResponseTextAsync();
             if (httpResult.IsOffline)
@@ -408,7 +408,7 @@ namespace Iql.OData
                 operation.Result.RemoteEntity = odataResultRoot.ToObject<TEntity>();
             }
             operation.Result.Success = httpResult.Success;
-            ParseValidation(operation.Result, operation.Operation.Entity, responseData);
+            ParseValidation(operation.Result, operation.Operation.EntityState.Entity, responseData);
             return operation.Result;
         }
 
@@ -417,7 +417,7 @@ namespace Iql.OData
         {
             var configuration = Configuration;
             var http = configuration.HttpProvider;
-            var entityUri = ResolveEntityUri(operation.Operation.Entity);
+            var entityUri = ResolveEntityUri(operation.Operation.EntityState.Entity);
             var properties = new List<string>();
             var changedProperties = operation.Operation.GetChangedProperties();
             for (var i = 0; i < changedProperties.Length; i++)
@@ -435,7 +435,7 @@ namespace Iql.OData
             }
 
             var json = JsonDataSerializer.SerializeEntityPropertiesToJson(
-                operation.Operation.Entity,
+                operation.Operation.EntityState.Entity,
                 entityConfiguration,
                 false,
                 false,
@@ -450,7 +450,7 @@ namespace Iql.OData
             {
                 operation.Result.Success = httpResult.Success;
             }
-            ParseValidation(operation.Result, operation.Operation.Entity, await httpResult.GetResponseTextAsync());
+            ParseValidation(operation.Result, operation.Operation.EntityState.Entity, await httpResult.GetResponseTextAsync());
             return operation.Result;
         }
 
@@ -469,7 +469,7 @@ namespace Iql.OData
             {
                 operation.Result.Success = httpResult.Success;
             }
-            ParseValidation(operation.Result, operation.Operation.Entity, await httpResult.GetResponseTextAsync());
+            ParseValidation(operation.Result, operation.Operation.EntityState.Entity, await httpResult.GetResponseTextAsync());
             return operation.Result;
         }
 
