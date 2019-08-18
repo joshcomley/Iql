@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud;
 using Iql.Data.Crud.Operations;
-using Iql.Data.Crud.Operations.Queued;
-using Iql.Data.Crud.Operations.Results;
 using Iql.Data.Events;
 using Iql.Data.Extensions;
 using Iql.Entities;
@@ -83,8 +82,17 @@ namespace Iql.Data.Tracking.State
             MarkedForCascadeDeletion = false;
             AbandonEvents.EmitCompletedAsync(() => ev);
             AbandonEvents.EmitSuccessAsync(() => ev);
-            StatefulSaveEvents.UnsubscribeAll();
+            ClearStatefulEvents();
             StateEvents.AbandonedEntityChanges.Emit(() => ev);
+        }
+
+        public void ClearStatefulEvents()
+        {
+            StatefulSaveEvents.UnsubscribeAll();
+            foreach (var propertyState in PropertyStates)
+            {
+                propertyState.ClearStatefulEvents();
+            }
         }
 
         public void MarkForCascadeDeletion(object from, IRelationship relationship)
@@ -213,7 +221,76 @@ namespace Iql.Data.Tracking.State
                 Properties.Add(new PropertyState(property, this));
             }
             LocalKey = entityConfiguration.GetCompositeKey(entity);
+            MonitorSaveEvents();
         }
+
+        private Dictionary<Guid, IPropertyState[]> _operations = new Dictionary<Guid, IPropertyState[]>();
+        private async Task EmitPropertyEventAsync(ICrudOperation operation, Func<IPropertyState, IEntityPropertyEvent, Task> fn)
+        {
+        }
+
+        private void MonitorSaveEvents()
+        {
+            EventManager = new IqlEventManager();
+            EventManager.SubscribeAsync(SaveEvents.StartedAsync,
+                async _ =>
+                {
+                    if (_.Operation.Kind == IqlOperationKind.Update)
+                    {
+                        var updateOp = (IUpdateEntityOperation)_.Operation;
+                        var changed = updateOp.GetChangedProperties();
+                        for (var i = 0; i < changed.Length; i++)
+                        {
+                            var prop = changed[i];
+                            var propState = GetPropertyState(prop.Property.PropertyName);
+                            await propState.SaveEvents.EmitStartedAsync(() =>
+                                new IqlEntityPropertyEvent<T>(propState.Property, this, null));
+                        }
+                        _operations.Add(_.Operation.Id, changed);
+                    }
+                    else if (_.Operation.Kind == IqlOperationKind.Add)
+                    {
+                        foreach (var propState in PropertyStates)
+                        {
+                            await propState.SaveEvents.EmitStartedAsync(() =>
+                                new IqlEntityPropertyEvent<T>(propState.Property, this, null));
+                        }
+                        _operations.Add(_.Operation.Id, PropertyStates.ToArray());
+                    }
+                });
+            EventManager.SubscribeAsync(SaveEvents.SuccessfulAsync,
+                async _ =>
+                {
+                    if (_operations.ContainsKey(_.Operation.Id))
+                    {
+                        var properties = _operations[_.Operation.Id];
+                        for (var i = 0; i < properties.Length; i++)
+                        {
+                            var prop = properties[i];
+                            await prop.SaveEvents.EmitSuccessAsync(() =>
+                                new IqlEntityPropertyEvent<T>(prop.Property, this, null));
+                        }
+                    }
+                });
+            EventManager.SubscribeAsync(SaveEvents.CompletedAsync,
+                async _ =>
+                {
+                    if (_operations.ContainsKey(_.Operation.Id))
+                    {
+                        var properties = _operations[_.Operation.Id];
+                        for (var i = 0; i < properties.Length; i++)
+                        {
+                            var prop = properties[i];
+                            await prop.SaveEvents.EmitCompletedAsync(() =>
+                                new IqlEntityPropertyEvent<T>(prop.Property, this, null));
+                        }
+
+                        _operations.Remove(_.Operation.Id);
+                    }
+                });
+        }
+
+        private IqlEventManager EventManager { get; set; }
 
         public static IEntityStateBase New(object entity, Type entityType, IEntityConfiguration entityConfiguration)
         {
@@ -314,6 +391,16 @@ namespace Iql.Data.Tracking.State
                 MarkedForCascadeDeletion,
                 PropertyStates = PropertyStates.Where(_ => IsNew || _.HasChanged).Select(_ => _.PrepareForJson()).Where(_ => _ != null)
             };
+        }
+
+        public void Dispose()
+        {
+            MarkedForDeletionChanged?.Dispose();
+            EventManager?.Dispose();
+            foreach(var propState in PropertyStates)
+            {
+                propState.Dispose();
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Iql.Data.Crud.Operations.Results
             set => _kind = value ? SaveChangeKind.Success : SaveChangeKind.Fail;
         }
 
-        public SaveChangesResult(SaveChangesOperation operation, SaveChangeKind kind) : base(kind != SaveChangeKind.Fail)
+        public SaveChangesResult(SaveChangesOperation operation, SaveChangeKind kind) : base(operation, kind != SaveChangeKind.Fail)
         {
             Operation = operation;
             _kind = kind;

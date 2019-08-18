@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking
 {
-    public class DataTracker : IJsonSerializable, IDataChangeProvider
+    public class DataTracker : IJsonSerializable, IDataChangeProvider, IDisposable
     {
         //public EventEmitter<OfflineChangeStateChangedEvent> StateChanged { get; } = new EventEmitter<OfflineChangeStateChangedEvent>();
         public string SynchronicityKey => Name;
@@ -568,6 +568,15 @@ namespace Iql.Data.Tracking
             var entityConfiguration = EntityConfigurationBuilder.GetEntityByTypeName(typeName);
             var set = TrackingSetByType(entityConfiguration.Type);
             return set;
+        }
+
+        public void Dispose()
+        {
+            for (var i = 0; i < Sets.Count; i++)
+            {
+                var set = Sets[i];
+                set.Dispose();
+            }
         }
     }
 }

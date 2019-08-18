@@ -7,7 +7,7 @@ namespace Iql.Data.Crud.Operations.Results
         public bool IsOffline { get; set; }
         public GetDataOperation<T> Operation { get; }
 
-        public CountDataResult(bool isOffline, GetDataOperation<T> operation, long? count, bool success) : base(success)
+        public CountDataResult(bool isOffline, GetDataOperation<T> operation, long? count, bool success) : base(operation, success)
         {
             IsOffline = isOffline;
             Operation = operation;

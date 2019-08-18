@@ -241,10 +241,15 @@ namespace Iql.Data.Tracking.State
                 AbandonEvents.EmitSuccessAsync(() => ev);
                 AbandonEvents.EmitCompletedAsync(() => ev);
                 StateEvents.AbandonedPropertyChange.Emit(() => ev);
-                StatefulSaveEvents.UnsubscribeAll();
                 //PropertyChanger.ApplyTo(_oldObjectClone, _oldObject);
             }
+            ClearStatefulEvents();
             //_hasChanged = false;
+        }
+
+        public void ClearStatefulEvents()
+        {
+            StatefulSaveEvents.UnsubscribeAll();
         }
 
         public void Restore(Conversion.State.SerializedPropertyState state)
@@ -272,6 +277,13 @@ namespace Iql.Data.Tracking.State
                 LocalValue = Property.GetValue(EntityState.Entity),
                 Property = Property.PropertyName
             };
+        }
+
+        public void Dispose()
+        {
+            HasChangedChanged?.Dispose();
+            RemoteValueChanged?.Dispose();
+            LocalValueChanged?.Dispose();
         }
     }
 }

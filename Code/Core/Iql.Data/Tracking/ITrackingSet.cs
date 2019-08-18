@@ -7,8 +7,9 @@ using Iql.Entities;
 
 namespace Iql.Data.Tracking
 {
-    public interface ITrackingSet : IJsonSerializable, IDataChangeProvider
+    public interface ITrackingSet : IJsonSerializable, IDataChangeProvider, IDisposable
     {
+        IEntityStateBase[] AllEntityStates();
         Type EntityType { get; }
         IEntityStateBase Restore(SerializedEntityState entityState);
         void RemoveEntityByKey(CompositeKey compositeKey);

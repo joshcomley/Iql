@@ -4,7 +4,7 @@ using Iql.Entities;
 
 namespace Iql.Data.Crud.Operations
 {
-    public class UpdateEntityOperation<T> : EntityCrudOperation<T>, IUpdateEntityOperation
+    public class UpdateEntityOperation<T> : EntityCrudOperation<T>, IUpdateEntityOperation, IEntitySaveOperation
         where T : class
     {
         public IProperty[] Properties { get; }

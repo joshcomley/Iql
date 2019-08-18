@@ -922,6 +922,7 @@ namespace Iql.Data.Context
                 var result = saveChangesResult.Results[i];
                 await result.EntityState.StatefulSaveEvents.EmitCompletedAsync(() => result);
                 await result.EntityState.SaveEvents.EmitCompletedAsync(() => result);
+                result.EntityState.ClearStatefulEvents();
             }
             return saveChangesResult;
         }
@@ -2005,6 +2006,12 @@ namespace Iql.Data.Context
             }
 
             return result.Value ? IqlEntityStatus.New : IqlEntityStatus.Existing;
+        }
+
+        public void Dispose()
+        {
+            TemporalDataTracker?.Dispose();
+            OfflineDataTracker?.Dispose();
         }
     }
 }

@@ -8,5 +8,6 @@ namespace Iql.Data.Tracking.State
         IOperationEventsBase SaveEvents { get; }
         IOperationEventsBase AbandonEvents { get; }
         void AbandonChanges();
+        void ClearStatefulEvents();
     }
 }

@@ -14,6 +14,60 @@ namespace Iql.Tests.Tests
     public class SaveChangesTests : TestsBase
     {
         [TestMethod]
+        public async Task PropertyStateCrudEventsTest()
+        {
+            // New entity successful add
+            var client = new Client { Name = "Some type", TypeId = 1 };
+            var entityState = Db.Clients.Add(client);
+            var startedAsyncCount = 0;
+            var completedAsyncCount = 0;
+            var successfulAsyncCount = 0;
+            var startedCount = 0;
+            var completedCount = 0;
+            var successfulCount = 0;
+            var propertyState = entityState.GetPropertyState(nameof(Client.Name));
+
+            propertyState.SaveEvents.StartedAsync.SubscribeAsync(async state => { startedAsyncCount++; });
+            propertyState.SaveEvents.SuccessfulAsync.SubscribeAsync(async state => { successfulAsyncCount++; });
+            propertyState.SaveEvents.CompletedAsync.SubscribeAsync(async state => { completedAsyncCount++; });
+            propertyState.SaveEvents.Started.Subscribe(state => { startedCount++; });
+            propertyState.SaveEvents.Successful.Subscribe(state => { successfulCount++; });
+            propertyState.SaveEvents.Completed.Subscribe(state => { completedCount++; });
+
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+
+            Assert.AreEqual(1, startedAsyncCount);
+            Assert.AreEqual(1, successfulAsyncCount);
+            Assert.AreEqual(1, completedAsyncCount);
+            Assert.AreEqual(1, startedCount);
+            Assert.AreEqual(1, successfulCount);
+            Assert.AreEqual(1, completedCount);
+
+            client.Name = "New name";
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+
+            Assert.AreEqual(2, startedAsyncCount);
+            Assert.AreEqual(2, successfulAsyncCount);
+            Assert.AreEqual(2, completedAsyncCount);
+            Assert.AreEqual(2, startedCount);
+            Assert.AreEqual(2, successfulCount);
+            Assert.AreEqual(2, completedCount);
+
+            client.Description = "New description";
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+
+            Assert.AreEqual(2, startedAsyncCount);
+            Assert.AreEqual(2, successfulAsyncCount);
+            Assert.AreEqual(2, completedAsyncCount);
+            Assert.AreEqual(2, startedCount);
+            Assert.AreEqual(2, successfulCount);
+            Assert.AreEqual(2, completedCount);
+        }
+
+        [TestMethod]
         public async Task EntityStateCrudEventsTest()
         {
             // New entity successful add
@@ -64,22 +118,86 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, startedAsyncCount);
             Assert.AreEqual(1, successfulAsyncCount);
             Assert.AreEqual(1, completedAsyncCount);
+            Assert.AreEqual(1, startedCount);
+            Assert.AreEqual(1, successfulCount);
+            Assert.AreEqual(1, completedCount);
 
             clientType.Name = "Some type " + i++;
             result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(2, startedAsyncCount);
-            Assert.AreEqual(2, successfulAsyncCount);
-            Assert.AreEqual(2, completedAsyncCount);
+            Assert.AreEqual(1, startedAsyncCount);
+            Assert.AreEqual(1, successfulAsyncCount);
+            Assert.AreEqual(1, completedAsyncCount);
+            Assert.AreEqual(1, startedCount);
+            Assert.AreEqual(1, successfulCount);
+            Assert.AreEqual(1, completedCount);
 
             entityState.AbandonChanges();
 
             clientType.Name = "Some type " + i++;
             result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
+            Assert.AreEqual(1, startedAsyncCount);
+            Assert.AreEqual(1, successfulAsyncCount);
+            Assert.AreEqual(1, completedAsyncCount);
+            Assert.AreEqual(1, startedCount);
+            Assert.AreEqual(1, successfulCount);
+            Assert.AreEqual(1, completedCount);
+
+            entityState.StatefulSaveEvents.StartedAsync.SubscribeAsync(async state => { startedAsyncCount++; });
+            entityState.StatefulSaveEvents.SuccessfulAsync.SubscribeAsync(async state => { successfulAsyncCount++; });
+            entityState.StatefulSaveEvents.CompletedAsync.SubscribeAsync(async state => { completedAsyncCount++; });
+            entityState.StatefulSaveEvents.Started.Subscribe(state => { startedCount++; });
+            entityState.StatefulSaveEvents.Successful.Subscribe(state => { successfulCount++; });
+            entityState.StatefulSaveEvents.Completed.Subscribe(state => { completedCount++; });
+
+            clientType.Name = "Some type " + i++;
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
             Assert.AreEqual(2, startedAsyncCount);
             Assert.AreEqual(2, successfulAsyncCount);
             Assert.AreEqual(2, completedAsyncCount);
+            Assert.AreEqual(2, startedCount);
+            Assert.AreEqual(2, successfulCount);
+            Assert.AreEqual(2, completedCount);
+
+            clientType.Name = "Some type " + i++;
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(2, startedAsyncCount);
+            Assert.AreEqual(2, successfulAsyncCount);
+            Assert.AreEqual(2, completedAsyncCount);
+            Assert.AreEqual(2, startedCount);
+            Assert.AreEqual(2, successfulCount);
+            Assert.AreEqual(2, completedCount);
+
+            entityState.StatefulSaveEvents.StartedAsync.SubscribeAsync(async state => { startedAsyncCount++; });
+            entityState.StatefulSaveEvents.SuccessfulAsync.SubscribeAsync(async state => { successfulAsyncCount++; });
+            entityState.StatefulSaveEvents.CompletedAsync.SubscribeAsync(async state => { completedAsyncCount++; });
+            entityState.StatefulSaveEvents.Started.Subscribe(state => { startedCount++; });
+            entityState.StatefulSaveEvents.Successful.Subscribe(state => { successfulCount++; });
+            entityState.StatefulSaveEvents.Completed.Subscribe(state => { completedCount++; });
+
+            clientType.Name = "Some type " + i++;
+            Db.AbandonChanges();
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(2, startedAsyncCount);
+            Assert.AreEqual(2, successfulAsyncCount);
+            Assert.AreEqual(2, completedAsyncCount);
+            Assert.AreEqual(2, startedCount);
+            Assert.AreEqual(2, successfulCount);
+            Assert.AreEqual(2, completedCount);
+
+            clientType.Name = "Some type " + i++;
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(2, startedAsyncCount);
+            Assert.AreEqual(2, successfulAsyncCount);
+            Assert.AreEqual(2, completedAsyncCount);
+            Assert.AreEqual(2, startedCount);
+            Assert.AreEqual(2, successfulCount);
+            Assert.AreEqual(2, completedCount);
         }
 
         [TestMethod]

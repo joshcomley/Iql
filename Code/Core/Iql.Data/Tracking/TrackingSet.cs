@@ -23,6 +23,41 @@ namespace Iql.Data.Tracking
     public class TrackingSet<T> : TrackingSetBase, ITrackingSet
         where T : class
     {
+        public IEntityStateBase[] AllEntityStates()
+        {
+            var states = new List<IEntityStateBase>();
+            foreach (var state in EntitiesByPersistenceKey)
+            {
+                if (!states.Contains(state.Value))
+                {
+                    states.Add(state.Value);
+                }
+            }
+            foreach (var state in EntitiesByObject)
+            {
+                if (!states.Contains(state.Value))
+                {
+                    states.Add(state.Value);
+                }
+            }
+            foreach (var state in EntitiesByKey)
+            {
+                if (!states.Contains(state.Value))
+                {
+                    states.Add(state.Value);
+                }
+            }
+            foreach (var state in EntitiesByRemoteKey)
+            {
+                if (!states.Contains(state.Value.State))
+                {
+                    states.Add(state.Value.State);
+                }
+            }
+
+            return states.ToArray();
+        }
+
         public Type EntityType => typeof(T);
         private int _idCount = 0;
         private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
@@ -1170,6 +1205,14 @@ namespace Iql.Data.Tracking
 
             _idCount--;
             return _idCount;
+        }
+
+        public void Dispose()
+        {
+            foreach (var state in AllEntityStates())
+            {
+                state.Dispose();
+            }
         }
     }
 }

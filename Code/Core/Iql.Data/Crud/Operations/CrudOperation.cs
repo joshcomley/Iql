@@ -1,3 +1,4 @@
+using System;
 using Iql.Data.Context;
 
 namespace Iql.Data.Crud.Operations
@@ -8,8 +9,10 @@ namespace Iql.Data.Crud.Operations
         {
             Kind = kind;
             DataContext = dataContext;
+            Id = Guid.NewGuid();
         }
 
+        public Guid Id { get; }
         public IqlOperationKind Kind { get; }
         public IDataContext DataContext { get; }
     }

@@ -10,7 +10,7 @@ using Iql.Events;
 
 namespace Iql.Data.Tracking.State
 {
-    public interface IEntityStateBase : IJsonSerializable, IStateful
+    public interface IEntityStateBase : IJsonSerializable, IStateful, IDisposable
     {
         //IAsyncEventSubscriber<IEntityEvent> SavingAsync { get; }
         //IAsyncEventSubscriber<IEntityEvent> SavedAsync { get; }

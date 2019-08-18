@@ -7,7 +7,7 @@ namespace Iql.Data.Crud
         where TOperation : IEntitySetCrudOperationBase
     {
         public CrudResult(bool success, TOperation operation, RequestStatus requestStatus = RequestStatus.Online)
-            : base(typeof(TResult), success, requestStatus)
+            : base(operation, typeof(TResult), success, requestStatus)
         {
             Operation = operation;
         }

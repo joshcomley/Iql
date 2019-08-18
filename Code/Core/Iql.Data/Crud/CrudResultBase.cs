@@ -1,12 +1,19 @@
-﻿using Iql.Data.Crud.Operations.Results;
+﻿using Iql.Data.Crud.Operations;
+using Iql.Data.Crud.Operations.Results;
 
 namespace Iql.Data.Crud
 {
-    public class CrudResultBase : ICrudResult
+    public abstract class CrudResultBase : ICrudResult
     {
+        private ICrudOperation _operation;
+        ICrudOperation ICrudResult.Operation => _operation;
         public RequestStatus RequestStatus { get; set; }
-        public CrudResultBase(bool success, RequestStatus requestStatus = RequestStatus.Online)
+        public CrudResultBase(
+            ICrudOperation operation,
+            bool success, 
+            RequestStatus requestStatus = RequestStatus.Online)
         {
+            _operation = operation;
             RequestStatus = requestStatus;
             if (RequestStatus != RequestStatus.Online && RequestStatus != RequestStatus.Offline)
             {

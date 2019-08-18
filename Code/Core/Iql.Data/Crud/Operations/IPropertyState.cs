@@ -1,4 +1,5 @@
-﻿using Iql.Conversion;
+﻿using System;
+using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Events;
 using Iql.Data.Tracking.State;
@@ -8,7 +9,7 @@ using Iql.Events;
 
 namespace Iql.Data.Crud.Operations
 {
-    public interface IPropertyState : IJsonSerializable, IStateful
+    public interface IPropertyState : IJsonSerializable, IStateful, IDisposable
     {
         //IEntityPropertyEvent
         EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; }
@@ -23,7 +24,6 @@ namespace Iql.Data.Crud.Operations
         void HardReset();
         void SoftReset();
         IPropertyState Copy();
-        void AbandonChanges();
         void Restore(SerializedPropertyState state);
     }
 }

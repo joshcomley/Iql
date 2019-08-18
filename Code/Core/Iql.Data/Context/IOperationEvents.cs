@@ -17,7 +17,6 @@ namespace Iql.Data.Context
         Task EmitStartedAsync(Func<TOperation> ev);
         Task EmitSuccessAsync(Func<TResult> ev);
         Task EmitCompletedAsync(Func<TResult> ev);
-        void UnsubscribeAll();
     }
 
     public interface IOperationEventsBase
@@ -31,5 +30,6 @@ namespace Iql.Data.Context
         Task EmitStartedAsync(Func<object> ev);
         Task EmitSuccessAsync(Func<object> ev);
         Task EmitCompletedAsync(Func<object> ev);
+        void UnsubscribeAll();
     }
 }
