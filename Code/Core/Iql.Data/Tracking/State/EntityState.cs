@@ -225,10 +225,6 @@ namespace Iql.Data.Tracking.State
         }
 
         private Dictionary<Guid, IPropertyState[]> _operations = new Dictionary<Guid, IPropertyState[]>();
-        private async Task EmitPropertyEventAsync(ICrudOperation operation, Func<IPropertyState, IEntityPropertyEvent, Task> fn)
-        {
-        }
-
         private void MonitorSaveEvents()
         {
             EventManager = new IqlEventManager();
@@ -242,9 +238,12 @@ namespace Iql.Data.Tracking.State
                         for (var i = 0; i < changed.Length; i++)
                         {
                             var prop = changed[i];
-                            var propState = GetPropertyState(prop.Property.PropertyName);
-                            await propState.SaveEvents.EmitStartedAsync(() =>
-                                new IqlEntityPropertyEvent<T>(propState.Property, this, null));
+                            foreach (var property in prop.Property.GetGroupProperties())
+                            {
+                                var propState = GetPropertyState(property.Name);
+                                await propState.SaveEvents.EmitStartedAsync(() =>
+                                    new IqlEntityPropertyEvent<T>(_.Operation, propState.Property, this, propState));
+                            }
                         }
                         _operations.Add(_.Operation.Id, changed);
                     }
@@ -253,7 +252,7 @@ namespace Iql.Data.Tracking.State
                         foreach (var propState in PropertyStates)
                         {
                             await propState.SaveEvents.EmitStartedAsync(() =>
-                                new IqlEntityPropertyEvent<T>(propState.Property, this, null));
+                                new IqlEntityPropertyEvent<T>(_.Operation, propState.Property, this, propState));
                         }
                         _operations.Add(_.Operation.Id, PropertyStates.ToArray());
                     }
@@ -267,8 +266,12 @@ namespace Iql.Data.Tracking.State
                         for (var i = 0; i < properties.Length; i++)
                         {
                             var prop = properties[i];
-                            await prop.SaveEvents.EmitSuccessAsync(() =>
-                                new IqlEntityPropertyEvent<T>(prop.Property, this, null));
+                            foreach (var property in prop.Property.GetGroupProperties())
+                            {
+                                var propState = GetPropertyState(property.Name);
+                                await propState.SaveEvents.EmitSuccessAsync(() =>
+                                    new IqlEntityPropertyEvent<T>(_.Operation, propState.Property, this, propState));
+                            }
                         }
                     }
                 });
@@ -281,8 +284,12 @@ namespace Iql.Data.Tracking.State
                         for (var i = 0; i < properties.Length; i++)
                         {
                             var prop = properties[i];
-                            await prop.SaveEvents.EmitCompletedAsync(() =>
-                                new IqlEntityPropertyEvent<T>(prop.Property, this, null));
+                            foreach (var property in prop.Property.GetGroupProperties())
+                            {
+                                var propState = GetPropertyState(property.Name);
+                                await propState.SaveEvents.EmitCompletedAsync(() =>
+                                    new IqlEntityPropertyEvent<T>(_.Operation, propState.Property, this, propState));
+                            }
                         }
 
                         _operations.Remove(_.Operation.Id);
@@ -366,7 +373,17 @@ namespace Iql.Data.Tracking.State
 
         public IPropertyState GetPropertyState(string name)
         {
-            var state = Properties.SingleOrDefault(p => p.Property.Name == name);
+            var state = Properties.SingleOrDefault(p => p.Property.PropertyName == name);
+            return state;
+        }
+
+        public IPropertyState FindPropertyState(string name)
+        {
+            var state = Properties.FirstOrDefault(p => p.Property.PropertyName == name);
+            state = state ?? Properties.FirstOrDefault(p => p.Property.PrimaryProperty.PropertyName == name);
+            state = state ?? Properties.FirstOrDefault(p => p.Property.PrimaryProperty.GetGroupProperties()
+                        .Any(_ => _.Name == name));
+            state = state ?? Properties.FirstOrDefault(p => p.Property.PropertyGroup != null && p.Property.PropertyGroup.Name == name);
             return state;
         }
 

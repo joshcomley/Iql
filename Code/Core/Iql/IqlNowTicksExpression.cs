@@ -3,12 +3,22 @@ using System.Collections.Generic;
 
 namespace Iql
 {
-    public class IqlCurrentUserExpression : IqlSpecialValueExpression
+    public class IqlNowTicksExpression : IqlSpecialValueExpression
     {
-        public IqlCurrentUserExpression() : base(IqlExpressionKind.CurrentUser)
+        public IqlNowTicksExpression() : base(IqlExpressionKind.NowTicks)
         {
+            ReturnType = IqlType.Integer;
         }
 
+
+        internal override void FlattenInternal(IqlFlattenContext context)
+        {
+            // #FlattenStart
+
+				context.Flatten(Parent);
+
+            // #FlattenEnd
+        }
 
         internal override IqlExpression ReplaceExpressions(ReplaceContext context)
         {
@@ -25,20 +35,11 @@ namespace Iql
             // #ReplaceEnd
         }
 
-        internal override void FlattenInternal(IqlFlattenContext context)
-        {
-            // #FlattenStart
-
-				context.Flatten(Parent);
-
-            // #FlattenEnd
-        }
-
-        public static IqlCurrentUserExpression Clone(IqlCurrentUserExpression source)
+        public static IqlNowTicksExpression Clone(IqlNowTicksExpression source)
         {
             // #CloneStart
 
-			var expression = new IqlCurrentUserExpression();
+			var expression = new IqlNowTicksExpression();
 			expression.CanFail = source.CanFail;
 			expression.Key = source.Key;
 			expression.Kind = source.Kind;

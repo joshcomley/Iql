@@ -61,61 +61,67 @@ namespace Iql.Data.IqlToIql.Parsers
             switch (action.Kind)
             {
                 case IqlExpressionKind.CurrentLocation:
+                {
+                    var currentLocationService = parser.ServiceProvider.Resolve<IqlCurrentLocationService>();
+                    if (currentLocationService != null)
                     {
-                        var currentLocationService = parser.ServiceProvider.Resolve<IqlCurrentLocationService>();
-                        if (currentLocationService != null)
+                        var result =
+                            await currentLocationService.ResolveCurrentLocationAsync(parser.ServiceProvider);
+                        if (!result.Success && action.CanFail)
                         {
-                            var result =
-                                await currentLocationService.ResolveCurrentLocationAsync(parser.ServiceProvider);
-                            if (!result.Success && action.CanFail)
-                            {
-                                parser.Success = false;
-                            }
-                            return new IqlLiteralExpression(result.Result);
+                            parser.Success = false;
                         }
-                        parser.Success = action.CanFail;
-                        return null;
+
+                        return new IqlLiteralExpression(result.Result);
                     }
+
+                    parser.Success = action.CanFail;
+                    return null;
+                }
                 case IqlExpressionKind.CurrentUserId:
+                {
+                    var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
+                    object currentUserId = null;
+                    if (currentUserService != null)
                     {
-                        var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
-                        object currentUserId = null;
-                        if (currentUserService != null)
+                        var result =
+                            await currentUserService.ResolveCurrentUserIdAsync(parser.ServiceProvider);
+                        if (!result.Success && !action.CanFail)
                         {
-                            var result =
-                                await currentUserService.ResolveCurrentUserIdAsync(parser.ServiceProvider);
-                            if (!result.Success && !action.CanFail)
-                            {
-                                parser.Success = false;
-                            }
-                            currentUserId = result.Result;
+                            parser.Success = false;
                         }
-                        else
-                        {
-                            parser.Success = action.CanFail;
-                        }
-                        return new IqlLiteralExpression(currentUserId);
+
+                        currentUserId = result.Result;
                     }
+                    else
+                    {
+                        parser.Success = action.CanFail;
+                    }
+
+                    return new IqlLiteralExpression(currentUserId);
+                }
                 case IqlExpressionKind.CurrentUser:
+                {
+                    var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
+                    object currentUser = null;
+                    if (currentUserService != null)
                     {
-                        var currentUserService = parser.ServiceProvider.Resolve<IqlCurrentUserService>();
-                        object currentUser = null;
-                        if (currentUserService != null)
+                        var result =
+                            await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
+                        if (!result.Success && !action.CanFail)
                         {
-                            var result =
-                                await currentUserService.ResolveCurrentUserAsync(parser.ServiceProvider);
-                            if (!result.Success && !action.CanFail)
-                            {
-                                parser.Success = false;
-                            }
-                            currentUser = result.Result;
+                            parser.Success = false;
                         }
-                        else
-                        {
-                            parser.Success = action.CanFail;
-                        }
-                        return new IqlLiteralExpression(currentUser);
+
+                        currentUser = result.Result;
                     }
+                    else
+                    {
+                        parser.Success = action.CanFail;
+                    }
+
+                    return new IqlLiteralExpression(currentUser);
+                }
                 case IqlExpressionKind.NewGuid:
                     if (parser.ResolveSpecialValues)
                     {
@@ -125,6 +131,7 @@ namespace Iql.Data.IqlToIql.Parsers
                             return new IqlLiteralExpression(guid);
                         }
                     }
+
                     break;
                 case IqlExpressionKind.Now:
                     if (parser.ResolveSpecialValues)
@@ -135,6 +142,27 @@ namespace Iql.Data.IqlToIql.Parsers
                             return new IqlLiteralExpression(currentDateTime);
                         }
                     }
+
+                    break;
+                case IqlExpressionKind.NowTicks:
+                    if (parser.ResolveSpecialValues)
+                    {
+                        var currentDateTime = await parser.ServiceProvider.ResolveNowAsync(true);
+                        if (currentDateTime != null)
+                        {
+                            return new IqlLiteralExpression(currentDateTime.Value.Ticks);
+                        }
+                    }
+
+                    break;
+                case IqlExpressionKind.NowTicksString:
+                {
+                    var currentDateTime = await parser.ServiceProvider.ResolveNowAsync(true);
+                    if (currentDateTime != null)
+                    {
+                        return new IqlLiteralExpression(currentDateTime.Value.Ticks.ToString());
+                    }
+                }
                     break;
             }
 

@@ -819,6 +819,26 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task DateNowTicksString()
+        {
+            Db.ServiceProvider.Register<TestNowService>();
+            var query = Db.Users.WhereEquals(new IqlIsEqualToExpression(
+                new IqlPropertyExpression(
+                    nameof(Client.Name),
+                    new IqlRootReferenceExpression()),
+                new IqlNowTicksStringExpression()));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Db.ServiceProvider.Unregister<TestNowService>();
+#if TypeScript
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Name eq '1546398245000')",
+                uri);
+#else
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/Name eq '636819950450000000')",
+                uri);
+#endif
+        }
+
+        [TestMethod]
         public async Task DateNowWithSimpleTimeSpanSubtractionExpression()
         {
             var query = Db.Users.WhereEquals(new IqlIsGreaterThanExpression(

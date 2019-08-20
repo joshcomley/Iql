@@ -38,6 +38,7 @@ namespace Iql.Data.Tracking.State
         EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }
         string StateKey { get; set; }
         IPropertyState GetPropertyState(string name);
+        IPropertyState FindPropertyState(string name);
         void MarkForCascadeDeletion(object from, IRelationship relationship);
         void UnmarkForDeletion();
         void AbandonChanges();

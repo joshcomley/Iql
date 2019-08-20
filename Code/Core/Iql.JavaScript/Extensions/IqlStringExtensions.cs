@@ -53,9 +53,13 @@ namespace Iql.JavaScript.Extensions
 
         public static string Clean(this string str)
         {
+            str = str.Replace("\r", "");
+#if !TypeScript
+            str = str.Replace("\"Key\":null,", "");
+#endif
             //str = Regex.Replace(str, @"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d*\+\d\d:\d\d",
             //    @"0001-01-01T00:00:00.0+00:00");
-            return str.Replace("\r", "");
+            return str;
         }
 
         public static string NormalizeJson(this string json)

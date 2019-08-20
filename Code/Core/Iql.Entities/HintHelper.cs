@@ -23,7 +23,7 @@ namespace Iql.Entities
                             return new HintHelperResult(hint, group.PrimaryProperty);
                         }
                     }
-                    if (hint == null && group.PropertyGroup != null)
+                    if (group.PropertyGroup != null)
                     {
                         hint = HintHelper.FindHint(group.PropertyGroup, name, true);
                         {

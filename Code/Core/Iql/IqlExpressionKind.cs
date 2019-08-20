@@ -72,6 +72,8 @@ namespace Iql
         CurrentUser = 68,
         CurrentUserId = 69,
         CurrentLocation = 70,
-        NewGuid = 71
+        NewGuid = 71,
+        NowTicks = 72,
+        NowTicksString = 73
     }
 }

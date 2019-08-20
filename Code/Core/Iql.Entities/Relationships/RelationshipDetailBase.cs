@@ -196,6 +196,10 @@ namespace Iql.Entities.Relationships
         //, Dictionary<object, CompositeKey> dic
         )
         {
+            if(entity is CompositeKey)
+            {
+                return (CompositeKey)entity;
+            }
             var constraints = Constraints;
             var inverseConstraints = RelationshipSide == RelationshipSide.Source
                 ? Relationship.Target.Constraints : Relationship.Source.Constraints;

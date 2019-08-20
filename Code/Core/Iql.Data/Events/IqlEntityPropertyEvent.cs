@@ -1,4 +1,5 @@
 ﻿using Iql.Data.Context;
+using Iql.Data.Crud.Operations;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 
@@ -8,14 +9,19 @@ namespace Iql.Data.Events
         where T : class
     {
         public IqlEntityPropertyEvent(
+            ICrudOperation operation,
             IPropertyContainer property,
             IEntityState<T> entity,
-            IDataContext dataContext
-            ) : base(entity, dataContext)
+            IPropertyState propertyState
+            ) : base(entity, null)
         {
+            Operation = operation;
             Property = property;
+            PropertyState = propertyState;
         }
 
+        public IPropertyState PropertyState { get; set; }
+        public ICrudOperation Operation { get; }
         public IPropertyContainer Property { get; }
     }
 }

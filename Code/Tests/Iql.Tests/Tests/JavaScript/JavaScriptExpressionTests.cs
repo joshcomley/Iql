@@ -268,7 +268,7 @@ namespace Iql.Tests.Tests.JavaScript
 		.OrderBy(function(entity2, context) { return (entity2 || {}).Name; }, false); }";
 #endif
             var cleaned = expected.Clean();
-            Assert.AreEqual(cleaned, javaScript);
+            Assert.AreEqual(cleaned, javaScript.Clean());
             IqlJavaScriptIqlExpressionExtensions.NormalizeJson = false;
         }
 
@@ -302,7 +302,7 @@ namespace Iql.Tests.Tests.JavaScript
 		.OrderBy(function(entity, context) { return (entity || {}).AverageSales; }, true); }";
 #endif
             var cleaned = expected.Clean();
-            Assert.AreEqual(cleaned, javaScript);
+            Assert.AreEqual(cleaned, javaScript.Clean());
             IqlJavaScriptIqlExpressionExtensions.NormalizeJson = false;
         }
 

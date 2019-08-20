@@ -160,8 +160,6 @@ namespace Iql.Tests.Tests
                         property,
                         now)
                     );
-            ;
-
         }
 
         [TestMethod]
