@@ -49,7 +49,7 @@ namespace Iql.Entities
                 var startsWith = $"{name}:";
                 if (lower.StartsWith(startsWith))
                 {
-                    return new HintHelperResult(new MetadataHint(hint, hint.Substring(startsWith.Length)), metadata);
+                    return new HintHelperResult(new MetadataHint(name, hint.Substring(startsWith.Length)), metadata);
                 }
             }
             return null;
@@ -86,7 +86,13 @@ namespace Iql.Entities
             HintHelperResult result = FindHintAndResolveProperty(metadata, name, onlySelf);
             while(result != null)
             {
+                var length = result.Metadata.Hints.Count;
                 result.Metadata.Hints.Remove(result.Hint.Formatted());
+                if (result.Metadata.Hints.Count == length)
+                {
+                    // Something went wrong
+                    break;
+                }
                 result = FindHintAndResolveProperty(metadata, name, onlySelf);
             }
         }
