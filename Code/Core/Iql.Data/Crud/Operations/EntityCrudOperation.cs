@@ -11,10 +11,6 @@ namespace Iql.Data.Crud.Operations
         {
             EntityState = entityState;
             KeyBeforeSave = EntityState?.KeyBeforeChanges();
-            if (EntityState == null)
-            {
-                int a = 0;
-            }
         }
 
         public IEntityState<T> EntityState { get; set; }

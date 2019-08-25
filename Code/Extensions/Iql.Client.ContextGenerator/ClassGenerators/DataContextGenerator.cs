@@ -101,6 +101,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 propertyDefinition.Private = false;
                 entitySetDefinitions.Add(propertyDefinition);
             }
+
             await ClassAsync(
                 _className,
                 Namespace,
@@ -665,7 +666,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         PrintODataMethod(method, true);
                     }
-                }, nameof(DataContext));
+                }, 
+                nameof(DataContext));
             foreach (var set in _entitySetDefinitions)
             {
                 File.References.Add(set.Type);
@@ -1027,24 +1029,31 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 {
                                     sb.AppendLine();
                                     sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasFile)}(");
-                                    var parameters = new[]
+                                    var parameters = new object[]
                                     {
-                                    file.UrlProperty
-                                };
+                                        file.Guid,
+                                        file.UrlProperty
+                                    };
                                     var subLambda = $"{lambdaKey}_f";
-                                    var parameterStrings =
-                                        parameters.Select(p => p == null ? "null" : $"{subLambda} => {subLambda}.{p.Name}")
-                                            .ToList();
+                                    var parameterStrings = new string[]
+                                        {
+                                            file.UrlProperty == null
+                                                ? "null"
+                                                : $"{subLambda} => {subLambda}.{file.UrlProperty.PropertyName}",
+                                            $@"new Guid(""{file.Guid.ToString()}"")"
+                                        };
                                     var config = await ConfigureMetadataAsync(file, null, subLambda, false);
                                     if (string.IsNullOrWhiteSpace(config))
                                     {
                                         config = $"{subLambda} => {{}}";
                                     }
+
                                     var allParams = new[]
                                     {
-                                    parameterStrings[0],
-                                    config
-                                };
+                                        parameterStrings[0],
+                                        parameterStrings[1],
+                                        config
+                                    };
                                     sb.Append(string.Join(", ", allParams));
                                     sb.Append(");");
                                 }
@@ -1143,7 +1152,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 var sbFilePreviews = new StringBuilder();
                                 foreach (var filePreview in filePreviews)
                                 {
-                                    sbFilePreviews.Append($"{lambdaKey}.{nameof(File<object>.AddPreview)}(fp => fp.{filePreview.UrlProperty.PropertyName}, {(filePreview.MaxWidth == null ? "null" : filePreview.MaxWidth.Value.ToString())}, {(filePreview.MaxHeight == null ? "null" : filePreview.MaxHeight.Value.ToString())}, {String(filePreview.Key)}, {await ConfigureMetadataAsync(filePreview, null, "fp", false)});");
+                                    sbFilePreviews.Append($"{lambdaKey}.{nameof(File<object>.AddPreview)}(fp => fp.{filePreview.UrlProperty.PropertyName}, new Guid(\"{filePreview.Guid}\"), {nameof(IqlPreviewKind)}.{filePreview.Kind.ToString()}, {(filePreview.MaxWidth == null ? "null" : filePreview.MaxWidth.Value.ToString())}, {(filePreview.MaxHeight == null ? "null" : filePreview.MaxHeight.Value.ToString())}, {String(filePreview.Key)}, {await ConfigureMetadataAsync(filePreview, null, "fp", false)});");
                                 }
 
                                 assign = sbFilePreviews.ToString();

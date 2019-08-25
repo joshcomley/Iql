@@ -14,11 +14,13 @@ namespace Iql.Entities.PropertyGroups.Files
         }
 
         public File(
+            Guid guid,
             IProperty urlProperty = null,
             IProperty nameProperty = null,
             IProperty versionProperty = null,
             IProperty kindProperty = null,
             string key = null) : base(
+            guid,
             urlProperty,
             nameProperty,
             versionProperty,
@@ -58,13 +60,15 @@ namespace Iql.Entities.PropertyGroups.Files
 
         public File<T> AddPreview(
             Expression<Func<T, object>> property, 
+            Guid guid,
+            IqlPreviewKind kind = IqlPreviewKind.Image,
             int? maxWidth = null, 
             int? maxHeight = null, 
             string key = null,
             Action<FilePreview<T>> configure = null)
         {
             var propertyResolved = EntityConfiguration.FindPropertyByExpression(property);
-            var filePreview = new FilePreview<T>(this, propertyResolved, maxWidth, maxHeight, key);
+            var filePreview = new FilePreview<T>(guid, kind, this, propertyResolved, maxWidth, maxHeight, key);
             Previews.Add(filePreview);
             if (configure != null)
             {

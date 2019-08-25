@@ -1,10 +1,13 @@
-﻿#if !TypeScript
+﻿
+using System;
+#if !TypeScript
 using Iql.Entities;
 using Iql.Entities.NestedSets;
 using Iql.Server.Serialization;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Server.Serialization.Serialization;
 using IqlSampleApp.Data.Entities;
 
@@ -65,12 +68,15 @@ namespace Iql.Tests.Tests.MetadataSerialization
                         }),
                     c => c.NestedSets[0]));
             clientConfig.HasFile(f => f.Description,
+                new Guid("264781e3-2630-4a22-8f8e-9c861ead521d"),
                 f =>
                 {
                     f.MediaKey.AddGroup(g => g.AddPropertyPath(p => p.CreatedByUser.Id).AddString("root-mk-test"));
                     f.Key = "my-file";
                     f.AddPreview(
                         _ => _.Name,
+                        new Guid("6b4ce757-2b64-4092-a537-f697dcea433f"),
+                        IqlPreviewKind.Image,
                         200,
                         configure:
                         fp => fp.MediaKey.AddGroup(

@@ -3,8 +3,8 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Server.Media;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 
 namespace Iql.Server.Azure
 {

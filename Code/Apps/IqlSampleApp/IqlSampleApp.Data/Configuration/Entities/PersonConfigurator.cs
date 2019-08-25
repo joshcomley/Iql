@@ -48,13 +48,15 @@ namespace IqlSampleApp.Data.Configuration.Entities
             var model = builder.EntityType<Person>();
             model.Permissions.UseRule("PersonsPermission");
             model.Permissions.UseRule("PersonsPermissionOnlyRead");
-            model.HasFile(s => s.PhotoUrl, f =>
-            {
-                f.SetVersionProperty(_ => _.PhotoRevisionKey);
-                //f.SetHint(KnownHints.Image);
-                //f.SetHint(KnownHints.Video);
-                f.FriendlyName = "Photo";
-            });
+            model.HasFile(s => s.PhotoUrl,
+                new Guid("2ac84af2-2090-4bfd-a27e-ea68ad0faccb"),
+                f =>
+                {
+                    f.SetVersionProperty(_ => _.PhotoRevisionKey);
+                    //f.SetHint(KnownHints.Image);
+                    //f.SetHint(KnownHints.Video);
+                    f.FriendlyName = "Photo";
+                });
             model.PreviewPropertyName = model.FindPropertyByExpression(_ => _.PhotoUrl).File.Name;
             model.ConfigureProperty(_ => _.Client, p =>
             {

@@ -6,6 +6,7 @@ using Iql.Data.Types;
 using Iql.Entities.Enums;
 using Iql.Entities.Extensions;
 using Iql.Entities.Functions;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
@@ -15,6 +16,9 @@ namespace Iql.Entities
 {
     public class EntityConfigurationBuilder : MetadataBase, IEntityConfigurationBuilder
     {
+        private readonly GuidManager _guidManager = new GuidManager();
+        public GuidManager GuidManager => _guidManager;
+
         private UserPermissionsManager _permissionsManager;
 
         private readonly List<IqlUserPermissionRule> _permissionRules =

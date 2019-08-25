@@ -1,4 +1,5 @@
-﻿using Iql.Entities;
+﻿using System;
+using Iql.Entities;
 using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
@@ -9,6 +10,10 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
         {
             get => MediaKeyInternal;
             set => MediaKeyInternal = value;
+        }
+
+        public File() : base(Guid.Empty)
+        {
         }
     }
 }

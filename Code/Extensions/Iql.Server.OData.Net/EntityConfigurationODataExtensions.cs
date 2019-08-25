@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Brandless.AspNetCore.OData.Extensions.Extensions;
 using Iql.Entities;
 using Iql.Entities.Functions;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Server.OData.Net.Geography;

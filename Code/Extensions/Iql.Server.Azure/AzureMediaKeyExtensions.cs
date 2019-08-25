@@ -7,33 +7,61 @@ namespace Iql.Server.Azure
     public static class AzureMediaKeyExtensions
     {
         public static MediaKey<T> ConfigureAzureMediaKey<T>(this MediaKey<T> mediaKey,
-            Expression<Func<T, object>> containerExpression,
+            Expression<Func<T, object>> parentExpression,
             Expression<Func<T, object>> blobExpression,
-            string key = null)
+            string containerName = "files")
             where T : class
         {
             return mediaKey.ConfigureAzureMediaKeyCustom(
-                g => g.AddPropertyPath(containerExpression),
-                    g => g.AddPropertyPath(blobExpression),
-                key);
+                g => g.AddPropertyPath(parentExpression),
+                g => g.AddPropertyPath(blobExpression),
+                g => g.AddString(containerName)
+                );
+        }
+
+        public static MediaKey<T> ConfigureAzureMediaKey<T>(this MediaKey<T> mediaKey,
+            Expression<Func<T, object>> parentExpression,
+            Expression<Func<T, object>> blobExpression,
+            Expression<Func<T, object>> containerExpression)
+            where T : class
+        {
+            return mediaKey.ConfigureAzureMediaKeyCustom(
+                g => g.AddPropertyPath(parentExpression),
+                g => g.AddPropertyPath(blobExpression),
+                g => g.AddPropertyPath(containerExpression)
+                );
         }
 
         public static MediaKey<T> ConfigureAzureMediaKeyCustom<T>(this MediaKey<T> mediaKey,
-            Action<MediaKeyGroup<T>> configureContainer,
+            Action<MediaKeyGroup<T>> configureParent,
             Action<MediaKeyGroup<T>> configureBlob,
-            string key = null,
-            bool appendUrlPropertyName = true)
+            string containerName = "files")
+            where T : class
+        {
+            return mediaKey.ConfigureAzureMediaKeyCustom(
+                configureParent,
+                configureBlob,
+                _ => _.AddString(containerName)
+            );
+        }
+
+        public static MediaKey<T> ConfigureAzureMediaKeyCustom<T>(
+            this MediaKey<T> mediaKey,
+            Action<MediaKeyGroup<T>> configureParent,
+            Action<MediaKeyGroup<T>> configureBlob,
+            Action<MediaKeyGroup<T>> configureContainer
+            )
             where T : class
         {
             return mediaKey
                 .AddGroup(configureContainer)
                 .AddGroup(g =>
                 {
+                    configureParent(g);
+                    g.AddString("___ID___");
                     configureBlob(g);
-                    if (appendUrlPropertyName)
-                    {
-                        g.AddString(key ?? mediaKey.File.UrlProperty.Name);
-                    }
+                    g.AddString($"___FILE___");
+                    g.AddString(mediaKey.File.Guid.ToString());
                 });
         }
     }

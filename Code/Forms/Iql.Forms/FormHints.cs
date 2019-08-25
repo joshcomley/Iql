@@ -11,6 +11,9 @@
         public static string WizardTitle = Prefix + nameof(WizardTitle);
         public static string WizardAlways = Prefix + nameof(WizardAlways);
         public static string WizardKey = Prefix + nameof(WizardKey);
+        public static string WizardOrder = Prefix + nameof(WizardOrder);
         public static string WizardKeyOrder = Prefix + nameof(WizardKeyOrder);
+        public static string TokenThumbnailStretch = Prefix + nameof(TokenThumbnailStretch);
+        public static string AsMediaCollection = Prefix + nameof(AsMediaCollection);
     }
 }

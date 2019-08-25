@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10046-1-Debug" />
+    <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10052-1-Debug" />
     <PackageReference Include="Microsoft.AspNetCore.OData.NetTopology" Version="7.2.0-pre-0014" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.3-alpha0003-1-Debug" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.0.3-alpha0003-1-Debug" />

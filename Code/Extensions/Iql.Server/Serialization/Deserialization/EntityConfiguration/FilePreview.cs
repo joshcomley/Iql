@@ -1,4 +1,5 @@
-﻿using Iql.Entities;
+﻿using System;
+using Iql.Entities;
 using Iql.Entities.PropertyGroups.Files;
 
 namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
@@ -21,5 +22,8 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
             set => UrlPropertyInternal = value;
         }
 
+        public FilePreview() : base(Guid.Empty)
+        {
+        }
     }
 }

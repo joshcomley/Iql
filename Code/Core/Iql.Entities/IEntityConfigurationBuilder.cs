@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Entities.Enums;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
 using Iql.Parsing.Types;
@@ -10,6 +11,7 @@ namespace Iql.Entities
 {
     public interface IEntityConfigurationBuilder : IEntityConfigurationBuilderMetadata, IConfiguration, IServiceProviderProvider, ITypeResolver, IMethodContainer
     {
+        GuidManager GuidManager { get; }
         SpecialTypeDefinition GetSpecialTypeMap(string name);
         bool IsEntityType<T>();
         bool IsEntityTypeByType(Type type);

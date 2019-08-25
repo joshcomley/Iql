@@ -110,7 +110,8 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                     NpmOutput = true,
                     WrapGettersAndSetters = false,
                     AddUtilityFiles = false,
-                    SafeCasts = false
+                    SafeCasts = false,
+                    ForceBaseClass = true
                 };
                 await defaultConversionSettings.MetadataReferences.AddReferenceAsync<IqlExpression>("@brandless/iql", true);
                 await defaultConversionSettings.MetadataReferences.AddReferenceAsync<EventEmitterExceptions>("@brandless/iql.events", true);

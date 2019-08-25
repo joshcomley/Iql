@@ -301,6 +301,10 @@ namespace Iql
                     return typeof(IqlCurrentLocationExpression);
                 case IqlExpressionKind.NewGuid:
                     return typeof(IqlNewGuidExpression);
+                case IqlExpressionKind.NowTicks:
+                    return typeof(IqlNowTicksExpression);
+                case IqlExpressionKind.NowTicksString:
+                    return typeof(IqlNowTicksStringExpression);
             }
             throw new NotSupportedException($"Unable to resolve type for expression kind {kind.ToString()}");
         }

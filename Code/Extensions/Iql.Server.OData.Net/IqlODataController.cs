@@ -342,6 +342,17 @@ namespace Iql.Server.OData.Net
         protected override async Task OnPatchAsync(Delta<TModel> patch, TModel dbObject)
         {
             var serverEvaluator = NewDataEvaluator();
+            //if (EntityConfiguration.Files != null && EntityConfiguration.Files.Count > 0)
+            //{
+            //    var changedProperties = patch.GetChangedPropertyNames();
+            //    foreach (var file in EntityConfiguration.Files)
+            //    {
+            //        if (file.VersionProperty != null && changedProperties.Contains(file.VersionProperty.PropertyName))
+            //        {
+            //            OnNewFileReceived
+            //        }
+            //    }
+            //}
             var clone = (TModel)dbObject.Clone(Builder, EntityConfiguration.Type);
             await base.OnPatchAsync(patch, dbObject);
             await new InferredValueEvaluationSession()

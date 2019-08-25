@@ -48,7 +48,8 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                     //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
                     await GenerateWebAndMobile(isiteUrl,
                         @"D:\Code\i-site\Code\Web\ClientApp\app\generated\DataContext",
-                        @"D:\Code\i-site\Code\Mobile\i-site\src\app\generated\DataContext");
+                        @"D:\Code\i-site\Code\Mobile\i-site\src\app\generated\DataContext",
+                        @"D:\Code\i-site\Code\Api\src\ISite.App.Media.Azure\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
                     //isiteSettings.GenerateCountProperties = false;
                     //isiteSettings.GenerateEntities = false;
@@ -111,11 +112,15 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             }
         }
 
-        private static async Task GenerateWebAndMobile(string url, string webOutputPath, string mobileOutputPath)
+        private static async Task GenerateWebAndMobile(string url, string webOutputPath, string mobileOutputPath, string azureFunctionOutputPath = null)
         {
             var generatedContexts = await GenerateAsync(url, OutputKind.TypeScript);
             generatedContexts.TypeScriptContext.SaveTo(webOutputPath, true);
             generatedContexts.TypeScriptContext.SaveTo(mobileOutputPath, true);
+            if (!string.IsNullOrWhiteSpace(azureFunctionOutputPath))
+            {
+                generatedContexts.CSharpContext.SaveTo(azureFunctionOutputPath);
+            }
             //foreach (var path in new[] {webOutputPath, mobileOutputPath})
             //{
             //}

@@ -1,4 +1,5 @@
-﻿using Iql.Data.Extensions;
+﻿using System;
+using Iql.Data.Extensions;
 using Iql.Entities;
 #if !TypeScript
 using Iql.Server.Serialization;
@@ -102,7 +103,7 @@ namespace Iql.Tests.Tests.EntityConfiguration
         {
             var property = Db.EntityConfigurationContext.EntityType<ApplicationUser>().FindPropertyByExpression(l => l.FullName);
             var stringKey = "photo";
-            var file = new File<ApplicationUser>(property);
+            var file = new File<ApplicationUser>(new Guid("ae0e2ca3-d0d4-4689-8fdd-88b5f7726449"), property);
             var mediaKey = new MediaKey<ApplicationUser>(file)
                 .AddGroup(g =>
                     g.AddPropertyPath(l => l.Client.Type.Id)
@@ -141,7 +142,7 @@ namespace Iql.Tests.Tests.EntityConfiguration
             AppDbContext.InMemoryDb.Clients.Add(client);
             AppDbContext.InMemoryDb.ClientTypes.Add(clientType);
             var stringKey = "photo";
-            var file = new File<ApplicationUser>(property);
+            var file = new File<ApplicationUser>(new Guid("62ea7428-3909-47bd-acb4-47c440e3ab29"), property);
             var mediaKey = new MediaKey<ApplicationUser>(file)
                 .AddGroup(g =>
                     g.AddPropertyPath(l => l.Client.Type.Name)
@@ -173,6 +174,7 @@ namespace Iql.Tests.Tests.EntityConfiguration
         {
             MediaKeyShouldBeParseable();
             await MediaKeyShouldBeLazyLoaded();
+            Db.EntityConfigurationContext.GuidManager.Clear();
         }
 
         [TestMethod]

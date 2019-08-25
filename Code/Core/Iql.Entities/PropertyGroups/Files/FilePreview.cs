@@ -1,4 +1,6 @@
-﻿namespace Iql.Entities.PropertyGroups.Files
+﻿using System;
+
+namespace Iql.Entities.PropertyGroups.Files
 {
     public class FilePreview<T> : FilePreviewBase, IFileUrl<T>
         where T : class
@@ -18,10 +20,11 @@
             set => MediaKeyInternal = value;
         }
 
-        public FilePreview(IFile file = null, IProperty urlProperty = null, int? maxWidth = null, int? maxHeight = null, string key = null)
-            : base(file, urlProperty, maxWidth, maxHeight, key)
+        public FilePreview(Guid guid, IqlPreviewKind kind = IqlPreviewKind.Image, IFile file = null, IProperty urlProperty = null, int? maxWidth = null, int? maxHeight = null, string key = null)
+            : base(guid, file, urlProperty, maxWidth, maxHeight, key)
         {
             MediaKey = new MediaKey<T>(this);
+            Kind = kind;
         }
     }
 }

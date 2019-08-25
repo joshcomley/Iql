@@ -8799,15 +8799,18 @@ namespace IqlSampleApp.ApiContext.Base
                 p.DefaultBrowseSortExpression = "CreatedDate";
                 p.DefaultBrowseSortDescending = true;
                 p.PersistenceKeyProperty = p.FindProperty("PersistenceKey");
-                p.HasFile(p_f => p_f.PhotoUrl, p_f => {
-                    p_f.VersionProperty = p.FindProperty("PhotoRevisionKey");
-                    p_f.CanWrite = true;
-                    p_f.Name = "Photo";
-                    p_f.Title = "Photo";
-                    p_f.FriendlyName = "Photo";
-                    // p_f.GroupOrder = ???;
-                    p_f.UrlProperty = p.FindProperty("PhotoUrl");
-                });
+                p.HasFile(p_f => p_f.PhotoUrl,
+                    new Guid("0946bc72-f6a4-4a61-8019-98297ce04445"),
+                    p_f =>
+                    {
+                        p_f.VersionProperty = p.FindProperty("PhotoRevisionKey");
+                        p_f.CanWrite = true;
+                        p_f.Name = "Photo";
+                        p_f.Title = "Photo";
+                        p_f.FriendlyName = "Photo";
+                        // p_f.GroupOrder = ???;
+                        p_f.UrlProperty = p.FindProperty("PhotoUrl");
+                    });
                 p.Name = "Person";
                 p.Title = "Person";
                 p.FriendlyName = "Person";

@@ -13,7 +13,7 @@ namespace Iql.Entities
         string TypeName { get; }
         IFile ResolvePreviewProperty();
         IFile CalculatePreviewProperty();
-		IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null);
+        IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null);
         IEntityConfiguration AddMethod(IqlMethod method);
         IProperty[] TryMatchProperty(params string[] names);
         IEnumerable<DisplayConfiguration> DisplayConfigurationsFor(DisplayConfigurationKind kind);

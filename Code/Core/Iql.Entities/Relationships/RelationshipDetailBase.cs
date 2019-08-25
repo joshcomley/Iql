@@ -196,7 +196,7 @@ namespace Iql.Entities.Relationships
         //, Dictionary<object, CompositeKey> dic
         )
         {
-            if(entity is CompositeKey)
+            if(entity is CompositeKey && !inverse)
             {
                 return (CompositeKey)entity;
             }

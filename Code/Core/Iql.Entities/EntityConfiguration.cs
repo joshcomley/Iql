@@ -871,12 +871,13 @@ namespace Iql.Entities
 
         public EntityConfiguration<T> HasFile(
             Expression<Func<T, object>> fileUrlProperty,
+            Guid guid,
             Action<File<T>> configure = null
         )
         {
             var fileProperty = FindPropertyByExpression(fileUrlProperty);
             // MediaKey should support preview variable
-            var file = new File<T>(fileProperty);
+            var file = new File<T>(guid, fileProperty);
             Files.Add(file);
             if (configure != null)
             {

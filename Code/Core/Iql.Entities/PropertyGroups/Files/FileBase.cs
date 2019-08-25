@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Iql.Entities.PropertyGroups.Files
 {
     public class FileBase : SimplePropertyGroupBase<IFile>, IFile
     {
+        private Guid _guid;
+
         public override IProperty PrimaryProperty
         {
             get { return UrlProperty; }
@@ -16,6 +19,7 @@ namespace Iql.Entities.PropertyGroups.Files
         }
 
         public FileBase(
+            Guid guid,
             IProperty urlProperty = null,
             IProperty nameProperty = null,
             IProperty versionProperty = null,
@@ -26,6 +30,7 @@ namespace Iql.Entities.PropertyGroups.Files
             NameProperty = nameProperty;
             VersionProperty = versionProperty;
             KindProperty = kindProperty;
+            Guid = guid;
         }
 
         IMediaKey IFileUrlBase.MediaKey
@@ -40,10 +45,10 @@ namespace Iql.Entities.PropertyGroups.Files
         {
             return new PropertyGroupMetadata[]
             {
-                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.Primary), 
-                new PropertyGroupMetadata(KindProperty, PropertySearchKind.Secondary), 
-                new PropertyGroupMetadata(VersionProperty, PropertySearchKind.None), 
-                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.None), 
+                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.Primary),
+                new PropertyGroupMetadata(KindProperty, PropertySearchKind.Secondary),
+                new PropertyGroupMetadata(VersionProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.None),
             };
         }
 
@@ -58,6 +63,17 @@ namespace Iql.Entities.PropertyGroups.Files
         public IFile RootFile => RootFileInternal;
         protected IFile RootFileInternal => this;
         protected IProperty UrlPropertyInternal { get; set; }
+
+        public Guid Guid
+        {
+            get => _guid;
+            set
+            {
+                EntityConfiguration?.Builder.GuidManager.Assert(value, this);
+                _guid = value;
+            }
+        }
+
         public IProperty UrlProperty
         {
             get => UrlPropertyInternal;

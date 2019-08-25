@@ -30,6 +30,14 @@ namespace Iql.Entities
                             return new HintHelperResult(hint, group.PropertyGroup);
                         }
                     }
+                    if (group.PrimaryProperty != null && group.PrimaryProperty.PropertyGroup != null)
+                    {
+                        hint = HintHelper.FindHint(group.PrimaryProperty.PropertyGroup, name, true);
+                        if (hint != null)
+                        {
+                            return new HintHelperResult(hint, group.PrimaryProperty.PropertyGroup);
+                        }
+                    }
                 }
                 return null;
             }

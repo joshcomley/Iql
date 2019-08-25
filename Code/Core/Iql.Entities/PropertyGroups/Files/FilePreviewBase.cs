@@ -1,7 +1,11 @@
-﻿namespace Iql.Entities.PropertyGroups.Files
+﻿using System;
+
+namespace Iql.Entities.PropertyGroups.Files
 {
     public class FilePreviewBase : MetadataBase, IFilePreview
     {
+        private Guid _guid;
+
         IProperty IFileUrlBase.UrlProperty
         {
             get => UrlPropertyInternal;
@@ -13,6 +17,16 @@
         {
             get => MediaKeyInternal;
             set => MediaKeyInternal = value;
+        }
+
+        public Guid Guid
+        {
+            get { return _guid; }
+            set
+            {
+                EntityConfiguration?.Builder.GuidManager.Assert(value, this);
+                _guid = value;
+            }
         }
 
         IFile IFilePreview.File
@@ -30,14 +44,16 @@
         public int? MaxWidth { get; set; }
         public int? MaxHeight { get; set; }
         public string Key { get; set; }
+        public IqlPreviewKind Kind { get; set; }
 
-        public FilePreviewBase(IFile file = null, IProperty urlProperty = null, int? maxWidth = null, int? maxHeight = null, string key = null)
+        public FilePreviewBase(Guid guid, IFile file = null, IProperty urlProperty = null, int? maxWidth = null, int? maxHeight = null, string key = null)
         {
             FileInternal = file;
             UrlPropertyInternal = urlProperty;
             MaxWidth = maxWidth;
             MaxHeight = maxHeight;
             Key = key;
+            Guid = guid;
         }
 
         public IEntityConfiguration EntityConfiguration => UrlPropertyInternal?.EntityConfiguration;

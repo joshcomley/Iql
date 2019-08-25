@@ -19,6 +19,7 @@ using Iql.Entities.Functions;
 using Iql.Entities.InferredValues;
 using Iql.Entities.Metadata;
 using Iql.Entities.PropertyChangers;
+using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.SpecialTypes;
@@ -76,6 +77,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             typeof(Enum),
             typeof(IDataContext),
             typeof(IqlType),
+            typeof(IqlPreviewKind),
             typeof(DisplayRuleKind),
             typeof(DisplayRuleAppliesToKind),
             typeof(EntityManageKind),
