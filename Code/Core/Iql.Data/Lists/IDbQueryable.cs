@@ -60,8 +60,10 @@ namespace Iql.Data.Lists
         IDbQueryable ExpandAll();
         IDbQueryable ExpandForDisplayFormatter(IEntityDisplayTextFormatter displayFomatter = null);
         IDbQueryable ExpandRelationship(string name);
+        IDbQueryable ExpandCollectionRelationshipCount(string name);
         IDbQueryable ExpandAllSingleRelationships();
         IDbQueryable ExpandAllCollectionCounts();
+        IDbQueryable ExpandAllCollectionRelationships();
         IDbQueryable WithKeys(IEnumerable<object> keys);
         IDbQueryable WithKey(object entityOrKey);
         IDbQueryable WithCompositeKeys(IEnumerable<CompositeKey> keys);

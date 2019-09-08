@@ -20,6 +20,20 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task TestGetDataContextForUntrackedEntity()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 7,
+                Name = "Test client",
+                TypeId = 2
+            });
+            var client = await Db.Clients.NoTracking().GetWithKeyAsync(7);
+            var db = DataContext.FindDataContextForEntity(client);
+            Assert.AreEqual(db, Db);
+        }
+
+        [TestMethod]
         public async Task UpdatingNonNullableRemoteRelationshipFromSetToUnsetShouldMarkEntityForDelete()
         {
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType

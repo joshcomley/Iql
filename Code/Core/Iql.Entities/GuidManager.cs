@@ -5,6 +5,7 @@ namespace Iql.Entities.PropertyGroups.Files
 {
     public class GuidManager
     {
+        public static bool GloballyDisabled { get; set; }
         public Dictionary<Guid, MetadataBase> _lookup = new Dictionary<Guid, MetadataBase>();
         public Dictionary<MetadataBase, Guid> _reverseLookup = new Dictionary<MetadataBase, Guid>();
         public MetadataBase FindByGuid(Guid guid)
@@ -31,8 +32,12 @@ namespace Iql.Entities.PropertyGroups.Files
             {
                 if (_lookup.ContainsKey(guid) && _lookup[guid] != sender)
                 {
-                    var friendlyName = sender.FriendlyName;
-                    throw new ArgumentException($@"""{_lookup[guid].FriendlyName}"" is already using guid ""{guid}"", which ""{friendlyName}"" is attempting to reuse.");
+                    if(!GloballyDisabled)
+                    {
+                        var friendlyName = sender.FriendlyName;
+                        throw new ArgumentException($@"""{_lookup[guid].FriendlyName}"" is already using guid ""{guid}"", which ""{friendlyName}"" is attempting to reuse.");
+                    }
+                    _lookup[guid] = sender;
                 }
                 if (!_lookup.ContainsKey(guid))
                 {

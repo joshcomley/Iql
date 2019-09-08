@@ -11,6 +11,7 @@ namespace Iql.Data.Crud.Operations
 {
     public interface IPropertyState : IJsonSerializable, IStateful, IDisposable
     {
+        Guid Guid { get; }
         //IEntityPropertyEvent
         EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; }
         EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; }
@@ -20,6 +21,7 @@ namespace Iql.Data.Crud.Operations
         bool LocalValueSet { get; }
         object LocalValue { get; set; }
         object RemoteValue { get; set; }
+        string Data { get; set; }
         IProperty Property { get; }
         void HardReset();
         void SoftReset();

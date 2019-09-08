@@ -63,6 +63,23 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task ExpandCollectionCount()
+        {
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 62, TypeId = 52 });
+            AppDbContext.InMemoryDb.People.Add(new Person { Id = 63 });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType { Id = 53 });
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType { Id = 52 });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 62, TypeId = 53 });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap { PersonId = 63, TypeId = 52 });
+
+            var people = await Db.People.ExpandCollectionCount(s => s.Types).ToListAsync();
+            foreach(var person in people)
+            {
+                Assert.AreEqual(1, person.TypesCount);
+            }
+        }
+
+        [TestMethod]
         public async Task ExpandCollectionAndNestedExpandSingleShouldIncludeExpandedEntities()
         {
             AppDbContext.InMemoryDb.People.Add(new Person { Id = 62, TypeId = 52 });

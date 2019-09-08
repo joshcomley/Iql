@@ -12,6 +12,7 @@ using Iql.JavaScript.Extensions;
 using Iql.Parsing;
 #endif
 using Iql.Tests.Context;
+using Iql.Tests.Extensions;
 using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -382,8 +383,8 @@ namespace Iql.Tests.Tests.Offline
             var entityState = Db.GetEntityState(client);
             var jsonWithChanges = Db.TemporalDataTracker.SerializeToJson();
             Assert.AreEqual(
-                @"{""Sets"":[{""Type"":""Client"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":1}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":1,""LocalValue"":2,""Property"":""TypeId""},{""RemoteValue"":""Coca-Cola"",""LocalValue"":""Changed"",""Property"":""Name""}]}]},{""Type"":""ClientType"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":2}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":""Software"",""LocalValue"":""A new name"",""Property"":""Name""}]}]}]}",
-                jsonWithChanges.NormalizeJson());
+                @"{""Sets"":[{""Type"":""Client"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":1}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":1,""LocalValue"":2,""Property"":""TypeId"",""Guid"":""27517399-6b47-45d9-9320-19b5d2c1b1e3""},{""RemoteValue"":""Coca-Cola"",""LocalValue"":""Changed"",""Property"":""Name"",""Guid"":""a2f461aa-2279-42ae-8485-781d9f1192e7""}]}]},{""Type"":""ClientType"",""EntityStates"":[{""CurrentKey"":{""Keys"":[{""Name"":""Id"",""Value"":2}]},""IsNew"":false,""MarkedForDeletion"":false,""MarkedForCascadeDeletion"":false,""PropertyStates"":[{""RemoteValue"":""Software"",""LocalValue"":""A new name"",""Property"":""Name"",""Guid"":""58c11590-6449-431e-8887-94e00cccb408""}]}]}]}".NormalizeGuidsInJson(),
+                jsonWithChanges.NormalizeJson().NormalizeGuidsInJson());
 
             AssertChanges();
 

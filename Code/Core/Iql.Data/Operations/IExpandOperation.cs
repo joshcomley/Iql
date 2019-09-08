@@ -6,7 +6,8 @@ namespace Iql.Data.Operations
 {
     public interface IExpandOperation : IExpressionQueryOperation
     {
-        List<ExpandDetail> ExpandDetails { get; set; }
-        IQueryableBase ApplyQuery(IQueryableBase queryable);
+        bool CountOnly { get; set; }
+        // List<ExpandDetail> ExpandDetails { get; set; }
+        // IQueryableBase ApplyQuery(IQueryableBase queryable);
     }
 }

@@ -39,5 +39,7 @@ namespace Iql.Conversion.State
         public object RemoteValue { get; set; }
         public object LocalValue { get; set; }
         public string Property { get; set; }
+        public string Data { get; set; }
+        public string Guid{ get; set; }
     }
 }

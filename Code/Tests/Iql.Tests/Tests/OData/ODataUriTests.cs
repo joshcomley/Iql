@@ -267,6 +267,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestCurrentUserId()
         {
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
             var query = Db.People.WhereEquals(new IqlIsEqualToExpression(
                 new IqlPropertyExpression(
                     nameof(Person.CreatedByUserId),
@@ -279,6 +280,30 @@ namespace Iql.Tests.Tests.OData
             uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual($@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq '{TestCurrentUserResolver.TestCurrentUserId}')",
                 uri);
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
+        }
+
+        [TestMethod]
+        public async Task TestCollectionCount()
+        {
+            var uri = await Db.People.ExpandCollectionCount(s => s.Types).ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/People?$expand=Types/$count", uri);
+        }
+
+        [TestMethod]
+        public async Task TestCurrentUserGetId()
+        {
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
+            var query = Db.People.Where(_ => _.CreatedByUserId == IqlCurrentUser.Get<ApplicationUser>().Id);
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq null)",
+                uri);
+            Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
+            uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual($@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq '{TestCurrentUserResolver.TestCurrentUserId}')",
+                uri);
+            Db.ServiceProvider.Unregister<IqlCurrentUserService>();
         }
 
         [TestMethod]

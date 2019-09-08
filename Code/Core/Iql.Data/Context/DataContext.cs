@@ -177,12 +177,9 @@ namespace Iql.Data.Context
             var tracker = FindTrackingForEntity(entity);
             if (tracker != null)
             {
-                foreach (var dataContext in AllDataContexts)
+                if(tracker.DataTracker is DataContextDataTracker noTrackingDataTracker)
                 {
-                    if (dataContext.TemporalDataTracker.TrackingSetByType(tracker.EntityType) == tracker)
-                    {
-                        return dataContext;
-                    }
+                    return noTrackingDataTracker.DataContext;
                 }
             }
             return null;
@@ -204,6 +201,16 @@ namespace Iql.Data.Context
             //return null;
         }
 
+        public static IEntityConfiguration FindConfigurationForEntity(object entity)
+        {
+            var tracker = FindTrackingForEntity(entity);
+            if (tracker != null)
+            {
+                return tracker.EntityConfiguration;
+            }
+            return null;
+        }
+
         public static IEntityStateBase FindEntity(object entity)
         {
             var tracker = FindTrackingForEntity(entity);
@@ -217,7 +224,7 @@ namespace Iql.Data.Context
             {
                 if (_dataTracker == null)
                 {
-                    _dataTracker = new DataTracker(DataTrackerKind.Temporal, EntityConfigurationContext, "Temporal");
+                    _dataTracker = new DataContextDataTracker(this, DataTrackerKind.Temporal, EntityConfigurationContext, "Temporal");
                     _dataTracker.RelationshipObserver.UntrackedEntityAdded.Subscribe(_ => { AddEntity(_.Entity); });
                     //_dataTracker.DataContext = this;
                 }
@@ -1783,7 +1790,7 @@ namespace Iql.Data.Context
                 var localDataTracker = TemporalDataTracker;
                 if (!shouldTrackResults)
                 {
-                    localDataTracker = new DataTracker(DataTrackerKind.Temporal, EntityConfigurationContext, "No Tracking", false, true);
+                    localDataTracker = new DataContextDataTracker(this, DataTrackerKind.Temporal, EntityConfigurationContext, "No Tracking", false, true);
                 }
 
                 void TrackResponse(DataTracker dataTracker)

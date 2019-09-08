@@ -172,6 +172,7 @@ namespace Iql.Tests.Tests.EntityConfiguration
         [TestMethod]
         public async Task MediaKeyDoubleTest()
         {
+            Db.EntityConfigurationContext.GuidManager.Clear();
             MediaKeyShouldBeParseable();
             await MediaKeyShouldBeLazyLoaded();
             Db.EntityConfigurationContext.GuidManager.Clear();

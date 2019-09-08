@@ -45,6 +45,19 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                     break;
             }
             var parent = iqlReferenceExpression.Parent as IqlReferenceExpression;
+            if (iqlReferenceExpression.Parent != null && iqlReferenceExpression.Parent.Kind == IqlExpressionKind.Property)
+            {
+                var prop = (IqlPropertyExpression)iqlReferenceExpression;
+                if (prop.PropertyName == nameof(IqlCurrentUser.Get) && prop.Parent.Kind == IqlExpressionKind.Property)
+                {
+                    prop = (IqlPropertyExpression)prop.Parent;
+                    if (prop.PropertyName == nameof(IqlCurrentUser))
+                    {
+                        prop = (IqlPropertyExpression)prop.Parent;
+                        method = new IqlCurrentUserExpression();
+                    }
+                }
+            }
             switch (nativeMethodName)
             {
                 case nameof(IqlPointExpression.Intersects):
@@ -156,7 +169,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                                     var lambdaFunc = context.ParseLambda(
                                         lambdaJavaScriptExpressionNode.Expression,
                                         new RootEntity(
-                                            lambdaJavaScriptExpressionNode.ParameterName, 
+                                            lambdaJavaScriptExpressionNode.ParameterName,
                                             newRootEntityType,
                                             calleeIql.Value as IqlPropertyExpression)).Value;
                                     var countExpression = new IqlCountExpression(lambdaJavaScriptExpressionNode.ParameterName,

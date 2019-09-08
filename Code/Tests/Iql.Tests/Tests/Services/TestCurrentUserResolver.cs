@@ -15,6 +15,7 @@ namespace Iql.Tests.Tests.Services
         {
             return Task.FromResult(new IqlObjectEvaluationResult(true, new ApplicationUser()
             {
+                Id = TestCurrentUserId,
                 UserName = TestCurrentUserName,
                 ClientId = 77
             }));

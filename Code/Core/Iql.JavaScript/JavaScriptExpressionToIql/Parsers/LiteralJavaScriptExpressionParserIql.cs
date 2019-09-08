@@ -16,7 +16,11 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
             // If we have a parent, then:
             // .. if the value is a number, then we're indexing an array
             // .. if the value is a string, then we're indexing a property
-            if (context.ObjectStack().Count > 0)
+            if(Equals(expression.Value, nameof(IqlCurrentUser)))
+            {
+                exp = new IqlPropertyExpression(nameof(IqlCurrentUser));
+            }
+            else if (context.ObjectStack().Count > 0)
             {
                 var type = expression.Value.GetType();
                 if (type.Name == "string")

@@ -5,6 +5,7 @@ using Iql.Data.Queryable;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Entities.Services;
+using Iql.Extensions;
 using Iql.Serialization;
 
 namespace Iql.Data.IqlToIql.Parsers
@@ -281,6 +282,19 @@ namespace Iql.Data.IqlToIql.Parsers
                     ((IqlLiteralExpression)action.Parent).Value == null))
             {
                 return action.Parent;
+            }
+            if(action.Parent.Kind == IqlExpressionKind.Literal)
+            {
+                var literal = (IqlLiteralExpression)action.Parent;
+                if(literal.Value == null)
+                {
+                    return literal;
+                }
+                var value = literal.Value.GetPropertyValueByName(action.PropertyName);
+                if(value != null)
+                {
+                    return new IqlLiteralExpression(value);
+                }
             }
             return action;
         }

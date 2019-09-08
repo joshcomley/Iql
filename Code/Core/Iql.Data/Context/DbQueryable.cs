@@ -1208,16 +1208,56 @@ namespace Iql.Data.Context
             return ClearExpands();
         }
 
+        public DbQueryable<T> ExpandAllCollectionRelationships()
+        {
+            return AllCollectionRelationships(
+                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.PropertyName));
+        }
+
+        IDbQueryable IDbQueryable.ExpandAllCollectionRelationships()
+        {
+            return ExpandAllCollectionRelationships();
+        }
+
+        IDbQueryable IDbQueryable.ExpandCollectionRelationshipCount(string name)
+        {
+            var isDone = false;
+            return AllCollectionRelationships(
+                (queryable, relationship, detail) =>
+                {
+                    if (isDone)
+                    {
+                        return queryable;
+                    }
+                    else if (detail.Property.PropertyName == name && detail.CountProperty != null)
+                    {
+                        return queryable.ExpandRelationship(detail.CountProperty.PropertyName);
+                    }
+                    else if (detail.CountProperty != null && detail.CountProperty.PropertyName == name)
+                    {
+                        return queryable.ExpandRelationship(detail.CountProperty.PropertyName);
+                    }
+                    return queryable;
+                });
+        }
+
         public DbQueryable<T> ExpandAllCollectionCounts()
         {
             return AllCollectionRelationships(
-                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.Name));
+                (queryable, relationship, detail) =>
+                {
+                    if (detail.CountProperty != null)
+                    {
+                        return queryable.ExpandRelationship(detail.CountProperty.PropertyName);
+                    }
+                    return queryable;
+                });
         }
 
         public DbQueryable<T> ExpandAllSingleRelationships()
         {
             return AllSingleRelationships(
-                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.Name));
+                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.PropertyName));
         }
 
         public DbQueryable<T> Expand<TTarget>(
@@ -1269,9 +1309,9 @@ namespace Iql.Data.Context
         }
 
         public DbQueryable<T> ExpandQuery(
-            ExpandQueryExpression expression)
+            ExpandQueryExpression expression, bool countOnly = false)
         {
-            return Then(new ExpandOperation(expression));
+            return Then(new ExpandOperation(expression, countOnly));
         }
 
         public DbQueryable<T> ExpandSingle<TTarget>(
@@ -1296,6 +1336,19 @@ namespace Iql.Data.Context
                     target,
                     q => filter == null ? q : filter((DbQueryable<TTarget>)q)
                     ));
+        }
+
+        public DbQueryable<T> ExpandCollectionCount<TTarget>(
+            Expression<Func<T, IEnumerable<TTarget>>> target,
+            Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter = null)
+            where TTarget : class
+        {
+            return ExpandQuery(
+                new ExpandQueryExpression(
+                    target,
+                    q => filter == null ? q : filter((DbQueryable<TTarget>)q)
+                    ),
+                true);
         }
 
         public DbQueryable<T> AllCollectionRelationships(
@@ -1454,7 +1507,7 @@ namespace Iql.Data.Context
 
         IDbQueryable IDbQueryable.ExpandAllCollectionCounts()
         {
-            return ExpandAllCollectionCounts();
+            return ExpandAllCollectionRelationships();
         }
 
         //IDbQueryable IDbQueryable.Copy()
@@ -1579,14 +1632,14 @@ namespace Iql.Data.Context
                     var iqlExpandExpression = new IqlExpandExpression();
                     iqlExpandExpression.NavigationProperty = iql.TryGetPropertyExpression();
                     var propertytPath = IqlPropertyPath.FromPropertyExpression(EntityConfiguration.Builder, typeMetadata, iqlExpandExpression.NavigationProperty);
-                    var expressionQueryOperatiton = operation as IExpressionQueryOperation;
+                    var expressionQueryOperatiton = operation as IExpandOperation;
                     var expandQueryExpression = expressionQueryOperatiton.QueryExpression as IExpandQueryExpression;
                     var property = propertytPath.Property.EntityProperty();
-                    if (property.Kind.HasFlag(PropertyKind.Count))
+                    if (property.Kind.HasFlag(PropertyKind.Count) || expressionQueryOperatiton.CountOnly)
                     {
                         iqlExpandExpression.Count = true;
                         property = property.Relationship.ThisEnd.CountProperty;
-                        iqlExpandExpression.NavigationProperty.PropertyName = property.Name;
+                        iqlExpandExpression.NavigationProperty.PropertyName = property.PropertyName;
                     }
                     var expandEntityType = property.Relationship.OtherEnd.EntityConfiguration.Type;
                     var expandDbSet = DataContext.GetDbSetByEntityType(expandEntityType);

@@ -117,7 +117,7 @@ namespace Iql.Data.Lists
 
         public new DbSet<T, TKey> ExpandAllCollectionCounts()
         {
-            return (DbSet<T, TKey>)base.ExpandAllCollectionCounts();
+            return (DbSet<T, TKey>)base.ExpandAllCollectionRelationships();
         }
 
         public new DbSet<T, TKey> ExpandAllSingleRelationships()

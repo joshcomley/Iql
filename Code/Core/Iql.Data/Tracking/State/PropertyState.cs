@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Iql.Conversion;
 using Iql.Data.Context;
@@ -23,6 +24,7 @@ namespace Iql.Data.Tracking.State
             IProperty property,
             IEntityStateBase entityState)
         {
+            Guid = Guid.NewGuid();
             Property = property;
             EntityState = entityState;
             if (!(PropertyChanger is PrimitivePropertyChanger))
@@ -202,6 +204,9 @@ namespace Iql.Data.Tracking.State
         public EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
         public IEntityStateBase EntityState { get; }
         public IProperty Property { get; }
+        public string Data { get; set; }
+
+        public Guid Guid { get; set; }
 
         public void HardReset()
         {
@@ -225,7 +230,8 @@ namespace Iql.Data.Tracking.State
             return new PropertyState(Property, null)
             {
                 RemoteValue = RemoteValue,
-                LocalValue = LocalValue
+                LocalValue = LocalValue,
+                Data = Data
             };
         }
 
@@ -249,6 +255,7 @@ namespace Iql.Data.Tracking.State
 
         public void ClearStatefulEvents()
         {
+            Data = null;
             StatefulSaveEvents.UnsubscribeAll();
         }
 
@@ -257,6 +264,11 @@ namespace Iql.Data.Tracking.State
             LocalValue = Property.TypeDefinition.EnsureValueType(state.LocalValue);
             RemoteValue = Property.TypeDefinition.EnsureValueType(state.RemoteValue);
             Property.SetValue(EntityState.Entity, LocalValue);
+            Data = state.Data;
+            if (!string.IsNullOrWhiteSpace(state.Guid))
+            {
+                Guid = new Guid(state.Guid);
+            }
         }
 
         public string SerializeToJson()
@@ -275,7 +287,9 @@ namespace Iql.Data.Tracking.State
             {
                 RemoteValue,
                 LocalValue = Property.GetValue(EntityState.Entity),
-                Property = Property.PropertyName
+                Property = Property.PropertyName,
+                Data = Data,
+                Guid = Guid
             };
         }
 
