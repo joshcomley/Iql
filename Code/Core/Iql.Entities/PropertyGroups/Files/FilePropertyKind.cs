@@ -7,6 +7,7 @@
         PreviewUrl,
         Name,
         Version,
-        Kind
+        Kind,
+        State
     }
 }

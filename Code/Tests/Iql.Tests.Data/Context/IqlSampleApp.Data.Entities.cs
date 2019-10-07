@@ -2873,6 +2873,15 @@ namespace IqlSampleApp.Data.Entities
                 PrimitivePropertyChanger.Instance.ChangeProperty(this, "PhotoUrl", _photoUrl, value, _propertyChanging, _propertyChanged, newValue => this._photoUrl = newValue);
             }
         }
+        protected string _photoState;
+        public string PhotoState
+        {
+            get => _photoState;
+            set
+            {
+                PrimitivePropertyChanger.Instance.ChangeProperty(this, "PhotoState", _photoState, value, _propertyChanging, _propertyChanged, newValue => this._photoState = newValue);
+            }
+        }
         protected string _photoRevisionKey;
         public string PhotoRevisionKey
         {

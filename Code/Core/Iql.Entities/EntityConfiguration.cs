@@ -23,7 +23,8 @@ using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
 {
-    public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
+    public class EntityConfiguration<T> : EntityConfigurationBase
+        , IEntityConfiguration where T : class
     {
         public EntityConfiguration<T> SetGroupPath(string path = null, int order = 0)
         {
@@ -34,7 +35,6 @@ namespace Iql.Entities
 
         public override IUserPermission ParentPermissions => Builder;
         public virtual EntityConfigurationBuilder Builder { get; }
-        IEntityConfiguration IEntityConfigurationItem.EntityConfiguration => this;
 
         public SpecialTypeDefinition SpecialTypeDefinition { get; set; }
 

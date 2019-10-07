@@ -117,7 +117,7 @@ namespace Iql.Data.Tracking
         public object PrepareForJson()
         {
             var trackingSets = Sets
-                .Where(_ => _.GetQueuedChanges(new SaveChangesOperation(null)).Length > 0)
+                .Where(_ => _.GetChangedStates().Length > 0)
                 .ToArray();
             if(trackingSets.Length == 0)
             {
@@ -538,9 +538,9 @@ namespace Iql.Data.Tracking
             {
                 Restore(state);
             }
-            catch
+            catch (Exception e)
             {
-
+                // TODO: Add logging
             }
         }
 

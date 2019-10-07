@@ -9,6 +9,7 @@ namespace Iql.Data.Tracking
 {
     public interface ITrackingSet : IJsonSerializable, IDataChangeProvider, IDisposable
     {
+        IEntityStateBase[] GetChangedStates();
         IEntityStateBase[] AllEntityStates();
         Type EntityType { get; }
         IEntityStateBase Restore(SerializedEntityState entityState);

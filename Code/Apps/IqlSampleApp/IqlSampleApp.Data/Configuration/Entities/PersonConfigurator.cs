@@ -52,6 +52,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 new Guid("2ac84af2-2090-4bfd-a27e-ea68ad0faccb"),
                 f =>
                 {
+                    f.SetStateProperty(_ => _.PhotoState);
                     f.SetVersionProperty(_ => _.PhotoRevisionKey);
                     //f.SetHint(KnownHints.Image);
                     //f.SetHint(KnownHints.Video);

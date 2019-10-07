@@ -16,18 +16,21 @@ namespace Iql.Entities.PropertyGroups.Files
         public File(
             Guid guid,
             IProperty urlProperty = null,
+            IProperty stateProperty = null,
             IProperty nameProperty = null,
             IProperty versionProperty = null,
             IProperty kindProperty = null,
             string key = null) : base(
             guid,
             urlProperty,
+            stateProperty,
             nameProperty,
             versionProperty,
             kindProperty,
             key)
         {
             UrlPropertyInternal = urlProperty;
+            StatePropertyInternal = stateProperty;
             NameProperty = nameProperty;
             VersionProperty = versionProperty;
             KindProperty = kindProperty;
@@ -55,6 +58,12 @@ namespace Iql.Entities.PropertyGroups.Files
         public File<T> SetKindProperty(Expression<Func<T, object>> property)
         {
             KindProperty = EntityConfiguration.FindNestedPropertyByExpression(property);
+            return this;
+        }
+
+        public File<T> SetStateProperty(Expression<Func<T, object>> property)
+        {
+            StatePropertyInternal = EntityConfiguration.FindNestedPropertyByExpression(property);
             return this;
         }
 
@@ -91,6 +100,7 @@ namespace Iql.Entities.PropertyGroups.Files
             {
                 new PropertyGroupMetadata(UrlProperty, PropertySearchKind.None),
                 new PropertyGroupMetadata(KindProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(StateProperty, PropertySearchKind.None),
                 new PropertyGroupMetadata(NameProperty, PropertySearchKind.Primary),
                 new PropertyGroupMetadata(VersionProperty, PropertySearchKind.None),
             };

@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
+using Iql.Conversion;
 using Iql.Entities;
 
 namespace Iql.Data.Rendering
@@ -8,8 +11,9 @@ namespace Iql.Data.Rendering
     [DebuggerDisplay("{Property.Name}, can edit: {CanEdit}, can show: {CanShow}")]
     public class EntityPropertySnapshot
     {
+        public EntityPropertySnapshot Parent { get; private set; }
+        public EntityPropertySnapshot Root => Parent == null ? this : Parent.Root;
         public PropertyDetail Detail { get; set; }
-
         public string Kind { get; set; }
         public bool IsEnum => Kind == PropertyRenderingKind.Enum;
         public bool IsString => Kind == PropertyRenderingKind.String;
@@ -79,12 +83,13 @@ namespace Iql.Data.Rendering
         public SnapshotReasonKind CanShowReason { get; }
         public bool CanEdit { get; set; }
         public SnapshotReasonKind CanEditReason { get; }
-        public EntityPropertySnapshot[] ChildProperties { get; set; }
+        public EntityPropertySnapshot[] ChildProperties { get; }
         public string PropertyName => Property?.Name;
         public IPropertyContainer Property => Detail?.Property;
         public bool EditPermissionDenied => CanEditReason == SnapshotReasonKind.Permissions && !CanEdit;
         public bool ReadPermissionDenied => CanShowReason == SnapshotReasonKind.Permissions && !CanShow;
-
+        public IEntityConfigurationBuilder Builder => EntityConfiguration?.Builder;
+        public IEntityConfiguration EntityConfiguration => Detail == null ? null : Detail.Property.EntityConfiguration;
         public EntityPropertySnapshot(PropertyDetail detail, string kind, bool canShow, SnapshotReasonKind canShowReason, bool canEdit,
             SnapshotReasonKind canEditReason, EntityPropertySnapshot[] childProperties)
         {
@@ -95,6 +100,28 @@ namespace Iql.Data.Rendering
             CanEdit = canEdit;
             CanEditReason = canEditReason;
             ChildProperties = childProperties;
+            if(ChildProperties != null)
+            {
+                foreach (var child in ChildProperties)
+                {
+                    child.Parent = this;
+                }
+            }
+        }
+
+        public EntityPropertySnapshot FindChildProperty(string name)
+        {
+            return Flattened().Where(_ => _.PropertyName == name).SingleOrDefault();
+        }
+
+        public EntityPropertySnapshot FindChildPropertyByExpression<T>(Expression<Func<T, object>> expression)
+        {
+            var name = expression.ToIqlPropertyExpression(Root.EntityConfiguration)?.PropertyName;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+            return Flattened().Where(_ => _.PropertyName == name).SingleOrDefault();
         }
 
         public EntityPropertySnapshot[] Flattened()

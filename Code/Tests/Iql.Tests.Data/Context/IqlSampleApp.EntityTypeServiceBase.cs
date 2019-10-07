@@ -1813,6 +1813,14 @@ namespace IqlSampleApp.ApiContext.Base
                 return _Person_PhotoUrl = _Person_PhotoUrl ?? FindPropertyByName<Person>("PhotoUrl");
             }
         }
+        private IProperty _Person_PhotoState = null;
+        public IProperty Person_PhotoState
+        {
+            get
+            {
+                return _Person_PhotoState = _Person_PhotoState ?? FindPropertyByName<Person>("PhotoState");
+            }
+        }
         private IProperty _Person_PhotoRevisionKey = null;
         public IProperty Person_PhotoRevisionKey
         {

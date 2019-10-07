@@ -1,5 +1,8 @@
 ﻿using System;
+using Iql.Conversion;
 using Iql.JavaScript;
+using Iql.JavaScript.JavaScriptExpressionToIql;
+using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Iql.Tests.Tests.JavaScript
@@ -119,7 +122,7 @@ export var  balanceAnimationKeyframes = r.balanceAnimationKeyframes;
 export var  clearStyles = r.clearStyles;
 export var  collectAndResolveStyles = r.collectAndResolveStyles;
 ";
-            Assert.AreEqual(expected.Replace("\r", ""), cleaned.Replace("\r", ""));
+            Assert.AreEqual(expected.Replace("\n", "").Replace("\r", ""), cleaned.Replace("\n", "").Replace("\r", ""));
         }
 
         [TestMethod]

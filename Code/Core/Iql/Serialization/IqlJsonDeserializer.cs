@@ -49,6 +49,23 @@ namespace Iql.Serialization
             }
 
 #if !TypeScript
+            if (type == typeof(DateTimeOffset) && !(value is DateTimeOffset))
+            {
+                if (value is Int64)
+                {
+                    return new DateTimeOffset(new DateTime((long)value));
+                }
+
+                return DateTimeOffset.Parse(value.ToString());
+            }
+            if (type == typeof(Guid))
+            {
+                return new Guid(value.ToString());
+            }
+            if (type == typeof(Guid?))
+            {
+                return value == null ? (Guid?)null : new Guid(value.ToString());
+            }
             if (type == typeof(object))
             {
                 return value;

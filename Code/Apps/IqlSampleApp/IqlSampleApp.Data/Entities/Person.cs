@@ -17,6 +17,7 @@ namespace IqlSampleApp.Data.Entities
     public class Person : DbObject
     {
         public string PhotoUrl { get; set; }
+        public string PhotoState { get; set; }
         public string PhotoRevisionKey { get; set; }
         public int? InferredFromUserClientId { get; set; }
         public Client InferredFromUserClient { get; set; }

@@ -7,12 +7,20 @@ using IqlSampleApp.ApiContext.Base;
 using IqlSampleApp.Sets;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
+using Iql.JavaScript.JavaScriptExpressionToIql;
 
 namespace Iql.Tests.Tests.DataContextTests
 {
     [TestClass]
     public class DataContextTests : TestsBase
     {
+        //[TestMethod]
+        //public void TestSimplified()
+        //{
+        //    var iql = new JavaScriptExpressionConverter().ConvertJavaScriptStringToIql<Client>("function(e){return e.Id}", Db.EntityConfigurationContext);
+        //    int a = 0;
+        //}
+
         [TestMethod]
         public void AttachEntityTracksCorrectly()
         {

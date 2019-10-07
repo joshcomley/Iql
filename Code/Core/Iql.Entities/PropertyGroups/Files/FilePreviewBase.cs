@@ -4,6 +4,16 @@ namespace Iql.Entities.PropertyGroups.Files
 {
     public class FilePreviewBase : MetadataBase, IFilePreview
     {
+        public IFileState TryGetFileState(object entity)
+        {
+            return FileState.TryGetFileState(StatePropertyInternal, entity);
+        }
+
+        public bool TrySetFileState(object entity, IFileState state)
+        {
+            return FileState.TrySetFileState(StatePropertyInternal, entity, state);
+        }
+
         private Guid _guid;
 
         IProperty IFileUrlBase.UrlProperty
@@ -12,6 +22,13 @@ namespace Iql.Entities.PropertyGroups.Files
             set => UrlPropertyInternal = value;
         }
         protected IProperty UrlPropertyInternal { get; set; }
+
+        IProperty IFileUrlBase.StateProperty
+        {
+            get => StatePropertyInternal;
+            set => StatePropertyInternal = value;
+        }
+        protected IProperty StatePropertyInternal { get; set; }
 
         IMediaKey IFileUrlBase.MediaKey
         {

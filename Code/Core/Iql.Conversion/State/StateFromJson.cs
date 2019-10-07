@@ -15,6 +15,7 @@ namespace Iql.Conversion.State
 
     public partial class SerializedEntityState
     {
+        public Guid Id { get; set; }
         public SerializedCompositeKey CurrentKey { get; set; }
         public object PersistenceKey { get; set; }
         public bool IsNew { get; set; }

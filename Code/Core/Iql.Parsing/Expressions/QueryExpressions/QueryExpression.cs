@@ -10,7 +10,7 @@ namespace Iql.Parsing.Expressions.QueryExpressions
     public abstract class QueryExpression
     {
         public static string Eval =
-            "this.queryableExpressionEvalContext = { evaluate: function (n) {return eval(n);}, context: this }";
+            "(function(){return { Evaluate: function (n) {return eval(n);}, Context: this };})()";
 
         private static readonly string GuidKey = "12694f14-4fb1-4a38-963c-ac851113d6e7";
 

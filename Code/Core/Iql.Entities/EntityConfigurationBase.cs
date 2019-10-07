@@ -22,6 +22,7 @@ namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
+        public override IEntityConfiguration EntityConfiguration => (IEntityConfiguration)this;
         private bool _thumbnailPropertyResolved = false;
 	    private IFile _resolvedThumbnailProperty = null;
 	    public IFile ResolvePreviewProperty()

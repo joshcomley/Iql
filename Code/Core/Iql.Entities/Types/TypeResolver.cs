@@ -29,15 +29,15 @@ namespace Iql.Data.Types
         static TypeResolver()
         {
             KnownTypes = new Dictionary<string, IIqlTypeMetadata>();
-            RegisterKnownType(typeof(RelationshipFilterContext<>));
-            RegisterKnownType(typeof(InferredValueContext<>));
-            RegisterKnownType(typeof(IqlEntityUserPermissionContext<,>));
-            RegisterKnownType(typeof(IqlUserPermissionContext<>));
+            RegisterKnownType(typeof(RelationshipFilterContext<>), nameof(RelationshipFilterContext<object>));
+            RegisterKnownType(typeof(InferredValueContext<>), nameof(InferredValueContext<object>));
+            RegisterKnownType(typeof(IqlEntityUserPermissionContext<,>), nameof(IqlEntityUserPermissionContext<object, object>));
+            RegisterKnownType(typeof(IqlUserPermissionContext<>), nameof(IqlUserPermissionContext<object>));
         }
 
-        public static void RegisterKnownType(Type type)
+        public static void RegisterKnownType(Type type, string name)
         {
-            KnownTypes.Add(CleanTypeName(type.Name), new StandardTypeMetadata(type, type.GetTypeInfo().GenericTypeParameters.Select(gt => new GenericTypeParameter(gt.Name, null)).ToArray()));
+            KnownTypes.Add(name, new StandardTypeMetadata(type, type.GetTypeInfo().GenericTypeParameters.Select(gt => new GenericTypeParameter(gt.Name, null)).ToArray()));
         }
 
         protected static string CleanTypeName(string typeName)

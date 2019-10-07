@@ -25,6 +25,8 @@ namespace Iql.Data.Tracking.State
         private CompositeKey _remoteKey;
         private CompositeKey _localKey;
 
+        public Guid Id { get; set; }
+
         //private CompositeKey _remoteKey;
         public bool IsNew
         {
@@ -175,14 +177,15 @@ namespace Iql.Data.Tracking.State
                     .Restore(deserializedPropertyState);
             }
 
-            MarkedForDeletion = state.MarkedForDeletion;
-            MarkedForCascadeDeletion = state.MarkedForCascadeDeletion;
             if (state.PersistenceKey != null)
             {
                 PersistenceKey = state.PersistenceKey.EnsureGuid();
             }
 
             IsNew = state.IsNew;
+            // This must occur after "IsNew" is set else it will reset MarkedForDeletion
+            MarkedForDeletion = state.MarkedForDeletion;
+            MarkedForCascadeDeletion = state.MarkedForCascadeDeletion;
             LocalKey = state.CurrentKey.ToCompositeKey(EntityConfiguration);
             for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
             {
@@ -211,6 +214,7 @@ namespace Iql.Data.Tracking.State
             Type entityType,
             IEntityConfiguration entityConfiguration)
         {
+            Id = Guid.NewGuid();
             DataTracker = dataTracker;
             Entity = entity;
             EntityType = entityType;
@@ -401,6 +405,7 @@ namespace Iql.Data.Tracking.State
         {
             return new
             {
+                Id,
                 CurrentKey = LocalKey.PrepareForJson(),
                 PersistenceKey,
                 IsNew,

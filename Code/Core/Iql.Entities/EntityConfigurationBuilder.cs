@@ -78,7 +78,7 @@ namespace Iql.Entities
                 var type = entityConfiguration.Value.Type;
                 while (type != null && type != typeof(object))
                 {
-                    if (entityConfiguration.Key.Name == typeName)
+                    if (entityConfiguration.Key.Name == typeName || entityConfiguration.Value.Name == typeName)
                     {
                         return entityConfiguration.Value;
                     }

@@ -12,6 +12,28 @@ namespace Iql.Tests.Tests.Properties
     public class SnapshotTests : TestsBase
     {
         [TestMethod]
+        public async Task TestFindPropertyByExpression()
+        {
+            var currentUser = new ApplicationUser();
+            var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
+            var detail = PropertyDetail.For(siteEntityConfiguration);
+            var displayConfiguration = siteEntityConfiguration.GetDisplayConfiguration(
+                DisplayConfigurationKind.Read);
+            var instance = await detail.GetSnapshotAsync(
+                null,
+                typeof(Site),
+                currentUser,
+                typeof(ApplicationUser),
+                Db,
+                displayConfiguration,
+                SnapshotOrdering.Standard
+            );
+            var sitePostCode = instance.FindChildPropertyByExpression<Site>(_ => _.PostCode);
+            Assert.IsNotNull(sitePostCode);
+            Assert.AreEqual(sitePostCode.PropertyName, nameof(Site.PostCode));
+        }
+
+        [TestMethod]
         public void TestStandardReadOrdering()
         {
             var clientEntityConfiguration = Db.EntityConfigurationContext.EntityType<Client>();

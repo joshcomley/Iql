@@ -30,6 +30,7 @@ namespace Iql.Data.Context
         bool SupportsOffline { get; }
         IOfflineDataStore OfflineDataStore { get; set; }
         IPersistState PersistState { get; set; }
+        //AddSnapshot()
         bool RefreshDisabled { get; set; }
         Task<DbList<TEntity>> TrackGetDataResultAsync<TEntity>(
             FlattenedGetDataResult<TEntity> response)
@@ -41,6 +42,19 @@ namespace Iql.Data.Context
         Task<bool> RestoreOfflineStateAsync();
         IqlDataChanges GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
         IqlDataChanges GetChanges(object[] entities = null, IProperty[] properties = null);
+        DataSnapshotChain SnapshotChain { get; }
+        void ClearSnapshots();
+        DataSnapshot GetSnapshot();
+        DataSnapshotChain RecordSnapshot();
+        DataSnapshotChain CurrentSnapshot { get; }
+        bool HasChanges();
+        bool HasChangesSinceSnapshot();
+        bool RestoreSnapshot(DataSnapshotChain snapshot);
+        bool RestoreSnapshotById(Guid id);
+        bool RestoreToLatestSnapshot();
+        bool RestoreToPreviousSnapshot();
+        bool RestoreToNextSnapshot();
+        bool HasSnapshot { get; }
         IQueuedUpdateEntityOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);
         IQueuedDeleteEntityOperation[] GetDeletions(object[] entities = null);
         IQueuedAddEntityOperation[] GetAdditions(object[] entities = null);
@@ -80,6 +94,7 @@ namespace Iql.Data.Context
         UserSettingsManager UserSettingsManager { get; }
         INestedSetsProviderBase NestedSetsProviderForType(Type type);
         INestedSetsProvider<T> NestedSetsProviderFor<T>();
+        void RevertChanges();
         void AbandonChanges();
         void AbandonChangesForEntity(object entity);
         void AbandonChangesForEntities(IEnumerable<object> entities);

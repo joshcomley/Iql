@@ -75,6 +75,7 @@ namespace Iql.Data.Tracking
             SimplePropertyMerger = new SimplePropertyMerger(EntityConfiguration);
             EntitiesByPersistenceKey = new Dictionary<Guid, IEntityStateBase>();
             EntitiesByObject = new Dictionary<object, IEntityStateBase>();
+            EntitiesByStateId = new Dictionary<string, IEntityStateBase>();
             EntitiesByKey = new Dictionary<string, IEntityStateBase>();
             EntitiesByRemoteKey = new Dictionary<string, RemoteKeyMap>();
         }
@@ -248,6 +249,7 @@ namespace Iql.Data.Tracking
         private Dictionary<object, IEntityStateBase> EntitiesByObject { get; }
         private Dictionary<string, RemoteKeyMap> EntitiesByRemoteKey { get; }
         private Dictionary<string, IEntityStateBase> EntitiesByKey { get; }
+        private Dictionary<string, IEntityStateBase> EntitiesByStateId { get; }
 
         protected IProperty PersistenceKey => EntityConfiguration.PersistenceKeyProperty;
         //public IDataContext DataContext => DataTracker.DataContext;
@@ -530,6 +532,7 @@ namespace Iql.Data.Tracking
             _entityObservers.Clear();
             EntitiesByKey.Clear();
             EntitiesByObject.Clear();
+            EntitiesByStateId.Clear();
             EntitiesByPersistenceKey.Clear();
             EntitiesByRemoteKey.Clear();
             _tracking.Clear();
@@ -550,19 +553,25 @@ namespace Iql.Data.Tracking
 
         public object PrepareForJson()
         {
-            var allStates = EntitiesByKey.Values
-                .Concat(EntitiesByObject.Values)
-                .Concat(EntitiesByPersistenceKey.Values)
-                .Distinct();
             return new
             {
                 Type = EntityConfiguration.Name,
-                EntityStates = WithChanges(allStates).Select(_ => _.PrepareForJson())
+                EntityStates = GetChangedStates().Select(_ => _.PrepareForJson())
                 //EntitiesByKey = WithChanges(EntitiesByKey.Values).Select(_ => _.PrepareForJson()),
                 //EntitiesByObject = WithChanges(EntitiesByObject.Values).Select(_ => _.PrepareForJson()),
                 //EntitiesByPersistenceKey = WithChanges(EntitiesByPersistenceKey.Values).Select(_ => _.PrepareForJson()),
                 //EntitiesByRemoteKey = EntitiesByRemoteKey.Values.Select(_ => _.PrepareForJson()),
             };
+        }
+
+        public IEntityStateBase[] GetChangedStates()
+        {
+            var allStates = EntitiesByKey.Values
+              .Concat(EntitiesByObject.Values)
+              .Concat(EntitiesByStateId.Values)
+              .Concat(EntitiesByPersistenceKey.Values)
+              .Distinct();
+            return WithChanges(allStates).ToArray();
         }
 
         public bool DifferentEntityWithSameKeyIsTracked(T entity)
@@ -600,19 +609,39 @@ namespace Iql.Data.Tracking
                 (T)entity,
                 typeof(T),
                 EntityConfiguration);
-            EntitiesByObject.Add(entity, entityState);
+            TrackState(entityState);
+            return entityState;
+        }
+
+        private void TrackState(IEntityStateBase entityState)
+        {
+            var entity = entityState.Entity;
+            if (!EntitiesByObject.ContainsKey(entity))
+            {
+                EntitiesByObject.Add(entity, entityState);
+            }
+            var stateId = entityState.Id.ToString();
+            if (!EntitiesByStateId.ContainsKey(stateId))
+            {
+                EntitiesByStateId.Add(stateId, entityState);
+            }
             var hasKey = !entityState.LocalKey.HasDefaultValue();
             if (hasKey)
             {
-                EntitiesByKey.Add(entityState.LocalKey.AsLegacyKeyString(), entityState);
+                var key = entityState.LocalKey.AsLegacyKeyString();
+                if (!EntitiesByKey.ContainsKey(key))
+                {
+                    EntitiesByKey.Add(key, entityState);
+                }
             }
             else if (PersistenceKey != null)
             {
                 var persistenceKey = EnsurePersistenceKey(entity).Value;
-                EntitiesByPersistenceKey.Add(persistenceKey, entityState);
+                if (!EntitiesByPersistenceKey.ContainsKey(persistenceKey))
+                {
+                    EntitiesByPersistenceKey.Add(persistenceKey, entityState);
+                }
             }
-
-            return entityState;
         }
 
         private bool HasEntityState(object entity, bool entityOnly)
@@ -660,12 +689,17 @@ namespace Iql.Data.Tracking
             var compositeKey = entityState.CurrentKey.ToCompositeKey(EntityConfiguration);
 
             IEntityStateBase state = null;
+            var stateId = entityState.Id == null ? Guid.NewGuid().ToString() : entityState.Id.ToString();
+            if (EntitiesByStateId.ContainsKey(stateId))
+            {
+                state = EntitiesByStateId[stateId];
+            }
             var keyString = compositeKey.AsLegacyKeyString();
-            if (EntitiesByKey.ContainsKey(keyString))
+            if (state == null && EntitiesByKey.ContainsKey(keyString))
             {
                 state = EntitiesByKey[keyString];
             }
-            if (entityState.PersistenceKey != null)
+            if (state == null && entityState.PersistenceKey != null)
             {
                 var guid = entityState.PersistenceKey.EnsureGuid();
                 state = guid.HasValue ? EntitiesByPersistenceKey[guid.Value] : null;
@@ -681,7 +715,10 @@ namespace Iql.Data.Tracking
                 }
                 state = CreateEntityState(entity);
             }
-
+            else
+            {
+                TrackState(state);
+            }
             state.Restore(entityState);
             return state;
         }

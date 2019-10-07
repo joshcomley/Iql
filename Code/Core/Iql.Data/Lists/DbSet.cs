@@ -143,9 +143,10 @@ namespace Iql.Data.Lists
         }
 
         public new DbSet<T, TKey> ExpandQuery(
-            ExpandQueryExpression expression)
+            ExpandQueryExpression expression, 
+            bool countOnly = false)
         {
-            return (DbSet<T, TKey>)base.ExpandQuery(expression);
+            return (DbSet<T, TKey>)base.ExpandQuery(expression, countOnly);
         }
 
         public new DbSet<T, TKey> ExpandSingle<TTarget>(

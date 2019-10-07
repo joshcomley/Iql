@@ -124,7 +124,7 @@ namespace Iql.Data.Rendering
                     isInitialize);
                 canEdit = !isInferredReadOnly;
             }
-            canShow = canShow && CanShow(entity, configuration);
+            canShow = canShow && (entity == null || CanShow(entity, configuration));
             var canShowReason = SnapshotReasonKind.Configuration;
             var canEditReason = SnapshotReasonKind.Configuration;
             if (editKindOverrides != null && editKindOverrides.ContainsKey(Property))

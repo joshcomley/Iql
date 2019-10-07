@@ -27,22 +27,42 @@ namespace Iql.JavaScript
             var lastStartIndex = 0;
             var currentQuoteChar = '_';
             var lastChar = '_';
+            var lastLastChar = '_';
             var codeChunks = new List<int[]>();
+            var inQuoteIndex = 0;
+            var ss = "";
+            var lastLastI = 0;
+            var lastI = 0;
             for (var i = 0; i < code.Length; i++)
             {
+                if (i == 4959)
+                {
+                    int a = 0;
+                }
+                lastLastI = lastI;
+                lastI = i;
                 var ch = code[i];
                 var startQuote = !inQuote &&
                                  (ch == SingleQuote || ch == DoubleQuote || ch == TildeQuote);// && Quotes.Contains(code[i]);
+                if (startQuote)
+                {
+                    inQuoteIndex = i;
+                }
+                if (inQuote)
+                {
+                    ss += ch;
+                }
                 var endQuote = inQuote && ch == currentQuoteChar;
                 if (!inComment && (startQuote || endQuote))
                 {
-                    if (endQuote && lastChar != '\\')
+                    if (endQuote && (lastChar != '\\' || (lastChar == '\\' && lastLastChar == '\\')))
                     {
                         inQuote = false;
                         currentQuoteChar = '_';
                     }
                     else if (startQuote)
                     {
+                        ss = "";
                         inQuote = true;
                         currentQuoteChar = ch;
                     }
@@ -50,17 +70,70 @@ namespace Iql.JavaScript
                 if (!inQuote)
                 {
                     int endIndex;
-                    if (!inComment && ch == '/' && i < code.Length - 1 && code[i + 1] == '/')
+                    if (!inComment && ch == '/')
                     {
-                        startIndex = i;
-                        while (i < code.Length && code[i] != '\n')
+                        if (i < code.Length - 1 && code[i + 1] == '/')
                         {
-                            i++;
+                            startIndex = i;
+                            while (i < code.Length && code[i] != '\n')
+                            {
+                                i++;
+                            }
+                            endIndex = i;
+                            var hasNewLine = i < code.Length && code[i] == '\n';
+                            //i = 0;
+                            codeChunks.Add(new[] { lastStartIndex, startIndex - lastStartIndex, hasNewLine ? 1 : 0 });
+                            lastStartIndex = endIndex;
                         }
-                        endIndex = i;
-                        //i = 0;
-                        codeChunks.Add(new[] { lastStartIndex, startIndex - lastStartIndex });
-                        lastStartIndex = endIndex;
+                        else if (i < code.Length - 1 && code[i + 1] != '*' && code[i + 1] != '/' && code[i + 1] != ' ' && code[i + 1] != '	')
+                        {
+                            // startIndex = i;
+                            var x = i;
+                            // Regex
+                            i++;
+                            var squareBracketDepth = 0;
+                            var escaped = false;
+                            var rStr = "" + code[i - 1];
+                            while (true)
+                            {
+                                if (i > code.Length - 1)
+                                {
+                                    int a = 0;
+                                }
+                                var rCh = code[i];
+                                rStr += rCh;
+                                var cancelEscape = false;
+                                if (squareBracketDepth == 0 && !escaped && rCh == '/')
+                                {
+                                    endIndex = i;
+                                    break;
+                                }
+                                if (rCh == '\\' && !escaped)
+                                {
+                                    escaped = true;
+                                }
+                                else
+                                {
+                                    cancelEscape = true;
+                                }
+                                if (rCh == '[' && !escaped)
+                                {
+                                    squareBracketDepth++;
+                                }
+                                if (rCh == ']' && !escaped)
+                                {
+                                    squareBracketDepth--;
+                                }
+                                i++;
+                                if (cancelEscape)
+                                {
+                                    escaped = false;
+                                }
+                            }
+                            continue;
+                            // codeChunks.Add(new[] { startIndex, i });
+                            // lastStartIndex = endIndex;
+                        }
                         //code = 
                         //    (codeStr.Substring(0, startIndex) + codeStr.Substring(endIndex, code.Length - endIndex)).ToCharArray();
                     }
@@ -73,19 +146,35 @@ namespace Iql.JavaScript
                     {
                         endIndex = i + 2;
                         inComment = false;
+                        i += 2;
                         //i = 0;
                         //code = (codeStr.Substring(0, startIndex) + codeStr.Substring(endIndex, code.Length - endIndex)).ToCharArray();
                         codeChunks.Add(new[] { lastStartIndex, startIndex - lastStartIndex });
                         lastStartIndex = endIndex;
                     }
                 }
+                lastLastChar = lastChar;
                 lastChar = ch;
             }
 
             var result = "";
             foreach (var chunk in codeChunks)
             {
-                result += codeStr.Substring(chunk[0], chunk[1]);
+                var chunkCode = codeStr.Substring(chunk[0], chunk[1]);
+                var i = chunkCode.Length - 1;
+                while (i > 0 && (chunkCode[i] == '\r' || chunkCode[i] == '\n'))
+                {
+                    i--;
+                }
+                if (i < chunkCode.Length - 1)
+                {
+                    chunkCode = chunkCode.Substring(0, i + 1);
+                }
+                if (chunk.Length > 2 && chunk[2] == 1)
+                {
+                    chunkCode += "\r";
+                }
+                result += chunkCode;
             }
             result += codeStr.Substring(lastStartIndex);
             return result;

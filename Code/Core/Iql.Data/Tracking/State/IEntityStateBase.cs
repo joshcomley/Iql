@@ -14,6 +14,7 @@ namespace Iql.Data.Tracking.State
     {
         //IAsyncEventSubscriber<IEntityEvent> SavingAsync { get; }
         //IAsyncEventSubscriber<IEntityEvent> SavedAsync { get; }
+        Guid Id { get; set; }
         void Restore(SerializedEntityState state);
         bool Floating { get; set; }
         DataTracker DataTracker { get; }

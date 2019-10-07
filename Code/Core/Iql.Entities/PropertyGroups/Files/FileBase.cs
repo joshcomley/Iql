@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,16 +22,28 @@ namespace Iql.Entities.PropertyGroups.Files
         public FileBase(
             Guid guid,
             IProperty urlProperty = null,
+            IProperty stateProperty = null,
             IProperty nameProperty = null,
             IProperty versionProperty = null,
             IProperty kindProperty = null,
             string key = null) : base(null, key)
         {
+            StateProperty = stateProperty;
             UrlProperty = urlProperty;
             NameProperty = nameProperty;
             VersionProperty = versionProperty;
             KindProperty = kindProperty;
             Guid = guid;
+        }
+
+        public IFileState TryGetFileState(object entity)
+        {
+            return FileState.TryGetFileState(StateProperty, entity);
+        }
+
+        public bool TrySetFileState(object entity, IFileState state)
+        {
+            return FileState.TrySetFileState(StateProperty, entity, state);
         }
 
         IMediaKey IFileUrlBase.MediaKey
@@ -63,6 +76,7 @@ namespace Iql.Entities.PropertyGroups.Files
         public IFile RootFile => RootFileInternal;
         protected IFile RootFileInternal => this;
         protected IProperty UrlPropertyInternal { get; set; }
+        protected IProperty StatePropertyInternal { get; set; }
 
         public Guid Guid
         {
@@ -78,6 +92,12 @@ namespace Iql.Entities.PropertyGroups.Files
         {
             get => UrlPropertyInternal;
             set => UrlPropertyInternal = value;
+        }
+
+        public IProperty StateProperty
+        {
+            get => StatePropertyInternal;
+            set => StatePropertyInternal = value;
         }
 
         public IProperty NameProperty { get; set; }
@@ -120,6 +140,11 @@ namespace Iql.Entities.PropertyGroups.Files
             if (property == KindProperty)
             {
                 return FilePropertyKind.Kind;
+            }
+
+            if (property == StateProperty)
+            {
+                return FilePropertyKind.State;
             }
 
             return FilePropertyKind.None;

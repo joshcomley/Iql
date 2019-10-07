@@ -58,6 +58,10 @@ namespace Iql.Data.Types
                 }
                 part += fullName[i];
             }
+            if(part.Length > 2 && part.IndexOf("$") == 0 && part[part.Length - 1] == '$')
+            {
+                part = part.Substring(1, part.Length - 2);
+            }
             if (!string.IsNullOrWhiteSpace(part))
             {
                 type.Name = part;
