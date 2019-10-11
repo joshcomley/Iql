@@ -45,17 +45,22 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                     break;
             }
             var parent = iqlReferenceExpression.Parent as IqlReferenceExpression;
-            if (iqlReferenceExpression.Parent != null && iqlReferenceExpression.Parent.Kind == IqlExpressionKind.Property)
+            if (nativeMethodName == nameof(IqlCurrentUser.Get) &&
+                iqlReferenceExpression.Parent != null &&
+                iqlReferenceExpression.Parent.Kind == IqlExpressionKind.Property)
             {
-                var prop = (IqlPropertyExpression)iqlReferenceExpression;
-                if (prop.PropertyName == nameof(IqlCurrentUser.Get) && prop.Parent.Kind == IqlExpressionKind.Property)
+                IIqlLiteralExpression parentValue = null;
+                try
                 {
-                    prop = (IqlPropertyExpression)prop.Parent;
-                    if (prop.PropertyName == nameof(IqlCurrentUser))
-                    {
-                        prop = (IqlPropertyExpression)prop.Parent;
-                        method = new IqlCurrentUserExpression();
-                    }
+                    parentValue = context.Reducer.Evaluate(parent);
+                }
+                catch
+                {
+
+                }
+                if (parentValue != null && parentValue.Value == typeof(IqlCurrentUser))
+                {
+                    method = new IqlCurrentUserExpression();
                 }
             }
             switch (nativeMethodName)

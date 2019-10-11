@@ -20,7 +20,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
         private readonly int _length;
         private readonly JavaScriptParserSettings _settings;
 
-        public JavaScriptExpressionStringToExpressionTreeParser(string expr, 
+        public JavaScriptExpressionStringToExpressionTreeParser(string expr,
             JavaScriptParserSettings settings = null,
             bool extractBody = true)
         {
@@ -39,7 +39,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
 
         public char ExprI(int i)
         {
-            return i >= _expr.Length ? (char) 0 : _expr[i];
+            return i >= _expr.Length ? (char)0 : _expr[i];
         }
 
         public int ExprICode(int i)
@@ -182,7 +182,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 var property = left as PropertyIdentifierJavaScriptExpressionNode;
                 //lambda = $"function({property.Name}) {{ return {lambda}; }}";
                 var parser = new JavaScriptExpressionStringToExpressionTreeParser(
-                    lambda, 
+                    lambda,
                     _settings,
                     false);
                 var result = parser.Parse();
@@ -191,14 +191,14 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
 
             // Otherwise, we need to start a stack to properly place the binary operations in their
             // precedence structure
-            var biopInfo = new BinaryOperationInfo {Value = biop, Prec = _settings.BinaryPrecedence(biop)};
+            var biopInfo = new BinaryOperationInfo { Value = biop, Prec = _settings.BinaryPrecedence(biop) };
 
             var right = ReadToken();
             if (right == null)
             {
                 JavaScriptParserSettings.ThrowError(_expr, "Expected expression after " + biop, _index);
             }
-            var stack = new List<object>(new object[] {left, biopInfo, right});
+            var stack = new List<object>(new object[] { left, biopInfo, right });
 
             // Properly deal with precedence using [recursive descent](http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm)
             while ((biop = ReadBinaryOp()) != null)
@@ -209,7 +209,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                 {
                     break;
                 }
-                biopInfo = new BinaryOperationInfo {Value = biop, Prec = prec};
+                biopInfo = new BinaryOperationInfo { Value = biop, Prec = prec };
 
                 // Reduce: make a binary expression from the three topmost entries.
                 while (stack.Count > 2 && prec <= (stack[stack.Count - 2] as BinaryOperationInfo).Prec)
@@ -562,7 +562,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
             var start = _index;
             _index += "function".Length;
             ReadSpaces();
-            
+
             _index = FindClose('(', ')', _index);
             _index++;
             ReadSpaces();
@@ -647,7 +647,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                         );
                         break;
                     case JavaScriptParserSettings.OpenArray:
-                        node = new MemberJavaScriptExpressionNode(
+                        var memberNode = new MemberJavaScriptExpressionNode(
                             true,
                             node,
                             ReadExpression()
@@ -658,6 +658,15 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
                         {
                             JavaScriptParserSettings.ThrowError(_expr, "Unclosed [", _index);
                         }
+                        if (memberNode.Property.Type == ExpressionType.Literal)
+                        {
+                            var value = ((LiteralJavaScriptExpressionNode)memberNode.Property).Value;
+                            if (value != null && value.GetType() == typeof(string))
+                            {
+                                memberNode.Property = new PropertyIdentifierJavaScriptExpressionNode((string)value);
+                            }
+                        }
+                        node = memberNode;
                         _index++;
                         break;
                     case JavaScriptParserSettings.OpenParenthesis:

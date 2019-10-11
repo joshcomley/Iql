@@ -20,6 +20,8 @@ using Iql.Tests.Data.Services;
 using Iql.Tests.Tests.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
+using Iql.Parsing;
+using Iql.Parsing.Expressions;
 
 namespace Iql.Tests.Tests.OData
 {
@@ -295,7 +297,16 @@ namespace Iql.Tests.Tests.OData
         public async Task TestCurrentUserGetId()
         {
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();
-            var query = Db.People.Where(_ => _.CreatedByUserId == IqlCurrentUser.Get<ApplicationUser>().Id);
+            var query = Db.People.Where(_ => _.CreatedByUserId == IqlCurrentUser.Get<ApplicationUser>().Id
+#if TypeScript
+                ,
+                                new EvaluateContext
+                                {
+                                    Context = this,
+                                    Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
+                                }
+#endif
+            );
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq null)",
                 uri);

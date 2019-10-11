@@ -18,7 +18,7 @@ using Iql.Parsing.Expressions;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Types;
 
-#if TypeScript
+#if TypeScript || CustomEvaluate
 using Iql.Parsing;
 #endif
 
@@ -62,6 +62,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
+#if CustomEvaluate
+            , EvaluateContext evaluateContext = null
+#endif
         ) where TEntity : class
         {
             var ctx = this;
@@ -72,7 +75,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                 new JavaScriptExpressionNodeParseContext<TEntity>(
                     typeResolver,
                     this,
-#if TypeScript
+#if TypeScript || CustomEvaluate
                     evaluateContext,
 #endif
                     null,
@@ -119,7 +122,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             if (typeResolver != null)
             {
                 var iqlRedudcer = new IqlReducer(
-#if TypeScript
+#if TypeScript || CustomEvaluate
                     evaluateContext
 #endif
                 );

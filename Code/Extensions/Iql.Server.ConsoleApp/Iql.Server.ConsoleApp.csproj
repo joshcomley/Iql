@@ -3,6 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>Latest</LangVersion>
+    <Configurations>Debug;Release;Debug TypeScript CSharp</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10018-1-Debug" />

@@ -43,6 +43,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                             propertyType = property.PropertyType;
                             break;
                         case IqlExpressionKind.Variable:
+                            //var variableParent = parent as IqlVariableExpression;
                             //debugger;
                             break;
                         case IqlExpressionKind.Property:
@@ -60,7 +61,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
 
                 if (propertyType == null)
                 {
-                    var resolvedType = context.TypeResolver == null ? null : context.TypeResolver.FindTypeByType(rootEntityType);
+                    var resolvedType = rootEntityType == null || context.TypeResolver == null ? null : context.TypeResolver.FindTypeByType(rootEntityType);
                     if (resolvedType != null)
                     {
                         ITypeProperty configuredProperty = null;

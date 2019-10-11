@@ -40,6 +40,7 @@
     <ProjectReference Include="..\..\Core\Iql.Parsing\Iql.Parsing.csproj" />
     <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
     <ProjectReference Include="..\..\Core\Iql\Iql.csproj" />
+    <ProjectReference Include="..\..\Extensions\Iql.Server\Iql.Server.csproj" />
     <ProjectReference Include="..\Iql.Tests.Data\Iql.Tests.Data.csproj" />
   </ItemGroup>
 </Project>

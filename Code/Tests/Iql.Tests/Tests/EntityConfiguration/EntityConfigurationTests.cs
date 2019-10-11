@@ -1,9 +1,6 @@
 ﻿using System;
 using Iql.Data.Extensions;
 using Iql.Entities;
-#if !TypeScript
-using Iql.Server.Serialization;
-#endif
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;

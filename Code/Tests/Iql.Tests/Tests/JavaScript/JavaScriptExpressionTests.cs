@@ -1,9 +1,9 @@
-﻿#if TypeScript
+﻿using Iql.Parsing;
+#if TypeScript || CustomEvaluate
 using System;
 using Iql.JavaScript.JavaScriptExpressionToIql;
-using Iql.Parsing;
 #else
-using Brandless.ObjectSerializer;
+// using Brandless.ObjectSerializer;
 #endif
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,8 +11,6 @@ using Iql.Conversion;
 using Iql.Entities.Rules.Relationship;
 using Iql.Entities.SpecialTypes;
 using Iql.JavaScript.Extensions;
-#if !TypeScript
-#endif
 using Iql.JavaScript.JavaScriptExpressionToIql;
 using Iql.OData;
 using Iql.OData.Extensions;
@@ -27,6 +25,29 @@ namespace Iql.Tests.Tests.JavaScript
     [TestClass]
     public class JavaScriptExpressionTests : TestsBase
     {
+#if TypeScript || CustomEvaluate
+        [TestMethod]
+        public void TestWebPackedJavaScript()
+        {
+            var anonVariable = new
+            {
+                t = "123"
+            };
+            var converter = new JavaScriptExpressionConverter();
+            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function(_) { return _.Email == someVariable[/* IqlCurrentUser */ 't']; }", TypeResolver, 
+                new EvaluateContext(_ =>
+                {
+                    if(_ == "t")
+                    {
+                        return anonVariable.t;
+                    }
+                    return anonVariable;
+                }));
+            //var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function(_) { return _.IsClosed == false && _.CreatedByUserId == _brandless_iql__WEBPACK_IMPORTED_MODULE_10__[/* IqlCurrentUser */ ""t""].Get().Id && _.CreatedDate > today; }", TypeResolver);
+            //function(_) { return _.IsClosed == false && _.CreatedByUserId == _brandless_iql__WEBPACK_IMPORTED_MODULE_10__[/* IqlCurrentUser */ ""t""].Get().Id && _.CreatedDate > today; }
+        }
+#endif
+
         [TestMethod]
         public void TestConditionalExpression()
         {

@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <Configurations>Debug;Release;Debug TypeScript CSharp</Configurations>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10018-1-Debug" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />

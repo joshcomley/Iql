@@ -1,9 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configurations>Debug;Release;TypeScript Debug</Configurations>
+    <Configurations>Debug;Release;TypeScript Debug;Debug TypeScript CSharp</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETCOREAPP2_0;TypeScript</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug TypeScript CSharp|netcoreapp2.2|AnyCPU'">
+    <DefineConstants>TRACE;CustomEvaluate</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />

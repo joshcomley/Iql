@@ -1,25 +1,22 @@
-﻿
+﻿#if !TypeScript && !CustomEvaluate
 using System;
-#if !TypeScript
+using Iql.Server.Serialization;
 using Iql.Entities;
 using Iql.Entities.NestedSets;
-using Iql.Server.Serialization;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Iql.Entities.PropertyGroups.Files;
-using Iql.Server.Serialization.Serialization;
 using IqlSampleApp.Data.Entities;
+using Iql.Server.Serialization.Serialization;
 
 namespace Iql.Tests.Tests.MetadataSerialization
 {
     [TestClass]
     public class MetadataSerializationTests
     {
-        [TestMethod]
         public void TestSerializeDeserialize()
         {
-            return;
             var db = new AppDbContext();
             var json2 =
                 false
@@ -94,7 +91,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                 // For speedy debugging
                 ? MetadataSerializationJsonCache.Json
                 : db.EntityConfigurationContext.ToJson();
-            return;
+            // return;
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));
             var siteContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Site));

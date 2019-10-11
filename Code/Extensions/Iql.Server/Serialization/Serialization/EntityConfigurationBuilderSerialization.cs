@@ -11,7 +11,6 @@ namespace Iql.Server.Serialization.Serialization
     {
         public static string ToJson(this IEntityConfigurationBuilder entityConfigurationBuilder)
         {
-
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new InterfaceContractResolver(),

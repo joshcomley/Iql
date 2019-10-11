@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <Configurations>Debug;Release;TypeScript Debug</Configurations>
+    <Configurations>Debug;Release;TypeScript Debug;Debug TypeScript CSharp</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.3-alpha0003-1-Debug" />

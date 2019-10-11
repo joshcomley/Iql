@@ -37,8 +37,8 @@ namespace Iql.Tests.Server
         }
 
         [TestMethod]
-            public async Task InferValuesForUserSettings()
-            {
+        public async Task InferValuesForUserSettings()
+        {
             var controller = ControllerContext();
             var dbObject = new UserSetting
             {
@@ -113,23 +113,23 @@ namespace Iql.Tests.Server
                 controller.ServerEvaluator,
                 ResolveServiceProviderProvider());
             Assert.AreEqual(dbObjectNoInitialize.HasPaid, null);
-             result = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+            result = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+               controller.EntityConfiguration,
+               null,
+               dbObjectNoInitialize,
+               false,
+               controller.ServerEvaluator,
+               ResolveServiceProviderProvider());
+            Assert.AreEqual(dbObjectNoInitialize.HasPaid, null);
+            result = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
                 controller.EntityConfiguration,
                 null,
                 dbObjectNoInitialize,
-                false,
+                true,
                 controller.ServerEvaluator,
                 ResolveServiceProviderProvider());
-             Assert.AreEqual(dbObjectNoInitialize.HasPaid, null);
-             result = await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
-                 controller.EntityConfiguration,
-                 null,
-                 dbObjectNoInitialize,
-                 true,
-                 controller.ServerEvaluator,
-                 ResolveServiceProviderProvider());
-             Assert.AreEqual(dbObjectNoInitialize.HasPaid, true);
-             var json = controller.EntityConfiguration.Builder.ToJson();
+            Assert.AreEqual(dbObjectNoInitialize.HasPaid, true);
+            var json = controller.EntityConfiguration.Builder.ToJson();
         }
 
         [TestMethod]

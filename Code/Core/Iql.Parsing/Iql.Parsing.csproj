@@ -1,9 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configurations>Debug;Release;TypeScript Debug</Configurations>
+    <Configurations>Debug;Release;TypeScript Debug;Debug TypeScript CSharp</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
     <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug TypeScript CSharp|AnyCPU'">
+    <DefineConstants>TRACE;CustomEvaluate</DefineConstants>
   </PropertyGroup>
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
@@ -11,7 +14,7 @@
         <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0051-0-Release" />
       </ItemGroup>
     </When>
-    <When Condition="'$(Configuration)' == 'Debug' or '$(Configuration)' == 'TypeScript Debug'">
+    <When Condition="'$(Configuration)' == 'Debug' or '$(Configuration)' == 'TypeScript Debug' or '$(Configuration)' == 'Debug TypeScript CSharp'">
       <ItemGroup>
         <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0051-1-Debug" />
       </ItemGroup>
