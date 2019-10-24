@@ -28,7 +28,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
 
             var iqlUrl = "http://localhost:28000/odata/$metadata";
             var hazceptionUrl = "http://localhost:58000/odata/$metadata";
-            switch ("isite")
+            switch ("todoot")
             {
                 case "todoot":
                     await GenerateWebAndMobile(
