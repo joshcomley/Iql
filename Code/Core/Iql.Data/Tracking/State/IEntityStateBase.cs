@@ -42,6 +42,6 @@ namespace Iql.Data.Tracking.State
         IPropertyState FindPropertyState(string name);
         void MarkForCascadeDeletion(object from, IRelationship relationship);
         void UnmarkForDeletion();
-        void AbandonChanges();
+        void AbandonPropertyChanges(IProperty[] properties);
     }
 }

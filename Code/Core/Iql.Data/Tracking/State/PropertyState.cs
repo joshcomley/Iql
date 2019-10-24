@@ -15,6 +15,7 @@ namespace Iql.Data.Tracking.State
     [DebuggerDisplay("{Property.Name}")]
     public class PropertyState : IPropertyState
     {
+        private bool _hasChangedSinceSnapshot;
         private bool _hasChanged;
         private object _remoteValueClone;
         private bool _originalValueSet;
@@ -40,7 +41,7 @@ namespace Iql.Data.Tracking.State
         IOperationEventsBase IStateful.SaveEvents => SaveEvents;
         public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents { get; } = new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
         IOperationEventsBase IStateful.AbandonEvents => AbandonEvents;
-        
+
         private PropertyChanger _propertyChanger;
         private object _remoteValue;
 
@@ -50,6 +51,7 @@ namespace Iql.Data.Tracking.State
         }
 
         public string HasChangedText { get; private set; }
+        public bool HasChangedSinceSnapshot => _hasChangedSinceSnapshot;
         public bool HasChanged
         {
             get
@@ -159,6 +161,37 @@ namespace Iql.Data.Tracking.State
             }
         }
 
+        public object SnapshotValue => _snapshotValueSet ? _snapshotValue : RemoteValue;
+
+        public void AddSnapshot()
+        {
+            if (_snapshotValueSet)
+            {
+                if (HasChangedSinceSnapshot)
+                {
+                    AddSnapshotInternal();
+                }
+            }
+            else if (HasChanged)
+            {
+                AddSnapshotInternal();
+            }
+        }
+
+        private void AddSnapshotInternal()
+        {
+            _snapshotValue = LocalValue;
+            _snapshotValueSet = true;
+            UpdateHasChanged();
+        }
+
+        public void ClearSnapshotValue()
+        {
+            _snapshotValueSet = false;
+            _snapshotValue = null;
+            UpdateHasChanged();
+        }
+
         private void SetRemoteValue(object value)
         {
             var oldValue = _remoteValue;
@@ -172,6 +205,8 @@ namespace Iql.Data.Tracking.State
         }
 
         private bool _localValueSet = false;
+        private object _snapshotValue;
+        private bool _snapshotValueSet;
         public bool LocalValueSet => _localValueSet;
         public object LocalValue
         {
@@ -191,15 +226,36 @@ namespace Iql.Data.Tracking.State
 
         private void UpdateHasChanged()
         {
+            UpdateHasChangedSinceStart();
+            UpdateHasChangedSinceSnapshot();
+        }
+
+        private void UpdateHasChangedSinceStart()
+        {
             var oldValue = _hasChanged;
             _hasChanged = _localValueSet && !PropertyChanger.AreEquivalent(RemoteValue, LocalValue);
             if (oldValue != _hasChanged)
             {
+                if (_hasChanged)
+                {
+                }
                 HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
             }
         }
 
+        private void UpdateHasChangedSinceSnapshot()
+        {
+            var oldValue = _hasChangedSinceSnapshot;
+            _hasChangedSinceSnapshot = _localValueSet && _snapshotValueSet && !PropertyChanger.AreEquivalent(SnapshotValue, LocalValue);
+            if (oldValue != _hasChangedSinceSnapshot)
+            {
+                EntityState.DataTracker.MarkAsChangedSinceSnapshot(this, _hasChangedSinceSnapshot);
+                HasChangedSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
+            }
+        }
+
         public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
         public EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
         public IEntityStateBase EntityState { get; }

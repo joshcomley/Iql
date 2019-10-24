@@ -72,12 +72,21 @@ namespace Iql.Data.Tracking.State
 
         public void AbandonChanges()
         {
+            AbandonPropertyChanges(null);
+        }
+
+        public void AbandonPropertyChanges(IProperty[] properties)
+        {
             var ev = new AbandonChangeEvent(this, null);
             AbandonEvents.EmitStartedAsync(() => ev);
             StateEvents.AbandoningEntityChanges.Emit(() => ev);
             for (var i = 0; i < Properties.Count; i++)
             {
                 var state = Properties[i];
+                if (properties != null && !properties.Contains(state.Property))
+                {
+                    continue;
+                }
                 state.AbandonChanges();
             }
             MarkedForDeletion = false;
@@ -419,7 +428,7 @@ namespace Iql.Data.Tracking.State
         {
             MarkedForDeletionChanged?.Dispose();
             EventManager?.Dispose();
-            foreach(var propState in PropertyStates)
+            foreach (var propState in PropertyStates)
             {
                 propState.Dispose();
             }

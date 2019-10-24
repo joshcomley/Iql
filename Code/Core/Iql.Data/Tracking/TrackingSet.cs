@@ -480,15 +480,19 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public void AbandonChanges()
+        public void AbandonChanges(object[] entities = null, IProperty[] properties = null)
         {
             var allStates = new List<IEntityState<T>>();
             foreach (var entity in EntitiesByObject)
             {
+                if (entities != null && !entities.Contains(entity))
+                {
+                    continue;
+                }
                 allStates.Add((IEntityState<T>)entity.Value);
             }
 
-            AbandonChangesForEntityStates(allStates);
+            AbandonChangesForEntityStates(allStates, properties);
         }
 
         public void AbandonChangesForEntities(IEnumerable<object> entities)
@@ -506,13 +510,13 @@ namespace Iql.Data.Tracking
             AbandonChangesForEntityStates(allStates);
         }
 
-        void ITrackingSet.AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states)
+        void ITrackingSet.AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states, IProperty[] properties)
         {
             foreach (var state in states)
             {
                 if (state != null && state.Entity is T)
                 {
-                    state.AbandonChanges();
+                    state.AbandonPropertyChanges(properties);
                     if (state.IsNew)
                     {
                         RemoveEntity((T)state.Entity);
@@ -1170,14 +1174,14 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public void AbandonChangesForEntityStates(IEnumerable<IEntityState<T>> allStates)
+        public void AbandonChangesForEntityStates(IEnumerable<IEntityState<T>> allStates, IProperty[] properties = null)
         {
             var removedStates = new List<IEntityState<T>>();
             var allStatesArr = allStates.ToList();
             for (var i = 0; i < allStatesArr.Count; i++)
             {
                 var state = allStatesArr[i];
-                state.AbandonChanges();
+                state.AbandonPropertyChanges(properties);
                 if (state.IsNew)
                 {
                     removedStates.Add(state);

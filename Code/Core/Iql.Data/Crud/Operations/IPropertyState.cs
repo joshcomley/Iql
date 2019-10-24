@@ -14,13 +14,18 @@ namespace Iql.Data.Crud.Operations
         Guid Guid { get; }
         //IEntityPropertyEvent
         EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; }
+        EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; }
         EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; }
         EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; }
         IEntityStateBase EntityState { get; }
         bool HasChanged { get; }
+        bool HasChangedSinceSnapshot { get; }
         bool LocalValueSet { get; }
         object LocalValue { get; set; }
         object RemoteValue { get; set; }
+        object SnapshotValue { get; }
+        void AddSnapshot();
+        void ClearSnapshotValue();
         string Data { get; set; }
         IProperty Property { get; }
         void HardReset();

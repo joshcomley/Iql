@@ -45,6 +45,109 @@ namespace Iql.Data.Tracking
             }
         }
 
+        private readonly Dictionary<IPropertyState, bool> _hasChangedSinceSnapshot = new Dictionary<IPropertyState, bool>();
+        private readonly List<TrackerSnapshot> _snapshots = new List<TrackerSnapshot>();
+
+        /// <summary>
+        /// For internal use only
+        /// </summary>
+        /// <param name="propertyState"></param>
+        /// <param name="hasChanged"></param>
+        public void MarkAsChangedSinceSnapshot(IPropertyState propertyState, bool hasChanged)
+        {
+            if (hasChanged)
+            {
+                if (!_hasChangedSinceSnapshot.ContainsKey(propertyState))
+                {
+                    _hasChangedSinceSnapshot.Add(propertyState, true);
+                }
+            }
+            else
+            {
+                if (_hasChangedSinceSnapshot.ContainsKey(propertyState))
+                {
+                    _hasChangedSinceSnapshot.Remove(propertyState);
+                }
+            }
+        }
+
+        public void ClearSnapshots()
+        {
+            while (_snapshots.Any())
+            {
+                AbandonLastSnapshot();
+            }
+        }
+
+        public void AddSnapshot()
+        {
+            var snapshot = new TrackerSnapshot();
+            snapshot.Id = Guid.NewGuid();
+            foreach (var item in _hasChangedSinceSnapshot)
+            {
+                snapshot.Values.Add(item.Key, new PropertySnapshot
+                {
+                    PreviousValue = item.Key.SnapshotValue,
+                    CurrentValue = item.Key.LocalValue
+                });
+                item.Key.AddSnapshot();
+            }
+            _hasChangedSinceSnapshot.Clear();
+            _snapshots.Add(snapshot);
+        }
+
+        public bool UndoChanges(object[] entities = null, IProperty[] properties = null)
+        {
+            return GoToLastSnapshot(false, true, entities, properties);
+        }
+
+        public bool AbandonLastSnapshot(bool revert = false)
+        {
+            return GoToLastSnapshot(true, revert);
+        }
+
+        private bool GoToLastSnapshot(bool remove, bool revert, object[] entities = null, IProperty[] properties = null)
+        {
+            var unsetSnapshotValue = false;
+            if (_snapshots.Any())
+            {
+                var last = _snapshots.Last();
+                if (remove)
+                {
+                    _snapshots.Remove(last);
+                    if (!_snapshots.Any())
+                    {
+                        unsetSnapshotValue = true;
+                    }
+                }
+                foreach (var item in last.Values)
+                {
+                    if (entities != null && !entities.Contains(item.Key.EntityState.Entity))
+                    {
+                        continue;
+                    }
+                    if (properties != null && !properties.Contains(item.Key.Property))
+                    {
+                        continue;
+                    }
+
+                    if (revert)
+                    {
+                        item.Key.LocalValue = item.Value.CurrentValue;
+                    }
+                    if (unsetSnapshotValue)
+                    {
+                        item.Key.ClearSnapshotValue();
+                    }
+                }
+                _hasChangedSinceSnapshot.Clear();
+                return true;
+            }
+            AbandonChanges(entities, properties);
+            _hasChangedSinceSnapshot.Clear();
+            return false;
+        }
+
         private void RelationshipChanged(RelationshipChangedEvent relationshipChangedEvent)
         {
             var trackingSet = TrackingSetByType(relationshipChangedEvent.Relationship.Source.EntityConfiguration.Type);
@@ -332,12 +435,12 @@ namespace Iql.Data.Tracking
                 entityState.SoftReset(markAsNotNew));
         }
 
-        public void AbandonChanges()
+        public void AbandonChanges(object[] entities = null, IProperty[] properties = null)
         {
             for (var i = 0; i < Sets.Count; i++)
             {
                 var set = Sets[i];
-                set.AbandonChanges();
+                set.AbandonChanges(entities, properties);
             }
         }
 

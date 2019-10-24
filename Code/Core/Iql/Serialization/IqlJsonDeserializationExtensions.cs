@@ -9,6 +9,7 @@ namespace Iql.Serialization
         {
             return obj.ClaimedIqlKind() != null;
         }
+
         public static IqlExpressionKind? ClaimedIqlKind(this object obj)
         {
             if (obj == null)

@@ -39,11 +39,11 @@ namespace Iql.Data.Tracking
         void SoftReset(IEntityStateBase state, bool markAsNotNew);
         void HardResetAll(List<IEntityStateBase> states);
         void SoftResetAll(List<IEntityStateBase> states, bool markAsNotNew);
-        void AbandonChanges();
+        void AbandonChanges(object[] entities = null, IProperty[] properties = null);
         void AbandonChangesForEntity(object entity);
         void AbandonChangesForEntities(IEnumerable<object> entities);
         void AbandonChangesForEntityState(IEntityStateBase state);
-        void AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states);
+        void AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states, IProperty[] properties = null);
         void Clear();
     }
 }
