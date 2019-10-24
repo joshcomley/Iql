@@ -31,7 +31,12 @@ namespace Iql.Server.Azure
             var container = client.GetContainerReference(AzureSafe(name));
             if (createIfNotExists)
             {
-                await container.CreateIfNotExistsAsync();
+                if (await container.CreateIfNotExistsAsync())
+                {
+                    var permissions = await container.GetPermissionsAsync();
+                    permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
+                    await container.SetPermissionsAsync(permissions);
+                }
             }
             return container;
         }
