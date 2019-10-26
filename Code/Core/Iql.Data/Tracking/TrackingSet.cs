@@ -110,6 +110,7 @@ namespace Iql.Data.Tracking
                 }
             }
             DataTracker.RelationshipObserver.ObserveAll(flattened);
+            entityState.AttachedToTracker = true;
             return (EntityState<T>)entityState;
         }
 
@@ -125,7 +126,8 @@ namespace Iql.Data.Tracking
             {
                 foreach (var item in pair.Value)
                 {
-                    var es = (DataTracker.TrackingSetByType(pair.Key) as TrackingSetBase).AttachEntityInternal(item, isLocal);
+                    var trackingSetByType = (DataTracker.TrackingSetByType(pair.Key) as TrackingSetBase);
+                    var es = trackingSetByType.AttachEntityInternal(item, isLocal);
                     if (item == entity)
                     {
                         entityState = es;
@@ -133,6 +135,7 @@ namespace Iql.Data.Tracking
                 }
             }
             DataTracker.RelationshipObserver.ObserveAll(flattened);
+            entityState.AttachedToTracker = true;
             return (IEntityState<T>)entityState;
         }
 
@@ -166,8 +169,7 @@ namespace Iql.Data.Tracking
                     }
                 }
 
-                var entityState = CreateEntityState(entity);
-                entityState.IsNew = isLocal;
+                var entityState = CreateEntityState(entity, isLocal);
                 Watch(entityState.Entity);
                 if (!isLocal)
                 {
@@ -595,7 +597,7 @@ namespace Iql.Data.Tracking
             return true;
         }
 
-        private IEntityState<T> CreateEntityState(object entity)
+        private IEntityState<T> CreateEntityState(object entity, bool isNew)
         {
             //if (entity is CompositeKey)
             //{
@@ -612,7 +614,8 @@ namespace Iql.Data.Tracking
                 DataTracker,
                 (T)entity,
                 typeof(T),
-                EntityConfiguration);
+                EntityConfiguration,
+                isNew);
             TrackState(entityState);
             return entityState;
         }
@@ -717,7 +720,7 @@ namespace Iql.Data.Tracking
                     var key = EntityConfiguration.Key.Properties[i];
                     key.SetValue(entity, compositeKey.Keys.Single(_ => _.Name == key.PropertyName).Value);
                 }
-                state = CreateEntityState(entity);
+                state = CreateEntityState(entity, true);
             }
             else
             {
@@ -763,6 +766,9 @@ namespace Iql.Data.Tracking
             {
                 EntitiesByPersistenceKey.Remove(state.PersistenceKey.Value);
             }
+
+            _tracking.Remove(entity);
+            state.AttachedToTracker = false;
         }
 
         internal void Watch(T sourceEntity)

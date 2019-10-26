@@ -5,6 +5,7 @@ using Iql.Conversion.State;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
 using Iql.Entities;
+using Iql.Entities.Events;
 using Iql.Entities.Relationships;
 using Iql.Events;
 
@@ -12,8 +13,14 @@ namespace Iql.Data.Tracking.State
 {
     public interface IEntityStateBase : IJsonSerializable, IStateful, IDisposable
     {
+        bool AttachedToTracker { get; set; }
+        EventEmitter<ValueChangedEvent<bool>> AttachedToTrackerChanged { get; }
+        bool PendingInsert { get; }
+        EventEmitter<ValueChangedEvent<bool>> PendingInsertChanged { get; }
         //IAsyncEventSubscriber<IEntityEvent> SavingAsync { get; }
         //IAsyncEventSubscriber<IEntityEvent> SavedAsync { get; }
+        bool IsAttachedToGraph { get; set; }
+        EventEmitter<ValueChangedEvent<bool>> IsAttachedToGraphChanged { get; }
         Guid Id { get; set; }
         void Restore(SerializedEntityState state);
         bool Floating { get; set; }
@@ -27,6 +34,7 @@ namespace Iql.Data.Tracking.State
         bool MarkedForCascadeDeletion { get; set; }
         Guid? PersistenceKey { get; set; }
         bool IsNew { get; set; }
+        EventEmitter<ValueChangedEvent<bool>> IsNewChanged { get; }
         Type EntityType { get; }
         bool MarkedForAnyDeletion { get; }
         List<CascadeDeletion> CascadeDeletedBy { get; }

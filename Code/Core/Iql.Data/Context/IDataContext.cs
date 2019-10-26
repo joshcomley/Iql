@@ -22,7 +22,7 @@ using Iql.Parsing;
 
 namespace Iql.Data.Context
 {
-    public interface IDataContext : IServiceProviderProvider, IIqlDataEvaluator, IDisposable
+    public interface IDataContext : IServiceProviderProvider, IIqlDataEvaluator, IDisposable, ISnapshotManager
     {
         DataContextEvents Events { get; }
         EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged { get; }
@@ -42,19 +42,20 @@ namespace Iql.Data.Context
         Task<bool> RestoreOfflineStateAsync();
         IqlDataChanges GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
         IqlDataChanges GetChanges(object[] entities = null, IProperty[] properties = null);
-        DataSnapshotChain SnapshotChain { get; }
-        void ClearSnapshots();
-        DataSnapshot GetSnapshot();
-        DataSnapshotChain RecordSnapshot();
-        DataSnapshotChain CurrentSnapshot { get; }
-        bool HasChanges();
-        bool HasChangesSinceSnapshot();
-        bool RestoreSnapshot(DataSnapshotChain snapshot);
-        bool RestoreSnapshotById(Guid id);
-        bool RestoreToLatestSnapshot();
-        bool RestoreToPreviousSnapshot();
-        bool RestoreToNextSnapshot();
-        bool HasSnapshot { get; }
+        //DataSnapshotChain SnapshotChain { get; }
+        //void ClearSnapshots();
+        //DataSnapshot GetSnapshot();
+        //DataSnapshotChain CurrentSnapshot { get; }
+        //bool HasChanges();
+        //bool HasChangesSinceSnapshot();
+        //bool RestoreSnapshot(DataSnapshotChain snapshot);
+        //bool RestoreSnapshotById(Guid id);
+        //bool RestoreToLatestSnapshot();
+        //bool RestoreToPreviousSnapshot();
+        //bool RestoreToNextSnapshot();
+        //bool HasSnapshot { get; }
+        //void RevertChanges();
+        TrackerSnapshot CurrentSnapshot { get; }
         IQueuedUpdateEntityOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);
         IQueuedDeleteEntityOperation[] GetDeletions(object[] entities = null);
         IQueuedAddEntityOperation[] GetAdditions(object[] entities = null);
@@ -94,7 +95,6 @@ namespace Iql.Data.Context
         UserSettingsManager UserSettingsManager { get; }
         INestedSetsProviderBase NestedSetsProviderForType(Type type);
         INestedSetsProvider<T> NestedSetsProviderFor<T>();
-        void RevertChanges();
         void AbandonChanges();
         void AbandonChangesForEntity(object entity);
         void AbandonChangesForEntities(IEnumerable<object> entities);
@@ -102,7 +102,7 @@ namespace Iql.Data.Context
         void AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states);
         //Task<SaveChangesResult> CommitQueueAsync(IEnumerable<IQueuedOperation> operations);
         SaveChangesOperation GetSaveChangesOperation(object[] entities = null, IProperty[] properties = null);
-        bool HasOfflineChanges();
+        bool HasOfflineChanges { get; }
         Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null);
         Task<SaveChangesResult> SaveOfflineChangesAsync();
         bool TrackEntities { get; set; }

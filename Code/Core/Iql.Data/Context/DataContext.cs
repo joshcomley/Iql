@@ -24,6 +24,7 @@ using Iql.Data.SpecialTypes;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
+using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Entities.InferredValues;
 using Iql.Entities.Relationships;
@@ -400,10 +401,7 @@ namespace Iql.Data.Context
             return await CommitQueueAsync(saveChangesOperation, changes.AllChanges, true);
         }
 
-        public bool HasOfflineChanges()
-        {
-            return OfflineDataTracker?.HasChanges() == true;
-        }
+        public bool HasOfflineChanges => OfflineDataTracker != null && OfflineDataTracker.HasChanges;
 
         public bool TrackEntities { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
@@ -792,27 +790,23 @@ namespace Iql.Data.Context
             return (INestedSetsProvider<T>)NestedSetsProviderForType(typeof(T));
         }
 
-        public void RevertChanges()
-        {
-            if (HasSnapshot)
-            {
-                if (HasChangesSinceSnapshot())
-                {
-                    RestoreToPreviousSnapshot();
-                }
-            }
-            else
-            {
-                AbandonChanges();
-            }
-        }
+        //public void RevertChanges()
+        //{
+        //    if (HasSnapshot)
+        //    {
+        //        if (HasChangesSinceSnapshot())
+        //        {
+        //            RestoreToPreviousSnapshot();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        AbandonChanges();
+        //    }
+        //}
 
         public void AbandonChanges()
         {
-            if (HasSnapshot)
-            {
-                SnapshotChain.Next = null;
-            }
             AbandonChangesInternal();
         }
 
@@ -960,7 +954,7 @@ namespace Iql.Data.Context
 
         protected virtual void EmitOfflineChangeStateEvent()
         {
-            OfflineStateChanged.Emit(() => new OfflineChangeStateChangedEvent(this, OfflineDataTracker, HasOfflineChanges()));
+            OfflineStateChanged.Emit(() => new OfflineChangeStateChangedEvent(this, OfflineDataTracker, HasOfflineChanges));
         }
 
         protected virtual Task PerformAsync<TEntity>(
@@ -1276,163 +1270,153 @@ namespace Iql.Data.Context
             return TemporalDataTracker.GetChanges(new SaveChangesOperation(this, entities, properties));
         }
 
-        private DataSnapshotChain _snapshotChain = null;
-        public DataSnapshotChain SnapshotChain
-        {
-            get
-            {
-                if (_snapshotChain == null)
-                {
-                    _snapshotChain = new DataSnapshotChain(_snapshotCreatorId);
-                }
-                return _snapshotChain;
-            }
-        }
+        //private DataSnapshotChain _snapshotChain = null;
+        //public DataSnapshotChain SnapshotChain
+        //{
+        //    get
+        //    {
+        //        if (_snapshotChain == null)
+        //        {
+        //            _snapshotChain = new DataSnapshotChain(_snapshotCreatorId);
+        //        }
+        //        return _snapshotChain;
+        //    }
+        //}
 
-        public bool HasChanges()
-        {
-            return GetChanges().HasChanges;
-        }
+        //public bool HasSnapshot => SnapshotChain.Latest.Snapshot != null;
+        //private Guid _snapshotCreatorId = Guid.NewGuid();
+        //public DataSnapshot GetSnapshot()
+        //{
+        //    return new DataSnapshot(_snapshotCreatorId, TemporalDataTracker.SerializeToJson());
+        //}
 
-        public bool HasSnapshot => SnapshotChain.Latest.Snapshot != null;
-        private Guid _snapshotCreatorId = Guid.NewGuid();
-        public DataSnapshot GetSnapshot()
-        {
-            return new DataSnapshot(_snapshotCreatorId, TemporalDataTracker.SerializeToJson());
-        }
+        //public DataSnapshotChain RecordSnapshot()
+        //{
+        //    if(CurrentSnapshot == null)
+        //    {
+        //        if (!HasChanges())
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //    else if(!HasChangesSinceSnapshot())
+        //    {
+        //        return null;
+        //    }
+        //    var snapshot = GetSnapshot();
+        //    var newChainPoint = new DataSnapshotChain(_snapshotCreatorId, snapshot);
+        //    (CurrentSnapshot ?? SnapshotChain).Next = newChainPoint;
+        //    _lastRestoredSnapshot = newChainPoint;
+        //    return newChainPoint;
+        //}
 
-        public DataSnapshotChain RecordSnapshot()
-        {
-            if(CurrentSnapshot == null)
-            {
-                if (!HasChanges())
-                {
-                    return null;
-                }
-            }
-            else if(!HasChangesSinceSnapshot())
-            {
-                return null;
-            }
-            var snapshot = GetSnapshot();
-            var newChainPoint = new DataSnapshotChain(_snapshotCreatorId, snapshot);
-            (CurrentSnapshot ?? SnapshotChain).Next = newChainPoint;
-            _lastRestoredSnapshot = newChainPoint;
-            return newChainPoint;
-        }
 
-        public void ClearSnapshots()
-        {
-            _lastRestoredSnapshot = null;
-            SnapshotChain.Next = null;
-        }
+        //public DataSnapshotChain CurrentSnapshot
+        //{
+        //    get
+        //    {
+        //        if (_lastRestoredSnapshot != null)
+        //        {
+        //            return _lastRestoredSnapshot;
+        //        }
+        //        if (HasSnapshot)
+        //        {
+        //            return SnapshotChain.Latest;
+        //        }
+        //        return null;
+        //    }
+        //}
 
-        public DataSnapshotChain CurrentSnapshot
-        {
-            get
-            {
-                if (_lastRestoredSnapshot != null)
-                {
-                    return _lastRestoredSnapshot;
-                }
-                if (HasSnapshot)
-                {
-                    return SnapshotChain.Latest;
-                }
-                return null;
-            }
-        }
+        //public bool RestoreToNextSnapshot()
+        //{
+        //    var currentSnapshot = CurrentSnapshot;
+        //    if (currentSnapshot != null && currentSnapshot.Next != null)
+        //    {
+        //        return RestoreSnapshot(currentSnapshot.Next);
+        //    }
+        //    return false;
+        //}
 
-        public bool RestoreToNextSnapshot()
-        {
-            var currentSnapshot = CurrentSnapshot;
-            if (currentSnapshot != null && currentSnapshot.Next != null)
-            {
-                return RestoreSnapshot(currentSnapshot.Next);
-            }
-            return false;
-        }
+        //public bool RestoreToPreviousSnapshot()
+        //{
+        //    if (_lastRestoredSnapshot != null)
+        //    {
+        //        if (HasChangesSinceSnapshot())
+        //        {
+        //            return RestoreSnapshot(_lastRestoredSnapshot);
+        //        }
+        //        return RestoreSnapshot(_lastRestoredSnapshot.Previous);
+        //    }
+        //    if (HasSnapshot)
+        //    {
+        //        return RestoreToLatestSnapshot();
+        //    }
+        //    return false;
+        //}
 
-        public bool RestoreToPreviousSnapshot()
-        {
-            if (_lastRestoredSnapshot != null)
-            {
-                if (HasChangesSinceSnapshot())
-                {
-                    return RestoreSnapshot(_lastRestoredSnapshot);
-                }
-                return RestoreSnapshot(_lastRestoredSnapshot.Previous);
-            }
-            if (HasSnapshot)
-            {
-                return RestoreToLatestSnapshot();
-            }
-            return false;
-        }
+        //public bool RestoreToLatestSnapshot()
+        //{
+        //    if (HasSnapshot)
+        //    {
+        //        return RestoreSnapshot(SnapshotChain.Latest);
+        //    }
+        //    return false;
+        //}
 
-        public bool RestoreToLatestSnapshot()
-        {
-            if (HasSnapshot)
-            {
-                return RestoreSnapshot(SnapshotChain.Latest);
-            }
-            return false;
-        }
+        //public bool RevertToFirstSnapshot()
+        //{
+        //    if (HasSnapshot)
+        //    {
+        //        return RestoreSnapshot(SnapshotChain.Next);
+        //    }
+        //    return false;
+        //}
 
-        public bool RevertToFirstSnapshot()
-        {
-            if (HasSnapshot)
-            {
-                return RestoreSnapshot(SnapshotChain.Next);
-            }
-            return false;
-        }
+        //public bool HasChangesSinceSnapshot()
+        //{
+        //    var currentSnapshot = CurrentSnapshot;
+        //    if (currentSnapshot != null && currentSnapshot.Snapshot != null)
+        //    {
+        //        var state = TemporalDataTracker.SerializeToJson();
+        //        return state != currentSnapshot.Snapshot.Snapshot;
+        //    }
+        //    return false;
+        //}
 
-        public bool HasChangesSinceSnapshot()
-        {
-            var currentSnapshot = CurrentSnapshot;
-            if (currentSnapshot != null && currentSnapshot.Snapshot != null)
-            {
-                var state = TemporalDataTracker.SerializeToJson();
-                return state != currentSnapshot.Snapshot.Snapshot;
-            }
-            return false;
-        }
+        //private DataSnapshotChain _lastRestoredSnapshot = null;
+        //public bool RestoreSnapshot(DataSnapshotChain chain)
+        //{
+        //    if (chain == null)
+        //    {
+        //        return false;
+        //    }
+        //    if (chain.CreatorId != _snapshotCreatorId)
+        //    {
+        //        return false;
+        //    }
+        //    if (chain.IsInvalid)
+        //    {
+        //        return false;
+        //    }
+        //    var success = false;
+        //    _lastRestoredSnapshot = chain;
+        //    AbandonChangesInternal();
+        //    if(chain.Snapshot != null)
+        //    {
+        //        TemporalDataTracker.RestoreFromJson(chain.Snapshot.Snapshot);
+        //    }
+        //    return success;
+        //}
 
-        private DataSnapshotChain _lastRestoredSnapshot = null;
-        public bool RestoreSnapshot(DataSnapshotChain chain)
-        {
-            if (chain == null)
-            {
-                return false;
-            }
-            if (chain.CreatorId != _snapshotCreatorId)
-            {
-                return false;
-            }
-            if (chain.IsInvalid)
-            {
-                return false;
-            }
-            var success = false;
-            _lastRestoredSnapshot = chain;
-            AbandonChangesInternal();
-            if(chain.Snapshot != null)
-            {
-                TemporalDataTracker.RestoreFromJson(chain.Snapshot.Snapshot);
-            }
-            return success;
-        }
-
-        public bool RestoreSnapshotById(Guid id)
-        {
-            var snapshot = SnapshotChain.FindById(id);
-            if (snapshot == null)
-            {
-                return false;
-            }
-            return RestoreSnapshot(snapshot);
-        }
+        //public bool RestoreSnapshotById(Guid id)
+        //{
+        //    var snapshot = SnapshotChain.FindById(id);
+        //    if (snapshot == null)
+        //    {
+        //        return false;
+        //    }
+        //    return RestoreSnapshot(snapshot);
+        //}
 
         public IQueuedAddEntityOperation[] GetAdditions(object[] entities = null)
         {
@@ -1922,7 +1906,7 @@ namespace Iql.Data.Context
         private async Task RunGetAsync<TEntity>(QueuedGetDataOperation<TEntity> queuedGetDataOperation, FlattenedGetDataResult<TEntity> response)
             where TEntity : class
         {
-            if (OfflineDataTracker?.HasChanges() != true)
+            if (!HasOfflineChanges)
             {
                 await DataStore.PerformGetAsync(queuedGetDataOperation);
 
@@ -2202,5 +2186,46 @@ namespace Iql.Data.Context
             TemporalDataTracker?.Dispose();
             OfflineDataTracker?.Dispose();
         }
+
+        public TrackerSnapshot CurrentSnapshot => _dataTracker.CurrentSnapshot;
+
+        public void ClearSnapshots()
+        {
+            _dataTracker.ClearSnapshots();
+        }
+
+        public TrackerSnapshot AddSnapshot()
+        {
+            return _dataTracker.AddSnapshot();
+        }
+
+        public bool UndoChanges(object[] entities = null, IProperty[] properties = null)
+        {
+            return _dataTracker.UndoChanges(entities, properties);
+        }
+
+        public bool RemoveLastSnapshot(SnapshotRemoveKind? kind = null)
+        {
+            return _dataTracker.RemoveLastSnapshot(kind);
+        }
+
+        public bool RevertToSnapshot()
+        {
+            return _dataTracker.RevertToSnapshot();
+        }
+
+        public bool HasChangesSinceSnapshot => _dataTracker.HasChangesSinceSnapshot;
+        public bool HasChanges => _dataTracker.HasChanges;
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged => _dataTracker.HasChangesSinceSnapshotChanged;
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _dataTracker.HasChangesChanged;
+
+        public bool RestoreNextAbandonedSnapshot()
+        {
+            return _dataTracker.RestoreNextAbandonedSnapshot();
+        }
+
+        public bool HasSnapshot => _dataTracker.HasSnapshot;
+
+        public bool HasRestorableSnapshot => _dataTracker.HasRestorableSnapshot;
     }
 }

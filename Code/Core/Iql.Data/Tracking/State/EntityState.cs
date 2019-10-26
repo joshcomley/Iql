@@ -11,6 +11,7 @@ using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
 using Iql.Data.Extensions;
 using Iql.Entities;
+using Iql.Entities.Events;
 using Iql.Entities.Relationships;
 using Iql.Events;
 
@@ -21,10 +22,68 @@ namespace Iql.Data.Tracking.State
         where T : class
     {
         private bool _markedForDeletion;
-        private bool _isNew = true;
+        private bool _attachedToTracker = true;
+        private bool _pendingInsert;
+        private bool _isNew;
         private CompositeKey _remoteKey;
         private CompositeKey _localKey;
 
+        // TODO: This somehow needs to be maintained
+        public bool AttachedToTracker
+        {
+            get => _attachedToTracker;
+            set
+            {
+                var old = _attachedToTracker;
+                _attachedToTracker = value;
+                if (old != value)
+                {
+                    DataTracker.NotifyAttachedToTrackerChanged(this, value);
+                    AttachedToTrackerChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                }
+            }
+        }
+
+        public EventEmitter<ValueChangedEvent<bool>> AttachedToTrackerChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+
+        public bool PendingInsert
+        {
+            get => _pendingInsert;
+            private set
+            {
+                var old = _pendingInsert;
+                _pendingInsert = value;
+                if (old != value)
+                {
+                    DataTracker.NotifyPendingInsertChanged(this, value);
+                    PendingInsertChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                }
+            }
+        }
+
+        public EventEmitter<ValueChangedEvent<bool>> PendingInsertChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+
+        public bool IsAttachedToGraph
+        {
+            get => _isAttachedToGraph;
+            set
+            {
+                var old = _isAttachedToGraph;
+                _isAttachedToGraph = value;
+                if (old != value)
+                {
+                    IsAttachedToGraphChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    UpdatePendingInsert();
+                }
+            }
+        }
+
+        private void UpdatePendingInsert()
+        {
+            PendingInsert = IsNew && !MarkedForAnyDeletion;
+        }
+
+        public EventEmitter<ValueChangedEvent<bool>> IsAttachedToGraphChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public Guid Id { get; set; }
 
         //private CompositeKey _remoteKey;
@@ -33,16 +92,24 @@ namespace Iql.Data.Tracking.State
             get => _isNew;
             set
             {
+                var old = _isNew;
                 _isNew = value;
                 if (value)
                 {
+                    // TODO: Remove this..?
                     //_remoteKey = null;
                     MarkedForDeletion = false;
+                }
+                if (old != value)
+                {
+                    IsNewChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    UpdatePendingInsert();
                 }
             }
         }
 
         public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; } = new EventEmitter<MarkedForDeletionChangeEvent>();
+        public EventEmitter<ValueChangedEvent<bool>> IsNewChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public string StateKey { get; set; }
 
 
@@ -56,6 +123,11 @@ namespace Iql.Data.Tracking.State
                 if (changed)
                 {
                     MarkedForDeletionChanged.Emit(() => new MarkedForDeletionChangeEvent(this, value));
+                    if (DataTracker != null)
+                    {
+                        DataTracker.NotifyMarkedForDeletionChanged(this, value);
+                    }
+                    UpdatePendingInsert();
                 }
             }
         }
@@ -221,7 +293,8 @@ namespace Iql.Data.Tracking.State
             DataTracker dataTracker,
             T entity,
             Type entityType,
-            IEntityConfiguration entityConfiguration)
+            IEntityConfiguration entityConfiguration,
+            bool isNew)
         {
             Id = Guid.NewGuid();
             DataTracker = dataTracker;
@@ -234,10 +307,13 @@ namespace Iql.Data.Tracking.State
                 Properties.Add(new PropertyState(property, this));
             }
             LocalKey = entityConfiguration.GetCompositeKey(entity);
+            IsNew = isNew;
             MonitorSaveEvents();
         }
 
         private Dictionary<Guid, IPropertyState[]> _operations = new Dictionary<Guid, IPropertyState[]>();
+        private bool _isAttachedToGraph;
+
         private void MonitorSaveEvents()
         {
             EventManager = new IqlEventManager();

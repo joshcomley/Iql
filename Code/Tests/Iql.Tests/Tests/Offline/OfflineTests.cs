@@ -111,10 +111,10 @@ namespace Iql.Tests.Tests.Offline
             Db.IsOffline = true;
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
-            Assert.IsTrue(Db.HasOfflineChanges());
+            Assert.IsTrue(Db.HasOfflineChanges);
             var tempDb = new OfflineAppDbContext();
             Assert.AreEqual(tempDb.OfflineDataTracker, Db.OfflineDataTracker);
-            Assert.IsTrue(tempDb.HasOfflineChanges());
+            Assert.IsTrue(tempDb.HasOfflineChanges);
         }
 
         [TestMethod]
@@ -149,17 +149,17 @@ namespace Iql.Tests.Tests.Offline
             result = await Db.SaveChangesAsync();
             Assert.AreEqual(1, eventCount);
             Assert.IsTrue(result.Success);
-            Assert.IsTrue(Db.HasOfflineChanges());
+            Assert.IsTrue(Db.HasOfflineChanges);
             var tempDb = new OfflineAppDbContext();
             Assert.AreEqual(tempDb.OfflineDataTracker, Db.OfflineDataTracker);
-            Assert.IsTrue(tempDb.HasOfflineChanges());
+            Assert.IsTrue(tempDb.HasOfflineChanges);
             Db.IsOffline = false;
             Assert.AreEqual(1, eventCount);
             result = await Db.SaveOfflineChangesAsync();
             Assert.IsTrue(result.Success);
             Assert.AreEqual(2, eventCount);
-            Assert.IsFalse(Db.HasOfflineChanges());
-            Assert.IsFalse(tempDb.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges);
+            Assert.IsFalse(tempDb.HasOfflineChanges);
         }
 
         [TestMethod]
@@ -195,16 +195,16 @@ namespace Iql.Tests.Tests.Offline
             result = await Db.SaveChangesAsync();
             Assert.AreEqual(1, eventCount);
             Assert.IsTrue(result.Success);
-            Assert.IsTrue(Db.HasOfflineChanges());
+            Assert.IsTrue(Db.HasOfflineChanges);
             Assert.AreEqual(tempDb.OfflineDataTracker, Db.OfflineDataTracker);
-            Assert.IsTrue(tempDb.HasOfflineChanges());
+            Assert.IsTrue(tempDb.HasOfflineChanges);
             Db.IsOffline = false;
             Assert.AreEqual(1, eventCount);
             result = await Db.SaveOfflineChangesAsync();
             Assert.IsTrue(result.Success);
             Assert.AreEqual(2, eventCount);
-            Assert.IsFalse(Db.HasOfflineChanges());
-            Assert.IsFalse(tempDb.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges);
+            Assert.IsFalse(tempDb.HasOfflineChanges);
         }
 
         [TestMethod]
@@ -566,6 +566,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(0, Db.GetChanges().Count);
             Assert.AreEqual(0, Db.GetOfflineChanges().Count);
             Assert.IsFalse(RemoteClientExists());
+            Assert.IsFalse(Db.HasOfflineChanges);
         }
 
         [TestMethod]
@@ -622,7 +623,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(0, offlineDataSet.Count);
             Assert.AreEqual(3, onlineDataSet.Count);
 
-            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges, "There should be no offline changes (1)");
 
             // Go offline
             Db.IsOffline = false;
@@ -633,7 +634,7 @@ namespace Iql.Tests.Tests.Offline
             Db.Clients.Add(newClient);
             var result = await Db.SaveChangesAsync();
 
-            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges, "There should be no offline changes (2)");
 
             Assert.IsTrue(result.Success);
 
@@ -660,7 +661,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(0, offlineDataSet.Count);
             Assert.AreEqual(3, onlineDataSet.Count);
 
-            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges);
 
             // Go offline
             Db.IsOffline = true;
@@ -670,7 +671,7 @@ namespace Iql.Tests.Tests.Offline
             newClient.TypeId = 2;
             Db.Clients.Add(newClient);
             var result = await Db.SaveChangesAsync();
-            Assert.IsTrue(Db.HasOfflineChanges());
+            Assert.IsTrue(Db.HasOfflineChanges);
             await Db.SaveOfflineStateAsync();
             await Db.ClearOfflineStateAsync();
             StaticPersistState.UseDummyState = true;
@@ -692,7 +693,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(0, offlineDataSet.Count);
             Assert.AreEqual(3, onlineDataSet.Count);
 
-            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges);
 
             // Go offline
             Db.IsOffline = true;
@@ -703,7 +704,7 @@ namespace Iql.Tests.Tests.Offline
             Db.Clients.Add(newClient);
             var result = await Db.SaveChangesAsync();
 
-            Assert.IsTrue(Db.HasOfflineChanges());
+            Assert.IsTrue(Db.HasOfflineChanges);
             var offlineChanges = Db.GetOfflineChanges();
             Assert.AreEqual(1, offlineChanges.Count);
             Assert.IsTrue(offlineChanges.AllChanges[0].Kind == QueuedOperationKind.Add);
@@ -730,7 +731,7 @@ namespace Iql.Tests.Tests.Offline
 
             Assert.IsNotNull(onlineClient);
 
-            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges);
         }
 
 
@@ -738,13 +739,15 @@ namespace Iql.Tests.Tests.Offline
         [TestMethod]
         public async Task AddingAnEntityWithANewDependencyWhenOffline()
         {
+            //await DeleteEntityWhenOfflineAndResyncWhenOnline();
+            Assert.IsFalse(Db.HasOfflineChanges);
             var offlineDataSet = Db.OfflineInMemoryDataStore.DataSet<Client>();
             var onlineDataSet = (Db.DataStore as IOfflineDataStore).DataSet<Client>();
 
             Assert.AreEqual(0, offlineDataSet.Count);
             Assert.AreEqual(3, onlineDataSet.Count);
 
-            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges);
 
             // Go offline
             Db.IsOffline = true;
@@ -757,7 +760,7 @@ namespace Iql.Tests.Tests.Offline
             Db.Clients.Add(newClient);
             var result = await Db.SaveChangesAsync();
 
-            Assert.IsTrue(Db.HasOfflineChanges());
+            Assert.IsTrue(Db.HasOfflineChanges);
 
             Assert.IsTrue(result.Success);
 
@@ -781,7 +784,7 @@ namespace Iql.Tests.Tests.Offline
 
             Assert.IsNotNull(onlineClient);
 
-            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges);
         }
 
         [TestMethod]
@@ -820,7 +823,7 @@ namespace Iql.Tests.Tests.Offline
             Assert.AreEqual(3, clientType.Id);
             Assert.AreEqual(3, client.TypeId);
             Assert.AreEqual(3, offlineClient.TypeId);
-            Assert.IsFalse(Db.HasOfflineChanges());
+            Assert.IsFalse(Db.HasOfflineChanges);
             Assert.IsNotNull(offlineClientTypesDataSet.Single(_ => _.Id == 3));
         }
 

@@ -60,7 +60,7 @@ namespace Iql.Data.Context
         {
             await DataContext.Events.EntityEvents.EmitStartedAsync(() => operation);
             await operation.Events.EmitStartedAsync(() => operation);
-            var allowOnline = isOfflineResync || !DataContext.HasOfflineChanges();
+            var allowOnline = isOfflineResync || !DataContext.HasOfflineChanges;
             //var ctor: { new(entityType: { new(): any }, success: boolean, entity: any): any };
             var isOffline = !allowOnline;
             IEntityCrudResult result;
@@ -585,7 +585,8 @@ namespace Iql.Data.Context
                 update.Operation.EntityState.DataTracker,
                 mappedEntity,
                 typeof(TMap),
-                DataContext.EntityConfigurationContext.EntityType<TMap>());
+                DataContext.EntityConfigurationContext.EntityType<TMap>(),
+                true);
             return dummyEntityState;
         }
 

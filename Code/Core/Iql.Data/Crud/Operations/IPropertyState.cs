@@ -26,6 +26,7 @@ namespace Iql.Data.Crud.Operations
         object SnapshotValue { get; }
         void AddSnapshot();
         void ClearSnapshotValue();
+        void SetSnapshotValue(object value);
         string Data { get; set; }
         IProperty Property { get; }
         void HardReset();

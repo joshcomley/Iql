@@ -178,11 +178,16 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        private void AddSnapshotInternal()
+        public void SetSnapshotValue(object value)
         {
-            _snapshotValue = LocalValue;
+            _snapshotValue = value;
             _snapshotValueSet = true;
             UpdateHasChanged();
+        }
+
+        private void AddSnapshotInternal()
+        {
+            SetSnapshotValue(LocalValue);
         }
 
         public void ClearSnapshotValue()
@@ -236,9 +241,6 @@ namespace Iql.Data.Tracking.State
             _hasChanged = _localValueSet && !PropertyChanger.AreEquivalent(RemoteValue, LocalValue);
             if (oldValue != _hasChanged)
             {
-                if (_hasChanged)
-                {
-                }
                 HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
             }
         }
@@ -246,10 +248,13 @@ namespace Iql.Data.Tracking.State
         private void UpdateHasChangedSinceSnapshot()
         {
             var oldValue = _hasChangedSinceSnapshot;
-            _hasChangedSinceSnapshot = _localValueSet && _snapshotValueSet && !PropertyChanger.AreEquivalent(SnapshotValue, LocalValue);
+            _hasChangedSinceSnapshot = _localValueSet && !PropertyChanger.AreEquivalent(SnapshotValue, LocalValue);
             if (oldValue != _hasChangedSinceSnapshot)
             {
-                EntityState.DataTracker.MarkAsChangedSinceSnapshot(this, _hasChangedSinceSnapshot);
+                if(EntityState != null)
+                {
+                    EntityState.DataTracker.NotifyChangedSinceSnapshot(this, _hasChangedSinceSnapshot);
+                }
                 HasChangedSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
             }
         }

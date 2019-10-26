@@ -771,23 +771,24 @@ namespace Iql.Data.Relationships
             switch (relationship.Kind)
             {
                 case RelationshipKind.OneToOne:
+                    //throw new NotSupportedException("OneToOne relationships not supported directly.");
                     if (oldTarget != null)
                     {
                         _propertyChangeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(
                             () => { oldTarget.SetPropertyValue(relationship.Target.Property, null); },
-                            new[] {relationship.Target.Property}, oldTarget);
+                            new[] { relationship.Target.Property }, oldTarget);
                     }
 
                     if (newTarget != null)
                     {
                         _propertyChangeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(
                             () => { newTarget.SetPropertyValue(relationship.Target.Property, source); },
-                            new[] {relationship.Target.Property}, newTarget);
+                            new[] { relationship.Target.Property }, newTarget);
                     }
 
                     _propertyChangeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(
                         () => { source.SetPropertyValue(relationship.Source.Property, newTarget); },
-                        new[] {relationship.Source.Property}, source);
+                        new[] { relationship.Source.Property }, source);
                     break;
                 case RelationshipKind.OneToMany:
                     if (oldTarget != null)
@@ -815,6 +816,18 @@ namespace Iql.Data.Relationships
                             source.SetPropertyValue(relationship.Source.Property, newTarget);
                         },
                         new[] {relationship.Source.Property}, source);
+                    if (oldTarget != null)
+                    {
+                        CheckIfAttachedToGraph(oldTarget);
+                    }
+                    if (newTarget != null)
+                    {
+                        CheckIfAttachedToGraph(newTarget);
+                    }
+                    if (source != null)
+                    {
+                        CheckIfAttachedToGraph(source);
+                    }
                     break;
             }
 
@@ -853,6 +866,34 @@ namespace Iql.Data.Relationships
             }
 
             RelationshipChanged.Emit(() => new RelationshipChangedEvent(source, relationship));
+        }
+
+        private void CheckIfAttachedToGraph(object entity)
+        {
+            var state = DataTracker.GetEntityState(entity);
+            if (state != null)
+            {
+                if (!state.IsNew)
+                {
+                    state.IsAttachedToGraph = true;
+                    return;
+                }
+                var entityGraph = EntityConfigurationContext.FlattenObjectGraph(entity, entity.GetType());
+                foreach(var item in entityGraph)
+                {
+                    for (var i = 0; i < item.Value.Count; i++)
+                    {
+                        var gEntity = item.Value[i];
+                        var s = DataTracker.GetEntityState(gEntity);
+                        if(!s.IsNew)
+                        {
+                            state.IsAttachedToGraph = true;
+                            return;
+                        }
+                    }
+                }
+                state.IsAttachedToGraph = false;
+            }
         }
     }
 }
