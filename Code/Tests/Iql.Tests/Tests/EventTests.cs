@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Iql.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,6 +8,100 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class EventTests
     {
+        [TestMethod]
+        public void PauseEventManagerTest()
+        {
+            var counter = 0;
+            var emitter = new EventEmitter<int>();
+            var manager = new IqlEventManager();
+            var sub1 = manager.Subscribe(emitter, _ => { counter++; });
+            var sub2 = manager.Subscribe(emitter, _ => { counter++; });
+            var sub3 = manager.Subscribe(emitter, _ => { counter++; });
+            emitter.Emit(() => 0);
+            Assert.AreEqual(3, counter);
+            sub2.Pause();
+            emitter.Emit(() => 0);
+            Assert.AreEqual(5, counter);
+            manager.Pause();
+            emitter.Emit(() => 0);
+            emitter.Emit(() => 0);
+            emitter.Emit(() => 0);
+            emitter.Emit(() => 0);
+            Assert.AreEqual(5, counter);
+            manager.Resume();
+            emitter.Emit(() => 0);
+            emitter.Emit(() => 0);
+            Assert.AreEqual(11, counter);
+        }
+
+        [TestMethod]
+        public async Task PauseEventManagerAsyncTest()
+        {
+            var counter = 0;
+            var emitter = new AsyncEventEmitter<int>();
+            var manager = new IqlEventManager();
+            var sub1 = manager.SubscribeAsync(emitter, async _ => { counter++; });
+            var sub2 = manager.SubscribeAsync(emitter, async _ => { counter++; });
+            var sub3 = manager.SubscribeAsync(emitter, async _ => { counter++; });
+            await emitter.EmitAsync(() => 0);
+            Assert.AreEqual(3, counter);
+            sub2.Pause();
+            await emitter.EmitAsync(() => 0);
+            Assert.AreEqual(5, counter);
+            manager.Pause();
+            await emitter.EmitAsync(() => 0);
+            await emitter.EmitAsync(() => 0);
+            await emitter.EmitAsync(() => 0);
+            await emitter.EmitAsync(() => 0);
+            Assert.AreEqual(5, counter);
+            manager.Resume();
+            await emitter.EmitAsync(() => 0);
+            await emitter.EmitAsync(() => 0);
+            Assert.AreEqual(11, counter);
+        }
+
+        [TestMethod]
+        public void PauseEventTest()
+        {
+            var counter = 0;
+            var emitter = new EventEmitter<int>();
+            var sub = emitter.Subscribe(_ => { counter++; });
+            emitter.Emit(() => 0);
+            emitter.Emit(() => 0);
+            sub.Pause();
+            Assert.AreEqual(2, counter);
+            emitter.Emit(() => 0);
+            Assert.AreEqual(2, counter);
+            emitter.Emit(() => 0);
+            emitter.Emit(() => 0);
+            emitter.Emit(() => 0);
+            Assert.AreEqual(2, counter);
+            sub.Resume();
+            emitter.Emit(() => 0);
+            Assert.AreEqual(3, counter);
+        }
+
+        [TestMethod]
+        public async Task PauseAsyncEventTest()
+        {
+            var counter = 0;
+            var emitter = new AsyncEventEmitter<int>();
+            var sub = emitter.SubscribeAsync(async _ => { counter++; });
+            await emitter.EmitAsync(() => 0);
+            await emitter.EmitAsync(() => 0);
+            sub.Pause();
+            Assert.AreEqual(2, counter);
+            await emitter.EmitAsync(() => 0);
+            Assert.AreEqual(2, counter);
+            await emitter.EmitAsync(() => 0);
+            await emitter.EmitAsync(() => 0);
+            await emitter.EmitAsync(() => 0);
+            Assert.AreEqual(2, counter);
+            sub.Resume();
+            await emitter.EmitAsync(() => 0);
+            Assert.AreEqual(3, counter);
+        }
+
         [TestMethod]
         public void OnSubscribe()
         {

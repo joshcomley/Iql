@@ -16,40 +16,39 @@ namespace Iql.Events
         private EventEmitter<EventSubscription> _onSubscribe;
         private EventEmitter<EventSubscription> _onUnsubscribe;
         private int _subscriptionId;
-        private Dictionary<int, TSubscriptionAction> _subscriptionActions;
 
         protected List<TSubscriptionAction> ResolveSubscriptionActions(IEnumerable<EventSubscription> subscriptions)
         {
-            List<TSubscriptionAction> subscriptionActions;
+            List<EventSubscription> subscriptionActions;
             if (subscriptions == null)
             {
                 subscriptionActions = SubscriptionActions;
             }
             else
             {
-                subscriptionActions = new List<TSubscriptionAction>();
+                subscriptionActions = new List<EventSubscription>();
                 foreach (var eventSubscription in subscriptions)
                 {
                     var match = FindSubscription(eventSubscription.Id);
-                    if (match != null && match.Subscription == eventSubscription && eventSubscription.EventSubscriber == this)
+                    if (match != null && match == eventSubscription && eventSubscription.EventSubscriber == this)
                     {
-                        subscriptionActions.Add(match.Action);
+                        subscriptionActions.Add(match);
                     }
                 }
             }
-            return subscriptionActions;
+            return subscriptionActions == null ? null : subscriptionActions.Where(_ => !_.Paused).Select(_ => (TSubscriptionAction)_.Action).ToList();
         }
 
-        protected SubscriptionMatch<TSubscriptionAction> FindSubscription(int id)
+        protected EventSubscription FindSubscription(int id)
         {
-            if (_subscriptionActions.ContainsKey(id) && SubscriptionsLookup.ContainsKey(id))
+            if (SubscriptionsLookup.ContainsKey(id) && SubscriptionsLookup.ContainsKey(id))
             {
-                return new SubscriptionMatch<TSubscriptionAction>(SubscriptionsLookup[id], _subscriptionActions[id]);
+                return SubscriptionsLookup[id];
             }
             return null;
         }
 
-        protected List<TSubscriptionAction> SubscriptionActions { get; set; }
+        protected List<EventSubscription> SubscriptionActions { get; set; }
 
         [JsonIgnore]
         public EventEmitter<EventSubscription> OnSubscribe =>
@@ -92,7 +91,7 @@ namespace Iql.Events
 
         public void Unsubscribe(int subscription)
         {
-            if (_subscriptionActions == null)
+            if (SubscriptionsLookup == null)
             {
                 return;
             }
@@ -108,7 +107,6 @@ namespace Iql.Events
             }
 
             SubscriptionsLookup.Remove(subscription);
-            _subscriptionActions.Remove(subscription);
         }
 
         public void UnsubscribeAll()
@@ -123,8 +121,7 @@ namespace Iql.Events
 
             SubscriptionsLookup.Clear();
             Subscriptions.Clear();
-            _subscriptionActions = new Dictionary<int, TSubscriptionAction>();
-            SubscriptionActions = new List<TSubscriptionAction>();
+            SubscriptionActions = new List<EventSubscription>();
         }
 
         public void Dispose()
@@ -167,16 +164,10 @@ namespace Iql.Events
 
         protected EventSubscription SubscribeInternal(TSubscriptionAction action)
         {
-            if (_subscriptionActions == null)
-            {
-                _subscriptionActions = new Dictionary<int, TSubscriptionAction>();
-            }
-
             var id = ++_subscriptionId;
-            _subscriptionActions.Add(id, action);
-            SubscriptionActions = _subscriptionActions.Values.ToList();
-            var sub = new EventSubscription(this, id);
+            var sub = new EventSubscription(this, id, action);
             SubscriptionsLookup.Add(id, sub);
+            SubscriptionActions = SubscriptionsLookup.Values.ToList();
             if (_onSubscribe != null)
             {
                 OnSubscribe.Emit(() => sub);

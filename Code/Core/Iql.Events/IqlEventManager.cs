@@ -8,10 +8,25 @@ namespace Iql.Events
     {
         private readonly List<EventSubscription> _subscriptions = new List<EventSubscription>();
 
+        public void Pause()
+        {
+            for (var i = 0; i < _subscriptions.Count; i++)
+            {
+                _subscriptions[i].Pause();
+            }
+        }
+
+        public void Resume()
+        {
+            for (var i = 0; i < _subscriptions.Count; i++)
+            {
+                _subscriptions[i].Resume();
+            }
+        }
+
         public void Dispose()
         {
             UnsubscribeAll();
-
         }
 
         public void UnsubscribeAll()
