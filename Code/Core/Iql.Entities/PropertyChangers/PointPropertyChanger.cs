@@ -2,6 +2,11 @@
 {
     public class PointPropertyChanger : ComplexPropertyChanger<IqlPointExpression>
     {
+        public PointPropertyChanger()
+        {
+            CanSilentlyChange = true;
+        }
+
         public static PointPropertyChanger Instance { get; } = new PointPropertyChanger();
         protected override bool CheckEquivalence(IqlPointExpression newValue, IqlPointExpression oldValue)
         {

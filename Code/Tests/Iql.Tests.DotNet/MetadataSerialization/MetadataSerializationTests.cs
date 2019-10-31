@@ -7,6 +7,7 @@ using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Iql.Entities.PropertyGroups.Files;
+using Iql.Forms;
 using IqlSampleApp.Data.Entities;
 using Iql.Server.Serialization.Serialization;
 
@@ -45,7 +46,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                 .HasGeographic(c => c.AverageIncome, c => c.AverageIncome, "MyGeographic");
             clientConfig
                 .HasNestedSet(c => c.AverageIncome, c => c.AverageSales, setKey: "MyNestedSet");
-            clientConfig.Geographics[0].SetHint(KnownHints.BigText);
+            clientConfig.Geographics[0].SetHint(FormHints.BigText);
             clientConfig.SetEditDisplay(
                 (entityConfiguration, displayConfiguration) => displayConfiguration.SetProperties(
                     entityConfiguration,
@@ -60,7 +61,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                                 c2 => c2.FindProperty(nameof(Client.Category))))
                         .Configure(c3 =>
                         {
-                            c3.SetHint(KnownHints.HelpTextBottom);
+                            c3.SetHint(FormHints.HelpTextBottom);
                             c3.ContentAlignment = ContentAlignment.Horizontal;
                         }),
                     c => c.NestedSets[0]));

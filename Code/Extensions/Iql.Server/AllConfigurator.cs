@@ -84,7 +84,7 @@ namespace Iql.Server
         {
             builder.EntityType<T>().Configure(config =>
             {
-                config.ConfigureProperty(p => p.Description, p => p.SetHint(KnownHints.BigText));
+                config.ConfigureProperty(p => p.Description, p => p.SetHint(FormHints.BigText));
             });
         }
 
@@ -228,7 +228,7 @@ namespace Iql.Server
             builder.EntityType<T>().Configure(config =>
             {
                 config.ConfigureProperty(p => p.Id, p => p.SetReadOnly());
-                config.ConfigureProperty(p => p.Email, p => p.SetHint(KnownHints.EmailAddress));
+                config.ConfigureProperty(p => p.Email, p => p.SetHint(FormHints.EmailAddress));
             });
         }
 

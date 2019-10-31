@@ -401,7 +401,6 @@ namespace Iql.Entities
                         double GetOrder(IProperty p, double d)
                         {
                             if (
-                                p.HasHint(KnownHints.EmailAddress) ||
                                 p.Kind.HasFlag(PropertyKind.RelationshipKey) ||
                                 p.Kind.HasFlag(PropertyKind.Key))
                             {

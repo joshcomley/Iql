@@ -14,6 +14,7 @@ using Iql.Data.SpecialTypes;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
+using Iql.Entities.Events;
 using Iql.Entities.Relationships;
 using Iql.Entities.Services;
 using Iql.Entities.Validation.Validation;
@@ -55,7 +56,6 @@ namespace Iql.Data.Context
         //bool RestoreToNextSnapshot();
         //bool HasSnapshot { get; }
         //void RevertChanges();
-        TrackerSnapshot CurrentSnapshot { get; }
         IQueuedUpdateEntityOperation[] GetUpdates(object[] entities = null, IProperty[] properties = null);
         IQueuedDeleteEntityOperation[] GetDeletions(object[] entities = null);
         IQueuedAddEntityOperation[] GetAdditions(object[] entities = null);
@@ -89,7 +89,6 @@ namespace Iql.Data.Context
             ;
         Task<IPropertyValidationResult> ValidateEntityPropertyByNameAsync(object entity, string property, bool? sanitizeValue = null);
         Task<IPropertyValidationResult> ValidateEntityPropertyAsync(object entity, IProperty property, bool? sanitizeValue = null);
-        bool IsTracked(object entity);
         UsersManager UsersManager { get; }
         CustomReportsManager CustomReportsManager { get; }
         UserSettingsManager UserSettingsManager { get; }
@@ -103,6 +102,7 @@ namespace Iql.Data.Context
         //Task<SaveChangesResult> CommitQueueAsync(IEnumerable<IQueuedOperation> operations);
         SaveChangesOperation GetSaveChangesOperation(object[] entities = null, IProperty[] properties = null);
         bool HasOfflineChanges { get; }
+        EventEmitter<ValueChangedEvent<bool>> HasOfflineChangesChanged { get; }
         Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null);
         Task<SaveChangesResult> SaveOfflineChangesAsync();
         bool TrackEntities { get; set; }

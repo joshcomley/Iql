@@ -44,6 +44,43 @@ namespace Iql.Data.Tracking.State
             }
         }
 
+        public void CheckHasChanged()
+        {
+            HasChanged = Properties.Any(_ => _.HasChanged);
+            HasChangedSinceSnapshot = Properties.Any(_ => _.HasChangedSinceSnapshot);
+        }
+
+        public bool HasChanged
+        {
+            get => _hasChanged;
+            set
+            {
+                var old = _hasChanged;
+                _hasChanged = value;
+                if(old != value)
+                {
+                    HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                }
+            }
+        }
+
+        public bool HasChangedSinceSnapshot
+        {
+            get => _hasChangedSinceSnapshot;
+            set
+            {
+                var old = _hasChangedSinceSnapshot;
+                _hasChangedSinceSnapshot = value;
+                if (old != value)
+                {
+                    HasChangedSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                }
+            }
+        }
+
+        public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+
         public EventEmitter<ValueChangedEvent<bool>> AttachedToTrackerChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
 
         public bool PendingInsert
@@ -302,10 +339,18 @@ namespace Iql.Data.Tracking.State
             EntityType = entityType;
             EntityConfiguration = entityConfiguration;
             Properties = new List<IPropertyState>();
-            foreach (var property in EntityConfiguration.Properties)
+            for (var i = 0; i < EntityConfiguration.Properties.Count; i++)
             {
+                var property = EntityConfiguration.Properties[i];
                 Properties.Add(new PropertyState(property, this));
             }
+
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var property = Properties[i];
+                ((PropertyState) property).UpdateHasChanged();
+            }
+
             LocalKey = entityConfiguration.GetCompositeKey(entity);
             IsNew = isNew;
             MonitorSaveEvents();
@@ -313,6 +358,8 @@ namespace Iql.Data.Tracking.State
 
         private Dictionary<Guid, IPropertyState[]> _operations = new Dictionary<Guid, IPropertyState[]>();
         private bool _isAttachedToGraph;
+        private bool _hasChanged;
+        private bool _hasChangedSinceSnapshot;
 
         private void MonitorSaveEvents()
         {

@@ -487,7 +487,7 @@ namespace Iql.Data.Tracking
             var allStates = new List<IEntityState<T>>();
             foreach (var entity in EntitiesByObject)
             {
-                if (entities != null && !entities.Contains(entity))
+                if (entities != null && !entities.Contains(entity.Value.Entity))
                 {
                     continue;
                 }

@@ -115,23 +115,29 @@ namespace Iql.Data.Tracking
             return false;
         }
 
-        public TrackerSnapshot AddSnapshot()
+        public TrackerSnapshot AddSnapshot(bool? nullIfEmpty = null)
         {
-            if (!HasChangesSinceSnapshot)
+            var doNullIfEmpty = nullIfEmpty ?? false;
+            if (doNullIfEmpty && !HasChangesSinceSnapshot)
             {
                 return null;
             }
             var snapshot = NewTrackerSnapshot();
             snapshot.Id = Guid.NewGuid();
             _ignoreChangedSinceSnapshotChanges = true;
-            foreach (var item in _propertiesChangedSinceLastSnapshot)
+            var items = new List<IPropertyState>();
+            foreach (var item in _propertiesChangedSinceLastSave)
             {
-                snapshot.Values.Add(item.Key, new PropertySnapshot
+                items.Add(item.Key);
+            }
+            foreach (var item in items)
+            {
+                snapshot.Values.Add(item, new PropertySnapshot
                 {
-                    PreviousValue = item.Key.SnapshotValue,
-                    CurrentValue = item.Key.LocalValue
+                    PreviousValue = item.SnapshotValue,
+                    CurrentValue = item.LocalValue
                 });
-                item.Key.AddSnapshot();
+                item.AddSnapshot();
             }
             _ignoreChangedSinceSnapshotChanges = false;
             ResetSnapshotState(true);
@@ -198,6 +204,12 @@ namespace Iql.Data.Tracking
             return true;
         }
 
+        public TrackerSnapshot ReplaceLastSnapshot()
+        {
+            RemoveLastSnapshot();
+            return AddSnapshot();
+        }
+
         public bool HasSnapshot => CurrentSnapshot != null;
 
         public bool HasRestorableSnapshot => _removedSnapshots.Count > 0;
@@ -230,7 +242,7 @@ namespace Iql.Data.Tracking
                         continue;
                     }
 
-                    if (undoChanges == true)
+                    if (undoChanges == true && (usePreSnapshotValue == true || item.Key.HasChanged))
                     {
                         item.Key.Property.SetValue(item.Key.EntityState.Entity, usePreSnapshotValue == true ? item.Value.PreviousValue : item.Value.CurrentValue);
                     }
@@ -241,6 +253,14 @@ namespace Iql.Data.Tracking
                     else
                     {
                         item.Key.SetSnapshotValue(item.Value.CurrentValue);
+                    }
+                }
+
+                foreach (var item in _propertiesChangedSinceLastSnapshot)
+                {
+                    if (!last.Values.ContainsKey(item.Key))
+                    {
+                        item.Key.AbandonChanges();
                     }
                 }
 
@@ -631,6 +651,10 @@ namespace Iql.Data.Tracking
 
         public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+        public TrackerSnapshot[] Snapshots => (_snapshots ?? new List<TrackerSnapshot>()).ToArray();
+        public int SnapshotsCount => Snapshots.Length;
+        public TrackerSnapshot[] RestorableSnapshots => (_removedSnapshots ?? new List<TrackerSnapshot>()).ToArray();
+        public int RestorableSnapshotsCount => RestorableSnapshots.Length;
 
         public bool HasChangesSinceSnapshot
         {

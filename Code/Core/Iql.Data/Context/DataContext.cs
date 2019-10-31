@@ -403,6 +403,25 @@ namespace Iql.Data.Context
 
         public bool HasOfflineChanges => OfflineDataTracker != null && OfflineDataTracker.HasChanges;
 
+        public EventEmitter<ValueChangedEvent<bool>> HasOfflineChangesChanged
+        {
+            get
+            {
+                if (_hasOfflineChangesChanged == null)
+                {
+                    if (SynchronisedConfiguration != null && SynchronisedConfiguration.OfflineDataTracker != null)
+                    {
+                        _hasOfflineChangesChanged = SynchronisedConfiguration.OfflineDataTracker.HasChangesChanged;
+                    }
+                    else
+                    {
+                        _hasOfflineChangesChanged = new EventEmitter<ValueChangedEvent<bool>>();
+                    }
+                }
+                return _hasOfflineChangesChanged;
+            }
+        } 
+
         public bool TrackEntities { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
         public string OfflineSynchronicityKey { get; set; } = "offline";
@@ -1168,6 +1187,7 @@ namespace Iql.Data.Context
         private IDataStore _dataStore;
         private SynchronisedDataContextConfiguration _synchronisedConfiguration;
         private DataContextEvents _events;
+        private EventEmitter<ValueChangedEvent<bool>> _hasOfflineChangesChanged;
 
         private MethodInfo ValidateEntityPropertyInternalAsyncMethod
         {
@@ -2194,9 +2214,9 @@ namespace Iql.Data.Context
             _dataTracker.ClearSnapshots();
         }
 
-        public TrackerSnapshot AddSnapshot()
+        public TrackerSnapshot AddSnapshot(bool? nullIfEmpty = null)
         {
-            return _dataTracker.AddSnapshot();
+            return _dataTracker.AddSnapshot(nullIfEmpty);
         }
 
         public bool UndoChanges(object[] entities = null, IProperty[] properties = null)
@@ -2218,10 +2238,22 @@ namespace Iql.Data.Context
         public bool HasChanges => _dataTracker.HasChanges;
         public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged => _dataTracker.HasChangesSinceSnapshotChanged;
         public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _dataTracker.HasChangesChanged;
+        public TrackerSnapshot[] Snapshots => _dataTracker.Snapshots;
+
+        public int SnapshotsCount => _dataTracker.SnapshotsCount;
+
+        public TrackerSnapshot[] RestorableSnapshots => _dataTracker.RestorableSnapshots;
+
+        public int RestorableSnapshotsCount => _dataTracker.RestorableSnapshotsCount;
 
         public bool RestoreNextAbandonedSnapshot()
         {
             return _dataTracker.RestoreNextAbandonedSnapshot();
+        }
+
+        public TrackerSnapshot ReplaceLastSnapshot()
+        {
+            return _dataTracker.ReplaceLastSnapshot();
         }
 
         public bool HasSnapshot => _dataTracker.HasSnapshot;

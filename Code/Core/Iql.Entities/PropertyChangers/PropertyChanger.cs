@@ -6,6 +6,7 @@ namespace Iql.Entities.PropertyChangers
 {
     public class PropertyChanger
     {
+        public bool CanSilentlyChange { get; set; }
         public void ChangeProperty<TEntity, TValue>(
             TEntity entity,
             string propertyName, 

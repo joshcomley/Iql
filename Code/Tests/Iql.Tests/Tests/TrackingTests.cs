@@ -34,6 +34,32 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task TestEntityStateChangedEvents()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 7,
+                Name = "Test client",
+                TypeId = 2
+            });
+            var client = await Db.Clients.GetWithKeyAsync(7);
+            var state = Db.GetEntityState(client);
+            Assert.IsFalse(state.HasChanged);
+            var hasChangedChangedCount = 0;
+            state.HasChangedChanged.Subscribe(_ =>
+            {
+                hasChangedChangedCount++;
+            });
+            Assert.AreEqual(0, hasChangedChangedCount);
+            client.Name = "Blah";
+            Assert.IsTrue(state.HasChanged);
+            Assert.AreEqual(1, hasChangedChangedCount);
+            client.Name = "Test client";
+            Assert.IsFalse(state.HasChanged);
+            Assert.AreEqual(2, hasChangedChangedCount);
+        }
+
+        [TestMethod]
         public async Task UpdatingNonNullableRemoteRelationshipFromSetToUnsetShouldMarkEntityForDelete()
         {
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType

@@ -4,6 +4,7 @@ using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
+using Iql.Data.Lists;
 using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
@@ -18,7 +19,7 @@ namespace Iql.Data.Tracking.State
         private bool _hasChangedSinceSnapshot;
         private bool _hasChanged;
         private object _remoteValueClone;
-        private bool _originalValueSet;
+        private bool _remoteValueSet;
         private object _localValue;
 
         public PropertyState(
@@ -28,11 +29,11 @@ namespace Iql.Data.Tracking.State
             Guid = Guid.NewGuid();
             Property = property;
             EntityState = entityState;
-            if (!(PropertyChanger is PrimitivePropertyChanger))
-            {
-                // Ensure it is loaded
-                EnsureOldValue();
-            }
+            // Ensure it is loaded
+            EnsureRemoteValue();
+            //if (!(PropertyChanger is PrimitivePropertyChanger))
+            //{
+            //}
         }
 
         public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> StatefulSaveEvents { get; } = new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
@@ -52,43 +53,73 @@ namespace Iql.Data.Tracking.State
 
         public string HasChangedText { get; private set; }
         public bool HasChangedSinceSnapshot => _hasChangedSinceSnapshot;
+
+        public bool CanUndo
+        {
+            get => _canUndo;
+            set
+            {
+                var old = _canUndo;
+                _canUndo = value;
+                if (value != old)
+                {
+                    CanUndoChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                }
+            }
+        }
+
+        private bool _nestedHasChanged = false;
         public bool HasChanged
         {
             get
             {
-                //if (Property.IsReadOnly)
-                //{
-                //    HasChangedText = "Read only";
-                //    return false;
-                //}
-
-                if (Property.Kind.HasFlag(PropertyKind.Count))
+                var forceUpdate = false;
+                if (!_localValueSet && EntityState != null)
                 {
-                    HasChangedText = "Count field";
-                    return false;
+                    LocalValue = Property.GetValue(EntityState.Entity);
+                    forceUpdate = true;
                 }
-
-                if (Property.Kind.HasFlag(PropertyKind.Relationship))
+                if (PropertyChanger.CanSilentlyChange)
                 {
-                    HasChangedText = "Relationship field";
-                    return RelationshipHasChanged();
+                    forceUpdate = true;
                 }
-
-                if (PropertyChanger is PrimitivePropertyChanger)
+                if(forceUpdate && !_nestedHasChanged)
                 {
-                    HasChangedText = "_hasChanged";
-                    return _hasChanged;
+                    _nestedHasChanged = true;
+                    UpdateHasChanged();
                 }
-
-                HasChangedText = $"PropertyChanger: {PropertyChanger.GetType().Name}";
-                return !PropertyChanger.AreEquivalent(RemoteValue, Property.GetValue(EntityState.Entity));
+                _nestedHasChanged = false;
+                return _hasChanged;
             }
         }
 
-        private void EnsureOldValue()
+        private bool CalculateHasChanged(object remoteValue)
+        {
+            if (Property.Kind.HasFlag(PropertyKind.Count))
+            {
+                HasChangedText = "Count field";
+                return false;
+            }
+
+            if (Property.Kind.HasFlag(PropertyKind.Relationship))
+            {
+                HasChangedText = "Relationship field";
+                if (Property.Relationship.ThisIsSource)
+                {
+                    return RelationshipHasChanged(remoteValue);
+                }
+
+                return false;
+            }
+
+            HasChangedText = $"PropertyChanger: {PropertyChanger.GetType().Name}";
+            return !PropertyChanger.AreEquivalent(remoteValue, EntityState == null || _localValueSet ? LocalValue : Property.GetValue(EntityState.Entity));
+        }
+
+        private void EnsureRemoteValue()
         {
             if (EntityState != null &&
-                _originalValueSet &&
+                _remoteValueSet &&
                 _remoteValue == null &&
                 _localValue != null &&
                 Property.Relationship != null &&
@@ -112,13 +143,13 @@ namespace Iql.Data.Tracking.State
                     if (objectKey.Matches(relationshipKey))
                     {
                         SetRemoteValue(_localValue);
-                        _originalValueSet = true;
+                        _remoteValueSet = true;
                     }
                 }
             }
-            if (!_originalValueSet)
+            if (!_remoteValueSet)
             {
-                _originalValueSet = true;
+                _remoteValueSet = true;
                 if (EntityState != null)
                 {
                     SetRemoteValue(Property.GetValue(EntityState.Entity));
@@ -126,20 +157,32 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        private bool RelationshipHasChanged()
+        private bool RelationshipHasChanged(object remoteValue)
         {
-            if (RemoteValue != null && LocalValue != null && RemoteValue != LocalValue)
+            if (remoteValue != null && LocalValue != null && remoteValue != LocalValue)
+            {
+                return true;
+            }
+            if (remoteValue == null && LocalValue != null)
+            {
+                return true;
+            }
+            if (remoteValue != null && LocalValue == null)
             {
                 return true;
             }
 
-            var constraints = Property.Relationship.ThisEnd.Constraints;
-            for (var i = 0; i < constraints.Length; i++)
+            if (EntityState != null)
             {
-                var constraint = constraints[i];
-                if (EntityState.GetPropertyState(constraint.Name).HasChanged)
+                var constraints = Property.Relationship.ThisEnd.Constraints;
+                for (var i = 0; i < constraints.Length; i++)
                 {
-                    return true;
+                    var constraint = constraints[i];
+                    var propertyState = EntityState.GetPropertyState(constraint.Name);
+                    if (propertyState != null && propertyState.HasChanged)
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -150,12 +193,12 @@ namespace Iql.Data.Tracking.State
         {
             get
             {
-                EnsureOldValue();
+                EnsureRemoteValue();
                 return _remoteValueClone;
             }
             set
             {
-                _originalValueSet = true;
+                _remoteValueSet = true;
                 SetRemoteValue(value);
                 UpdateHasChanged();
             }
@@ -212,6 +255,7 @@ namespace Iql.Data.Tracking.State
         private bool _localValueSet = false;
         private object _snapshotValue;
         private bool _snapshotValueSet;
+        private bool _canUndo;
         public bool LocalValueSet => _localValueSet;
         public object LocalValue
         {
@@ -229,7 +273,7 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        private void UpdateHasChanged()
+        internal void UpdateHasChanged()
         {
             UpdateHasChangedSinceStart();
             UpdateHasChangedSinceSnapshot();
@@ -238,27 +282,37 @@ namespace Iql.Data.Tracking.State
         private void UpdateHasChangedSinceStart()
         {
             var oldValue = _hasChanged;
-            _hasChanged = _localValueSet && !PropertyChanger.AreEquivalent(RemoteValue, LocalValue);
+            _hasChanged = CalculateHasChanged(RemoteValue);
             if (oldValue != _hasChanged)
             {
                 HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
+                if(EntityState != null)
+                {
+                    EntityState.CheckHasChanged();
+                }
             }
         }
 
         private void UpdateHasChangedSinceSnapshot()
         {
             var oldValue = _hasChangedSinceSnapshot;
-            _hasChangedSinceSnapshot = _localValueSet && !PropertyChanger.AreEquivalent(SnapshotValue, LocalValue);
+            _hasChangedSinceSnapshot = CalculateHasChanged(SnapshotValue);
             if (oldValue != _hasChangedSinceSnapshot)
             {
-                if(EntityState != null)
+                if (EntityState != null)
                 {
                     EntityState.DataTracker.NotifyChangedSinceSnapshot(this, _hasChangedSinceSnapshot);
                 }
-                HasChangedSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
+                HasChangedSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChangedSinceSnapshot));
+                if (EntityState != null)
+                {
+                    EntityState.CheckHasChanged();
+                }
             }
+            CanUndo = (_snapshotValueSet && HasChangedSinceSnapshot) || HasChanged;
         }
 
+        public EventEmitter<ValueChangedEvent<bool>> CanUndoChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
@@ -272,9 +326,9 @@ namespace Iql.Data.Tracking.State
         public void HardReset()
         {
             var newValue = Property.GetValue(EntityState.Entity);
-            _originalValueSet = false;
+            _remoteValueSet = false;
             _localValueSet = false;
-            EnsureOldValue();
+            EnsureRemoteValue();
             LocalValue = newValue;
         }
 
@@ -329,6 +383,18 @@ namespace Iql.Data.Tracking.State
             if (!string.IsNullOrWhiteSpace(state.Guid))
             {
                 Guid = new Guid(state.Guid);
+            }
+        }
+
+        public void UndoChange()
+        {
+            if (this.EntityState != null)
+            {
+                this.EntityState.DataTracker.UndoChanges(new[] { EntityState.Entity }, new[] { Property });
+            }
+            else
+            {
+                this.LocalValue = RemoteValue;
             }
         }
 

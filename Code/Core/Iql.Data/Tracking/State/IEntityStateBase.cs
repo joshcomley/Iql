@@ -13,14 +13,21 @@ namespace Iql.Data.Tracking.State
 {
     public interface IEntityStateBase : IJsonSerializable, IStateful, IDisposable
     {
-        bool AttachedToTracker { get; set; }
+        void CheckHasChanged();
+        bool HasChanged { get; }
+        bool HasChangedSinceSnapshot { get; }
+        EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; }
+        EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; }
         EventEmitter<ValueChangedEvent<bool>> AttachedToTrackerChanged { get; }
-        bool PendingInsert { get; }
         EventEmitter<ValueChangedEvent<bool>> PendingInsertChanged { get; }
+        EventEmitter<ValueChangedEvent<bool>> IsAttachedToGraphChanged { get; }
+        EventEmitter<ValueChangedEvent<bool>> IsNewChanged { get; }
+        EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }
+        bool AttachedToTracker { get; set; }
+        bool PendingInsert { get; }
         //IAsyncEventSubscriber<IEntityEvent> SavingAsync { get; }
         //IAsyncEventSubscriber<IEntityEvent> SavedAsync { get; }
         bool IsAttachedToGraph { get; set; }
-        EventEmitter<ValueChangedEvent<bool>> IsAttachedToGraphChanged { get; }
         Guid Id { get; set; }
         void Restore(SerializedEntityState state);
         bool Floating { get; set; }
@@ -34,7 +41,6 @@ namespace Iql.Data.Tracking.State
         bool MarkedForCascadeDeletion { get; set; }
         Guid? PersistenceKey { get; set; }
         bool IsNew { get; set; }
-        EventEmitter<ValueChangedEvent<bool>> IsNewChanged { get; }
         Type EntityType { get; }
         bool MarkedForAnyDeletion { get; }
         List<CascadeDeletion> CascadeDeletedBy { get; }
@@ -44,7 +50,6 @@ namespace Iql.Data.Tracking.State
         CompositeKey KeyBeforeChanges();
         IPropertyState[] GetChangedProperties(IProperty[] properties = null);
         IEntityConfiguration EntityConfiguration { get; }
-        EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }
         string StateKey { get; set; }
         IPropertyState GetPropertyState(string name);
         IPropertyState FindPropertyState(string name);

@@ -2,6 +2,7 @@ using System.Linq;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql;
 using Iql.Entities;
+using Iql.Forms;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
 using Microsoft.AspNet.OData.Builder;
@@ -54,7 +55,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                         {
                             c.ContentAlignment = ContentAlignment.Horizontal;
                             c.Name = "Site Address";
-                            c.SetHint(KnownHints.HelpTextTop);
+                            c.SetHint(FormHints.HelpTextTop);
                         }),
                         _ => _.FindPropertyByExpression(s => s.Parent),
                         _ => _.FindPropertyByExpression(s => s.Key),

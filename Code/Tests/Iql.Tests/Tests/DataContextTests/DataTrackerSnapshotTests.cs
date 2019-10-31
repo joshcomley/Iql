@@ -22,7 +22,176 @@ namespace Iql.Tests.Tests.DataContextTests
             AppDbContext.InMemoryDb.Clients.Add(clientRemote);
             var entity1 = await Db.GetEntityAsync<Client>(156187);
             var snapshot = Db.AddSnapshot();
+            Assert.IsNotNull(snapshot);
+            snapshot = Db.AddSnapshot(true);
             Assert.IsNull(snapshot);
+        }
+
+        [TestMethod]
+        public async Task TestUndoChangesAfterSave()
+        {
+            var id1 = 156187;
+            var clientRemote = new Client
+            {
+                Name = "abc",
+                Id = id1,
+                TypeId = 1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var id2 = 156188;
+            var clientRemote2 = new Client
+            {
+                Name = "xyz",
+                Id = id2,
+                TypeId = 1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote2);
+            var entity1 = await Db.GetEntityAsync<Client>(id1);
+            var entity2 = await Db.GetEntityAsync<Client>(id2);
+            var entity1PropertyState = Db.GetEntityState(entity1).GetPropertyState(nameof(Client.Name));
+            var entity2PropertyState = Db.GetEntityState(entity2).GetPropertyState(nameof(Client.Name));
+            Assert.IsFalse(entity1PropertyState.CanUndo);
+            Assert.IsFalse(entity2PropertyState.CanUndo);
+            entity1.Name = "def";
+            entity2.Name = "123";
+            Assert.IsTrue(entity1PropertyState.CanUndo);
+            Assert.IsTrue(entity2PropertyState.CanUndo);
+            Db.AbandonChanges();
+            Assert.IsFalse(entity1PropertyState.CanUndo);
+            Assert.IsFalse(entity2PropertyState.CanUndo);
+            Assert.AreEqual("abc", entity1.Name);
+            Assert.AreEqual("xyz", entity2.Name);
+            entity1.Name = "def";
+            entity2.Name = "123";
+            Assert.IsTrue(entity1PropertyState.CanUndo);
+            Assert.IsTrue(entity2PropertyState.CanUndo);
+            Db.UndoChanges();
+            Assert.AreEqual("abc", entity1.Name);
+            Assert.AreEqual("xyz", entity2.Name);
+            Assert.IsFalse(entity1PropertyState.CanUndo);
+            Assert.IsFalse(entity2PropertyState.CanUndo);
+            var snapshot = Db.AddSnapshot();
+            Assert.IsFalse(entity1PropertyState.CanUndo);
+            Assert.IsFalse(entity2PropertyState.CanUndo);
+            entity1.Name = "def";
+            entity2.Name = "123";
+            Assert.IsTrue(entity1PropertyState.CanUndo);
+            Assert.IsTrue(entity2PropertyState.CanUndo);
+            Db.UndoChanges();
+            Assert.IsFalse(entity1PropertyState.CanUndo);
+            Assert.IsFalse(entity2PropertyState.CanUndo);
+            Assert.AreEqual("abc", entity1.Name);
+            Assert.AreEqual("xyz", entity2.Name);
+            entity1.Name = "def";
+            entity2.Name = "123";
+            Assert.IsTrue(entity1PropertyState.CanUndo);
+            Assert.IsTrue(entity2PropertyState.CanUndo);
+            var result = await Db.SaveChangesAsync(new[] { entity1 });
+            Assert.IsTrue(result.Success);
+            Assert.IsFalse(entity1PropertyState.CanUndo);
+            Assert.IsTrue(entity2PropertyState.CanUndo);
+            Db.UndoChanges();
+            Assert.IsFalse(entity1PropertyState.CanUndo);
+            Assert.IsFalse(entity2PropertyState.CanUndo);
+            Assert.AreEqual("def", entity1.Name);
+            Assert.AreEqual("xyz", entity2.Name);
+            Assert.IsNotNull(snapshot);
+        }
+
+        [TestMethod]
+        public async Task TestReplaceSnapshotAfterSave()
+        {
+            var id1 = 156187;
+            var clientRemote = new Client
+            {
+                Name = "abc",
+                Id = id1,
+                TypeId = 1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var id2 = 156188;
+            var clientRemote2 = new Client
+            {
+                Name = "xyz",
+                Id = id2,
+                TypeId = 1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote2);
+            var entity1 = await Db.GetEntityAsync<Client>(id1);
+            var entity2 = await Db.GetEntityAsync<Client>(id2);
+            entity1.Name = "def";
+            entity2.Name = "123";
+            var snapshot = Db.AddSnapshot();
+            entity1.Name = "xxx";
+            entity2.Name = "yyy";
+            Db.UndoChanges();
+            Assert.AreEqual(1, Db.SnapshotsCount);
+            Assert.AreEqual("def", entity1.Name);
+            Assert.AreEqual("123", entity2.Name);
+            entity1.Name = "xxx";
+            entity2.Name = "yyy";
+            snapshot = Db.ReplaceLastSnapshot();
+            Db.UndoChanges();
+            Assert.AreEqual(1, Db.SnapshotsCount);
+            Assert.AreEqual("xxx", entity1.Name);
+            Assert.AreEqual("yyy", entity2.Name);
+            Db.RemoveLastSnapshot();
+            Assert.AreEqual(0, Db.SnapshotsCount);
+            Assert.AreEqual("xxx", entity1.Name);
+            Assert.AreEqual("yyy", entity2.Name);
+        }
+
+        [TestMethod]
+        public async Task TestPropertyUndo()
+        {
+            var id1 = 156187;
+            var clientRemote = new Client
+            {
+                Name = "abc",
+                Id = id1,
+                TypeId = 1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var id2 = 156188;
+            var clientRemote2 = new Client
+            {
+                Name = "xyz",
+                Id = id2,
+                TypeId = 1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote2);
+            var entity1 = await Db.GetEntityAsync<Client>(id1);
+            var entity2 = await Db.GetEntityAsync<Client>(id2);
+            entity1.Name = "def";
+            entity2.Name = "123";
+            var entity1State = Db.GetEntityState(entity1);
+            var entity1PropertyState = entity1State.GetPropertyState(nameof(Client.Name));
+            entity1PropertyState.UndoChange();
+            Assert.AreEqual(0, Db.SnapshotsCount);
+            Assert.AreEqual("abc", entity1.Name);
+            Assert.AreEqual("123", entity2.Name);
+            entity1.Name = "def";
+            var snapshot = Db.AddSnapshot();
+            entity1PropertyState.UndoChange();
+            Assert.AreEqual(1, Db.SnapshotsCount);
+            Assert.AreEqual("def", entity1.Name);
+            Assert.AreEqual("123", entity2.Name);
+            entity1PropertyState.UndoChange();
+            Assert.AreEqual(1, Db.SnapshotsCount);
+            Assert.AreEqual("def", entity1.Name);
+            Assert.AreEqual("123", entity2.Name);
+            entity1PropertyState.UndoChange();
+            Assert.AreEqual(1, Db.SnapshotsCount);
+            Assert.AreEqual("def", entity1.Name);
+            Assert.AreEqual("123", entity2.Name);
+            Db.RemoveLastSnapshot();
+            Assert.AreEqual(0, Db.SnapshotsCount);
+            Assert.AreEqual("def", entity1.Name);
+            Assert.AreEqual("123", entity2.Name);
+            entity1PropertyState.UndoChange();
+            Assert.AreEqual(0, Db.SnapshotsCount);
+            Assert.AreEqual("abc", entity1.Name);
+            Assert.AreEqual("123", entity2.Name);
         }
 
         [TestMethod]
@@ -378,8 +547,10 @@ namespace Iql.Tests.Tests.DataContextTests
             client.Name = "123";
             client.Description = "456";
             var clientType = new ClientType { Name = "Client type" };
+            var prop = Db.GetEntityState(client).GetPropertyState(nameof(Client.Type));
             client.Type = clientType;
-            Db.AddSnapshot();
+            var snapshot = Db.AddSnapshot();
+            Assert.AreEqual(3, snapshot.Values.Count);
             client.Name = "foo";
             client.Description = "bar";
             Db.RemoveLastSnapshot(SnapshotRemoveKind.GoToPreSnapshotValues);
