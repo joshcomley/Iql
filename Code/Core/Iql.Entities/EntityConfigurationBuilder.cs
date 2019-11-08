@@ -11,6 +11,7 @@ using Iql.Entities.Relationships;
 using Iql.Entities.Services;
 using Iql.Entities.SpecialTypes;
 using Iql.Events;
+using Iql.Extensions;
 
 namespace Iql.Entities
 {
@@ -78,8 +79,9 @@ namespace Iql.Entities
                 var type = entityConfiguration.Value.Type;
                 while (type != null && type != typeof(object))
                 {
-                    if (entityConfiguration.Key.Name == typeName || entityConfiguration.Value.Name == typeName)
+                    if (entityConfiguration.Value.HasNameOrAlias(typeName))
                     {
+                        _entitiesByTypeName.Add(typeName, entityConfiguration.Value);
                         return entityConfiguration.Value;
                     }
                     type = type.BaseType;
@@ -123,7 +125,14 @@ namespace Iql.Entities
             }
         }
 
-        public EntityConfiguration<T> EntityType<T>() where T : class
+        public EntityConfiguration<T> EntityType<T>()
+            where T : class
+        {
+            return DefineEntityType<T>();
+        }
+        
+        public EntityConfiguration<T> DefineEntityType<T>(string name = null)
+            where T : class
         {
             var entityType = typeof(T);
             EntityConfiguration<T> entityConfiguration;
@@ -140,6 +149,10 @@ namespace Iql.Entities
                 //}
                 entityConfiguration = new EntityConfiguration<T>(this);
                 CacheEntityConfigurationByType(entityType, entityConfiguration);
+            }
+            if (entityConfiguration != null && !string.IsNullOrWhiteSpace(name))
+            {
+                entityConfiguration.AddAlias(name);
             }
             return entityConfiguration;
         }

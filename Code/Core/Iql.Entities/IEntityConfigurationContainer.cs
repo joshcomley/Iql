@@ -7,6 +7,7 @@ namespace Iql.Entities
 {
     public interface IEntityConfigurationContainer : IUserPermissionContainer
     {
+        IEntityConfiguration GetEntityByTypeName(string name);
         IEnumerable<IqlMethod> AllMethods();
         IEnumerable<IEntityConfiguration> AllEntityTypes();
         IEnumerable<IEnumConfiguration> AllEnumTypes();

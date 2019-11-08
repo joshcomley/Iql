@@ -22,6 +22,53 @@ namespace Iql.Entities
 {
     public abstract class EntityConfigurationBase : MetadataBase, IEntityMetadata
     {
+        private List<string> _aliases;
+        public List<string> Aliases
+        {
+            get
+            {
+                _aliases = _aliases ?? new List<string>();
+                return _aliases;
+            }
+            set => _aliases = value;
+        }
+
+        protected EntityConfigurationBase AddAliasInternal(string name)
+        {
+            var match = this.ConfigurationContainer.GetEntityByTypeName(name);
+            if (match != null)
+            {
+                // Redundant cast is for TypeScript
+                // ReSharper disable once RedundantCast
+                if (match != (object)this)
+                {
+                    throw new Exception($@"""{name}"" is already mapped to entity of type {match.Name}");
+                }
+            }
+            Aliases.Add(name);
+            return this;
+        }
+
+        public bool HasNameOrAlias(string name)
+        {
+            if(Name == name)
+            {
+                return true;
+            }
+
+            if(Aliases != null && Aliases.Any(_ => _ == name))
+            {
+                return true;
+            }
+
+            if(Type.Name == name)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public override IEntityConfiguration EntityConfiguration => (IEntityConfiguration)this;
         private bool _thumbnailPropertyResolved = false;
 	    private IFile _resolvedThumbnailProperty = null;

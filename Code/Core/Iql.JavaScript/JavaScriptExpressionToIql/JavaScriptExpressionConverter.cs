@@ -91,7 +91,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             };
 
             expressionResult.Expression = expression2(null);
-            
+
             // Now try to correct any property types
             if (typeResolver != null)
             {
@@ -149,34 +149,34 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public static MethodInfo ConvertLambdaToIqlMethod { get; set; }
 
-//        public ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression filter, Type entityType
-//#if TypeScript
-//            , EvaluateContext evaluateContext = null
-//#endif
-//        )
-//        {
-//            return (ExpressionResult<IqlExpression>)ConvertLambdaToIqlMethod
-//                .InvokeGeneric(this, new object[]
-//                {
-//                    filter
-//#if TypeScript
-//                    , evaluateContext
-//#endif
-//                }, entityType);
-//        }
+        //        public ExpressionResult<IqlExpression> ConvertLambdaExpressionToIqlByType(LambdaExpression filter, Type entityType
+        //#if TypeScript
+        //            , EvaluateContext evaluateContext = null
+        //#endif
+        //        )
+        //        {
+        //            return (ExpressionResult<IqlExpression>)ConvertLambdaToIqlMethod
+        //                .InvokeGeneric(this, new object[]
+        //                {
+        //                    filter
+        //#if TypeScript
+        //                    , evaluateContext
+        //#endif
+        //                }, entityType);
+        //        }
 
-//        public ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> filter
-//#if TypeScript
-//            , EvaluateContext evaluateContext = null
-//#endif
-//        ) where TEntity : class
-//        {
-//            return ConvertLambdaExpressionToIql<TEntity>(filter
-//#if TypeScript
-//                , evaluateContext
-//#endif
-//            );
-//        }
+        //        public ExpressionResult<IqlExpression> ConvertLambdaToIql<TEntity>(Expression<Func<TEntity, object>> filter
+        //#if TypeScript
+        //            , EvaluateContext evaluateContext = null
+        //#endif
+        //        ) where TEntity : class
+        //        {
+        //            return ConvertLambdaExpressionToIql<TEntity>(filter
+        //#if TypeScript
+        //                , evaluateContext
+        //#endif
+        //            );
+        //        }
 
         public virtual IExpressionParseResultBase ParseJavaScriptExpressionTree(
             JavaScriptExpressionNode expression,
@@ -299,6 +299,8 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             return javascript.AsFunction(true);
         }
 
+        private static string _PopIqlTemporaryGlobalObjectName = null;
+        private static Regex _PopIqlTemporaryGlobalObjectRegex = new Regex(@"[A-Za-z0-9_]+\._PopIqlTemporaryGlobalObject");
         private JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression
             , ITypeResolver typeResolver
             , Type rootEntityType = null
@@ -315,7 +317,35 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                 , evaluateContext
 #endif
             );
-            var javascript = new JavaScriptExpression("entity", javascriptExpression.ToCodeString());
+#if TypeScript
+#endif
+            var codeString = javascriptExpression.ToCodeString();
+            if (codeString != null && codeString.IndexOf(nameof(JavaScriptLiteralParser._PopIqlTemporaryGlobalObject)) != -1)
+            {
+                var matches = _PopIqlTemporaryGlobalObjectRegex.Matches(codeString);
+                if (matches != null && matches.Count > 0)
+                {
+                    var firstMatchValue = matches[0].Value;
+                    if (_PopIqlTemporaryGlobalObjectName == null)
+                    {
+                        Func<object> getter = () => JavaScriptLiteralParser._PopIqlTemporaryGlobalObject(null);
+                        var currentAccessorMatches = _PopIqlTemporaryGlobalObjectRegex.Matches(getter.ToString());
+                        var fullyQualifiedName = currentAccessorMatches[0].Value;
+                        var indexOfPeriod = fullyQualifiedName.IndexOf(".");
+                        _PopIqlTemporaryGlobalObjectName = fullyQualifiedName.Substring(0, indexOfPeriod);
+                    }
+                    var replacement =
+                        $"{_PopIqlTemporaryGlobalObjectName}.{nameof(JavaScriptLiteralParser._PopIqlTemporaryGlobalObject)}";
+                    if (firstMatchValue != replacement)
+                    {
+                        while (codeString.IndexOf(firstMatchValue) != -1)
+                        {
+                            codeString = codeString.Replace(firstMatchValue, replacement);
+                        }
+                    }
+                }
+            }
+            var javascript = new JavaScriptExpression("entity", codeString);
             return javascript;
         }
     }

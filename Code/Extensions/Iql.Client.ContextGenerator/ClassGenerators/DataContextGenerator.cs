@@ -189,14 +189,13 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                     ? Schema.EntityConfigurations[entityTypeName]
                                     : null;
                                 var defineEntityParameters =
-                                    OutputKind == OutputKind.TypeScript ?
-                                new[]
-                                {
-                                new EntityFunctionParameterDefinition(
-                                    entityTypeName,
-                                    new TypeInfo())
-                                } : null;
-                                var defineEntityName = nameof(EntityConfigurationBuilder.EntityType);
+                                    OutputKind == OutputKind.TypeScript
+                                        ? new[]
+                                        {
+                                            new EntityFunctionParameterDefinition(String(NameMapper(entityTypeName)))
+                                        }
+                                        : null;
+                                var defineEntityName = nameof(EntityConfigurationBuilder.DefineEntityType);
                                 if (OutputKind == OutputKind.CSharp)
                                 {
                                     defineEntityName += $"<{NameMapper(entityTypeName)}>";
@@ -1508,7 +1507,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
 
         private string GetEntityTypeConfiguration(IVariable builder, string entityTypeName)
         {
-            return $@"{builder.Name}.{nameof(EntityConfigurationBuilder.EntityType)}<{NameMapper(entityTypeName)}>()";
+            return $@"{builder.Name}.{nameof(EntityConfigurationBuilder.DefineEntityType)}<{NameMapper(entityTypeName)}>({String(NameMapper(entityTypeName))})";
         }
         private async Task<string> SerializePropertyGroupsAsync(IPropertyGroup propertyGroup, IEntityMetadata entityMetadata, int index)
         {
@@ -1580,7 +1579,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 Compile = false,
                 GenerateImports = true,
                 WriteToDisk = false,
-                ResolveCircularDependencies = false,
+                ForceOriginalFileStructure = true,
                 OutputClassFunctionsDeclared = false,
                 OutputClassInterfacesImplemented = false,
                 OutputClassNameStaticProperty = false,

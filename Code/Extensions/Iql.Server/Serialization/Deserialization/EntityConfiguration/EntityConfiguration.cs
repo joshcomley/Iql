@@ -13,6 +13,11 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
     [DebuggerDisplay("{Name} - {SetName}")]
     public class EntityConfiguration : EntityConfigurationBase, IEntityConfiguration
     {
+        public IEntityConfiguration AddAlias(string name)
+        {
+            return (IEntityConfiguration)AddAliasInternal(name);
+        }
+
         protected override IEntityConfigurationContainer ConfigurationContainer => _configurationContainer;
 
         private  IEntityConfigurationContainer _configurationContainer;

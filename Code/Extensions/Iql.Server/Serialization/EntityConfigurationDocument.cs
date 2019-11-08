@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Iql.Entities;
 using Iql.Entities.Enums;
 using Iql.Entities.Functions;
@@ -23,7 +24,12 @@ namespace Iql.Server.Serialization
         {
             return EntityConfigurationParser.FromJson(json);
         }
-        
+
+        public IEntityConfiguration GetEntityByTypeName(string name)
+        {
+            return AllEntityTypes().SingleOrDefault(_ => _.HasNameOrAlias(name));
+        }
+
         public IEnumerable<IqlMethod> AllMethods()
         {
             return Methods;

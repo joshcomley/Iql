@@ -23,8 +23,7 @@ using Iql.Entities.SpecialTypes;
 
 namespace Iql.Entities
 {
-    public class EntityConfiguration<T> : EntityConfigurationBase
-        , IEntityConfiguration where T : class
+    public class EntityConfiguration<T> : EntityConfigurationBase, IEntityConfiguration where T : class
     {
         public EntityConfiguration<T> SetGroupPath(string path = null, int order = 0)
         {
@@ -70,6 +69,7 @@ namespace Iql.Entities
         }
 
         private GeographyResolver<T> _geographyResolver = null;
+
         public async Task<Geography.Geography> ResolveGeographyAsync(T entity)
         {
             if (_geographyResolver == null)
@@ -775,6 +775,17 @@ namespace Iql.Entities
         }
 
         public string TypeName => Type?.Name;
+
+        public EntityConfiguration<T> AddAlias(string name)
+        {
+            return (EntityConfiguration<T>)AddAliasInternal(name);
+        }
+
+        IEntityConfiguration IEntityConfiguration.AddAlias(string name)
+        {
+            return AddAlias(name);
+        }
+
         DisplayConfiguration IEntityConfiguration.GetOrDefineDisplayConfigurationBase<TEntity>(DisplayConfigurationKind kind, string key, Action<EntityConfiguration<TEntity>, DisplayConfiguration> configure = null)
         {
             return GetOrDefineDisplayConfiguration(kind, key, (configuration, displayConfiguration) =>

@@ -18,6 +18,8 @@ namespace Iql.Data.Crud.Operations
         EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; }
         EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; }
         EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; }
+        IPropertyState[] SiblingStates { get; }
+        IPropertyState[] GroupStates { get; }
         IEntityStateBase EntityState { get; }
         bool CanUndo { get; }
         bool HasChanged { get; }

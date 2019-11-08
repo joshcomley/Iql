@@ -11,7 +11,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
     {
         private static Dictionary<string, object> GlobalObjects { get; } = new Dictionary<string, object>();
 
-        public static object PopGlobal(string key)
+        public static object _PopIqlTemporaryGlobalObject(string key)
         {
             var obj = GlobalObjects[key];
             GlobalObjects.Remove(key);
@@ -86,7 +86,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                 {
                     var guid = Guid.NewGuid().ToString();
                     GlobalObjects.Add(guid, action.Value);
-                    Func<object> getter = () => JavaScriptLiteralParser.PopGlobal("MYGUID");
+                    Func<object> getter = () => JavaScriptLiteralParser._PopIqlTemporaryGlobalObject("MYGUID");
                     var getterStr = getter.ToString().Replace("MYGUID", guid);
                     return new IqlFinalExpression<string>($"({getterStr})()");
                 }

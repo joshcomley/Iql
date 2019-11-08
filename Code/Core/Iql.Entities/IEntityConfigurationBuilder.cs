@@ -17,6 +17,7 @@ namespace Iql.Entities
         bool IsEntityTypeByType(Type type);
         void ForEntityTypes(Func<IEntityConfiguration, bool> filter, Action<IEntityConfiguration> action);
         EntityConfiguration<T> EntityType<T>() where T : class;
+        EntityConfiguration<T> DefineEntityType<T>(string name = null) where T : class;
         IEnumConfiguration EnumType<T>();
         Dictionary<Type, IList> FlattenObjectGraph(object entity, Type entityType);
         Dictionary<Type, IList> FlattenObjectGraphs(Type entityType, IEnumerable entities);

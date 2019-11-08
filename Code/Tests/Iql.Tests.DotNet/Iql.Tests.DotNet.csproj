@@ -23,13 +23,13 @@
     </When>
   </Choose>
   <ItemGroup>
-    <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10108-1-Debug" />
+    <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10111-1-Debug" />
     <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.0.20171219.105559" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.10.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
-    <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0051-1-Debug" />
+    <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0053-1-Debug" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />

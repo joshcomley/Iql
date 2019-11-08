@@ -11,6 +11,9 @@ namespace Iql.Entities
     public interface IEntityConfiguration : IEntityMetadata, IPropertyContainer, IIqlTypeMetadataProvider
     {
         string TypeName { get; }
+        List<string> Aliases { get; set; }
+        bool HasNameOrAlias(string name);
+        IEntityConfiguration AddAlias(string name);
         IFile ResolvePreviewProperty();
         IFile CalculatePreviewProperty();
         IqlMethod FindMethod(string name, bool? ensure = null, Action<IqlMethod> configure = null);

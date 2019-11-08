@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Iql.Conversion;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
@@ -83,7 +84,7 @@ namespace Iql.Data.Tracking.State
                 {
                     forceUpdate = true;
                 }
-                if(forceUpdate && !_nestedHasChanged)
+                if (forceUpdate && !_nestedHasChanged)
                 {
                     _nestedHasChanged = true;
                     UpdateHasChanged();
@@ -256,6 +257,8 @@ namespace Iql.Data.Tracking.State
         private object _snapshotValue;
         private bool _snapshotValueSet;
         private bool _canUndo;
+        private IPropertyState[] _groupStates;
+        private IPropertyState[] _siblingStates;
         public bool LocalValueSet => _localValueSet;
         public object LocalValue
         {
@@ -286,7 +289,7 @@ namespace Iql.Data.Tracking.State
             if (oldValue != _hasChanged)
             {
                 HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
-                if(EntityState != null)
+                if (EntityState != null)
                 {
                     EntityState.CheckHasChanged();
                 }
@@ -317,6 +320,60 @@ namespace Iql.Data.Tracking.State
         public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
         public EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
+
+        public IPropertyState[] SiblingStates
+        {
+            get
+            {
+                if (_siblingStates == null)
+                {
+                    if (GroupStates == null)
+                    {
+                        return null;
+                    }
+
+                    _siblingStates = GroupStates.Where(_ => _ != this).ToArray();
+                }
+
+                return _siblingStates;
+            }
+        }
+
+        public IPropertyState[] GroupStates
+        {
+            get
+            {
+                if (_groupStates == null)
+                {
+                    if (EntityState == null)
+                    {
+                        return null;
+                    }
+
+                    if (Property.Kind.HasFlag(PropertyKind.Relationship) && Property.Relationship.ThisIsTarget)
+                    {
+                        _groupStates = new IPropertyState[] { this };
+                    }
+                    else
+                    {
+                        if (Property.PropertyGroup == null)
+                        {
+                            _groupStates = new IPropertyState[] { this };
+                        }
+                        else
+                        {
+                            var properties = Property.PropertyGroup.GetGroupProperties();
+                            _groupStates = properties.Where(_ => _.GroupKind == IqlPropertyGroupKind.Primitive)
+                                .Select(_ => EntityState.GetPropertyState(((IProperty)_).PropertyName))
+                                .Where(_ => _ != null)
+                                .ToArray();
+                        }
+                    }
+                }
+                return _groupStates;
+            }
+        }
+
         public IEntityStateBase EntityState { get; }
         public IProperty Property { get; }
         public string Data { get; set; }
