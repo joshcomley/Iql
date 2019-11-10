@@ -9,26 +9,40 @@ namespace Iql.Events
     {
         public AsyncEventEmitter(BackfireMode backfireMode = BackfireMode.None) : base(backfireMode)
         {
-            
+
         }
-        EventSubscription IAsyncEventSubscriberBase.SubscribeAsync(Func<object, Task> action)
+        EventSubscription IAsyncEventSubscriberBase.SubscribeAsync(Func<object, Task> action, string key = null, int? allowedCount = null)
         {
             return SubscribeAsync(async e =>
             {
                 await action(e);
-            });
+            }, key, allowedCount);
         }
 
-        public EventSubscription SubscribeAsync(Func<TEvent, Task> action)
+        EventSubscription IAsyncEventSubscriberBase.SubscribeOnceAsync(Func<object, Task> action, string key = null)
         {
-            var sub = SubscribeInternal(action);
+            return SubscribeOnceAsync(async e =>
+                {
+                    await action(e);
+                },
+                key);
+        }
+
+        public EventSubscription SubscribeOnceAsync(Func<TEvent, Task> action, string key = null)
+        {
+            return SubscribeAsync(action, key, 1);
+        }
+
+        public EventSubscription SubscribeAsync(Func<TEvent, Task> action, string key = null, int? allowedCount = null)
+        {
+            var sub = SubscribeInternal(action, key, allowedCount);
             switch (BackfireMode)
             {
                 case BackfireMode.All:
                     foreach (var ev in Backfires)
                     {
 #pragma warning disable 4014
-                        EmitToSubscriptionsAsync(() => ev, null, new[] { action }.ToList());
+                        EmitToSubscriptionsAsync(() => ev, null, new[] { new SubscriptionAction<Func<TEvent, Task>>(sub, action) }.ToList());
 #pragma warning restore 4014
                     }
                     break;
@@ -37,7 +51,7 @@ namespace Iql.Events
                     {
                         var last = Backfires.LastOrDefault();
 #pragma warning disable 4014
-                        EmitToSubscriptionsAsync(() => last, null, new[] { action }.ToList());
+                        EmitToSubscriptionsAsync(() => last, null, new[] { new SubscriptionAction<Func<TEvent, Task>>(sub, action) }.ToList());
 #pragma warning restore 4014
                     }
                     break;
@@ -50,7 +64,7 @@ namespace Iql.Events
             return await EmitToSubscriptionsAsync(eventObjectFactory, afterEvent, ResolveSubscriptionActions(subscriptions));
         }
 
-        private async Task<TEvent> EmitToSubscriptionsAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent, List<Func<TEvent, Task>> subscriptionActions)
+        private async Task<TEvent> EmitToSubscriptionsAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent, List<SubscriptionAction<Func<TEvent, Task>>> subscriptionActions)
         {
             eventObjectFactory = BuildEventObjectFactory(eventObjectFactory);
             if (subscriptionActions != null && subscriptionActions.Count > 0)
@@ -58,9 +72,19 @@ namespace Iql.Events
                 var ev = eventObjectFactory();
                 for (var i = 0; i < subscriptionActions.Count; i++)
                 {
+                    var subscriptionAction = subscriptionActions[i];
+                    if (subscriptionAction.Subscription.Paused || !subscriptionAction.Subscription.IsWithinAllowedCallCount)
+                    {
+                        continue;
+                    }
                     try
                     {
-                        await subscriptionActions[i](ev);
+                        subscriptionAction.Subscription.RegisterCalled();
+                        await subscriptionAction.Action(ev);
+                        if (!subscriptionAction.Subscription.IsWithinAllowedCallCount && !subscriptionAction.Subscription.KeepSubscriptionAfterCallCount)
+                        {
+                            subscriptionAction.Subscription.Unsubscribe();
+                        }
                     }
                     catch (Exception e)
                     {

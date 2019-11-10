@@ -15,12 +15,14 @@ namespace Iql.Events
 
     public interface IAsyncEventSubscriber<out TEvent> : IAsyncEventSubscriberBase
     {
-        EventSubscription SubscribeAsync(Func<TEvent, Task> action);
+        EventSubscription SubscribeAsync(Func<TEvent, Task> action, string key = null, int? allowedCount = null);
+        EventSubscription SubscribeOnceAsync(Func<TEvent, Task> action, string key = null);
     }
 
     public interface IAsyncEventSubscriberBase : IEventUnsubscriber
     {
-        EventSubscription SubscribeAsync(Func<object, Task> propertyChangeEvent);
+        EventSubscription SubscribeAsync(Func<object, Task> propertyChangeEvent, string key = null, int? allowedCount = null);
+        EventSubscription SubscribeOnceAsync(Func<object, Task> propertyChangeEvent, string key = null);
     }
 
     public interface IEventManager<TEvent> : IEventEmitter<TEvent>, IEventSubscriber<TEvent>
@@ -40,7 +42,8 @@ namespace Iql.Events
 
     public interface IEventSubscriber<out TEvent> : IEventSubscriberBase
     {
-        EventSubscription Subscribe(Action<TEvent> action);
+        EventSubscription Subscribe(Action<TEvent> action, string key = null, int? allowedCount = null);
+        EventSubscription SubscribeOnce(Action<TEvent> action, string key = null);
     }
 
     public interface IEventSubscriberSubscriber
@@ -56,7 +59,8 @@ namespace Iql.Events
     public interface IEventSubscriberBase : IEventSubscriberRoot
     {
         int SubscriptionCount { get; }
-        EventSubscription Subscribe(Action<object> propertyChangeEvent);
+        EventSubscription Subscribe(Action<object> propertyChangeEvent, string key = null, int? allowedCount = null);
+        EventSubscription SubscribeOnce(Action<object> propertyChangeEvent, string key = null);
     }
 
     public interface IEventUnsubscriber : IDisposable
@@ -66,6 +70,6 @@ namespace Iql.Events
         bool HasBackfires { get; }
         int BackfireCount { get; }
         void Unsubscribe(int subscription);
-        void UnsubscribeAll();
+        void UnsubscribeAll(string key = null);
     }
 }

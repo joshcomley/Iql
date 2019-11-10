@@ -1,14 +1,45 @@
-﻿namespace Iql.Events
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Iql.Events
 {
     public class EventSubscription
     {
         public IEventUnsubscriber EventSubscriber { get; }
         public object Action { get; }
         public int Id { get; }
-        
+        public string Key { get; set; }
+        public bool KeepSubscriptionAfterCallCount { get; set; }
+        public bool IsWithinAllowedCallCount => AllowedCallCount == null || AllowedCallCount.Value > CallCount;
+        public int? AllowedCallCount { get; set; }
+        private int _callCount = 0;
+        public int CallCount => _callCount;
+
+        /// <summary>
+        /// For internal use only
+        /// </summary>
+        public void RegisterCalled()
+        {
+            _callCount++;
+        }
+
         public void Pause()
         {
             Paused = true;
+        }
+
+        public void PauseWhile(Action action)
+        {
+            Pause();
+            action();
+            Resume();
+        }
+
+        public async Task PauseWhileAsync(Func<Task> action)
+        {
+            Pause();
+            await action();
+            Resume();
         }
 
         public void Resume()

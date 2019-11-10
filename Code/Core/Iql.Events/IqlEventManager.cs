@@ -8,19 +8,39 @@ namespace Iql.Events
     {
         private readonly List<EventSubscription> _subscriptions = new List<EventSubscription>();
 
-        public void Pause()
+        public void Pause(string key = null)
         {
             for (var i = 0; i < _subscriptions.Count; i++)
             {
-                _subscriptions[i].Pause();
+                if (key == null || _subscriptions[i].Key == key)
+                {
+                    _subscriptions[i].Pause();
+                }
             }
         }
 
-        public void Resume()
+        public void PauseWhile(Action action, string key = null)
+        {
+            Pause(key);
+            action();
+            Resume(key);
+        }
+
+        public async Task PauseWhileAsync(Func<Task> action, string key = null)
+        {
+            Pause(key);
+            await action();
+            Resume(key);
+        }
+
+        public void Resume(string key = null)
         {
             for (var i = 0; i < _subscriptions.Count; i++)
             {
-                _subscriptions[i].Resume();
+                if (key == null || _subscriptions[i].Key == key)
+                {
+                    _subscriptions[i].Resume();
+                }
             }
         }
 
@@ -29,24 +49,41 @@ namespace Iql.Events
             UnsubscribeAll();
         }
 
-        public void UnsubscribeAll()
+        public void UnsubscribeAll(string key = null)
         {
             for (var i = 0; i < _subscriptions.Count; i++)
             {
-                _subscriptions[i].Unsubscribe();
+                if(key == null || _subscriptions[i].Key == key)
+                {
+                    _subscriptions[i].Unsubscribe();
+                }
             }
         }
 
-        public EventSubscription Subscribe<T>(IEventSubscriber<T> subscriber, Action<T> action)
+        public EventSubscription Subscribe<T>(IEventSubscriber<T> subscriber, Action<T> action, string key = null, int? allowedCount = null)
         {
-            var sub = subscriber.Subscribe(action);
+            var sub = subscriber.Subscribe(action, key, allowedCount);
             _subscriptions.Add(sub);
             return sub;
         }
 
-        public EventSubscription SubscribeAsync<T>(IAsyncEventSubscriber<T> subscriber, Func<T, Task> action)
+        public EventSubscription SubscribeOnce<T>(IEventSubscriber<T> subscriber, Action<T> action, string key = null)
         {
-            var sub = subscriber.SubscribeAsync(action);
+            var sub = subscriber.SubscribeOnce(action, key);
+            _subscriptions.Add(sub);
+            return sub;
+        }
+
+        public EventSubscription SubscribeAsync<T>(IAsyncEventSubscriber<T> subscriber, Func<T, Task> action, string key = null, int? allowedCount = null)
+        {
+            var sub = subscriber.SubscribeAsync(action, key, allowedCount);
+            _subscriptions.Add(sub);
+            return sub;
+        }
+
+        public EventSubscription SubscribeOnceAsync<T>(IAsyncEventSubscriber<T> subscriber, Func<T, Task> action, string key = null)
+        {
+            var sub = subscriber.SubscribeOnceAsync(action, key);
             _subscriptions.Add(sub);
             return sub;
         }

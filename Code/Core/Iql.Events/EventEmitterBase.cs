@@ -5,6 +5,17 @@ using Newtonsoft.Json;
 
 namespace Iql.Events
 {
+    public class SubscriptionAction<TSubscriptionAction>
+    {
+        public EventSubscription Subscription { get; }
+        public TSubscriptionAction Action { get; }
+
+        public SubscriptionAction(EventSubscription subscription, TSubscriptionAction action)
+        {
+            Subscription = subscription;
+            Action = action;
+        }
+    }
     public class EventEmitterBase<TEvent, TSubscriptionAction> : IEventSubscriberRoot
     {
         public EventEmitterBase(BackfireMode backfireMode = BackfireMode.None)
@@ -17,12 +28,12 @@ namespace Iql.Events
         private EventEmitter<EventSubscription> _onUnsubscribe;
         private int _subscriptionId;
 
-        protected List<TSubscriptionAction> ResolveSubscriptionActions(IEnumerable<EventSubscription> subscriptions)
+        protected List<SubscriptionAction<TSubscriptionAction>> ResolveSubscriptionActions(IEnumerable<EventSubscription> subscriptions)
         {
             List<EventSubscription> subscriptionActions;
             if (subscriptions == null)
             {
-                subscriptionActions = SubscriptionActions;
+                subscriptionActions = Subscriptions;
             }
             else
             {
@@ -36,19 +47,22 @@ namespace Iql.Events
                     }
                 }
             }
-            return subscriptionActions == null ? null : subscriptionActions.Where(_ => !_.Paused).Select(_ => (TSubscriptionAction)_.Action).ToList();
+            if(subscriptionActions == null)
+            {
+                return null;
+            }
+            return subscriptionActions
+                .Select(_ => new SubscriptionAction<TSubscriptionAction>(_, (TSubscriptionAction)_.Action)).ToList();
         }
 
         protected EventSubscription FindSubscription(int id)
         {
-            if (SubscriptionsLookup.ContainsKey(id) && SubscriptionsLookup.ContainsKey(id))
+            if (SubscriptionsById.ContainsKey(id) && SubscriptionsById.ContainsKey(id))
             {
-                return SubscriptionsLookup[id];
+                return SubscriptionsById[id];
             }
             return null;
         }
-
-        protected List<EventSubscription> SubscriptionActions { get; set; }
 
         [JsonIgnore]
         public EventEmitter<EventSubscription> OnSubscribe =>
@@ -58,10 +72,11 @@ namespace Iql.Events
         public EventEmitter<EventSubscription> OnUnsubscribe =>
             _onUnsubscribe = _onUnsubscribe ?? new EventEmitter<EventSubscription>();
 
-        protected Dictionary<EventSubscription, EventSubscription> Subscriptions { get; } =
-            new Dictionary<EventSubscription, EventSubscription>();
+        private List<EventSubscription> _subscriptions = null;
+        protected List<EventSubscription> Subscriptions =>
+            _subscriptions = _subscriptions ?? new List<EventSubscription>();
 
-        protected Dictionary<int, EventSubscription> SubscriptionsLookup { get; } =
+        protected Dictionary<int, EventSubscription> SubscriptionsById { get; } =
             new Dictionary<int, EventSubscription>();
 
         public void ClearBackfires()
@@ -91,12 +106,12 @@ namespace Iql.Events
 
         public void Unsubscribe(int subscription)
         {
-            if (SubscriptionsLookup == null)
+            if (SubscriptionsById == null)
             {
                 return;
             }
 
-            var sub = SubscriptionsLookup.ContainsKey(subscription) ? SubscriptionsLookup[subscription] : null;
+            var sub = SubscriptionsById.ContainsKey(subscription) ? SubscriptionsById[subscription] : null;
             if (sub != null)
             {
                 Subscriptions.Remove(sub);
@@ -106,22 +121,34 @@ namespace Iql.Events
                 }
             }
 
-            SubscriptionsLookup.Remove(subscription);
+            SubscriptionsById.Remove(subscription);
         }
 
-        public void UnsubscribeAll()
+        public void UnsubscribeAll(string key = null)
         {
             if (_onUnsubscribe != null)
             {
                 foreach (var sub in Subscriptions)
                 {
-                    OnUnsubscribe.Emit(() => sub.Key);
+                    if(key == null || sub.Key == key)
+                    {
+                        OnUnsubscribe.Emit(() => sub);
+                        if (key != null)
+                        {
+                            SubscriptionsById.Remove(sub.Id);;                        }
+                    }
                 }
             }
 
-            SubscriptionsLookup.Clear();
-            Subscriptions.Clear();
-            SubscriptionActions = new List<EventSubscription>();
+            if (key == null)
+            {
+                SubscriptionsById.Clear();
+                Subscriptions.Clear();
+            }
+            else
+            {
+
+            }
         }
 
         public void Dispose()
@@ -162,12 +189,14 @@ namespace Iql.Events
             return () => { return CreateEvent(); };
         }
 
-        protected EventSubscription SubscribeInternal(TSubscriptionAction action)
+        protected EventSubscription SubscribeInternal(TSubscriptionAction action, string key = null, int? allowedCount = null)
         {
             var id = ++_subscriptionId;
             var sub = new EventSubscription(this, id, action);
-            SubscriptionsLookup.Add(id, sub);
-            SubscriptionActions = SubscriptionsLookup.Values.ToList();
+            sub.Key = key;
+            sub.AllowedCallCount = allowedCount;
+            SubscriptionsById.Add(id, sub);
+            _subscriptions = SubscriptionsById.Values.ToList();
             if (_onSubscribe != null)
             {
                 OnSubscribe.Emit(() => sub);
