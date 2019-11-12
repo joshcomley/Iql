@@ -192,9 +192,7 @@ namespace Iql.Entities.Relationships
             return GetCompositeKeyInternal(entity, inverse);
         }
 
-        private CompositeKey GetCompositeKeyInternal(object entity, bool inverse
-        //, Dictionary<object, CompositeKey> dic
-        )
+        private CompositeKey GetCompositeKeyInternal(object entity, bool inverse)
         {
             if(entity is CompositeKey && !inverse)
             {
@@ -210,12 +208,12 @@ namespace Iql.Entities.Relationships
                 var constraint = constraints[i];
                 var value =
                     entity is CompositeKey
-                        ? (entity as CompositeKey).Keys.Single(k => k.Name == constraint.Name).Value
+                        ? (entity as CompositeKey).Keys.Single(k => k.Name == constraint.PropertyName).Value
                         : entity.GetPropertyValue(constraint);
                 var keyValue = new KeyValue(
                     inverse
-                        ? inverseConstraints[i].Name
-                        : constraint.Name,
+                        ? inverseConstraints[i].PropertyName
+                        : constraint.PropertyName,
                     value,
                     constraint.TypeDefinition);
                 compositeKey.Keys[i] = keyValue;

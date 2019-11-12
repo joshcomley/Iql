@@ -657,6 +657,17 @@ namespace Iql.Data.Tracking
             return result != null;
         }
 
+        private bool IsEntityNew(object entity)
+        {
+            var state = DataTracker.GetEntityState(entity);
+            if(state != null)
+            {
+                return state.IsNew;
+            }
+
+            return false;
+        }
+
         private TryGetEntityStateResult TryGetEntityState(object entity, bool entityOnly)
         {
             var result = new TryGetEntityStateResult();
@@ -871,7 +882,18 @@ namespace Iql.Data.Tracking
                             var relationship = this.EntityConfiguration.FindRelationshipByName(changeEvent.List.PropertyName);
                             if (relationship.OtherEnd.Property.Nullable == false)
                             {
-                                DataTracker.DeleteEntity(changeEvent.Item);
+                                var state = DataTracker.GetEntityState(changeEvent.Item);
+                                if (state != null)
+                                {
+                                    if (state.IsNew && !state.IsAttachedToGraph)
+                                    {
+                                        DataTracker.DeleteEntity(changeEvent.Item);
+                                    }
+                                    else if(!state.MarkedForDeletion)
+                                    {
+                                        state.MarkForCascadeDeletion(changeEvent.Item, relationship.Relationship);
+                                    }
+                                }
                             }
                         }
 

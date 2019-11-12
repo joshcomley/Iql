@@ -1895,6 +1895,7 @@ namespace Iql.Data.Context
                 operation,
                 response);
 
+            TemporalDataTracker.Lock();
             await RunGetAsync(queuedGetDataOperation, response);
 
             //if (OfflineDataTracker != null)
@@ -1911,6 +1912,21 @@ namespace Iql.Data.Context
 
             // In here, if we're offline, we don't want to update other trackers (I think)
             var dbList = await TrackGetDataResultAsync(response);
+            var all = EntityConfigurationContext.FlattenObjectGraphs(typeof(TEntity), dbList);
+            TemporalDataTracker.Unlock();
+
+            foreach (var grouping in all)
+            {
+                var list = grouping.Value;
+                foreach(var item in list)
+                {
+                    var entityStateBase = GetEntityState(item);
+                    if (entityStateBase != null)
+                    {
+                        entityStateBase.UpdateHasChanges();
+                    }
+                }
+            }
 
             var getDataResult =
                 new GetDataResult<TEntity>(response.IsOffline, dbList, operation, response.IsSuccessful())

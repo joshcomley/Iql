@@ -4,7 +4,7 @@ namespace Iql.Entities.PropertyChangers
 {
     public static class PropertyChangerExtensions
     {
-        public static PropertyChanger ResovleChanger(this ITypeDefinition typeDefinition)
+        public static PropertyChanger ResolveChanger(this ITypeDefinition typeDefinition)
         {
             if (typeDefinition != null)
             {
@@ -19,6 +19,8 @@ namespace Iql.Entities.PropertyChangers
                     case IqlType.GeographyPoint:
                     case IqlType.GeometryPoint:
                         return PointPropertyChanger.Instance;
+                    case IqlType.Collection:
+                        return CollectionPropertyChanger.Instance;
                 }
             }
             return PrimitivePropertyChanger.Instance;

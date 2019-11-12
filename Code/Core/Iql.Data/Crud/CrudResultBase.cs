@@ -6,6 +6,7 @@ namespace Iql.Data.Crud
     public abstract class CrudResultBase : ICrudResult
     {
         private ICrudOperation _operation;
+        private bool _success;
         ICrudOperation ICrudResult.Operation => _operation;
         public RequestStatus RequestStatus { get; set; }
         public CrudResultBase(
@@ -22,7 +23,18 @@ namespace Iql.Data.Crud
             Success = success;
         }
 
-        public virtual bool Success { get; set; }
+        public virtual bool Success
+        {
+            get => _success;
+            set
+            {
+                if(!value)
+                {
+                    int a = 0;
+                }
+                _success = value;
+            }
+        }
     }
 
 

@@ -2,6 +2,7 @@
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Events;
+using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
@@ -9,8 +10,10 @@ using Iql.Events;
 
 namespace Iql.Data.Crud.Operations
 {
-    public interface IPropertyState : IJsonSerializable, IStateful, IDisposable
+    public interface IPropertyState : IJsonSerializable, IStateful, IDisposable, ILockable
     {
+        void UpdateHasChanged(bool? ignoreRelationshipOtherSide = null);
+        DataTracker DataTracker { get; }
         Guid Guid { get; }
         //IEntityPropertyEvent
         EventEmitter<ValueChangedEvent<bool>> CanUndoChanged { get; }

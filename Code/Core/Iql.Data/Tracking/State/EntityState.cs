@@ -44,6 +44,18 @@ namespace Iql.Data.Tracking.State
             }
         }
 
+        private bool _isLocked = false;
+        public ILockable Parent => DataTracker;
+        public bool IsLocked => _isLocked || Parent == null || Parent.IsLocked;
+        public void Lock()
+        {
+            _isLocked = true;
+        }
+        public void Unlock()
+        {
+            _isLocked = false;
+        }
+
         public void CheckHasChanged()
         {
             HasChanged = Properties.Any(_ => _.HasChanged);
@@ -345,18 +357,35 @@ namespace Iql.Data.Tracking.State
                 Properties.Add(new PropertyState(property, this));
             }
 
-            for (var i = 0; i < Properties.Count; i++)
-            {
-                var property = Properties[i];
-                ((PropertyState) property).UpdateHasChanged();
-            }
-
+            UpdateHasChanges();
             LocalKey = entityConfiguration.GetCompositeKey(entity);
             IsNew = isNew;
             MonitorSaveEvents();
         }
 
-        private Dictionary<Guid, IPropertyState[]> _operations = new Dictionary<Guid, IPropertyState[]>();
+        public void UpdateHasChanges()
+        {
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var propertyState = Properties[i];
+                if (propertyState.Property.TypeDefinition.Kind == IqlType.Collection)
+                {
+                    continue;
+                }
+                propertyState.UpdateHasChanged(true);
+            }
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var propertyState = Properties[i];
+                if (propertyState.Property.TypeDefinition.Kind != IqlType.Collection)
+                {
+                    continue;
+                }
+                propertyState.UpdateHasChanged(true);
+            }
+        }
+
+        private readonly Dictionary<Guid, IPropertyState[]> _operations = new Dictionary<Guid, IPropertyState[]>();
         private bool _isAttachedToGraph;
         private bool _hasChanged;
         private bool _hasChangedSinceSnapshot;
@@ -495,7 +524,10 @@ namespace Iql.Data.Tracking.State
             var entity = Entity.Clone(EntityConfiguration.Builder, EntityType);
             foreach (var property in Properties)
             {
-                property.Property.SetValue(entity, property.RemoteValue);
+                if(property.Property.TypeDefinition.Kind != IqlType.Collection)
+                {
+                    property.Property.SetValue(entity, property.RemoteValue);
+                }
             }
             return (T)entity;
         }

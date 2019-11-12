@@ -20,8 +20,19 @@ using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking
 {
-    public class DataTracker : IJsonSerializable, IDataChangeProvider, IDisposable, ISnapshotManager
+    public class DataTracker : IJsonSerializable, IDataChangeProvider, IDisposable, ISnapshotManager, ILockable
     {
+        private bool _isLocked = false;
+        public ILockable Parent => null;
+        public bool IsLocked => _isLocked;
+        public void Lock()
+        {
+            _isLocked = true;
+        }
+        public void Unlock()
+        {
+            _isLocked = false;
+        }
         //public EventEmitter<OfflineChangeStateChangedEvent> StateChanged { get; } = new EventEmitter<OfflineChangeStateChangedEvent>();
         public string SynchronicityKey => Name;
         public DataTrackerKind Kind { get; }
@@ -154,6 +165,7 @@ namespace Iql.Data.Tracking
             _propertiesChangedSinceLastSnapshot.Clear();
             _entitiesPendingInsertSinceLastSnapshot.Clear();
             _entitiesPendingDeleteSinceLastSnapshot.Clear();
+            UpdateHasChangesSinceSnapshot();
         }
 
         private TrackerSnapshot NewTrackerSnapshot()
@@ -642,6 +654,10 @@ namespace Iql.Data.Tracking
             {
                 var old = _hasChanges;
                 _hasChanges = value;
+                if (value)
+                {
+                    int a = 0;
+                }
                 if (old != value)
                 {
                     HasChangesChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
@@ -889,11 +905,45 @@ namespace Iql.Data.Tracking
         }
 
         /// <summary>
-        /// For internal use only
+        /// For internal use only.
+        /// </summary>
+        /// <param name="propertyState"></param>
+        public void NotifyRemoteValueChanged(IPropertyState propertyState)
+        {
+            var found = false;
+            if (_removedSnapshots != null)
+            {
+                for (var i = 0; i < _removedSnapshots.Count; i++)
+                {
+                    var removedSnapshot = _removedSnapshots[i];
+                    foreach (var item in removedSnapshot.Values)
+                    {
+                        if (item.Key == propertyState)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (found)
+            {
+                _removedSnapshots.Clear();
+            }
+        }
+
+        /// <summary>
+        /// For internal use only.
         /// </summary>
         /// <param name="propertyState"></param>
         /// <param name="hasChanged"></param>
-        public void NotifyChangedSinceSnapshot(IPropertyState propertyState, bool hasChanged)
+        public void NotifyChangedSinceSnapshotChanged(IPropertyState propertyState, bool hasChanged)
         {
             if (!propertyState.EntityState.AttachedToTracker)
             {
@@ -1037,6 +1087,17 @@ namespace Iql.Data.Tracking
                 }
             }
             UpdateHasChanges();
+        }
+
+        public IEntityStateBase FindTrackedEntity(CompositeKey compositeKey)
+        {
+            var set = Sets.FirstOrDefault(_ => _.EntityConfiguration.TypeName == compositeKey.TypeName);
+            if (set == null)
+            {
+                return null;
+            }
+
+            return set.FindMatchingEntityState(compositeKey);
         }
     }
 }

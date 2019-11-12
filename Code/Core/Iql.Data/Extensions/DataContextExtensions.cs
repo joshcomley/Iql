@@ -87,11 +87,19 @@ namespace Iql.Data.Extensions
         {
             var entityConfiguration = entityConfigurationBuilder.GetEntityByType(entity.GetType());
             var properties = new List<IPropertyState>();
-            foreach (var property in entityConfiguration.Properties)
+            for (var i = 0; i < entityConfiguration.Properties.Count; i++)
             {
+                var property = entityConfiguration.Properties[i];
+                if (property.TypeDefinition.Kind == IqlType.Collection)
+                {
+                    continue;
+                }
+
                 var propertyValue = entity.GetPropertyValue(property);
-                if (propertyValue != null || !property.TypeDefinition.Nullable && !property.Kind.HasFlag(PropertyKind.Relationship) &&
-                    (!property.Kind.HasFlag(PropertyKind.Key) || property.EntityConfiguration.Key.CanWrite || includeNonEditableKey))
+                if (propertyValue != null || !property.TypeDefinition.Nullable &&
+                    !property.Kind.HasFlag(PropertyKind.Relationship) &&
+                    (!property.Kind.HasFlag(PropertyKind.Key) || property.EntityConfiguration.Key.CanWrite ||
+                     includeNonEditableKey))
                 {
                     var state = new PropertyState(property, null);
                     properties.Add(state);
@@ -99,6 +107,7 @@ namespace Iql.Data.Extensions
                     state.LocalValue = propertyValue;
                 }
             }
+
             return properties;
         }
     }

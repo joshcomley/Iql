@@ -11,8 +11,9 @@ using Iql.Events;
 
 namespace Iql.Data.Tracking.State
 {
-    public interface IEntityStateBase : IJsonSerializable, IStateful, IDisposable
+    public interface IEntityStateBase : IJsonSerializable, IStateful, IDisposable, ILockable
     {
+        void UpdateHasChanges();
         void CheckHasChanged();
         bool HasChanged { get; }
         bool HasChangedSinceSnapshot { get; }

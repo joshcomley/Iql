@@ -71,7 +71,8 @@ namespace Iql.Tests.Tests
             {
                 Id = 7,
                 Name = "Test client",
-                TypeId = 2
+                TypeId = 2,
+                CreatedByUserId = "abc"
             });
             var client = await Db.Clients.Expand(_ => _.Type).GetWithKeyAsync(7);
             Assert.IsTrue(client.Type.Clients.Contains(client));
@@ -79,12 +80,14 @@ namespace Iql.Tests.Tests
             var clientState = Db.GetEntityState(client);
             Assert.IsFalse(clientState.MarkedForAnyDeletion);
             client.TypeId = 0;
+            Assert.AreEqual("abc", client.CreatedByUserId);
             var client2 = await Db.Clients.Expand(_ => _.Type).GetWithKeyAsync(7);
             Assert.IsFalse(clientType.Clients.Contains(client));
             Assert.AreEqual(client, client2);
             Assert.IsNull(client.Type);
             Assert.AreEqual(0, client.TypeId);
-            Assert.IsTrue(clientState.MarkedForAnyDeletion);
+            Assert.IsTrue(clientState.MarkedForCascadeDeletion);
+            Assert.AreEqual("abc", client.CreatedByUserId);
         }
 
         [TestMethod]

@@ -896,8 +896,8 @@ namespace Iql.Tests.Tests
             var entityState = Db.TemporalDataTracker.TrackingSetByType(typeof(Client))
                 .FindMatchingEntityState(clientToDelete);
 
-            Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion.");
-            Assert.AreEqual(false, entityState.MarkedForCascadeDeletion, "Entity is incorrectly marked for cascade deletion.");
+            Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion (1).");
+            Assert.AreEqual(false, entityState.MarkedForCascadeDeletion, "Entity is incorrectly marked for cascade deletion (1).");
 
             Db.Clients.Delete(clientToDelete);
 
@@ -914,8 +914,8 @@ namespace Iql.Tests.Tests
             // Reinstate the deleted entity
             clients.ClientType2.Clients.Add(deleteOperation.Operation.EntityState.Entity);
 
-            Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion.");
-            Assert.AreEqual(false, entityState.MarkedForCascadeDeletion, "Entity is incorrectly marked for cascade deletion.");
+            Assert.AreEqual(false, entityState.MarkedForDeletion, "Entity is incorrectly marked for deletion (2).");
+            Assert.AreEqual(false, entityState.MarkedForCascadeDeletion, "Entity is incorrectly marked for cascade deletion (2).");
         }
 
         [TestMethod]

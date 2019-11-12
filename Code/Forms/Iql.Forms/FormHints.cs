@@ -26,6 +26,7 @@
         public static string DateAndTime = Prefix + nameof(DateAndTime);
         public static string PhoneNumber = Prefix + nameof(PhoneNumber);
         public static string CurrentUserKey = Prefix + nameof(CurrentUserKey);
+        public static string SnapshotUnaffected = Prefix + nameof(SnapshotUnaffected);
         private static string HelpText = Prefix + nameof(HelpText) + ":";
         public static string HelpTextTop = HelpText + "Top";
         public static string HelpTextBottom = HelpText + "Bottom";

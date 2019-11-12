@@ -142,6 +142,121 @@ namespace Iql.Tests.Tests.DataContextTests
         }
 
         [TestMethod]
+        public async Task TestRevertSnapshot()
+        {
+            var id1 = 156187;
+            var clientRemote = new Client
+            {
+                Name = "abc",
+                Id = id1,
+                TypeId = 1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var entity1 = await Db.GetEntityAsync<Client>(id1);
+            var snapshot = Db.AddSnapshot();
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            entity1.Name = "def";
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Db.RevertToSnapshot();
+            Assert.AreEqual("abc", entity1.Name);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+        }
+
+        [TestMethod]
+        public async Task TestRevertSnapshotWithNewEntity()
+        {
+            var id1 = 156187;
+            var clientTypeRemote = new ClientType
+            {
+                Name = "abc",
+                Id = id1
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(clientTypeRemote);
+            var entity1 = await Db.GetEntityAsync<ClientType>(id1);
+            var snapshot = Db.AddSnapshot();
+            var propertyState = Db.GetEntityState(entity1).GetPropertyState(nameof(ClientType.Clients));
+            var newClient = new Client
+            {
+                Name = "New client",
+                Description = "abc"
+            };
+            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            Db.Clients.Add(newClient);
+            newClient.TypeId = id1;
+            //            entity1.Clients.Add(newClient);
+            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Assert.AreEqual(id1, newClient.TypeId);
+            Assert.AreEqual(1, entity1.Clients.Count);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Db.RevertToSnapshot();
+            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.AreEqual(0, newClient.TypeId);
+            Assert.AreEqual(0, entity1.Clients.Count);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+        }
+
+
+        [TestMethod]
+        public async Task TestRevertSnapshotWithNewEntityViaRelationshipList()
+        {
+            var id1 = 156187;
+            var clientTypeRemote = new ClientType
+            {
+                Name = "abc",
+                Id = id1
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(clientTypeRemote);
+            var entity1 = await Db.GetEntityAsync<ClientType>(id1);
+            var snapshot = Db.AddSnapshot();
+            var propertyState = Db.GetEntityState(entity1).GetPropertyState(nameof(ClientType.Clients));
+            var newClient = new Client
+            {
+                Name = "New client",
+                Description = "abc"
+            };
+            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            entity1.Clients.Add(newClient);
+            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Assert.AreEqual(id1, newClient.TypeId);
+            Assert.AreEqual(1, entity1.Clients.Count);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Db.RevertToSnapshot();
+            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.AreEqual(0, newClient.TypeId);
+            Assert.AreEqual(0, entity1.Clients.Count);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+        }
+
+        [TestMethod]
+        public async Task TestRelationshipListEntityChange()
+        {
+            var id1 = 156187;
+            var clientTypeRemote = new ClientType
+            {
+                Name = "abc",
+                Id = id1
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(clientTypeRemote);
+            var entity1 = await Db.GetEntityAsync<ClientType>(id1);
+            var propertyState = Db.GetEntityState(entity1).GetPropertyState(nameof(ClientType.Clients));
+            var newClient = new Client
+            {
+                Name = "New client",
+                Description = "abc"
+            };
+            entity1.Clients.Add(newClient);
+            var snapshot = Db.AddSnapshot();
+            newClient.Name = "New";
+            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Db.RevertToSnapshot();
+            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+        }
+
+        [TestMethod]
         public async Task TestPropertyUndo()
         {
             var id1 = 156187;
@@ -441,9 +556,13 @@ namespace Iql.Tests.Tests.DataContextTests
             var client2 = await Db.Clients.GetWithKeyAsync(1212);
             Assert.AreEqual(client, client2);
             Assert.IsTrue(Db.HasRestorableSnapshot);
-            dbClient.Name = "new name";
+            dbClient.AverageIncome = 12;
             var client3 = await Db.Clients.GetWithKeyAsync(1212);
-            Assert.AreEqual(client, client2);
+            Assert.AreEqual(client, client3);
+            Assert.IsTrue(Db.HasRestorableSnapshot);
+            dbClient.Name = "new name";
+            client3 = await Db.Clients.GetWithKeyAsync(1212);
+            Assert.AreEqual(client, client3);
             Assert.IsFalse(Db.HasRestorableSnapshot);
         }
 
@@ -479,10 +598,6 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.IsTrue(Db.HasRestorableSnapshot);
             var client2b = await Db.Clients.GetWithKeyAsync(1213);
             Assert.IsTrue(Db.HasRestorableSnapshot);
-            dbClient.Name = "new name";
-            var client3 = await Db.Clients.GetWithKeyAsync(1212);
-            Assert.AreEqual(client, client2);
-            Assert.IsFalse(Db.HasRestorableSnapshot);
         }
 
         [TestMethod]
