@@ -143,17 +143,26 @@ namespace Iql.Data.Tracking
             }
             foreach (var item in items)
             {
-                snapshot.Values.Add(item, new PropertySnapshot
+                if (!item.IsRelationshipCollection)
                 {
-                    PreviousValue = item.SnapshotValue,
-                    CurrentValue = item.LocalValue
-                });
+                    snapshot.Values.Add(item, new PropertySnapshot
+                    {
+                        PreviousValue = item.SnapshotValue,
+                        CurrentValue = item.LocalValue
+                    });
+                }
                 item.AddSnapshot();
             }
             _ignoreChangedSinceSnapshotChanges = false;
             ResetSnapshotState(true);
             _snapshots.Add(snapshot);
+            UpdateHasSnapshot();
             return snapshot;
+        }
+
+        private void UpdateHasSnapshot()
+        {
+            HasSnapshot = CurrentSnapshot != null;
         }
 
         private void ResetSnapshotState(bool clearRemovedSnapshots)
@@ -222,7 +231,19 @@ namespace Iql.Data.Tracking
             return AddSnapshot();
         }
 
-        public bool HasSnapshot => CurrentSnapshot != null;
+        public bool HasSnapshot
+        {
+            get => _hasSnapshot;
+            set
+            {
+                var old = _hasSnapshot;
+                _hasSnapshot = value;
+                if(old != value)
+                {
+                    HasSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                }
+            }
+        }
 
         public bool HasRestorableSnapshot => _removedSnapshots.Count > 0;
 
@@ -237,6 +258,7 @@ namespace Iql.Data.Tracking
                 if (remove)
                 {
                     _snapshots.Remove(last);
+                    UpdateHasSnapshot();
                     _removedSnapshots.Add(last);
                     if (!_snapshots.Any())
                     {
@@ -665,6 +687,7 @@ namespace Iql.Data.Tracking
             }
         }
 
+        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
         public TrackerSnapshot[] Snapshots => (_snapshots ?? new List<TrackerSnapshot>()).ToArray();
@@ -950,6 +973,41 @@ namespace Iql.Data.Tracking
                 return;
             }
             UpdateLookup(propertyState, hasChanged, _propertiesChangedSinceLastSnapshot, _propertiesChangedSinceLastSave, true);
+            //NotifyInterestedParties(propertyState);
+        }
+
+        /// <summary>
+        /// For internal use only.
+        /// </summary>
+        /// <param name="propertyState"></param>
+        /// <param name="hasChanged"></param>
+        public void NotifyChangedChanged(IPropertyState propertyState, bool hasChanged)
+        {
+            //if (!propertyState.EntityState.AttachedToTracker)
+            //{
+            //    return;
+            //}
+            //NotifyInterestedParties(propertyState);
+        }
+
+        private void NotifyInterestedParties(IEntityStateBase entityState)
+        {
+            if(entityState != null)
+            {
+                var entity = entityState.Entity;
+                if (_interestedParties.ContainsKey(entity))
+                {
+                    var interestedParties = _interestedParties[entity].Values.ToList();
+                    for (var i = 0; i < interestedParties.Count; i++)
+                    {
+                        var item = interestedParties[i];
+                        if (item != null)
+                        {
+                            item(entityState);
+                        }
+                    }
+                }
+            }
         }
 
         public void NotifyPendingInsertChanged<T>(EntityState<T> entityState, bool value) where T : class
@@ -1098,6 +1156,52 @@ namespace Iql.Data.Tracking
             }
 
             return set.FindMatchingEntityState(compositeKey);
+        }
+
+        private readonly Dictionary<object, Dictionary<string, Action<IEntityStateBase>>> _interestedParties = new Dictionary<object, Dictionary<string, Action<IEntityStateBase>>>();
+        private bool _hasSnapshot;
+
+        public void UnregisterInterest(object value, string key)
+        {
+            if (_interestedParties.ContainsKey(value))
+            {
+                var interestedParties = _interestedParties[value];
+                if (interestedParties.ContainsKey(key))
+                {
+                    interestedParties.Remove(key);
+                }
+            }
+        }
+        public void RegisterInterest(object value, string key, Action<IEntityStateBase> action)
+        {
+            if (!_interestedParties.ContainsKey(value))
+            {
+                _interestedParties.Add(value, new Dictionary<string, Action<IEntityStateBase>>());
+            }
+            var interestedParties = _interestedParties[value];
+            if (!interestedParties.ContainsKey(key))
+            {
+                interestedParties.Add(key, action);
+            }
+            else
+            {
+                interestedParties[key] = action;
+            }
+        }
+
+        public void NotifyEntityIsNewChanged(IEntityStateBase entityState)
+        {
+            NotifyInterestedParties(entityState);
+        }
+
+        public void NotifyEntityHasChangedChanged(IEntityStateBase entityState)
+        {
+            NotifyInterestedParties(entityState);
+        }
+
+        public void NotifyEntityHasChangedSinceSnapshotChanged(IEntityStateBase entityState)
+        {
+            NotifyInterestedParties(entityState);
         }
     }
 }

@@ -58,8 +58,9 @@ namespace Iql.Data.Tracking.State
 
         public void CheckHasChanged()
         {
-            HasChanged = Properties.Any(_ => _.HasChanged);
-            HasChangedSinceSnapshot = Properties.Any(_ => _.HasChangedSinceSnapshot);
+            HasChanged = IsNew || Properties.Any(_ => _.HasChanged);
+            var hasSnapshots = DataTracker != null && DataTracker.HasSnapshot;
+            HasChangedSinceSnapshot = (!hasSnapshots && HasChanged) || Properties.Any(_ => _.HasChangedSinceSnapshot);
         }
 
         public bool HasChanged
@@ -72,6 +73,10 @@ namespace Iql.Data.Tracking.State
                 if(old != value)
                 {
                     HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    if (DataTracker != null)
+                    {
+                        DataTracker.NotifyEntityHasChangedChanged(this);
+                    }
                 }
             }
         }
@@ -86,6 +91,10 @@ namespace Iql.Data.Tracking.State
                 if (old != value)
                 {
                     HasChangedSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    if (DataTracker != null)
+                    {
+                        DataTracker.NotifyEntityHasChangedSinceSnapshotChanged(this);
+                    }
                 }
             }
         }
@@ -153,6 +162,11 @@ namespace Iql.Data.Tracking.State
                 {
                     IsNewChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
                     UpdatePendingInsert();
+                    CheckHasChanged();
+                    if (DataTracker != null)
+                    {
+                        DataTracker.NotifyEntityIsNewChanged(this);
+                    }
                 }
             }
         }
@@ -347,6 +361,13 @@ namespace Iql.Data.Tracking.State
         {
             Id = Guid.NewGuid();
             DataTracker = dataTracker;
+            if(DataTracker != null)
+            {
+                EventManager.Subscribe(DataTracker.HasSnapshotChanged, _ =>
+                {
+                    CheckHasChanged();
+                });
+            }
             Entity = entity;
             EntityType = entityType;
             EntityConfiguration = entityConfiguration;
@@ -354,8 +375,12 @@ namespace Iql.Data.Tracking.State
             for (var i = 0; i < EntityConfiguration.Properties.Count; i++)
             {
                 var property = EntityConfiguration.Properties[i];
-                Properties.Add(new PropertyState(property, this));
-            }
+                var propertyState = new PropertyState(property, this);
+                Properties.Add(propertyState);
+                propertyState.HasChangedChanged.Subscribe(_ => CheckHasChanged());
+                propertyState.HasChangedSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
+                propertyState.HasSnapshotValueChanged.Subscribe(_ => CheckHasChanged());
+;            }
 
             UpdateHasChanges();
             LocalKey = entityConfiguration.GetCompositeKey(entity);
@@ -389,10 +414,10 @@ namespace Iql.Data.Tracking.State
         private bool _isAttachedToGraph;
         private bool _hasChanged;
         private bool _hasChangedSinceSnapshot;
+        private IqlEventManager _eventManager;
 
         private void MonitorSaveEvents()
         {
-            EventManager = new IqlEventManager();
             EventManager.SubscribeAsync(SaveEvents.StartedAsync,
                 async _ =>
                 {
@@ -462,7 +487,7 @@ namespace Iql.Data.Tracking.State
                 });
         }
 
-        private IqlEventManager EventManager { get; set; }
+        private IqlEventManager EventManager => _eventManager = _eventManager ?? new IqlEventManager();
 
         public static IEntityStateBase New(object entity, Type entityType, IEntityConfiguration entityConfiguration)
         {

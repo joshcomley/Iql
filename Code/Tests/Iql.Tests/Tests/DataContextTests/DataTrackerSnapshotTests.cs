@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Iql.Data.Tracking;
 using Iql.Entities;
 using Iql.Tests.Context;
@@ -567,6 +568,126 @@ namespace Iql.Tests.Tests.DataContextTests
         }
 
         [TestMethod]
+        public async Task AddingSnapshotShouldResetSnapshotChangeStatus()
+        {
+            var dbClient = new Client
+            {
+                Id = 1212,
+                Name = "abc",
+                Description = "def"
+            };
+            AppDbContext.InMemoryDb.Clients.Add(dbClient);
+            var client = await Db.Clients.GetWithKeyAsync(1212);
+            client.Name = "123";
+            client.Description = "456";
+            var propertyState = Db.GetEntityState(client).GetPropertyState(nameof(Client.Name));
+            Assert.IsTrue(propertyState.HasChanged);
+            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Db.AddSnapshot();
+            Assert.IsTrue(propertyState.HasChanged);
+            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            client.Name = "456";
+            Assert.IsTrue(propertyState.HasChanged);
+            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Db.RevertToSnapshot();
+            Assert.IsTrue(propertyState.HasChanged);
+            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            client.Name = "456";
+            Assert.IsTrue(propertyState.HasChanged);
+            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Db.AddSnapshot();
+            Assert.IsTrue(propertyState.HasChanged);
+            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+        }
+
+        [TestMethod]
+        public async Task TestRelationshipCollectionNestedChanges()
+        {
+            var dbClient = new Client
+            {
+                Id = 1212,
+                Name = "abc",
+                Description = "def",
+                TypeId = 77
+            };
+            var dbClientType1 = new ClientType
+            {
+                Id = 77
+            };
+            var dbClientType2 = new ClientType
+            {
+                Id = 78
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(dbClientType1);
+            AppDbContext.InMemoryDb.ClientTypes.Add(dbClientType2);
+            AppDbContext.InMemoryDb.Clients.Add(dbClient);
+            var types = await Db.ClientTypes.Expand(_ => _.Clients).ToListAsync();
+            var clientType1 = types.Single(_ => _.Id == 77);
+            var clientType2 = types.Single(_ => _.Id == 78);
+            var client = clientType1.Clients[0];
+            var relationshipCollection1 = Db.GetEntityState(clientType1).GetPropertyState(nameof(ClientType.Clients));
+            var relationshipCollection2 = Db.GetEntityState(clientType2).GetPropertyState(nameof(ClientType.Clients));
+            Assert.IsFalse(relationshipCollection1.HasChanged);
+            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection1.HasNestedChanges);
+            Assert.IsFalse(relationshipCollection1.HasNestedChangesSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanged);
+            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasNestedChanges);
+            Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
+            var clientState = Db.GetEntityState(client);
+            var nameState = clientState.GetPropertyState(nameof(Client.Name));
+            Assert.IsFalse(clientState.HasChanged);
+            Assert.IsFalse(clientState.HasChangedSinceSnapshot);
+            Assert.IsFalse(nameState.HasChanged);
+            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
+            client.Name = "def";
+            Assert.IsTrue(clientState.HasChanged);
+            Assert.IsTrue(clientState.HasChangedSinceSnapshot);
+            Assert.IsTrue(nameState.HasChanged);
+            Assert.IsTrue(nameState.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection1.HasChanged);
+            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsTrue(relationshipCollection1.HasNestedChanges);
+            Assert.IsTrue(relationshipCollection1.HasNestedChangesSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanged);
+            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasNestedChanges);
+            Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
+            client.Name = "abc";
+            Assert.IsFalse(clientState.HasChanged);
+            Assert.IsFalse(clientState.HasChangedSinceSnapshot);
+            Assert.IsFalse(nameState.HasChanged);
+            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection1.HasChanged);
+            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection1.HasNestedChanges);
+            Assert.IsFalse(relationshipCollection1.HasNestedChangesSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanged);
+            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasNestedChanges);
+            Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
+            client.Name = "def";
+            Assert.IsFalse(relationshipCollection1.HasChanged);
+            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsTrue(relationshipCollection1.HasNestedChanges);
+            Assert.IsTrue(relationshipCollection1.HasNestedChangesSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanged);
+            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasNestedChanges);
+            Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
+            var snapshot = Db.AddSnapshot();
+            Assert.IsFalse(relationshipCollection1.HasChanged);
+            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsTrue(relationshipCollection1.HasNestedChanges);
+            Assert.IsFalse(relationshipCollection1.HasNestedChangesSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanged);
+            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasNestedChanges);
+            Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
+        }
+
+        [TestMethod]
         public async Task TestFetchEntirelyNewEntityShouldNotClearRestorableSnapshots()
         {
             var dbClient = new Client
@@ -598,6 +719,171 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.IsTrue(Db.HasRestorableSnapshot);
             var client2b = await Db.Clients.GetWithKeyAsync(1213);
             Assert.IsTrue(Db.HasRestorableSnapshot);
+        }
+
+        [TestMethod]
+        public async Task TestRelationshipCollectionStatus()
+        {
+            var dbClientType1 = new ClientType
+            {
+                Id = 1212,
+                Name = "abc",
+            };
+            var dbClientType2 = new ClientType
+            {
+                Id = 1213,
+                Name = "abc",
+            };
+            var dbClient1 = new Client
+            {
+                Id = 4545,
+                Name = "abc",
+                Description = "def",
+                TypeId = 1212
+            };
+            var dbClient2 = new Client
+            {
+                Id = 4546,
+                Name = "def",
+                Description = "def",
+                TypeId = 1212
+            };
+            var dbClient3 = new Client
+            {
+                Id = 4547,
+                Name = "ghi",
+                Description = "def",
+                TypeId = 1212
+            };
+            var dbClient4 = new Client
+            {
+                Id = 4548,
+                Name = "jkl",
+                Description = "def",
+                TypeId = 1212
+            };
+            var dbClient5 = new Client
+            {
+                Id = 4549,
+                Name = "mno",
+                Description = "def",
+                TypeId = 1212
+            };
+            var dbClient6 = new Client
+            {
+                Id = 4550,
+                Name = "pqr",
+                Description = "def",
+                TypeId = 1212
+            };
+            var dbClient7 = new Client
+            {
+                Id = 4551,
+                Name = "stu",
+                Description = "def",
+                TypeId = 1213
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(dbClientType1);
+            AppDbContext.InMemoryDb.ClientTypes.Add(dbClientType2);
+            AppDbContext.InMemoryDb.Clients.Add(dbClient1);
+            AppDbContext.InMemoryDb.Clients.Add(dbClient2);
+            AppDbContext.InMemoryDb.Clients.Add(dbClient3);
+            AppDbContext.InMemoryDb.Clients.Add(dbClient4);
+            AppDbContext.InMemoryDb.Clients.Add(dbClient5);
+            AppDbContext.InMemoryDb.Clients.Add(dbClient6);
+            AppDbContext.InMemoryDb.Clients.Add(dbClient7);
+            var clientTypes = await Db.ClientTypes.Expand(_ => _.Clients).ToListAsync();
+            var clientType1 = clientTypes.Single(_ => _.Id == 1212);
+            var clientType2 = clientTypes.Single(_ => _.Id == 1213);
+            var client1 = clientType1.Clients.Single(_ => _.Id == 4545);
+            var client2 = clientType1.Clients.Single(_ => _.Id == 4546);
+            var client3 = clientType1.Clients.Single(_ => _.Id == 4547);
+            var client4 = clientType1.Clients.Single(_ => _.Id == 4548);
+            var client5 = clientType1.Clients.Single(_ => _.Id == 4549);
+            var client6 = clientType1.Clients.Single(_ => _.Id == 4550);
+            var client7 = clientType2.Clients.Single(_ => _.Id == 4551);
+            var client1State = Db.GetEntityState(client1);
+            var client2State = Db.GetEntityState(client2);
+            var client3State = Db.GetEntityState(client3);
+            var client4State = Db.GetEntityState(client4);
+            var client5State = Db.GetEntityState(client5);
+            var client6State = Db.GetEntityState(client6);
+            var client7State = Db.GetEntityState(client7);
+            Assert.AreEqual(6, clientType1.Clients.Count);
+            var state = Db.GetEntityState(clientType1);
+            var clientType1ClientsState = state.GetPropertyState(nameof(ClientType.Clients));
+            Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsAdded.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsChangedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsAddedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
+            client1.Name = "a new name";
+            Assert.AreEqual(6, clientType1.Clients.Count);
+            client2.TypeId = 7878;
+            Assert.AreEqual(5, clientType1.Clients.Count);
+            var newClient1 = new Client
+            {
+                Name = "A new client 1",
+                Description = "def",
+                TypeId = clientType1.Id
+            };
+            Db.Clients.Add(newClient1);
+            var newClient1State = Db.GetEntityState(newClient1);
+            Assert.AreEqual(6, clientType1.Clients.Count);
+            AssertCollection(clientType1ClientsState.ItemsChanged, client1State);
+            AssertCollection(clientType1ClientsState.ItemsAdded, newClient1State);
+            AssertCollection(clientType1ClientsState.ItemsRemoved, client2State);
+            AssertCollection(clientType1ClientsState.ItemsChangedSinceSnapshot, client1State);
+            AssertCollection(clientType1ClientsState.ItemsAddedSinceSnapshot, newClient1State);
+            AssertCollection(clientType1ClientsState.ItemsRemovedSinceSnapshot, client2State);
+            clientType1ClientsState.ItemsChanged.Change.Subscribe(_ =>
+            {
+                int a = 0;
+            });
+            Db.AddSnapshot();
+            AssertCollection(clientType1ClientsState.ItemsChanged, client1State);
+            AssertCollection(clientType1ClientsState.ItemsAdded, newClient1State);
+            AssertCollection(clientType1ClientsState.ItemsRemoved, client2State);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsChangedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsAddedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
+            client4.Name = "Another new name";
+            AssertCollection(clientType1ClientsState.ItemsChanged, client1State, client4State);
+            AssertCollection(clientType1ClientsState.ItemsAdded, newClient1State);
+            AssertCollection(clientType1ClientsState.ItemsRemoved, client2State);
+            AssertCollection(clientType1ClientsState.ItemsChangedSinceSnapshot, client4State);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsAddedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
+            var newClient2 = new Client
+            {
+                Name = "A new client 2",
+                Description = "def",
+                TypeId = clientType1.Id
+            };
+            Db.Clients.Add(newClient2);
+            var newClient2State = Db.GetEntityState(newClient2);
+            AssertCollection(clientType1ClientsState.ItemsChanged, client1State, client4State);
+            AssertCollection(clientType1ClientsState.ItemsAdded, newClient1State, newClient2State);
+            AssertCollection(clientType1ClientsState.ItemsRemoved, client2State);
+            AssertCollection(clientType1ClientsState.ItemsChangedSinceSnapshot, client4State);
+            AssertCollection(clientType1ClientsState.ItemsAddedSinceSnapshot, newClient2State);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
+            client7.TypeId = clientType1.Id;
+            AssertCollection(clientType1ClientsState.ItemsChanged, client1State, client4State);
+            AssertCollection(clientType1ClientsState.ItemsAdded, newClient1State, newClient2State, client7State);
+            AssertCollection(clientType1ClientsState.ItemsRemoved, client2State);
+            AssertCollection(clientType1ClientsState.ItemsChangedSinceSnapshot, client4State);
+            AssertCollection(clientType1ClientsState.ItemsAddedSinceSnapshot, newClient2State, client7State);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsAdded.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsChangedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsAddedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
         }
 
         [TestMethod]

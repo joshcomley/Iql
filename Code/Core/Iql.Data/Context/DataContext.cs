@@ -1895,6 +1895,7 @@ namespace Iql.Data.Context
                 operation,
                 response);
 
+            // Prevents changes triggering changed state detection
             TemporalDataTracker.Lock();
             await RunGetAsync(queuedGetDataOperation, response);
 
@@ -1913,6 +1914,7 @@ namespace Iql.Data.Context
             // In here, if we're offline, we don't want to update other trackers (I think)
             var dbList = await TrackGetDataResultAsync(response);
             var all = EntityConfigurationContext.FlattenObjectGraphs(typeof(TEntity), dbList);
+            // Restore change state detection
             TemporalDataTracker.Unlock();
 
             foreach (var grouping in all)

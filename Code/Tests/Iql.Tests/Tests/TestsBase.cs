@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Iql.Conversion;
 using Iql.Data.DataStores.InMemory;
 using Iql.Parsing.Types;
@@ -74,6 +75,19 @@ namespace Iql.Tests.Tests
                 Assert.IsTrue(e is TException || e.InnerException is TException);
             }
             Assert.AreEqual(exceptionCount, 1, $"Expected exception {typeof(TException).Name} not thrown.");
+        }
+
+        public void AssertCollection(IList collection, params object[] args)
+        {
+            Assert.AreEqual(args == null ? 0 : args.Length, collection.Count);
+            if (args != null)
+            {
+                for (var i = 0; i < args.Length; i++)
+                {
+                    var arg = args[i];
+                    Assert.IsTrue(collection.Contains(arg));
+                }
+            }
         }
     }
 }

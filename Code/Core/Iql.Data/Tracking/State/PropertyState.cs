@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Iql.Conversion;
+using Iql.Conversion.State;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Events;
@@ -11,7 +12,9 @@ using Iql.Data.Lists;
 using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
+using Iql.Entities.Lists;
 using Iql.Entities.PropertyChangers;
+using Iql.Entities.Relationships;
 using Iql.Events;
 
 namespace Iql.Data.Tracking.State
@@ -19,24 +22,40 @@ namespace Iql.Data.Tracking.State
     [DebuggerDisplay("{Property.Name}")]
     public class PropertyState : IPropertyState
     {
-        private bool _isLocked = false;
-        public ILockable Parent => EntityState;
-        public bool IsLocked => _isLocked || Parent == null || Parent.IsLocked;
-        public void Lock()
-        {
-            _isLocked = true;
-        }
-        public void Unlock()
-        {
-            _isLocked = false;
-        }
-
-        public DataTracker DataTracker => EntityState == null ? null : EntityState.DataTracker;
-        private bool _hasChangedSinceSnapshot;
+        private bool _canUndo;
+        private IPropertyState[] _groupStates;
         private bool _hasChanged;
+        private string _id;
+        private bool _isLocked;
+        private bool _isUpdatingHasChanged;
+        private object _localValue;
+        private bool _nestedHasChanged;
+        private bool? _isRelationshipCollection;
+        private bool? _otherEndIsCollection;
+        private List<IProperty> _otherSideProperties;
+        private PropertyChanger _propertyChanger;
+        //private object _relationshipEntityLocal;
+        //private object _relationshipEntityRemote;
+        //private object _relationshipEntitySnapshot;
+        private IPropertyState _relationshipPropertyState;
+        //private IPropertyState _relationshipPropertyStateLocal;
+        //private IPropertyState _relationshipPropertyStateRemote;
+        //private IPropertyState _relationshipPropertyStateSnapshot;
+        private object _remoteValue;
         private object _remoteValueClone;
         private bool _remoteValueSet;
-        private object _localValue;
+        private IPropertyState[] _siblingStates;
+        private object _snapshotValue;
+        private bool _hasSnapshotValue;
+        private ObservableList<IEntityStateBase> _itemsChanged;
+        private ObservableList<IEntityStateBase> _itemsRemoved;
+        private ObservableList<IEntityStateBase> _itemsAdded;
+        private ObservableList<IEntityStateBase> _itemsChangedSinceSnapshot;
+        private ObservableList<IEntityStateBase> _itemsRemovedSinceSnapshot;
+        private ObservableList<IEntityStateBase> _itemsAddedSinceSnapshot;
+        private bool _hasNestedChanges;
+        private bool _hasNestedChangesSinceStart;
+        private bool _hasChangedSinceSnapshot;
 
         public PropertyState(
             IProperty property,
@@ -45,22 +64,53 @@ namespace Iql.Data.Tracking.State
             Guid = Guid.NewGuid();
             Property = property;
             EntityState = entityState;
-            // Ensure it is loaded
             EnsureRemoteValue();
-            //if (!(PropertyChanger is PrimitivePropertyChanger))
-            //{
-            //}
         }
 
-        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> StatefulSaveEvents { get; } = new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
-        IOperationEventsBase IStateful.StatefulSaveEvents => StatefulSaveEvents;
-        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> SaveEvents { get; } = new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
-        IOperationEventsBase IStateful.SaveEvents => SaveEvents;
-        public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents { get; } = new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
-        IOperationEventsBase IStateful.AbandonEvents => AbandonEvents;
+        private string Id
+        {
+            get
+            {
+                if (_id == null)
+                {
+                    _id = Guid.NewGuid().ToString();
+                }
 
-        private PropertyChanger _propertyChanger;
-        private object _remoteValue;
+                return _id;
+            }
+        }
+
+        public bool HasSnapshotValue
+        {
+            get => _hasSnapshotValue;
+            private set
+            {
+                var old = _hasSnapshotValue;
+                _hasSnapshotValue = value;
+                if (old != value)
+                {
+                    HasSnapshotValueChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                }
+            }
+        }
+
+        public ObservableList<IEntityStateBase> ItemsChanged => _itemsChanged = _itemsChanged ?? new ObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsRemoved => _itemsRemoved = _itemsRemoved ?? new ObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsAdded => _itemsAdded = _itemsAdded ?? new ObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsChangedSinceSnapshot => _itemsChangedSinceSnapshot = _itemsChangedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsRemovedSinceSnapshot => _itemsRemovedSinceSnapshot = _itemsRemovedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsAddedSinceSnapshot => _itemsAddedSinceSnapshot = _itemsAddedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
+
+        private IqlEventManager EventManager { get; } = new IqlEventManager();
+
+        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> StatefulSaveEvents { get; } =
+            new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
+
+        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> SaveEvents { get; } =
+            new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
+
+        public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents { get; } =
+            new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
 
         private PropertyChanger PropertyChanger
         {
@@ -68,7 +118,95 @@ namespace Iql.Data.Tracking.State
         }
 
         public string HasChangedText { get; private set; }
-        public bool HasChangedSinceSnapshot => _hasChangedSinceSnapshot;
+
+        public bool IsRelationshipCollection
+        {
+            get
+            {
+                if (_isRelationshipCollection == null)
+                {
+                    _isRelationshipCollection = Property.Kind.HasFlag(PropertyKind.Relationship) &&
+                                                Property.Relationship.ThisIsTarget &&
+                                                Property.Relationship.ThisEnd.Property.TypeDefinition.Kind ==
+                                                IqlType.Collection;
+                }
+
+                return _isRelationshipCollection.Value;
+            }
+        }
+        private bool OtherEndIsCollection
+        {
+            get
+            {
+                if (_otherEndIsCollection == null)
+                {
+                    _otherEndIsCollection = EntityState != null && Property.Kind.HasFlag(PropertyKind.Relationship) &&
+                                            Property.Relationship.ThisIsSource &&
+                                            Property.Relationship.OtherEnd.Property.TypeDefinition.Kind ==
+                                            IqlType.Collection;
+                }
+
+                return _otherEndIsCollection.Value;
+            }
+        }
+
+        public IPropertyState RelationshipPropertyState
+        {
+            get
+            {
+                if (Property.Relationship != null && _relationshipPropertyState == null)
+                {
+                    _relationshipPropertyState = Property.Relationship.ThisEnd.Property == Property
+                        ? this
+                        : EntityState.GetPropertyState(Property.Relationship.ThisEnd.Property.PropertyName);
+                }
+
+                return _relationshipPropertyState;
+            }
+        }
+
+        public ILockable Parent => EntityState;
+        public bool IsLocked => _isLocked || Parent == null || Parent.IsLocked;
+
+        public void Lock()
+        {
+            _isLocked = true;
+        }
+
+        public void Unlock()
+        {
+            _isLocked = false;
+        }
+
+        public DataTracker DataTracker => EntityState == null ? null : EntityState.DataTracker;
+        IOperationEventsBase IStateful.StatefulSaveEvents => StatefulSaveEvents;
+        IOperationEventsBase IStateful.SaveEvents => SaveEvents;
+        IOperationEventsBase IStateful.AbandonEvents => AbandonEvents;
+
+        public bool HasChangedSinceSnapshot
+        {
+            get => _hasChangedSinceSnapshot;
+            private set
+            {
+                var old = _hasChangedSinceSnapshot;
+                _hasChangedSinceSnapshot = value;
+                if (old != value)
+                {
+                    if (EntityState != null)
+                    {
+                        EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, value);
+                    }
+
+                    HasChangedSinceSnapshotChanged.Emit(
+                        () => new ValueChangedEvent<bool>(old, value));
+                    if (EntityState != null)
+                    {
+                        EntityState.CheckHasChanged();
+                    }
+                }
+                CanUndo = HasSnapshotValue && HasChangedSinceSnapshot || HasChanged;
+            }
+        }
 
         public bool CanUndo
         {
@@ -84,200 +222,48 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        private bool _nestedHasChanged = false;
         public bool HasChanged
         {
             get
             {
                 var forceUpdate = false;
-                if (!_localValueSet && EntityState != null)
+                if (!LocalValueSet && EntityState != null)
                 {
                     LocalValue = Property.GetValue(EntityState.Entity);
                     forceUpdate = true;
                 }
+
                 if (PropertyChanger.CanSilentlyChange)
                 {
                     forceUpdate = true;
                 }
+
                 if (forceUpdate && !_nestedHasChanged)
                 {
                     _nestedHasChanged = true;
                     UpdateHasChanged();
                 }
+
                 _nestedHasChanged = false;
                 return _hasChanged;
             }
-        }
-
-        private bool CalculateHasChanged(object remoteValue, ChangeCalculationKind kind)
-        {
-            if (Property.Kind.HasFlag(PropertyKind.Count))
+            private set
             {
-                HasChangedText = "Count field";
-                return false;
-            }
-
-            if (Property.Kind.HasFlag(PropertyKind.Relationship))
-            {
-                HasChangedText = "Relationship field";
-                if (Property.Relationship.ThisIsSource)
+                var old = _hasChanged;
+                _hasChanged = value;
+                if (old != value)
                 {
-                    return RelationshipSourceHasChanged(remoteValue);
-                }
-                else if (Property.TypeDefinition.Kind == IqlType.Collection)
-                {
-                    return RelationshipTargetHasChanged(remoteValue, kind);
-                }
-            }
-
-            HasChangedText = $"PropertyChanger: {PropertyChanger.GetType().Name}";
-            return !PropertyChanger.AreEquivalent(remoteValue, EntityState == null || _localValueSet ? LocalValue : Property.GetValue(EntityState.Entity));
-        }
-
-        private void EnsureRemoteValue()
-        {
-            if (EntityState != null &&
-                _remoteValueSet &&
-                _remoteValue == null &&
-                _localValue != null &&
-                Property.Relationship != null &&
-                !Property.Relationship.ThisIsTarget &&
-                Property == Property.Relationship.ThisEnd.Property)
-            {
-                var canMatchToKey = true;
-                for (var i = 0; i < Property.Relationship.ThisEnd.Constraints.Length; i++)
-                {
-                    var key = Property.Relationship.ThisEnd.Constraints[i];
-                    if (EntityState.GetPropertyState(key.PropertyName).HasChanged)
+                    if (EntityState != null)
                     {
-                        canMatchToKey = false;
+                        EntityState.DataTracker.NotifyChangedChanged(this, _hasChanged);
                     }
-                }
-
-                if (canMatchToKey)
-                {
-                    var objectKey = Property.Relationship.OtherEnd.GetCompositeKey(_localValue, true);
-                    var relationshipKey = Property.Relationship.ThisEnd.GetCompositeKey(EntityState.Entity);
-                    if (objectKey.Matches(relationshipKey))
+                    HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    if (EntityState != null)
                     {
-                        SetRemoteValue(_localValue);
-                        _remoteValueSet = true;
+                        EntityState.CheckHasChanged();
                     }
                 }
             }
-            if (!_remoteValueSet)
-            {
-                _remoteValueSet = true;
-                if (EntityState != null)
-                {
-                    SetRemoteValue(Property.GetValue(EntityState.Entity));
-                }
-            }
-        }
-
-        private bool RelationshipTargetHasChanged(object remoteValue, ChangeCalculationKind kind)
-        {
-            var remoteList = (IList)remoteValue;
-            var remoteCount = 0;
-            if (remoteList != null)
-            {
-                remoteCount = remoteList.Count;
-            }
-
-            var localCount = 0;
-            var localList = (IList)LocalValue;
-            if (localList != null)
-            {
-                localCount = localList.Count;
-            }
-            if (remoteCount == 0 && localCount == 0)
-            {
-                return false;
-            }
-            if (remoteCount > 0 && localCount < remoteCount)
-            {
-                return true;
-            }
-            if (remoteCount == 0 && localList != null)
-            {
-                for (var i = 0; i < localList.Count; i++)
-                {
-                    var item = localList[i];
-                    if (HasRelationshipItemChanged(item, kind))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        private List<IProperty> _otherSideProperties = null;
-        private bool HasRelationshipItemChanged(object item, ChangeCalculationKind kind)
-        {
-            var state = DataTracker.GetEntityState(item);
-            if (state == null)
-            {
-                return false;
-            }
-
-            if (_otherSideProperties == null)
-            {
-                _otherSideProperties = Property.Relationship.OtherEnd.Constraints.ToList();
-                _otherSideProperties.Add(Property.Relationship.OtherEnd.Property);
-            }
-
-            for (var i = 0; i < _otherSideProperties.Count; i++)
-            {
-                var prop = _otherSideProperties[i];
-                var propState = state.GetPropertyState(prop.PropertyName);
-                if (propState != null)
-                {
-                    if (kind == ChangeCalculationKind.Remote && propState.HasChanged)
-                    {
-                        return true;
-                    }
-
-                    if (kind == ChangeCalculationKind.Snapshot && propState.HasChangedSinceSnapshot)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private bool RelationshipSourceHasChanged(object remoteValue)
-        {
-            if (remoteValue != null && LocalValue != null && remoteValue != LocalValue)
-            {
-                return true;
-            }
-            if (remoteValue == null && LocalValue != null)
-            {
-                return true;
-            }
-            if (remoteValue != null && LocalValue == null)
-            {
-                return true;
-            }
-
-            if (EntityState != null)
-            {
-                var constraints = Property.Relationship.ThisEnd.Constraints;
-                for (var i = 0; i < constraints.Length; i++)
-                {
-                    var constraint = constraints[i];
-                    var propertyState = EntityState.GetPropertyState(constraint.Name);
-                    if (propertyState != null && propertyState.HasChanged)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         public object RemoteValue
@@ -295,11 +281,11 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        public object SnapshotValue => _snapshotValueSet ? _snapshotValue : RemoteValue;
+        public object SnapshotValue => HasSnapshotValue ? _snapshotValue : RemoteValue;
 
         public void AddSnapshot()
         {
-            if (_snapshotValueSet)
+            if (HasSnapshotValue)
             {
                 if (HasChangedSinceSnapshot)
                 {
@@ -314,49 +300,40 @@ namespace Iql.Data.Tracking.State
 
         public void SetSnapshotValue(object value)
         {
-            _snapshotValue = PropertyChanger.CloneValue(value);
-            _snapshotValueSet = true;
+            var newSnapshotValue = PropertyChanger.CloneValue(value);
+            ObserveIfNecessary(_snapshotValue, newSnapshotValue, ChangeCalculationKind.Snapshot);
+            _snapshotValue = newSnapshotValue;
+            ClearSnapshotRelationshipChanges();
+            HasSnapshotValue = true;
             UpdateHasChanged();
-        }
-
-        private void AddSnapshotInternal()
-        {
-            SetSnapshotValue(LocalValue);
         }
 
         public void ClearSnapshotValue()
         {
-            _snapshotValueSet = false;
+            ClearSnapshotRelationshipChanges();
+            HasSnapshotValue = false;
             _snapshotValue = null;
             UpdateHasChanged();
         }
 
-        private void SetRemoteValue(object value)
+        private void ClearSnapshotRelationshipChanges()
         {
-            var oldValue = _remoteValue;
-            _remoteValueClone = PropertyChanger.CloneValue(value);
-            _remoteValue = value;
-            UpdateHasChanged();
-            if (_remoteValue != oldValue)
+            if (IsRelationshipCollection)
             {
-                DataTracker.NotifyRemoteValueChanged(this);
-                RemoteValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
+                ItemsChangedSinceSnapshot.Clear();
+                ItemsRemovedSinceSnapshot.Clear();
+                ItemsAddedSinceSnapshot.Clear();
             }
         }
 
-        private bool _localValueSet = false;
-        private object _snapshotValue;
-        private bool _snapshotValueSet;
-        private bool _canUndo;
-        private IPropertyState[] _groupStates;
-        private IPropertyState[] _siblingStates;
-        public bool LocalValueSet => _localValueSet;
+        public bool LocalValueSet { get; private set; }
+
         public object LocalValue
         {
-            get => _localValueSet ? _localValue : RemoteValue;
+            get => LocalValueSet ? _localValue : RemoteValue;
             set
             {
-                _localValueSet = true;
+                LocalValueSet = true;
                 var oldValue = _localValue;
                 _localValue = value;
                 UpdateHasChanged();
@@ -364,40 +341,159 @@ namespace Iql.Data.Tracking.State
                 {
                     LocalValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
                 }
-            }
-        }
 
-        private bool? _otherEndIsCollection = null;
-        private bool OtherEndIsCollection
-        {
-            get
-            {
-                if (_otherEndIsCollection == null)
+                if (Property.Relationship != null && Property.TypeDefinition.Kind == IqlType.Collection)
                 {
-                    _otherEndIsCollection = EntityState != null && Property.Kind.HasFlag(PropertyKind.Relationship) &&
-                                            Property.Relationship.ThisIsSource &&
-                                            Property.Relationship.OtherEnd.Property.TypeDefinition.Kind ==
-                                            IqlType.Collection;
+                    if (oldValue != null)
+                    {
+                        EventManager.UnsubscribeAll("LocalValue");
+                    }
+
+                    if (value != null)
+                    {
+                        var relatedList = (IRelatedList)value;
+                        EventManager.Subscribe(relatedList.RelatedListChange, _ =>
+                        {
+                            var hasChanged = false;
+                            if (EntityState != null)
+                            {
+                                switch (_.Kind)
+                                {
+                                    case RelatedListChangeKind.Added:
+                                        {
+                                            var itemState = DataTracker.GetEntityState(_.Item);
+                                            if (itemState != null)
+                                            {
+                                                if (itemState.IsNew || 
+                                                    HasRelationshipSourceChanged(itemState, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote))
+                                                {
+                                                    if (!ItemsAdded.Contains(itemState))
+                                                    {
+                                                        ItemsAdded.Add(itemState);
+                                                    }
+                                                    if (!ItemsAddedSinceSnapshot.Contains(itemState))
+                                                    {
+                                                        ItemsAddedSinceSnapshot.Add(itemState);
+                                                    }
+                                                }
+                                                DataTracker.RegisterInterest(_.Item, "LocalValue",
+                                                    entityState =>
+                                                    {
+                                                        if (entityState.HasChanged)
+                                                        {
+                                                            if (!ItemsAdded.Contains(entityState) &&
+                                                                !ItemsRemoved.Contains(entityState) &&
+                                                                !ItemsChanged.Contains(entityState))
+                                                            {
+                                                                ItemsChanged.Add(entityState);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (ItemsRemoved.Contains(entityState))
+                                                            {
+                                                                DataTracker.UnregisterInterest(_.Item, "LocalValue");
+                                                            }
+                                                            ItemsChanged.Remove(entityState);
+                                                            ItemsAdded.Remove(entityState);
+                                                            ItemsRemoved.Remove(entityState);
+                                                        }
+                                                        if (entityState.HasChangedSinceSnapshot)
+                                                        {
+                                                            if (!ItemsAdded.Contains(entityState) &&
+                                                                !ItemsRemoved.Contains(entityState) &&
+                                                                !ItemsAddedSinceSnapshot.Contains(entityState) &&
+                                                                !ItemsRemovedSinceSnapshot.Contains(entityState) &&
+                                                                !ItemsChangedSinceSnapshot.Contains(entityState))
+                                                            {
+                                                                ItemsChangedSinceSnapshot.Add(entityState);
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            ItemsChangedSinceSnapshot.Remove(entityState);
+                                                            ItemsAddedSinceSnapshot.Remove(entityState);
+                                                            ItemsRemovedSinceSnapshot.Remove(entityState);
+                                                        }
+                                                    });
+                                            }
+
+                                            break;
+                                        }
+                                    case RelatedListChangeKind.Removed:
+                                        {
+                                            var itemState = DataTracker.GetEntityState(_.Item);
+                                            if (itemState != null)
+                                            {
+                                                if (!ItemsAdded.Contains(itemState))
+                                                {
+                                                    if (ItemsChanged.Contains(itemState))
+                                                    {
+                                                        ItemsChanged.Remove(itemState);
+                                                    }
+                                                    ItemsRemoved.Add(itemState);
+                                                }
+                                                else
+                                                {
+                                                    ItemsAdded.Remove(itemState);
+                                                }
+                                                if (!ItemsAddedSinceSnapshot.Contains(itemState))
+                                                {
+                                                    if (ItemsChangedSinceSnapshot.Contains(itemState))
+                                                    {
+                                                        ItemsChangedSinceSnapshot.Remove(itemState);
+                                                    }
+                                                    ItemsRemovedSinceSnapshot.Add(itemState);
+                                                }
+                                                else
+                                                {
+                                                    ItemsAddedSinceSnapshot.Remove(itemState);
+                                                }
+                                                //DataTracker.UnregisterInterest(_.Item, "LocalValue");
+                                            }
+                                            break;
+                                        }
+                                }
+                            }
+
+                            //if (hasChanged)
+                            {
+                                UpdateHasChanged();
+                            }
+                        }, "LocalValue");
+                    }
                 }
-                return _otherEndIsCollection.Value;
             }
         }
 
-        private IPropertyState _relationshipPropertyState = null;
-        private IPropertyState RelationshipPropertyState
+        public bool HasNestedChanges
         {
-            get
+            get => _hasNestedChanges;
+            private set
             {
-                if (_relationshipPropertyState == null)
+                var old = _hasNestedChanges;
+                _hasNestedChanges = value;
+                if (old != value)
                 {
-                    _relationshipPropertyState = EntityState.GetPropertyState(Property.Relationship.ThisEnd.Property.PropertyName);
+                    HasNestedChangesChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
                 }
-
-                return _relationshipPropertyState;
             }
         }
 
-        private bool _isUpdatingHasChanged = false;
+        public bool HasNestedChangesSinceSnapshot
+        {
+            get => _hasNestedChangesSinceStart;
+            private set
+            {
+                var old = _hasNestedChangesSinceStart;
+                _hasNestedChangesSinceStart = value;
+                if (old != value)
+                {
+                    HasNestedChangesSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                }
+            }
+        }
+
         public void UpdateHasChanged(bool? ignoreRelationshipOtherSide = null)
         {
             if (_isUpdatingHasChanged)
@@ -411,102 +507,78 @@ namespace Iql.Data.Tracking.State
             }
 
             _isUpdatingHasChanged = true;
-            UpdateHasChangedSinceStart();
-            UpdateHasChangedSinceSnapshot();
-            if (ignoreRelationshipOtherSide != true && OtherEndIsCollection && RelationshipPropertyState != null)
+            if (IsRelationshipCollection)
             {
-                var oldRelatedList = _relationshipEntityRemote == RelationshipPropertyState.RemoteValue
-                    ? _relationshipPropertyStateRemote
-                    : ResolveRelatedListStateFromSource(RelationshipPropertyState.RemoteValue);
-                var newRelatedList = _relationshipEntityLocal == RelationshipPropertyState.LocalValue
-                    ? _relationshipPropertyStateLocal
-                    : ResolveRelatedListStateFromSource(RelationshipPropertyState.LocalValue);
-                var snapshotRelatedList = _relationshipEntitySnapshot == RelationshipPropertyState.SnapshotValue
-                    ? _relationshipPropertyStateSnapshot
-                    : ResolveRelatedListStateFromSource(RelationshipPropertyState.LocalValue);
-                _relationshipPropertyStateLocal = newRelatedList;
-                _relationshipEntityLocal = RelationshipPropertyState.LocalValue;
-                _relationshipPropertyStateRemote = newRelatedList;
-                _relationshipEntityRemote = RelationshipPropertyState.RemoteValue;
-                _relationshipPropertyStateSnapshot = snapshotRelatedList;
-                _relationshipEntitySnapshot = RelationshipPropertyState.SnapshotValue;
-                if (oldRelatedList != null)
-                {
-                    oldRelatedList.UpdateHasChanged();
-                }
-                if (newRelatedList != oldRelatedList && newRelatedList != null)
-                {
-                    newRelatedList.UpdateHasChanged();
-                }
-                if (snapshotRelatedList != oldRelatedList && snapshotRelatedList != newRelatedList && snapshotRelatedList != null)
-                {
-                    snapshotRelatedList.UpdateHasChanged();
-                }
+                HasChanged = ItemsRemoved.Any() || ItemsAdded.Any();
+                HasChangedSinceSnapshot = ItemsRemovedSinceSnapshot.Any() || ItemsAddedSinceSnapshot.Any();
+                HasNestedChanges = ItemsChanged.Any();
+                HasNestedChangesSinceSnapshot = ItemsChangedSinceSnapshot.Any();
             }
+            else
+            {
+                UpdateHasChangedSinceStart();
+                UpdateHasChangedSinceSnapshot();
+            }
+            //if (ignoreRelationshipOtherSide != true && OtherEndIsCollection && RelationshipPropertyState != null)
+            //{
+            //    var oldRelatedList = _relationshipEntityRemote == RelationshipPropertyState.RemoteValue
+            //        ? _relationshipPropertyStateRemote
+            //        : ResolveRelatedListStateFromSource(RelationshipPropertyState.RemoteValue);
+            //    var newRelatedList = _relationshipEntityLocal == RelationshipPropertyState.LocalValue
+            //        ? _relationshipPropertyStateLocal
+            //        : ResolveRelatedListStateFromSource(RelationshipPropertyState.LocalValue);
+            //    var snapshotRelatedList = _relationshipEntitySnapshot == RelationshipPropertyState.SnapshotValue
+            //        ? _relationshipPropertyStateSnapshot
+            //        : ResolveRelatedListStateFromSource(RelationshipPropertyState.LocalValue);
+            //    _relationshipPropertyStateLocal = newRelatedList;
+            //    _relationshipEntityLocal = RelationshipPropertyState.LocalValue;
+            //    _relationshipPropertyStateRemote = newRelatedList;
+            //    _relationshipEntityRemote = RelationshipPropertyState.RemoteValue;
+            //    _relationshipPropertyStateSnapshot = snapshotRelatedList;
+            //    _relationshipEntitySnapshot = RelationshipPropertyState.SnapshotValue;
+            //    if (oldRelatedList != null)
+            //    {
+            //        oldRelatedList.UpdateHasChanged();
+            //    }
+
+            //    if (newRelatedList != oldRelatedList && newRelatedList != null)
+            //    {
+            //        newRelatedList.UpdateHasChanged();
+            //    }
+
+            //    if (snapshotRelatedList != oldRelatedList && snapshotRelatedList != newRelatedList &&
+            //        snapshotRelatedList != null)
+            //    {
+            //        snapshotRelatedList.UpdateHasChanged();
+            //    }
+            //}
+
             _isUpdatingHasChanged = false;
         }
 
-        private IPropertyState _relationshipPropertyStateLocal = null;
-        private object _relationshipEntityLocal = null;
-        private IPropertyState _relationshipPropertyStateRemote = null;
-        private object _relationshipEntityRemote = null;
-        private IPropertyState _relationshipPropertyStateSnapshot = null;
-        private object _relationshipEntitySnapshot = null;
-        private IPropertyState ResolveRelatedListStateFromSource(object relationshipPropertyValue)
-        {
-            //var state = DataTracker.FindTrackedEntity(compositeKey);
-            if (relationshipPropertyValue == null)
-            {
-                return null;
-            }
+        public EventEmitter<ValueChangedEvent<bool>> CanUndoChanged { get; } =
+            new EventEmitter<ValueChangedEvent<bool>>();
 
-            var state = DataTracker.GetEntityState(relationshipPropertyValue);
-            if (state != null)
-            {
-                return state.GetPropertyState(Property.Relationship.OtherEnd.Property.PropertyName);
-            }
+        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotValueChanged { get; } =
+            new EventEmitter<ValueChangedEvent<bool>>();
 
-            return null;
-        }
+        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesChanged { get; } =
+            new EventEmitter<ValueChangedEvent<bool>>();
 
-        private void UpdateHasChangedSinceStart()
-        {
-            var oldValue = _hasChanged;
-            _hasChanged = CalculateHasChanged(RemoteValue, ChangeCalculationKind.Remote);
-            if (oldValue != _hasChanged)
-            {
-                HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChanged));
-                if (EntityState != null)
-                {
-                    EntityState.CheckHasChanged();
-                }
-            }
-        }
+        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged { get; } =
+            new EventEmitter<ValueChangedEvent<bool>>();
 
-        private void UpdateHasChangedSinceSnapshot()
-        {
-            var oldValue = _hasChangedSinceSnapshot;
-            _hasChangedSinceSnapshot = CalculateHasChanged(SnapshotValue, ChangeCalculationKind.Snapshot);
-            if (oldValue != _hasChangedSinceSnapshot)
-            {
-                if (EntityState != null)
-                {
-                    EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, _hasChangedSinceSnapshot);
-                }
-                HasChangedSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, _hasChangedSinceSnapshot));
-                if (EntityState != null)
-                {
-                    EntityState.CheckHasChanged();
-                }
-            }
-            CanUndo = (_snapshotValueSet && HasChangedSinceSnapshot) || HasChanged;
-        }
+        public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; } =
+            new EventEmitter<ValueChangedEvent<bool>>();
 
-        public EventEmitter<ValueChangedEvent<bool>> CanUndoChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
-        public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
-        public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
-        public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
-        public EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; } = new EventEmitter<ValueChangedEvent<object>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; } =
+            new EventEmitter<ValueChangedEvent<bool>>();
+
+        public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; } =
+            new EventEmitter<ValueChangedEvent<object>>();
+
+        public EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; } =
+            new EventEmitter<ValueChangedEvent<object>>();
 
         public IPropertyState[] SiblingStates
         {
@@ -557,6 +629,7 @@ namespace Iql.Data.Tracking.State
                         }
                     }
                 }
+
                 return _groupStates;
             }
         }
@@ -571,7 +644,7 @@ namespace Iql.Data.Tracking.State
         {
             var newValue = Property.GetValue(EntityState.Entity);
             _remoteValueSet = false;
-            _localValueSet = false;
+            LocalValueSet = false;
             EnsureRemoteValue();
             LocalValue = newValue;
             UpdateHasChanged();
@@ -611,58 +684,16 @@ namespace Iql.Data.Tracking.State
                 {
                     EntityState.Entity.SetPropertyValue(Property, _remoteValueClone);
                 }
+
                 HardReset();
                 AbandonEvents.EmitSuccessAsync(() => ev);
                 AbandonEvents.EmitCompletedAsync(() => ev);
                 StateEvents.AbandonedPropertyChange.Emit(() => ev);
                 //PropertyChanger.ApplyTo(_oldObjectClone, _oldObject);
             }
+
             ClearStatefulEvents();
             //_hasChanged = false;
-        }
-
-        private void RestoreList(IList source, IList destination)
-        {
-            if (source == null && destination != null)
-            {
-                destination.Clear();
-            }
-
-            if (source != null && destination == null)
-            {
-                throw new NotSupportedException("Cannot merge non-empty list with null list.");
-            }
-
-            var toRemove = new List<object>();
-            for (var i = 0; i < source.Count; i++)
-            {
-                var item = source[i];
-                if (!destination.Contains(item))
-                {
-                    toRemove.Add(item);
-                }
-            }
-            var toAdd = new List<object>();
-            for (var i = 0; i < destination.Count; i++)
-            {
-                var item = destination[i];
-                if (!source.Contains(item))
-                {
-                    toAdd.Add(item);
-                }
-            }
-
-            for (var i = 0; i < toRemove.Count; i++)
-            {
-                var item = toRemove[i];
-                destination.Remove(item);
-            }
-
-            for (var i = 0; i < toAdd.Count; i++)
-            {
-                var item = toAdd[i];
-                destination.Add(item);
-            }
         }
 
         public void ClearStatefulEvents()
@@ -671,7 +702,7 @@ namespace Iql.Data.Tracking.State
             StatefulSaveEvents.UnsubscribeAll();
         }
 
-        public void Restore(Conversion.State.SerializedPropertyState state)
+        public void Restore(SerializedPropertyState state)
         {
             LocalValue = Property.TypeDefinition.EnsureValueType(state.LocalValue);
             RemoteValue = Property.TypeDefinition.EnsureValueType(state.RemoteValue);
@@ -707,13 +738,14 @@ namespace Iql.Data.Tracking.State
             {
                 return null;
             }
+
             return new
             {
                 RemoteValue,
                 LocalValue = Property.GetValue(EntityState.Entity),
                 Property = Property.PropertyName,
-                Data = Data,
-                Guid = Guid
+                Data,
+                Guid
             };
         }
 
@@ -722,6 +754,418 @@ namespace Iql.Data.Tracking.State
             HasChangedChanged?.Dispose();
             RemoteValueChanged?.Dispose();
             LocalValueChanged?.Dispose();
+        }
+
+        private bool CalculateHasChanged(object remoteValue, ChangeCalculationKind kind)
+        {
+            if (Property.Kind.HasFlag(PropertyKind.Count))
+            {
+                HasChangedText = "Count field";
+                return false;
+            }
+
+            if (Property.Kind.HasFlag(PropertyKind.Relationship))
+            {
+                HasChangedText = "Relationship field";
+                if (Property.Relationship.ThisIsSource)
+                {
+                    return RelationshipSourceHasChanged(remoteValue, kind);
+                }
+
+                if (Property.TypeDefinition.Kind == IqlType.Collection)
+                {
+                    return RelationshipTargetHasChanged(remoteValue, kind);
+                }
+            }
+
+            HasChangedText = $"PropertyChanger: {PropertyChanger.GetType().Name}";
+            return !PropertyChanger.AreEquivalent(remoteValue,
+                EntityState == null || LocalValueSet ? LocalValue : Property.GetValue(EntityState.Entity));
+        }
+
+        private bool CalculateHasNestedChanges(object remoteValue, ChangeCalculationKind kind)
+        {
+            if (Property.Kind.HasFlag(PropertyKind.Relationship) && Property.TypeDefinition.Kind == IqlType.Collection)
+            {
+                return RelationshipTargetHasNestedChanges(remoteValue, kind);
+            }
+
+            return false;
+        }
+
+        private void EnsureRemoteValue()
+        {
+            if (EntityState != null &&
+                _remoteValueSet &&
+                _remoteValue == null &&
+                _localValue != null &&
+                Property.Relationship != null &&
+                !Property.Relationship.ThisIsTarget &&
+                Property == Property.Relationship.ThisEnd.Property)
+            {
+                var canMatchToKey = true;
+                for (var i = 0; i < Property.Relationship.ThisEnd.Constraints.Length; i++)
+                {
+                    var key = Property.Relationship.ThisEnd.Constraints[i];
+                    if (EntityState.GetPropertyState(key.PropertyName).HasChanged)
+                    {
+                        canMatchToKey = false;
+                    }
+                }
+
+                if (canMatchToKey)
+                {
+                    var objectKey = Property.Relationship.OtherEnd.GetCompositeKey(_localValue, true);
+                    var relationshipKey = Property.Relationship.ThisEnd.GetCompositeKey(EntityState.Entity);
+                    if (objectKey.Matches(relationshipKey))
+                    {
+                        SetRemoteValue(_localValue);
+                        _remoteValueSet = true;
+                    }
+                }
+            }
+
+            if (!_remoteValueSet)
+            {
+                _remoteValueSet = true;
+                if (EntityState != null)
+                {
+                    SetRemoteValue(Property.GetValue(EntityState.Entity));
+                }
+            }
+        }
+
+        private bool RelationshipTargetHasNestedChanges(object remoteValue, ChangeCalculationKind kind)
+        {
+            var remoteList = (IList)remoteValue;
+            var localList = (IList)LocalValue;
+            if (remoteList == null && localList == null)
+            {
+                return false;
+            }
+
+            if (remoteList != null)
+            {
+                for (var i = 0; i < remoteList.Count; i++)
+                {
+                    var item = remoteList[i];
+                    if (HasItemChanged(item, kind))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if (localList != null)
+            {
+                for (var i = 0; i < localList.Count; i++)
+                {
+                    var item = localList[i];
+                    if (HasItemChanged(item, kind))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool HasItemChanged(object item, ChangeCalculationKind kind)
+        {
+            var state = DataTracker.GetEntityState(item);
+            if (state == null)
+            {
+                return false;
+            }
+
+            return kind == ChangeCalculationKind.Remote ? state.HasChanged : state.HasChangedSinceSnapshot;
+        }
+
+        private bool RelationshipTargetHasChanged(object remoteValue, ChangeCalculationKind kind)
+        {
+            var remoteList = (IList)remoteValue;
+            var remoteCount = 0;
+            if (remoteList != null)
+            {
+                remoteCount = remoteList.Count;
+            }
+
+            var localCount = 0;
+            var localList = (IList)LocalValue;
+            if (localList != null)
+            {
+                localCount = localList.Count;
+            }
+
+            if (remoteCount == 0 && localCount == 0)
+            {
+                return false;
+            }
+
+            if (remoteCount > 0 && localCount < remoteCount)
+            {
+                return true;
+            }
+
+            if (remoteCount == 0 && localList != null)
+            {
+                for (var i = 0; i < localList.Count; i++)
+                {
+                    var item = localList[i];
+                    if (HasRelationshipItemChanged(item, kind))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool HasRelationshipItemChanged(object item, ChangeCalculationKind kind)
+        {
+            var state = DataTracker.GetEntityState(item);
+            if (state == null)
+            {
+                return false;
+            }
+
+            if (_otherSideProperties == null)
+            {
+                _otherSideProperties = Property.Relationship.OtherEnd.Constraints.ToList();
+                _otherSideProperties.Add(Property.Relationship.OtherEnd.Property);
+            }
+
+            for (var i = 0; i < _otherSideProperties.Count; i++)
+            {
+                var prop = _otherSideProperties[i];
+                var propState = state.GetPropertyState(prop.PropertyName);
+                if (propState != null)
+                {
+                    if (kind == ChangeCalculationKind.Remote && propState.HasChanged)
+                    {
+                        return true;
+                    }
+
+                    if (kind == ChangeCalculationKind.Snapshot && propState.HasChangedSinceSnapshot)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool RelationshipSourceHasChanged(object remoteValue, ChangeCalculationKind kind)
+        {
+            if (remoteValue != null && LocalValue != null && remoteValue != LocalValue)
+            {
+                return true;
+            }
+
+            if (remoteValue == null && LocalValue != null)
+            {
+                return true;
+            }
+
+            if (remoteValue != null && LocalValue == null)
+            {
+                return true;
+            }
+
+            if (EntityState != null)
+            {
+                if (HasRelationshipSourceChanged(EntityState, Property.Relationship.ThisEnd, kind))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool HasRelationshipSourceChanged(IEntityStateBase entityState, IRelationshipDetail relationshipDetail,
+            ChangeCalculationKind kind)
+        {
+            var constraints = relationshipDetail.Constraints;
+            for (var i = 0; i < constraints.Length; i++)
+            {
+                var constraint = constraints[i];
+                var propertyState = entityState.GetPropertyState(constraint.Name);
+                if (propertyState != null && (kind == ChangeCalculationKind.Remote
+                        ? propertyState.HasChanged
+                        : propertyState.HasChangedSinceSnapshot))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void ObserveIfNecessary(object oldValue, object newValue, ChangeCalculationKind kind)
+        {
+            if (Property.Relationship != null && Property.TypeDefinition.Kind == IqlType.Collection)
+            {
+                ObserveList((IList)oldValue, (IList)newValue, kind);
+            }
+        }
+
+        private void ObserveList(IList oldValue, IList newValue, ChangeCalculationKind kind)
+        {
+            //var key = GetInterestKey($"Collection-{(kind == ChangeCalculationKind.Remote ? "Remote" : "Snapshot")}");
+            //if (oldValue != null)
+            //{
+            //    for (var i = 0; i < oldValue.Count; i++)
+            //    {
+            //        var value = oldValue[i];
+            //        DataTracker.UnregisterInterest(value, key);
+            //    }
+            //}
+            //if (newValue != null)
+            //{
+            //    for (var i = 0; i < newValue.Count; i++)
+            //    {
+            //        var value = newValue[i];
+            //        DataTracker.RegisterInterest(value, key, () =>
+            //        {
+            //            UpdateHasChanged();
+            //        });
+            //    }
+            //}
+        }
+
+        private void AddSnapshotInternal()
+        {
+            SetSnapshotValue(LocalValue);
+        }
+
+        private void SetRemoteValue(object value)
+        {
+            var oldValue = _remoteValue;
+            _remoteValueClone = PropertyChanger.CloneValue(value);
+            if (IsRelationshipCollection)
+            {
+                ItemsChanged.Clear();
+                ItemsRemoved.Clear();
+                ItemsAdded.Clear();
+            }
+            ObserveIfNecessary(oldValue, _remoteValueClone, ChangeCalculationKind.Remote);
+            _remoteValue = value;
+            UpdateHasChanged();
+            if (_remoteValue != oldValue)
+            {
+                DataTracker.NotifyRemoteValueChanged(this);
+                RemoteValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
+            }
+        }
+
+        private IPropertyState ResolveRelatedListStateFromSource(object relationshipPropertyValue)
+        {
+            //var state = DataTracker.FindTrackedEntity(compositeKey);
+            if (relationshipPropertyValue == null)
+            {
+                return null;
+            }
+
+            var state = DataTracker.GetEntityState(relationshipPropertyValue);
+            if (state != null)
+            {
+                return state.GetPropertyState(Property.Relationship.OtherEnd.Property.PropertyName);
+            }
+
+            return null;
+        }
+
+        //private void UpdateHasNestedChangesSinceStart()
+        //{
+        //    var oldValue = HasNestedChanges;
+        //    HasNestedChanges = CalculateHasNestedChanges(LocalValue, ChangeCalculationKind.Remote);
+        //    if (oldValue != HasNestedChanges)
+        //    {
+        //        HasNestedChangesChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, HasNestedChanges));
+        //        if (EntityState != null)
+        //        {
+        //            EntityState.CheckHasChanged();
+        //        }
+        //    }
+        //}
+
+        //private void UpdateHasNestedChangesSinceSnapshot()
+        //{
+        //    var oldValue = HasNestedChangesSinceSnapshot;
+        //    HasNestedChangesSinceSnapshot = CalculateHasNestedChanges(LocalValue, ChangeCalculationKind.Snapshot);
+        //    if (oldValue != HasNestedChangesSinceSnapshot)
+        //    {
+        //        HasNestedChangesSinceSnapshotChanged.Emit(() =>
+        //            new ValueChangedEvent<bool>(oldValue, HasNestedChangesSinceSnapshot));
+        //        if (EntityState != null)
+        //        {
+        //            EntityState.CheckHasChanged();
+        //        }
+        //    }
+        //}
+
+        private void UpdateHasChangedSinceStart()
+        {
+            HasChanged = CalculateHasChanged(RemoteValue, ChangeCalculationKind.Remote);
+        }
+
+        private void UpdateHasChangedSinceSnapshot()
+        {
+            HasChangedSinceSnapshot = CalculateHasChanged(SnapshotValue, ChangeCalculationKind.Snapshot);
+        }
+
+        private void RestoreList(IList source, IList destination)
+        {
+            if (source == null && destination != null)
+            {
+                destination.Clear();
+            }
+
+            if (source != null && destination == null)
+            {
+                throw new NotSupportedException("Cannot merge non-empty list with null list.");
+            }
+
+            var toRemove = new List<object>();
+            for (var i = 0; i < source.Count; i++)
+            {
+                var item = source[i];
+                if (!destination.Contains(item))
+                {
+                    toRemove.Add(item);
+                }
+            }
+
+            var toAdd = new List<object>();
+            for (var i = 0; i < destination.Count; i++)
+            {
+                var item = destination[i];
+                if (!source.Contains(item))
+                {
+                    toAdd.Add(item);
+                }
+            }
+
+            for (var i = 0; i < toRemove.Count; i++)
+            {
+                var item = toRemove[i];
+                destination.Remove(item);
+            }
+
+            for (var i = 0; i < toAdd.Count; i++)
+            {
+                var item = toAdd[i];
+                destination.Add(item);
+            }
+        }
+
+        private string GetInterestKey(string key)
+        {
+            return $"{Id}-{key}";
         }
     }
 }
