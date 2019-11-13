@@ -376,7 +376,7 @@ namespace Iql.Data.Tracking.State
                                                         ItemsAddedSinceSnapshot.Add(itemState);
                                                     }
                                                 }
-                                                DataTracker.RegisterInterest(_.Item, "LocalValue",
+                                                DataTracker.RegisterInterest(_.Item, GetInterestKey(nameof(LocalValue)),
                                                     entityState =>
                                                     {
                                                         if (entityState.HasChanged)
@@ -392,7 +392,7 @@ namespace Iql.Data.Tracking.State
                                                         {
                                                             if (ItemsRemoved.Contains(entityState))
                                                             {
-                                                                DataTracker.UnregisterInterest(_.Item, "LocalValue");
+                                                                DataTracker.UnregisterInterest(_.Item, GetInterestKey(nameof(LocalValue)));
                                                             }
                                                             ItemsChanged.Remove(entityState);
                                                             ItemsAdded.Remove(entityState);
