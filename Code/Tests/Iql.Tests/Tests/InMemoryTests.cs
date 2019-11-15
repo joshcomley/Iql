@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Iql.Tests.Tests
 {
     [TestClass]
-    public class InMemoryTests : TestsBase
+    public abstract class InMemoryTests : TestsBase
     {
         [TestInitialize]
         public override void TestInitialize()
