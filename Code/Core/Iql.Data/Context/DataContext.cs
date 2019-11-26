@@ -218,19 +218,19 @@ namespace Iql.Data.Context
             return tracker?.FindMatchingEntityState(entity);
         }
 
-        private DataTracker _dataTracker;
+        private DataTracker _temporalDataTracker;
         public DataTracker TemporalDataTracker
         {
             get
             {
-                if (_dataTracker == null)
+                if (_temporalDataTracker == null)
                 {
-                    _dataTracker = new DataContextDataTracker(this, DataTrackerKind.Temporal, EntityConfigurationContext, "Temporal");
-                    _dataTracker.RelationshipObserver.UntrackedEntityAdded.Subscribe(_ => { AddEntity(_.Entity); });
-                    //_dataTracker.DataContext = this;
+                    _temporalDataTracker = new DataContextDataTracker(this, DataTrackerKind.Temporal, EntityConfigurationContext, "Temporal");
+                    _temporalDataTracker.RelationshipObserver.UntrackedEntityAdded.Subscribe(_ => { AddEntity(_.Entity); });
+                    //TemporalDataTracker.DataContext = this;
                 }
 
-                return _dataTracker;
+                return _temporalDataTracker;
             }
         }
 
@@ -2225,57 +2225,57 @@ namespace Iql.Data.Context
             OfflineDataTracker?.Dispose();
         }
 
-        public TrackerSnapshot CurrentSnapshot => _dataTracker.CurrentSnapshot;
+        public TrackerSnapshot CurrentSnapshot => TemporalDataTracker.CurrentSnapshot;
 
         public void ClearSnapshots()
         {
-            _dataTracker.ClearSnapshots();
+            TemporalDataTracker.ClearSnapshots();
         }
 
         public TrackerSnapshot AddSnapshot(bool? nullIfEmpty = null)
         {
-            return _dataTracker.AddSnapshot(nullIfEmpty);
+            return TemporalDataTracker.AddSnapshot(nullIfEmpty);
         }
 
         public bool UndoChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return _dataTracker.UndoChanges(entities, properties);
+            return TemporalDataTracker.UndoChanges(entities, properties);
         }
 
         public bool RemoveLastSnapshot(SnapshotRemoveKind? kind = null)
         {
-            return _dataTracker.RemoveLastSnapshot(kind);
+            return TemporalDataTracker.RemoveLastSnapshot(kind);
         }
 
         public bool RevertToSnapshot()
         {
-            return _dataTracker.RevertToSnapshot();
+            return TemporalDataTracker.RevertToSnapshot();
         }
 
-        public bool HasChangesSinceSnapshot => _dataTracker.HasChangesSinceSnapshot;
-        public bool HasChanges => _dataTracker.HasChanges;
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged => _dataTracker.HasChangesSinceSnapshotChanged;
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _dataTracker.HasChangesChanged;
-        public TrackerSnapshot[] Snapshots => _dataTracker.Snapshots;
+        public bool HasChangesSinceSnapshot => TemporalDataTracker.HasChangesSinceSnapshot;
+        public bool HasChanges => TemporalDataTracker.HasChanges;
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged => TemporalDataTracker.HasChangesSinceSnapshotChanged;
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => TemporalDataTracker.HasChangesChanged;
+        public TrackerSnapshot[] Snapshots => TemporalDataTracker.Snapshots;
 
-        public int SnapshotsCount => _dataTracker.SnapshotsCount;
+        public int SnapshotsCount => TemporalDataTracker.SnapshotsCount;
 
-        public TrackerSnapshot[] RestorableSnapshots => _dataTracker.RestorableSnapshots;
+        public TrackerSnapshot[] RestorableSnapshots => TemporalDataTracker.RestorableSnapshots;
 
-        public int RestorableSnapshotsCount => _dataTracker.RestorableSnapshotsCount;
+        public int RestorableSnapshotsCount => TemporalDataTracker.RestorableSnapshotsCount;
 
         public bool RestoreNextAbandonedSnapshot()
         {
-            return _dataTracker.RestoreNextAbandonedSnapshot();
+            return TemporalDataTracker.RestoreNextAbandonedSnapshot();
         }
 
         public TrackerSnapshot ReplaceLastSnapshot()
         {
-            return _dataTracker.ReplaceLastSnapshot();
+            return TemporalDataTracker.ReplaceLastSnapshot();
         }
 
-        public bool HasSnapshot => _dataTracker.HasSnapshot;
+        public bool HasSnapshot => TemporalDataTracker.HasSnapshot;
 
-        public bool HasRestorableSnapshot => _dataTracker.HasRestorableSnapshot;
+        public bool HasRestorableSnapshot => TemporalDataTracker.HasRestorableSnapshot;
     }
 }

@@ -231,6 +231,30 @@ namespace Iql.Tests.Tests.DataContextTests
         }
 
         [TestMethod]
+        public async Task TestNewEntityStillReceivesChangedSinceSnapshot()
+        {
+            var newClient = new Client
+            {
+                Name = "New client",
+                Description = "abc"
+            };
+            var snapshot = Db.AddSnapshot();
+            Db.Clients.Add(newClient);
+            var entityState = Db.GetEntityState(newClient);
+            Assert.IsFalse(entityState.HasChangedSinceSnapshot);
+            for (var i = 0; i < entityState.PropertyStates.Length; i++)
+            {
+                var propertyState = entityState.PropertyStates[i];
+                Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            }
+
+            var namePropertyState = entityState.GetPropertyState(nameof(Client.Name));
+            newClient.Name = "def";
+            Assert.IsTrue(entityState.HasChangedSinceSnapshot);
+            Assert.IsTrue(namePropertyState.HasChangedSinceSnapshot);
+        }
+
+        [TestMethod]
         public async Task TestRelationshipListEntityChange()
         {
             var id1 = 156187;
