@@ -199,7 +199,7 @@ namespace Iql.Tests.Tests.DataContextTests
 
 
         [TestMethod]
-        public async Task TestRevertSnapshotSingleProperty()
+        public async Task TestUndoSinglePropertyFromSnapshot()
         {
             var id1 = 156187;
             var clientRemote = new Client
@@ -209,13 +209,28 @@ namespace Iql.Tests.Tests.DataContextTests
             };
             AppDbContext.InMemoryDb.Clients.Add(clientRemote);
             var entity1 = await Db.GetEntityAsync<Client>(id1);
+            var entityState = Db.GetEntityState(entity1);
             var snapshot = Db.AddSnapshot();
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
             entity1.Name = "def";
             entity1.Description = "123";
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Assert.IsTrue(Db.HasChanges);
             var nameProperty = Db.EntityConfigurationContext.EntityType<Client>().FindProperty(nameof(Client.Name));
+            var descriptionPropertyState = entityState.GetPropertyState(nameof(Client.Description));
+            Assert.IsTrue(descriptionPropertyState.HasChangedSinceSnapshot);
+            Db.HasChangesSinceSnapshotChanged.Subscribe(_ =>
+            {
+                var a = 0;
+            });
             Db.UndoChanges(new[] {entity1}, new[] {nameProperty});
             Assert.AreEqual("abc", entity1.Name);
             Assert.AreEqual("123", entity1.Description);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Assert.IsTrue(descriptionPropertyState.HasChangedSinceSnapshot);
+            entity1.Description = null;
+            Assert.IsFalse(descriptionPropertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
         }
 
         [TestMethod]
