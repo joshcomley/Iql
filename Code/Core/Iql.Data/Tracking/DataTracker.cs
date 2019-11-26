@@ -22,6 +22,7 @@ namespace Iql.Data.Tracking
 {
     public class DataTrackerState
     {
+        public EventEmitter<DataTrackerState> Changed { get; } = new EventEmitter<DataTrackerState>();
         private readonly Dictionary<IPropertyState, bool> _propertiesChangedSinceLastSnapshot = new Dictionary<IPropertyState, bool>();
         private readonly Dictionary<IEntityStateBase, bool> _entitiesPendingInsertSinceLastSnapshot = new Dictionary<IEntityStateBase, bool>();
         private readonly Dictionary<IEntityStateBase, bool> _entitiesPendingDeleteSinceLastSnapshot = new Dictionary<IEntityStateBase, bool>();
@@ -95,12 +96,19 @@ namespace Iql.Data.Tracking
                 if (!lookup.ContainsKey(item))
                 {
                     lookup.Add(item, true);
+                    EmitChanged();
                 }
             }
             else if (lookup.ContainsKey(item))
             {
                 lookup.Remove(item);
+                EmitChanged();
             }
+        }
+
+        private void EmitChanged()
+        {
+            Changed.Emit(() => this);
         }
 
         private IDictionary<TLookup, bool> ResolveLookup<TLookup>(DataTrackerStateKind changeKind)
@@ -170,6 +178,16 @@ namespace Iql.Data.Tracking
             RelationshipObserver = new RelationshipObserver(this);
             RelationshipObserver.RelationshipChanged.Subscribe(RelationshipChanged);
             //Id = Guid.NewGuid().ToString();
+            StateSinceSave.Changed.Subscribe(_ =>
+            {
+                UpdateHasChanges();
+                UpdateHasChangesSinceSnapshot();
+            });
+            StateSinceSnapshot.Changed.Subscribe(_ =>
+            {
+                UpdateHasChanges();
+                UpdateHasChangesSinceSnapshot();
+            });
             if (!silent)
             {
                 _allDataTrackers.Add(this);
