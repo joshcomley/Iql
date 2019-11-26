@@ -271,6 +271,7 @@ namespace Iql.Data.Tracking
                     {
                         continue;
                     }
+
                     if (properties != null && !properties.Contains(item.Key.Property))
                     {
                         continue;
@@ -280,6 +281,7 @@ namespace Iql.Data.Tracking
                     {
                         item.Key.Property.SetValue(item.Key.EntityState.Entity, usePreSnapshotValue == true ? item.Value.PreviousValue : item.Value.CurrentValue);
                     }
+
                     if (unsetSnapshotValue)
                     {
                         item.Key.ClearSnapshotValue();
@@ -292,6 +294,16 @@ namespace Iql.Data.Tracking
 
                 foreach (var item in _propertiesChangedSinceLastSnapshot)
                 {
+                    if (entities != null && !entities.Contains(item.Key.EntityState.Entity))
+                    {
+                        continue;
+                    }
+                    
+                    if (properties != null && !properties.Contains(item.Key.Property))
+                    {
+                        continue;
+                    }
+
                     if (!last.Values.ContainsKey(item.Key))
                     {
                         item.Key.AbandonChanges();

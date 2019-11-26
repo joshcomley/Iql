@@ -199,6 +199,26 @@ namespace Iql.Tests.Tests.DataContextTests
 
 
         [TestMethod]
+        public async Task TestRevertSnapshotSingleProperty()
+        {
+            var id1 = 156187;
+            var clientRemote = new Client
+            {
+                Name = "abc",
+                Id = id1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var entity1 = await Db.GetEntityAsync<Client>(id1);
+            var snapshot = Db.AddSnapshot();
+            entity1.Name = "def";
+            entity1.Description = "123";
+            var nameProperty = Db.EntityConfigurationContext.EntityType<Client>().FindProperty(nameof(Client.Name));
+            Db.UndoChanges(new[] {entity1}, new[] {nameProperty});
+            Assert.AreEqual("abc", entity1.Name);
+            Assert.AreEqual("123", entity1.Description);
+        }
+
+        [TestMethod]
         public async Task TestRevertSnapshotWithNewEntityViaRelationshipList()
         {
             var id1 = 156187;
