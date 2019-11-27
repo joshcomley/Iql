@@ -414,27 +414,26 @@ namespace Iql.Data.Tracking
                     }
                 }
 
-                var propertiesChanged = StateSinceSnapshot.GetPropertiesChanged();
-                foreach (var item in propertiesChanged)
-                {
-                    if (entities != null && !entities.Contains(item.EntityState.Entity))
-                    {
-                        continue;
-                    }
-
-                    if (properties != null && !properties.Contains(item.Property))
-                    {
-                        continue;
-                    }
-
-                    if (!last.Values.ContainsKey(item))
-                    {
-                        item.AbandonChanges();
-                    }
-                }
-
                 if (undoChanges == true)
                 {
+                    var propertiesChanged = StateSinceSnapshot.GetPropertiesChanged();
+                    foreach (var item in propertiesChanged)
+                    {
+                        if (entities != null && !entities.Contains(item.EntityState.Entity))
+                        {
+                            continue;
+                        }
+
+                        if (properties != null && !properties.Contains(item.Property))
+                        {
+                            continue;
+                        }
+
+                        if (!last.Values.ContainsKey(item))
+                        {
+                            item.AbandonChanges();
+                        }
+                    }
                     if (usePreSnapshotValue == true)
                     {
                         var previous = _snapshots.Where(_ => _ != last).LastOrDefault();

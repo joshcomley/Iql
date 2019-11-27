@@ -314,6 +314,29 @@ namespace Iql.Tests.Tests.DataContextTests
             var isDeleted = newEntityKeepState.MarkedForAnyDeletion;
         }
 
+
+        [TestMethod]
+        public async Task TestReplaceLastSnapshot()
+        {
+            var id1 = 156187;
+            var clientTypeRemote = new ClientType
+            {
+                Name = "abc",
+                Id = id1
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(clientTypeRemote);
+            var entity = await Db.ClientTypes.GetWithKeyAsync(id1);
+            Assert.AreEqual(0, Db.SnapshotsCount);
+            Db.AddSnapshot();
+            Assert.AreEqual(1, Db.SnapshotsCount);
+            entity.Name = "def";
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            var snapshot = Db.ReplaceLastSnapshot();
+            Assert.AreEqual(1, Db.SnapshotsCount);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            Assert.AreEqual("def", entity.Name);
+        }
+
         [TestMethod]
         public async Task TestRevertSnapshotWithNewEntityViaRelationshipList()
         {
