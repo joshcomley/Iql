@@ -8,9 +8,9 @@ namespace Iql.Events
     {
 
     }
-    public interface IAsyncEventEmitter<TEvent> : IEventEmitterCommon<TEvent>
+    public interface IAsyncEventEmitter<TEvent> : IEventEmitterCommon<TEvent>, IAsyncEventEmitterBase
     {
-        Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEventAsync = null, IEnumerable<EventSubscription> subscriptions = null);
+        Task<TEvent> EmitAsync(Func<TEvent> eventObjectFactory = null, Func<TEvent, Task> afterEventAsync = null, IEnumerable<EventSubscription> subscriptions = null);
     }
 
     public interface IAsyncEventSubscriber<out TEvent> : IAsyncEventSubscriberBase
@@ -19,6 +19,14 @@ namespace Iql.Events
         EventSubscription SubscribeOnceAsync(Func<TEvent, Task> action, string key = null);
     }
 
+    public interface IAsyncEventEmitterBase
+    {
+        Task<object> EmitAsync(Func<object> eventObjectFactory = null, Func<object, Task> afterEventAsync = null, IEnumerable<EventSubscription> subscriptions = null);
+    }
+    public interface IEventEmitterBase
+    {
+        object Emit(Func<object> eventObjectFactory = null, Action<object> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null);
+    }
     public interface IAsyncEventSubscriberBase : IEventUnsubscriber
     {
         EventSubscription SubscribeAsync(Func<object, Task> propertyChangeEvent, string key = null, int? allowedCount = null);
@@ -35,9 +43,9 @@ namespace Iql.Events
         List<TEvent> Backfires { get; }
     }
 
-    public interface IEventEmitter<TEvent> : IEventEmitterCommon<TEvent>
+    public interface IEventEmitter<TEvent> : IEventEmitterCommon<TEvent>, IEventEmitterBase
     {
-        TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null);
+        TEvent Emit(Func<TEvent> eventObjectFactory = null, Action<TEvent> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null);
     }
 
     public interface IEventSubscriber<out TEvent> : IEventSubscriberBase

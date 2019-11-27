@@ -115,5 +115,14 @@ namespace Iql.Events
 
             return default(TEvent);
         }
+
+        async Task<object> IAsyncEventEmitterBase.EmitAsync(Func<object> eventObjectFactory = null, Func<object, Task> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null)
+        {
+            var result = await EmitAsync(
+                eventObjectFactory == null ? (Func<TEvent>)null : () => (TEvent)eventObjectFactory(),
+                afterEvent == null ? (Func<TEvent, Task>)null : async _ => { await afterEvent(_); },
+                subscriptions);
+            return result;
+        }
     }
 }

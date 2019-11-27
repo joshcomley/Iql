@@ -20,148 +20,21 @@ using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking
 {
-    public class DataTrackerState
-    {
-        public EventEmitter<DataTrackerState> Changed { get; } = new EventEmitter<DataTrackerState>();
-        private readonly Dictionary<IPropertyState, bool> _propertiesChangedSinceLastSnapshot = new Dictionary<IPropertyState, bool>();
-        private readonly Dictionary<IEntityStateBase, bool> _entitiesPendingInsertSinceLastSnapshot = new Dictionary<IEntityStateBase, bool>();
-        private readonly Dictionary<IEntityStateBase, bool> _entitiesPendingDeleteSinceLastSnapshot = new Dictionary<IEntityStateBase, bool>();
-
-        public int PropertiesChangedCount => _propertiesChangedSinceLastSnapshot.Count;
-        public int EntitiesPendingInsertCount => _propertiesChangedSinceLastSnapshot.Count;
-        public int EntitiesPendingDeleteCount => _propertiesChangedSinceLastSnapshot.Count;
-
-        public bool HasChanges => PropertiesChangedCount > 0 ||
-                                  EntitiesPendingInsertCount > 0 ||
-                                  EntitiesPendingDeleteCount > 0;
-
-        public void Clear()
-        {
-            _propertiesChangedSinceLastSnapshot.Clear();
-            _entitiesPendingInsertSinceLastSnapshot.Clear();
-            _entitiesPendingDeleteSinceLastSnapshot.Clear();
-        }
-
-        public IEntityStateBase[] GetEntitiesPendingInsert()
-        {
-            return _entitiesPendingInsertSinceLastSnapshot.Keys.ToArray();
-        }
-        public IEntityStateBase[] GetEntitiesPendingDelete()
-        {
-            return _entitiesPendingDeleteSinceLastSnapshot.Keys.ToArray();
-        }
-        public IPropertyState[] GetPropertiesChanged()
-        {
-            return _propertiesChangedSinceLastSnapshot.Keys.ToArray();
-        }
-
-        public void UpdateInserted<T>(T item, bool value)
-            where T : IEntityStateBase
-        {
-            UpdateInternal<IEntityStateBase>(DataTrackerStateKind.EntityInserted, item, value);
-        }
-
-        public void UpdateDeleted<T>(T item, bool value)
-            where T : IEntityStateBase
-        {
-            UpdateInternal<IEntityStateBase>(DataTrackerStateKind.EntityDeleted, item, value);
-        }
-
-        public void UpdatePropertyChanged<T>(T item, bool value)
-            where T : IPropertyState
-        {
-            UpdateInternal<IPropertyState>(DataTrackerStateKind.Property, item, value);
-        }
-
-        public void Update<TLookup>(DataTrackerStateKind changeKind, TLookup item, bool value)
-        {
-            switch (changeKind)
-            {
-                case DataTrackerStateKind.EntityInserted:
-                    UpdateInserted((IEntityStateBase)item, value);
-                    break;
-                case DataTrackerStateKind.EntityDeleted:
-                    UpdateDeleted((IEntityStateBase)item, value);
-                    break;
-                case DataTrackerStateKind.Property:
-                    UpdatePropertyChanged((IPropertyState)item, value);
-                    break;
-            }
-        }
-        protected void UpdateInternal<TLookup>(DataTrackerStateKind changeKind, TLookup item, bool value)
-        {
-            var lookup = ResolveLookup<TLookup>(changeKind);
-            if (value)
-            {
-                if (!lookup.ContainsKey(item))
-                {
-                    lookup.Add(item, true);
-                    EmitChanged();
-                }
-            }
-            else if (lookup.ContainsKey(item))
-            {
-                lookup.Remove(item);
-                EmitChanged();
-            }
-        }
-
-        private void EmitChanged()
-        {
-            Changed.Emit(() => this);
-        }
-
-        private IDictionary<TLookup, bool> ResolveLookup<TLookup>(DataTrackerStateKind changeKind)
-        {
-            IDictionary<TLookup, bool> lookup = null;
-            switch (changeKind)
-            {
-                case DataTrackerStateKind.EntityDeleted:
-                    lookup = (IDictionary<TLookup, bool>)_entitiesPendingDeleteSinceLastSnapshot;
-                    break;
-                case DataTrackerStateKind.EntityInserted:
-                    lookup = (IDictionary<TLookup, bool>)_entitiesPendingInsertSinceLastSnapshot;
-                    break;
-                case DataTrackerStateKind.Property:
-                    lookup = (IDictionary<TLookup, bool>)_propertiesChangedSinceLastSnapshot;
-                    break;
-            }
-
-            return lookup;
-        }
-
-        public bool Has<TLookup>(DataTrackerStateKind changeKind, TLookup item)
-        {
-            switch (changeKind)
-            {
-                case DataTrackerStateKind.EntityDeleted:
-                case DataTrackerStateKind.EntityInserted:
-                    return ResolveLookup<IEntityStateBase>(changeKind).ContainsKey((IEntityStateBase)item);
-                case DataTrackerStateKind.Property:
-                    return ResolveLookup<IPropertyState>(changeKind).ContainsKey((IPropertyState)item);
-            }
-
-            return false;
-        }
-    }
     public class DataTracker : IJsonSerializable, IDataChangeProvider, IDisposable, ISnapshotManager, ILockable
     {
-        protected DataTrackerState StateSinceSnapshot { get; }= new DataTrackerState();
-        protected DataTrackerState StateSinceSave { get; } = new DataTrackerState();
-        private bool _isLocked = false;
-        public ILockable Parent => null;
-        public bool IsLocked => _isLocked;
-        public void Lock()
-        {
-            _isLocked = true;
-        }
-        public void Unlock()
-        {
-            _isLocked = false;
-        }
-        //public EventEmitter<OfflineChangeStateChangedEvent> StateChanged { get; } = new EventEmitter<OfflineChangeStateChangedEvent>();
-        public string SynchronicityKey => Name;
-        public DataTrackerKind Kind { get; }
+        private readonly Dictionary<object, Dictionary<string, Action<IEntityStateBase>>> _interestedParties =
+            new Dictionary<object, Dictionary<string, Action<IEntityStateBase>>>();
+
+        private readonly List<TrackerSnapshot> _removedSnapshots = new List<TrackerSnapshot>();
+
+        private readonly List<TrackerSnapshot> _snapshots = new List<TrackerSnapshot>();
+        private bool _hasChanges;
+        private bool _hasChangesSinceSnapshot;
+        private bool _hasSnapshot;
+
+        private bool _ignoreChanges = false;
+        private bool _isRestoring = false;
+
         public DataTracker(
             DataTrackerKind kind,
             IEntityConfigurationBuilder entityConfigurationBuilder,
@@ -178,29 +51,118 @@ namespace Iql.Data.Tracking
             RelationshipObserver = new RelationshipObserver(this);
             RelationshipObserver.RelationshipChanged.Subscribe(RelationshipChanged);
             //Id = Guid.NewGuid().ToString();
-            StateSinceSave.Changed.Subscribe(_ =>
-            {
-                UpdateHasChanges();
-                UpdateHasChangesSinceSnapshot();
-            });
-            StateSinceSnapshot.Changed.Subscribe(_ =>
-            {
-                UpdateHasChanges();
-                UpdateHasChangesSinceSnapshot();
-            });
             if (!silent)
             {
                 _allDataTrackers.Add(this);
             }
         }
 
-        private readonly List<TrackerSnapshot> _snapshots = new List<TrackerSnapshot>();
-        private readonly List<TrackerSnapshot> _removedSnapshots = new List<TrackerSnapshot>();
+        protected DataTrackerState StateSinceSnapshot { get; } = new DataTrackerState();
 
-        private bool _ignoreChangedSinceSnapshotChanges = false;
-        private bool _ignoreChanges = false;
-        private bool _hasChanges = false;
-        private bool _hasChangesSinceSnapshot = false;
+        protected DataTrackerState StateSinceSave { get; } = new DataTrackerState();
+
+        //public EventEmitter<OfflineChangeStateChangedEvent> StateChanged { get; } = new EventEmitter<OfflineChangeStateChangedEvent>();
+        public string SynchronicityKey => Name;
+        public DataTrackerKind Kind { get; }
+
+        public Dictionary<string, ITrackingSet> SetsMap { get; set; }
+        public List<ITrackingSet> Sets { get; set; }
+
+        public bool AllowLocalKeyGeneration => Offline;
+        public IEntityConfigurationBuilder EntityConfigurationBuilder { get; }
+        public string Name { get; }
+
+        public bool Offline { get; }
+        //public IDataContext DataContext { get; set; }
+
+        public IRelationshipObserver RelationshipObserver { get; }
+
+        private static List<DataTracker> _allDataTrackers { get; }
+            = new List<DataTracker>();
+
+        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotChanged { get; } =
+            new EventEmitter<ValueChangedEvent<bool>>();
+
+        public List<IEntityCrudOperationBase> GetInserts(IDataContext dataContext = null, object[] entities = null)
+        {
+            var inserts = new List<IEntityCrudOperationBase>();
+            foreach (var set in Sets)
+            {
+                inserts.AddRange(set.GetInserts(dataContext, entities));
+            }
+
+            inserts = inserts
+                .OrderBy(operation => GetPendingDependencyCount(operation.EntityState.Entity, operation.EntityType))
+                .ToList();
+            return inserts;
+        }
+
+        public List<IUpdateEntityOperation> GetUpdates(IDataContext dataContext = null, object[] entities = null,
+            IProperty[] properties = null)
+        {
+            var updates = new List<IUpdateEntityOperation>();
+            foreach (var set in Sets)
+            {
+                updates.AddRange(set.GetUpdates(dataContext, entities, properties));
+            }
+
+            return updates;
+        }
+
+        public List<IEntityCrudOperationBase> GetDeletions(IDataContext dataContext = null, object[] entities = null)
+        {
+            var deletions = new List<IEntityCrudOperationBase>();
+            foreach (var set in Sets)
+            {
+                deletions.AddRange(set.GetDeletions(dataContext, entities));
+            }
+
+            return deletions;
+        }
+
+        public void Dispose()
+        {
+            for (var i = 0; i < Sets.Count; i++)
+            {
+                var set = Sets[i];
+                set.Dispose();
+            }
+        }
+
+        public string SerializeToJson()
+        {
+            return this.ToJson();
+        }
+
+        public object PrepareForJson()
+        {
+            var trackingSets = Sets
+                .Where(_ => _.GetChangedStates().Length > 0)
+                .ToArray();
+            if (trackingSets.Length == 0)
+            {
+                return new { };
+            }
+
+            return new
+            {
+                Sets = trackingSets
+                    .Select(_ => _.PrepareForJson())
+            };
+        }
+
+        public ILockable Parent => null;
+        public bool IsLocked { get; private set; }
+
+        public void Lock()
+        {
+            IsLocked = true;
+        }
+
+        public void Unlock()
+        {
+            IsLocked = false;
+        }
 
         public TrackerSnapshot CurrentSnapshot => _snapshots.LastOrDefault();
 
@@ -212,48 +174,6 @@ namespace Iql.Data.Tracking
             }
         }
 
-        private bool HasChangedSinceSnapshot(TrackerSnapshot snapshot = null)
-        {
-            if (StateSinceSnapshot.PropertiesChangedCount > 0)
-            {
-                return true;
-            }
-            snapshot = snapshot ?? NewTrackerSnapshot();
-            var newEntities = snapshot.EntitiesPendingInsert;
-            var deletedEntities = snapshot.EntitiesPendingDelete;
-            if (CurrentSnapshot != null)
-            {
-                if (newEntities.Length != CurrentSnapshot.EntitiesPendingInsert.Length)
-                {
-                    return true;
-                }
-                if (deletedEntities.Length != CurrentSnapshot.EntitiesPendingDelete.Length)
-                {
-                    return true;
-                }
-                foreach (var entity in newEntities)
-                {
-                    if (!CurrentSnapshot.EntitiesPendingInsert.Contains(entity))
-                    {
-                        return true;
-                    }
-                }
-                foreach (var entity in deletedEntities)
-                {
-                    if (!CurrentSnapshot.EntitiesPendingDelete.Contains(entity))
-                    {
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                return newEntities.Length > 0 || deletedEntities.Length > 0;
-            }
-
-            return false;
-        }
-
         public TrackerSnapshot AddSnapshot(bool? nullIfEmpty = null)
         {
             var doNullIfEmpty = nullIfEmpty ?? false;
@@ -261,9 +181,10 @@ namespace Iql.Data.Tracking
             {
                 return null;
             }
+
             var snapshot = NewTrackerSnapshot();
             snapshot.Id = Guid.NewGuid();
-            _ignoreChangedSinceSnapshotChanges = true;
+            _isRestoring = true;
             var items = StateSinceSave.GetPropertiesChanged();
             foreach (var item in items)
             {
@@ -275,38 +196,14 @@ namespace Iql.Data.Tracking
                         CurrentValue = item.LocalValue
                     });
                 }
+
                 item.AddSnapshot();
             }
-            _ignoreChangedSinceSnapshotChanges = false;
+
+            _isRestoring = false;
             ResetSnapshotState(true, true);
             _snapshots.Add(snapshot);
             UpdateHasSnapshot();
-            return snapshot;
-        }
-
-        private void UpdateHasSnapshot()
-        {
-            HasSnapshot = CurrentSnapshot != null;
-        }
-
-        private void ResetSnapshotState(bool clearRemovedSnapshots, bool forceClearCache)
-        {
-            if (clearRemovedSnapshots)
-            {
-                _removedSnapshots.Clear();
-            }
-            if (forceClearCache)
-            {
-                StateSinceSnapshot.Clear();
-            }
-            UpdateHasChangesSinceSnapshot();
-        }
-
-        private TrackerSnapshot NewTrackerSnapshot()
-        {
-            var snapshot = new TrackerSnapshot();
-            snapshot.EntitiesPendingInsert = StateSinceSave.GetEntitiesPendingInsert().ToArray();
-            snapshot.EntitiesPendingDelete = StateSinceSave.GetEntitiesPendingDelete().ToArray();
             return snapshot;
         }
 
@@ -325,6 +222,7 @@ namespace Iql.Data.Tracking
                 case SnapshotRemoveKind.GoToSnapshotValues:
                     return GoToLastSnapshot(true, true, false);
             }
+
             return GoToLastSnapshot(true, false, false);
         }
 
@@ -345,7 +243,7 @@ namespace Iql.Data.Tracking
             }
 
             _snapshots.Add(last);
-            RestoreNewAndDeleted(snapshot, last);
+            RestoreNewAndDeleted(snapshot, last, null);
             ResetSnapshotState(false, true);
             return true;
         }
@@ -363,7 +261,7 @@ namespace Iql.Data.Tracking
             {
                 var old = _hasSnapshot;
                 _hasSnapshot = value;
-                if(old != value)
+                if (old != value)
                 {
                     HasSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
                 }
@@ -372,10 +270,107 @@ namespace Iql.Data.Tracking
 
         public bool HasRestorableSnapshot => _removedSnapshots.Count > 0;
 
-        private bool GoToLastSnapshot(bool remove, bool? undoChanges, bool? usePreSnapshotValue, object[] entities = null, IProperty[] properties = null)
+        public bool RevertToSnapshot()
+        {
+            if (CurrentSnapshot != null)
+            {
+                return UndoChanges();
+            }
+
+            return false;
+        }
+
+        public bool HasChanges => StateSinceSave.HasChanges;
+
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged =>
+            StateSinceSnapshot.HasChangesChanged;
+
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => StateSinceSave.HasChangesChanged;
+
+        public TrackerSnapshot[] Snapshots => (_snapshots ?? new List<TrackerSnapshot>()).ToArray();
+        public int SnapshotsCount => Snapshots.Length;
+        public TrackerSnapshot[] RestorableSnapshots => (_removedSnapshots ?? new List<TrackerSnapshot>()).ToArray();
+        public int RestorableSnapshotsCount => RestorableSnapshots.Length;
+
+        public bool HasChangesSinceSnapshot => StateSinceSnapshot.HasChanges;
+
+        private bool HasChangedSinceSnapshot(TrackerSnapshot snapshot = null)
+        {
+            if (StateSinceSnapshot.PropertiesChangedCount > 0)
+            {
+                return true;
+            }
+
+            snapshot = snapshot ?? NewTrackerSnapshot();
+            var newEntities = snapshot.EntitiesPendingInsert;
+            var deletedEntities = snapshot.EntitiesPendingDelete;
+            if (CurrentSnapshot != null)
+            {
+                if (newEntities.Length != CurrentSnapshot.EntitiesPendingInsert.Length)
+                {
+                    return true;
+                }
+
+                if (deletedEntities.Length != CurrentSnapshot.EntitiesPendingDelete.Length)
+                {
+                    return true;
+                }
+
+                foreach (var entity in newEntities)
+                {
+                    if (!CurrentSnapshot.EntitiesPendingInsert.Contains(entity))
+                    {
+                        return true;
+                    }
+                }
+
+                foreach (var entity in deletedEntities)
+                {
+                    if (!CurrentSnapshot.EntitiesPendingDelete.Contains(entity))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                return newEntities.Length > 0 || deletedEntities.Length > 0;
+            }
+
+            return false;
+        }
+
+        private void UpdateHasSnapshot()
+        {
+            HasSnapshot = CurrentSnapshot != null;
+        }
+
+        private void ResetSnapshotState(bool clearRemovedSnapshots, bool forceClearCache)
+        {
+            if (clearRemovedSnapshots)
+            {
+                _removedSnapshots.Clear();
+            }
+
+            if (forceClearCache)
+            {
+                StateSinceSnapshot.Clear();
+            }
+        }
+
+        private TrackerSnapshot NewTrackerSnapshot()
+        {
+            var snapshot = new TrackerSnapshot();
+            snapshot.EntitiesPendingInsert = StateSinceSave.GetEntitiesPendingInsert().ToArray();
+            snapshot.EntitiesPendingDelete = StateSinceSave.GetEntitiesPendingDelete().ToArray();
+            return snapshot;
+        }
+
+        private bool GoToLastSnapshot(bool remove, bool? undoChanges, bool? usePreSnapshotValue,
+            object[] entities = null, IProperty[] properties = null)
         {
             var snapshot = NewTrackerSnapshot();
-            _ignoreChangedSinceSnapshotChanges = true;
+            _isRestoring = true;
             var unsetSnapshotValue = false;
             if (_snapshots.Any())
             {
@@ -390,6 +385,7 @@ namespace Iql.Data.Tracking
                         unsetSnapshotValue = true;
                     }
                 }
+
                 foreach (var item in last.Values)
                 {
                     if (entities != null && !entities.Contains(item.Key.EntityState.Entity))
@@ -404,7 +400,8 @@ namespace Iql.Data.Tracking
 
                     if (undoChanges == true && (usePreSnapshotValue == true || item.Key.HasChanged))
                     {
-                        item.Key.Property.SetValue(item.Key.EntityState.Entity, usePreSnapshotValue == true ? item.Value.PreviousValue : item.Value.CurrentValue);
+                        item.Key.Property.SetValue(item.Key.EntityState.Entity,
+                            usePreSnapshotValue == true ? item.Value.PreviousValue : item.Value.CurrentValue);
                     }
 
                     if (unsetSnapshotValue)
@@ -424,7 +421,7 @@ namespace Iql.Data.Tracking
                     {
                         continue;
                     }
-                    
+
                     if (properties != null && !properties.Contains(item.Property))
                     {
                         continue;
@@ -445,29 +442,45 @@ namespace Iql.Data.Tracking
                         {
                             previous = new TrackerSnapshot();
                         }
-                        RestoreNewAndDeleted(snapshot, previous);
+
+                        RestoreNewAndDeleted(snapshot, previous, entities);
                     }
                     else
                     {
-                        RestoreNewAndDeleted(snapshot, last);
+                        RestoreNewAndDeleted(snapshot, last, entities);
                     }
                 }
 
                 ResetSnapshotState(false, entities == null && properties == null);
-                _ignoreChangedSinceSnapshotChanges = false;
+                _isRestoring = false;
                 return true;
             }
+
             AbandonChanges(entities, properties);
             ResetSnapshotState(false, true);
-            _ignoreChangedSinceSnapshotChanges = false;
+            _isRestoring = false;
             return false;
         }
 
-        private void RestoreNewAndDeleted(TrackerSnapshot fromSnapshot, TrackerSnapshot toSnapshot)
+        private void RestoreNewAndDeleted(TrackerSnapshot fromSnapshot, TrackerSnapshot toSnapshot, object[] entities)
         {
-            var itemsToDelete = toSnapshot.EntitiesPendingDelete.Where(_ => !fromSnapshot.EntitiesPendingDelete.Contains(_)).ToArray();
-            var itemsToAdd = toSnapshot.EntitiesPendingInsert;//.Where(_ => !fromSnapshot.NewEntities.Contains(_)).ToArray();
-            var itemsToUnAdd = fromSnapshot.EntitiesPendingInsert.Where(_ => !toSnapshot.EntitiesPendingInsert.Contains(_)).ToArray();
+            bool IsAllowed(IEntityStateBase entityState)
+            {
+                if(entities == null)
+                {
+                    return true;
+                }
+
+                return entities.Contains(entityState.Entity);
+            }
+            var itemsToDelete = toSnapshot.EntitiesPendingDelete
+                .Where(_ => IsAllowed(_) && !fromSnapshot.EntitiesPendingDelete.Contains(_)).ToArray();
+            var itemsToAdd =
+                toSnapshot.EntitiesPendingInsert.Where(_ => IsAllowed(_)).ToArray(); //.Where(_ => !fromSnapshot.NewEntities.Contains(_)).ToArray();
+            var itemsToUnAdd = fromSnapshot.EntitiesPendingInsert
+                .Where(_ => IsAllowed(_) && !toSnapshot.EntitiesPendingInsert.Contains(_)).ToArray();
+            var itemsToUnDelete = fromSnapshot.EntitiesPendingDelete
+                .Where(_ => IsAllowed(_) && !toSnapshot.EntitiesPendingDelete.Contains(_)).ToArray();
             for (var i = 0; i < itemsToAdd.Length; i++)
             {
                 var entity = itemsToAdd[i];
@@ -485,15 +498,12 @@ namespace Iql.Data.Tracking
                 var entity = itemsToUnAdd[i];
                 Sets.Single(_ => _.EntityType == entity.EntityType).RemoveEntity(entity.Entity);
             }
-        }
 
-        public bool RevertToSnapshot()
-        {
-            if (CurrentSnapshot != null)
+            for (var i = 0; i < itemsToUnDelete.Length; i++)
             {
-                return UndoChanges();
+                var entity = itemsToUnDelete[i];
+                Sets.Single(_ => _.EntityType == entity.EntityType).AddEntity(entity.Entity);
             }
-            return false;
         }
 
         private void RelationshipChanged(RelationshipChangedEvent relationshipChangedEvent)
@@ -501,21 +511,6 @@ namespace Iql.Data.Tracking
             var trackingSet = TrackingSetByType(relationshipChangedEvent.Relationship.Source.EntityConfiguration.Type);
             (trackingSet as TrackingSetBase).RelationshipChanged(relationshipChangedEvent);
         }
-
-        public Dictionary<string, ITrackingSet> SetsMap { get; set; }
-        public List<ITrackingSet> Sets { get; set; }
-
-        public bool AllowLocalKeyGeneration => Offline;
-        public IEntityConfigurationBuilder EntityConfigurationBuilder { get; }
-        public string Name { get; }
-        public bool Offline { get; }
-        //public IDataContext DataContext { get; set; }
-
-        public IRelationshipObserver RelationshipObserver { get; }
-
-        private static List<DataTracker> _allDataTrackers { get; }
-            = new List<DataTracker>();
-
 
         public async Task<bool> ClearStateAsync(IPersistState persistState)
         {
@@ -552,33 +547,13 @@ namespace Iql.Data.Tracking
                 EmitStateChangedEvent();
                 return true;
             }
+
             return false;
         }
 
         private string PersistStateKey()
         {
             return $"DataTracker-{Kind.ToString()}-{Name}";
-        }
-
-        public string SerializeToJson()
-        {
-            return this.ToJson();
-        }
-
-        public object PrepareForJson()
-        {
-            var trackingSets = Sets
-                .Where(_ => _.GetChangedStates().Length > 0)
-                .ToArray();
-            if (trackingSets.Length == 0)
-            {
-                return new { };
-            }
-            return new
-            {
-                Sets = trackingSets
-                        .Select(_ => _.PrepareForJson())
-            };
         }
 
         public int GetPendingDependencyCount(object entity, Type entityType = null)
@@ -598,6 +573,7 @@ namespace Iql.Data.Tracking
                             var type = relationship.OtherSide.Type;
                             return TrackingSetByType(type).FindMatchingEntityState(key)?.Entity;
                         }
+
                         return value;
                     });
             foreach (var item in flattened)
@@ -621,47 +597,11 @@ namespace Iql.Data.Tracking
             return count;
         }
 
-        public List<IEntityCrudOperationBase> GetInserts(IDataContext dataContext = null, object[] entities = null)
-        {
-            var inserts = new List<IEntityCrudOperationBase>();
-            foreach (var set in Sets)
-            {
-                inserts.AddRange(set.GetInserts(dataContext, entities));
-            }
-
-            inserts = inserts
-                .OrderBy(operation => GetPendingDependencyCount(operation.EntityState.Entity, operation.EntityType))
-                .ToList();
-            return inserts;
-        }
-
-        public List<IUpdateEntityOperation> GetUpdates(IDataContext dataContext = null, object[] entities = null, IProperty[] properties = null)
-        {
-            var updates = new List<IUpdateEntityOperation>();
-            foreach (var set in Sets)
-            {
-                updates.AddRange(set.GetUpdates(dataContext, entities, properties));
-            }
-
-            return updates;
-        }
-
-        public List<IEntityCrudOperationBase> GetDeletions(IDataContext dataContext = null, object[] entities = null)
-        {
-            var deletions = new List<IEntityCrudOperationBase>();
-            foreach (var set in Sets)
-            {
-                deletions.AddRange(set.GetDeletions(dataContext, entities));
-            }
-
-            return deletions;
-        }
-
         public ITrackingSet TrackingSetByType(Type type)
         {
             if (!SetsMap.ContainsKey(type.Name))
             {
-                var set = (ITrackingSet)typeof(DataTracker).GetRuntimeMethods()
+                var set = (ITrackingSet) typeof(DataTracker).GetRuntimeMethods()
                     .First(m => m.Name == nameof(TrackingSet))
                     .InvokeGeneric(this, new object[] { }, type);
                 return set;
@@ -681,7 +621,7 @@ namespace Iql.Data.Tracking
         }
 
         public IEntityStateBase AddEntity<T>(T entity)
-        where T : class
+            where T : class
         {
             var entityType = ResolveTrackingSet(entity, out var set);
             return TrackingSetByType(entityType).AddEntity(entity);
@@ -697,7 +637,7 @@ namespace Iql.Data.Tracking
                 Sets.Add(set);
             }
 
-            return (TrackingSet<T>)SetsMap[type.Name];
+            return (TrackingSet<T>) SetsMap[type.Name];
         }
 
         public bool EntityWithSameKeyIsBeingTracked(object entity, Type entityType)
@@ -808,46 +748,6 @@ namespace Iql.Data.Tracking
             return _allDataTrackers.ToArray();
         }
 
-        public bool HasChanges
-        {
-            get { return _hasChanges; }
-            private set
-            {
-                var old = _hasChanges;
-                _hasChanges = value;
-                if (value)
-                {
-                    int a = 0;
-                }
-                if (old != value)
-                {
-                    HasChangesChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
-                }
-            }
-        }
-
-        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
-        public TrackerSnapshot[] Snapshots => (_snapshots ?? new List<TrackerSnapshot>()).ToArray();
-        public int SnapshotsCount => Snapshots.Length;
-        public TrackerSnapshot[] RestorableSnapshots => (_removedSnapshots ?? new List<TrackerSnapshot>()).ToArray();
-        public int RestorableSnapshotsCount => RestorableSnapshots.Length;
-
-        public bool HasChangesSinceSnapshot
-        {
-            get { return _hasChangesSinceSnapshot; }
-            private set
-            {
-                var old = _hasChangesSinceSnapshot;
-                _hasChangesSinceSnapshot = value;
-                if (old != value)
-                {
-                    HasChangesSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
-                }
-            }
-        }
-
         public void RemoveEntityByKeyAndType(CompositeKey key, Type entityType)
         {
             if (key == null)
@@ -917,11 +817,12 @@ namespace Iql.Data.Tracking
             return state.IsNew ? TrackingState.TrackedLocal : TrackingState.TrackedRemote;
         }
 
-        public IEntityState<TEntity> ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation, bool isOffline) where TEntity : class
+        public IEntityState<TEntity> ApplyAdd<TEntity>(QueuedAddEntityOperation<TEntity> operation, bool isOffline)
+            where TEntity : class
         {
             var trackingSet = TrackingSet<TEntity>();
             var state = trackingSet.AttachEntity(
-                (TEntity)operation.Result.RemoteEntity.Clone(
+                (TEntity) operation.Result.RemoteEntity.Clone(
                     EntityConfigurationBuilder,
                     typeof(TEntity)),
                 isOffline);
@@ -971,7 +872,7 @@ namespace Iql.Data.Tracking
             else
             {
                 var ourState = trackingSet.FindMatchingEntityState(operation.Operation.EntityState.Entity);
-                trackingSet.RemoveEntity((TEntity)ourState.Entity);
+                trackingSet.RemoveEntity((TEntity) ourState.Entity);
             }
 
             EmitStateChangedEvent();
@@ -981,7 +882,7 @@ namespace Iql.Data.Tracking
         {
             getChangesOperation = getChangesOperation ?? new SaveChangesOperation(null);
             return new IqlDataChanges(
-                (SaveChangesOperation)getChangesOperation,
+                (SaveChangesOperation) getChangesOperation,
                 this.GetQueuedChanges(getChangesOperation).OrderBy(_ =>
                 {
                     if (_.Operation is IEntityCrudOperationBase op)
@@ -990,19 +891,7 @@ namespace Iql.Data.Tracking
                     }
 
                     return 0;
-                }).Select(_ => (IQueuedEntityCrudOperation)_).ToArray());
-        }
-
-        private class TrackCollectionResult
-        {
-            public TrackCollectionResult(IList data, List<IEntityStateBase> states)
-            {
-                Data = data;
-                States = states;
-            }
-
-            public IList Data { get; }
-            public List<IEntityStateBase> States { get; }
+                }).Select(_ => (IQueuedEntityCrudOperation) _).ToArray());
         }
 
         public void RestoreFromJson(string jsonWithChanges)
@@ -1012,14 +901,14 @@ namespace Iql.Data.Tracking
             {
                 try
                 {
-                    state = (SerializedTrackingState)JsonConvert.DeserializeObject(jsonWithChanges,
+                    state = (SerializedTrackingState) JsonConvert.DeserializeObject(jsonWithChanges,
                         typeof(SerializedTrackingState));
                 }
                 catch
                 {
-
                 }
             }
+
             state = state ?? new SerializedTrackingState();
             try
             {
@@ -1057,17 +946,8 @@ namespace Iql.Data.Tracking
             return set;
         }
 
-        public void Dispose()
-        {
-            for (var i = 0; i < Sets.Count; i++)
-            {
-                var set = Sets[i];
-                set.Dispose();
-            }
-        }
-
         /// <summary>
-        /// For internal use only.
+        ///     For internal use only.
         /// </summary>
         /// <param name="propertyState"></param>
         public void NotifyRemoteValueChanged(IPropertyState propertyState)
@@ -1101,7 +981,7 @@ namespace Iql.Data.Tracking
         }
 
         /// <summary>
-        /// For internal use only.
+        ///     For internal use only.
         /// </summary>
         /// <param name="propertyState"></param>
         /// <param name="hasChanged"></param>
@@ -1111,12 +991,13 @@ namespace Iql.Data.Tracking
             {
                 return;
             }
+
             UpdateLookup(propertyState, hasChanged, DataTrackerStateKind.Property, true);
             //NotifyInterestedParties(propertyState);
         }
 
         /// <summary>
-        /// For internal use only.
+        ///     For internal use only.
         /// </summary>
         /// <param name="propertyState"></param>
         /// <param name="hasChanged"></param>
@@ -1131,7 +1012,7 @@ namespace Iql.Data.Tracking
 
         private void NotifyInterestedParties(IEntityStateBase entityState)
         {
-            if(entityState != null)
+            if (entityState != null)
             {
                 var entity = entityState.Entity;
                 if (_interestedParties.ContainsKey(entity))
@@ -1155,6 +1036,7 @@ namespace Iql.Data.Tracking
             {
                 return;
             }
+
             UpdateLookup(entityState, value, DataTrackerStateKind.EntityInserted, true);
         }
 
@@ -1164,53 +1046,45 @@ namespace Iql.Data.Tracking
             {
                 return;
             }
+
             UpdateLookup(entityState, value, DataTrackerStateKind.EntityDeleted, false);
         }
 
         private void UpdateLookup<TLookup>(
-            TLookup item, 
+            TLookup item,
             bool value,
             DataTrackerStateKind changeKind,
             bool clearRemovedSnapshotsOnlyIfTrue)
         {
             StateSinceSave.Update(changeKind, item, value);
-            UpdateHasChanges();
-            if (_ignoreChangedSinceSnapshotChanges)
-            {
-                return;
-            }
-            if (!clearRemovedSnapshotsOnlyIfTrue)
+            //if (_ignoreChangedSinceSnapshotChanges)
+            //{
+            //    return;
+            //}
+
+            if (!_isRestoring && !clearRemovedSnapshotsOnlyIfTrue)
             {
                 _removedSnapshots.Clear();
             }
+
             if (value)
             {
-                if (clearRemovedSnapshotsOnlyIfTrue)
+                if (!_isRestoring && clearRemovedSnapshotsOnlyIfTrue)
                 {
                     _removedSnapshots.Clear();
                 }
+
                 StateSinceSnapshot.Update(changeKind, item, true);
             }
             else if (StateSinceSnapshot.Has(changeKind, item))
             {
                 StateSinceSnapshot.Update(changeKind, item, false);
             }
-            UpdateHasChangesSinceSnapshot();
-        }
-
-        private void UpdateHasChanges()
-        {
-            HasChanges = StateSinceSave.HasChanges;
-        }
-
-        private void UpdateHasChangesSinceSnapshot()
-        {
-            HasChangesSinceSnapshot = StateSinceSnapshot.HasChanges;
         }
 
         public void NotifyAttachedToTrackerChanged<T>(EntityState<T> entityState, bool value) where T : class
         {
-            if(!value)
+            if (!value)
             {
                 StateSinceSave.Update(DataTrackerStateKind.EntityInserted, entityState, false);
                 StateSinceSave.Update(DataTrackerStateKind.EntityDeleted, entityState, false);
@@ -1252,7 +1126,6 @@ namespace Iql.Data.Tracking
                     }
                 }
             }
-            UpdateHasChanges();
         }
 
         public IEntityStateBase FindTrackedEntity(CompositeKey compositeKey)
@@ -1266,9 +1139,6 @@ namespace Iql.Data.Tracking
             return set.FindMatchingEntityState(compositeKey);
         }
 
-        private readonly Dictionary<object, Dictionary<string, Action<IEntityStateBase>>> _interestedParties = new Dictionary<object, Dictionary<string, Action<IEntityStateBase>>>();
-        private bool _hasSnapshot;
-
         public void UnregisterInterest(object value, string key)
         {
             if (_interestedParties.ContainsKey(value))
@@ -1280,12 +1150,14 @@ namespace Iql.Data.Tracking
                 }
             }
         }
+
         public void RegisterInterest(object value, string key, Action<IEntityStateBase> action)
         {
             if (!_interestedParties.ContainsKey(value))
             {
                 _interestedParties.Add(value, new Dictionary<string, Action<IEntityStateBase>>());
             }
+
             var interestedParties = _interestedParties[value];
             if (!interestedParties.ContainsKey(key))
             {
@@ -1310,6 +1182,18 @@ namespace Iql.Data.Tracking
         public void NotifyEntityHasChangedSinceSnapshotChanged(IEntityStateBase entityState)
         {
             NotifyInterestedParties(entityState);
+        }
+
+        private class TrackCollectionResult
+        {
+            public TrackCollectionResult(IList data, List<IEntityStateBase> states)
+            {
+                Data = data;
+                States = states;
+            }
+
+            public IList Data { get; }
+            public List<IEntityStateBase> States { get; }
         }
     }
 }

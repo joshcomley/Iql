@@ -59,7 +59,7 @@ namespace Iql.Events
             return sub;
         }
 
-        public TEvent Emit(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null)
+        public TEvent Emit(Func<TEvent> eventObjectFactory = null, Action<TEvent> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null)
         {
             return EmitToSubscriptions(eventObjectFactory, afterEvent, ResolveSubscriptionActions(subscriptions));
         }
@@ -122,6 +122,14 @@ namespace Iql.Events
                 ValidateException(e.InnerException);
 #endif
             }
+        }
+
+        object IEventEmitterBase.Emit(Func<object> eventObjectFactory = null, Action<object> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null)
+        {
+            return Emit(
+                eventObjectFactory == null ? (Func<TEvent>) null : () => { return (TEvent) eventObjectFactory(); },
+                afterEvent == null ? (Action<TEvent>) null : _ => { afterEvent(_); },
+                subscriptions);
         }
     }
 }

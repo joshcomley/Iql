@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Iql.Data.Tracking;
 using Iql.Entities;
@@ -231,6 +232,86 @@ namespace Iql.Tests.Tests.DataContextTests
             entity1.Description = null;
             Assert.IsFalse(descriptionPropertyState.HasChangedSinceSnapshot);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
+        }
+
+
+
+        [TestMethod]
+        public async Task TestUndoSinglePropertyFromSnapshotShouldNotAffectInsertedEntities()
+        {
+            var id1 = 156187;
+            var clientRemote1 = new Client
+            {
+                Name = "abc",
+                Id = id1
+            };
+            var id2 = 156188;
+            var clientRemote2 = new Client
+            {
+                Name = "abc",
+                Id = id2
+            };
+            var id3 = 156189;
+            var clientRemote3 = new Client
+            {
+                Name = "abc",
+                Id = id3
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote1);
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote2);
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote3);
+            var entity1 = await Db.GetEntityAsync<Client>(id1);
+            var entity2KeepDelete = await Db.GetEntityAsync<Client>(id2);
+            var entity3UndoDelete = await Db.GetEntityAsync<Client>(id3);
+            var entity2KeepDeleteState = Db.GetEntityState(entity2KeepDelete);
+            var entity3UndoDeleteState = Db.GetEntityState(entity3UndoDelete);
+            var newEntityKeep = new Client()
+            {
+                Name = "New Client"
+            };
+            var newEntityUndo = new Client()
+            {
+                Name = "New Client Undo"
+            };
+            var snapshot = Db.AddSnapshot();
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            Assert.IsFalse(Db.HasChanges);
+            Db.Clients.Add(newEntityKeep);
+            Db.Clients.Add(newEntityUndo);
+            Db.Clients.Delete(entity2KeepDelete);
+            Db.Clients.Delete(entity3UndoDelete);
+            Assert.IsTrue(entity2KeepDeleteState.MarkedForAnyDeletion);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.IsTracked(newEntityKeep));
+            var entityState = Db.GetEntityState(entity1);
+            var newEntityKeepState = Db.GetEntityState(newEntityKeep);
+            var newEntityUndoState = Db.GetEntityState(newEntityUndo);
+            entity1.Name = "def";
+            entity1.Description = "123";
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Assert.IsTrue(Db.HasChanges);
+            var nameProperty = Db.EntityConfigurationContext.EntityType<Client>().FindProperty(nameof(Client.Name));
+            var descriptionPropertyState = entityState.GetPropertyState(nameof(Client.Description));
+            Assert.IsTrue(descriptionPropertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(Db.IsTracked(newEntityKeep));
+            Assert.IsTrue(entity3UndoDeleteState.MarkedForAnyDeletion);
+            Db.UndoChanges(new[] { entity3UndoDelete, newEntityUndo, entity1 }, new[] { nameProperty });
+            Assert.IsTrue(entity2KeepDeleteState.MarkedForAnyDeletion);
+            Assert.IsFalse(entity3UndoDeleteState.MarkedForAnyDeletion);
+            Assert.IsTrue(Db.IsTracked(newEntityKeep));
+            Assert.IsFalse(Db.IsTracked(newEntityUndo));
+            Assert.AreEqual("abc", entity1.Name);
+            Assert.AreEqual("123", entity1.Description);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Assert.IsTrue(descriptionPropertyState.HasChangedSinceSnapshot);
+            entity1.Description = null;
+            Assert.IsFalse(descriptionPropertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Assert.IsTrue(Db.IsTracked(newEntityKeep));
+            Db.Clients.Delete(newEntityKeep);
+            var isTracked = Db.IsTracked(newEntityKeep);
+            var isDeleted = newEntityKeepState.MarkedForAnyDeletion;
         }
 
         [TestMethod]
