@@ -516,7 +516,7 @@ namespace Iql.Data.Tracking.State
                         case EntityStatus.NewAndDeleted:
                             AttachedToTracker = true;
                             IsNew = true;
-                            UnmarkForDeletion();
+                            MarkedForDeletion = true;
                             PendingInsert = false;
                             if (TrackingSet != null)
                             {

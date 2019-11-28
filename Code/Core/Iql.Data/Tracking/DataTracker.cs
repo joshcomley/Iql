@@ -231,21 +231,52 @@ namespace Iql.Data.Tracking
             switch (kind)
             {
                 case SnapshotRemoveKind.GoToPreSnapshotValues:
-                    //StateSinceSnapshot.UndoChanges();
-                    return GoToLastSnapshot(true, true, true);
-                    //break;
+                    StateSinceSnapshot.UndoChanges();
+                    //return GoToLastSnapshot(true, true, true);
+                    break;
                 case SnapshotRemoveKind.GoToSnapshotValues:
                     StateSinceSnapshot.UndoChanges();
                     break;
             }
 
             var snapshotRemoved = TryRemoveLastSnapshotInternal();
-            StateSinceSnapshot.MergeWith(snapshotRemoved);
             if (kind == SnapshotRemoveKind.GoToPreSnapshotValues)
             {
-                UndoChanges();
+                SetSnapshotValues(snapshotRemoved, true);
+                StateSinceSnapshot.RemoveMatching(snapshotRemoved);
             }
+            else
+            {
+                StateSinceSnapshot.MergeWith(snapshotRemoved);
+            }
+            _removedSnapshots.Add(snapshotRemoved);
+            UpdateHasSnapshot();
             return true;
+        }
+
+        private static void SetSnapshotValues(TrackerSnapshot snapshot, bool usePrevious)
+        {
+            foreach (var item in snapshot.Entities)
+            {
+                var value = usePrevious ? item.Value.PreviousValue : item.Value.CurrentValue;
+                if (value.WillUntrack())
+                {
+                    item.Key.SetSnapshotValue(value);
+                    item.Key.Status = value;
+                }
+            }
+            foreach (var item in snapshot.Values)
+            {
+                var value = usePrevious ? item.Value.PreviousValue : item.Value.CurrentValue;
+                item.Key.SetSnapshotValue(value);
+                item.Key.Property.SetValue(item.Key.EntityState.Entity, value);
+            }
+            foreach (var item in snapshot.Entities)
+            {
+                var value = usePrevious ? item.Value.PreviousValue : item.Value.CurrentValue;
+                item.Key.SetSnapshotValue(value);
+                item.Key.Status = value;
+            }
         }
 
         private TrackerSnapshot TryRemoveLastSnapshotInternal()
@@ -254,7 +285,6 @@ namespace Iql.Data.Tracking
             {
                 var last = _snapshots.Last();
                 _snapshots.Remove(last);
-                _removedSnapshots.Add(last);
                 UpdateHasSnapshot();
                 return last;
             }
@@ -269,18 +299,10 @@ namespace Iql.Data.Tracking
                 return false;
             }
 
-            var snapshot = NewTrackerSnapshot();
             var last = _removedSnapshots.Last();
             _removedSnapshots.Remove(last);
-            foreach (var item in last.Values)
-            {
-                item.Key.Property.SetValue(item.Key.EntityState.Entity, item.Value.CurrentValue);
-                item.Key.SetSnapshotValue(item.Value.CurrentValue);
-            }
-
+            SetSnapshotValues(last, false);
             _snapshots.Add(last);
-            RestoreNewAndDeleted(snapshot, last, null);
-            ResetSnapshotState(false, true);
             UpdateHasSnapshot();
             return true;
         }
@@ -554,7 +576,7 @@ namespace Iql.Data.Tracking
                 snapshot.PreviousValue = item.Value.CurrentValue;
                 var match = toSnapshot.Entities.ContainsKey(item.Key)
                     ? toSnapshot.Entities[snapshot.State].CurrentValue
-                    : GetOppositeStatus(item.Value.CurrentValue);
+                    : item.Value.CurrentValue.Opposite();
                 snapshot.CurrentValue = match;
                 if (snapshot.PreviousValue != snapshot.CurrentValue)
                 {
@@ -599,31 +621,6 @@ namespace Iql.Data.Tracking
                 var entity = itemsToDelete[i];
                 entity.State.MarkedForDeletion = true;
             }
-        }
-
-        public static EntityStatus GetOppositeStatus(EntityStatus status)
-        {
-            if (status == EntityStatus.New)
-            {
-                return EntityStatus.NewAndDeleted;
-            }
-
-            if (status == EntityStatus.NewAndDeleted)
-            {
-                return EntityStatus.New;
-            }
-
-            if (status == EntityStatus.Existing)
-            {
-                return EntityStatus.ExistingAndPendingDelete;
-            }
-
-            if (status == EntityStatus.ExistingAndPendingDelete)
-            {
-                return EntityStatus.Existing;
-            }
-
-            return status;
         }
 
         private void RelationshipChanged(RelationshipChangedEvent relationshipChangedEvent)
@@ -1243,7 +1240,7 @@ namespace Iql.Data.Tracking
             {
                 if (entityState.PendingInsert || entityState.MarkedForDeletion)
                 {
-                    StateSinceSave.Update(DataTrackerStateKind.EntityStatus, entityState, true, GetOppositeStatus(entityState.Status), entityState.Status);
+                    StateSinceSave.Update(DataTrackerStateKind.EntityStatus, entityState, true, entityState.Status.Opposite(), entityState.Status);
                 }
 
                 for (var i = 0; i < entityState.PropertyStates.Length; i++)

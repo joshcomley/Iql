@@ -350,20 +350,28 @@ namespace Iql.Tests.Tests.DataContextTests
         public async Task TestNestedSnapshots()
         {
             var id1 = 156187;
-            var clientRemote = new Client
+            var clientRemote1 = new Client
             {
                 Name = "abc",
                 Description = "def",
                 Id = id1
             };
-            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
-            var client = await Db.Clients.GetWithKeyAsync(id1);
-            var clientState = Db.GetEntityState(client);
+            var id2 = 156188;
+            var clientRemote2 = new Client
+            {
+                Name = "1",
+                Description = "2",
+                Id = id1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote1);
+            var client1 = await Db.Clients.GetWithKeyAsync(id1); 
+            var client2 = await Db.Clients.GetWithKeyAsync(id2);
+            var clientState = Db.GetEntityState(client1);
             var snapshot1 = Db.AddSnapshot();
+            //client2.Name = "3";
             var snapshot2 = Db.AddSnapshot();
-
-            client.Description = "456";
-            Db.DeleteEntity(client);
+            client1.Description = "456";
+            Db.DeleteEntity(client1);
             Db.ReplaceLastSnapshot();
             Assert.IsTrue(Db.HasChanges);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
@@ -373,7 +381,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Db.RemoveLastSnapshot();
             Assert.IsTrue(Db.HasChanges);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
-            Assert.AreEqual("456", client.Description);
+            Assert.AreEqual("456", client1.Description);
             Assert.IsTrue(Db.HasChanges);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
         }
@@ -588,17 +596,27 @@ namespace Iql.Tests.Tests.DataContextTests
             };
             AppDbContext.InMemoryDb.Clients.Add(clientRemote);
             var entity1 = await Db.GetEntityAsync<Client>(156187);
+            var entity1State = Db.GetEntityState(entity1);
+            var nameState = entity1State.GetPropertyState(nameof(Client.Name));
+            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
             entity1.Name = "def";
+            Assert.IsTrue(nameState.HasChangedSinceSnapshot);
             var snapshot = Db.AddSnapshot();
+            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
             Assert.AreEqual(snapshot, Db.CurrentSnapshot);
             entity1.Name = "ghi";
+            Assert.IsTrue(nameState.HasChangedSinceSnapshot);
             Db.UndoChanges();
+            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
             Assert.AreEqual("def", entity1.Name);
             Db.UndoChanges();
+            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
             Assert.AreEqual("def", entity1.Name);
             Db.RemoveLastSnapshot(SnapshotRemoveKind.GoToPreSnapshotValues);
+            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
             Assert.AreEqual("abc", entity1.Name);
             entity1.Name = "xyz";
+            Assert.IsTrue(nameState.HasChangedSinceSnapshot);
             Db.RestoreNextAbandonedSnapshot();
             Assert.AreEqual("xyz", entity1.Name);
         }

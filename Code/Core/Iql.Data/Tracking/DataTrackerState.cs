@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Data.Crud.Operations;
+using Iql.Data.Extensions;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
@@ -62,7 +63,7 @@ namespace Iql.Data.Tracking
                 var state = entityStates[i];
                 dic.Add(state, new EntitySnapshot
                 {
-                    PreviousValue = state.SnapshotStatus,
+                    PreviousValue = state.Status.Opposite(),
                     CurrentValue = state.Status,
                     State = state
                 });
@@ -212,11 +213,9 @@ namespace Iql.Data.Tracking
             {
                 var entityState = entityStates[i];
                 if (IsEntityAllowed(entityState.State) &&
-                    (entityState.Value.Item1 == EntityStatus.Existing ||
-                     entityState.Value.Item1 == EntityStatus.ExistingAndPendingDelete ||
-                     entityState.Value.Item1 == EntityStatus.New))
+                    entityState.Value.Item1.WillUntrack())
                 {
-                    entityState.State.Status = DataTracker.GetOppositeStatus(entityState.Value.Item1);
+                    entityState.State.Status = entityState.Value.Item1.Opposite();
                     _entitiesChanged.Remove(entityState.State);
                 }
             }
@@ -238,7 +237,7 @@ namespace Iql.Data.Tracking
                 var entityState = entityStates[i];
                 if (IsEntityAllowed(entityState.State))
                 {
-                    entityState.State.Status = DataTracker.GetOppositeStatus(entityState.Value.Item1);
+                    entityState.State.Status = entityState.Value.Item1.Opposite();
                     _entitiesChanged.Remove(entityState.State);
                 }
             }
@@ -249,6 +248,10 @@ namespace Iql.Data.Tracking
 
         public void MergeWith(TrackerSnapshot snapshot)
         {
+            MergeWith(snapshot, true);
+        }
+        private void MergeWith(TrackerSnapshot snapshot, bool add)
+        {
             foreach (var snapshotEntity in snapshot.Entities)
             {
                 if (_entitiesChanged.ContainsKey(snapshotEntity.Key))
@@ -256,13 +259,16 @@ namespace Iql.Data.Tracking
                     _entitiesChanged.Remove(snapshotEntity.Key);
                 }
 
-                _entitiesChanged.Add(
-                    snapshotEntity.Key,
-                    new Tuple<EntityStatus, EntityStatus>(
-                        snapshotEntity.Value.PreviousValue,
-                        snapshotEntity.Value.CurrentValue
-                    )
-                );
+                if (add)
+                {
+                    _entitiesChanged.Add(
+                        snapshotEntity.Key,
+                        new Tuple<EntityStatus, EntityStatus>(
+                            snapshotEntity.Value.PreviousValue,
+                            snapshotEntity.Value.CurrentValue
+                        )
+                    );
+                }
             }
             foreach (var snapshotProperty in snapshot.Values)
             {
@@ -271,15 +277,23 @@ namespace Iql.Data.Tracking
                     _propertiesChanged.Remove(snapshotProperty.Key);
                 }
 
-                _propertiesChanged.Add(
-                    snapshotProperty.Key,
-                    new Tuple<object, object>(
-                        snapshotProperty.Value.PreviousValue,
-                        snapshotProperty.Value.CurrentValue
-                    )
-                );
+                if (add)
+                {
+                    _propertiesChanged.Add(
+                        snapshotProperty.Key,
+                        new Tuple<object, object>(
+                            snapshotProperty.Value.PreviousValue,
+                            snapshotProperty.Value.CurrentValue
+                        )
+                    );
+                }
             }
             EmitChanged();
+        }
+
+        public void RemoveMatching(TrackerSnapshot snapshot)
+        {
+            MergeWith(snapshot, false);
         }
     }
 }
