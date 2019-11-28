@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ using Iql.Events;
 
 namespace Iql.Data.Tracking.State
 {
-    [DebuggerDisplay("{EntityType.Name}")]
+    [DebuggerDisplay("{EntityType.Name} - {Status}")]
     public class EntityState<T> : IEntityState<T>
         where T : class
     {
@@ -41,6 +42,7 @@ namespace Iql.Data.Tracking.State
                     DataTracker.NotifyAttachedToTrackerChanged(this, value);
                     AttachedToTrackerChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
                 }
+                UpdateStatus();
             }
         }
 
@@ -70,7 +72,7 @@ namespace Iql.Data.Tracking.State
             {
                 var old = _hasChanged;
                 _hasChanged = value;
-                if(old != value)
+                if (old != value)
                 {
                     HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
                     if (DataTracker != null)
@@ -113,7 +115,6 @@ namespace Iql.Data.Tracking.State
                 _pendingInsert = value;
                 if (old != value)
                 {
-                    DataTracker.NotifyPendingInsertChanged(this, value);
                     PendingInsertChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
                 }
             }
@@ -168,7 +169,56 @@ namespace Iql.Data.Tracking.State
                         DataTracker.NotifyEntityIsNewChanged(this);
                     }
                 }
+
+                UpdateStatus();
             }
+        }
+
+        private void UpdateStatus()
+        {
+            if (_settingStatus)
+            {
+                return;
+            }
+
+            _settingStatus = true;
+            var status = EntityStatus.Unattached;
+            if (AttachedToTracker)
+            {
+                if (IsNew)
+                {
+                    if (PendingInsert)
+                    {
+                        status = EntityStatus.New;
+                    }
+                    else
+                    {
+                        status = EntityStatus.NewAndDeleted;
+                    }
+                }
+                else
+                {
+                    if (MarkedForDeletion)
+                    {
+                        status = EntityStatus.ExistingAndPendingDelete;
+                    }
+                    else if (AttachedToTracker)
+                    {
+                        status = EntityStatus.Existing;
+                    }
+                    else
+                    {
+                        status = EntityStatus.ExistingAndDeleted;
+                    }
+                }
+            }
+            else if (!IsNew)
+            {
+                status = EntityStatus.ExistingAndDeleted;
+            }
+
+            Status = status;
+            _settingStatus = false;
         }
 
         public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; } = new EventEmitter<MarkedForDeletionChangeEvent>();
@@ -186,16 +236,21 @@ namespace Iql.Data.Tracking.State
                 if (changed)
                 {
                     MarkedForDeletionChanged.Emit(() => new MarkedForDeletionChangeEvent(this, value));
-                    if (DataTracker != null)
-                    {
-                        DataTracker.NotifyMarkedForDeletionChanged(this, value);
-                    }
                     UpdatePendingInsert();
                 }
+                UpdateStatus();
             }
         }
 
-        public bool MarkedForCascadeDeletion { get; set; }
+        public bool MarkedForCascadeDeletion
+        {
+            get => _markedForCascadeDeletion;
+            set
+            {
+                _markedForCascadeDeletion = value;
+                UpdateStatus();
+            }
+        }
 
         public bool MarkedForAnyDeletion => MarkedForDeletion || MarkedForCascadeDeletion;
 
@@ -230,6 +285,21 @@ namespace Iql.Data.Tracking.State
             AbandonEvents.EmitSuccessAsync(() => ev);
             ClearStatefulEvents();
             StateEvents.AbandonedEntityChanges.Emit(() => ev);
+        }
+
+        public void AddSnapshot()
+        {
+            SetSnapshotValue(Status);
+        }
+
+        public void ClearSnapshotValue()
+        {
+            SnapshotStatus = Status;
+        }
+
+        public void SetSnapshotValue(EntityStatus snapshotStatus)
+        {
+            SnapshotStatus = snapshotStatus;
         }
 
         public void ClearStatefulEvents()
@@ -361,7 +431,7 @@ namespace Iql.Data.Tracking.State
         {
             Id = Guid.NewGuid();
             DataTracker = dataTracker;
-            if(DataTracker != null)
+            if (DataTracker != null)
             {
                 EventManager.Subscribe(DataTracker.HasSnapshotChanged, _ =>
                 {
@@ -380,12 +450,131 @@ namespace Iql.Data.Tracking.State
                 propertyState.HasChangedChanged.Subscribe(_ => CheckHasChanged());
                 propertyState.HasChangedSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
                 propertyState.HasSnapshotValueChanged.Subscribe(_ => CheckHasChanged());
-;            }
+                ;
+            }
 
             UpdateHasChanges();
             LocalKey = entityConfiguration.GetCompositeKey(entity);
             IsNew = isNew;
+            _snapshotStatus = Status;
             MonitorSaveEvents();
+        }
+
+        public EventEmitter<ValueChangedEvent<EntityStatus>> StatusChanged { get; } = new EventEmitter<ValueChangedEvent<EntityStatus>>();
+        public EventEmitter<ValueChangedEvent<bool>> StatusHasChangedChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> StatusHasChangedSinceSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+
+        public bool StatusHasChanged
+        {
+            get { return _statusHasChanged; }
+            set { _statusHasChanged = value; }
+        }
+
+        public bool StatusHasChangedSinceSnapshot
+        {
+            get { return _statusHasChangedSinceSnapshot; }
+            set { _statusHasChangedSinceSnapshot = value; }
+        }
+
+        public EntityStatus Status
+        {
+            get => _status;
+            set
+            {
+                var old = _status;
+                _status = value;
+                if (!_settingStatus)
+                {
+                    _settingStatus = true;
+                    switch (_status)
+                    {
+                        case EntityStatus.Unattached:
+                            AttachedToTracker = false;
+                            break;
+                        case EntityStatus.New:
+                            AttachedToTracker = true;
+                            IsNew = true;
+                            UnmarkForDeletion();
+                            PendingInsert = true;
+                            break;
+                        case EntityStatus.NewAndDeleted:
+                            AttachedToTracker = true;
+                            IsNew = true;
+                            UnmarkForDeletion();
+                            PendingInsert = false;
+                            break;
+                        case EntityStatus.Existing:
+                            AttachedToTracker = true;
+                            IsNew = false;
+                            UnmarkForDeletion();
+                            PendingInsert = false;
+                            break;
+                        case EntityStatus.ExistingAndPendingDelete:
+                            AttachedToTracker = true;
+                            IsNew = false;
+                            MarkedForDeletion = true;
+                            PendingInsert = false;
+                            break;
+                        case EntityStatus.ExistingAndDeleted:
+                            IsNew = false;
+                            AttachedToTracker = false;
+                            UnmarkForDeletion();
+                            PendingInsert = false;
+                            break;
+                    }
+                    _settingStatus = false;
+                }
+
+                if (old != value)
+                {
+                    StatusChanged.Emit(() => new ValueChangedEvent<EntityStatus>(old, value));
+                    //if (DataTracker != null)
+                    //{
+                    //    DataTracker.NotifyStatusChanged(this, value);
+                    //}
+                }
+
+                UpdateStatusHasChanged();
+            }
+        }
+
+        private void UpdateStatusHasChanged()
+        {
+            if (SnapshotStatus == EntityStatus.Existing &&
+                Status == EntityStatus.ExistingAndPendingDelete)
+            {
+                StatusHasChanged = true;
+            }
+            else if (SnapshotStatus == EntityStatus.ExistingAndPendingDelete &&
+                Status == EntityStatus.Existing)
+            {
+                StatusHasChanged = true;
+            }
+            else if (SnapshotStatus == EntityStatus.New &&
+                Status == EntityStatus.NewAndDeleted)
+            {
+                StatusHasChanged = true;
+            }
+            else if (SnapshotStatus == EntityStatus.NewAndDeleted &&
+                Status == EntityStatus.New)
+            {
+                StatusHasChanged = true;
+            }
+            else
+            {
+                StatusHasChanged = false;
+            }
+            if (DataTracker != null)
+            {
+                DataTracker.NotifyStatusChanged(this, Status == EntityStatus.New || Status == EntityStatus.NewAndDeleted ||
+                                                      Status == EntityStatus.ExistingAndPendingDelete);
+            }
+        }
+
+        public EntityStatus SnapshotStatus
+        {
+            get => _snapshotStatus;
+            protected set => _snapshotStatus = value;
         }
 
         public void UpdateHasChanges()
@@ -415,6 +604,12 @@ namespace Iql.Data.Tracking.State
         private bool _hasChanged;
         private bool _hasChangedSinceSnapshot;
         private IqlEventManager _eventManager;
+        private EntityStatus _status = EntityStatus.Unattached;
+        private bool _settingStatus = false;
+        private bool _markedForCascadeDeletion;
+        private bool _statusHasChanged;
+        private bool _statusHasChangedSinceSnapshot;
+        private EntityStatus _snapshotStatus = EntityStatus.Unattached;
 
         private void MonitorSaveEvents()
         {
@@ -549,7 +744,7 @@ namespace Iql.Data.Tracking.State
             var entity = Entity.Clone(EntityConfiguration.Builder, EntityType);
             foreach (var property in Properties)
             {
-                if(property.Property.TypeDefinition.Kind != IqlType.Collection)
+                if (property.Property.TypeDefinition.Kind != IqlType.Collection)
                 {
                     property.Property.SetValue(entity, property.RemoteValue);
                 }

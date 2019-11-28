@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Iql.Data.Tracking;
+using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,6 +13,37 @@ namespace Iql.Tests.Tests.DataContextTests
     [TestClass]
     public class DataTrackerSnapshotTests : TestsBase
     {
+        [TestMethod]
+        public async Task TestDeleteNewEntity()
+        {
+            var id = 156187;
+            var clientRemote = new Client
+            {
+                Name = "abc",
+                Id = id
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var client = new Client
+            {
+                Name = "abc"
+            };
+            Db.Clients.Add(client);
+            var state = Db.GetEntityState(client);
+            Assert.AreEqual(EntityStatus.New, state.Status);
+            Assert.IsTrue(state.AttachedToTracker);
+            Db.Clients.Delete(client);
+            Assert.AreEqual(EntityStatus.NewAndDeleted, state.Status);
+            Assert.IsTrue(state.AttachedToTracker);
+            var remoteClient = await Db.Clients.GetWithKeyAsync(id);
+            var remoteState = Db.GetEntityState(remoteClient);
+            Assert.AreEqual(EntityStatus.Existing, remoteState.Status);
+            Db.Clients.Delete(remoteClient);
+            Assert.AreEqual(EntityStatus.ExistingAndPendingDelete, remoteState.Status);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(EntityStatus.ExistingAndDeleted, remoteState.Status);
+        }
+
         [TestMethod]
         public async Task TestNoChangesSnapshotShouldBeNull()
         {
@@ -252,14 +284,14 @@ namespace Iql.Tests.Tests.DataContextTests
                 Id = id2
             };
             var id3 = 156189;
-            var clientRemote3 = new Client
+            var clientRemoteUndoDelete3 = new Client
             {
-                Name = "abc",
+                Name = "clientRemoteUndoDelete3",
                 Id = id3
             };
             AppDbContext.InMemoryDb.Clients.Add(clientRemote1);
             AppDbContext.InMemoryDb.Clients.Add(clientRemote2);
-            AppDbContext.InMemoryDb.Clients.Add(clientRemote3);
+            AppDbContext.InMemoryDb.Clients.Add(clientRemoteUndoDelete3);
             var entity1 = await Db.GetEntityAsync<Client>(id1);
             var entity2KeepDelete = await Db.GetEntityAsync<Client>(id2);
             var entity3UndoDelete = await Db.GetEntityAsync<Client>(id3);
@@ -300,7 +332,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.IsTrue(entity2KeepDeleteState.MarkedForAnyDeletion);
             Assert.IsFalse(entity3UndoDeleteState.MarkedForAnyDeletion);
             Assert.IsTrue(Db.IsTracked(newEntityKeep));
-            Assert.IsFalse(Db.IsTracked(newEntityUndo));
+            Assert.IsTrue(Db.IsTracked(newEntityUndo));
             Assert.AreEqual("abc", entity1.Name);
             Assert.AreEqual("123", entity1.Description);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
@@ -314,6 +346,31 @@ namespace Iql.Tests.Tests.DataContextTests
             var isDeleted = newEntityKeepState.MarkedForAnyDeletion;
         }
 
+        [TestMethod]
+        public async Task TestNestedSnapshots()
+        {
+            var id1 = 156187;
+            var clientRemote = new Client
+            {
+                Name = "abc",
+                Description = "def",
+                Id = id1
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            var client = await Db.Clients.GetWithKeyAsync(id1);
+            var clientState = Db.GetEntityState(client);
+            var snapshot1 = Db.AddSnapshot();
+            var snapshot2 = Db.AddSnapshot();
+
+            client.Description = "456";
+            Db.DeleteEntity(client);
+            Db.ReplaceLastSnapshot();
+            Db.UndoChanges();
+            Db.RemoveLastSnapshot();
+            Assert.AreEqual("456", client.Description);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+        }
 
         [TestMethod]
         public async Task TestReplaceLastSnapshot()
@@ -558,16 +615,16 @@ namespace Iql.Tests.Tests.DataContextTests
             Db.Clients.Add(entity2);
             entity2.Name = "def";
             var snapshot2 = Db.AddSnapshot();
-
-            Assert.IsTrue(Db.IsTracked(entity2));
+            var entity2State = Db.GetEntityState(entity2);
+            Assert.AreEqual(EntityStatus.New, entity2State.Status);
 
             Db.RemoveLastSnapshot(SnapshotRemoveKind.GoToPreSnapshotValues);
 
-            Assert.IsFalse(Db.IsTracked(entity2));
+            Assert.AreEqual(EntityStatus.NewAndDeleted, entity2State.Status);
 
             Db.RestoreNextAbandonedSnapshot();
 
-            Assert.IsTrue(Db.IsTracked(entity2));
+            Assert.AreEqual(EntityStatus.New, entity2State.Status);
         }
 
         [TestMethod]

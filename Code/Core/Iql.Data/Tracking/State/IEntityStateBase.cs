@@ -13,6 +13,15 @@ namespace Iql.Data.Tracking.State
 {
     public interface IEntityStateBase : IJsonSerializable, IStateful, IDisposable, ILockable
     {
+        EventEmitter<ValueChangedEvent<EntityStatus>> StatusChanged { get; }
+        EventEmitter<ValueChangedEvent<bool>> StatusHasChangedChanged { get; }
+        EventEmitter<ValueChangedEvent<bool>> StatusHasChangedSinceSnapshotChanged { get; }
+        bool StatusHasChanged { get; }
+        bool StatusHasChangedSinceSnapshot { get; }
+        EntityStatus Status { get; set; }
+        EntityStatus SnapshotStatus { get; }
+        void ClearSnapshotValue();
+        void SetSnapshotValue(EntityStatus value);
         void UpdateHasChanges();
         void CheckHasChanged();
         bool HasChanged { get; }
@@ -57,5 +66,6 @@ namespace Iql.Data.Tracking.State
         void MarkForCascadeDeletion(object from, IRelationship relationship);
         void UnmarkForDeletion();
         void AbandonPropertyChanges(IProperty[] properties);
+        void AddSnapshot();
     }
 }

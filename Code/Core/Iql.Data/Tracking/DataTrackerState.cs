@@ -11,10 +11,7 @@ namespace Iql.Data.Tracking
     public class DataTrackerState
     {
         public bool PauseEvents { get; set; }
-        private readonly Dictionary<IEntityStateBase, bool> _entitiesPendingDelete =
-            new Dictionary<IEntityStateBase, bool>();
-
-        private readonly Dictionary<IEntityStateBase, bool> _entitiesPendingInsert =
+        private readonly Dictionary<IEntityStateBase, bool> _entitiesChanged =
             new Dictionary<IEntityStateBase, bool>();
 
         private readonly Dictionary<IPropertyState, bool> _propertiesChanged = new Dictionary<IPropertyState, bool>();
@@ -26,12 +23,7 @@ namespace Iql.Data.Tracking
         public EventEmitter<ValueChangedEvent<bool>> PropertiesChangedChanged { get; } =
             new EventEmitter<ValueChangedEvent<bool>>();
 
-        public int EntitiesPendingInsertCount => _entitiesPendingInsert.Count;
-
-        public EventEmitter<ValueChangedEvent<bool>> EntitiesPendingInsertChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
-
-        public int EntitiesPendingDeleteCount => _entitiesPendingDelete.Count;
+        public int EntitiesPendingDeleteCount => _entitiesChanged.Count;
 
         public EventEmitter<ValueChangedEvent<bool>> EntitiesPendingDeleteChanged { get; } =
             new EventEmitter<ValueChangedEvent<bool>>();
@@ -56,19 +48,26 @@ namespace Iql.Data.Tracking
         public void Clear()
         {
             _propertiesChanged.Clear();
-            _entitiesPendingInsert.Clear();
-            _entitiesPendingDelete.Clear();
+            _entitiesChanged.Clear();
             EmitChanged();
         }
 
-        public IEntityStateBase[] GetEntitiesPendingInsert()
+        public Dictionary<IEntityStateBase, EntitySnapshot> GetEntitiesChanged()
         {
-            return _entitiesPendingInsert.Keys.ToArray();
-        }
+            var entityStates = _entitiesChanged.Keys.ToArray();
+            var dic = new Dictionary<IEntityStateBase, EntitySnapshot>();
+            for (var i = 0; i < entityStates.Length; i++)
+            {
+                var state = entityStates[i];
+                dic.Add(state, new EntitySnapshot
+                {
+                    PreviousValue = state.SnapshotStatus,
+                    CurrentValue = state.Status,
+                    State = state
+                });
+            }
 
-        public IEntityStateBase[] GetEntitiesPendingDelete()
-        {
-            return _entitiesPendingDelete.Keys.ToArray();
+            return dic;
         }
 
         public IPropertyState[] GetPropertiesChanged()
@@ -76,16 +75,10 @@ namespace Iql.Data.Tracking
             return _propertiesChanged.Keys.ToArray();
         }
 
-        public void UpdateInserted<T>(T item, bool value)
+        public void UpdateStatusChanged<T>(T item, bool value)
             where T : IEntityStateBase
         {
-            UpdateInternal<IEntityStateBase>(DataTrackerStateKind.EntityInserted, item, value);
-        }
-
-        public void UpdateDeleted<T>(T item, bool value)
-            where T : IEntityStateBase
-        {
-            UpdateInternal<IEntityStateBase>(DataTrackerStateKind.EntityDeleted, item, value);
+            UpdateInternal<IEntityStateBase>(DataTrackerStateKind.EntityStatus, item, value);
         }
 
         public void UpdatePropertyChanged<T>(T item, bool value)
@@ -98,11 +91,8 @@ namespace Iql.Data.Tracking
         {
             switch (changeKind)
             {
-                case DataTrackerStateKind.EntityInserted:
-                    UpdateInserted((IEntityStateBase) item, value);
-                    break;
-                case DataTrackerStateKind.EntityDeleted:
-                    UpdateDeleted((IEntityStateBase) item, value);
+                case DataTrackerStateKind.EntityStatus:
+                    UpdateStatusChanged((IEntityStateBase) item, value);
                     break;
                 case DataTrackerStateKind.Property:
                     UpdatePropertyChanged((IPropertyState) item, value);
@@ -140,7 +130,6 @@ namespace Iql.Data.Tracking
         private void EmitChanged()
         {
             HasChanges = PropertiesChangedCount > 0 ||
-                         EntitiesPendingInsertCount > 0 ||
                          EntitiesPendingDeleteCount > 0;
             //if (!PauseEvents)
             {
@@ -155,13 +144,9 @@ namespace Iql.Data.Tracking
             IEventEmitterBase eventEmitter = null;
             switch (changeKind)
             {
-                case DataTrackerStateKind.EntityDeleted:
-                    lookup = (IDictionary<TLookup, bool>) _entitiesPendingDelete;
+                case DataTrackerStateKind.EntityStatus:
+                    lookup = (IDictionary<TLookup, bool>) _entitiesChanged;
                     eventEmitter = EntitiesPendingDeleteChanged;
-                    break;
-                case DataTrackerStateKind.EntityInserted:
-                    lookup = (IDictionary<TLookup, bool>) _entitiesPendingInsert;
-                    eventEmitter = EntitiesPendingInsertChanged;
                     break;
                 case DataTrackerStateKind.Property:
                     lookup = (IDictionary<TLookup, bool>) _propertiesChanged;
@@ -176,8 +161,7 @@ namespace Iql.Data.Tracking
         {
             switch (changeKind)
             {
-                case DataTrackerStateKind.EntityDeleted:
-                case DataTrackerStateKind.EntityInserted:
+                case DataTrackerStateKind.EntityStatus:
                     return ResolveLookup<IEntityStateBase>(changeKind).Item1.ContainsKey((IEntityStateBase) item);
                 case DataTrackerStateKind.Property:
                     return ResolveLookup<IPropertyState>(changeKind).Item1.ContainsKey((IPropertyState) item);
