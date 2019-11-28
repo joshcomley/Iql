@@ -34,6 +34,7 @@ namespace Iql.Data.Tracking
 
         private bool _ignoreChanges = false;
         private bool _isRestoring = false;
+        private bool _hasRestorableSnapshot;
 
         public DataTracker(
             DataTrackerKind kind,
@@ -214,21 +215,51 @@ namespace Iql.Data.Tracking
 
         public bool UndoChanges(object[] entities = null, IProperty[] properties = null)
         {
-            return GoToLastSnapshot(false, true, false, entities, properties);
+            return StateSinceSnapshot.UndoChanges(entities, properties);
+            //return GoToLastSnapshot(false, true, false, entities, properties);
         }
 
         public bool RemoveLastSnapshot(SnapshotRemoveKind? kind = null)
+        {
+            var result = RemoveLastSnapshotInternal(kind);
+            return result;
+        }
+
+        private bool RemoveLastSnapshotInternal(SnapshotRemoveKind? kind)
         {
             kind = kind ?? SnapshotRemoveKind.None;
             switch (kind)
             {
                 case SnapshotRemoveKind.GoToPreSnapshotValues:
+                    //StateSinceSnapshot.UndoChanges();
                     return GoToLastSnapshot(true, true, true);
+                    //break;
                 case SnapshotRemoveKind.GoToSnapshotValues:
-                    return GoToLastSnapshot(true, true, false);
+                    StateSinceSnapshot.UndoChanges();
+                    break;
             }
 
-            return GoToLastSnapshot(true, false, false);
+            var snapshotRemoved = TryRemoveLastSnapshotInternal();
+            StateSinceSnapshot.MergeWith(snapshotRemoved);
+            if (kind == SnapshotRemoveKind.GoToPreSnapshotValues)
+            {
+                UndoChanges();
+            }
+            return true;
+        }
+
+        private TrackerSnapshot TryRemoveLastSnapshotInternal()
+        {
+            if (HasSnapshot)
+            {
+                var last = _snapshots.Last();
+                _snapshots.Remove(last);
+                _removedSnapshots.Add(last);
+                UpdateHasSnapshot();
+                return last;
+            }
+
+            return null;
         }
 
         public bool RestoreNextAbandonedSnapshot()
@@ -250,6 +281,7 @@ namespace Iql.Data.Tracking
             _snapshots.Add(last);
             RestoreNewAndDeleted(snapshot, last, null);
             ResetSnapshotState(false, true);
+            UpdateHasSnapshot();
             return true;
         }
 
@@ -273,7 +305,20 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public bool HasRestorableSnapshot => _removedSnapshots.Count > 0;
+        public EventEmitter<ValueChangedEvent<bool>> HasRestorableSnapshotChanged { get; } = new EventEmitter<ValueChangedEvent<bool>>();
+        public bool HasRestorableSnapshot
+        {
+            get => _hasRestorableSnapshot;
+            set
+            {
+                var old = _hasRestorableSnapshot;
+                _hasRestorableSnapshot = value;
+                if (old != value)
+                {
+                    HasRestorableSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                }
+            }
+        }
 
         public bool RevertToSnapshot()
         {
@@ -295,7 +340,7 @@ namespace Iql.Data.Tracking
         public TrackerSnapshot[] Snapshots => (_snapshots ?? new List<TrackerSnapshot>()).ToArray();
         public int SnapshotsCount => Snapshots.Length;
         public TrackerSnapshot[] RestorableSnapshots => (_removedSnapshots ?? new List<TrackerSnapshot>()).ToArray();
-        public int RestorableSnapshotsCount => RestorableSnapshots.Length;
+        public int RestorableSnapshotsCount => _removedSnapshots == null ? 0 : _removedSnapshots.Count;
 
         public bool HasChangesSinceSnapshot => StateSinceSnapshot.HasChanges;
 
@@ -348,6 +393,7 @@ namespace Iql.Data.Tracking
         private void UpdateHasSnapshot()
         {
             HasSnapshot = CurrentSnapshot != null;
+            HasRestorableSnapshot = RestorableSnapshotsCount > 0;
         }
 
         private void ResetSnapshotState(bool clearRemovedSnapshots, bool forceClearCache)
@@ -386,8 +432,8 @@ namespace Iql.Data.Tracking
                 if (remove)
                 {
                     _snapshots.Remove(last);
-                    UpdateHasSnapshot();
                     _removedSnapshots.Add(last);
+                    UpdateHasSnapshot();
                     if (!_snapshots.Any())
                     {
                         unsetSnapshotValue = true;
@@ -474,13 +520,13 @@ namespace Iql.Data.Tracking
                     }
                 }
 
-                ResetSnapshotState(false, entities == null && properties == null);
+                ResetSnapshotState(false, false);
                 _isRestoring = false;
                 return true;
             }
 
             AbandonChanges(entities, properties);
-            ResetSnapshotState(false, true);
+            ResetSnapshotState(false, false);
             _isRestoring = false;
             return false;
         }
@@ -555,7 +601,7 @@ namespace Iql.Data.Tracking
             }
         }
 
-        private static EntityStatus GetOppositeStatus(EntityStatus status)
+        public static EntityStatus GetOppositeStatus(EntityStatus status)
         {
             if (status == EntityStatus.New)
             {
@@ -1066,7 +1112,15 @@ namespace Iql.Data.Tracking
                 return;
             }
 
-            UpdateLookup(propertyState, hasChanged, DataTrackerStateKind.Property, true, false);
+            UpdateLookup(
+                propertyState,
+                hasChanged,
+                propertyState.RemoteValue,
+                propertyState.SnapshotValue,
+                propertyState.LocalValue,
+                DataTrackerStateKind.Property,
+                true,
+                false);
             //NotifyInterestedParties(propertyState);
         }
 
@@ -1111,17 +1165,27 @@ namespace Iql.Data.Tracking
             //    return;
             //}
 
-            UpdateLookup(entityState, value, DataTrackerStateKind.EntityStatus, true);
+            UpdateLookup(
+                entityState,
+                value,
+                entityState.Status,
+                entityState.Status,
+                entityState.Status,
+                DataTrackerStateKind.EntityStatus,
+                true);
         }
 
         private void UpdateLookup<TLookup>(
             TLookup item,
             bool value,
+            object remoteValue,
+            object snapshotValue,
+            object localValue,
             DataTrackerStateKind changeKind,
             bool clearRemovedSnapshotsOnlyIfTrue,
             bool updateSaveState = true)
         {
-            StateSinceSave.Update(changeKind, item, value);
+            StateSinceSave.Update(changeKind, item, value, remoteValue, localValue);
             //if (_ignoreChangedSinceSnapshotChanges)
             //{
             //    return;
@@ -1139,24 +1203,25 @@ namespace Iql.Data.Tracking
                     ClearRestorableSnapshots();
                 }
 
-                StateSinceSnapshot.Update(changeKind, item, true);
+                StateSinceSnapshot.Update(changeKind, item, true, snapshotValue, localValue);
             }
             else if (StateSinceSnapshot.Has(changeKind, item))
             {
-                StateSinceSnapshot.Update(changeKind, item, false);
+                StateSinceSnapshot.Update(changeKind, item, false, EntityStatus.Unattached, EntityStatus.Unattached);
             }
         }
 
         private void ClearRestorableSnapshots()
         {
             _removedSnapshots.Clear();
+            UpdateHasSnapshot();
         }
 
         public void NotifyAttachedToTrackerChanged<T>(EntityState<T> entityState, bool value) where T : class
         {
             if (!value)
             {
-                StateSinceSave.Update(DataTrackerStateKind.EntityStatus, entityState, false);
+                StateSinceSave.Update(DataTrackerStateKind.EntityStatus, entityState, false, EntityStatus.Unattached, EntityStatus.Unattached);
 
                 var propertyChangesToRemove = new List<IPropertyState>();
                 var propertiesChangedSinceLastSave = StateSinceSave.GetPropertiesChanged().ToArray();
@@ -1171,14 +1236,14 @@ namespace Iql.Data.Tracking
                 for (var i = 0; i < propertyChangesToRemove.Count; i++)
                 {
                     var propertyState = propertyChangesToRemove[i];
-                    StateSinceSave.Update(DataTrackerStateKind.Property, propertyState, false);
+                    StateSinceSave.Update(DataTrackerStateKind.Property, propertyState, false, null, null);
                 }
             }
             else
             {
                 if (entityState.PendingInsert || entityState.MarkedForDeletion)
                 {
-                    StateSinceSave.Update(DataTrackerStateKind.EntityStatus, entityState, true);
+                    StateSinceSave.Update(DataTrackerStateKind.EntityStatus, entityState, true, GetOppositeStatus(entityState.Status), entityState.Status);
                 }
 
                 for (var i = 0; i < entityState.PropertyStates.Length; i++)
@@ -1186,7 +1251,7 @@ namespace Iql.Data.Tracking
                     var property = entityState.PropertyStates[i];
                     if (property.HasChanged)
                     {
-                        StateSinceSave.Update(DataTrackerStateKind.Property, property, true);
+                        StateSinceSave.Update(DataTrackerStateKind.Property, property, true, property.RemoteValue, property.LocalValue);
                     }
                 }
             }

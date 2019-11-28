@@ -476,6 +476,18 @@ namespace Iql.Data.Tracking.State
             set { _statusHasChangedSinceSnapshot = value; }
         }
 
+        private TrackingSet<T> TrackingSet
+        {
+            get
+            {
+                if (_trackingSet == null && DataTracker != null)
+                {
+                    _trackingSet = DataTracker.TrackingSet<T>();
+                }
+                return _trackingSet;
+            }
+        }
+
         public EntityStatus Status
         {
             get => _status;
@@ -496,12 +508,20 @@ namespace Iql.Data.Tracking.State
                             IsNew = true;
                             UnmarkForDeletion();
                             PendingInsert = true;
+                            if (TrackingSet != null)
+                            {
+                                TrackingSet.AddEntity(Entity);
+                            }
                             break;
                         case EntityStatus.NewAndDeleted:
                             AttachedToTracker = true;
                             IsNew = true;
                             UnmarkForDeletion();
                             PendingInsert = false;
+                            if (TrackingSet != null)
+                            {
+                                TrackingSet.RemoveEntity(Entity);
+                            }
                             break;
                         case EntityStatus.Existing:
                             AttachedToTracker = true;
@@ -514,6 +534,10 @@ namespace Iql.Data.Tracking.State
                             IsNew = false;
                             MarkedForDeletion = true;
                             PendingInsert = false;
+                            if (TrackingSet != null)
+                            {
+                                TrackingSet.RemoveEntity(Entity);
+                            }
                             break;
                         case EntityStatus.ExistingAndDeleted:
                             IsNew = false;
@@ -610,6 +634,7 @@ namespace Iql.Data.Tracking.State
         private bool _statusHasChanged;
         private bool _statusHasChangedSinceSnapshot;
         private EntityStatus _snapshotStatus = EntityStatus.Unattached;
+        private TrackingSet<T> _trackingSet;
 
         private void MonitorSaveEvents()
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Tracking.State;
+using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Events;
 
@@ -11,10 +12,10 @@ namespace Iql.Data.Tracking
     public class DataTrackerState
     {
         public bool PauseEvents { get; set; }
-        private readonly Dictionary<IEntityStateBase, bool> _entitiesChanged =
-            new Dictionary<IEntityStateBase, bool>();
+        private readonly Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>> _entitiesChanged =
+            new Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>>();
 
-        private readonly Dictionary<IPropertyState, bool> _propertiesChanged = new Dictionary<IPropertyState, bool>();
+        private readonly Dictionary<IPropertyState, Tuple<object, object>> _propertiesChanged = new Dictionary<IPropertyState, Tuple<object, object>>();
         private bool _hasChanges;
         public EventEmitter<DataTrackerState> Changed { get; } = new EventEmitter<DataTrackerState>();
 
@@ -75,40 +76,40 @@ namespace Iql.Data.Tracking
             return _propertiesChanged.Keys.ToArray();
         }
 
-        public void UpdateStatusChanged<T>(T item, bool value)
+        public void UpdateStatusChanged<T>(T item, bool value, EntityStatus oldValue, EntityStatus newValue)
             where T : IEntityStateBase
         {
-            UpdateInternal<IEntityStateBase>(DataTrackerStateKind.EntityStatus, item, value);
+            UpdateInternal<IEntityStateBase, EntityStatus>(DataTrackerStateKind.EntityStatus, item, value, oldValue, newValue);
         }
 
-        public void UpdatePropertyChanged<T>(T item, bool value)
+        public void UpdatePropertyChanged<T>(T item, bool value, object oldValue, object newValue)
             where T : IPropertyState
         {
-            UpdateInternal<IPropertyState>(DataTrackerStateKind.Property, item, value);
+            UpdateInternal<IPropertyState, object>(DataTrackerStateKind.Property, item, value, oldValue, newValue);
         }
 
-        public void Update<TLookup>(DataTrackerStateKind changeKind, TLookup item, bool value)
+        public void Update<TLookup>(DataTrackerStateKind changeKind, TLookup item, bool value, object oldValue, object newValue)
         {
             switch (changeKind)
             {
                 case DataTrackerStateKind.EntityStatus:
-                    UpdateStatusChanged((IEntityStateBase) item, value);
+                    UpdateStatusChanged((IEntityStateBase)item, value, (EntityStatus)oldValue, (EntityStatus)newValue);
                     break;
                 case DataTrackerStateKind.Property:
-                    UpdatePropertyChanged((IPropertyState) item, value);
+                    UpdatePropertyChanged((IPropertyState)item, value, oldValue, newValue);
                     break;
             }
         }
 
-        protected void UpdateInternal<TLookup>(DataTrackerStateKind changeKind, TLookup item, bool value)
+        protected void UpdateInternal<TLookup, TValue>(DataTrackerStateKind changeKind, TLookup item, bool value, TValue oldValue, TValue newValue)
         {
-            var resolved = ResolveLookup<TLookup>(changeKind);
+            var resolved = ResolveLookup<TLookup, TValue>(changeKind);
             var lookup = resolved.Item1;
             if (value)
             {
                 if (!lookup.ContainsKey(item))
                 {
-                    lookup.Add(item, true);
+                    lookup.Add(item, new Tuple<TValue, TValue>(oldValue, newValue));
                     //if (!PauseEvents)
                     {
                         resolved.Item2.Emit(() => new ValueChangedEvent<bool>(false, true));
@@ -137,24 +138,24 @@ namespace Iql.Data.Tracking
             }
         }
 
-        private Tuple<IDictionary<TLookup, bool>, IEventEmitterBase> ResolveLookup<TLookup>(
+        private Tuple<IDictionary<TLookup, Tuple<TValue, TValue>>, IEventEmitterBase> ResolveLookup<TLookup, TValue>(
             DataTrackerStateKind changeKind)
         {
-            IDictionary<TLookup, bool> lookup = null;
+            IDictionary<TLookup, Tuple<TValue, TValue>> lookup = null;
             IEventEmitterBase eventEmitter = null;
             switch (changeKind)
             {
                 case DataTrackerStateKind.EntityStatus:
-                    lookup = (IDictionary<TLookup, bool>) _entitiesChanged;
+                    lookup = (IDictionary<TLookup, Tuple<TValue, TValue>>)_entitiesChanged;
                     eventEmitter = EntitiesChangedChanged;
                     break;
                 case DataTrackerStateKind.Property:
-                    lookup = (IDictionary<TLookup, bool>) _propertiesChanged;
+                    lookup = (IDictionary<TLookup, Tuple<TValue, TValue>>)_propertiesChanged;
                     eventEmitter = PropertiesChangedChanged;
                     break;
             }
 
-            return new Tuple<IDictionary<TLookup, bool>, IEventEmitterBase>(lookup, eventEmitter);
+            return new Tuple<IDictionary<TLookup, Tuple<TValue, TValue>>, IEventEmitterBase>(lookup, eventEmitter);
         }
 
         public bool Has<TLookup>(DataTrackerStateKind changeKind, TLookup item)
@@ -162,12 +163,123 @@ namespace Iql.Data.Tracking
             switch (changeKind)
             {
                 case DataTrackerStateKind.EntityStatus:
-                    return ResolveLookup<IEntityStateBase>(changeKind).Item1.ContainsKey((IEntityStateBase) item);
+                    return ResolveLookup<IEntityStateBase, EntityStatus>(changeKind).Item1.ContainsKey((IEntityStateBase)item);
                 case DataTrackerStateKind.Property:
-                    return ResolveLookup<IPropertyState>(changeKind).Item1.ContainsKey((IPropertyState) item);
+                    return ResolveLookup<IPropertyState, object>(changeKind).Item1.ContainsKey((IPropertyState)item);
             }
 
             return false;
+        }
+
+        public bool UndoChanges(object[] allowedEntities = null, IProperty[] allowedProperties = null)
+        {
+            bool IsEntityAllowed(IEntityStateBase entityState)
+            {
+                if (allowedEntities == null)
+                {
+                    return true;
+                }
+
+                return allowedEntities.Contains(entityState.Entity);
+            }
+            bool IsPropertyAllowed(IPropertyState propertyState)
+            {
+                if (propertyState.Property.Relationship != null &&
+                    propertyState.Property.TypeDefinition.IsCollection)
+                {
+                    return false;
+                }
+                if (allowedProperties == null)
+                {
+                    return true;
+                }
+
+                return allowedProperties.Contains(propertyState.Property);
+            }
+            var entityStates = _entitiesChanged.Keys.Select(_=>new
+            {
+                State = _,
+                Value = _entitiesChanged[_]
+            }).ToArray();
+            var propertyStates = _propertiesChanged.Keys.Select(_=>new
+            {
+                State = _,
+                Value = _propertiesChanged[_]
+            }).ToArray();
+
+            // Restore tracking first, if need be
+            for (var i = 0; i < entityStates.Length; i++)
+            {
+                var entityState = entityStates[i];
+                if (IsEntityAllowed(entityState.State) &&
+                    (entityState.Value.Item1 == EntityStatus.Existing ||
+                     entityState.Value.Item1 == EntityStatus.ExistingAndPendingDelete ||
+                     entityState.Value.Item1 == EntityStatus.New))
+                {
+                    entityState.State.Status = DataTracker.GetOppositeStatus(entityState.Value.Item1);
+                    _entitiesChanged.Remove(entityState.State);
+                }
+            }
+
+            for (var i = 0; i < propertyStates.Length; i++)
+            {
+                var propertyState = propertyStates[i];
+                if (IsEntityAllowed(propertyState.State.EntityState) &&
+                    IsPropertyAllowed(propertyState.State))
+                {
+                    propertyState.State.Property.SetValue(propertyState.State.EntityState.Entity,
+                        propertyState.Value.Item1);
+                    _propertiesChanged.Remove(propertyState.State);
+                }
+            }
+
+            for (var i = 0; i < entityStates.Length; i++)
+            {
+                var entityState = entityStates[i];
+                if (IsEntityAllowed(entityState.State))
+                {
+                    entityState.State.Status = DataTracker.GetOppositeStatus(entityState.Value.Item1);
+                    _entitiesChanged.Remove(entityState.State);
+                }
+            }
+
+            EmitChanged();
+            return true;
+        }
+
+        public void MergeWith(TrackerSnapshot snapshot)
+        {
+            foreach (var snapshotEntity in snapshot.Entities)
+            {
+                if (_entitiesChanged.ContainsKey(snapshotEntity.Key))
+                {
+                    _entitiesChanged.Remove(snapshotEntity.Key);
+                }
+
+                _entitiesChanged.Add(
+                    snapshotEntity.Key,
+                    new Tuple<EntityStatus, EntityStatus>(
+                        snapshotEntity.Value.PreviousValue,
+                        snapshotEntity.Value.CurrentValue
+                    )
+                );
+            }
+            foreach (var snapshotProperty in snapshot.Values)
+            {
+                if (_propertiesChanged.ContainsKey(snapshotProperty.Key))
+                {
+                    _propertiesChanged.Remove(snapshotProperty.Key);
+                }
+
+                _propertiesChanged.Add(
+                    snapshotProperty.Key,
+                    new Tuple<object, object>(
+                        snapshotProperty.Value.PreviousValue,
+                        snapshotProperty.Value.CurrentValue
+                    )
+                );
+            }
+            EmitChanged();
         }
     }
 }

@@ -816,6 +816,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.IsTrue(propertyState.HasChanged);
             Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
             Db.RevertToSnapshot();
+            Assert.AreEqual("123", client.Name);
             Assert.IsTrue(propertyState.HasChanged);
             Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
             client.Name = "456";
