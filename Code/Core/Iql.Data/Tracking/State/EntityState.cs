@@ -590,7 +590,8 @@ namespace Iql.Data.Tracking.State
             }
             if (DataTracker != null)
             {
-                DataTracker.NotifyStatusChanged(this, Status == EntityStatus.New || Status == EntityStatus.NewAndDeleted ||
+                DataTracker.NotifyStatusChanged(this, 
+                    Status == EntityStatus.New || Status == EntityStatus.NewAndDeleted ||
                                                       Status == EntityStatus.ExistingAndPendingDelete);
             }
         }

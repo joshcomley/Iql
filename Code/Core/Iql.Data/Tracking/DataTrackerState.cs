@@ -261,6 +261,7 @@ namespace Iql.Data.Tracking
 
                 if (add)
                 {
+                    snapshotEntity.Key.SetSnapshotValue(snapshotEntity.Value.PreviousValue);
                     _entitiesChanged.Add(
                         snapshotEntity.Key,
                         new Tuple<EntityStatus, EntityStatus>(
@@ -279,13 +280,14 @@ namespace Iql.Data.Tracking
 
                 if (add)
                 {
-                    _propertiesChanged.Add(
-                        snapshotProperty.Key,
-                        new Tuple<object, object>(
-                            snapshotProperty.Value.PreviousValue,
-                            snapshotProperty.Value.CurrentValue
-                        )
-                    );
+                    snapshotProperty.Key.SetSnapshotValue(snapshotProperty.Value.PreviousValue);
+                    //_propertiesChanged.Add(
+                    //    snapshotProperty.Key,
+                    //    new Tuple<object, object>(
+                    //        snapshotProperty.Value.PreviousValue,
+                    //        snapshotProperty.Value.CurrentValue
+                    //    )
+                    //);
                 }
             }
             EmitChanged();

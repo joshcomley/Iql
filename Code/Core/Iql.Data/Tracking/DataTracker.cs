@@ -186,7 +186,7 @@ namespace Iql.Data.Tracking
             var snapshot = NewTrackerSnapshot();
             snapshot.Id = Guid.NewGuid();
             _isRestoring = true;
-            var items = StateSinceSave.GetPropertiesChanged();
+            var items = StateSinceSnapshot.GetPropertiesChanged();
             foreach (var entity in snapshot.Entities)
             {
                 entity.Key.AddSnapshot();
@@ -249,6 +249,7 @@ namespace Iql.Data.Tracking
             {
                 StateSinceSnapshot.MergeWith(snapshotRemoved);
             }
+            // All changes in save state but not in snapshot
             _removedSnapshots.Add(snapshotRemoved);
             UpdateHasSnapshot();
             return true;
@@ -1102,7 +1103,9 @@ namespace Iql.Data.Tracking
         /// </summary>
         /// <param name="propertyState"></param>
         /// <param name="hasChanged"></param>
-        public void NotifyChangedSinceSnapshotChanged(IPropertyState propertyState, bool hasChanged)
+        public void NotifyChangedSinceSnapshotChanged(IPropertyState propertyState,
+            bool isDifferentFromSave,
+            bool isDifferentFromSnapshot)
         {
             if (!propertyState.EntityState.AttachedToTracker)
             {
@@ -1111,13 +1114,13 @@ namespace Iql.Data.Tracking
 
             UpdateLookup(
                 propertyState,
-                hasChanged,
+                isDifferentFromSave,
+                isDifferentFromSnapshot,
                 propertyState.RemoteValue,
                 propertyState.SnapshotValue,
                 propertyState.LocalValue,
                 DataTrackerStateKind.Property,
-                true,
-                false);
+                true);
             //NotifyInterestedParties(propertyState);
         }
 
@@ -1155,7 +1158,7 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public void NotifyStatusChanged<T>(EntityState<T> entityState, bool value) where T : class
+        public void NotifyStatusChanged<T>(EntityState<T> entityState, bool isDifferentFromSave) where T : class
         {
             //if (!entityState.AttachedToTracker)
             //{
@@ -1164,7 +1167,8 @@ namespace Iql.Data.Tracking
 
             UpdateLookup(
                 entityState,
-                value,
+                isDifferentFromSave,
+                isDifferentFromSave,
                 entityState.Status,
                 entityState.Status,
                 entityState.Status,
@@ -1174,15 +1178,15 @@ namespace Iql.Data.Tracking
 
         private void UpdateLookup<TLookup>(
             TLookup item,
-            bool value,
+            bool isDifferentFromSave,
+            bool isDifferentFromSnapshot,
             object remoteValue,
             object snapshotValue,
             object localValue,
             DataTrackerStateKind changeKind,
-            bool clearRemovedSnapshotsOnlyIfTrue,
-            bool updateSaveState = true)
+            bool clearRemovedSnapshotsOnlyIfTrue)
         {
-            StateSinceSave.Update(changeKind, item, value, remoteValue, localValue);
+            StateSinceSave.Update(changeKind, item, isDifferentFromSave, remoteValue, localValue);
             //if (_ignoreChangedSinceSnapshotChanges)
             //{
             //    return;
@@ -1193,7 +1197,7 @@ namespace Iql.Data.Tracking
                 ClearRestorableSnapshots();
             }
 
-            if (value)
+            if (isDifferentFromSnapshot)
             {
                 if (!_isRestoring && clearRemovedSnapshotsOnlyIfTrue)
                 {

@@ -194,7 +194,7 @@ namespace Iql.Data.Tracking.State
                 {
                     if (EntityState != null)
                     {
-                        EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, value);
+                        EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, HasChanged, value);
                     }
 
                     HasChangedSinceSnapshotChanged.Emit(

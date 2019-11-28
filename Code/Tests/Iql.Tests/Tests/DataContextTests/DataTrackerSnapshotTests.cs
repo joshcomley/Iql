@@ -361,29 +361,84 @@ namespace Iql.Tests.Tests.DataContextTests
             {
                 Name = "1",
                 Description = "2",
-                Id = id1
+                Id = id2
             };
+            var saveState = Db.TemporalDataTracker.StateSinceSave;
             AppDbContext.InMemoryDb.Clients.Add(clientRemote1);
-            var client1 = await Db.Clients.GetWithKeyAsync(id1); 
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote2);
+            var client1 = await Db.Clients.GetWithKeyAsync(id1);
             var client2 = await Db.Clients.GetWithKeyAsync(id2);
             var clientState = Db.GetEntityState(client1);
             var snapshot1 = Db.AddSnapshot();
-            //client2.Name = "3";
+            client2.Name = "3";
             var snapshot2 = Db.AddSnapshot();
             client1.Description = "456";
             Db.DeleteEntity(client1);
             Db.ReplaceLastSnapshot();
+            Assert.AreEqual("3", client2.Name);
             Assert.IsTrue(Db.HasChanges);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
             Db.UndoChanges();
+            Assert.AreEqual("3", client2.Name);
             Assert.IsTrue(Db.HasChanges);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
             Db.RemoveLastSnapshot();
+            Assert.AreEqual("3", client2.Name);
             Assert.IsTrue(Db.HasChanges);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
             Assert.AreEqual("456", client1.Description);
             Assert.IsTrue(Db.HasChanges);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Db.UndoChanges();
+            Assert.AreEqual("1", client2.Name);
+        }
+
+        [TestMethod]
+        public async Task TestNestedSnapshots2()
+        {
+            var id1 = 156187;
+            var clientRemote1 = new Client
+            {
+                Name = "abc",
+                Description = "def",
+                Id = id1
+            };
+            var id2 = 156188;
+            var clientRemote2 = new Client
+            {
+                Name = "1",
+                Description = "2",
+                Id = id2
+            };
+            var saveState = Db.TemporalDataTracker.StateSinceSave;
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote1);
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote2);
+            var client1 = await Db.Clients.GetWithKeyAsync(id1);
+            var client2 = await Db.Clients.GetWithKeyAsync(id2);
+            var clientState = Db.GetEntityState(client1);
+            var snapshot1 = Db.AddSnapshot();
+            client2.Name = "3";
+            var snapshot2 = Db.AddSnapshot();
+            client1.Description = "456";
+            Db.DeleteEntity(client1);
+            Db.ReplaceLastSnapshot();
+            Assert.AreEqual("3", client2.Name);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            Db.UndoChanges();
+            Assert.AreEqual("3", client2.Name);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            Db.RemoveLastSnapshot();
+            Assert.AreEqual("3", client2.Name);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Assert.AreEqual("456", client1.Description);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Db.RemoveLastSnapshot();
+            Db.UndoChanges();
+            Assert.AreEqual("1", client2.Name);
         }
 
         [TestMethod]
