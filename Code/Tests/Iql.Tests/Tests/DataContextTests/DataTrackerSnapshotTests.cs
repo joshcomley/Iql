@@ -365,8 +365,14 @@ namespace Iql.Tests.Tests.DataContextTests
             client.Description = "456";
             Db.DeleteEntity(client);
             Db.ReplaceLastSnapshot();
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
             Db.UndoChanges();
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
             Db.RemoveLastSnapshot();
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
             Assert.AreEqual("456", client.Description);
             Assert.IsTrue(Db.HasChanges);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);

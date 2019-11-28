@@ -23,9 +23,9 @@ namespace Iql.Data.Tracking
         public EventEmitter<ValueChangedEvent<bool>> PropertiesChangedChanged { get; } =
             new EventEmitter<ValueChangedEvent<bool>>();
 
-        public int EntitiesPendingDeleteCount => _entitiesChanged.Count;
+        public int EntitiesChangedCount => _entitiesChanged.Count;
 
-        public EventEmitter<ValueChangedEvent<bool>> EntitiesPendingDeleteChanged { get; } =
+        public EventEmitter<ValueChangedEvent<bool>> EntitiesChangedChanged { get; } =
             new EventEmitter<ValueChangedEvent<bool>>();
 
         public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged { get; }
@@ -130,7 +130,7 @@ namespace Iql.Data.Tracking
         private void EmitChanged()
         {
             HasChanges = PropertiesChangedCount > 0 ||
-                         EntitiesPendingDeleteCount > 0;
+                         EntitiesChangedCount > 0;
             //if (!PauseEvents)
             {
                 Changed.Emit(() => this);
@@ -146,7 +146,7 @@ namespace Iql.Data.Tracking
             {
                 case DataTrackerStateKind.EntityStatus:
                     lookup = (IDictionary<TLookup, bool>) _entitiesChanged;
-                    eventEmitter = EntitiesPendingDeleteChanged;
+                    eventEmitter = EntitiesChangedChanged;
                     break;
                 case DataTrackerStateKind.Property:
                     lookup = (IDictionary<TLookup, bool>) _propertiesChanged;
