@@ -677,6 +677,123 @@ namespace Iql.Tests.Tests.DataContextTests
         }
 
         [TestMethod]
+        public async Task TestSaveChanges()
+        {
+            var clientTypeId = 38237;
+            var clientTypeRemote = new ClientType
+            {
+                Id = clientTypeId,
+                Name = "abc"
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(clientTypeRemote);
+            var clientType = await Db.ClientTypes.GetWithKeyAsync(clientTypeId);
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            clientType.Name = "def";
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            clientType.Clients.Add(new Client
+            {
+                Name = "New client"
+            });
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            clientType.Name = "def";
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+        }
+
+        [TestMethod]
+        public async Task TestSaveChangesWithSnapshot()
+        {
+            var clientTypeId = 382372;
+            var clientTypeRemote = new ClientType
+            {
+                Id = clientTypeId,
+                Name = "abc"
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(clientTypeRemote);
+            var clientType = await Db.ClientTypes.GetWithKeyAsync(clientTypeId);
+            Db.AddSnapshot();
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            clientType.Name = "def";
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            var newClient = new Client
+            {
+                Name = $"New client for {clientTypeId}"
+            };
+            clientType.Clients.Add(newClient);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            clientType.Name = "def";
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            var remoteNewClient = AppDbContext.InMemoryDb.Clients.SingleOrDefault(_ => _.Name == newClient.Name);
+            Assert.IsNotNull(remoteNewClient);
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            Db.RemoveLastSnapshot();
+        }
+
+        [TestMethod]
+        public async Task TestSaveChangesWithNestedSnapshots()
+        {
+            var clientTypeId = 38237;
+            var clientTypeRemote = new ClientType
+            {
+                Id = clientTypeId,
+                Name = "abc"
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(clientTypeRemote);
+            var clientType = await Db.ClientTypes.GetWithKeyAsync(clientTypeId);
+            Db.AddSnapshot();
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            clientType.Name = "def";
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Db.AddSnapshot();
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            var newClient = new Client
+            {
+                Name = $"New client for {clientTypeId}"
+            };
+            clientType.Clients.Add(newClient);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Db.ReplaceLastSnapshot();
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            Db.RemoveLastSnapshot();
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+            var remoteNewClient = AppDbContext.InMemoryDb.Clients.SingleOrDefault(_ => _.Name == newClient.Name);
+            Assert.IsNotNull(remoteNewClient);
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            Db.RemoveLastSnapshot();
+        }
+
+        [TestMethod]
         public async Task TestAddEntitySnapshot()
         {
             var entity1 = new Client
