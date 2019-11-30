@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Iql.Queryable\Iql.Queryable.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Properties\" />
     <Folder Include="Types\" />
   </ItemGroup>
 </Project>

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using Iql.Conversion;
 using Iql.Conversion.State;
-using Iql.Data.Events;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Lists;
+using Iql.Entities.PropertyChangers;
 using Iql.Events;
 
 namespace Iql.Data.Crud.Operations
@@ -55,6 +54,7 @@ namespace Iql.Data.Crud.Operations
         void SetSnapshotValue(object value);
         string Data { get; set; }
         IProperty Property { get; }
+        PropertyChanger PropertyChanger { get; }
         void HardReset();
         void SoftReset();
         IPropertyState Copy();

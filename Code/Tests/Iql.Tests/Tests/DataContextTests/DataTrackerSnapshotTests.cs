@@ -788,6 +788,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.IsTrue(result.Success);
             var remoteNewClient = AppDbContext.InMemoryDb.Clients.SingleOrDefault(_ => _.Name == newClient.Name);
             Assert.IsNotNull(remoteNewClient);
+            var changes = Db.GetChanges();
             Assert.IsFalse(Db.HasChanges);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
             Db.RemoveLastSnapshot();

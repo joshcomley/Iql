@@ -1131,11 +1131,30 @@ namespace Iql.Data.Tracking
         /// <param name="hasChanged"></param>
         public void NotifyChangedChanged(IPropertyState propertyState, bool hasChanged)
         {
-            //if (!propertyState.EntityState.AttachedToTracker)
-            //{
-            //    return;
-            //}
-            //NotifyInterestedParties(propertyState);
+            if (!propertyState.EntityState.AttachedToTracker)
+            {
+                return;
+            }
+
+            if (!hasChanged)
+            {
+                propertyState.SetSnapshotValue(propertyState.RemoteValue);
+                StateSinceSave.RemovePropertyChange(propertyState);
+                StateSinceSnapshot.RemovePropertyChange(propertyState);
+                foreach (var snapshot in Snapshots)
+                {
+                    if (snapshot.Values.ContainsKey(propertyState))
+                    {
+                        var propertySnapshot = snapshot.Values[propertyState];
+                        propertySnapshot.PreviousValue = propertyState.LocalValue;
+                        if (propertyState.PropertyChanger.AreEquivalent(propertySnapshot.PreviousValue, propertySnapshot.CurrentValue))
+                        {
+                            snapshot.Values.Remove(propertyState);
+                        }
+                    }
+                }
+            }
+            //NotifyInterestedParties(propertyState.EntityState);
         }
 
         private void NotifyInterestedParties(IEntityStateBase entityState)

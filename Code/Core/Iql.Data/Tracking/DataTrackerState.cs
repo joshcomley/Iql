@@ -83,6 +83,13 @@ namespace Iql.Data.Tracking
             UpdateInternal<IEntityStateBase, EntityStatus>(DataTrackerStateKind.EntityStatus, item, value, oldValue, newValue);
         }
 
+        public void RemovePropertyChange<T>(T item)
+            where T : IPropertyState
+        {
+            ResolveLookup<IPropertyState, object>(DataTrackerStateKind.Property).Item1.Remove(item);
+            EmitChanged();
+        }
+
         public void UpdatePropertyChanged<T>(T item, bool value, object oldValue, object newValue)
             where T : IPropertyState
         {

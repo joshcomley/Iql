@@ -112,7 +112,7 @@ namespace Iql.Data.Tracking.State
         public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents { get; } =
             new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
 
-        private PropertyChanger PropertyChanger
+        public PropertyChanger PropertyChanger
         {
             get { return _propertyChanger = _propertyChanger ?? Property.TypeDefinition.ResolveChanger(); }
         }
@@ -261,6 +261,11 @@ namespace Iql.Data.Tracking.State
                     if (EntityState != null)
                     {
                         EntityState.CheckHasChanged();
+                    }
+
+                    if (!value)
+                    {
+                        HasChangedSinceSnapshot = false;
                     }
                 }
             }
