@@ -248,9 +248,10 @@ namespace Iql.Data.Tracking
 
         public void MergeWith(TrackerSnapshot snapshot)
         {
-            MergeWith(snapshot, true);
+            MergeWithInternal(snapshot, true);
         }
-        private void MergeWith(TrackerSnapshot snapshot, bool add)
+
+        private void MergeWithInternal(TrackerSnapshot snapshot, bool add)
         {
             foreach (var snapshotEntity in snapshot.Entities)
             {
@@ -295,7 +296,7 @@ namespace Iql.Data.Tracking
 
         public void RemoveMatching(TrackerSnapshot snapshot)
         {
-            MergeWith(snapshot, false);
+            MergeWithInternal(snapshot, false);
         }
     }
 }
