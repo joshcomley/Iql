@@ -444,10 +444,10 @@ namespace Iql.Data.Tracking.State
                                 ItemsChangedSinceSnapshot.Remove(entityState);
                             }
 
-                            if (HasRelationshipSourceChanged(entityState, Property.Relationship.OtherEnd,
-                                ChangeCalculationKind.Remote, CheckMode.NoMatch))
+                            if (HasRelationshipSourceChanged(entityState, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote))
                             {
-                                if (!relatedList.Contains(entityState.Entity))
+                                if (!DoesRelationshipSourceMatchUs(entityState, Property.Relationship.OtherEnd) &&
+                                    !relatedList.Contains(entityState.Entity))
                                 {
                                     if (remoteList.Contains(entityState) && !ItemsAdded.Contains(entityState) &&
                                         !ItemsRemoved.Contains(entityState))
@@ -466,7 +466,8 @@ namespace Iql.Data.Tracking.State
                             }
                             else
                             {
-                                if (ItemsRemoved.Contains(entityState))
+                                if ((remoteList.Contains(entityState.Entity) || !DoesRelationshipSourceMatchUs(entityState, Property.Relationship.OtherEnd))
+                                    && ItemsRemoved.Contains(entityState))
                                 {
                                     ItemsRemoved.Remove(entityState);
                                     DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
@@ -527,9 +528,10 @@ namespace Iql.Data.Tracking.State
                                 }
 
                                 if (relatedList.Contains(entityState.Entity) &&
-                                    (entityState.IsNew || HasRelationshipSourceChanged(entityState,
-                                         Property.Relationship.OtherEnd, ChangeCalculationKind.Remote,
-                                         CheckMode.Match)))
+                                    (entityState.IsNew || 
+                                     (HasRelationshipSourceChanged(entityState, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote) &&
+                                      DoesRelationshipSourceMatchUs(entityState, Property.Relationship.OtherEnd))
+                                     ))
                                 {
                                     if (relatedList.Contains(entityState.Entity))
                                     {
@@ -590,8 +592,9 @@ namespace Iql.Data.Tracking.State
                     }
 
                     if (state != null && !state.IsNew && !ItemsAdded.Contains(item) && state.HasChanged &&
-                        HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd,
-                            ChangeCalculationKind.Remote, CheckMode.Match, false))
+                        !HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd,
+                            ChangeCalculationKind.Remote) &&
+                        DoesRelationshipSourceMatchUs(state, Property.Relationship.OtherEnd))
                     {
                         changed.Add(state.Entity);
                     }
@@ -625,7 +628,8 @@ namespace Iql.Data.Tracking.State
                     if (state != null)
                     {
                         if (!state.IsNew && !ItemsAdded.Contains(item) &&
-                            HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote, CheckMode.Match, false))
+                            !HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote) &&
+                            DoesRelationshipSourceMatchUs(state, Property.Relationship.OtherEnd))
                         {
                             if (state.HasChanged)
                             {
@@ -1247,7 +1251,7 @@ namespace Iql.Data.Tracking.State
 
             if (EntityState != null)
             {
-                if (HasRelationshipSourceChanged(EntityState, Property.Relationship.ThisEnd, kind, CheckMode.NoCheck))
+                if (HasRelationshipSourceChanged(EntityState, Property.Relationship.ThisEnd, kind))
                 {
                     return true;
                 }
@@ -1257,50 +1261,47 @@ namespace Iql.Data.Tracking.State
         }
 
         private bool HasRelationshipSourceChanged(IEntityStateBase entityState, IRelationshipDetail relationshipDetail,
-            ChangeCalculationKind kind, CheckMode checkMode, bool hasChanged = true)
+            ChangeCalculationKind kind)
         {
             var constraints = relationshipDetail.Constraints;
             for (var i = 0; i < constraints.Length; i++)
             {
                 var constraint = constraints[i];
                 var propertyState = entityState.GetPropertyState(constraint.Name);
-                var allow = false;
-                if (checkMode == CheckMode.NoCheck)
-                {
-                    allow = true;
-                }
-                else
-                {
-                    allow = propertyState.PropertyChanger.AreEquivalent(
-                        relationshipDetail.OtherSide.Constraints[i].GetValue(EntityState.Entity),
-                        propertyState.LocalValue);
-                    if (checkMode == CheckMode.NoMatch)
-                    {
-                        allow = !allow;
-                    }
-                }
-
-                if (!allow)
-                {
-                    return false;
-                }
                 if (propertyState != null)
                 {
                     var hasChangedValue = kind == ChangeCalculationKind.Remote
                         ? propertyState.HasChanged
                         : propertyState.HasChangedSinceSnapshot;
-                    if (hasChanged)
+                    if (hasChangedValue)
                     {
-                        return hasChangedValue;
+                        return true;
                     }
-                    else if (hasChangedValue)
+                }
+            }
+
+            return false;
+        }
+
+        private bool DoesRelationshipSourceMatchUs(IEntityStateBase entityState, IRelationshipDetail relationshipDetail)
+        {
+            var constraints = relationshipDetail.Constraints;
+            for (var i = 0; i < constraints.Length; i++)
+            {
+                var constraint = constraints[i];
+                var propertyState = entityState.GetPropertyState(constraint.Name);
+                if (propertyState != null)
+                {
+                    if (!propertyState.PropertyChanger.AreEquivalent(
+                        relationshipDetail.OtherSide.Constraints[i].GetValue(EntityState.Entity),
+                        propertyState.LocalValue))
                     {
                         return false;
                     }
                 }
             }
 
-            return !hasChanged;
+            return true;
         }
 
         private void ObserveIfNecessary(object oldValue, object newValue, ChangeCalculationKind kind)
