@@ -267,9 +267,24 @@ namespace Iql.Entities
             return (CollectionRelationshipDetail<T, TOtherEnd>)relationship.ThisEnd;
         }
 
+        private readonly Dictionary<string, IEntityProperty<T>> _propertyByNameLookup = new Dictionary<string, IEntityProperty<T>>();
         public IEntityProperty<T> FindProperty(string name)
         {
-            return (IEntityProperty<T>)Properties.SingleOrDefault(p => p.PropertyName.ToLower() == name.ToLower());
+            if (!_propertyByNameLookup.ContainsKey(name))
+            {
+                var property = (IEntityProperty<T>)Properties.SingleOrDefault(p => p.PropertyName.ToLower() == name.ToLower());
+                if (property != null)
+                {
+                    _propertyByNameLookup.Add(name, property);
+                    return property;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return _propertyByNameLookup[name];
         }
 
         IProperty IEntityConfiguration.FindProperty(string name)

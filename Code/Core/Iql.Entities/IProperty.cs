@@ -14,6 +14,8 @@ namespace Iql.Entities
 {
     public interface IProperty : IPropertyMetadata, IConfigurable<IProperty>, IPropertyMetadataProvider
     {
+        IProperty[] GroupProperties { get; }
+        bool HasRelationship { get; }
         bool IsPersistenceKey { get; }
         bool HasInferredWith { get; }
         bool HasInferredWithCondition { get; }
@@ -21,6 +23,7 @@ namespace Iql.Entities
         INestedSet NestedSet { get; }
         IGeographicPoint GeographicPoint { get; }
         IFile File { get; }
+        bool IsCount { get; }
         bool IsLongitudeProperty { get; }
         bool IsLatitudeProperty { get; }
         bool IsLongitudeOrLatitudeProperty { get; }

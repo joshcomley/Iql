@@ -215,7 +215,7 @@ namespace Iql.Data.Tracking
             return false;
         }
 
-        public bool UndoChanges(object[] allowedEntities = null, IProperty[] allowedProperties = null)
+        public bool UndoChanges(object[] allowedEntities = null, object[] allowedProperties = null)
         {
             bool IsEntityAllowed(IEntityStateBase entityState)
             {
@@ -224,7 +224,7 @@ namespace Iql.Data.Tracking
                     return true;
                 }
 
-                return allowedEntities.Contains(entityState.Entity);
+                return allowedEntities.Contains(entityState.Entity) || allowedEntities.Contains(entityState);
             }
             bool IsPropertyAllowed(IPropertyState propertyState)
             {
@@ -238,14 +238,14 @@ namespace Iql.Data.Tracking
                     return true;
                 }
 
-                return allowedProperties.Contains(propertyState.Property);
+                return allowedProperties.Contains(propertyState.Property) || allowedProperties.Contains(propertyState);
             }
-            var entityStates = _entitiesChanged.Keys.Select(_=>new
+            var entityStates = _entitiesChanged.Keys.Select(_ => new
             {
                 State = _,
                 Value = _entitiesChanged[_]
             }).ToArray();
-            var propertyStates = _propertiesChanged.Keys.Select(_=>new
+            var propertyStates = _propertiesChanged.Keys.Select(_ => new
             {
                 State = _,
                 Value = _propertiesChanged[_]
@@ -284,6 +284,22 @@ namespace Iql.Data.Tracking
                     _entitiesChanged.Remove(entityState.State);
                 }
             }
+
+            //if (allowedProperties != null)
+            //{
+            //    foreach (var property in allowedProperties)
+            //    {
+            //        IProperty p = null;
+            //        if (property is PropertyBase pb)
+            //        {
+            //            p = (IProperty) pb;
+            //        }
+            //        else
+            //        {
+            //            p = ((IPropertyState) property).Property;
+            //        }
+            //    }
+            //}
 
             EmitChanged();
             return true;

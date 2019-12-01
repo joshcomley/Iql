@@ -216,7 +216,7 @@ namespace Iql.Data.Tracking
             return snapshot;
         }
 
-        public bool UndoChanges(object[] entities = null, IProperty[] properties = null)
+        public bool UndoChanges(object[] entities = null, object[] properties = null)
         {
             return StateSinceSnapshot.UndoChanges(entities, properties);
             //return GoToLastSnapshot(false, true, false, entities, properties);

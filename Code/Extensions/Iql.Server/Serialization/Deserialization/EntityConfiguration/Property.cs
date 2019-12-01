@@ -10,6 +10,7 @@ namespace Iql.Server.Serialization.Deserialization.EntityConfiguration
     [DebuggerDisplay("{Name}")]
     public class Property : PropertyBase, IProperty
     {
+        public bool IsCount { get; }
         public override Func<object, object> GetValue { get; set; }
         public override Func<object, object, object> SetValue { get; set; }
         public Dictionary<string, object> CustomInformation { get; }

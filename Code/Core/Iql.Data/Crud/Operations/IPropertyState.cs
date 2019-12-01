@@ -59,6 +59,6 @@ namespace Iql.Data.Crud.Operations
         void SoftReset();
         IPropertyState Copy();
         void Restore(SerializedPropertyState state);
-        void UndoChange();
+        void UndoChanges(bool? undoNestedChanges = null);
     }
 }

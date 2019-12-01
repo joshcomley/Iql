@@ -98,6 +98,29 @@ namespace Iql.Tests.Tests
                 changedProperties = state.GetChangedProperties();
                 Assert.AreEqual(0, changedProperties.Length);
             }
+
+            for (var i = 0; i < 10; i++)
+            {
+                site.Location.Y++;
+                await Db.SaveChangesAsync();
+            }
+        }
+
+        [TestMethod]
+        public async Task TestPerformance()
+        {
+            AppDbContext.InMemoryDb.Sites.Add(new Site
+            {
+                Id = 1235,
+                Location = new IqlPointExpression(10, 20)
+            });
+            var site = await Db.Sites.GetWithKeyAsync(1235);
+
+            for (var i = 0; i < 50; i++)
+            {
+                site.Location.Y++;
+                await Db.SaveChangesAsync();
+            }
         }
 
         [TestMethod]

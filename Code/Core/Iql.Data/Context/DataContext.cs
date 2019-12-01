@@ -2237,7 +2237,7 @@ namespace Iql.Data.Context
             return TemporalDataTracker.AddSnapshot(nullIfEmpty);
         }
 
-        public bool UndoChanges(object[] entities = null, IProperty[] properties = null)
+        public bool UndoChanges(object[] entities = null, object[] properties = null)
         {
             return TemporalDataTracker.UndoChanges(entities, properties);
         }

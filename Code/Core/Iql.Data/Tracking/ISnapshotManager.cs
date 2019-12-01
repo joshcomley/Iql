@@ -9,7 +9,7 @@ namespace Iql.Data.Tracking
         TrackerSnapshot CurrentSnapshot { get; }
         void ClearSnapshots();
         TrackerSnapshot AddSnapshot(bool? nullIfEmpty = null);
-        bool UndoChanges(object[] entities = null, IProperty[] properties = null);
+        bool UndoChanges(object[] entities = null, object[] properties = null);
         bool RevertToSnapshot();
         bool RemoveLastSnapshot(SnapshotRemoveKind? kind = null);
         bool RestoreNextAbandonedSnapshot();

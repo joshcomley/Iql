@@ -15,6 +15,61 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : SimplePropertyGroupBase<IProperty>, IPropertyMetadata, IPropertyMetadataProvider
     {
+        private IProperty[] _groupStates = null;
+        public IProperty[] GroupProperties
+        {
+            get
+            {
+                if (_groupStates == null)
+                {
+                    if (Kind.HasFlag(PropertyKind.Relationship) && Relationship.ThisIsTarget)
+                    {
+                        _groupStates = new IProperty[] { (IProperty) this };
+                    }
+                    else
+                    {
+                        if (PropertyGroup == null)
+                        {
+                            _groupStates = new IProperty[] { (IProperty)this };
+                        }
+                        else
+                        {
+                            var properties = PropertyGroup.GetGroupProperties();
+                            _groupStates = properties.Where(_ => _.GroupKind == IqlPropertyGroupKind.Primitive)
+                                .Select(_ => (IProperty) _)
+                                .ToArray();
+                        }
+                    }
+                }
+
+                return _groupStates;
+            }
+        }
+
+        public bool IsCount
+        {
+            get
+            {
+                if (_isCount == null)
+                {
+                    _isCount = Kind.HasFlag(PropertyKind.Count);
+                }
+                return _isCount.Value;
+            }
+        }
+
+        public bool HasRelationship
+        {
+            get
+            {
+                if (_hasRelationship == null)
+                {
+                    _hasRelationship = Kind.HasFlag(PropertyKind.Relationship);
+                }
+                return _hasRelationship.Value;
+            }
+        }
+
         public override IProperty PrimaryProperty
         {
             get
@@ -311,6 +366,8 @@ namespace Iql.Entities
         }
 
         private ITypeProperty _propertyMetadata = null;
+        private bool? _isCount;
+        private bool? _hasRelationship;
         public ITypeProperty PropertyMetadata => _propertyMetadata = _propertyMetadata ?? new PropertyMetadataProvider(EntityConfiguration.TypeMetadata, this);
     }
 }

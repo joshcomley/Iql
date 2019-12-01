@@ -799,10 +799,23 @@ namespace Iql.Data.Tracking.State
 
         public IPropertyState[] PropertyStates => Properties.ToArray();
 
+        private readonly Dictionary<string, IPropertyState> _propertyStateByName = new Dictionary<string, IPropertyState>();
         public IPropertyState GetPropertyState(string name)
         {
-            var state = Properties.SingleOrDefault(p => p.Property.PropertyName == name);
-            return state;
+            if (!_propertyStateByName.ContainsKey(name))
+            {
+                var state = Properties.SingleOrDefault(p => p.Property.PropertyName == name);
+                if (state != null)
+                {
+                    _propertyStateByName.Add(name, state);
+                    return state;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            return _propertyStateByName[name];
         }
 
         public IPropertyState FindPropertyState(string name)
