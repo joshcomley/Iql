@@ -22,8 +22,8 @@ namespace Iql.Data.Tracking
 {
     public class DataTracker : IJsonSerializable, IDataChangeProvider, IDisposable, ISnapshotManager, ILockable
     {
-        private readonly Dictionary<object, Dictionary<string, Action<IEntityStateBase>>> _interestedParties =
-            new Dictionary<object, Dictionary<string, Action<IEntityStateBase>>>();
+        private readonly Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedParties =
+            new Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>>();
 
         private readonly List<TrackerSnapshot> _removedSnapshots = new List<TrackerSnapshot>();
 
@@ -1093,7 +1093,7 @@ namespace Iql.Data.Tracking
         /// <param name="propertyState"></param>
         public void NotifyLocalValueChanged(IPropertyState propertyState)
         {
-            NotifyInterestedParties(propertyState.EntityState);
+            NotifyInterestedParties(propertyState.EntityState, propertyState);
         }
 
         /// <summary>
@@ -1218,7 +1218,7 @@ namespace Iql.Data.Tracking
             //NotifyInterestedParties(propertyState.EntityState);
         }
 
-        private void NotifyInterestedParties(IEntityStateBase entityState)
+        private void NotifyInterestedParties(IEntityStateBase entityState, IPropertyState propertyState = null)
         {
             if (entityState != null)
             {
@@ -1231,7 +1231,7 @@ namespace Iql.Data.Tracking
                         var item = interestedParties[i];
                         if (item != null)
                         {
-                            item(entityState);
+                            item(entityState, propertyState);
                         }
                     }
                 }
@@ -1375,11 +1375,11 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public void RegisterInterest(object value, string key, Action<IEntityStateBase> action)
+        public void RegisterInterest(object value, string key, Action<IEntityStateBase, IPropertyState> action)
         {
             if (!_interestedParties.ContainsKey(value))
             {
-                _interestedParties.Add(value, new Dictionary<string, Action<IEntityStateBase>>());
+                _interestedParties.Add(value, new Dictionary<string, Action<IEntityStateBase, IPropertyState>>());
             }
 
             var interestedParties = _interestedParties[value];

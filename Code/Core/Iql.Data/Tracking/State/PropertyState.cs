@@ -393,10 +393,14 @@ namespace Iql.Data.Tracking.State
                                                 if (watch)
                                                 {
                                                     DataTracker.RegisterInterest(_.Item, GetInterestKey(addedKey),
-                                                      entityState =>
+                                                      (entityState, propertyState) =>
                                                       {
                                                           if (!IsLocked)
                                                           {
+                                                              if (propertyState != null && !propertyState.GroupStates.Any(gp => gp.Property == Property.Relationship.OtherEnd.Property))
+                                                              {
+                                                                  return;
+                                                              }
                                                               //if (!entityState.HasChanged)
                                                               //{
                                                               //    ItemsAdded.Remove(entityState);
@@ -468,10 +472,14 @@ namespace Iql.Data.Tracking.State
                                                     $"{nameof(LocalValue)}_{nameof(RelatedListChangeKind.Removed)}";
                                                 DataTracker.RegisterInterest(_.Item, GetInterestKey(
                                                         removedKey),
-                                                    entityState =>
+                                                    (entityState, propertyState) =>
                                                     {
                                                         if (!IsLocked)
                                                         {
+                                                            if (propertyState != null && !propertyState.GroupStates.Any(gp => gp.Property == Property.Relationship.OtherEnd.Property))
+                                                            {
+                                                                return;
+                                                            }
                                                             //var wasAdded = ItemsAdded.Contains(entityState);
                                                             //if (!entityState.HasChanged)
                                                             //{
