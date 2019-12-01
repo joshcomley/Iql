@@ -58,9 +58,9 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public DataTrackerState StateSinceSnapshot { get; } = new DataTrackerState();
+        public DataTrackerState StateSinceSnapshot { get; } = new DataTrackerState(true);
 
-        public DataTrackerState StateSinceSave { get; } = new DataTrackerState();
+        public DataTrackerState StateSinceSave { get; } = new DataTrackerState(false);
 
         //public EventEmitter<OfflineChangeStateChangedEvent> StateChanged { get; } = new EventEmitter<OfflineChangeStateChangedEvent>();
         public string SynchronicityKey => Name;
@@ -174,7 +174,8 @@ namespace Iql.Data.Tracking
                 RemoveLastSnapshot();
             }
         }
-
+        public EventEmitter<DataTracker> SnapshotAdding { get; } = new EventEmitter<DataTracker>();
+        public EventEmitter<DataTracker> SnapshotAdded { get; } = new EventEmitter<DataTracker>();
         public TrackerSnapshot AddSnapshot(bool? nullIfEmpty = null)
         {
             var doNullIfEmpty = nullIfEmpty ?? false;
@@ -183,10 +184,11 @@ namespace Iql.Data.Tracking
                 return null;
             }
 
+            SnapshotAdding.Emit(() => this);
             var snapshot = NewTrackerSnapshot();
             snapshot.Id = Guid.NewGuid();
             _isRestoring = true;
-            var items = StateSinceSnapshot.GetPropertiesChanged();
+            var items = StateSinceSnapshot.GetPropertiesChanged(true);
             foreach (var entity in snapshot.Entities)
             {
                 entity.Key.AddSnapshot();
@@ -210,6 +212,7 @@ namespace Iql.Data.Tracking
             ResetSnapshotState(true, true);
             _snapshots.Add(snapshot);
             UpdateHasSnapshot();
+            SnapshotAdded.Emit(() => this);
             return snapshot;
         }
 
@@ -252,6 +255,10 @@ namespace Iql.Data.Tracking
             // All changes in save state but not in snapshot
             _removedSnapshots.Add(snapshotRemoved);
             UpdateHasSnapshot();
+            //if (kind == SnapshotRemoveKind.GoToPreSnapshotValues)
+            //{
+            //    UndoChanges();
+            //}
             return true;
         }
 
@@ -435,7 +442,23 @@ namespace Iql.Data.Tracking
         private TrackerSnapshot NewTrackerSnapshot()
         {
             var snapshot = new TrackerSnapshot();
-            snapshot.Entities = StateSinceSave.GetEntitiesChanged();
+            var sinceSave = StateSinceSave.GetEntitiesChanged();
+            var sinceSnapshot = StateSinceSnapshot.GetEntitiesChanged();
+            foreach (var entity in sinceSave)
+            {
+                snapshot.Entities.Add(entity.Key, entity.Value);
+            }
+            foreach (var entity in sinceSnapshot)
+            {
+                if (snapshot.Entities.ContainsKey(entity.Key))
+                {
+                    snapshot.Entities[entity.Key] = entity.Value;
+                }
+                else
+                {
+                    snapshot.Entities.Add(entity.Key, entity.Value);
+                }
+            }
             return snapshot;
         }
 
@@ -990,7 +1013,7 @@ namespace Iql.Data.Tracking
             else
             {
                 var ourState = trackingSet.FindMatchingEntityState(operation.Operation.EntityState.Entity);
-                trackingSet.RemoveEntity((TEntity)ourState.Entity);
+                trackingSet.UntrackEntity((TEntity)ourState.Entity);
             }
 
             EmitStateChangedEvent();
@@ -1068,6 +1091,15 @@ namespace Iql.Data.Tracking
         ///     For internal use only.
         /// </summary>
         /// <param name="propertyState"></param>
+        public void NotifyLocalValueChanged(IPropertyState propertyState)
+        {
+            NotifyInterestedParties(propertyState.EntityState);
+        }
+
+        /// <summary>
+        ///     For internal use only.
+        /// </summary>
+        /// <param name="propertyState"></param>
         public void NotifyRemoteValueChanged(IPropertyState propertyState)
         {
             var found = false;
@@ -1112,16 +1144,41 @@ namespace Iql.Data.Tracking
                 return;
             }
 
-            UpdateLookup(
-                propertyState,
-                isDifferentFromSave,
-                isDifferentFromSnapshot,
-                propertyState.RemoteValue,
-                propertyState.SnapshotValue,
-                propertyState.LocalValue,
-                DataTrackerStateKind.Property,
-                true);
-            //NotifyInterestedParties(propertyState);
+            //UpdateLookup(
+            //    propertyState,
+            //    isDifferentFromSave,
+            //    isDifferentFromSnapshot,
+            //    propertyState.RemoteValue,
+            //    propertyState.SnapshotValue,
+            //    propertyState.LocalValue,
+            //    DataTrackerStateKind.Property,
+            //    true);
+            var clearRemovedSnapshotsOnlyIfTrue = true;
+            StateSinceSave.Update(DataTrackerStateKind.Property, propertyState, isDifferentFromSave, propertyState.RemoteValue, propertyState.LocalValue);
+            //if (_ignoreChangedSinceSnapshotChanges)
+            //{
+            //    return;
+            //}
+
+            if (!_isRestoring && !clearRemovedSnapshotsOnlyIfTrue)
+            {
+                ClearRestorableSnapshots();
+            }
+
+            if (isDifferentFromSnapshot)
+            {
+                if (!_isRestoring && clearRemovedSnapshotsOnlyIfTrue)
+                {
+                    ClearRestorableSnapshots();
+                }
+
+                StateSinceSnapshot.Update(DataTrackerStateKind.Property, propertyState, true, propertyState.SnapshotValue, propertyState.LocalValue);
+            }
+            else if (StateSinceSnapshot.Has(DataTrackerStateKind.Property, propertyState))
+            {
+                StateSinceSnapshot.Update(DataTrackerStateKind.Property, propertyState, false, propertyState.SnapshotValue, propertyState.LocalValue);
+            }
+            NotifyInterestedParties(propertyState.EntityState);
         }
 
         /// <summary>
@@ -1138,7 +1195,11 @@ namespace Iql.Data.Tracking
 
             if (!hasChanged)
             {
-                propertyState.SetSnapshotValue(propertyState.RemoteValue);
+                if (!propertyState.IsRelationshipCollection)
+                {
+                    propertyState.SetSnapshotValue(propertyState.PropertyChanger.CloneValue(propertyState.RemoteValue));
+                }
+                //propertyState.SetSnapshotValue(propertyState.RemoteValue);//.PropertyChanger.CloneValue(propertyState.LocalValue));
                 StateSinceSave.RemovePropertyChange(propertyState);
                 StateSinceSnapshot.RemovePropertyChange(propertyState);
                 foreach (var snapshot in Snapshots)
@@ -1183,16 +1244,30 @@ namespace Iql.Data.Tracking
             //{
             //    return;
             //}
-
+            var isDifferentFromSnapshot =
+                (entityState.Status == EntityStatus.New ||
+                 entityState.Status == EntityStatus.ExistingAndPendingDelete ||
+                 entityState.Status == EntityStatus.NewAndDeleted) &&
+                StateSinceSnapshot.GetEntityStatus(entityState) != entityState.Status;
             UpdateLookup(
                 entityState,
                 isDifferentFromSave,
-                isDifferentFromSave,
+                isDifferentFromSnapshot,
                 entityState.Status,
                 entityState.Status,
                 entityState.Status,
                 DataTrackerStateKind.EntityStatus,
                 true);
+            //StateSinceSave.UpdateStatusChanged(
+            //    entityState,
+            //    isDifferentFromSave,
+            //    entityState.Status,
+            //    entityState.Status);
+            //StateSinceSnapshot.UpdateStatusChanged(
+            //    entityState,
+            //    isDifferentFromSnapshot,
+            //    entityState.Status,
+            //    entityState.Status);
         }
 
         private void UpdateLookup<TLookup>(
@@ -1227,7 +1302,7 @@ namespace Iql.Data.Tracking
             }
             else if (StateSinceSnapshot.Has(changeKind, item))
             {
-                StateSinceSnapshot.Update(changeKind, item, false, EntityStatus.Unattached, EntityStatus.Unattached);
+                StateSinceSnapshot.Update(changeKind, item, false, snapshotValue, localValue);
             }
         }
 

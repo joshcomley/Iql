@@ -248,6 +248,7 @@ namespace Iql.Data.Tracking.State
             set
             {
                 _markedForCascadeDeletion = value;
+                UpdatePendingInsert();
                 UpdateStatus();
             }
         }
@@ -455,9 +456,15 @@ namespace Iql.Data.Tracking.State
 
             UpdateHasChanges();
             LocalKey = entityConfiguration.GetCompositeKey(entity);
+            if (isNew)
+            {
+                PendingInsert = true;
+            }
             IsNew = isNew;
             _snapshotStatus = Status;
             MonitorSaveEvents();
+            CanNotifyStatusChange = true;
+            NotifyStatusChange();
         }
 
         public EventEmitter<ValueChangedEvent<EntityStatus>> StatusChanged { get; } = new EventEmitter<ValueChangedEvent<EntityStatus>>();
@@ -518,10 +525,10 @@ namespace Iql.Data.Tracking.State
                             IsNew = true;
                             MarkedForDeletion = true;
                             PendingInsert = false;
-                            if (TrackingSet != null)
-                            {
-                                TrackingSet.RemoveEntity(Entity);
-                            }
+                            //if (TrackingSet != null)
+                            //{
+                            //    TrackingSet.UntrackEntity(Entity);
+                            //}
                             break;
                         case EntityStatus.Existing:
                             AttachedToTracker = true;
@@ -534,16 +541,16 @@ namespace Iql.Data.Tracking.State
                             IsNew = false;
                             MarkedForDeletion = true;
                             PendingInsert = false;
-                            if (TrackingSet != null)
-                            {
-                                TrackingSet.RemoveEntity(Entity);
-                            }
                             break;
                         case EntityStatus.ExistingAndDeleted:
                             IsNew = false;
                             AttachedToTracker = false;
                             UnmarkForDeletion();
                             PendingInsert = false;
+                            if (TrackingSet != null)
+                            {
+                                TrackingSet.UntrackEntity(Entity);
+                            }
                             break;
                     }
                     _settingStatus = false;
@@ -588,11 +595,18 @@ namespace Iql.Data.Tracking.State
             {
                 StatusHasChanged = false;
             }
-            if (DataTracker != null)
+            NotifyStatusChange();
+        }
+
+        private bool CanNotifyStatusChange { get; set; }
+
+        private void NotifyStatusChange()
+        {
+            if (DataTracker != null && CanNotifyStatusChange)
             {
-                DataTracker.NotifyStatusChanged(this, 
-                    Status == EntityStatus.New || Status == EntityStatus.NewAndDeleted ||
-                                                      Status == EntityStatus.ExistingAndPendingDelete);
+                DataTracker.NotifyStatusChanged(this,
+                    Status == EntityStatus.New ||
+                    Status == EntityStatus.ExistingAndPendingDelete);
             }
         }
 

@@ -12,20 +12,25 @@ namespace Iql.Data.Tracking
 {
     public class DataTrackerState
     {
-        public bool PauseEvents { get; set; }
+        public bool TrackNewEntityProperties { get; set; }
+
+        public DataTrackerState(bool trackNewEntityProperties)
+        {
+            TrackNewEntityProperties = trackNewEntityProperties;
+        }
         private readonly Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>> _entitiesChanged =
             new Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>>();
 
         private readonly Dictionary<IPropertyState, Tuple<object, object>> _propertiesChanged = new Dictionary<IPropertyState, Tuple<object, object>>();
         private bool _hasChanges;
+        private int _propertiesChangedCount = 0;
         public EventEmitter<DataTrackerState> Changed { get; } = new EventEmitter<DataTrackerState>();
 
-        public int PropertiesChangedCount => _propertiesChanged.Count;
+        public int PropertiesChangedCount => _propertiesChangedCount;
+        public int EntitiesChangedCount => _entitiesChanged.Count;
 
         public EventEmitter<ValueChangedEvent<bool>> PropertiesChangedChanged { get; } =
             new EventEmitter<ValueChangedEvent<bool>>();
-
-        public int EntitiesChangedCount => _entitiesChanged.Count;
 
         public EventEmitter<ValueChangedEvent<bool>> EntitiesChangedChanged { get; } =
             new EventEmitter<ValueChangedEvent<bool>>();
@@ -72,15 +77,45 @@ namespace Iql.Data.Tracking
             return dic;
         }
 
-        public IPropertyState[] GetPropertiesChanged()
+        public IPropertyState[] GetPropertiesChanged(bool allowRelationshipCollections = false)
         {
-            return _propertiesChanged.Keys.ToArray();
+            return _propertiesChanged.Keys.Where(_ =>
+            {
+                //if (!allowRelationshipCollections && _.Property.Relationship != null && _.Property.TypeDefinition.IsCollection)
+                //{
+                //    return false;
+                //}
+                if (!TrackNewEntityProperties && _.EntityState.IsNew)
+                {
+                    return false;
+                }
+                if (_entitiesChanged.ContainsKey(_.EntityState) &&
+                    _entitiesChanged[_.EntityState].Item2 == EntityStatus.NewAndDeleted)
+                {
+                    return false;
+                }
+
+                return true;
+            }).ToArray();
         }
 
         public void UpdateStatusChanged<T>(T item, bool value, EntityStatus oldValue, EntityStatus newValue)
             where T : IEntityStateBase
         {
-            UpdateInternal<IEntityStateBase, EntityStatus>(DataTrackerStateKind.EntityStatus, item, value, oldValue, newValue);
+            if (_entitiesChanged.ContainsKey(item))
+            {
+                var existingValue = _entitiesChanged[item].Item1;
+                if (existingValue == newValue.Opposite() ||
+                    existingValue.AreOpposing(newValue))
+                {
+                    _entitiesChanged.Remove(item);
+                    EmitChanged();
+                }
+            }
+            else
+            {
+                UpdateInternal<IEntityStateBase, EntityStatus>(DataTrackerStateKind.EntityStatus, item, value, oldValue, newValue);
+            }
         }
 
         public void RemovePropertyChange<T>(T item)
@@ -138,6 +173,7 @@ namespace Iql.Data.Tracking
 
         private void EmitChanged()
         {
+            _propertiesChangedCount = GetPropertiesChanged().Length;
             HasChanges = PropertiesChangedCount > 0 ||
                          EntitiesChangedCount > 0;
             //if (!PauseEvents)
@@ -304,6 +340,16 @@ namespace Iql.Data.Tracking
         public void RemoveMatching(TrackerSnapshot snapshot)
         {
             MergeWithInternal(snapshot, false);
+        }
+
+        public EntityStatus? GetEntityStatus<T>(EntityState<T> entityState) where T : class
+        {
+            if (_entitiesChanged.ContainsKey(entityState))
+            {
+                return _entitiesChanged[entityState].Item2;
+            }
+
+            return null;
         }
     }
 }

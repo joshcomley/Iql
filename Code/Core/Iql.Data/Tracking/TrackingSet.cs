@@ -338,7 +338,7 @@ namespace Iql.Data.Tracking
 
         void ITrackingSet.RemoveEntity(object entity)
         {
-            RemoveEntity((T)entity);
+            UntrackEntity((T)entity);
         }
 
         public void HardResetEntity(object entity)
@@ -521,7 +521,7 @@ namespace Iql.Data.Tracking
                     state.AbandonPropertyChanges(properties);
                     if (state.IsNew)
                     {
-                        RemoveEntity((T)state.Entity);
+                        UntrackEntity((T)state.Entity);
                     }
                 }
             }
@@ -750,12 +750,12 @@ namespace Iql.Data.Tracking
                 EntitiesByRemoteKey.Remove(keyString);
                 if (mapping.State != null)
                 {
-                    RemoveEntity((T)mapping.State.Entity);
+                    UntrackEntity((T)mapping.State.Entity);
                 }
             }
         }
 
-        public void RemoveEntity(T entity)
+        public void UntrackEntity(T entity)
         {
             var state = GetEntityState(entity);
             if (state == null)
@@ -1219,7 +1219,7 @@ namespace Iql.Data.Tracking
             for (var i = 0; i < removedStates.Count; i++)
             {
                 var removedState = removedStates[i];
-                RemoveEntity(removedState.Entity);
+                UntrackEntity(removedState.Entity);
             }
         }
 
@@ -1228,7 +1228,7 @@ namespace Iql.Data.Tracking
             state.AbandonChanges();
             if (state.IsNew)
             {
-                RemoveEntity(state.Entity);
+                UntrackEntity(state.Entity);
             }
         }
 

@@ -4,6 +4,21 @@ namespace Iql.Data.Extensions
 {
     public static class EntityStatusExtensions
     {
+        public static bool AreOpposing(this EntityStatus status, EntityStatus newStatus)
+        {
+            switch (status)
+            {
+                case EntityStatus.New:
+                case EntityStatus.NewAndDeleted:
+                    return newStatus != EntityStatus.New && newStatus != EntityStatus.NewAndDeleted;
+                case EntityStatus.Existing:
+                case EntityStatus.ExistingAndPendingDelete:
+                    return newStatus != EntityStatus.Existing && newStatus != EntityStatus.ExistingAndPendingDelete;
+            }
+
+            return false;
+
+        }
         public static EntityStatus Opposite(this EntityStatus status)
         {
             if (status == EntityStatus.New)

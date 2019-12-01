@@ -16,6 +16,7 @@ using Iql.Entities.Lists;
 using Iql.Entities.PropertyChangers;
 using Iql.Entities.Relationships;
 using Iql.Events;
+using Iql.Extensions;
 
 namespace Iql.Data.Tracking.State
 {
@@ -310,6 +311,7 @@ namespace Iql.Data.Tracking.State
             _snapshotValue = newSnapshotValue;
             ClearSnapshotRelationshipChanges();
             HasSnapshotValue = true;
+            //UpdateSnapshotRelatedListChanged();
             UpdateHasChanged();
         }
 
@@ -342,6 +344,11 @@ namespace Iql.Data.Tracking.State
                 var oldValue = _localValue;
                 _localValue = value;
                 UpdateHasChanged();
+                if (DataTracker != null)
+                {
+                    DataTracker.NotifyLocalValueChanged(this);
+                }
+
                 if (oldValue != value)
                 {
                     LocalValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
@@ -356,7 +363,9 @@ namespace Iql.Data.Tracking.State
 
                     if (value != null)
                     {
+                        var addedKey = $"{nameof(LocalValue)}_{nameof(RelatedListChangeKind.Added)}";
                         var relatedList = (IRelatedList)value;
+                        var remoteList = (IEnumerable<object>)RemoteValue;
                         EventManager.Subscribe(relatedList.RelatedListChange, _ =>
                         {
                             var hasChanged = false;
@@ -369,58 +378,68 @@ namespace Iql.Data.Tracking.State
                                             var itemState = DataTracker.GetEntityState(_.Item);
                                             if (itemState != null)
                                             {
-                                                if (itemState.IsNew || 
-                                                    HasRelationshipSourceChanged(itemState, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote))
+                                                var watch = true;
+                                                if (!IsLocked)
                                                 {
-                                                    if (!ItemsAdded.Contains(itemState))
+                                                    if (itemState.IsNew && !ItemsAdded.Contains(itemState))
                                                     {
                                                         ItemsAdded.Add(itemState);
                                                     }
-                                                    if (!ItemsAddedSinceSnapshot.Contains(itemState))
+                                                    else if (ItemsRemoved.Contains(itemState))
                                                     {
-                                                        ItemsAddedSinceSnapshot.Add(itemState);
+                                                        ItemsRemoved.Remove(itemState);
                                                     }
                                                 }
-                                                DataTracker.RegisterInterest(_.Item, GetInterestKey(nameof(LocalValue)),
-                                                    entityState =>
-                                                    {
-                                                        if (entityState.HasChanged)
-                                                        {
-                                                            if (!ItemsAdded.Contains(entityState) &&
-                                                                !ItemsRemoved.Contains(entityState) &&
-                                                                !ItemsChanged.Contains(entityState))
-                                                            {
-                                                                ItemsChanged.Add(entityState);
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            if (ItemsRemoved.Contains(entityState))
-                                                            {
-                                                                DataTracker.UnregisterInterest(_.Item, GetInterestKey(nameof(LocalValue)));
-                                                            }
-                                                            ItemsChanged.Remove(entityState);
-                                                            ItemsAdded.Remove(entityState);
-                                                            ItemsRemoved.Remove(entityState);
-                                                        }
-                                                        if (entityState.HasChangedSinceSnapshot)
-                                                        {
-                                                            if (!ItemsAdded.Contains(entityState) &&
-                                                                !ItemsRemoved.Contains(entityState) &&
-                                                                !ItemsAddedSinceSnapshot.Contains(entityState) &&
-                                                                !ItemsRemovedSinceSnapshot.Contains(entityState) &&
-                                                                !ItemsChangedSinceSnapshot.Contains(entityState))
-                                                            {
-                                                                ItemsChangedSinceSnapshot.Add(entityState);
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            ItemsChangedSinceSnapshot.Remove(entityState);
-                                                            ItemsAddedSinceSnapshot.Remove(entityState);
-                                                            ItemsRemovedSinceSnapshot.Remove(entityState);
-                                                        }
-                                                    });
+                                                if (watch)
+                                                {
+                                                    DataTracker.RegisterInterest(_.Item, GetInterestKey(addedKey),
+                                                      entityState =>
+                                                      {
+                                                          if (!IsLocked)
+                                                          {
+                                                              //if (!entityState.HasChanged)
+                                                              //{
+                                                              //    ItemsAdded.Remove(entityState);
+                                                              //    ItemsRemoved.Remove(entityState);
+                                                              //    ItemsChanged.Remove(entityState);
+                                                              //}
+                                                              if (!entityState.HasChangedSinceSnapshot)
+                                                              {
+                                                                  ItemsAddedSinceSnapshot.Remove(entityState);
+                                                                  ItemsRemovedSinceSnapshot.Remove(entityState);
+                                                                  ItemsChangedSinceSnapshot.Remove(entityState);
+                                                              }
+                                                              if (relatedList.Contains(entityState.Entity) &&
+                                                                  (entityState.IsNew || HasRelationshipSourceChanged(entityState, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote, CheckMode.Match)))
+                                                              {
+                                                                  if (relatedList.Contains(entityState.Entity))
+                                                                  {
+                                                                      if (!ItemsRemoved.Contains(entityState) && !ItemsAdded.Contains(entityState))
+                                                                      {
+                                                                          ItemsAdded.Add(entityState);
+                                                                      }
+                                                                  }
+                                                                  //else
+                                                                  //{
+                                                                  //    if (ItemsAdded.Contains(entityState))
+                                                                  //    {
+                                                                  //        ItemsAdded.Remove(entityState);
+                                                                  //    }
+                                                                  //}
+                                                              }
+                                                              else
+                                                              {
+                                                                  if (ItemsAdded.Contains(entityState))
+                                                                  {
+                                                                      ItemsAdded.Remove(entityState);
+                                                                      //DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
+                                                                  }
+                                                              }
+                                                          }
+                                                          UpdateSnapshotRelatedListChanged();
+                                                      });
+                                                }
+                                                UpdateSnapshotRelatedListChanged();
                                             }
 
                                             break;
@@ -430,31 +449,71 @@ namespace Iql.Data.Tracking.State
                                             var itemState = DataTracker.GetEntityState(_.Item);
                                             if (itemState != null)
                                             {
-                                                if (!ItemsAdded.Contains(itemState))
+                                                if (!IsLocked)
                                                 {
-                                                    if (ItemsChanged.Contains(itemState))
+                                                    if (ItemsAdded.Contains(itemState))
                                                     {
-                                                        ItemsChanged.Remove(itemState);
+                                                        ItemsAdded.Remove(itemState);
+                                                        //DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
                                                     }
-                                                    ItemsRemoved.Add(itemState);
-                                                }
-                                                else
-                                                {
-                                                    ItemsAdded.Remove(itemState);
-                                                }
-                                                if (!ItemsAddedSinceSnapshot.Contains(itemState))
-                                                {
-                                                    if (ItemsChangedSinceSnapshot.Contains(itemState))
+                                                    else if (!itemState.IsNew)
                                                     {
-                                                        ItemsChangedSinceSnapshot.Remove(itemState);
+                                                        if (!ItemsRemoved.Contains(itemState))
+                                                        {
+                                                            ItemsRemoved.Add(itemState);
+                                                        }
                                                     }
-                                                    ItemsRemovedSinceSnapshot.Add(itemState);
                                                 }
-                                                else
-                                                {
-                                                    ItemsAddedSinceSnapshot.Remove(itemState);
-                                                }
-                                                //DataTracker.UnregisterInterest(_.Item, "LocalValue");
+                                                var removedKey =
+                                                    $"{nameof(LocalValue)}_{nameof(RelatedListChangeKind.Removed)}";
+                                                DataTracker.RegisterInterest(_.Item, GetInterestKey(
+                                                        removedKey),
+                                                    entityState =>
+                                                    {
+                                                        if (!IsLocked)
+                                                        {
+                                                            //var wasAdded = ItemsAdded.Contains(entityState);
+                                                            //if (!entityState.HasChanged)
+                                                            //{
+                                                            //    ItemsAdded.Remove(entityState);
+                                                            //    ItemsRemoved.Remove(entityState);
+                                                            //    ItemsChanged.Remove(entityState);
+                                                            //}
+                                                            if (!entityState.HasChangedSinceSnapshot)
+                                                            {
+                                                                ItemsAddedSinceSnapshot.Remove(entityState);
+                                                                ItemsRemovedSinceSnapshot.Remove(entityState);
+                                                                ItemsChangedSinceSnapshot.Remove(entityState);
+                                                            }
+                                                            if (HasRelationshipSourceChanged(entityState, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote, CheckMode.NoMatch))
+                                                            {
+                                                                if (!relatedList.Contains(entityState.Entity))
+                                                                {
+                                                                    if (remoteList.Contains(entityState) && !ItemsAdded.Contains(entityState) && !ItemsRemoved.Contains(entityState))
+                                                                    {
+                                                                        ItemsRemoved.Add(entityState);
+                                                                    }
+                                                                }
+                                                                //else
+                                                                //{
+                                                                //    if (ItemsRemoved.Contains(entityState))
+                                                                //    {
+                                                                //        ItemsRemoved.Remove(entityState);
+                                                                //    }
+                                                                //}
+                                                            }
+                                                            else
+                                                            {
+                                                                if (ItemsRemoved.Contains(entityState))
+                                                                {
+                                                                    ItemsRemoved.Remove(entityState);
+                                                                }
+                                                                //DataTracker.UnregisterInterest(_.Item, GetInterestKey(removedKey));
+                                                            }
+                                                        }
+                                                        UpdateSnapshotRelatedListChanged();
+                                                    });
+                                                UpdateSnapshotRelatedListChanged();
                                             }
                                             break;
                                         }
@@ -467,6 +526,136 @@ namespace Iql.Data.Tracking.State
                             }
                         }, "LocalValue");
                     }
+                }
+            }
+        }
+
+        private void UpdateSnapshotRelatedListChanged()
+        {
+            if (IsLocked || !IsRelationshipCollection)
+            {
+                return;
+            }
+            var relatedList = ((IRelatedList)LocalValue);
+            if (HasSnapshotValue)
+            {
+                var snapshotList = ((IEnumerable<object>)SnapshotValue).ToArray();
+                var addedSinceSnapshot = new List<object>();
+                var removedSinceSnapshot = new List<object>();
+                var changedSinceSnapshot = new List<object>();
+                var changed = new List<object>();
+                foreach (var item in relatedList)
+                {
+                    var state = DataTracker.GetEntityState(item);
+                    if (state != null && !snapshotList.Contains(item) && (state.IsNew || state.HasChangedSinceSnapshot))
+                    {
+                        addedSinceSnapshot.Add(item);
+                    }
+
+                    if (state != null && !state.IsNew && !ItemsAdded.Contains(item) && state.HasChanged &&
+                        HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote, CheckMode.Match, false))
+                    {
+                        changed.Add(state.Entity);
+                    }
+                }
+                foreach (var item in snapshotList)
+                {
+                    if (!relatedList.Contains(item))
+                    {
+                        removedSinceSnapshot.Add(item);
+                    }
+                    else if (DataTracker.GetEntityState(item)?.HasChangedSinceSnapshot == true)
+                    {
+                        changedSinceSnapshot.Add(item);
+                    }
+                }
+
+                ChangeList(ItemsChanged, changed);
+                ChangeList(ItemsAddedSinceSnapshot, addedSinceSnapshot);
+                ChangeList(ItemsChangedSinceSnapshot, changedSinceSnapshot);
+                ChangeList(ItemsRemovedSinceSnapshot, removedSinceSnapshot);
+            }
+            else
+            {
+                var changed = new List<IEntityStateBase>();
+                var changedSinceSnapshot = new List<IEntityStateBase>();
+                foreach (var item in relatedList)
+                {
+                    var state = DataTracker.GetEntityState(item);
+                    if (state != null)
+                    {
+                        if (!state.IsNew && !ItemsAdded.Contains(item) &&
+                            HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote, CheckMode.Match, false))
+                        {
+                            if (state.HasChanged)
+                            {
+                                changed.Add(state);
+                            }
+                            if (state.HasChangedSinceSnapshot)
+                            {
+                                changedSinceSnapshot.Add(state);
+                            }
+                        }
+                    }
+                }
+
+                ChangeEntityStateList(ItemsChanged, changed);
+                ChangeEntityStateList(ItemsAddedSinceSnapshot, ItemsAdded);
+                ChangeEntityStateList(ItemsChangedSinceSnapshot, changedSinceSnapshot);
+                ChangeEntityStateList(ItemsRemovedSinceSnapshot, ItemsRemoved);
+                //if (!DataTracker.HasSnapshot)
+                //{
+                //    ChangeEntityStateList(ItemsAddedSinceSnapshot, ItemsAdded);
+                //    ChangeEntityStateList(ItemsChangedSinceSnapshot, ItemsChanged);
+                //    ChangeEntityStateList(ItemsRemovedSinceSnapshot, ItemsRemoved);
+                //}
+                //else
+                //{
+                //    var entityStateBases = new List<IEntityStateBase>();
+                //    ChangeEntityStateList(ItemsAddedSinceSnapshot, entityStateBases);
+                //    ChangeEntityStateList(ItemsChangedSinceSnapshot, entityStateBases);
+                //    ChangeEntityStateList(ItemsRemovedSinceSnapshot, entityStateBases);
+                //}
+            }
+
+            UpdateHasChanged();
+        }
+
+        private void ChangeList(ObservableList<IEntityStateBase> source, List<object> setTo)
+        {
+            var copy = source.ToList();
+            foreach (var item in setTo)
+            {
+                var state = DataTracker.GetEntityState(item);
+                if (state != null && !source.Contains(state))
+                {
+                    source.Add(state);
+                }
+            }
+            foreach (var item in copy)
+            {
+                if (!setTo.Contains(item.Entity))
+                {
+                    source.Remove(item);
+                }
+            }
+        }
+
+        private void ChangeEntityStateList(ObservableList<IEntityStateBase> source, IList<IEntityStateBase> setTo)
+        {
+            var copy = source.ToList();
+            foreach (var state in setTo)
+            {
+                if (state != null && !source.Contains(state))
+                {
+                    source.Add(state);
+                }
+            }
+            foreach (var item in copy)
+            {
+                if (!setTo.Contains(item))
+                {
+                    source.Remove(item);
                 }
             }
         }
@@ -518,11 +707,26 @@ namespace Iql.Data.Tracking.State
                 HasChangedSinceSnapshot = ItemsRemovedSinceSnapshot.Any() || ItemsAddedSinceSnapshot.Any();
                 HasNestedChanges = ItemsChanged.Any();
                 HasNestedChangesSinceSnapshot = ItemsChangedSinceSnapshot.Any();
+                if (!HasSnapshotValue && HasNestedChanges)
+                {
+                    EventManager.Subscribe(DataTracker.SnapshotAdded, _ =>
+                    {
+                        ClearSnapshotRelationshipChanges();
+                    }, "SnapshotCheck");
+                }
+                else
+                {
+                    EventManager.UnsubscribeAll("SnapshotCheck");
+                }
             }
             else
             {
                 UpdateHasChangedSinceStart();
                 UpdateHasChangedSinceSnapshot();
+                foreach (var groupState in GroupStates)
+                {
+                    groupState.UpdateHasChanged();
+                }
             }
             //if (ignoreRelationshipOtherSide != true && OtherEndIsCollection && RelationshipPropertyState != null)
             //{
@@ -982,7 +1186,7 @@ namespace Iql.Data.Tracking.State
 
             if (EntityState != null)
             {
-                if (HasRelationshipSourceChanged(EntityState, Property.Relationship.ThisEnd, kind))
+                if (HasRelationshipSourceChanged(EntityState, Property.Relationship.ThisEnd, kind, CheckMode.NoCheck))
                 {
                     return true;
                 }
@@ -991,23 +1195,51 @@ namespace Iql.Data.Tracking.State
             return false;
         }
 
-        private static bool HasRelationshipSourceChanged(IEntityStateBase entityState, IRelationshipDetail relationshipDetail,
-            ChangeCalculationKind kind)
+        private bool HasRelationshipSourceChanged(IEntityStateBase entityState, IRelationshipDetail relationshipDetail,
+            ChangeCalculationKind kind, CheckMode checkMode, bool hasChanged = true)
         {
             var constraints = relationshipDetail.Constraints;
             for (var i = 0; i < constraints.Length; i++)
             {
                 var constraint = constraints[i];
                 var propertyState = entityState.GetPropertyState(constraint.Name);
-                if (propertyState != null && (kind == ChangeCalculationKind.Remote
-                        ? propertyState.HasChanged
-                        : propertyState.HasChangedSinceSnapshot))
+                var allow = false;
+                if (checkMode == CheckMode.NoCheck)
                 {
-                    return true;
+                    allow = true;
+                }
+                else
+                {
+                    allow = propertyState.PropertyChanger.AreEquivalent(
+                        relationshipDetail.OtherSide.Constraints[i].GetValue(EntityState.Entity),
+                        propertyState.LocalValue);
+                    if (checkMode == CheckMode.NoMatch)
+                    {
+                        allow = !allow;
+                    }
+                }
+
+                if (!allow)
+                {
+                    return false;
+                }
+                if (propertyState != null)
+                {
+                    var hasChangedValue = kind == ChangeCalculationKind.Remote
+                        ? propertyState.HasChanged
+                        : propertyState.HasChangedSinceSnapshot;
+                    if (hasChanged)
+                    {
+                        return hasChangedValue;
+                    }
+                    else if (hasChangedValue)
+                    {
+                        return false;
+                    }
                 }
             }
 
-            return false;
+            return !hasChanged;
         }
 
         private void ObserveIfNecessary(object oldValue, object newValue, ChangeCalculationKind kind)
@@ -1172,5 +1404,12 @@ namespace Iql.Data.Tracking.State
         {
             return $"{Id}-{key}";
         }
+    }
+
+    internal enum CheckMode
+    {
+        Match,
+        NoMatch,
+        NoCheck
     }
 }
