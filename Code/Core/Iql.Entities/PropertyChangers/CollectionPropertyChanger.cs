@@ -15,8 +15,7 @@ namespace Iql.Entities.PropertyChangers
         public static CollectionPropertyChanger Instance => _instance = _instance ?? new CollectionPropertyChanger();
         protected override bool CheckEquivalence(IList remoteValue, IList localValue)
         {
-            throw new NotImplementedException();
-//            return !AreDifferent(left, right);
+            return !AreDifferent(remoteValue, localValue);
         }
 
         public static bool AreDifferent(IList left, IList right)

@@ -24,15 +24,15 @@ namespace Iql.Data.Tracking
     {
         private bool _interestedPartiesDelayedInitialized;
         private Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedPartiesDelayed;
-        private Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedParties { get { if(!_interestedPartiesDelayedInitialized) { _interestedPartiesDelayedInitialized = true; _interestedPartiesDelayed =             new Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>>(); } return _interestedPartiesDelayed; } set { _interestedPartiesDelayedInitialized = true; _interestedPartiesDelayed = value; } }
+        private Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedParties { get { if (!_interestedPartiesDelayedInitialized) { _interestedPartiesDelayedInitialized = true; _interestedPartiesDelayed = new Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>>(); } return _interestedPartiesDelayed; } set { _interestedPartiesDelayedInitialized = true; _interestedPartiesDelayed = value; } }
         private bool _removedSnapshotsDelayedInitialized;
         private List<TrackerSnapshot> _removedSnapshotsDelayed;
 
-        private List<TrackerSnapshot> _removedSnapshots { get { if(!_removedSnapshotsDelayedInitialized) { _removedSnapshotsDelayedInitialized = true; _removedSnapshotsDelayed = new List<TrackerSnapshot>(); } return _removedSnapshotsDelayed; } set { _removedSnapshotsDelayedInitialized = true; _removedSnapshotsDelayed = value; } }
+        private List<TrackerSnapshot> _removedSnapshots { get { if (!_removedSnapshotsDelayedInitialized) { _removedSnapshotsDelayedInitialized = true; _removedSnapshotsDelayed = new List<TrackerSnapshot>(); } return _removedSnapshotsDelayed; } set { _removedSnapshotsDelayedInitialized = true; _removedSnapshotsDelayed = value; } }
         private bool _snapshotsDelayedInitialized;
         private List<TrackerSnapshot> _snapshotsDelayed;
 
-        private List<TrackerSnapshot> _snapshots { get { if(!_snapshotsDelayedInitialized) { _snapshotsDelayedInitialized = true; _snapshotsDelayed = new List<TrackerSnapshot>(); } return _snapshotsDelayed; } set { _snapshotsDelayedInitialized = true; _snapshotsDelayed = value; } }
+        private List<TrackerSnapshot> _snapshots { get { if (!_snapshotsDelayedInitialized) { _snapshotsDelayedInitialized = true; _snapshotsDelayed = new List<TrackerSnapshot>(); } return _snapshotsDelayed; } set { _snapshotsDelayedInitialized = true; _snapshotsDelayed = value; } }
         private bool _hasChanges;
         private bool _hasChangesSinceSnapshot;
         private bool _hasSnapshot;
@@ -193,6 +193,8 @@ namespace Iql.Data.Tracking
                 return null;
             }
 
+            var isFirstSnapshot = !HasSnapshot;
+
             SnapshotAdding.Emit(() => this);
             var snapshot = NewTrackerSnapshot();
             snapshot.Id = Guid.NewGuid();
@@ -204,13 +206,31 @@ namespace Iql.Data.Tracking
             }
             foreach (var propertyState in items)
             {
-                if (!propertyState.IsRelationshipCollection)
+                if (propertyState.IsRelationshipCollection && isFirstSnapshot)
+                {
+                    var previousValue = (IList)propertyState.PropertyChanger.CloneValue(propertyState.LocalValue);
+                    foreach (var item in propertyState.ItemsAdded)
+                    {
+                        previousValue.Remove(item.Entity);
+                    }
+                    foreach (var item in propertyState.ItemsRemoved)
+                    {
+                        previousValue.Add(item.Entity);
+                    }
+                    snapshot.Values.Add(propertyState, new PropertySnapshot
+                    {
+                        State = propertyState,
+                        PreviousValue = previousValue,
+                        CurrentValue = propertyState.PropertyChanger.CloneValue(propertyState.LocalValue)
+                    });
+                }
+                else
                 {
                     snapshot.Values.Add(propertyState, new PropertySnapshot
                     {
                         State = propertyState,
-                        PreviousValue = propertyState.SnapshotValue,
-                        CurrentValue = propertyState.LocalValue
+                        PreviousValue = propertyState.PropertyChanger.CloneValue(propertyState.SnapshotValue),
+                        CurrentValue = propertyState.PropertyChanger.CloneValue(propertyState.LocalValue)
                     });
                 }
 
@@ -1138,6 +1158,10 @@ namespace Iql.Data.Tracking
             {
                 ClearRestorableSnapshots();
             }
+            if (propertyState.HasSnapshotValue && !propertyState.IsRelationshipCollection)
+            {
+                propertyState.SetSnapshotValue(propertyState.PropertyChanger.CloneValue(propertyState.RemoteValue));
+            }
         }
 
         /// <summary>
@@ -1205,10 +1229,6 @@ namespace Iql.Data.Tracking
 
             if (!hasChanged)
             {
-                if (!propertyState.IsRelationshipCollection)
-                {
-                    propertyState.SetSnapshotValue(propertyState.PropertyChanger.CloneValue(propertyState.RemoteValue));
-                }
                 //propertyState.SetSnapshotValue(propertyState.RemoteValue);//.PropertyChanger.CloneValue(propertyState.LocalValue));
                 StateSinceSave.RemovePropertyChange(propertyState);
                 StateSinceSnapshot.RemovePropertyChange(propertyState);

@@ -222,6 +222,7 @@ namespace Iql.Data.Tracking.State
                 _hasChangedSinceSnapshot = value;
                 if (old != value)
                 {
+                    UpdateHasAnyChanges();
                     if (EntityState != null)
                     {
                         EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, HasChanges, value);
@@ -235,7 +236,6 @@ namespace Iql.Data.Tracking.State
                     }
                 }
                 CanUndo = HasSnapshotValue && HasChangesSinceSnapshot || HasChanges;
-                UpdateHasAnyChanges();
             }
         }
 
@@ -344,20 +344,29 @@ namespace Iql.Data.Tracking.State
 
         public void SetSnapshotValue(object value)
         {
+            if (IsRelationshipCollection)
+            {
+                int a = 0;
+            }
             var newSnapshotValue = PropertyChanger.CloneValue(value);
             ObserveIfNecessary(_snapshotValue, newSnapshotValue, ChangeCalculationKind.Snapshot);
             _snapshotValue = newSnapshotValue;
             ClearSnapshotRelationshipChanges();
             HasSnapshotValue = true;
-            //UpdateSnapshotRelatedListChanged();
+            UpdateSnapshotRelatedListChanged();
             UpdateHasChanged();
         }
 
         public void ClearSnapshotValue()
         {
+            if (IsRelationshipCollection)
+            {
+                int a = 0;
+            }
             ClearSnapshotRelationshipChanges();
             HasSnapshotValue = false;
             _snapshotValue = null;
+            UpdateSnapshotRelatedListChanged();
             UpdateHasChanged();
         }
 
@@ -609,7 +618,7 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        private void UpdateSnapshotRelatedListChanged()
+        public void UpdateSnapshotRelatedListChanged()
         {
             if (IsLocked || !IsRelationshipCollection)
             {
@@ -627,7 +636,11 @@ namespace Iql.Data.Tracking.State
                 {
                     var item = relatedList[i];
                     var state = DataTracker.GetEntityState(item);
-                    if (state != null && !snapshotList.Contains(item) && (state.IsNew || state.HasChangedSinceSnapshot))
+                    if (state != null &&
+                        !snapshotList.Contains(item) &&
+                        DoesRelationshipSourceMatchUs(state, Property.Relationship.OtherEnd) && 
+                        (state.IsNew || HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot))
+                        )
                     {
                         addedSinceSnapshot.Add(item);
                     }
@@ -644,11 +657,15 @@ namespace Iql.Data.Tracking.State
                 for (var i = 0; i < snapshotList.Length; i++)
                 {
                     var item = snapshotList[i];
+                    var state = DataTracker.GetEntityState(item);
                     if (!relatedList.Contains(item))
                     {
                         removedSinceSnapshot.Add(item);
                     }
-                    else if (DataTracker.GetEntityState(item)?.HasChangedSinceSnapshot == true)
+                    else if (state != null && 
+                             HasRelationshipSourceOtherPropertyChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot) &&
+                             !HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot) &&
+                             DoesRelationshipSourceMatchUs(state, Property.Relationship.OtherEnd))
                     {
                         changedSinceSnapshot.Add(item);
                     }
@@ -1329,6 +1346,21 @@ namespace Iql.Data.Tracking.State
                 }
             }
 
+            return false;
+        }
+
+        private bool HasRelationshipSourceOtherPropertyChanged(IEntityStateBase entityState, IRelationshipDetail relationshipDetail,
+            ChangeCalculationKind kind)
+        {
+            var groupProperties = relationshipDetail.Property.GroupProperties;
+
+            foreach (var property in entityState.PropertyStates)
+            {
+                if (!groupProperties.Contains(property.Property) && (kind == ChangeCalculationKind.Remote ? property.HasChanges : property.HasChangesSinceSnapshot))
+                {
+                    return true;
+                }
+            }
             return false;
         }
 

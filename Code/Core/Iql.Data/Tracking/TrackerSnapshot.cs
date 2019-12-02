@@ -39,7 +39,6 @@ namespace Iql.Data.Tracking
             {
                 _previousValueSet = true;
                 _previousValue = value;
-                Check();
             }
         }
 
@@ -50,15 +49,6 @@ namespace Iql.Data.Tracking
             {
                 _currentValueSet = true;
                 _currentValue = value;
-                Check();
-            }
-        }
-
-        private void Check()
-        {
-            if (_previousValueSet && _currentValueSet && PreviousValue == CurrentValue)
-            {
-                int a = 0;
             }
         }
     }
