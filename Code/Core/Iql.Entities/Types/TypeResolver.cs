@@ -183,7 +183,7 @@ namespace Iql.Data.Types
         public Func<object, object, object> SetValue =>
             (entity, value) => entity.SetPropertyValueByName(PropertyName, value);
 
-        public PropertyKind Kind => PropertyKind.Primitive;
+        public IqlPropertyKind Kind => IqlPropertyKind.Primitive;
         public string PropertyName => PropertyInfo?.Name;
         public object UnderlyingObject { get; }
         public EntityRelationship Relationship => null;

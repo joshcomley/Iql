@@ -35,17 +35,17 @@ namespace Iql.Entities.Relationships
             var sourceIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(sourceKeyProperty, Builder).Expression;
             var targetIqlProperty = expressionConverter.ConvertPropertyLambdaToIql(targetKeyProperty, Builder).Expression;
             var sourceProperty = Source.EntityConfiguration.FindOrDefinePropertyByName(sourceIqlProperty.PropertyName, typeof(TKey));
-            if (sourceProperty != null && sourceProperty.Kind.HasFlag(PropertyKind.Primitive))
+            if (sourceProperty != null && sourceProperty.Kind.HasFlag(IqlPropertyKind.Primitive))
             {
-                sourceProperty.Kind = sourceProperty.Kind | PropertyKind.RelationshipKey;
+                sourceProperty.Kind = sourceProperty.Kind | IqlPropertyKind.RelationshipKey;
                 sourceProperty.Relationship = Source.EntityConfiguration.FindRelationshipByName(Source.Property.Name);
             }
             var targetProperty = Target.EntityConfiguration.FindOrDefinePropertyByName(
                 targetIqlProperty.PropertyName,
                 typeof(TKey));
-            if (targetProperty != null && targetProperty.Kind.HasFlag(PropertyKind.Primitive))
+            if (targetProperty != null && targetProperty.Kind.HasFlag(IqlPropertyKind.Primitive))
             {
-                //targetProperty.Kind = targetProperty.Kind | PropertyKind.RelationshipKey;
+                //targetProperty.Kind = targetProperty.Kind | IqlPropertyKind.RelationshipKey;
                 targetProperty.RelationshipSources.Add(Target.EntityConfiguration.FindRelationshipByName(Target.Property.Name));
             }
             Constraints.Add(new RelationshipConstraint(

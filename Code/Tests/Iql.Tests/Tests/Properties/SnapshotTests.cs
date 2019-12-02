@@ -89,7 +89,7 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Areas), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.SiteInspections), false, false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Users), false, false);
-            Assert.AreEqual(PropertyRenderingKind.Tree, instance.ChildProperties[expectedIndex].Kind);
+            Assert.AreEqual(IqlPropertyRenderingKind.Tree, instance.ChildProperties[expectedIndex].Kind);
             AssertProperty(expectedIndex++, instance, "Hierarchy", true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Area), true);
@@ -140,7 +140,7 @@ namespace Iql.Tests.Tests.Properties
             AssertProperty(expectedIndex++, instance, nameof(Site.Parent), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Key), false);
             AssertProperty(expectedIndex++, instance, nameof(Site.Location), true);
-            Assert.AreEqual(PropertyRenderingKind.Tree, instance.ChildProperties[expectedIndex].Kind);
+            Assert.AreEqual(IqlPropertyRenderingKind.Tree, instance.ChildProperties[expectedIndex].Kind);
             AssertProperty(expectedIndex++, instance, "Hierarchy", true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Area), true);
             AssertProperty(expectedIndex++, instance, nameof(Site.Line), true);
@@ -259,12 +259,12 @@ namespace Iql.Tests.Tests.Properties
         [TestMethod]
         public async Task TestGetCustomDetailWithEditKindOverrides()
         {
-            var editKindOverrides = new Dictionary<IPropertyContainer, PropertyEditKind>();
+            var editKindOverrides = new Dictionary<IPropertyContainer, IqlPropertyEditKind>();
             var site = new Site();
             var currentUser = new ApplicationUser();
             var siteEntityConfiguration = Db.EntityConfigurationContext.EntityType<Site>();
-            editKindOverrides.Add(siteEntityConfiguration.FindProperty(nameof(Site.Address)), PropertyEditKind.Hidden);
-            editKindOverrides.Add(siteEntityConfiguration.FindProperty(nameof(Site.PostCode)), PropertyEditKind.Display);
+            editKindOverrides.Add(siteEntityConfiguration.FindProperty(nameof(Site.Address)), IqlPropertyEditKind.Hidden);
+            editKindOverrides.Add(siteEntityConfiguration.FindProperty(nameof(Site.PostCode)), IqlPropertyEditKind.Display);
             var detail = PropertyDetail.For(siteEntityConfiguration);
             var displayConfiguration = siteEntityConfiguration.GetDisplayConfiguration(
                 DisplayConfigurationKind.Edit,

@@ -67,7 +67,7 @@ namespace Iql.Parsing.Types
 
         public Func<object, object, object> SetValue => Property.SetValue;
 
-        public PropertyKind Kind => Property.Kind;
+        public IqlPropertyKind Kind => Property.Kind;
 
         public string PropertyName => Property.PropertyName;
         public object UnderlyingObject => Property.UnderlyingObject;

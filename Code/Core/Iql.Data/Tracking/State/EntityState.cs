@@ -734,7 +734,7 @@ namespace Iql.Data.Tracking.State
         public IPropertyState[] GetChangedProperties(IProperty[] properties = null)
         {
             var propertyStates = PropertyStates.Where(ps =>
-                    ps.HasChanges && !ps.Property.Kind.HasFlag(PropertyKind.Relationship) && (properties == null || properties.Contains(ps.Property)))
+                    ps.HasChanges && !ps.Property.Kind.HasFlag(IqlPropertyKind.Relationship) && (properties == null || properties.Contains(ps.Property)))
                 .ToArray();
             return propertyStates;
         }
@@ -745,7 +745,7 @@ namespace Iql.Data.Tracking.State
             {
                 return false;
             }
-            if (relationshipProperty.Kind.HasFlag(PropertyKind.Relationship))
+            if (relationshipProperty.Kind.HasFlag(IqlPropertyKind.Relationship))
             {
                 var relationshipEntity = relationshipProperty.GetValue(Entity);
                 if (relationshipEntity == null)

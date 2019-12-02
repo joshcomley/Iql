@@ -103,7 +103,7 @@ namespace Iql.Server
                 {
                     if (prop != null)
                     {
-                        prop.EditKind = PropertyEditKind.Display;
+                        prop.EditKind = IqlPropertyEditKind.Display;
                     }
                 }
             });
@@ -242,7 +242,7 @@ namespace Iql.Server
                 config.ConfigureProperty(p => p.Name, p =>
                 {
                     p.SetNullable(false);
-                    p.SearchKind = PropertySearchKind.Primary;
+                    p.SearchKind = IqlPropertySearchKind.Primary;
                 });
             });
         }

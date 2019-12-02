@@ -783,19 +783,19 @@ namespace Iql.Tests.Tests
         public async Task PropertyKindValues()
         {
 #if !TypeScript
-            var kind = PropertyKind.Primitive;
-            Assert.AreEqual(nameof(PropertyKind.Primitive), kind.ToString());
-            kind = PropertyKind.Relationship;
-            Assert.AreEqual(nameof(PropertyKind.Relationship), kind.ToString());
+            var kind = IqlPropertyKind.Primitive;
+            Assert.AreEqual(nameof(IqlPropertyKind.Primitive), kind.ToString());
+            kind = IqlPropertyKind.Relationship;
+            Assert.AreEqual(nameof(IqlPropertyKind.Relationship), kind.ToString());
 #endif
-            Assert.IsTrue(!PropertyKind.Primitive.HasFlag(PropertyKind.Relationship));
-            Assert.IsTrue(!PropertyKind.Relationship.HasFlag(PropertyKind.Primitive));
-            //kind = PropertyKind.RelationshipKey;
-            //Assert.AreEqual(string.Join(", ", new[] { nameof(PropertyKind.Primitive), nameof(PropertyKind.RelationshipKey) }), kind.ToString());
-            //kind = PropertyKind.Key;
-            //Assert.AreEqual(string.Join(", ", new[] { nameof(PropertyKind.Primitive), nameof(PropertyKind.Key) }), kind.ToString());
-            //kind = PropertyKind.Count;
-            //Assert.AreEqual(string.Join(", ", new[] { nameof(PropertyKind.Primitive), nameof(PropertyKind.Count) }), kind.ToString());
+            Assert.IsTrue(!IqlPropertyKind.Primitive.HasFlag(IqlPropertyKind.Relationship));
+            Assert.IsTrue(!IqlPropertyKind.Relationship.HasFlag(IqlPropertyKind.Primitive));
+            //kind = IqlPropertyKind.RelationshipKey;
+            //Assert.AreEqual(string.Join(", ", new[] { nameof(IqlPropertyKind.Primitive), nameof(IqlPropertyKind.RelationshipKey) }), kind.ToString());
+            //kind = IqlPropertyKind.Key;
+            //Assert.AreEqual(string.Join(", ", new[] { nameof(IqlPropertyKind.Primitive), nameof(IqlPropertyKind.Key) }), kind.ToString());
+            //kind = IqlPropertyKind.Count;
+            //Assert.AreEqual(string.Join(", ", new[] { nameof(IqlPropertyKind.Primitive), nameof(IqlPropertyKind.Count) }), kind.ToString());
         }
 
         [TestMethod]
@@ -803,7 +803,7 @@ namespace Iql.Tests.Tests
         {
             var property = Db.EntityConfigurationContext.EntityType<Person>()
                 .FindPropertyByExpression(p => p.Id);
-            Assert.IsFalse(property.Kind.HasFlag(PropertyKind.RelationshipKey));
+            Assert.IsFalse(property.Kind.HasFlag(IqlPropertyKind.RelationshipKey));
             Assert.IsNull(property.Relationship);
         }
 

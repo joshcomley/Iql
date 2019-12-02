@@ -26,10 +26,10 @@ namespace Iql.Data
 
         private static void MergeProperty(object entity, object mergeWith, IProperty property)
         {
-            if (property.Kind.HasFlag(PropertyKind.Count) ||
-                property.Kind.HasFlag(PropertyKind.Key) ||
-                property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
-                property.Kind.HasFlag(PropertyKind.Primitive))
+            if (property.Kind.HasFlag(IqlPropertyKind.Count) ||
+                property.Kind.HasFlag(IqlPropertyKind.Key) ||
+                property.Kind.HasFlag(IqlPropertyKind.RelationshipKey) ||
+                property.Kind.HasFlag(IqlPropertyKind.Primitive))
             {
                 entity.SetPropertyValue(property,
                     mergeWith.GetPropertyValue(property));

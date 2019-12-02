@@ -142,19 +142,19 @@ namespace Iql.Entities
             for (var i = 0; i < Properties.Count; i++)
             {
                 var property = Properties[i];
-                if (searchKind.HasFlag(IqlSearchKind.Primary) && property.SearchKind == PropertySearchKind.Primary)
+                if (searchKind.HasFlag(IqlSearchKind.Primary) && property.SearchKind == IqlPropertySearchKind.Primary)
                 {
                     result.Add(IqlPropertyPath.FromProperty(property, rootVariableName));
                 }
 
-                if (searchKind.HasFlag(IqlSearchKind.Secondary) && property.SearchKind == PropertySearchKind.Secondary)
+                if (searchKind.HasFlag(IqlSearchKind.Secondary) && property.SearchKind == IqlPropertySearchKind.Secondary)
                 {
                     result.Add(IqlPropertyPath.FromProperty(property, rootVariableName));
                 }
 
                 if (searchKind.HasFlag(IqlSearchKind.Relationships) && property.Relationship != null &&
                     property.Relationship.ThisIsSource
-                    && property.Kind.HasFlag(PropertyKind.Relationship))
+                    && property.Kind.HasFlag(IqlPropertyKind.Relationship))
                 {
                     var paths = property.Relationship.OtherEnd.EntityConfiguration
                         .ResolveSearchProperties();
@@ -350,7 +350,7 @@ namespace Iql.Entities
                 var property = FindProperty(propertyName);
                 if (property != null)
                 {
-                    property.Kind = property.Kind | PropertyKind.Key;
+                    property.Kind = property.Kind | IqlPropertyKind.Key;
                     //property.Relationship = null;
                 }
             }
@@ -450,7 +450,7 @@ namespace Iql.Entities
             var relationship = FindRelationshipByName(name);
             if (relationship != null)
             {
-                definition.Kind = PropertyKind.Relationship;
+                definition.Kind = IqlPropertyKind.Relationship;
                 definition.Relationship = relationship;
             }
 
@@ -458,7 +458,7 @@ namespace Iql.Entities
 
             if (definition.Kind == 0)
             {
-                definition.Kind = PropertyKind.Primitive;
+                definition.Kind = IqlPropertyKind.Primitive;
             }
 
             return definition;
@@ -655,7 +655,7 @@ namespace Iql.Entities
                 if (Nullable.GetUnderlyingType(countPropertyDefinition.PropertyType) != null)
                 {
                     countDefinition = MapProperty<long?, long?>(propertyName + "Count", countProperty, false, true, IqlType.Integer, collection);
-                    countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
+                    countDefinition.Kind = countDefinition.Kind | IqlPropertyKind.Count;
                     countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
                 }
                 else
@@ -665,7 +665,7 @@ namespace Iql.Entities
                     {
                         var lambda = (Expression<Func<T, int>>)CastLambda<int>(lambdaExpression);
                         countDefinition = MapProperty<int, int>(propertyName + "Count", lambda, false, true, IqlType.Integer, collection);
-                        countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
+                        countDefinition.Kind = countDefinition.Kind | IqlPropertyKind.Count;
 #if TypeScript
                         countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
 #endif
@@ -674,7 +674,7 @@ namespace Iql.Entities
                     {
                         var lambda = (Expression<Func<T, long>>)CastLambda<long>(lambdaExpression);
                         countDefinition = MapProperty<long, long>(propertyName + "Count", lambda, false, true, IqlType.Integer, collection);
-                        countDefinition.Kind = countDefinition.Kind | PropertyKind.Count;
+                        countDefinition.Kind = countDefinition.Kind | IqlPropertyKind.Count;
 #if TypeScript
                         countDefinition.TypeDefinition = countDefinition.TypeDefinition.ChangeNullable(true);
 #endif

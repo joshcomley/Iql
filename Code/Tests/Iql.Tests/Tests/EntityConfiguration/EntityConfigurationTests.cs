@@ -91,8 +91,8 @@ namespace Iql.Tests.Tests.EntityConfiguration
             var site = Db.EntityConfigurationContext.EntityType<Site>();
             var property = site.FindPropertyByExpression(l => l.CreatedByUser);
             var relationship = site.Relationships.Single(r => r.Source.Property == property);
-            Assert.AreEqual(PropertyEditKind.Edit, property.EditKind);
-            Assert.AreEqual(PropertyEditKind.Edit, relationship.Source.EditKind);
+            Assert.AreEqual(IqlPropertyEditKind.Edit, property.EditKind);
+            Assert.AreEqual(IqlPropertyEditKind.Edit, relationship.Source.EditKind);
         }
 
         [TestMethod]
@@ -180,7 +180,7 @@ namespace Iql.Tests.Tests.EntityConfiguration
         {
             var property = Db.EntityConfigurationContext.EntityType<Client>()
                 .FindPropertyByExpression(p => p.SitesCount);
-            Assert.IsTrue(property.Kind.HasFlag(PropertyKind.Count));
+            Assert.IsTrue(property.Kind.HasFlag(IqlPropertyKind.Count));
         }
 
         [TestMethod]

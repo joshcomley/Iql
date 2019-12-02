@@ -21,9 +21,9 @@ namespace Iql.Entities
             get { return null; }
         }
 
-        public override PropertyKind Kind
+        public override IqlPropertyKind Kind
         {
-            get => PropertyKind.GroupCollection;
+            get => IqlPropertyKind.GroupCollection;
             set { }
         }
 
@@ -33,7 +33,7 @@ namespace Iql.Entities
         {
             return Properties.Where(p => p != null).Select(p =>
             {
-                if (p.Kind.HasFlag(PropertyKind.Property))
+                if (p.Kind.HasFlag(IqlPropertyKind.Property))
                 {
                     var pr = p as IProperty;
                     return pr.PropertyGroup ?? pr;

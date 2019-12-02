@@ -98,11 +98,11 @@ namespace Iql.Entities.PropertyGroups.Files
         {
             return new PropertyGroupMetadata[]
             {
-                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(KindProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(StateProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(NameProperty, PropertySearchKind.Primary),
-                new PropertyGroupMetadata(VersionProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(UrlProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(KindProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(StateProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(NameProperty, IqlPropertySearchKind.Primary),
+                new PropertyGroupMetadata(VersionProperty, IqlPropertySearchKind.None),
             };
         }
     }

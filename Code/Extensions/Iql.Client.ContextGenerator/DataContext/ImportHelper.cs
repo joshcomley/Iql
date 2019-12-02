@@ -71,7 +71,7 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             typeof(ODataDataMethodRequest<>),
             typeof(ODataMethodRequest),
             typeof(IPropertyChangeEvent),
-            typeof(PropertyKind),
+            typeof(IqlPropertyKind),
             typeof(Expression),
             typeof(Func<>),
             typeof(Enum),

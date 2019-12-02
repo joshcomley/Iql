@@ -20,6 +20,7 @@ using Iql.Server.Serialization.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using IPropertyGroup = Iql.Entities.IPropertyGroup;
+using IqlPropertyGroupKind = Iql.Server.Serialization.Serialization.IqlPropertyGroupKind;
 
 namespace Iql.Server.Serialization.Deserialization.Converters
 {
@@ -196,7 +197,7 @@ namespace Iql.Server.Serialization.Deserialization.Converters
         {
             foreach (var mapping in PropertyMappings)
             {
-                if (mapping.Value.Kind != PropertyGroupKind.Relationship)
+                if (mapping.Value.Kind != IqlPropertyGroupKind.Relationship)
                 {
                     ProcessPropertyGroup(root, document, mapping.Value, mapping, true);
                 }
@@ -207,7 +208,7 @@ namespace Iql.Server.Serialization.Deserialization.Converters
         {
             foreach (var mapping in PropertyMappings)
             {
-                if (mapping.Value.Kind == PropertyGroupKind.Relationship)
+                if (mapping.Value.Kind == IqlPropertyGroupKind.Relationship)
                 {
                     ProcessPropertyGroup(root, document, mapping.Value, mapping, true);
                 }
@@ -220,12 +221,12 @@ namespace Iql.Server.Serialization.Deserialization.Converters
             var entityMetadata = document.EntityTypes.Single(e => e.Name == @group.Type);
             switch (@group.Kind)
             {
-                case PropertyGroupKind.Property:
+                case IqlPropertyGroupKind.Property:
                     var property = entityMetadata.Properties.Single(p => p.Name == @group.Paths);
                     (property as Property).EntityConfigurationInternal = entityMetadata as IEntityConfiguration;
                     if (set) { root.SetValueAtPropertyPath(mapping.Key, property); }
                     return property;
-                case PropertyGroupKind.PropertyCollection:
+                case IqlPropertyGroupKind.PropertyCollection:
                     var coll = new PropertyCollection(entityMetadata as IEntityConfiguration);
                     foreach (var child in @group.Children)
                     {
@@ -233,23 +234,23 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                     }
                     if (set) { root.SetValueAtPropertyPath(mapping.Key, coll); }
                     return coll;
-                case PropertyGroupKind.Geographic:
+                case IqlPropertyGroupKind.Geographic:
                     var geo = entityMetadata.Geographics[Convert.ToInt32(@group.Paths)];
                     if (set) { root.SetValueAtPropertyPath(mapping.Key, geo); }
                     return geo;
-                case PropertyGroupKind.NestedSet:
+                case IqlPropertyGroupKind.NestedSet:
                     var ns = entityMetadata.NestedSets[Convert.ToInt32(@group.Paths)];
                     if (set) { root.SetValueAtPropertyPath(mapping.Key, ns); }
                     return ns;
-                case PropertyGroupKind.File:
+                case IqlPropertyGroupKind.File:
                     var f = entityMetadata.Files[Convert.ToInt32(@group.Paths)];
                     if (set) { root.SetValueAtPropertyPath(mapping.Key, f); }
                     return f;
-                case PropertyGroupKind.DateRange:
+                case IqlPropertyGroupKind.DateRange:
                     var dr = entityMetadata.DateRanges[Convert.ToInt32(@group.Paths)];
                     if (set) { root.SetValueAtPropertyPath(mapping.Key, dr); }
                     return dr;
-                case PropertyGroupKind.Relationship:
+                case IqlPropertyGroupKind.Relationship:
                     var entityConfiguration = entityMetadata as IEntityConfiguration;
                     //var property2 = entityMetadata.Properties.Single(p => p.Name == @group.Paths);
                     //var rel = entityMetadata.Relationships.Single(p => p.Source.Property.Name == @group.Paths);

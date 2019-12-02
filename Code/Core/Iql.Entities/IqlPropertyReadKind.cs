@@ -1,6 +1,6 @@
 ﻿namespace Iql.Entities
 {
-    public enum PropertyReadKind
+    public enum IqlPropertyReadKind
     {
         Display = 1,
         Hidden

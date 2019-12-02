@@ -58,10 +58,10 @@ namespace Iql.Entities.PropertyGroups.Files
         {
             return new PropertyGroupMetadata[]
             {
-                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.Primary),
-                new PropertyGroupMetadata(KindProperty, PropertySearchKind.Secondary),
-                new PropertyGroupMetadata(VersionProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(UrlProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(UrlProperty, IqlPropertySearchKind.Primary),
+                new PropertyGroupMetadata(KindProperty, IqlPropertySearchKind.Secondary),
+                new PropertyGroupMetadata(VersionProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(UrlProperty, IqlPropertySearchKind.None),
             };
         }
 
@@ -71,7 +71,7 @@ namespace Iql.Entities.PropertyGroups.Files
         protected IEntityConfiguration EntityConfigurationInternal =>
             (UrlProperty ?? NameProperty ?? VersionProperty ?? KindProperty)?.EntityConfiguration;
 
-        public override PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
+        public override IqlPropertyKind Kind { get; set; } = IqlPropertyKind.SimpleCollection;
         public IList<IFilePreview> Previews { get; set; } = new List<IFilePreview>();
         public IFile RootFile => RootFileInternal;
         protected IFile RootFileInternal => this;
@@ -120,34 +120,34 @@ namespace Iql.Entities.PropertyGroups.Files
             return list.Where(_ => _ != null).ToArray();
         }
 
-        public FilePropertyKind GetPropertyKind(IProperty property)
+        public IqlFilePropertyKind GetPropertyKind(IProperty property)
         {
             if (property == UrlProperty)
             {
-                return FilePropertyKind.FileUrl;
+                return IqlFilePropertyKind.FileUrl;
             }
 
             if (Previews?.Any(p => p.UrlProperty == property) == true)
             {
-                return FilePropertyKind.PreviewUrl;
+                return IqlFilePropertyKind.PreviewUrl;
             }
 
             if (property == VersionProperty)
             {
-                return FilePropertyKind.Version;
+                return IqlFilePropertyKind.Version;
             }
 
             if (property == KindProperty)
             {
-                return FilePropertyKind.Kind;
+                return IqlFilePropertyKind.Kind;
             }
 
             if (property == StateProperty)
             {
-                return FilePropertyKind.State;
+                return IqlFilePropertyKind.State;
             }
 
-            return FilePropertyKind.None;
+            return IqlFilePropertyKind.None;
         }
     }
 }

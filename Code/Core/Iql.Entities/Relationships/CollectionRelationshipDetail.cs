@@ -13,8 +13,8 @@ namespace Iql.Entities.Relationships
     {
         public bool SupportsCascadeDelete { get; set; }
         protected override bool CanWriteDefaultValue { get; } = false;
-        public override PropertyEditKind EditKind { get; set; } = PropertyEditKind.Hidden;
-        public override PropertyReadKind ReadKind { get; set; } = PropertyReadKind.Hidden;
+        public override IqlPropertyEditKind EditKind { get; set; } = IqlPropertyEditKind.Hidden;
+        public override IqlPropertyReadKind ReadKind { get; set; } = IqlPropertyReadKind.Hidden;
 
         public override ReadOnlyEditDisplayKind ReadOnlyEditDisplayKind { get; set; } = ReadOnlyEditDisplayKind.Hide;
 

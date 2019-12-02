@@ -16,17 +16,17 @@ namespace Iql.Entities
             var relationship = entityConfiguration.FindRelationshipByName(definition.Name);
             if (relationship != null)
             {
-                definition.Kind = PropertyKind.Relationship;
+                definition.Kind = IqlPropertyKind.Relationship;
                 definition.Relationship = relationship;
                 var otherEndConfiguration = entityConfiguration.Builder.GetEntityByType(relationship.OtherEnd.Type);
                 foreach (var constraint in relationship.Relationship.Constraints)
                 {
                     var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.Name);
                     if (constraintProperty != null &&
-                        !constraintProperty.Kind.HasFlag(PropertyKind.RelationshipKey) &&
-                        !constraintProperty.Kind.HasFlag(PropertyKind.Key))
+                        !constraintProperty.Kind.HasFlag(IqlPropertyKind.RelationshipKey) &&
+                        !constraintProperty.Kind.HasFlag(IqlPropertyKind.Key))
                     {
-                        constraintProperty.Kind = constraintProperty.Kind | PropertyKind.RelationshipKey;
+                        constraintProperty.Kind = constraintProperty.Kind | IqlPropertyKind.RelationshipKey;
                         constraintProperty.Relationship = otherEndConfiguration.FindRelationshipByName(relationship.OtherEnd.Property.Name);
                     }
                 }
@@ -43,10 +43,10 @@ namespace Iql.Entities
                     foreach (var constraint in relationshipMatch.Relationship.Constraints)
                     {
                         if (constraint.SourceKeyProperty.Name == definition.Name &&
-                            !definition.Kind.HasFlag(PropertyKind.RelationshipKey) &&
-                            !definition.Kind.HasFlag(PropertyKind.Key))
+                            !definition.Kind.HasFlag(IqlPropertyKind.RelationshipKey) &&
+                            !definition.Kind.HasFlag(IqlPropertyKind.Key))
                         {
-                            definition.Kind = definition.Kind | PropertyKind.RelationshipKey;
+                            definition.Kind = definition.Kind | IqlPropertyKind.RelationshipKey;
                             definition.Relationship = relationshipMatch;
                         }
                     }

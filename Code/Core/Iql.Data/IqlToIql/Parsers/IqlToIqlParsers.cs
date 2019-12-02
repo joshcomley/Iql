@@ -258,7 +258,7 @@ namespace Iql.Data.IqlToIql.Parsers
         {
             var property = parser.Adapter.TypeResolver.FindType<TEntity>()
                 .FindProperty(action.PropertyName);
-            if (property != null && property.Kind.HasFlag(PropertyKind.Count))
+            if (property != null && property.Kind.HasFlag(IqlPropertyKind.Count))
             {
                 action.PropertyName = property.EntityProperty().Relationship.ThisEnd.Property.Name;
                 return new IqlCountExpression(null, action, null);

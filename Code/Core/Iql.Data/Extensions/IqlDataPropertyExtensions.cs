@@ -10,7 +10,7 @@ namespace Iql.Data.Extensions
     {
         public static string ResolveKind(this IPropertyContainer property)
         {
-            var kind = PropertyRenderingKind.Unknown;
+            var kind = IqlPropertyRenderingKind.Unknown;
             var prop = property as PropertyBase;
             var rel = property as RelationshipDetailBase;
             if (prop != null)
@@ -18,68 +18,68 @@ namespace Iql.Data.Extensions
                 switch (prop.TypeDefinition.Kind)
                 {
                     case IqlType.Enum:
-                        kind = PropertyRenderingKind.Enum;
+                        kind = IqlPropertyRenderingKind.Enum;
                         break;
                     case IqlType.Guid:
-                        kind = PropertyRenderingKind.Guid;
+                        kind = IqlPropertyRenderingKind.Guid;
                         break;
                     case IqlType.String:
-                        kind = PropertyRenderingKind.String;
+                        kind = IqlPropertyRenderingKind.String;
                         break;
                     case IqlType.TimeSpan:
-                        kind = PropertyRenderingKind.TimeSpan;
+                        kind = IqlPropertyRenderingKind.TimeSpan;
                         break;
                     case IqlType.Date:
-                        kind = PropertyRenderingKind.Date;
+                        kind = IqlPropertyRenderingKind.Date;
                         break;
                     case IqlType.Boolean:
-                        kind = PropertyRenderingKind.Boolean;
+                        kind = IqlPropertyRenderingKind.Boolean;
                         break;
                     case IqlType.Integer:
                     case IqlType.Decimal:
-                        kind = PropertyRenderingKind.Number;
+                        kind = IqlPropertyRenderingKind.Number;
                         break;
                     case IqlType.GeometryPolygon:
                     case IqlType.GeographyPolygon:
-                        kind = PropertyRenderingKind.GeoPolygon;
+                        kind = IqlPropertyRenderingKind.GeoPolygon;
                         break;
                     case IqlType.GeometryPoint:
                     case IqlType.GeographyPoint:
-                        kind = PropertyRenderingKind.GeoPoint;
+                        kind = IqlPropertyRenderingKind.GeoPoint;
                         break;
                 }
-                //if (prop.Kind.HasFlag(PropertyKind.Key))
+                //if (prop.Kind.HasFlag(IqlPropertyKind.Key))
                 //{
-                //    kind = PropertyRenderingKind.Key;
+                //    kind = IqlPropertyRenderingKind.Key;
                 //}
-                //else if (prop.Kind.HasFlag(PropertyKind.RelationshipKey))
+                //else if (prop.Kind.HasFlag(IqlPropertyKind.RelationshipKey))
                 //{
-                //    kind = PropertyRenderingKind.RelationshipKey;
+                //    kind = IqlPropertyRenderingKind.RelationshipKey;
                 //}
-                //else if (prop.Kind == PropertyKind.Relationship)
+                //else if (prop.Kind == IqlPropertyKind.Relationship)
                 //{
-                //    kind = PropertyRenderingKind.Relationship;
+                //    kind = IqlPropertyRenderingKind.Relationship;
                 //}
             }
             else if (rel != null && rel.RelationshipSide == RelationshipSide.Target)
             {
-                kind = PropertyRenderingKind.RelationshipTarget;
+                kind = IqlPropertyRenderingKind.RelationshipTarget;
             }
             else if (rel != null && rel.RelationshipSide == RelationshipSide.Source)
             {
-                kind = PropertyRenderingKind.RelationshipSource;
+                kind = IqlPropertyRenderingKind.RelationshipSource;
             }
             else if (property is IFile)
             {
-                kind = PropertyRenderingKind.File;
+                kind = IqlPropertyRenderingKind.File;
             }
             else if (property is INestedSet)
             {
-                kind = PropertyRenderingKind.Tree;
+                kind = IqlPropertyRenderingKind.Tree;
             }
             else
             {
-                kind = PropertyRenderingKind.Group;
+                kind = IqlPropertyRenderingKind.Group;
             }
 
             return kind;

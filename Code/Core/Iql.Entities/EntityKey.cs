@@ -41,7 +41,7 @@ namespace Iql.Entities
             for (var i = 0; i < _properties.Length; i++)
             {
                 var property = _properties[i];
-                if (!property.Kind.HasFlag(PropertyKind.RelationshipKey))
+                if (!property.Kind.HasFlag(IqlPropertyKind.RelationshipKey))
                 {
                     return false;
                 }
@@ -49,7 +49,7 @@ namespace Iql.Entities
             return true;
         }
 
-        public void SetReadKind(PropertyReadKind readKind)
+        public void SetReadKind(IqlPropertyReadKind readKind)
         {
             for (var i = 0; i < Properties.Length; i++)
             {
@@ -58,7 +58,7 @@ namespace Iql.Entities
             }
         }
 
-        public void SetEditKind(PropertyEditKind editKind)
+        public void SetEditKind(IqlPropertyEditKind editKind)
         {
             for (var i = 0; i < Properties.Length; i++)
             {

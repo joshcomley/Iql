@@ -183,7 +183,7 @@ namespace Iql.Data.Evaluation
                         }
                     }
                 }
-                if (part.Property != null && part.Property.Kind.HasFlag(PropertyKind.Relationship))
+                if (part.Property != null && part.Property.Kind.HasFlag(IqlPropertyKind.Relationship))
                 {
                     var key = part.Property.EntityProperty().Relationship.ThisEnd.GetCompositeKey(parent, true);
                     result = await dataEvaluator.GetEntityByKeyAsync(

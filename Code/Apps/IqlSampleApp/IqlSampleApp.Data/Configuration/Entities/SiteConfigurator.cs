@@ -45,7 +45,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 {
                     displayConfiguration.SetProperties(
                         entityConfiguration,
-                        _ => _.FindRelationship(s => s.Client).Configure(c => c.EditKind = PropertyEditKind.Edit),
+                        _ => _.FindRelationship(s => s.Client).Configure(c => c.EditKind = IqlPropertyEditKind.Edit),
                         _ => _.FindPropertyByExpression(s => s.Name),
                         _ => _.FindRelationship(s => s.Parent),
                         _ => _.PropertyCollection(
@@ -64,7 +64,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 });
             var areas = sites.FindCollectionRelationship(_ => _.Areas);
             //areas.CanWrite = true;
-            areas.EditKind = PropertyEditKind.Edit;
+            areas.EditKind = IqlPropertyEditKind.Edit;
         }
     }
 

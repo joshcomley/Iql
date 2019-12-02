@@ -8,7 +8,7 @@ namespace Iql.Entities
         }
 
         protected ISimpleProperty _property;
-        public override PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
+        public override IqlPropertyKind Kind { get; set; } = IqlPropertyKind.SimpleCollection;
         public override IqlPropertyGroupKind GroupKind { get; } = IqlPropertyGroupKind.PropertyPath;
         public string Path { get; set; }
 

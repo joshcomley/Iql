@@ -41,14 +41,14 @@ namespace Iql.Entities.PropertyGroups.Dates
         {
             return new PropertyGroupMetadata[]
             {
-                new PropertyGroupMetadata(StartDateProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(EndDateProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(StartDateProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(EndDateProperty, IqlPropertySearchKind.None),
             };
         }
 
-        public override PropertyKind Kind
+        public override IqlPropertyKind Kind
         {
-            get => PropertyKind.SimpleCollection;
+            get => IqlPropertyKind.SimpleCollection;
             set { }
         }
 

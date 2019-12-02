@@ -14,9 +14,9 @@ namespace Iql.Entities.Geography
             return "Location";
         }
 
-        public override PropertyKind Kind
+        public override IqlPropertyKind Kind
         {
-            get => PropertyKind.SimpleCollection;
+            get => IqlPropertyKind.SimpleCollection;
             set { }
         }
 
@@ -41,8 +41,8 @@ namespace Iql.Entities.Geography
         {
             return new PropertyGroupMetadata[]
             {
-                new PropertyGroupMetadata(LongitudeProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(LatitudeProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(LongitudeProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(LatitudeProperty, IqlPropertySearchKind.None),
             };
         }
 

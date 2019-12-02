@@ -1,6 +1,6 @@
 ﻿namespace Iql.Server.Serialization.Serialization
 {
-    public enum PropertyGroupKind
+    public enum IqlPropertyGroupKind
     {
         Property = 1,
         PropertyCollection,

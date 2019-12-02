@@ -17,8 +17,8 @@ namespace Iql.Entities.Relationships
         private IProperty[] _constraints;
 
         private bool _readKindSet;
-        private PropertyReadKind _readKindTemp = PropertyReadKind.Display;
-        public override PropertyReadKind ReadKind
+        private IqlPropertyReadKind _readKindTemp = IqlPropertyReadKind.Display;
+        public override IqlPropertyReadKind ReadKind
         {
             get => Property?.ReadKind ?? _readKindTemp;
             set
@@ -33,8 +33,8 @@ namespace Iql.Entities.Relationships
         }
         private bool _editKindSet;
         private bool _editKindNeedsPersisting;
-        private PropertyEditKind _editKindTemp = PropertyEditKind.Display;
-        public override PropertyEditKind EditKind
+        private IqlPropertyEditKind _editKindTemp = IqlPropertyEditKind.Display;
+        public override IqlPropertyEditKind EditKind
         {
             get
             {
@@ -235,7 +235,7 @@ namespace Iql.Entities.Relationships
             return list.ToArray();
         }
 
-        public override PropertyKind Kind { get; set; } = PropertyKind.SimpleCollection;
+        public override IqlPropertyKind Kind { get; set; } = IqlPropertyKind.SimpleCollection;
         IRelationshipDetail IConfigurable<IRelationshipDetail>.Configure(Action<IRelationshipDetail> configure)
         {
             if (configure != null)

@@ -140,7 +140,7 @@ namespace Iql.Data.Tracking.State
             {
                 if (_otherEndIsCollection == null)
                 {
-                    _otherEndIsCollection = EntityState != null && Property.Kind.HasFlag(PropertyKind.Relationship) &&
+                    _otherEndIsCollection = EntityState != null && Property.Kind.HasFlag(IqlPropertyKind.Relationship) &&
                                             Property.Relationship.ThisIsSource &&
                                             Property.Relationship.OtherEnd.Property.TypeDefinition.Kind ==
                                             IqlType.Collection;
@@ -914,7 +914,7 @@ namespace Iql.Data.Tracking.State
                         return null;
                     }
 
-                    if (Property.Kind.HasFlag(PropertyKind.Relationship) && Property.Relationship.ThisIsTarget)
+                    if (Property.Kind.HasFlag(IqlPropertyKind.Relationship) && Property.Relationship.ThisIsTarget)
                     {
                         _groupStates = new IPropertyState[] { this };
                     }
@@ -1053,8 +1053,8 @@ namespace Iql.Data.Tracking.State
 
         public object PrepareForJson()
         {
-            if (Property.Kind.HasFlag(PropertyKind.Count) ||
-                Property.Kind.HasFlag(PropertyKind.Relationship))
+            if (Property.Kind.HasFlag(IqlPropertyKind.Count) ||
+                Property.Kind.HasFlag(IqlPropertyKind.Relationship))
             {
                 return null;
             }
@@ -1107,7 +1107,7 @@ namespace Iql.Data.Tracking.State
 
         private bool CalculateHasNestedChanges(object remoteValue, ChangeCalculationKind kind)
         {
-            if (Property.Kind.HasFlag(PropertyKind.Relationship) && Property.TypeDefinition.Kind == IqlType.Collection)
+            if (Property.Kind.HasFlag(IqlPropertyKind.Relationship) && Property.TypeDefinition.Kind == IqlType.Collection)
             {
                 return RelationshipTargetHasNestedChanges(remoteValue, kind);
             }

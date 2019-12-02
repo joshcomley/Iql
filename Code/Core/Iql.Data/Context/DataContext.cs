@@ -1712,7 +1712,7 @@ namespace Iql.Data.Context
                 }
             }
 
-            if (!property.Kind.HasFlag(PropertyKind.Count) && (!property.Kind.HasFlag(PropertyKind.Key) || property.Kind.HasFlag(PropertyKind.RelationshipKey)))
+            if (!property.Kind.HasFlag(IqlPropertyKind.Count) && (!property.Kind.HasFlag(IqlPropertyKind.Key) || property.Kind.HasFlag(IqlPropertyKind.RelationshipKey)))
             {
                 var propertyValue = property.GetValue(entity);
                 if (!validationResult.HasValidationFailures() &&
@@ -1755,7 +1755,7 @@ namespace Iql.Data.Context
                 return false;
             }
 
-            if (property.Kind.HasFlag(PropertyKind.Relationship) &&
+            if (property.Kind.HasFlag(IqlPropertyKind.Relationship) &&
                 propertyValue == null)
             {
                 if (!property.Relationship.ThisIsTarget)
@@ -1776,7 +1776,7 @@ namespace Iql.Data.Context
             else if (Equals(null, propertyValue) && property.TypeDefinition.Nullable == false)
             {
                 if (ensureIntegrityForSubmissionResolved &&
-                    (!property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
+                    (!property.Kind.HasFlag(IqlPropertyKind.RelationshipKey) ||
                      property.Relationship.ThisEnd.Property.GetValue(entity) == null)
                 )
                 {

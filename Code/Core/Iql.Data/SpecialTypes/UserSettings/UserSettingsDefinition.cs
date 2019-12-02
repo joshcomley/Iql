@@ -83,13 +83,13 @@ namespace Iql.Entities.SpecialTypes
         {
             return new PropertyGroupMetadata[]
             {
-                new PropertyGroupMetadata(IdProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(UserIdProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(Key1Property, PropertySearchKind.Secondary),
-                new PropertyGroupMetadata(Key2Property, PropertySearchKind.Secondary),
-                new PropertyGroupMetadata(Key3Property, PropertySearchKind.Secondary),
-                new PropertyGroupMetadata(Key4Property, PropertySearchKind.Secondary),
-                new PropertyGroupMetadata(ValueProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(IdProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(UserIdProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(Key1Property, IqlPropertySearchKind.Secondary),
+                new PropertyGroupMetadata(Key2Property, IqlPropertySearchKind.Secondary),
+                new PropertyGroupMetadata(Key3Property, IqlPropertySearchKind.Secondary),
+                new PropertyGroupMetadata(Key4Property, IqlPropertySearchKind.Secondary),
+                new PropertyGroupMetadata(ValueProperty, IqlPropertySearchKind.None),
             };
         }
 

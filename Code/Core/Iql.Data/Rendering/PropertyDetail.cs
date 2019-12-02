@@ -59,8 +59,8 @@ namespace Iql.Data.Rendering
                                                       PropertyAsPropertyCollection.ContentAlignment ==
                                                       ContentAlignment.Horizontal;
 
-        public bool IsSimpleProperty => PropertyAsSimpleProperty != null;//IsPropertyGroup && PropertyAsPropertyGroup.Kind.HasFlag(PropertyKind.Property);
-        public bool IsBasicProperty => IsPropertyGroup && PropertyAsPropertyGroup.Kind.HasFlag(PropertyKind.Property);
+        public bool IsSimpleProperty => PropertyAsSimpleProperty != null;//IsPropertyGroup && PropertyAsPropertyGroup.Kind.HasFlag(IqlPropertyKind.Property);
+        public bool IsBasicProperty => IsPropertyGroup && PropertyAsPropertyGroup.Kind.HasFlag(IqlPropertyKind.Property);
 
         public bool IsGeographic => IsCoreProperty && PropertyAsCoreProperty.TypeDefinition != null &&
                                     PropertyAsCoreProperty.TypeDefinition.Type == typeof(IqlPointExpression);
@@ -98,7 +98,7 @@ namespace Iql.Data.Rendering
             bool doNotAppendNonConfiguredProperties = false,
             PermissionsEvaluationSession permissionsEvaluationSession = null,
             InferredValueEvaluationSession inferredValueEvaluationSession = null,
-            Dictionary<IPropertyContainer, PropertyEditKind> editKindOverrides = null,
+            Dictionary<IPropertyContainer, IqlPropertyEditKind> editKindOverrides = null,
             bool isInitialize = false
         )
         {
@@ -132,10 +132,10 @@ namespace Iql.Data.Rendering
                 var overrideKind = editKindOverrides[Property];
                 switch (overrideKind)
                 {
-                    case PropertyEditKind.Display:
+                    case IqlPropertyEditKind.Display:
                         canEdit = false;
                         break;
-                    case PropertyEditKind.Hidden:
+                    case IqlPropertyEditKind.Hidden:
                         canEdit = false;
                         canShow = false;
                         break;
@@ -195,7 +195,7 @@ namespace Iql.Data.Rendering
             for (var i = 0; i < allProperties.Length; i++)
             {
                 var property = allProperties[i];
-                if (property.Kind.HasFlag(PropertyKind.Property) && property.Kind.HasFlag(PropertyKind.Count))
+                if (property.Kind.HasFlag(IqlPropertyKind.Property) && property.Kind.HasFlag(IqlPropertyKind.Count))
                 {
                     continue;
                 }

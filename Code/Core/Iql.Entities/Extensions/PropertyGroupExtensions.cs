@@ -47,15 +47,15 @@ namespace Iql.Entities.Extensions
         //        if (property is IProperty)
         //        {
         //            var simpleProperty = property as IProperty;
-        //            if (simpleProperty.Kind.HasFlag(PropertyKind.Key))
+        //            if (simpleProperty.Kind.HasFlag(IqlPropertyKind.Key))
         //            {
         //                return 0;
         //            }
-        //            if (simpleProperty.SearchKind == PropertySearchKind.Primary)
+        //            if (simpleProperty.SearchKind == IqlPropertySearchKind.Primary)
         //            {
         //                return 10;
         //            }
-        //            if (simpleProperty.SearchKind == PropertySearchKind.Secondary)
+        //            if (simpleProperty.SearchKind == IqlPropertySearchKind.Secondary)
         //            {
         //                return 20;
         //            }
@@ -106,7 +106,7 @@ namespace Iql.Entities.Extensions
 
             if (property is IProperty simpleProperty)
             {
-                if (simpleProperty.Kind.HasFlag(PropertyKind.Key))
+                if (simpleProperty.Kind.HasFlag(IqlPropertyKind.Key))
                 {
                     return 2;
                 }
@@ -121,7 +121,7 @@ namespace Iql.Entities.Extensions
                     return 4;
                 }
 
-                if (simpleProperty.SearchKind == PropertySearchKind.Primary)
+                if (simpleProperty.SearchKind == IqlPropertySearchKind.Primary)
                 {
                     if (simpleProperty.Matches("title", "name"))
                     {
@@ -131,7 +131,7 @@ namespace Iql.Entities.Extensions
                     return 35;
                 }
 
-                if (simpleProperty.SearchKind == PropertySearchKind.Secondary)
+                if (simpleProperty.SearchKind == IqlPropertySearchKind.Secondary)
                 {
                     if (simpleProperty.Matches("firstname", "forename"))
                     {
@@ -171,13 +171,13 @@ namespace Iql.Entities.Extensions
         //        {
         //            switch (simpleProperty.SearchKind)
         //            {
-        //                case PropertySearchKind.Primary:
+        //                case IqlPropertySearchKind.Primary:
         //                    if (simpleProperty.Matches("title", "name"))
         //                    {
         //                        return 9;
         //                    }
         //                    return 10;
-        //                case PropertySearchKind.Secondary:
+        //                case IqlPropertySearchKind.Secondary:
         //                    if (simpleProperty.Matches("firstname", "forename"))
         //                    {
         //                        return 20;
@@ -251,7 +251,7 @@ namespace Iql.Entities.Extensions
 
         private static List<IProperty> FlattenToValuePropertiesInternal(this IPropertyGroup propertyGroup, List<IProperty> properties)
         {
-            if (!propertyGroup.Kind.HasFlag(PropertyKind.Property))
+            if (!propertyGroup.Kind.HasFlag(IqlPropertyKind.Property))
             {
                 foreach (var property in propertyGroup.GetGroupProperties())
                 {
@@ -282,7 +282,7 @@ namespace Iql.Entities.Extensions
 
         private static List<IPropertyGroup> FlattenInternal(this IPropertyGroup propertyGroup, List<IPropertyGroup> properties)
         {
-            if (propertyGroup.Kind.HasFlag(PropertyKind.GroupCollection))
+            if (propertyGroup.Kind.HasFlag(IqlPropertyKind.GroupCollection))
             {
                 var coll = propertyGroup as IPropertyCollection;
                 foreach (var property in coll.GetGroupProperties())

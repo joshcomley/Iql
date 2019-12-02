@@ -1,6 +1,6 @@
 ﻿namespace Iql.Entities
 {
-    public enum PropertyEditKind
+    public enum IqlPropertyEditKind
     {
         Edit = 1,
         Display,

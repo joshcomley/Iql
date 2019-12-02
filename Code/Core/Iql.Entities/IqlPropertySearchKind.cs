@@ -1,6 +1,6 @@
 namespace Iql.Entities
 {
-    public enum PropertySearchKind
+    public enum IqlPropertySearchKind
     {
         None = 1,
         Primary,

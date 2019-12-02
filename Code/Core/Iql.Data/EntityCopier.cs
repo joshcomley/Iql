@@ -127,7 +127,7 @@ namespace Iql.Data
             for (var i = 0; i < entityConfiguration.Properties.Count; i++)
             {
                 var property = entityConfiguration.Properties[i];
-                if (property.Kind.HasFlag(PropertyKind.Key) || property == entityConfiguration.PersistenceKeyProperty)
+                if (property.Kind.HasFlag(IqlPropertyKind.Key) || property == entityConfiguration.PersistenceKeyProperty)
                 {
                     continue;
                 }
@@ -135,8 +135,8 @@ namespace Iql.Data
                 {
                     continue;
                 }
-                if (property.Kind.HasFlag(PropertyKind.Primitive) ||
-                    property.Kind.HasFlag(PropertyKind.RelationshipKey))
+                if (property.Kind.HasFlag(IqlPropertyKind.Primitive) ||
+                    property.Kind.HasFlag(IqlPropertyKind.RelationshipKey))
                 {
                     var propertyValue = obj.GetPropertyValue(property);
                     if (propertyValue.ClaimsToBeIql())

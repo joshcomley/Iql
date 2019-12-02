@@ -6,7 +6,7 @@ namespace Iql.Server.Serialization.Serialization
     {
         public string Type { get; set; }
         public string Paths { get; set; }
-        public PropertyGroupKind Kind { get; set; }
+        public IqlPropertyGroupKind Kind { get; set; }
         public List<SerializedPropertyGroup> Children { get; set; }
     }
 }

@@ -109,32 +109,32 @@ namespace Iql.Server.Serialization.Serialization.Converters
             {
                 var properties = propertyGroup.GetGroupProperties();
                 var entityConfiguration = propertyGroup.EntityConfiguration;
-                var kind = PropertyGroupKind.Property;
+                var kind = IqlPropertyGroupKind.Property;
                 List<SerializedPropertyGroup> children = null;
                 string path = null;
                 if (propertyGroup is IGeographicPoint)
                 {
-                    kind = PropertyGroupKind.Geographic;
+                    kind = IqlPropertyGroupKind.Geographic;
                     path = entityConfiguration.Geographics.IndexOf(propertyGroup as IGeographicPoint).ToString();
                 }
                 else if (propertyGroup is INestedSet)
                 {
-                    kind = PropertyGroupKind.NestedSet;
+                    kind = IqlPropertyGroupKind.NestedSet;
                     path = entityConfiguration.NestedSets.IndexOf(propertyGroup as INestedSet).ToString();
                 }
                 else if (propertyGroup is IDateRange)
                 {
-                    kind = PropertyGroupKind.DateRange;
+                    kind = IqlPropertyGroupKind.DateRange;
                     path = entityConfiguration.DateRanges.IndexOf(propertyGroup as IDateRange).ToString();
                 }
                 else if (propertyGroup is IFile)
                 {
-                    kind = PropertyGroupKind.File;
+                    kind = IqlPropertyGroupKind.File;
                     path = entityConfiguration.Files.IndexOf(propertyGroup as IFile).ToString();
                 }
                 else if (propertyGroup is IRelationshipDetailMetadata)
                 {
-                    kind = PropertyGroupKind.Relationship;
+                    kind = IqlPropertyGroupKind.Relationship;
                     path = (propertyGroup as IRelationshipDetailMetadata).Property.Name;
                     //var index = 0;
                     //var isSource = false;
@@ -162,10 +162,10 @@ namespace Iql.Server.Serialization.Serialization.Converters
 
                 switch (kind)
                 {
-                    case PropertyGroupKind.Property:
+                    case IqlPropertyGroupKind.Property:
                         path = (properties[0] as IProperty).Name;
                         break;
-                    case PropertyGroupKind.PropertyCollection:
+                    case IqlPropertyGroupKind.PropertyCollection:
                         children = new List<SerializedPropertyGroup>();
                         foreach (var child in properties)
                         {

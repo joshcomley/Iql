@@ -60,8 +60,8 @@ namespace Iql.Entities.SpecialTypes
         {
             return new PropertyGroupMetadata[]
             {
-                new PropertyGroupMetadata(IdProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(NameProperty, PropertySearchKind.Primary),
+                new PropertyGroupMetadata(IdProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(NameProperty, IqlPropertySearchKind.Primary),
             };
         }
     }

@@ -1635,7 +1635,7 @@ namespace Iql.Data.Context
                     var expressionQueryOperatiton = operation as IExpandOperation;
                     var expandQueryExpression = expressionQueryOperatiton.QueryExpression as IExpandQueryExpression;
                     var property = propertytPath.Property.EntityProperty();
-                    if (property.Kind.HasFlag(PropertyKind.Count) || expressionQueryOperatiton.CountOnly)
+                    if (property.Kind.HasFlag(IqlPropertyKind.Count) || expressionQueryOperatiton.CountOnly)
                     {
                         iqlExpandExpression.Count = true;
                         property = property.Relationship.ThisEnd.CountProperty;

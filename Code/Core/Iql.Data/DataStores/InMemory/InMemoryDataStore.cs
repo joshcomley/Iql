@@ -248,7 +248,7 @@ namespace Iql.Data.DataStores.InMemory
                 {
                     foreach (var property in configuration.Key.Properties)
                     {
-                        if (property.Kind.HasFlag(PropertyKind.Key))
+                        if (property.Kind.HasFlag(IqlPropertyKind.Key))
                         {
                             //var oldId = clone.GetPropertyValue(property);
                             if (property.TypeDefinition.ElementType == typeof(int))

@@ -219,17 +219,17 @@ namespace Iql.Entities
             for (var i = 0; i < Properties.Count; i++)
             {
                 var property = Properties[i];
-                if (property.Kind.HasFlag(PropertyKind.Primitive) &&
-                    !property.Kind.HasFlag(PropertyKind.Key) &&
-                    !property.Kind.HasFlag(PropertyKind.Count))
+                if (property.Kind.HasFlag(IqlPropertyKind.Primitive) &&
+                    !property.Kind.HasFlag(IqlPropertyKind.Key) &&
+                    !property.Kind.HasFlag(IqlPropertyKind.Count))
                 {
                     return true;
                 }
 
-                if (property.Kind.HasFlag(PropertyKind.Relationship))
+                if (property.Kind.HasFlag(IqlPropertyKind.Relationship))
                 {
                     var constraints = property.Relationship.ThisEnd.Constraints;
-                    if (constraints.Any(c => !c.Kind.HasFlag(PropertyKind.Key)))
+                    if (constraints.Any(c => !c.Kind.HasFlag(IqlPropertyKind.Key)))
                     {
                         return true;
                     }
@@ -246,7 +246,7 @@ namespace Iql.Entities
             var all = new List<IPropertyGroup>();
             all.AddRange(AllPropertyGroups());
             all.AddRange(Properties.Where(p =>
-                p.PropertyGroup == null || (p.Kind.HasFlag(PropertyKind.Key) && !p.Kind.HasFlag(PropertyKind.RelationshipKey))));
+                p.PropertyGroup == null || (p.Kind.HasFlag(IqlPropertyKind.Key) && !p.Kind.HasFlag(IqlPropertyKind.RelationshipKey))));
             var ordered = all.PrioritizeForReading().ToArray();
             return ordered;
         }
@@ -286,8 +286,8 @@ namespace Iql.Entities
             for (int i = 0; i < properties.Length; i++)
             {
                 var property = properties[i];
-                if (property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
-                    (kind == DisplayConfigurationKind.Edit && property.Kind.HasFlag(PropertyKind.Count)))
+                if (property.Kind.HasFlag(IqlPropertyKind.RelationshipKey) ||
+                    (kind == DisplayConfigurationKind.Edit && property.Kind.HasFlag(IqlPropertyKind.Count)))
                 {
                     continue;
                 }
@@ -448,13 +448,13 @@ namespace Iql.Entities
                         double GetOrder(IProperty p, double d)
                         {
                             if (
-                                p.Kind.HasFlag(PropertyKind.RelationshipKey) ||
-                                p.Kind.HasFlag(PropertyKind.Key))
+                                p.Kind.HasFlag(IqlPropertyKind.RelationshipKey) ||
+                                p.Kind.HasFlag(IqlPropertyKind.Key))
                             {
                                 return d + 1000;
                             }
 
-                            if (p.SearchKind == PropertySearchKind.Primary)
+                            if (p.SearchKind == IqlPropertySearchKind.Primary)
                             {
                                 if (p.Matches("name", "title"))
                                 {
@@ -464,7 +464,7 @@ namespace Iql.Entities
                                 return d + 20;
                             }
 
-                            if (p.SearchKind == PropertySearchKind.Secondary)
+                            if (p.SearchKind == IqlPropertySearchKind.Secondary)
                             {
                                 if (p.Matches("description"))
                                 {
@@ -480,7 +480,7 @@ namespace Iql.Entities
                         var increment = 0.0001;
                         var index = increment;
                         //var titlePropertyCandidates = Properties.Where(p =>
-                        //        p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(PropertyKind.Primitive))
+                        //        p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(IqlPropertyKind.Primitive))
                         //    .Select(p =>
                         //    {
                         //        index += increment;
@@ -492,7 +492,7 @@ namespace Iql.Entities
                         //        };
                         //    }).ToArray();
                         _autoTitlePropertyName = Properties.Where(p =>
-                                 p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(PropertyKind.Primitive))
+                                 p.TypeDefinition.Kind == IqlType.String && p.Kind.HasFlag(IqlPropertyKind.Primitive))
                             .OrderBy(p =>
                             {
                                 index += increment;

@@ -16,7 +16,7 @@ namespace Iql.Entities
 
         public Func<object, object> GetValue => EntityProperty.GetValue;
         public Func<object, object, object> SetValue => EntityProperty.SetValue;
-        public PropertyKind Kind => EntityProperty.Kind;
+        public IqlPropertyKind Kind => EntityProperty.Kind;
         public string PropertyName => EntityProperty.PropertyName;
         public object UnderlyingObject => EntityProperty;
         public EntityRelationship Relationship => EntityProperty.Relationship;

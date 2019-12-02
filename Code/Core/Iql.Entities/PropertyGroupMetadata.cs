@@ -2,10 +2,10 @@ namespace Iql.Entities
 {
     public class PropertyGroupMetadata
     {
-        public PropertySearchKind? Kind { get; }
+        public IqlPropertySearchKind? Kind { get; }
         public IPropertyContainer Property { get; }
 
-        public PropertyGroupMetadata(IPropertyContainer property, PropertySearchKind? kind = null)
+        public PropertyGroupMetadata(IPropertyContainer property, IqlPropertySearchKind? kind = null)
         {
             Property = property;
             Kind = kind;

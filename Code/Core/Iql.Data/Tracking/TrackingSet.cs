@@ -832,7 +832,7 @@ namespace Iql.Data.Tracking
                             {
                                 var sourceConstraint = sourceConstraints[i];
                                 var targetConstraint = targetConstraints[i];
-                                if (sourceConstraint.Kind.HasFlag(PropertyKind.Key) &&
+                                if (sourceConstraint.Kind.HasFlag(IqlPropertyKind.Key) &&
                                     sourceConstraint.Relationship.OtherEnd == relationship.ThisEnd)
                                 {
                                     compositeKey.Keys.Single(key => key.Name == sourceConstraint.Name)
@@ -927,7 +927,7 @@ namespace Iql.Data.Tracking
                 }
 
                 var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-                if (property.Kind.HasFlag(PropertyKind.Key) && !property.CanWrite)
+                if (property.Kind.HasFlag(IqlPropertyKind.Key) && !property.CanWrite)
                 {
                     DataTracker.RelationshipObserver.RunIfNotIgnored(() =>
                         {
@@ -949,7 +949,7 @@ namespace Iql.Data.Tracking
                     );
                 }
 
-                if (property.Kind.HasFlag(PropertyKind.Key))
+                if (property.Kind.HasFlag(IqlPropertyKind.Key))
                 {
                     Reindex(propertyChange.Entity, false);
                 }
@@ -959,10 +959,10 @@ namespace Iql.Data.Tracking
         private void EntityPropertyChanging(IPropertyChangeEvent propertyChange)
         {
             var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-            if (property.Kind.HasFlag(PropertyKind.Key) ||
-                property.Kind.HasFlag(PropertyKind.Relationship) ||
-                property.Kind.HasFlag(PropertyKind.RelationshipKey) ||
-                property.Kind.HasFlag(PropertyKind.Primitive))
+            if (property.Kind.HasFlag(IqlPropertyKind.Key) ||
+                property.Kind.HasFlag(IqlPropertyKind.Relationship) ||
+                property.Kind.HasFlag(IqlPropertyKind.RelationshipKey) ||
+                property.Kind.HasFlag(IqlPropertyKind.Primitive))
             {
                 var entityState = GetEntityState(propertyChange.Entity);
                 if (entityState != null)
@@ -1114,7 +1114,7 @@ namespace Iql.Data.Tracking
             //for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
             //{
             //    var property = EntityConfiguration.Key.Properties[i];
-            //    if (property.Kind.HasFlag(PropertyKind.RelationshipKey) &&
+            //    if (property.Kind.HasFlag(IqlPropertyKind.RelationshipKey) &&
             //        property.GetValue(entity).IsDefaultValue(property.TypeDefinition))
             //    {
             //        hasDefaultValue = true;
@@ -1148,7 +1148,7 @@ namespace Iql.Data.Tracking
             //            {
             //                var oldPropertyState = oldStateMap.State.PropertyStates[i];
             //                var newPropertyState = state.GetPropertyState(oldPropertyState.Property.Name);
-            //                if (oldPropertyState.Property.Kind.HasFlag(PropertyKind.Key))
+            //                if (oldPropertyState.Property.Kind.HasFlag(IqlPropertyKind.Key))
             //                {
             //                    newPropertyState.OldValue = newPropertyState.NewValue;
             //                }

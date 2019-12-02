@@ -179,7 +179,7 @@ namespace Iql.Data.Relationships
             {
                 var targetCountProperty = relationship.Target.EntityConfiguration.FindProperty(
                     $"{relationship.Target.Property.Name}Count");
-                if (targetCountProperty != null && targetCountProperty.Kind.HasFlag(PropertyKind.Count))
+                if (targetCountProperty != null && targetCountProperty.Kind.HasFlag(IqlPropertyKind.Count))
                 {
                     foreach (var targetEntity in targetDictionary)
                     {

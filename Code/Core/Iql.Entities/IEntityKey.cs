@@ -11,7 +11,7 @@ namespace Iql.Entities
         IProperty[] Properties { get; }
         void AddProperty(IProperty property);
         bool IsPivot();
-        void SetReadKind(PropertyReadKind readKind);
-        void SetEditKind(PropertyEditKind editKind);
+        void SetReadKind(IqlPropertyReadKind readKind);
+        void SetEditKind(IqlPropertyEditKind editKind);
     }
 }

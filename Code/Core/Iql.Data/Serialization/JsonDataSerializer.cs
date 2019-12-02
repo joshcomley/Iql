@@ -223,7 +223,7 @@ namespace Iql.Data.Serialization
                         var entityProperty = entityType.Properties.SingleOrDefault(p => p.PropertyName == prop.Name);
                         if (entityProperty != null)
                         {
-                            if (entityProperty.Kind == PropertyKind.Relationship)
+                            if (entityProperty.Kind == IqlPropertyKind.Relationship)
                             {
                                 jobj[prop.Name] = ParseEntityInternal(value, entityProperty.Relationship.OtherEnd.EntityConfiguration, false, entityProperty);
                             }
@@ -311,13 +311,13 @@ namespace Iql.Data.Serialization
                 //    continue;
                 //}
 
-                if (property.Kind.HasFlag(PropertyKind.Key) && !property.Kind.HasFlag(PropertyKind.RelationshipKey) && !CanSendKey(property))
+                if (property.Kind.HasFlag(IqlPropertyKind.Key) && !property.Kind.HasFlag(IqlPropertyKind.RelationshipKey) && !CanSendKey(property))
                 {
                     continue;
                 }
 
                 var propertyValue = property.GetValue(entity);
-                if (property.Kind.HasFlag(PropertyKind.Count) || property.Kind.HasFlag(PropertyKind.Relationship))
+                if (property.Kind.HasFlag(IqlPropertyKind.Count) || property.Kind.HasFlag(IqlPropertyKind.Relationship))
                 {
                     continue;
                 }

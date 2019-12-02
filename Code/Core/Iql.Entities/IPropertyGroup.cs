@@ -15,8 +15,8 @@ namespace Iql.Entities
         string Placeholder { get; set; }
         bool Sortable { get; set; }
         bool Matches(params string[] names);
-        EventEmitter<ValueChangedEvent<PropertyEditKind>> EditKindChanged { get; }
-        EventEmitter<ValueChangedEvent<PropertyReadKind>> ReadKindChanged { get; }
+        EventEmitter<ValueChangedEvent<IqlPropertyEditKind>> EditKindChanged { get; }
+        EventEmitter<ValueChangedEvent<IqlPropertyReadKind>> ReadKindChanged { get; }
         IPropertyGroup SetReadOnlyAndHidden();
         IPropertyGroup SetReadOnly();
         IPropertyGroup SetEditorReadOnly();
@@ -25,12 +25,12 @@ namespace Iql.Entities
         bool IsHiddenFromEdit { get; }
         ReadOnlyEditDisplayKind ReadOnlyEditDisplayKind { get; set; }
         ReadOnlyEditDisplayKind ResolvedReadOnlyEditDisplayKind { get; }
-        PropertyReadKind ReadKind { get; set; }
-        PropertyEditKind EditKind { get; set; }
+        IqlPropertyReadKind ReadKind { get; set; }
+        IqlPropertyEditKind EditKind { get; set; }
         IPropertyGroup PropertyGroup { get; }
         string GroupKey { get; }
         string Key { get; set; }
-        PropertyKind Kind { get; set; }
+        IqlPropertyKind Kind { get; set; }
         IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         IRuleCollection<IBinaryRule> ValidationRules { get; set; }
         IRuleCollection<IDisplayRule> DisplayRules { get; set; }

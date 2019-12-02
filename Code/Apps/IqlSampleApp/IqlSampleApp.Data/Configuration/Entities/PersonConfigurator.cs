@@ -82,7 +82,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
                 );
             });
             var reports = model.FindCollectionRelationship(_ => _.Reports);
-            reports.EditKind = PropertyEditKind.Edit;
+            reports.EditKind = IqlPropertyEditKind.Edit;
             model.ConfigureProperty(_ => _.Description,
                 p => { p.IsConditionallyInferredWith(_ => "I'm \\ \"auto\"", _ => _.CurrentEntityState.Category == PersonCategory.AutoDescription); });
             model.ConfigureProperty(_ => _.Location, p =>

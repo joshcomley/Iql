@@ -150,7 +150,7 @@ namespace Iql.Data.Evaluation
             var sourcePropertyAsGroup = sourceProperty as IPropertyGroup;
             var propertyAsGroup = property as IPropertyGroup;
             if ((sourcePropertyAsGroup != null && !sourcePropertyAsGroup.CanWrite) ||
-                (propertyAsGroup != null && propertyAsGroup.EditKind != PropertyEditKind.Edit))
+                (propertyAsGroup != null && propertyAsGroup.EditKind != IqlPropertyEditKind.Edit))
             {
                 return true;
             }
@@ -389,7 +389,7 @@ namespace Iql.Data.Evaluation
 
                     var inferredValueChange = getPropertyChange(property, value);
                     changes.Add(inferredValueChange);
-                    if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
+                    if (property.Kind.HasFlag(IqlPropertyKind.RelationshipKey))
                     {
                         object relatedEntity = null;
                         if (value != null)
@@ -426,7 +426,7 @@ namespace Iql.Data.Evaluation
                         }
                     }
 
-                    if (property.Kind.HasFlag(PropertyKind.Relationship))
+                    if (property.Kind.HasFlag(IqlPropertyKind.Relationship))
                     {
                         var compositeKey = property.Relationship.OtherEnd.GetCompositeKey(
                             value,

@@ -9,6 +9,6 @@ namespace Iql.Entities.PropertyGroups.Files
         IProperty NameProperty { get; set; }
         IProperty VersionProperty { get; set; }
         IProperty KindProperty { get; set; }
-        FilePropertyKind GetPropertyKind(IProperty property);
+        IqlFilePropertyKind GetPropertyKind(IProperty property);
     }
 }

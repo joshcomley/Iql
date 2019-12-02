@@ -1,6 +1,6 @@
 ﻿namespace Iql.Data.Rendering
 {
-    public class PropertyRenderingKind
+    public class IqlPropertyRenderingKind
     {
         public static string Unknown = "unknown";
         public static string File = "file";

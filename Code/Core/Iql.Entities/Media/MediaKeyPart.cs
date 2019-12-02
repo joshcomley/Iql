@@ -19,7 +19,7 @@ namespace Iql.Entities
                 foreach (var part in parts)
                 {
                     var child = currentConfig.FindProperty(part);
-                    if (!child.Kind.HasFlag(PropertyKind.Relationship))
+                    if (!child.Kind.HasFlag(IqlPropertyKind.Relationship))
                     {
                         break;
                     }

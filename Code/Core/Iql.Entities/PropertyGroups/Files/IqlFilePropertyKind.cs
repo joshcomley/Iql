@@ -1,6 +1,6 @@
 ﻿namespace Iql.Entities.PropertyGroups.Files
 {
-    public enum FilePropertyKind
+    public enum IqlFilePropertyKind
     {
         None = 1,
         FileUrl,

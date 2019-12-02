@@ -15,15 +15,15 @@ namespace Iql.Data.Rendering
         public EntityPropertySnapshot Root => Parent == null ? this : Parent.Root;
         public PropertyDetail Detail { get; set; }
         public string Kind { get; set; }
-        public bool IsEnum => Kind == PropertyRenderingKind.Enum;
-        public bool IsString => Kind == PropertyRenderingKind.String;
-        public bool IsGuid => Kind == PropertyRenderingKind.Guid;
-        public bool IsDate => Kind == PropertyRenderingKind.Date;
-        public bool IsTimeSpan => Kind == PropertyRenderingKind.TimeSpan;
-        public bool IsBoolean => Kind == PropertyRenderingKind.Boolean;
-        public bool IsNumber => Kind == PropertyRenderingKind.Number;
-        public bool IsGeoPolygon => Kind == PropertyRenderingKind.GeoPolygon;
-        public bool IsGeoPoint => Kind == PropertyRenderingKind.GeoPoint;
+        public bool IsEnum => Kind == IqlPropertyRenderingKind.Enum;
+        public bool IsString => Kind == IqlPropertyRenderingKind.String;
+        public bool IsGuid => Kind == IqlPropertyRenderingKind.Guid;
+        public bool IsDate => Kind == IqlPropertyRenderingKind.Date;
+        public bool IsTimeSpan => Kind == IqlPropertyRenderingKind.TimeSpan;
+        public bool IsBoolean => Kind == IqlPropertyRenderingKind.Boolean;
+        public bool IsNumber => Kind == IqlPropertyRenderingKind.Number;
+        public bool IsGeoPolygon => Kind == IqlPropertyRenderingKind.GeoPolygon;
+        public bool IsGeoPoint => Kind == IqlPropertyRenderingKind.GeoPoint;
 
         private bool _asPropertySet = false;
         private IProperty _asProperty;
@@ -46,7 +46,7 @@ namespace Iql.Data.Rendering
             {
                 if (AsProperty != null)
                 {
-                    return AsProperty.Kind.HasFlag(PropertyKind.Key);
+                    return AsProperty.Kind.HasFlag(IqlPropertyKind.Key);
                 }
                 return false;
             }
@@ -58,7 +58,7 @@ namespace Iql.Data.Rendering
             {
                 if (AsProperty != null)
                 {
-                    return AsProperty.Kind.HasFlag(PropertyKind.RelationshipKey);
+                    return AsProperty.Kind.HasFlag(IqlPropertyKind.RelationshipKey);
                 }
                 return false;
             }
@@ -69,16 +69,16 @@ namespace Iql.Data.Rendering
             {
                 if (AsProperty != null)
                 {
-                    return AsProperty.Kind.HasFlag(PropertyKind.Relationship);
+                    return AsProperty.Kind.HasFlag(IqlPropertyKind.Relationship);
                 }
                 return false;
             }
         }
-        public bool IsRelationshipTarget => Kind == PropertyRenderingKind.RelationshipTarget;
-        public bool IsRelationshipSource => Kind == PropertyRenderingKind.RelationshipSource;
-        public bool IsFile => Kind == PropertyRenderingKind.File;
-        public bool IsGroup => Kind == PropertyRenderingKind.Group;
-        public bool IsUnknown => Kind == PropertyRenderingKind.Unknown;
+        public bool IsRelationshipTarget => Kind == IqlPropertyRenderingKind.RelationshipTarget;
+        public bool IsRelationshipSource => Kind == IqlPropertyRenderingKind.RelationshipSource;
+        public bool IsFile => Kind == IqlPropertyRenderingKind.File;
+        public bool IsGroup => Kind == IqlPropertyRenderingKind.Group;
+        public bool IsUnknown => Kind == IqlPropertyRenderingKind.Unknown;
         public bool CanShow { get; set; }
         public SnapshotReasonKind CanShowReason { get; }
         public bool CanEdit { get; set; }

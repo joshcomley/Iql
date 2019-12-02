@@ -71,7 +71,7 @@ namespace Iql.Entities.DisplayFormatting
                 return new AutoFormattingResult(AutoFormattingKind.Title, titleProperties);
             }
 
-            var firstSearchProperty = entityConfiguration.Properties.FirstOrDefault(p => p.SearchKind == PropertySearchKind.Primary);
+            var firstSearchProperty = entityConfiguration.Properties.FirstOrDefault(p => p.SearchKind == IqlPropertySearchKind.Primary);
             if (firstSearchProperty != null)
             {
                 return new AutoFormattingResult(AutoFormattingKind.FirstSearchProperty, new IProperty[] { firstSearchProperty });

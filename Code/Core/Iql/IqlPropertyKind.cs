@@ -1,9 +1,9 @@
 using System;
 
-namespace Iql.Entities
+namespace Iql
 {
     [Flags]
-    public enum PropertyKind
+    public enum IqlPropertyKind
     {
         Property = 1,
         Primitive = Property | 2,

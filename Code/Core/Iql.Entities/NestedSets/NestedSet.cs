@@ -14,9 +14,9 @@ namespace Iql.Entities.NestedSets
             return "Hierarchy";
         }
 
-        public override PropertyKind Kind
+        public override IqlPropertyKind Kind
         {
-            get => PropertyKind.SimpleCollection;
+            get => IqlPropertyKind.SimpleCollection;
             set { }
         }
 
@@ -39,15 +39,15 @@ namespace Iql.Entities.NestedSets
         {
             return new PropertyGroupMetadata[]
             {
-                new PropertyGroupMetadata(IdProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(LeftProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(RightProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(LeftOfProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(RightOfProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(KeyProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(LevelProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(ParentIdProperty, PropertySearchKind.None),
-                new PropertyGroupMetadata(ParentProperty, PropertySearchKind.None),
+                new PropertyGroupMetadata(IdProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(LeftProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(RightProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(LeftOfProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(RightOfProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(KeyProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(LevelProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(ParentIdProperty, IqlPropertySearchKind.None),
+                new PropertyGroupMetadata(ParentProperty, IqlPropertySearchKind.None),
             };
         }
 

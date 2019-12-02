@@ -123,13 +123,13 @@ namespace Iql.Entities
         public string Placeholder { get; set; }
         public bool Sortable { get; set; } = true;
         public virtual bool IsHiddenFromEdit =>
-            EditKind == PropertyEditKind.Hidden;
+            EditKind == IqlPropertyEditKind.Hidden;
 
         public virtual ReadOnlyEditDisplayKind ReadOnlyEditDisplayKind { get; set; } = ReadOnlyEditDisplayKind.Display;
         public virtual ReadOnlyEditDisplayKind ResolvedReadOnlyEditDisplayKind => ReadOnlyEditDisplayKind;
 
         public virtual bool IsHiddenFromRead =>
-            ReadKind == PropertyReadKind.Hidden;
+            ReadKind == IqlPropertyReadKind.Hidden;
 
         public abstract IProperty PrimaryProperty { get; }
 
@@ -146,31 +146,31 @@ namespace Iql.Entities
 
         public virtual IPropertyGroup SetEditorReadOnly()
         {
-            EditKind = PropertyEditKind.Display;
-            ReadKind = PropertyReadKind.Display;
+            EditKind = IqlPropertyEditKind.Display;
+            ReadKind = IqlPropertyReadKind.Display;
             return this;
         }
 
         public virtual IPropertyGroup SetHidden()
         {
-            EditKind = PropertyEditKind.Hidden;
-            ReadKind = PropertyReadKind.Hidden;
+            EditKind = IqlPropertyEditKind.Hidden;
+            ReadKind = IqlPropertyReadKind.Hidden;
             return this;
         }
 
 
-        private EventEmitter<ValueChangedEvent<PropertyEditKind>> _editKindChanged;
-        private EventEmitter<ValueChangedEvent<PropertyReadKind>> _readKindChanged;
-        private PropertyEditKind _editKind = PropertyEditKind.Edit;
-        private PropertyReadKind _readKind = PropertyReadKind.Display;
+        private EventEmitter<ValueChangedEvent<IqlPropertyEditKind>> _editKindChanged;
+        private EventEmitter<ValueChangedEvent<IqlPropertyReadKind>> _readKindChanged;
+        private IqlPropertyEditKind _editKind = IqlPropertyEditKind.Edit;
+        private IqlPropertyReadKind _readKind = IqlPropertyReadKind.Display;
 
-        public EventEmitter<ValueChangedEvent<PropertyEditKind>> EditKindChanged => _editKindChanged =
-            _editKindChanged ?? new EventEmitter<ValueChangedEvent<PropertyEditKind>>();
+        public EventEmitter<ValueChangedEvent<IqlPropertyEditKind>> EditKindChanged => _editKindChanged =
+            _editKindChanged ?? new EventEmitter<ValueChangedEvent<IqlPropertyEditKind>>();
 
-        public EventEmitter<ValueChangedEvent<PropertyReadKind>> ReadKindChanged => _readKindChanged =
-            _readKindChanged ?? new EventEmitter<ValueChangedEvent<PropertyReadKind>>();
+        public EventEmitter<ValueChangedEvent<IqlPropertyReadKind>> ReadKindChanged => _readKindChanged =
+            _readKindChanged ?? new EventEmitter<ValueChangedEvent<IqlPropertyReadKind>>();
 
-        public virtual PropertyReadKind ReadKind
+        public virtual IqlPropertyReadKind ReadKind
         {
             get => _readKind;
             set
@@ -179,12 +179,12 @@ namespace Iql.Entities
                 _readKind = value;
                 if (oldValue != value && _readKindChanged != null)
                 {
-                    ReadKindChanged.Emit(() => new ValueChangedEvent<PropertyReadKind>(oldValue, value));
+                    ReadKindChanged.Emit(() => new ValueChangedEvent<IqlPropertyReadKind>(oldValue, value));
                 }
             }
         }
 
-        public virtual PropertyEditKind EditKind
+        public virtual IqlPropertyEditKind EditKind
         {
             get => _editKind;
             set
@@ -193,7 +193,7 @@ namespace Iql.Entities
                 _editKind = value;
                 if (oldValue != value && _editKindChanged != null)
                 {
-                    EditKindChanged.Emit(() => new ValueChangedEvent<PropertyEditKind>(oldValue, value));
+                    EditKindChanged.Emit(() => new ValueChangedEvent<IqlPropertyEditKind>(oldValue, value));
                 }
             }
         }
@@ -209,7 +209,7 @@ namespace Iql.Entities
         public string Key { get; set; }
         public string GroupKey => this.ResolveGroupKey();
 
-        public abstract PropertyKind Kind { get; set; }
+        public abstract IqlPropertyKind Kind { get; set; }
         public abstract IqlPropertyGroupKind GroupKind { get; }
         public abstract PropertyGroupMetadata[] GetPropertyGroupMetadata();
 

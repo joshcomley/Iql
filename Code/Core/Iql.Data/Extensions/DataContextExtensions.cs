@@ -97,8 +97,8 @@ namespace Iql.Data.Extensions
 
                 var propertyValue = entity.GetPropertyValue(property);
                 if (propertyValue != null || !property.TypeDefinition.Nullable &&
-                    !property.Kind.HasFlag(PropertyKind.Relationship) &&
-                    (!property.Kind.HasFlag(PropertyKind.Key) || property.EntityConfiguration.Key.CanWrite ||
+                    !property.Kind.HasFlag(IqlPropertyKind.Relationship) &&
+                    (!property.Kind.HasFlag(IqlPropertyKind.Key) || property.EntityConfiguration.Key.CanWrite ||
                      includeNonEditableKey))
                 {
                     var state = new PropertyState(property, null);

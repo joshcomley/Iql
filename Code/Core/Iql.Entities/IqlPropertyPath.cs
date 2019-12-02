@@ -114,7 +114,7 @@ namespace Iql.Entities
             if (Property != null)
             {
                 return string.Join(separator,
-                    PropertyPath.Where(p => p.Property != null && p.Property.Kind.HasFlag(PropertyKind.Relationship))
+                    PropertyPath.Where(p => p.Property != null && p.Property.Kind.HasFlag(IqlPropertyKind.Relationship))
                         .Select(p => p.PropertyName));
             }
 
@@ -143,11 +143,11 @@ namespace Iql.Entities
         public string GetRelationshipPathFromHere(string separator)
         {
             var parts = new List<string>();
-            if (Property == null || Property.Kind.HasFlag(PropertyKind.Relationship))
+            if (Property == null || Property.Kind.HasFlag(IqlPropertyKind.Relationship))
             {
                 parts.Add(PropertyName);
                 var child = Child;
-                while (child != null && (child.Property == null || child.Property.Kind.HasFlag(PropertyKind.Relationship)))
+                while (child != null && (child.Property == null || child.Property.Kind.HasFlag(IqlPropertyKind.Relationship)))
                 {
                     parts.Add(child.PropertyName);
                     child = child.Child;

@@ -16,7 +16,7 @@ namespace Iql.Entities
         IqlType ToIqlType();
         Func<object, object> GetValue { get; }
         Func<object, object, object> SetValue { get; }
-        PropertyKind Kind { get; }
+        IqlPropertyKind Kind { get; }
         string PropertyName { get; }
         object UnderlyingObject { get; }
         //IProperty EntityProperty { get; }

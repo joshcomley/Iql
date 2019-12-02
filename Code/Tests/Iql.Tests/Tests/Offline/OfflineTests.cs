@@ -1026,7 +1026,7 @@ namespace Iql.Tests.Tests.Offline
                 findEntityState.EntityConfiguration.GetCompositeKey((_.Operation as IUpdateEntityOperation).EntityState.Entity).Matches(key));
             Assert.IsNotNull(first);
             var updateEntityOperation = first.Operation as IUpdateEntityOperation;
-            var changedProperties = updateEntityOperation.GetChangedProperties().Where(_ => !_.Property.Kind.HasFlag(PropertyKind.Relationship))
+            var changedProperties = updateEntityOperation.GetChangedProperties().Where(_ => !_.Property.Kind.HasFlag(IqlPropertyKind.Relationship))
                 .ToArray();
             Assert.AreEqual(properties.Length, changedProperties.Length);
             for (var i = 0; i < properties.Length; i++)

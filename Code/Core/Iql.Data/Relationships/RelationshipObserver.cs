@@ -378,19 +378,19 @@ namespace Iql.Data.Relationships
             _propertyChangeIgnorer.RunIfNotAlreadyIgnored(
                 () =>
                 {
-                    if (property.Kind.HasFlag(PropertyKind.Key))
+                    if (property.Kind.HasFlag(IqlPropertyKind.Key))
                     {
                         ProcessTargetKeyChange(propertyChangeEvent.Entity, entityConfiguration);
                     }
 
-                    if (property.Kind.HasFlag(PropertyKind.RelationshipKey))
+                    if (property.Kind.HasFlag(IqlPropertyKind.RelationshipKey))
                     {
                         ProcessRelationshipKeyChange(
                             propertyChangeEvent.Entity,
                             property,
                             propertyChangeEvent.OldValue);
                     }
-                    else if (property.Kind.HasFlag(PropertyKind.Relationship))
+                    else if (property.Kind.HasFlag(IqlPropertyKind.Relationship))
                     {
                         if (!property.TypeDefinition.IsCollection)
                         {
@@ -408,7 +408,7 @@ namespace Iql.Data.Relationships
             if (property.Relationship != null)
             {
                 property.Relationship.ThisEnd.MarkDirty(propertyChangeEvent.Entity);
-                if (property.Kind == PropertyKind.Relationship && !property.TypeDefinition.IsCollection)
+                if (property.Kind == IqlPropertyKind.Relationship && !property.TypeDefinition.IsCollection)
                 {
                     property.Relationship.OtherEnd.MarkDirty(propertyChangeEvent.OldValue);
                     property.Relationship.OtherEnd.MarkDirty(propertyChangeEvent.NewValue);

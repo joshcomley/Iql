@@ -86,7 +86,7 @@ namespace Iql.Tests.Tests.Validation
             // Mark key as generated remotely so our entity will be
             // attempted to be inserted upon save
             Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
-                .Key.SetEditKind(PropertyEditKind.Hidden);
+                .Key.SetEditKind(IqlPropertyEditKind.Hidden);
             var personTypeMap = EntityHelper.NewPersonTypeMap();
             personTypeMap.PersonId = 0;
             personTypeMap.TypeId = 0;
@@ -107,7 +107,7 @@ namespace Iql.Tests.Tests.Validation
                     ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
                     ValidationDefaults.DefaultRequiredAutoValidationFailureMessage));
             Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
-                .Key.SetEditKind(PropertyEditKind.Edit);
+                .Key.SetEditKind(IqlPropertyEditKind.Edit);
         }
 
 #if TypeScript
@@ -117,7 +117,7 @@ namespace Iql.Tests.Tests.Validation
             // Mark key as generated remotely so our entity will be
             // attempted to be inserted upon save
             Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
-                .Key.SetEditKind(PropertyEditKind.Hidden);
+                .Key.SetEditKind(IqlPropertyEditKind.Hidden);
             var personTypeMap = EntityHelper.NewPersonTypeMap();
             personTypeMap.SetPropertyValueByName(nameof(PersonTypeMap.PersonId), null);
             personTypeMap.SetPropertyValueByName(nameof(PersonTypeMap.TypeId), null);
@@ -133,7 +133,7 @@ namespace Iql.Tests.Tests.Validation
                     ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
                     ValidationDefaults.DefaultRequiredAutoValidationFailureMessage));
             Db.EntityConfigurationContext.EntityType<PersonTypeMap>()
-                .Key.SetEditKind(PropertyEditKind.Edit);
+                .Key.SetEditKind(IqlPropertyEditKind.Edit);
         }
 #endif
 

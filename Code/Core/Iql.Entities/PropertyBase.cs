@@ -22,7 +22,7 @@ namespace Iql.Entities
             {
                 if (_groupStates == null)
                 {
-                    if (Kind.HasFlag(PropertyKind.Relationship) && Relationship.ThisIsTarget)
+                    if (Kind.HasFlag(IqlPropertyKind.Relationship) && Relationship.ThisIsTarget)
                     {
                         _groupStates = new IProperty[] { (IProperty) this };
                     }
@@ -52,7 +52,7 @@ namespace Iql.Entities
             {
                 if (_isCount == null)
                 {
-                    _isCount = Kind.HasFlag(PropertyKind.Count);
+                    _isCount = Kind.HasFlag(IqlPropertyKind.Count);
                 }
                 return _isCount.Value;
             }
@@ -64,7 +64,7 @@ namespace Iql.Entities
             {
                 if (_hasRelationship == null)
                 {
-                    _hasRelationship = Kind.HasFlag(PropertyKind.Relationship);
+                    _hasRelationship = Kind.HasFlag(IqlPropertyKind.Relationship);
                 }
                 return _hasRelationship.Value;
             }
@@ -124,7 +124,7 @@ namespace Iql.Entities
             ? EntityConfiguration.Geographics.FirstOrDefault(g =>
                 Equals(g.LatitudeProperty, this) || Equals(g.LongitudeProperty, this))
             : null;
-        public IFile File => EntityConfiguration?.Files.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != FilePropertyKind.None);
+        public IFile File => EntityConfiguration?.Files.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != IqlFilePropertyKind.None);
         public IDateRange DateRange => EntityConfiguration?.DateRanges.FirstOrDefault(dr => dr.GetPropertyKind(this as IProperty) != DateRangePropertyKind.None);
         public INestedSet NestedSet => EntityConfiguration?.NestedSets.FirstOrDefault(ns => ns.GetPropertyKind(this as IProperty) != NestedSetPropertyKind.None);
         public bool IsLongitudeProperty => Equals(GeographicPoint?.LongitudeProperty, this);
@@ -206,7 +206,7 @@ namespace Iql.Entities
         public IEnumerable<IRelationship> Relationships => RelationshipSources.Where(r => !r.ThisIsTarget).Select(r => r.Relationship);
         public ITypeDefinition TypeDefinition { get; set; }
 
-        private PropertySearchKind _searchKind;
+        private IqlPropertySearchKind _searchKind;
 #if !TypeScript
         public PropertyInfo PropertyInfo { get; set; }
 #endif
@@ -252,14 +252,14 @@ namespace Iql.Entities
             }
         }
 
-        public override PropertyKind Kind { get; set; }
+        public override IqlPropertyKind Kind { get; set; }
 
         protected EntityRelationship _relationship;
         private IList<IInferredValueConfiguration> _inferredValueConfigurations = new List<IInferredValueConfiguration>();
         private bool IsSearchableType => TypeDefinition != null && (TypeDefinition.Type == typeof(string) &&
                                                                     string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType));
 
-        private PropertySearchKind? GetGroupSearchKind(IPropertyContainer groupDefinition)
+        private IqlPropertySearchKind? GetGroupSearchKind(IPropertyContainer groupDefinition)
         {
             var match = groupDefinition.GetPropertyGroupMetadata()
                 .FirstOrDefault(_ => _.Property == this);
@@ -272,15 +272,15 @@ namespace Iql.Entities
 
         public bool AutoSearchKind { get; set; } = true;
 
-        public virtual PropertySearchKind SearchKind
+        public virtual IqlPropertySearchKind SearchKind
         {
             get
             {
                 if (AutoSearchKind)
                 {
-                    if (!IsSearchableType || ReadKind == PropertyReadKind.Hidden)
+                    if (!IsSearchableType || ReadKind == IqlPropertyReadKind.Hidden)
                     {
-                        return PropertySearchKind.None;
+                        return IqlPropertySearchKind.None;
                     }
 
                     if (EntityConfiguration.SpecialTypeDefinition != null)
@@ -293,7 +293,7 @@ namespace Iql.Entities
                     }
 
                     var groups = EntityConfiguration.AllPropertyGroups();
-                    var groupMatches = new List<PropertySearchKind>();
+                    var groupMatches = new List<IqlPropertySearchKind>();
                     for (var i = 0; i < groups.Length; i++)
                     {
                         var groupSearchKind = GetGroupSearchKind(groups[i]);
@@ -302,36 +302,36 @@ namespace Iql.Entities
                             groupMatches.Add(groupSearchKind.Value);
                         }
                     }
-                    if (groupMatches.Any(_ => _ == PropertySearchKind.Primary))
+                    if (groupMatches.Any(_ => _ == IqlPropertySearchKind.Primary))
                     {
-                        return PropertySearchKind.Primary;
+                        return IqlPropertySearchKind.Primary;
                     }
-                    if (groupMatches.Any(_ => _ == PropertySearchKind.Secondary))
+                    if (groupMatches.Any(_ => _ == IqlPropertySearchKind.Secondary))
                     {
-                        return PropertySearchKind.Primary;
+                        return IqlPropertySearchKind.Primary;
                     }
                     if (groupMatches.Any())
                     {
-                        return PropertySearchKind.None;
+                        return IqlPropertySearchKind.None;
                     }
 
                     if (EntityConfiguration.TitleProperty == this || EntityConfiguration.PreviewProperty == this ||
                         Matches("name", "fullname", "title", "firstname", "lastname", "christianname", "forename", "surname"))
                     {
-                        return PropertySearchKind.Primary;
+                        return IqlPropertySearchKind.Primary;
                     }
 
-                    var searchKind = Kind.HasFlag(PropertyKind.Primitive) &&
-                                  !Kind.HasFlag(PropertyKind.RelationshipKey) &&
-                                  !Kind.HasFlag(PropertyKind.Key)
-                        ? PropertySearchKind.Secondary
-                        : PropertySearchKind.None;
+                    var searchKind = Kind.HasFlag(IqlPropertyKind.Primitive) &&
+                                  !Kind.HasFlag(IqlPropertyKind.RelationshipKey) &&
+                                  !Kind.HasFlag(IqlPropertyKind.Key)
+                        ? IqlPropertySearchKind.Secondary
+                        : IqlPropertySearchKind.None;
                     // TOOD: Add getter for all special property types this belongs to
                     // TODO: Move this logic into each special property group
                     var specialPropertyMetadata = PropertyGroup?.GetPropertyGroupMetadata().FirstOrDefault(_ => _.Property == this);
                     if (specialPropertyMetadata != null && specialPropertyMetadata.Kind != null)
                     {
-                        searchKind = PropertySearchKind.None;
+                        searchKind = IqlPropertySearchKind.None;
                     }
                     _searchKind = searchKind;
                 }
