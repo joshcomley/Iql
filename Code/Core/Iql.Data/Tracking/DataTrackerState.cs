@@ -24,19 +24,20 @@ namespace Iql.Data.Tracking
         private readonly Dictionary<IPropertyState, Tuple<object, object>> _propertiesChanged = new Dictionary<IPropertyState, Tuple<object, object>>();
         private bool _hasChanges;
         private int _propertiesChangedCount = 0;
-        public EventEmitter<DataTrackerState> Changed { get; } = new EventEmitter<DataTrackerState>();
+        private EventEmitter<DataTrackerState> _changed = null;
+        public EventEmitter<DataTrackerState> Changed => _changed = _changed ?? new EventEmitter<DataTrackerState>();
 
         public int PropertiesChangedCount => _propertiesChangedCount;
         public int EntitiesChangedCount => _entitiesChanged.Count;
+        private EventEmitter<ValueChangedEvent<bool>> _propertiesChangedChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> PropertiesChangedChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> PropertiesChangedChanged => _propertiesChangedChanged = _propertiesChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<bool>> _entitiesChangedChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> EntitiesChangedChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> EntitiesChangedChanged => _entitiesChangedChanged = _entitiesChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged { get; }
-            = new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
         public bool HasChanges
         {

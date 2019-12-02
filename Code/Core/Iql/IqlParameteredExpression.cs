@@ -5,7 +5,8 @@ namespace Iql
     public abstract class IqlParameteredExpression<TParameter> : IqlParameteredExpressionBase
         where TParameter : IqlExpression
     {
-        public List<TParameter> Parameters { get; set; } = new List<TParameter>();
+        private List<TParameter> _parameters = null;
+        public List<TParameter> Parameters { get => _parameters = _parameters ?? new List<TParameter>(); set => _parameters = value; }
 
         public override IEnumerable<IqlExpression> GetParameters()
         {

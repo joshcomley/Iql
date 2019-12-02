@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Iql.Entities;
 using Iql.Entities.SpecialTypes;
@@ -13,7 +13,7 @@ namespace Iql.Parsing.Types
         public ResolvedType(IIqlTypeMetadata typeMetadata, IGenericTypeParameter[] genericTypeParameters = null)
         {
             TypeMetadata = typeMetadata;
-            GenericTypeParameters = genericTypeParameters ?? new IGenericTypeParameter[] { };
+            _genericTypeParameters = genericTypeParameters ?? new IGenericTypeParameter[] { };
             var type = TypeMetadata.Type;
             if (GenericTypeParameters.Any())
             {
@@ -23,12 +23,13 @@ namespace Iql.Parsing.Types
                     type = type.GetGenericTypeDefinition();
                 }
 #endif
-                type = type.MakeGenericType(genericTypeParameters.Select(_ => _.Type.Type).ToArray());
+                type = type.MakeGenericType(GenericTypeParameters.Select(_ => _.Type.Type).ToArray());
             }
             Type = type;
         }
+        private IGenericTypeParameter[] _genericTypeParameters = null;
 
-        public IGenericTypeParameter[] GenericTypeParameters {get;} = new IGenericTypeParameter[]{};
+        public IGenericTypeParameter[] GenericTypeParameters => _genericTypeParameters = _genericTypeParameters ?? new IGenericTypeParameter[]{};
 
         public Type Type { get; }
         public string TypeName => Type?.Name;

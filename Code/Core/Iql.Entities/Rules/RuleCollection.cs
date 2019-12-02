@@ -18,8 +18,9 @@ namespace Iql.Entities.Rules
 
             return default(TRule);
         }
+        private List<TRule> _all = null;
 
-        public List<TRule> All { get; } = new List<TRule>();
+        public List<TRule> All => _all = _all ?? new List<TRule>();
 
         IEnumerable<TRule> IRuleCollection<TRule>.All => All;
 

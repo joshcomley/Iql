@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 
 namespace Iql.Entities.PropertyChangers
 {
     public class DatePropertyChanger : ComplexPropertyChanger<DateTimeOffset>
     {
-        public static DatePropertyChanger Instance { get; } = new DatePropertyChanger();
+        private static DatePropertyChanger _instance = null;
+        public static DatePropertyChanger Instance => _instance = _instance ?? new DatePropertyChanger();
         protected override bool CheckEquivalence(DateTimeOffset newValue, DateTimeOffset oldValue)
         {
             return oldValue.Ticks == newValue.Ticks;

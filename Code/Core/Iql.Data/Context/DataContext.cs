@@ -45,7 +45,8 @@ namespace Iql.Data.Context
         {
             private DataTracker _offlineDataTracker;
             public DataTracker OfflineDataTracker => _offlineDataTracker;
-            public EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged { get; } = new EventEmitter<OfflineChangeStateChangedEvent>();
+            private EventEmitter<OfflineChangeStateChangedEvent> _offlineStateChanged = null;
+            public EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged => _offlineStateChanged = _offlineStateChanged ?? new EventEmitter<OfflineChangeStateChangedEvent>();
 
             public IEntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
             public string SynchronicityKey { get; set; }
@@ -264,7 +265,8 @@ namespace Iql.Data.Context
                 return _synchronisedConfiguration;
             }
         }
-        internal static List<IDataContext> AllDataContexts { get; } = new List<IDataContext>();
+        private static List<IDataContext> _allDataContexts = null;
+        internal static List<IDataContext> AllDataContexts => _allDataContexts = _allDataContexts ?? new List<IDataContext>();
         public DataContext(
             IDataStore dataStore = null,
             EvaluateContext evaluateContext = null

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,8 @@ namespace Iql.Data.Types
 {
     public class TypeResolver : ITypeResolver
     {
-        public EventEmitter<string> ResolvingType { get; } = new EventEmitter<string>();
+        private EventEmitter<string> _resolvingType = null;
+        public EventEmitter<string> ResolvingType => _resolvingType = _resolvingType ?? new EventEmitter<string>();
         public IContextEvaluator ContextEvaluator { get; set; }
         public TypeResolver()
         {
@@ -139,10 +140,11 @@ namespace Iql.Data.Types
         public StandardTypeMetadata(Type type, IGenericTypeParameter[] genericTypeParameters)
         {
             Type = type;
-            GenericTypeParameters = genericTypeParameters ?? new IGenericTypeParameter[] { };
+            _genericTypeParameters = genericTypeParameters ?? new IGenericTypeParameter[] { };
         }
+        private IGenericTypeParameter[] _genericTypeParameters = null;
 
-        public IGenericTypeParameter[] GenericTypeParameters { get; } = new IGenericTypeParameter[] { };
+        public IGenericTypeParameter[] GenericTypeParameters => _genericTypeParameters = _genericTypeParameters ?? new IGenericTypeParameter[] { };
         public Type Type { get; }
         public string TypeName => Type?.Name;
 

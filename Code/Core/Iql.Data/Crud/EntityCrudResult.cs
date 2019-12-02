@@ -15,7 +15,8 @@ namespace Iql.Data.Crud
         public CompositeKey KeyBeforeSave { get; }
         public IEntityState<T> EntityState => (IEntityState<T>)Operation.EntityState;
         IEntityStateBase IEntityCrudResult.EntityState => EntityState;
-        public Dictionary<object, IEntityValidationResult> EntityValidationResults { get; set; } = new Dictionary<object, IEntityValidationResult>();
+        private Dictionary<object, IEntityValidationResult> _entityValidationResults = null;
+        public Dictionary<object, IEntityValidationResult> EntityValidationResults { get => _entityValidationResults = _entityValidationResults ?? new Dictionary<object, IEntityValidationResult>(); set => _entityValidationResults = value; }
         public IDataContext DataContext { get; }
         public IqlOperationKind Kind => Operation.Kind;
         object IEntityCrudResult.LocalEntity => LocalEntity;

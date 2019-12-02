@@ -135,7 +135,8 @@ namespace Iql.Entities
         public bool IsSubTitleProperty => HasHint(KnownHints.SubTitle);
         public override IEntityConfiguration EntityConfiguration => EntityConfigurationInternal;
         public IEntityConfiguration EntityConfigurationInternal { get; set; }
-        public List<EntityRelationship> RelationshipSources { get; set; } = new List<EntityRelationship>();
+        private List<EntityRelationship> _relationshipSources = null;
+        public List<EntityRelationship> RelationshipSources { get => _relationshipSources = _relationshipSources ?? new List<EntityRelationship>(); set => _relationshipSources = value; }
         public bool Searchable { get; set; } = true;
 
         public virtual bool? Nullable

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -75,9 +75,9 @@ namespace Iql.Events
         private List<EventSubscription> _subscriptions = null;
         protected List<EventSubscription> Subscriptions =>
             _subscriptions = _subscriptions ?? new List<EventSubscription>();
+        private Dictionary<int, EventSubscription> _subscriptionsById = null;
 
-        protected Dictionary<int, EventSubscription> SubscriptionsById { get; } =
-            new Dictionary<int, EventSubscription>();
+        protected Dictionary<int, EventSubscription> SubscriptionsById => _subscriptionsById = _subscriptionsById ?? new Dictionary<int, EventSubscription>();
 
         public void ClearBackfires()
         {
@@ -101,8 +101,9 @@ namespace Iql.Events
                 _backfireMode = value;
             }
         }
+        private List<TEvent> _backfires = null;
 
-        public List<TEvent> Backfires { get; } = new List<TEvent>();
+        public List<TEvent> Backfires => _backfires = _backfires ?? new List<TEvent>();
 
         public void Unsubscribe(int subscription)
         {

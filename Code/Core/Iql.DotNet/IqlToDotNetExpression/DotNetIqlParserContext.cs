@@ -57,8 +57,9 @@ namespace Iql.DotNet.IqlToDotNetExpression
                                        typeof(InMemoryContext<>).MakeGenericType(CurrentEntityType), "context");
             }
         }
+        private Dictionary<IqlParameteredLambdaExpression, Dictionary<string, ParameterExpression>> _parameterExpressions = null;
 
-        public Dictionary<IqlParameteredLambdaExpression, Dictionary<string, ParameterExpression>> ParameterExpressions { get; } = new Dictionary<IqlParameteredLambdaExpression, Dictionary<string, ParameterExpression>>();
+        public Dictionary<IqlParameteredLambdaExpression, Dictionary<string, ParameterExpression>> ParameterExpressions => _parameterExpressions = _parameterExpressions ?? new Dictionary<IqlParameteredLambdaExpression, Dictionary<string, ParameterExpression>>();
 
         public ParameterExpression GetParameterExpression(string name)
         {

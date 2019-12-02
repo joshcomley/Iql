@@ -56,7 +56,8 @@ namespace Iql.Parsing
         public TQueryAdapter Adapter { get; set; }
         public Type CurrentEntityType => TypeStack.LastOrDefault();
         public bool IsTypeRoot => TypeStack.Count == 1;
-        public List<Type> TypeStack { get; } = new List<Type>();
+        private List<Type> _typeStack = null;
+        public List<Type> TypeStack => _typeStack = _typeStack ?? new List<Type>();
         public Type RootEntityType { get; }
         private Dictionary<IqlExpression, Type> _foundTypes = new Dictionary<IqlExpression, Type>();
         private List<RootReferenceTypeMap> _rootReferenceResolvedTypes = new List<RootReferenceTypeMap>();
@@ -155,8 +156,9 @@ namespace Iql.Parsing
 
             return _rootEntityNames[name];
         }
+        private List<IqlExpression> _ancestors = null;
 
-        public List<IqlExpression> Ancestors { get; } = new List<IqlExpression>();
+        public List<IqlExpression> Ancestors => _ancestors = _ancestors ?? new List<IqlExpression>();
 
         public T[] GetAncestors<T>()
         where T : IqlExpression
@@ -239,8 +241,9 @@ namespace Iql.Parsing
 
             return null;
         }
+        private Dictionary<IqlExpression, List<TParserOutput>> _outputMap = null;
 
-        public Dictionary<IqlExpression, List<TParserOutput>> OutputMap { get; } = new Dictionary<IqlExpression, List<TParserOutput>>();
+        public Dictionary<IqlExpression, List<TParserOutput>> OutputMap => _outputMap = _outputMap ?? new Dictionary<IqlExpression, List<TParserOutput>>();
 
         //protected IqlPropertyPath Path { get; } = new IqlPropertyPath();
         protected string EntityPath { get; } = "";

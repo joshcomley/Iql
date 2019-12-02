@@ -9,9 +9,9 @@ namespace Iql.Entities.Lists
     public class ObservableList<T> : IList<T>, IObservableList
     {
         private readonly List<T> _rootList = new List<T>();
+        private EventEmitter<ObservableListChangeEvent<T>> _change = null;
 
-        public EventEmitter<ObservableListChangeEvent<T>> Change { get; }
-            = new EventEmitter<ObservableListChangeEvent<T>>();
+        public EventEmitter<ObservableListChangeEvent<T>> Change => _change = _change ?? new EventEmitter<ObservableListChangeEvent<T>>();
 
         IEventSubscriber<IObservableListChangeEvent> IObservableList.Change => Change;
 

@@ -102,8 +102,9 @@ namespace Iql.Entities
 
         private IIqlTypeMetadata _typeMetadata = null;
         public IIqlTypeMetadata TypeMetadata => _typeMetadata = _typeMetadata ?? new EntityConfigurationTypeProvider((IEntityConfiguration)this);
+        private List<IqlMethod> _methods = null;
 
-        public List<IqlMethod> Methods { get; set; } = new List<IqlMethod>();
+        public List<IqlMethod> Methods { get => _methods = _methods ?? new List<IqlMethod>(); set => _methods = value; }
 
         public IEntityConfiguration AddMethod(IqlMethod method)
         {
@@ -250,8 +251,9 @@ namespace Iql.Entities
             var ordered = all.PrioritizeForReading().ToArray();
             return ordered;
         }
+        private IList<DisplayConfiguration> _displayConfigurations = null;
 
-        public IList<DisplayConfiguration> DisplayConfigurations { get; set; } = new List<DisplayConfiguration>();
+        public IList<DisplayConfiguration> DisplayConfigurations { get => _displayConfigurations = _displayConfigurations ?? new List<DisplayConfiguration>(); set => _displayConfigurations = value; }
 
         public IEnumerable<DisplayConfiguration> DisplayConfigurationsFor(DisplayConfigurationKind kind)
         {
@@ -386,11 +388,15 @@ namespace Iql.Entities
 
             return properties.ToArray();
         }
+        private IList<IGeographicPoint> _geographics = null;
 
-        public IList<IGeographicPoint> Geographics { get; set; } = new List<IGeographicPoint>();
-        public IList<INestedSet> NestedSets { get; set; } = new List<INestedSet>();
-        public IList<IDateRange> DateRanges { get; set; } = new List<IDateRange>();
-        public IList<IFile> Files { get; set; } = new List<IFile>();
+        public IList<IGeographicPoint> Geographics { get => _geographics = _geographics ?? new List<IGeographicPoint>(); set => _geographics = value; }
+        private IList<INestedSet> _nestedSets = null;
+        public IList<INestedSet> NestedSets { get => _nestedSets = _nestedSets ?? new List<INestedSet>(); set => _nestedSets = value; }
+        private IList<IDateRange> _dateRanges = null;
+        public IList<IDateRange> DateRanges { get => _dateRanges = _dateRanges ?? new List<IDateRange>(); set => _dateRanges = value; }
+        private IList<IFile> _files = null;
+        public IList<IFile> Files { get => _files = _files ?? new List<IFile>(); set => _files = value; }
         public IDisplayFormatting DisplayFormatting { get; set; }
         public IRuleCollection<IBinaryRule> EntityValidation { get; set; }
         public IEntityKey Key { get; set; }

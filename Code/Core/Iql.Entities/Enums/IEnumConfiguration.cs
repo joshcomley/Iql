@@ -38,7 +38,8 @@ namespace Iql.Entities.Enums
         {
             Name = name;
         }
-        public List<IEnumValue> Values { get; set; } = new List<IEnumValue>();
+        private List<IEnumValue> _values = null;
+        public List<IEnumValue> Values { get => _values = _values ?? new List<IEnumValue>(); set => _values = value; }
 
         public IEnumConfiguration DefineValue(string name, long value)
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -47,7 +47,8 @@ namespace Iql.Data.Evaluation
                 Permission = permission;
             }
         }
-        private List<PermissionsEvaluationResult> Results { get; set; } = new List<PermissionsEvaluationResult>();
+        private List<PermissionsEvaluationResult> _results = null;
+        private List<PermissionsEvaluationResult> Results { get => _results = _results ?? new List<PermissionsEvaluationResult>(); set => _results = value; }
         public PermissionsEvaluationSession(
             bool enforceLatest = false,
             EvaluationCacheMode cacheMode = EvaluationCacheMode.All,

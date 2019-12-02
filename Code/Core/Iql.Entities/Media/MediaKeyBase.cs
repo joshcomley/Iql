@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Iql.Entities.PropertyGroups.Files;
 
@@ -9,7 +9,8 @@ namespace Iql.Entities
         protected IFileUrlBase FileInternal { get; set; }
         public string Separator { get; set; } = "/";
         IFileUrlBase IMediaKey.File => FileInternal;
-        public IList<IMediaKeyGroup> Groups { get; } = new List<IMediaKeyGroup>();
+        private IList<IMediaKeyGroup> _groups = null;
+        public IList<IMediaKeyGroup> Groups => _groups = _groups ?? new List<IMediaKeyGroup>();
         public string[][] Evaluate(object entity)
         {
             var groups = new List<string[]>();

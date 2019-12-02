@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Iql.Entities.PropertyChangers
 {
     public class PolygonPropertyChanger : ComplexPropertyChanger<IqlPolygonExpression>
     {
-        public static PolygonPropertyChanger Instance { get; } = new PolygonPropertyChanger();
+        private static PolygonPropertyChanger _instance = null;
+        public static PolygonPropertyChanger Instance => _instance = _instance ?? new PolygonPropertyChanger();
         protected override bool CheckEquivalence(IqlPolygonExpression newValue, IqlPolygonExpression oldValue)
         {
             if (oldValue.Srid != newValue.Srid)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Iql.Conversion;
@@ -11,8 +11,9 @@ namespace Iql.Entities
         public MediaKey<T> MediaKey { get; internal set; }
 
         IMediaKey IMediaKeyGroup.MediaKey => MediaKey;
+        private List<IMediaKeyPart> _parts = null;
 
-        public List<IMediaKeyPart> Parts { get; set; } = new List<IMediaKeyPart>();
+        public List<IMediaKeyPart> Parts { get => _parts = _parts ?? new List<IMediaKeyPart>(); set => _parts = value; }
 
         public string[] Evaluate(object entity)
         {

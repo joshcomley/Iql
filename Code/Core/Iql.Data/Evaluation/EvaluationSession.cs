@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -337,7 +337,8 @@ namespace Iql.Data.Evaluation
         {
             public IEntityConfiguration EntityConfiguration { get; }
             public object Entity { get; }
-            public List<string> ExpandPaths { get; } = new List<string>();
+            private List<string> _expandPaths = null;
+            public List<string> ExpandPaths => _expandPaths = _expandPaths ?? new List<string>();
 
             public ExpandGroupDefinition(IEntityConfiguration entityConfiguration, object entity)
             {

@@ -1,7 +1,8 @@
-﻿namespace Iql.Entities.PropertyChangers
+namespace Iql.Entities.PropertyChangers
 {
     public class PrimitivePropertyChanger : PropertyChanger
     {
-        public static PrimitivePropertyChanger Instance { get; } = new PrimitivePropertyChanger();
+        private static PrimitivePropertyChanger _instance = null;
+        public static PrimitivePropertyChanger Instance => _instance = _instance ?? new PrimitivePropertyChanger();
     }
 }

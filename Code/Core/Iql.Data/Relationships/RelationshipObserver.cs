@@ -72,11 +72,11 @@ namespace Iql.Data.Relationships
         public DataTracker DataTracker { get; }
 
         public IEntityConfigurationBuilder EntityConfigurationContext { get; set; }
+        private EventEmitter<UntrackedEntityAddedEvent> _untrackedEntityAdded = null;
 
-        public EventEmitter<UntrackedEntityAddedEvent> UntrackedEntityAdded { get; } =
-            new EventEmitter<UntrackedEntityAddedEvent>();
-        public EventEmitter<RelationshipChangedEvent> RelationshipChanged { get; } =
-            new EventEmitter<RelationshipChangedEvent>();
+        public EventEmitter<UntrackedEntityAddedEvent> UntrackedEntityAdded => _untrackedEntityAdded = _untrackedEntityAdded ?? new EventEmitter<UntrackedEntityAddedEvent>();
+        private EventEmitter<RelationshipChangedEvent> _relationshipChanged = null;
+        public EventEmitter<RelationshipChangedEvent> RelationshipChanged => _relationshipChanged = _relationshipChanged ?? new EventEmitter<RelationshipChangedEvent>();
 
         public void RunIfNotIgnored(Action action, IProperty property, object entity)
         {

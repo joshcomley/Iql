@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Iql.Parsing.Reduction
 {
     public class IqlTraverser
     {
         private readonly IqlReducerRegistryBase _registry;
-        internal List<IqlExpression> Expressions { get; set; } = new List<IqlExpression>();
+        private List<IqlExpression> _expressions = null;
+        internal List<IqlExpression> Expressions { get => _expressions = _expressions ?? new List<IqlExpression>(); set => _expressions = value; }
         internal IqlTraverser(IqlReducerRegistryBase registry)
         {
             _registry = registry;

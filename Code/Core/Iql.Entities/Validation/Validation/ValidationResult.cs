@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +9,8 @@ namespace Iql.Entities.Validation.Validation
     {
         public T Entity { get; set; }
         public Type EntityType => typeof(T);
-        public List<ValidationError> ValidationFailures { get; set; } = new List<ValidationError>();
+        private List<ValidationError> _validationFailures = null;
+        public List<ValidationError> ValidationFailures { get => _validationFailures = _validationFailures ?? new List<ValidationError>(); set => _validationFailures = value; }
 
         protected ValidationResult(T entity)
         {

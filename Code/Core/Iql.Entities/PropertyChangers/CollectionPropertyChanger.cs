@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,8 +10,9 @@ namespace Iql.Entities.PropertyChangers
         {
             CanSilentlyChange = true;
         }
+        private static CollectionPropertyChanger _instance = null;
 
-        public static CollectionPropertyChanger Instance { get; } = new CollectionPropertyChanger();
+        public static CollectionPropertyChanger Instance => _instance = _instance ?? new CollectionPropertyChanger();
         protected override bool CheckEquivalence(IList remoteValue, IList localValue)
         {
             throw new NotImplementedException();

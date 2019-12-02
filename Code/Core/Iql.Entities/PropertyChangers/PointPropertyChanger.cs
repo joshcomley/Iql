@@ -1,4 +1,4 @@
-﻿namespace Iql.Entities.PropertyChangers
+namespace Iql.Entities.PropertyChangers
 {
     public class PointPropertyChanger : ComplexPropertyChanger<IqlPointExpression>
     {
@@ -6,8 +6,9 @@
         {
             CanSilentlyChange = true;
         }
+        private static PointPropertyChanger _instance = null;
 
-        public static PointPropertyChanger Instance { get; } = new PointPropertyChanger();
+        public static PointPropertyChanger Instance => _instance = _instance ?? new PointPropertyChanger();
         protected override bool CheckEquivalence(IqlPointExpression newValue, IqlPointExpression oldValue)
         {
             return oldValue.X == newValue.X && oldValue.Y == newValue.Y && oldValue.Srid == newValue.Srid;

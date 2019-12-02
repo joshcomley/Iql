@@ -205,9 +205,11 @@ namespace Iql.Entities
             }
             return _entities[type];
         }
+        private IqlServiceProvider _serviceProvider = null;
 
-        public IqlServiceProvider ServiceProvider { get; } = new IqlServiceProvider();
-        public List<IqlMethod> Methods { get; set; } = new List<IqlMethod>();
+        public IqlServiceProvider ServiceProvider => _serviceProvider = _serviceProvider ?? new IqlServiceProvider();
+        private List<IqlMethod> _methods = null;
+        public List<IqlMethod> Methods { get => _methods = _methods ?? new List<IqlMethod>(); set => _methods = value; }
         public IEnumerable<IEnumConfiguration> EnumTypes => AllEnumTypes();
         public IEnumerable<IEntityConfiguration> EntityTypes => AllEntityTypes();
         public IEnumerable<IRelationship> Relationships => AllRelationships();
@@ -247,6 +249,7 @@ namespace Iql.Entities
         {
             return GraphFlattener.FlattenObjectGraphsInternal(this, entityType, entities);
         }
+                                                                        private EventEmitter<string> _resolvingType = null;
 
         //public Dictionary<Type, IList> FlattenDependencyGraph(object entity, Type entityType)
         //{
@@ -258,7 +261,7 @@ namespace Iql.Entities
         //    return this.FlattenDependencyGraphsInternal(entityType, entities);
         //}
 
-        public EventEmitter<string> ResolvingType { get; } = new EventEmitter<string>();
+        public EventEmitter<string> ResolvingType => _resolvingType = _resolvingType ?? new EventEmitter<string>();
 
         public IIqlTypeMetadata FindType<T>()
         {

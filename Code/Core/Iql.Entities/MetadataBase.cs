@@ -13,7 +13,8 @@ namespace Iql.Entities
         private string _title;
         private bool _titleSet;
         private UserPermissionsCollection _permissions;
-        public IMetadataCollection Metadata { get; set; } = new MetadataCollection();
+        private IMetadataCollection _metadata = null;
+        public IMetadataCollection Metadata { get => _metadata = _metadata ?? new MetadataCollection(); set => _metadata = value; }
 
         public virtual string Name
         {
@@ -128,7 +129,8 @@ namespace Iql.Entities
         public float GroupOrder { get; set; }
 
         public string Description { get; set; }
-        public List<string> Hints { get; set; } = new List<string>();
+        private List<string> _hints = null;
+        public List<string> Hints { get => _hints = _hints ?? new List<string>(); set => _hints = value; }
         public MetadataHint FindHint(string name, bool? onlySelf = false)
         {
             return HintHelper.FindHint(this, name, onlySelf);
@@ -144,8 +146,9 @@ namespace Iql.Entities
             HintHelper.RemoveHint(this, name, onlySelf);
             return this;
         }
+        private List<HelpText> _helpTexts = null;
 
-        public List<HelpText> HelpTexts { get; set; } = new List<HelpText>();
+        public List<HelpText> HelpTexts { get => _helpTexts = _helpTexts ?? new List<HelpText>(); set => _helpTexts = value; }
 
         public IConfiguration SetHint(string name, string value = null)
         {

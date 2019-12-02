@@ -1,13 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Iql
 {
     public class IqlFlattenContext
     {
-        public List<IqlExpression> Expressions { get; } = new List<IqlExpression>();
-        public List<IqlFlattenedExpression> FlattenedExpressions { get; } = new List<IqlFlattenedExpression>();
-        public List<IqlFlattenedExpression> Ancestors { get; } = new List<IqlFlattenedExpression>();
+        private List<IqlExpression> _expressions = null;
+        public List<IqlExpression> Expressions => _expressions = _expressions ?? new List<IqlExpression>();
+        private List<IqlFlattenedExpression> _flattenedExpressions = null;
+        public List<IqlFlattenedExpression> FlattenedExpressions => _flattenedExpressions = _flattenedExpressions ?? new List<IqlFlattenedExpression>();
+        private List<IqlFlattenedExpression> _ancestors = null;
+        public List<IqlFlattenedExpression> Ancestors => _ancestors = _ancestors ?? new List<IqlFlattenedExpression>();
         public Func<IqlExpression, FlattenReactionKind> Checker { get; set; }
 
         public IqlFlattenContext(Func<IqlExpression, FlattenReactionKind> checker = null)

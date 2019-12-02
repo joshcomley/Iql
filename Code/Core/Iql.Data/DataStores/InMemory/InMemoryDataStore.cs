@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -133,7 +133,8 @@ namespace Iql.Data.DataStores.InMemory
                 }
                 return _setConfigurations[type];
             }
-            public Dictionary<Type, IList> Data { get; } = new Dictionary<Type, IList>();
+            private Dictionary<Type, IList> _data = null;
+            public Dictionary<Type, IList> Data => _data = _data ?? new Dictionary<Type, IList>();
             private DataTracker _inMemoryDataTracker;
             public DataTracker InMemoryDataTracker
             {

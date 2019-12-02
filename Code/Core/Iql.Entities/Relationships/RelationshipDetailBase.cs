@@ -76,9 +76,11 @@ namespace Iql.Entities.Relationships
             //    }
             //}
         }
+        private List<ValueMapping> _valueMappings = null;
 
-        public List<ValueMapping> ValueMappings { get; set; } = new List<ValueMapping>();
-        public List<RelationshipMapping> RelationshipMappings { get; set; } = new List<RelationshipMapping>();
+        public List<ValueMapping> ValueMappings { get => _valueMappings = _valueMappings ?? new List<ValueMapping>(); set => _valueMappings = value; }
+        private List<RelationshipMapping> _relationshipMappings = null;
+        public List<RelationshipMapping> RelationshipMappings { get => _relationshipMappings = _relationshipMappings ?? new List<RelationshipMapping>(); set => _relationshipMappings = value; }
         public IRelationshipDetail OtherSide =>
             RelationshipSide == RelationshipSide.Source ? Relationship?.Target : Relationship?.Source;
         public RelationshipSide RelationshipSide { get; }

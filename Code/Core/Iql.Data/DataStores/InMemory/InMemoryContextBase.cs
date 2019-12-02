@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Iql.Data.DataStores.InMemory
 {
     public class GlobalContext
     {
-        public static Dictionary<string, object> GlobalVariables { get; }
-            = new Dictionary<string, object>();
+        private static Dictionary<string, object> _globalVariables = null;
+        public static Dictionary<string, object> GlobalVariables => _globalVariables = _globalVariables ?? new Dictionary<string, object>();
     }
 }

@@ -101,17 +101,18 @@ namespace Iql.Data.Tracking.State
         public ObservableList<IEntityStateBase> ItemsChangedSinceSnapshot => _itemsChangedSinceSnapshot = _itemsChangedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
         public ObservableList<IEntityStateBase> ItemsRemovedSinceSnapshot => _itemsRemovedSinceSnapshot = _itemsRemovedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
         public ObservableList<IEntityStateBase> ItemsAddedSinceSnapshot => _itemsAddedSinceSnapshot = _itemsAddedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
+        private IqlEventManager _eventManager = null;
 
-        private IqlEventManager EventManager { get; } = new IqlEventManager();
+        private IqlEventManager EventManager => _eventManager = _eventManager ?? new IqlEventManager();
+        private IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> _statefulSaveEvents = null;
 
-        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> StatefulSaveEvents { get; } =
-            new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
+        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> StatefulSaveEvents => _statefulSaveEvents = _statefulSaveEvents ?? new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
+        private IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> _saveEvents = null;
 
-        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> SaveEvents { get; } =
-            new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
+        public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> SaveEvents => _saveEvents = _saveEvents ?? new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
+        private IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> _abandonEvents = null;
 
-        public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents { get; } =
-            new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
+        public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents => _abandonEvents = _abandonEvents ?? new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
 
         public PropertyChanger PropertyChanger
         {
@@ -854,36 +855,36 @@ namespace Iql.Data.Tracking.State
 
             _isUpdatingHasChanged = false;
         }
+        private EventEmitter<ValueChangedEvent<bool>> _canUndoChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> CanUndoChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> CanUndoChanged => _canUndoChanged = _canUndoChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<bool>> _hasSnapshotValueChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotValueChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotValueChanged => _hasSnapshotValueChanged = _hasSnapshotValueChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<bool>> _hasNestedChangesChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesChanged => _hasNestedChangesChanged = _hasNestedChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<bool>> _hasNestedChangesSinceSnapshotChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged => _hasNestedChangesSinceSnapshotChanged = _hasNestedChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<bool>> _hasAnyChangesChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesChanged => _hasAnyChangesChanged = _hasAnyChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<bool>> _hasAnyChangesSinceSnapshotChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesSinceSnapshotChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesSinceSnapshotChanged => _hasAnyChangesSinceSnapshotChanged = _hasAnyChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<bool>> _hasChangesSinceSnapshotChanged = null;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged { get; } =
-            new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged => _hasChangesSinceSnapshotChanged = _hasChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        private EventEmitter<ValueChangedEvent<object>> _remoteValueChanged = null;
 
-        public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; } =
-            new EventEmitter<ValueChangedEvent<object>>();
+        public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged => _remoteValueChanged = _remoteValueChanged ?? new EventEmitter<ValueChangedEvent<object>>();
+        private EventEmitter<ValueChangedEvent<object>> _localValueChanged = null;
 
-        public EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; } =
-            new EventEmitter<ValueChangedEvent<object>>();
+        public EventEmitter<ValueChangedEvent<object>> LocalValueChanged => _localValueChanged = _localValueChanged ?? new EventEmitter<ValueChangedEvent<object>>();
 
         public IPropertyState[] SiblingStates
         {

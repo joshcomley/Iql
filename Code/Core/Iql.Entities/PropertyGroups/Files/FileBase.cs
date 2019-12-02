@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,7 +72,8 @@ namespace Iql.Entities.PropertyGroups.Files
             (UrlProperty ?? NameProperty ?? VersionProperty ?? KindProperty)?.EntityConfiguration;
 
         public override IqlPropertyKind Kind { get; set; } = IqlPropertyKind.SimpleCollection;
-        public IList<IFilePreview> Previews { get; set; } = new List<IFilePreview>();
+        private IList<IFilePreview> _previews = null;
+        public IList<IFilePreview> Previews { get => _previews = _previews ?? new List<IFilePreview>(); set => _previews = value; }
         public IFile RootFile => RootFileInternal;
         protected IFile RootFileInternal => this;
         protected IProperty UrlPropertyInternal { get; set; }

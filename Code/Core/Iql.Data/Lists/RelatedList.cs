@@ -39,9 +39,9 @@ namespace Iql.Data.Lists
                 }
             });
         }
+        private EventEmitter<RelatedListChangeEvent<TSource, TTarget>> _relatedListChange = null;
 
-        public EventEmitter<RelatedListChangeEvent<TSource, TTarget>> RelatedListChange { get; }
-            = new EventEmitter<RelatedListChangeEvent<TSource, TTarget>>();
+        public EventEmitter<RelatedListChangeEvent<TSource, TTarget>> RelatedListChange => _relatedListChange = _relatedListChange ?? new EventEmitter<RelatedListChangeEvent<TSource, TTarget>>();
 
         public TSource Owner { get; }
         public Type OwnerType => typeof(TSource);

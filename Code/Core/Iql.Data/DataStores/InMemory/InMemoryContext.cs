@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +18,8 @@ namespace Iql.Data.DataStores.InMemory
 {
     public class InMemoryContext<TEntity> : IInMemoryContext where TEntity : class
     {
-        public Dictionary<string, object> Variables { get; }
-            = new Dictionary<string, object>();
+        private Dictionary<string, object> _variables = null;
+        public Dictionary<string, object> Variables => _variables = _variables ?? new Dictionary<string, object>();
         public object GetVariable(string name)
         {
             if (!Variables.ContainsKey(name))

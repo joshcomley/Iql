@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Parsing.Reduction.Reducers;
@@ -41,8 +41,9 @@ namespace Iql.Parsing.Reduction
         {
             return (T)Evaluate(expression)?.Value;
         }
+        private List<IqlExpression> _ancestors = null;
 
-        public List<IqlExpression> Ancestors { get; set; } = new List<IqlExpression>();
+        public List<IqlExpression> Ancestors { get => _ancestors = _ancestors ?? new List<IqlExpression>(); set => _ancestors = value; }
 
         public IIqlLiteralExpression Evaluate(IqlExpression expression)
         {

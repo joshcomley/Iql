@@ -9,7 +9,8 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
     public class JavaScriptLiteralParser : JavaScriptActionParserBase<IqlLiteralExpression>
     {
-        private static Dictionary<string, object> GlobalObjects { get; } = new Dictionary<string, object>();
+        private static Dictionary<string, object> _globalObjects = null;
+        private static Dictionary<string, object> GlobalObjects => _globalObjects = _globalObjects ?? new Dictionary<string, object>();
 
         public static object _PopIqlTemporaryGlobalObject(string key)
         {

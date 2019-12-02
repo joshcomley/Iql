@@ -5,9 +5,9 @@ namespace Iql.Data.Tracking
 {
     public class GlobalTracking
     {
+                private static Dictionary<object, ITrackingSet> _trackedEntities = null;
         //internal abstract void UpdateRelationships(List<IEntityStateBase> states);
-        protected static Dictionary<object, ITrackingSet> TrackedEntities { get; }
-            = new Dictionary<object, ITrackingSet>();
+        protected static Dictionary<object, ITrackingSet> TrackedEntities => _trackedEntities = _trackedEntities ?? new Dictionary<object, ITrackingSet>();
 
         public static bool IsEntityTracked(object entity)
         {

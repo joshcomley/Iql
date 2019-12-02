@@ -8,8 +8,8 @@ namespace Iql.Data.Queryable
     public class EntityDefaultQueryConfiguration
     {
         public bool AlwaysIncludeCount { get; set; } = true;
-        public Dictionary<Type, Func<IDbQueryable>> Queryables { get; } =
-            new Dictionary<Type, Func<IDbQueryable>>();
+        private Dictionary<Type, Func<IDbQueryable>> _queryables = null;
+        public Dictionary<Type, Func<IDbQueryable>> Queryables => _queryables = _queryables ?? new Dictionary<Type, Func<IDbQueryable>>();
         public void ConfigureDefaultGetOperations<TEntity>(Func<DbQueryable<TEntity>> queryable) 
             where TEntity : class
         {

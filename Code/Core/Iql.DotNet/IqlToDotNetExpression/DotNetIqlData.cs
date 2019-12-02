@@ -4,6 +4,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
 {
     public class DotNetIqlData
     {
-        public List<IqlBinaryExpression> AlreadyCoalesced { get; } = new List<IqlBinaryExpression>();
+        private List<IqlBinaryExpression> _alreadyCoalesced = null;
+        public List<IqlBinaryExpression> AlreadyCoalesced => _alreadyCoalesced = _alreadyCoalesced ?? new List<IqlBinaryExpression>();
     }
 }

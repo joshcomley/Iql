@@ -17,9 +17,9 @@ namespace Iql.DotNet.DotNetExpressionToIql
             RootVariableName = rootVariableName;
             Parse = parse;
         }
+        private Dictionary<IqlVariableExpression, object> _variableValues = null;
 
-        public Dictionary<IqlVariableExpression, object> VariableValues { get; }
-            = new Dictionary<IqlVariableExpression, object>();
+        public Dictionary<IqlVariableExpression, object> VariableValues => _variableValues = _variableValues ?? new Dictionary<IqlVariableExpression, object>();
 
         public Type RootType { get; }
         public string RootVariableName { get; }
@@ -29,9 +29,11 @@ namespace Iql.DotNet.DotNetExpressionToIql
         {
             return Parse(node, this);
         }
+        private List<Type> _rootVariableTypes = null;
 
-        public List<Type> RootVariableTypes { get; } = new List<Type>();
-        public List<string> RootVariableNames { get; } = new List<string>();
+        public List<Type> RootVariableTypes => _rootVariableTypes = _rootVariableTypes ?? new List<Type>();
+        private List<string> _rootVariableNames = null;
+        public List<string> RootVariableNames => _rootVariableNames = _rootVariableNames ?? new List<string>();
 
         private int _throwawayRootVariableIndex;
         public string GetThrowawayRootVariableName()

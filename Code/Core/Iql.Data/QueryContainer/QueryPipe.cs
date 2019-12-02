@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Lists;
@@ -16,24 +16,24 @@ namespace Iql.Data.QueryContainer
         {
             SourceQuery = sourceQuery;
         }
+        private EventEmitter<QueryPipeChangedEvent<T>> _sourceQueryChanged = null;
 
-        public EventEmitter<QueryPipeChangedEvent<T>> SourceQueryChanged { get; } =
-            new EventEmitter<QueryPipeChangedEvent<T>>();
+        public EventEmitter<QueryPipeChangedEvent<T>> SourceQueryChanged => _sourceQueryChanged = _sourceQueryChanged ?? new EventEmitter<QueryPipeChangedEvent<T>>();
+        private AsyncEventEmitter<QueryPipeChangedEvent<T>> _resultsLoaded = null;
 
-        public AsyncEventEmitter<QueryPipeChangedEvent<T>> ResultsLoaded { get; } =
-            new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
+        public AsyncEventEmitter<QueryPipeChangedEvent<T>> ResultsLoaded => _resultsLoaded = _resultsLoaded ?? new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
+        private AsyncEventEmitter<QueryPipeChangedEvent<T>> _resultsLoadingChanged = null;
 
-        public AsyncEventEmitter<QueryPipeChangedEvent<T>> ResultsLoadingChanged { get; } =
-            new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
+        public AsyncEventEmitter<QueryPipeChangedEvent<T>> ResultsLoadingChanged => _resultsLoadingChanged = _resultsLoadingChanged ?? new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
+        private AsyncEventEmitter<QueryPipeEvent<T>> _pipe = null;
 
-        public AsyncEventEmitter<QueryPipeEvent<T>> Pipe { get; } =
-            new AsyncEventEmitter<QueryPipeEvent<T>>();
+        public AsyncEventEmitter<QueryPipeEvent<T>> Pipe => _pipe = _pipe ?? new AsyncEventEmitter<QueryPipeEvent<T>>();
+        private AsyncEventEmitter<QueryPipeInspectorEvent<T>> _queryBuilt = null;
 
-        public AsyncEventEmitter<QueryPipeInspectorEvent<T>> QueryBuilt { get; } =
-            new AsyncEventEmitter<QueryPipeInspectorEvent<T>>();
+        public AsyncEventEmitter<QueryPipeInspectorEvent<T>> QueryBuilt => _queryBuilt = _queryBuilt ?? new AsyncEventEmitter<QueryPipeInspectorEvent<T>>();
+        private AsyncEventEmitter<QueryPipeChangedEvent<T>> _queryBuildingChanged = null;
 
-        public AsyncEventEmitter<QueryPipeChangedEvent<T>> QueryBuildingChanged { get; } =
-            new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
+        public AsyncEventEmitter<QueryPipeChangedEvent<T>> QueryBuildingChanged => _queryBuildingChanged = _queryBuildingChanged ?? new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
 
         public DbQueryable<T> SourceQuery
         {

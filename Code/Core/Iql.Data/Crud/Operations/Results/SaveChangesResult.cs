@@ -26,7 +26,8 @@ namespace Iql.Data.Crud.Operations.Results
             Operation = operation;
             _kind = kind;
         }
+        private List<IEntityCrudResult> _results = null;
 
-        public List<IEntityCrudResult> Results { get; set; } = new List<IEntityCrudResult>();
+        public List<IEntityCrudResult> Results { get => _results = _results ?? new List<IEntityCrudResult>(); set => _results = value; }
     }
 }

@@ -70,8 +70,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         public JavaScriptToIqlExpressionData Data { get; set; }
         public EvaluateContext EvaluateContext { get; set; }
         public TEntity RootEntity { get; set; }
+        private List<RootEntity> _rootEntities = null;
 
-        public List<RootEntity> RootEntities { get; } = new List<RootEntity>();
+        public List<RootEntity> RootEntities => _rootEntities = _rootEntities ?? new List<RootEntity>();
 
         public RootEntity CurrentRootEntity => RootEntities.LastOrDefault();
         //public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
