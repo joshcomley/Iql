@@ -214,17 +214,17 @@ namespace Iql.Tests.Tests.DataContextTests
                 Name = "New client",
                 Description = "abc"
             };
-            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
             Db.Clients.Add(newClient);
             newClient.TypeId = id1;
             //            entity1.Clients.Add(newClient);
-            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(propertyState.HasChangesSinceSnapshot);
             Assert.AreEqual(id1, newClient.TypeId);
             Assert.AreEqual(1, entity1.Clients.Count);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
             Db.RevertToSnapshot();
-            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
             Assert.AreEqual(0, newClient.TypeId);
             Assert.AreEqual(0, entity1.Clients.Count);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
@@ -251,7 +251,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.IsTrue(Db.HasChanges);
             var nameProperty = Db.EntityConfigurationContext.EntityType<Client>().FindProperty(nameof(Client.Name));
             var descriptionPropertyState = entityState.GetPropertyState(nameof(Client.Description));
-            Assert.IsTrue(descriptionPropertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(descriptionPropertyState.HasChangesSinceSnapshot);
             Db.HasChangesSinceSnapshotChanged.Subscribe(_ =>
             {
                 var a = 0;
@@ -260,9 +260,9 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual("abc", entity1.Name);
             Assert.AreEqual("123", entity1.Description);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
-            Assert.IsTrue(descriptionPropertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(descriptionPropertyState.HasChangesSinceSnapshot);
             entity1.Description = null;
-            Assert.IsFalse(descriptionPropertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(descriptionPropertyState.HasChangesSinceSnapshot);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
         }
 
@@ -325,7 +325,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.IsTrue(Db.HasChanges);
             var nameProperty = Db.EntityConfigurationContext.EntityType<Client>().FindProperty(nameof(Client.Name));
             var descriptionPropertyState = entityState.GetPropertyState(nameof(Client.Description));
-            Assert.IsTrue(descriptionPropertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(descriptionPropertyState.HasChangesSinceSnapshot);
             Assert.IsTrue(Db.IsTracked(newEntityKeep));
             Assert.IsTrue(entity3UndoDeleteState.MarkedForAnyDeletion);
             Db.UndoChanges(new[] { entity3UndoDelete, newEntityUndo, entity1 }, new[] { nameProperty });
@@ -336,9 +336,9 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual("abc", entity1.Name);
             Assert.AreEqual("123", entity1.Description);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
-            Assert.IsTrue(descriptionPropertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(descriptionPropertyState.HasChangesSinceSnapshot);
             entity1.Description = null;
-            Assert.IsFalse(descriptionPropertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(descriptionPropertyState.HasChangesSinceSnapshot);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
             Assert.IsTrue(Db.IsTracked(newEntityKeep));
             Db.Clients.Delete(newEntityKeep);
@@ -481,15 +481,15 @@ namespace Iql.Tests.Tests.DataContextTests
                 Name = "New client",
                 Description = "abc"
             };
-            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
             entity1.Clients.Add(newClient);
-            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(propertyState.HasChangesSinceSnapshot);
             Assert.AreEqual(id1, newClient.TypeId);
             Assert.AreEqual(1, entity1.Clients.Count);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
             Db.RevertToSnapshot();
-            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
             Assert.AreEqual(0, newClient.TypeId);
             Assert.AreEqual(0, entity1.Clients.Count);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
@@ -510,13 +510,13 @@ namespace Iql.Tests.Tests.DataContextTests
             for (var i = 0; i < entityState.PropertyStates.Length; i++)
             {
                 var propertyState = entityState.PropertyStates[i];
-                Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+                Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
             }
 
             var namePropertyState = entityState.GetPropertyState(nameof(Client.Name));
             newClient.Name = "def";
             Assert.IsTrue(entityState.HasChangedSinceSnapshot);
-            Assert.IsTrue(namePropertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(namePropertyState.HasChangesSinceSnapshot);
         }
 
         [TestMethod]
@@ -539,10 +539,10 @@ namespace Iql.Tests.Tests.DataContextTests
             entity1.Clients.Add(newClient);
             var snapshot = Db.AddSnapshot();
             newClient.Name = "New";
-            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
             Db.RevertToSnapshot();
-            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
         }
 
@@ -653,25 +653,25 @@ namespace Iql.Tests.Tests.DataContextTests
             var entity1 = await Db.GetEntityAsync<Client>(156187);
             var entity1State = Db.GetEntityState(entity1);
             var nameState = entity1State.GetPropertyState(nameof(Client.Name));
-            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
+            Assert.IsFalse(nameState.HasChangesSinceSnapshot);
             entity1.Name = "def";
-            Assert.IsTrue(nameState.HasChangedSinceSnapshot);
+            Assert.IsTrue(nameState.HasChangesSinceSnapshot);
             var snapshot = Db.AddSnapshot();
-            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
+            Assert.IsFalse(nameState.HasChangesSinceSnapshot);
             Assert.AreEqual(snapshot, Db.CurrentSnapshot);
             entity1.Name = "ghi";
-            Assert.IsTrue(nameState.HasChangedSinceSnapshot);
+            Assert.IsTrue(nameState.HasChangesSinceSnapshot);
             Db.UndoChanges();
-            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
+            Assert.IsFalse(nameState.HasChangesSinceSnapshot);
             Assert.AreEqual("def", entity1.Name);
             Db.UndoChanges();
-            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
+            Assert.IsFalse(nameState.HasChangesSinceSnapshot);
             Assert.AreEqual("def", entity1.Name);
             Db.RemoveLastSnapshot(SnapshotRemoveKind.GoToPreSnapshotValues);
-            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
+            Assert.IsFalse(nameState.HasChangesSinceSnapshot);
             Assert.AreEqual("abc", entity1.Name);
             entity1.Name = "xyz";
-            Assert.IsTrue(nameState.HasChangedSinceSnapshot);
+            Assert.IsTrue(nameState.HasChangesSinceSnapshot);
             Db.RestoreNextAbandonedSnapshot();
             Assert.AreEqual("xyz", entity1.Name);
         }
@@ -1145,24 +1145,24 @@ namespace Iql.Tests.Tests.DataContextTests
             client.Name = "123";
             client.Description = "456";
             var propertyState = Db.GetEntityState(client).GetPropertyState(nameof(Client.Name));
-            Assert.IsTrue(propertyState.HasChanged);
-            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(propertyState.HasChanges);
+            Assert.IsTrue(propertyState.HasChangesSinceSnapshot);
             Db.AddSnapshot();
-            Assert.IsTrue(propertyState.HasChanged);
-            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(propertyState.HasChanges);
+            Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
             client.Name = "456";
-            Assert.IsTrue(propertyState.HasChanged);
-            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(propertyState.HasChanges);
+            Assert.IsTrue(propertyState.HasChangesSinceSnapshot);
             Db.RevertToSnapshot();
             Assert.AreEqual("123", client.Name);
-            Assert.IsTrue(propertyState.HasChanged);
-            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(propertyState.HasChanges);
+            Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
             client.Name = "456";
-            Assert.IsTrue(propertyState.HasChanged);
-            Assert.IsTrue(propertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(propertyState.HasChanges);
+            Assert.IsTrue(propertyState.HasChangesSinceSnapshot);
             Db.AddSnapshot();
-            Assert.IsTrue(propertyState.HasChanged);
-            Assert.IsFalse(propertyState.HasChangedSinceSnapshot);
+            Assert.IsTrue(propertyState.HasChanges);
+            Assert.IsFalse(propertyState.HasChangesSinceSnapshot);
         }
 
         [TestMethod]
@@ -1192,62 +1192,62 @@ namespace Iql.Tests.Tests.DataContextTests
             var client = clientType1.Clients[0];
             var relationshipCollection1 = Db.GetEntityState(clientType1).GetPropertyState(nameof(ClientType.Clients));
             var relationshipCollection2 = Db.GetEntityState(clientType2).GetPropertyState(nameof(ClientType.Clients));
-            Assert.IsFalse(relationshipCollection1.HasChanged);
-            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection1.HasChanges);
+            Assert.IsFalse(relationshipCollection1.HasChangesSinceSnapshot);
             Assert.IsFalse(relationshipCollection1.HasNestedChanges);
             Assert.IsFalse(relationshipCollection1.HasNestedChangesSinceSnapshot);
-            Assert.IsFalse(relationshipCollection2.HasChanged);
-            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanges);
+            Assert.IsFalse(relationshipCollection2.HasChangesSinceSnapshot);
             Assert.IsFalse(relationshipCollection2.HasNestedChanges);
             Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
             var clientState = Db.GetEntityState(client);
             var nameState = clientState.GetPropertyState(nameof(Client.Name));
             Assert.IsFalse(clientState.HasChanged);
             Assert.IsFalse(clientState.HasChangedSinceSnapshot);
-            Assert.IsFalse(nameState.HasChanged);
-            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
+            Assert.IsFalse(nameState.HasChanges);
+            Assert.IsFalse(nameState.HasChangesSinceSnapshot);
             client.Name = "def";
             Assert.IsTrue(clientState.HasChanged);
             Assert.IsTrue(clientState.HasChangedSinceSnapshot);
-            Assert.IsTrue(nameState.HasChanged);
-            Assert.IsTrue(nameState.HasChangedSinceSnapshot);
-            Assert.IsFalse(relationshipCollection1.HasChanged);
-            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsTrue(nameState.HasChanges);
+            Assert.IsTrue(nameState.HasChangesSinceSnapshot);
+            Assert.IsFalse(relationshipCollection1.HasChanges);
+            Assert.IsFalse(relationshipCollection1.HasChangesSinceSnapshot);
             Assert.IsTrue(relationshipCollection1.HasNestedChanges);
             Assert.IsTrue(relationshipCollection1.HasNestedChangesSinceSnapshot);
-            Assert.IsFalse(relationshipCollection2.HasChanged);
-            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanges);
+            Assert.IsFalse(relationshipCollection2.HasChangesSinceSnapshot);
             Assert.IsFalse(relationshipCollection2.HasNestedChanges);
             Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
             client.Name = "abc";
             Assert.IsFalse(clientState.HasChanged);
             Assert.IsFalse(clientState.HasChangedSinceSnapshot);
-            Assert.IsFalse(nameState.HasChanged);
-            Assert.IsFalse(nameState.HasChangedSinceSnapshot);
-            Assert.IsFalse(relationshipCollection1.HasChanged);
-            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsFalse(nameState.HasChanges);
+            Assert.IsFalse(nameState.HasChangesSinceSnapshot);
+            Assert.IsFalse(relationshipCollection1.HasChanges);
+            Assert.IsFalse(relationshipCollection1.HasChangesSinceSnapshot);
             Assert.IsFalse(relationshipCollection1.HasNestedChanges);
             Assert.IsFalse(relationshipCollection1.HasNestedChangesSinceSnapshot);
-            Assert.IsFalse(relationshipCollection2.HasChanged);
-            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanges);
+            Assert.IsFalse(relationshipCollection2.HasChangesSinceSnapshot);
             Assert.IsFalse(relationshipCollection2.HasNestedChanges);
             Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
             client.Name = "def";
-            Assert.IsFalse(relationshipCollection1.HasChanged);
-            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection1.HasChanges);
+            Assert.IsFalse(relationshipCollection1.HasChangesSinceSnapshot);
             Assert.IsTrue(relationshipCollection1.HasNestedChanges);
             Assert.IsTrue(relationshipCollection1.HasNestedChangesSinceSnapshot);
-            Assert.IsFalse(relationshipCollection2.HasChanged);
-            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanges);
+            Assert.IsFalse(relationshipCollection2.HasChangesSinceSnapshot);
             Assert.IsFalse(relationshipCollection2.HasNestedChanges);
             Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
             var snapshot = Db.AddSnapshot();
-            Assert.IsFalse(relationshipCollection1.HasChanged);
-            Assert.IsFalse(relationshipCollection1.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection1.HasChanges);
+            Assert.IsFalse(relationshipCollection1.HasChangesSinceSnapshot);
             Assert.IsTrue(relationshipCollection1.HasNestedChanges);
             Assert.IsFalse(relationshipCollection1.HasNestedChangesSinceSnapshot);
-            Assert.IsFalse(relationshipCollection2.HasChanged);
-            Assert.IsFalse(relationshipCollection2.HasChangedSinceSnapshot);
+            Assert.IsFalse(relationshipCollection2.HasChanges);
+            Assert.IsFalse(relationshipCollection2.HasChangesSinceSnapshot);
             Assert.IsFalse(relationshipCollection2.HasNestedChanges);
             Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
         }
@@ -1753,6 +1753,8 @@ namespace Iql.Tests.Tests.DataContextTests
             newClient2.TypeId = clientType1.Id;
             client1.Name = "blah";
             Assert.IsTrue(clientType1.Clients.Contains(newClient2));
+            Assert.IsTrue(clientType1ClientsState.HasNestedChanges);
+            Assert.IsTrue(clientType1ClientsState.HasNestedChangesSinceSnapshot);
             Assert.AreEqual(1, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(1, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -1763,6 +1765,10 @@ namespace Iql.Tests.Tests.DataContextTests
             clientType1ClientsState.UndoChanges();
             Assert.AreEqual(0, newClient2.TypeId);
             Assert.IsFalse(clientType1.Clients.Contains(newClient2));
+            Assert.IsFalse(clientType1ClientsState.HasChanges);
+            Assert.IsFalse(clientType1ClientsState.HasChangesSinceSnapshot);
+            Assert.IsTrue(clientType1ClientsState.HasNestedChanges);
+            Assert.IsTrue(clientType1ClientsState.HasNestedChangesSinceSnapshot);
             Assert.AreEqual(1, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -1773,6 +1779,9 @@ namespace Iql.Tests.Tests.DataContextTests
             clientType1ClientsState.UndoChanges(true);
             Assert.AreEqual(0, newClient2.TypeId);
             Assert.IsFalse(clientType1.Clients.Contains(newClient2));
+            Assert.IsFalse(clientType1ClientsState.HasAnyChanges);
+            Assert.IsFalse(clientType1ClientsState.HasNestedChanges);
+            Assert.IsFalse(clientType1ClientsState.HasNestedChangesSinceSnapshot);
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -1781,6 +1790,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
 
             clientType1.Clients.Remove(client1);
+            Assert.IsTrue(clientType1ClientsState.HasAnyChanges);
             Assert.IsFalse(clientType1.Clients.Contains(client1));
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsAdded.Count);
@@ -1790,6 +1800,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual(1, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
 
             clientType1ClientsState.UndoChanges(true);
+            Assert.IsFalse(clientType1ClientsState.HasAnyChanges);
             Assert.AreEqual(2, clientType1.Clients.Count);
             Assert.IsTrue(clientType1.Clients.Contains(client1));
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
@@ -1801,6 +1812,7 @@ namespace Iql.Tests.Tests.DataContextTests
 
             clientType1.Clients.Remove(client1);
             clientType1.Clients.Remove(client2);
+            Assert.IsTrue(clientType1ClientsState.HasAnyChanges);
             Assert.AreEqual(0, clientType1.Clients.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsAdded.Count);
@@ -1810,6 +1822,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual(2, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
 
             clientType1ClientsState.UndoChanges(true);
+            Assert.IsFalse(clientType1ClientsState.HasAnyChanges);
             Assert.AreEqual(2, clientType1.Clients.Count);
             Assert.IsTrue(clientType1.Clients.Contains(client1));
             Assert.IsTrue(clientType1.Clients.Contains(client2));
@@ -1822,6 +1835,7 @@ namespace Iql.Tests.Tests.DataContextTests
 
             clientType1.Clients.Remove(client1);
             clientType1.Clients.Remove(client2);
+            Assert.IsTrue(clientType1ClientsState.HasAnyChanges);
             Assert.AreEqual(0, clientType1.Clients.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsAdded.Count);
@@ -1831,6 +1845,7 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual(2, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
 
             clientType1ClientsState.UndoChanges();
+            Assert.IsFalse(clientType1ClientsState.HasAnyChanges);
             Assert.AreEqual(2, clientType1.Clients.Count);
             Assert.IsTrue(clientType1.Clients.Contains(client1));
             Assert.IsTrue(clientType1.Clients.Contains(client2));

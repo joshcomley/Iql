@@ -44,12 +44,12 @@ namespace Iql.Data
             foreach (var property in entityState.EntityConfiguration.Properties)
             {
                 var propertyState = entityState.PropertyStates.SingleOrDefault(_ => _.Property == property);
-                if (propertyState == null || !propertyState.HasChanged)
+                if (propertyState == null || !propertyState.HasChanges)
                 {
                     MergeProperty(entityState.Entity, mergeWith, property);
                 }
 
-                if (propertyState != null && propertyState.HasChanged)
+                if (propertyState != null && propertyState.HasChanges)
                 {
                     propertyState.RemoteValue = mergeWith.GetPropertyValue(property);
                 }

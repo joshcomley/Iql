@@ -374,7 +374,7 @@ namespace Iql.Data.Tracking
 
         public bool HasChangesSinceSnapshot => StateSinceSnapshot.HasChanges;
 
-        //private bool HasChangedSinceSnapshot(TrackerSnapshot snapshot = null)
+        //private bool HasChangesSinceSnapshot(TrackerSnapshot snapshot = null)
         //{
         //    if (StateSinceSnapshot.PropertiesChangedCount > 0)
         //    {
@@ -514,7 +514,7 @@ namespace Iql.Data.Tracking
                         continue;
                     }
 
-                    if (undoChanges == true && (usePreSnapshotValue == true || item.Key.HasChanged))
+                    if (undoChanges == true && (usePreSnapshotValue == true || item.Key.HasChanges))
                     {
                         item.Key.Property.SetValue(item.Key.EntityState.Entity,
                             usePreSnapshotValue == true ? item.Value.PreviousValue : item.Value.CurrentValue);
@@ -1344,7 +1344,7 @@ namespace Iql.Data.Tracking
                 for (var i = 0; i < entityState.PropertyStates.Length; i++)
                 {
                     var property = entityState.PropertyStates[i];
-                    if (property.HasChanged)
+                    if (property.HasChanges)
                     {
                         StateSinceSave.Update(DataTrackerStateKind.Property, property, true, property.RemoteValue, property.LocalValue);
                     }

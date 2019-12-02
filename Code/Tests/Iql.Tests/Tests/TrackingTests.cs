@@ -208,7 +208,7 @@ namespace Iql.Tests.Tests
             var propertyState = Db.TemporalDataTracker.TrackingSet<Client>()
                 .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.Type));
-            Assert.IsFalse(propertyState.HasChanged);
+            Assert.IsFalse(propertyState.HasChanges);
         }
 
         [TestMethod]
@@ -238,7 +238,7 @@ namespace Iql.Tests.Tests
                 .FindMatchingEntityState(client)
                 .GetPropertyState(nameof(Client.TypeId));
             var changes = Db.GetChanges();
-            Assert.IsTrue(referencePropertyState.HasChanged);
+            Assert.IsTrue(referencePropertyState.HasChanges);
         }
 
         [TestMethod]
@@ -414,7 +414,7 @@ namespace Iql.Tests.Tests
             await Db.Clients.GetWithKeyAsync(1);
             Assert.AreEqual("New Remote Name", propertyState.RemoteValue);
             Assert.AreEqual("My name", propertyState.LocalValue);
-            Assert.IsTrue(propertyState.HasChanged);
+            Assert.IsTrue(propertyState.HasChanges);
         }
 
         [TestMethod]

@@ -183,7 +183,36 @@ namespace Iql.Data.Tracking.State
         IOperationEventsBase IStateful.SaveEvents => SaveEvents;
         IOperationEventsBase IStateful.AbandonEvents => AbandonEvents;
 
-        public bool HasChangedSinceSnapshot
+        public bool HasAnyChanges
+        {
+            get => _hasAnyChanges;
+            protected set
+            {
+                if (value == _hasAnyChanges)
+                {
+                    return;
+                }
+                _hasAnyChanges = value;
+                HasAnyChangesChanged.Emit(() => new ValueChangedEvent<bool>(!_hasAnyChanges, value));
+            }
+        }
+
+
+        public bool HasAnyChangesSinceSnapshot
+        {
+            get => _hasAnyChangesSinceSnapshot;
+            protected set
+            {
+                if (value == _hasAnyChangesSinceSnapshot)
+                {
+                    return;
+                }
+                _hasAnyChangesSinceSnapshot = value;
+                HasAnyChangesSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(!_hasAnyChangesSinceSnapshot, value));
+            }
+        }
+
+        public bool HasChangesSinceSnapshot
         {
             get => _hasChangedSinceSnapshot;
             private set
@@ -194,17 +223,18 @@ namespace Iql.Data.Tracking.State
                 {
                     if (EntityState != null)
                     {
-                        EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, HasChanged, value);
+                        EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, HasChanges, value);
                     }
 
-                    HasChangedSinceSnapshotChanged.Emit(
+                    HasChangesSinceSnapshotChanged.Emit(
                         () => new ValueChangedEvent<bool>(old, value));
                     if (EntityState != null)
                     {
                         EntityState.CheckHasChanged();
                     }
                 }
-                CanUndo = HasSnapshotValue && HasChangedSinceSnapshot || HasChanged;
+                CanUndo = HasSnapshotValue && HasChangesSinceSnapshot || HasChanges;
+                UpdateHasAnyChanges();
             }
         }
 
@@ -222,7 +252,7 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        public bool HasChanged
+        public bool HasChanges
         {
             get
             {
@@ -257,7 +287,7 @@ namespace Iql.Data.Tracking.State
                     {
                         EntityState.DataTracker.NotifyChangedChanged(this, _hasChanged);
                     }
-                    HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    HasChangesChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
                     if (EntityState != null)
                     {
                         EntityState.CheckHasChanged();
@@ -265,10 +295,18 @@ namespace Iql.Data.Tracking.State
 
                     if (!value)
                     {
-                        HasChangedSinceSnapshot = false;
+                        HasChangesSinceSnapshot = false;
                     }
+
+                    UpdateHasAnyChanges();
                 }
             }
+        }
+
+        private void UpdateHasAnyChanges()
+        {
+            HasAnyChanges = HasChanges || HasNestedChanges;
+            HasAnyChangesSinceSnapshot = HasAnyChangesSinceSnapshot || HasNestedChangesSinceSnapshot;
         }
 
         public object RemoteValue
@@ -292,12 +330,12 @@ namespace Iql.Data.Tracking.State
         {
             if (HasSnapshotValue)
             {
-                if (HasChangedSinceSnapshot)
+                if (HasChangesSinceSnapshot)
                 {
                     AddSnapshotInternal();
                 }
             }
-            else if (HasChanged)
+            else if (HasChanges)
             {
                 AddSnapshotInternal();
             }
@@ -338,6 +376,8 @@ namespace Iql.Data.Tracking.State
         string removedKey = $"{nameof(LocalValue)}_{nameof(RelatedListChangeKind.Removed)}";
         private IProperty _relationshipOtherEndProperty;
         private bool? _isCount;
+        private bool _hasAnyChanges;
+        private bool _hasAnyChangesSinceSnapshot;
 
         private IProperty RelationshipOtherEndProperty => _relationshipOtherEndProperty = _relationshipOtherEndProperty ?? Property.Relationship.OtherEnd.Property;
 
@@ -431,7 +471,7 @@ namespace Iql.Data.Tracking.State
                             }
 
                             //var wasAdded = ItemsAdded.Contains(entityState);
-                            //if (!entityState.HasChanged)
+                            //if (!entityState.HasChanges)
                             //{
                             //    ItemsAdded.Remove(entityState);
                             //    ItemsRemoved.Remove(entityState);
@@ -514,7 +554,7 @@ namespace Iql.Data.Tracking.State
                                     return;
                                 }
 
-                                //if (!entityState.HasChanged)
+                                //if (!entityState.HasChanges)
                                 //{
                                 //    ItemsAdded.Remove(entityState);
                                 //    ItemsRemoved.Remove(entityState);
@@ -528,7 +568,7 @@ namespace Iql.Data.Tracking.State
                                 }
 
                                 if (relatedList.Contains(entityState.Entity) &&
-                                    (entityState.IsNew || 
+                                    (entityState.IsNew ||
                                      (HasRelationshipSourceChanged(entityState, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote) &&
                                       DoesRelationshipSourceMatchUs(entityState, Property.Relationship.OtherEnd))
                                      ))
@@ -709,12 +749,13 @@ namespace Iql.Data.Tracking.State
             get => _hasNestedChanges;
             private set
             {
-                var old = _hasNestedChanges;
-                _hasNestedChanges = value;
-                if (old != value)
+                if (value == _hasNestedChanges)
                 {
-                    HasNestedChangesChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    return;
                 }
+                _hasNestedChanges = value;
+                HasNestedChangesChanged.Emit(() => new ValueChangedEvent<bool>(!_hasNestedChanges, value));
+                UpdateHasAnyChanges();
             }
         }
 
@@ -723,12 +764,13 @@ namespace Iql.Data.Tracking.State
             get => _hasNestedChangesSinceStart;
             private set
             {
-                var old = _hasNestedChangesSinceStart;
-                _hasNestedChangesSinceStart = value;
-                if (old != value)
+                if (value == _hasNestedChangesSinceStart)
                 {
-                    HasNestedChangesSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    return;
                 }
+                _hasNestedChangesSinceStart = value;
+                HasNestedChangesSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(!_hasNestedChangesSinceStart, value));
+                UpdateHasAnyChanges();
             }
         }
 
@@ -747,8 +789,8 @@ namespace Iql.Data.Tracking.State
             _isUpdatingHasChanged = true;
             if (IsRelationshipCollection)
             {
-                HasChanged = ItemsRemoved.Count > 0 || ItemsAdded.Count > 0;
-                HasChangedSinceSnapshot = ItemsRemovedSinceSnapshot.Count > 0 || ItemsAddedSinceSnapshot.Count > 0;
+                HasChanges = ItemsRemoved.Count > 0 || ItemsAdded.Count > 0;
+                HasChangesSinceSnapshot = ItemsRemovedSinceSnapshot.Count > 0 || ItemsAddedSinceSnapshot.Count > 0;
                 HasNestedChanges = ItemsChanged.Count > 0;
                 HasNestedChangesSinceSnapshot = ItemsChangedSinceSnapshot.Count > 0;
                 //if (!HasSnapshotValue && HasNestedChanges)
@@ -825,10 +867,16 @@ namespace Iql.Data.Tracking.State
         public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged { get; } =
             new EventEmitter<ValueChangedEvent<bool>>();
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; } =
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged { get; } =
             new EventEmitter<ValueChangedEvent<bool>>();
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; } =
+        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesChanged { get; } =
+            new EventEmitter<ValueChangedEvent<bool>>();
+
+        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesSinceSnapshotChanged { get; } =
+            new EventEmitter<ValueChangedEvent<bool>>();
+
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged { get; } =
             new EventEmitter<ValueChangedEvent<bool>>();
 
         public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; } =
@@ -909,7 +957,7 @@ namespace Iql.Data.Tracking.State
 
         public void SoftReset()
         {
-            if (!HasChanged)
+            if (!HasChanges)
             {
                 HardReset();
             }
@@ -927,7 +975,7 @@ namespace Iql.Data.Tracking.State
 
         public void AbandonChanges()
         {
-            if (HasChanged)
+            if (HasChanges)
             {
                 var ev = new AbandonChangeEvent(EntityState, this);
                 AbandonEvents.EmitStartedAsync(() => ev);
@@ -1025,7 +1073,7 @@ namespace Iql.Data.Tracking.State
         {
             //DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
             //DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
-            HasChangedChanged?.Dispose();
+            HasChangesChanged?.Dispose();
             RemoteValueChanged?.Dispose();
             LocalValueChanged?.Dispose();
         }
@@ -1081,7 +1129,7 @@ namespace Iql.Data.Tracking.State
                 for (var i = 0; i < Property.Relationship.ThisEnd.Constraints.Length; i++)
                 {
                     var key = Property.Relationship.ThisEnd.Constraints[i];
-                    if (EntityState.GetPropertyState(key.PropertyName).HasChanged)
+                    if (EntityState.GetPropertyState(key.PropertyName).HasChanges)
                     {
                         canMatchToKey = false;
                     }
@@ -1217,12 +1265,12 @@ namespace Iql.Data.Tracking.State
                 var propState = state.GetPropertyState(prop.PropertyName);
                 if (propState != null)
                 {
-                    if (kind == ChangeCalculationKind.Remote && propState.HasChanged)
+                    if (kind == ChangeCalculationKind.Remote && propState.HasChanges)
                     {
                         return true;
                     }
 
-                    if (kind == ChangeCalculationKind.Snapshot && propState.HasChangedSinceSnapshot)
+                    if (kind == ChangeCalculationKind.Snapshot && propState.HasChangesSinceSnapshot)
                     {
                         return true;
                     }
@@ -1271,8 +1319,8 @@ namespace Iql.Data.Tracking.State
                 if (propertyState != null)
                 {
                     var hasChangedValue = kind == ChangeCalculationKind.Remote
-                        ? propertyState.HasChanged
-                        : propertyState.HasChangedSinceSnapshot;
+                        ? propertyState.HasChanges
+                        : propertyState.HasChangesSinceSnapshot;
                     if (hasChangedValue)
                     {
                         return true;
@@ -1409,12 +1457,12 @@ namespace Iql.Data.Tracking.State
 
         private void UpdateHasChangedSinceStart()
         {
-            HasChanged = CalculateHasChanged(RemoteValue, ChangeCalculationKind.Remote);
+            HasChanges = CalculateHasChanged(RemoteValue, ChangeCalculationKind.Remote);
         }
 
         private void UpdateHasChangedSinceSnapshot()
         {
-            HasChangedSinceSnapshot = CalculateHasChanged(SnapshotValue, ChangeCalculationKind.Snapshot);
+            HasChangesSinceSnapshot = CalculateHasChanged(SnapshotValue, ChangeCalculationKind.Snapshot);
         }
 
         private void RestoreList(IList source, IList destination)

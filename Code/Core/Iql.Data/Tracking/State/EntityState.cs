@@ -60,9 +60,9 @@ namespace Iql.Data.Tracking.State
 
         public void CheckHasChanged()
         {
-            HasChanged = IsNew || Properties.Any(_ => _.HasChanged);
+            HasChanged = IsNew || Properties.Any(_ => _.HasChanges);
             var hasSnapshots = DataTracker != null && DataTracker.HasSnapshot;
-            HasChangedSinceSnapshot = (!hasSnapshots && HasChanged) || Properties.Any(_ => _.HasChangedSinceSnapshot);
+            HasChangedSinceSnapshot = (!hasSnapshots && HasChanged) || Properties.Any(_ => _.HasChangesSinceSnapshot);
         }
 
         public bool HasChanged
@@ -448,8 +448,8 @@ namespace Iql.Data.Tracking.State
                 var property = EntityConfiguration.Properties[i];
                 var propertyState = new PropertyState(property, this);
                 Properties.Add(propertyState);
-                propertyState.HasChangedChanged.Subscribe(_ => CheckHasChanged());
-                propertyState.HasChangedSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
+                propertyState.HasChangesChanged.Subscribe(_ => CheckHasChanged());
+                propertyState.HasChangesSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
                 propertyState.HasSnapshotValueChanged.Subscribe(_ => CheckHasChanged());
                 ;
             }
@@ -734,7 +734,7 @@ namespace Iql.Data.Tracking.State
         public IPropertyState[] GetChangedProperties(IProperty[] properties = null)
         {
             var propertyStates = PropertyStates.Where(ps =>
-                    ps.HasChanged && !ps.Property.Kind.HasFlag(PropertyKind.Relationship) && (properties == null || properties.Contains(ps.Property)))
+                    ps.HasChanges && !ps.Property.Kind.HasFlag(PropertyKind.Relationship) && (properties == null || properties.Contains(ps.Property)))
                 .ToArray();
             return propertyStates;
         }
@@ -763,7 +763,7 @@ namespace Iql.Data.Tracking.State
                     {
                         var constraint = thisEndConstraints[i];
                         var constraintState = GetPropertyState(constraint.Name);
-                        if (constraintState.HasChanged)
+                        if (constraintState.HasChanges)
                         {
                             return true;
                         }
@@ -848,7 +848,7 @@ namespace Iql.Data.Tracking.State
                 IsNew,
                 MarkedForDeletion,
                 MarkedForCascadeDeletion,
-                PropertyStates = PropertyStates.Where(_ => IsNew || _.HasChanged).Select(_ => _.PrepareForJson()).Where(_ => _ != null)
+                PropertyStates = PropertyStates.Where(_ => IsNew || _.HasChanges).Select(_ => _.PrepareForJson()).Where(_ => _ != null)
             };
         }
 
