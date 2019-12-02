@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,7 +6,9 @@ namespace Iql.Events
 {
     public class IqlEventManager : IDisposable
     {
-        private readonly List<EventSubscription> _subscriptions = new List<EventSubscription>();
+        private bool _subscriptionsDelayedInitialized;
+        private List<EventSubscription> _subscriptionsDelayed;
+        private List<EventSubscription> _subscriptions { get { if(!_subscriptionsDelayedInitialized) { _subscriptionsDelayedInitialized = true; _subscriptionsDelayed = new List<EventSubscription>(); } return _subscriptionsDelayed; } set { _subscriptionsDelayedInitialized = true; _subscriptionsDelayed = value; } }
 
         public void Pause(string key = null)
         {

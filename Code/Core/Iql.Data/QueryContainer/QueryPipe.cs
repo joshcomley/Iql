@@ -16,22 +16,22 @@ namespace Iql.Data.QueryContainer
         {
             SourceQuery = sourceQuery;
         }
-        private EventEmitter<QueryPipeChangedEvent<T>> _sourceQueryChanged = null;
+        private EventEmitter<QueryPipeChangedEvent<T>> _sourceQueryChanged;
 
         public EventEmitter<QueryPipeChangedEvent<T>> SourceQueryChanged => _sourceQueryChanged = _sourceQueryChanged ?? new EventEmitter<QueryPipeChangedEvent<T>>();
-        private AsyncEventEmitter<QueryPipeChangedEvent<T>> _resultsLoaded = null;
+        private AsyncEventEmitter<QueryPipeChangedEvent<T>> _resultsLoaded;
 
         public AsyncEventEmitter<QueryPipeChangedEvent<T>> ResultsLoaded => _resultsLoaded = _resultsLoaded ?? new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
-        private AsyncEventEmitter<QueryPipeChangedEvent<T>> _resultsLoadingChanged = null;
+        private AsyncEventEmitter<QueryPipeChangedEvent<T>> _resultsLoadingChanged;
 
         public AsyncEventEmitter<QueryPipeChangedEvent<T>> ResultsLoadingChanged => _resultsLoadingChanged = _resultsLoadingChanged ?? new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
-        private AsyncEventEmitter<QueryPipeEvent<T>> _pipe = null;
+        private AsyncEventEmitter<QueryPipeEvent<T>> _pipe;
 
         public AsyncEventEmitter<QueryPipeEvent<T>> Pipe => _pipe = _pipe ?? new AsyncEventEmitter<QueryPipeEvent<T>>();
-        private AsyncEventEmitter<QueryPipeInspectorEvent<T>> _queryBuilt = null;
+        private AsyncEventEmitter<QueryPipeInspectorEvent<T>> _queryBuilt;
 
         public AsyncEventEmitter<QueryPipeInspectorEvent<T>> QueryBuilt => _queryBuilt = _queryBuilt ?? new AsyncEventEmitter<QueryPipeInspectorEvent<T>>();
-        private AsyncEventEmitter<QueryPipeChangedEvent<T>> _queryBuildingChanged = null;
+        private AsyncEventEmitter<QueryPipeChangedEvent<T>> _queryBuildingChanged;
 
         public AsyncEventEmitter<QueryPipeChangedEvent<T>> QueryBuildingChanged => _queryBuildingChanged = _queryBuildingChanged ?? new AsyncEventEmitter<QueryPipeChangedEvent<T>>();
 

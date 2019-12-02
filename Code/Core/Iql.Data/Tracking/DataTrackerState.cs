@@ -18,24 +18,27 @@ namespace Iql.Data.Tracking
         {
             TrackNewEntityProperties = trackNewEntityProperties;
         }
-        private readonly Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>> _entitiesChanged =
-            new Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>>();
+        private bool _entitiesChangedDelayedInitialized;
+        private Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>> _entitiesChangedDelayed;
+        private Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>> _entitiesChanged { get { if(!_entitiesChangedDelayedInitialized) { _entitiesChangedDelayedInitialized = true; _entitiesChangedDelayed =             new Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>>(); } return _entitiesChangedDelayed; } set { _entitiesChangedDelayedInitialized = true; _entitiesChangedDelayed = value; } }
+        private bool _propertiesChangedDelayedInitialized;
+        private Dictionary<IPropertyState, Tuple<object, object>> _propertiesChangedDelayed;
 
-        private readonly Dictionary<IPropertyState, Tuple<object, object>> _propertiesChanged = new Dictionary<IPropertyState, Tuple<object, object>>();
+        private Dictionary<IPropertyState, Tuple<object, object>> _propertiesChanged { get { if(!_propertiesChangedDelayedInitialized) { _propertiesChangedDelayedInitialized = true; _propertiesChangedDelayed = new Dictionary<IPropertyState, Tuple<object, object>>(); } return _propertiesChangedDelayed; } set { _propertiesChangedDelayedInitialized = true; _propertiesChangedDelayed = value; } }
         private bool _hasChanges;
         private int _propertiesChangedCount = 0;
-        private EventEmitter<DataTrackerState> _changed = null;
+        private EventEmitter<DataTrackerState> _changed;
         public EventEmitter<DataTrackerState> Changed => _changed = _changed ?? new EventEmitter<DataTrackerState>();
 
         public int PropertiesChangedCount => _propertiesChangedCount;
         public int EntitiesChangedCount => _entitiesChanged.Count;
-        private EventEmitter<ValueChangedEvent<bool>> _propertiesChangedChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _propertiesChangedChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> PropertiesChangedChanged => _propertiesChangedChanged = _propertiesChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _entitiesChangedChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _entitiesChangedChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> EntitiesChangedChanged => _entitiesChangedChanged = _entitiesChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 

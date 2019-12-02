@@ -19,10 +19,15 @@ namespace Iql.Data.Relationships
 {
     public class RelationshipObserver : IRelationshipObserver
     {
-        private readonly Dictionary<IRelationship, Dictionary<object, string>> _ids =
-            new Dictionary<IRelationship, Dictionary<object, string>>();
+        private bool _idsDelayedInitialized;
+        private Dictionary<IRelationship, Dictionary<object, string>> _idsDelayed;
+        private Dictionary<IRelationship, Dictionary<object, string>> _ids { get { if(!_idsDelayedInitialized) { _idsDelayedInitialized = true; _idsDelayed =             new Dictionary<IRelationship, Dictionary<object, string>>(); } return _idsDelayed; } set { _idsDelayedInitialized = true; _idsDelayed = value; } }
+        private bool _movingDelayedInitialized;
+        private Dictionary<object, object> _movingDelayed;
 
-        private readonly Dictionary<object, object> _moving = new Dictionary<object, object>();
+        private Dictionary<object, object> _moving { get { if(!_movingDelayedInitialized) { _movingDelayedInitialized = true; _movingDelayed = new Dictionary<object, object>(); } return _movingDelayed; } set { _movingDelayedInitialized = true; _movingDelayed = value; } }
+                                                                                private bool _observedDelayedInitialized;
+                                                                                private Dictionary<object, EntityObserver> _observedDelayed;
 
         //private Dictionary<IRelationship, string> GetEntityRelationshipKeyMap(object entity, IRelationship relationship)
         //{
@@ -36,17 +41,19 @@ namespace Iql.Data.Relationships
         //    return entityRelationshipKeyMap;
         //}
 
-        private readonly Dictionary<object, EntityObserver> _observed = new Dictionary<object, EntityObserver>();
+        private Dictionary<object, EntityObserver> _observed { get { if(!_observedDelayedInitialized) { _observedDelayedInitialized = true; _observedDelayed = new Dictionary<object, EntityObserver>(); } return _observedDelayed; } set { _observedDelayedInitialized = true; _observedDelayed = value; } }
+        private bool _oneToSourceRelationshipKeyMapsDelayedInitialized;
+        private Dictionary<IRelationship, Dictionary<string, Dictionary<object, object>>> _oneToSourceRelationshipKeyMapsDelayed;
 
-        private readonly Dictionary<IRelationship, Dictionary<string, Dictionary<object, object>>>
-            _oneToSourceRelationshipKeyMaps
-                = new Dictionary<IRelationship, Dictionary<string, Dictionary<object, object>>>();
+        private Dictionary<IRelationship, Dictionary<string, Dictionary<object, object>>> _oneToSourceRelationshipKeyMaps { get { if(!_oneToSourceRelationshipKeyMapsDelayedInitialized) { _oneToSourceRelationshipKeyMapsDelayedInitialized = true; _oneToSourceRelationshipKeyMapsDelayed = new Dictionary<IRelationship, Dictionary<string, Dictionary<object, object>>>(); } return _oneToSourceRelationshipKeyMapsDelayed; } set { _oneToSourceRelationshipKeyMapsDelayedInitialized = true; _oneToSourceRelationshipKeyMapsDelayed = value; } }
+        private bool _oneToTargetRelationshipKeyMapsDelayedInitialized;
+        private Dictionary<IRelationship, Dictionary<string, object>> _oneToTargetRelationshipKeyMapsDelayed;
 
-        private readonly Dictionary<IRelationship, Dictionary<string, object>> _oneToTargetRelationshipKeyMaps
-            = new Dictionary<IRelationship, Dictionary<string, object>>();
+        private Dictionary<IRelationship, Dictionary<string, object>> _oneToTargetRelationshipKeyMaps { get { if(!_oneToTargetRelationshipKeyMapsDelayedInitialized) { _oneToTargetRelationshipKeyMapsDelayedInitialized = true; _oneToTargetRelationshipKeyMapsDelayed = new Dictionary<IRelationship, Dictionary<string, object>>(); } return _oneToTargetRelationshipKeyMapsDelayed; } set { _oneToTargetRelationshipKeyMapsDelayedInitialized = true; _oneToTargetRelationshipKeyMapsDelayed = value; } }
+        private bool _propertyChangeIgnorerDelayedInitialized;
+        private PropertyChangeIgnorer _propertyChangeIgnorerDelayed;
 
-        private readonly PropertyChangeIgnorer _propertyChangeIgnorer =
-            new PropertyChangeIgnorer();
+        private PropertyChangeIgnorer _propertyChangeIgnorer { get { if(!_propertyChangeIgnorerDelayedInitialized) { _propertyChangeIgnorerDelayedInitialized = true; _propertyChangeIgnorerDelayed =             new PropertyChangeIgnorer(); } return _propertyChangeIgnorerDelayed; } set { _propertyChangeIgnorerDelayedInitialized = true; _propertyChangeIgnorerDelayed = value; } }
         //private readonly Dictionary<object, Dictionary<IRelationship, string>> _relationshipKeys
         //    = new Dictionary<object, Dictionary<IRelationship, string>>();
 
@@ -72,10 +79,10 @@ namespace Iql.Data.Relationships
         public DataTracker DataTracker { get; }
 
         public IEntityConfigurationBuilder EntityConfigurationContext { get; set; }
-        private EventEmitter<UntrackedEntityAddedEvent> _untrackedEntityAdded = null;
+        private EventEmitter<UntrackedEntityAddedEvent> _untrackedEntityAdded;
 
         public EventEmitter<UntrackedEntityAddedEvent> UntrackedEntityAdded => _untrackedEntityAdded = _untrackedEntityAdded ?? new EventEmitter<UntrackedEntityAddedEvent>();
-        private EventEmitter<RelationshipChangedEvent> _relationshipChanged = null;
+        private EventEmitter<RelationshipChangedEvent> _relationshipChanged;
         public EventEmitter<RelationshipChangedEvent> RelationshipChanged => _relationshipChanged = _relationshipChanged ?? new EventEmitter<RelationshipChangedEvent>();
 
         public void RunIfNotIgnored(Action action, IProperty property, object entity)

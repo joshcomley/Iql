@@ -102,9 +102,10 @@ namespace Iql.Entities
 
         private IIqlTypeMetadata _typeMetadata = null;
         public IIqlTypeMetadata TypeMetadata => _typeMetadata = _typeMetadata ?? new EntityConfigurationTypeProvider((IEntityConfiguration)this);
-        private List<IqlMethod> _methods = null;
+        private bool _methodsInitialized;
+        private List<IqlMethod> _methods;
 
-        public List<IqlMethod> Methods { get => _methods = _methods ?? new List<IqlMethod>(); set => _methods = value; }
+        public List<IqlMethod> Methods { get { if(!_methodsInitialized) { _methodsInitialized = true; _methods = new List<IqlMethod>(); } return _methods; } set { _methodsInitialized = true; _methods = value; } }
 
         public IEntityConfiguration AddMethod(IqlMethod method)
         {
@@ -142,7 +143,9 @@ namespace Iql.Entities
             return result;
         }
         protected virtual IEntityConfigurationContainer ConfigurationContainer { get; }
-        protected readonly Dictionary<string, IProperty> _propertiesMap = new Dictionary<string, IProperty>();
+        private bool _propertiesMapDelayedInitialized;
+        private Dictionary<string, IProperty> _propertiesMapDelayed;
+        protected Dictionary<string, IProperty> _propertiesMap { get { if(!_propertiesMapDelayedInitialized) { _propertiesMapDelayedInitialized = true; _propertiesMapDelayed = new Dictionary<string, IProperty>(); } return _propertiesMapDelayed; } set { _propertiesMapDelayedInitialized = true; _propertiesMapDelayed = value; } }
         private IFile _previewProperty;
         private string _titlePropertyName;
         private string _previewPropertyName;
@@ -251,9 +254,10 @@ namespace Iql.Entities
             var ordered = all.PrioritizeForReading().ToArray();
             return ordered;
         }
-        private IList<DisplayConfiguration> _displayConfigurations = null;
+        private bool _displayConfigurationsInitialized;
+        private IList<DisplayConfiguration> _displayConfigurations;
 
-        public IList<DisplayConfiguration> DisplayConfigurations { get => _displayConfigurations = _displayConfigurations ?? new List<DisplayConfiguration>(); set => _displayConfigurations = value; }
+        public IList<DisplayConfiguration> DisplayConfigurations { get { if(!_displayConfigurationsInitialized) { _displayConfigurationsInitialized = true; _displayConfigurations = new List<DisplayConfiguration>(); } return _displayConfigurations; } set { _displayConfigurationsInitialized = true; _displayConfigurations = value; } }
 
         public IEnumerable<DisplayConfiguration> DisplayConfigurationsFor(DisplayConfigurationKind kind)
         {
@@ -388,15 +392,19 @@ namespace Iql.Entities
 
             return properties.ToArray();
         }
-        private IList<IGeographicPoint> _geographics = null;
+        private bool _geographicsInitialized;
+        private IList<IGeographicPoint> _geographics;
 
-        public IList<IGeographicPoint> Geographics { get => _geographics = _geographics ?? new List<IGeographicPoint>(); set => _geographics = value; }
-        private IList<INestedSet> _nestedSets = null;
-        public IList<INestedSet> NestedSets { get => _nestedSets = _nestedSets ?? new List<INestedSet>(); set => _nestedSets = value; }
-        private IList<IDateRange> _dateRanges = null;
-        public IList<IDateRange> DateRanges { get => _dateRanges = _dateRanges ?? new List<IDateRange>(); set => _dateRanges = value; }
-        private IList<IFile> _files = null;
-        public IList<IFile> Files { get => _files = _files ?? new List<IFile>(); set => _files = value; }
+        public IList<IGeographicPoint> Geographics { get { if(!_geographicsInitialized) { _geographicsInitialized = true; _geographics = new List<IGeographicPoint>(); } return _geographics; } set { _geographicsInitialized = true; _geographics = value; } }
+        private bool _nestedSetsInitialized;
+        private IList<INestedSet> _nestedSets;
+        public IList<INestedSet> NestedSets { get { if(!_nestedSetsInitialized) { _nestedSetsInitialized = true; _nestedSets = new List<INestedSet>(); } return _nestedSets; } set { _nestedSetsInitialized = true; _nestedSets = value; } }
+        private bool _dateRangesInitialized;
+        private IList<IDateRange> _dateRanges;
+        public IList<IDateRange> DateRanges { get { if(!_dateRangesInitialized) { _dateRangesInitialized = true; _dateRanges = new List<IDateRange>(); } return _dateRanges; } set { _dateRangesInitialized = true; _dateRanges = value; } }
+        private bool _filesInitialized;
+        private IList<IFile> _files;
+        public IList<IFile> Files { get { if(!_filesInitialized) { _filesInitialized = true; _files = new List<IFile>(); } return _files; } set { _filesInitialized = true; _files = value; } }
         public IDisplayFormatting DisplayFormatting { get; set; }
         public IRuleCollection<IBinaryRule> EntityValidation { get; set; }
         public IEntityKey Key { get; set; }
@@ -534,7 +542,9 @@ namespace Iql.Entities
 
         private bool _setFriendlyNameSet = false;
         private string _setName;
-        private readonly ObservableList<IRelationship> _relationships = new ObservableList<IRelationship>();
+        private bool _relationshipsDelayedInitialized;
+        private ObservableList<IRelationship> _relationshipsDelayed;
+        private ObservableList<IRelationship> _relationships { get { if(!_relationshipsDelayedInitialized) { _relationshipsDelayedInitialized = true; _relationshipsDelayed = new ObservableList<IRelationship>(); } return _relationshipsDelayed; } set { _relationshipsDelayedInitialized = true; _relationshipsDelayed = value; } }
 
         public string SetFriendlyName
         {
@@ -593,9 +603,11 @@ namespace Iql.Entities
         public bool DefaultBrowseSortDescending { get; set; }
         public string DefaultSearchSortExpression { get; set; }
         public bool DefaultSearchSortDescending { get; set; }
+        private bool _allRelationshipsDelayedInitialized;
+        private List<EntityRelationship> _allRelationshipsDelayed;
 
 
-        private List<EntityRelationship> _allRelationships = new List<EntityRelationship>();
+        private List<EntityRelationship> _allRelationships { get { if(!_allRelationshipsDelayedInitialized) { _allRelationshipsDelayedInitialized = true; _allRelationshipsDelayed = new List<EntityRelationship>(); } return _allRelationshipsDelayed; } set { _allRelationshipsDelayedInitialized = true; _allRelationshipsDelayed = value; } }
 
         public List<EntityRelationship> AllRelationships()
         {

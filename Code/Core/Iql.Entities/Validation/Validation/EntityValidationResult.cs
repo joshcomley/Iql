@@ -5,12 +5,15 @@ namespace Iql.Entities.Validation.Validation
 {
     public class EntityValidationResult<T> : ValidationResult<T, EntityValidationResult<T>>, IEntityValidationResult
     {
-        private List<PropertyValidationResult<T>> _propertyValidationResults = null;
-        public List<PropertyValidationResult<T>> PropertyValidationResults { get => _propertyValidationResults = _propertyValidationResults ?? new List<PropertyValidationResult<T>>(); set => _propertyValidationResults = value; }
-        private List<RelationshipValidationResult<T>> _relationshipValidationResults = null;
-        public List<RelationshipValidationResult<T>> RelationshipValidationResults { get => _relationshipValidationResults = _relationshipValidationResults ?? new List<RelationshipValidationResult<T>>(); set => _relationshipValidationResults = value; }
-        private List<RelationshipCollectionValidationResult<T>> _relationshipCollectionValidationResults = null;
-        public List<RelationshipCollectionValidationResult<T>> RelationshipCollectionValidationResults { get => _relationshipCollectionValidationResults = _relationshipCollectionValidationResults ?? new List<RelationshipCollectionValidationResult<T>>(); set => _relationshipCollectionValidationResults = value; }
+        private bool _propertyValidationResultsInitialized;
+        private List<PropertyValidationResult<T>> _propertyValidationResults;
+        public List<PropertyValidationResult<T>> PropertyValidationResults { get { if(!_propertyValidationResultsInitialized) { _propertyValidationResultsInitialized = true; _propertyValidationResults = new List<PropertyValidationResult<T>>(); } return _propertyValidationResults; } set { _propertyValidationResultsInitialized = true; _propertyValidationResults = value; } }
+        private bool _relationshipValidationResultsInitialized;
+        private List<RelationshipValidationResult<T>> _relationshipValidationResults;
+        public List<RelationshipValidationResult<T>> RelationshipValidationResults { get { if(!_relationshipValidationResultsInitialized) { _relationshipValidationResultsInitialized = true; _relationshipValidationResults = new List<RelationshipValidationResult<T>>(); } return _relationshipValidationResults; } set { _relationshipValidationResultsInitialized = true; _relationshipValidationResults = value; } }
+        private bool _relationshipCollectionValidationResultsInitialized;
+        private List<RelationshipCollectionValidationResult<T>> _relationshipCollectionValidationResults;
+        public List<RelationshipCollectionValidationResult<T>> RelationshipCollectionValidationResults { get { if(!_relationshipCollectionValidationResultsInitialized) { _relationshipCollectionValidationResultsInitialized = true; _relationshipCollectionValidationResults = new List<RelationshipCollectionValidationResult<T>>(); } return _relationshipCollectionValidationResults; } set { _relationshipCollectionValidationResultsInitialized = true; _relationshipCollectionValidationResults = value; } }
 
         public EntityValidationResult(T entity) : base(entity)
         {

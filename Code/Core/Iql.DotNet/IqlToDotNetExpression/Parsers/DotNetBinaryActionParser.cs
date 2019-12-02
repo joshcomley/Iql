@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -204,8 +204,10 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
             return new IqlFinalExpression<Expression>(
                 expression);
         }
+        private static bool ToStringMethodsDelayedInitialized;
+        private static Dictionary<Type, MethodInfo> ToStringMethodsDelayed;
 
-        private static readonly Dictionary<Type, MethodInfo> ToStringMethods = new Dictionary<Type, MethodInfo>();
+        private static Dictionary<Type, MethodInfo> ToStringMethods { get { if(!ToStringMethodsDelayedInitialized) { ToStringMethodsDelayedInitialized = true; ToStringMethodsDelayed = new Dictionary<Type, MethodInfo>(); } return ToStringMethodsDelayed; } set { ToStringMethodsDelayedInitialized = true; ToStringMethodsDelayed = value; } }
         private static Expression AsToString(Expression expression)
         {
             var toStringMethod = ToStringMethods.Ensure(expression.Type,

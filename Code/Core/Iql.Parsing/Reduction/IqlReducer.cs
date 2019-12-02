@@ -41,9 +41,10 @@ namespace Iql.Parsing.Reduction
         {
             return (T)Evaluate(expression)?.Value;
         }
-        private List<IqlExpression> _ancestors = null;
+        private bool _ancestorsInitialized;
+        private List<IqlExpression> _ancestors;
 
-        public List<IqlExpression> Ancestors { get => _ancestors = _ancestors ?? new List<IqlExpression>(); set => _ancestors = value; }
+        public List<IqlExpression> Ancestors { get { if(!_ancestorsInitialized) { _ancestorsInitialized = true; _ancestors = new List<IqlExpression>(); } return _ancestors; } set { _ancestorsInitialized = true; _ancestors = value; } }
 
         public IIqlLiteralExpression Evaluate(IqlExpression expression)
         {

@@ -16,7 +16,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         where TEntity : class
     {
         public Type EntityType => typeof(TEntity);
-        private readonly List<object> _objectStack = new List<object>();
+        private bool _objectStackDelayedInitialized;
+        private List<object> _objectStackDelayed;
+        private List<object> _objectStack { get { if(!_objectStackDelayedInitialized) { _objectStackDelayedInitialized = true; _objectStackDelayed = new List<object>(); } return _objectStackDelayed; } set { _objectStackDelayedInitialized = true; _objectStackDelayed = value; } }
         public Func<string, object> Evaluate;
         public JavaScriptExpressionNode Expression { get; set; }
 
@@ -70,7 +72,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         public JavaScriptToIqlExpressionData Data { get; set; }
         public EvaluateContext EvaluateContext { get; set; }
         public TEntity RootEntity { get; set; }
-        private List<RootEntity> _rootEntities = null;
+        private List<RootEntity> _rootEntities;
 
         public List<RootEntity> RootEntities => _rootEntities = _rootEntities ?? new List<RootEntity>();
 

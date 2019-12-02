@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +6,9 @@ namespace Iql
 {
     public class EnumMapper<TEnum>
     {
-        private readonly List<EnumMapping<TEnum>> _mapping = new List<EnumMapping<TEnum>>();
+        private bool _mappingDelayedInitialized;
+        private List<EnumMapping<TEnum>> _mappingDelayed;
+        private List<EnumMapping<TEnum>> _mapping { get { if(!_mappingDelayedInitialized) { _mappingDelayedInitialized = true; _mappingDelayed = new List<EnumMapping<TEnum>>(); } return _mappingDelayed; } set { _mappingDelayedInitialized = true; _mappingDelayed = value; } }
 
         public EnumMapper(params EnumMapping<TEnum>[] args)
         {

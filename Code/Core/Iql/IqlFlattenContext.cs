@@ -5,11 +5,11 @@ namespace Iql
 {
     public class IqlFlattenContext
     {
-        private List<IqlExpression> _expressions = null;
+        private List<IqlExpression> _expressions;
         public List<IqlExpression> Expressions => _expressions = _expressions ?? new List<IqlExpression>();
-        private List<IqlFlattenedExpression> _flattenedExpressions = null;
+        private List<IqlFlattenedExpression> _flattenedExpressions;
         public List<IqlFlattenedExpression> FlattenedExpressions => _flattenedExpressions = _flattenedExpressions ?? new List<IqlFlattenedExpression>();
-        private List<IqlFlattenedExpression> _ancestors = null;
+        private List<IqlFlattenedExpression> _ancestors;
         public List<IqlFlattenedExpression> Ancestors => _ancestors = _ancestors ?? new List<IqlFlattenedExpression>();
         public Func<IqlExpression, FlattenReactionKind> Checker { get; set; }
 

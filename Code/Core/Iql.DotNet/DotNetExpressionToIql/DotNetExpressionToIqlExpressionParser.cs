@@ -27,9 +27,10 @@ namespace Iql.DotNet.DotNetExpressionToIql
             Parsers.Add(() => new UnaryDotNetExpressionParser<T>());
             Parsers.Add(() => new ParameterDotNetExpressionParser<T>());
         }
-        private List<Func<IDotNetExpressionParser>> _parsers = null;
+        private bool _parsersInitialized;
+        private List<Func<IDotNetExpressionParser>> _parsers;
 
-        public List<Func<IDotNetExpressionParser>> Parsers { get => _parsers = _parsers ?? new List<Func<IDotNetExpressionParser>>(); set => _parsers = value; }
+        public List<Func<IDotNetExpressionParser>> Parsers { get { if(!_parsersInitialized) { _parsersInitialized = true; _parsers = new List<Func<IDotNetExpressionParser>>(); } return _parsers; } set { _parsersInitialized = true; _parsers = value; } }
 
         public static IqlExpression Parse<TResult>(Expression<Func<T, TResult>> exp)
         {

@@ -42,8 +42,10 @@ namespace Iql.Entities
             ManageKind = manageKind;
             return this;
         }
+        private bool _sanitizersDelayedInitialized;
+        private Dictionary<string, EntitySanitizer<T>> _sanitizersDelayed;
 
-        private readonly Dictionary<string, EntitySanitizer<T>> _sanitizers = new Dictionary<string, EntitySanitizer<T>>();
+        private Dictionary<string, EntitySanitizer<T>> _sanitizers { get { if(!_sanitizersDelayedInitialized) { _sanitizersDelayedInitialized = true; _sanitizersDelayed = new Dictionary<string, EntitySanitizer<T>>(); } return _sanitizersDelayed; } set { _sanitizersDelayedInitialized = true; _sanitizersDelayed = value; } }
         public IEntityConfiguration AddSanitizer(Action<T> expression, string key = null)
         {
             key = key ?? Guid.NewGuid().ToString();
@@ -266,8 +268,10 @@ namespace Iql.Entities
             var relationship = FindRelationshipByName(property.Name);
             return (CollectionRelationshipDetail<T, TOtherEnd>)relationship.ThisEnd;
         }
+        private bool _propertyByNameLookupDelayedInitialized;
+        private Dictionary<string, IEntityProperty<T>> _propertyByNameLookupDelayed;
 
-        private readonly Dictionary<string, IEntityProperty<T>> _propertyByNameLookup = new Dictionary<string, IEntityProperty<T>>();
+        private Dictionary<string, IEntityProperty<T>> _propertyByNameLookup { get { if(!_propertyByNameLookupDelayedInitialized) { _propertyByNameLookupDelayedInitialized = true; _propertyByNameLookupDelayed = new Dictionary<string, IEntityProperty<T>>(); } return _propertyByNameLookupDelayed; } set { _propertyByNameLookupDelayedInitialized = true; _propertyByNameLookupDelayed = value; } }
         public IEntityProperty<T> FindProperty(string name)
         {
             if (!_propertyByNameLookup.ContainsKey(name))

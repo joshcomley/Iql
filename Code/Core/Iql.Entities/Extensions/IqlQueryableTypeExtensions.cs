@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Iql.Extensions;
@@ -19,7 +19,9 @@ namespace Iql.Entities.Extensions
         }
 #endif
 
-        private static readonly Dictionary<Type, object> DefaultValues = new Dictionary<Type, object>();
+        private static bool DefaultValuesDelayedInitialized;
+        private static Dictionary<Type, object> DefaultValuesDelayed;
+        private static Dictionary<Type, object> DefaultValues { get { if(!DefaultValuesDelayedInitialized) { DefaultValuesDelayedInitialized = true; DefaultValuesDelayed = new Dictionary<Type, object>(); } return DefaultValuesDelayed; } set { DefaultValuesDelayedInitialized = true; DefaultValuesDelayed = value; } }
         public static object DefaultValue(this ITypeDefinition type, bool ignoreNullable = false)
         {            
 #if TypeScript

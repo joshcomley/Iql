@@ -72,8 +72,9 @@ namespace Iql.Entities.PropertyGroups.Files
             (UrlProperty ?? NameProperty ?? VersionProperty ?? KindProperty)?.EntityConfiguration;
 
         public override IqlPropertyKind Kind { get; set; } = IqlPropertyKind.SimpleCollection;
-        private IList<IFilePreview> _previews = null;
-        public IList<IFilePreview> Previews { get => _previews = _previews ?? new List<IFilePreview>(); set => _previews = value; }
+        private bool _previewsInitialized;
+        private IList<IFilePreview> _previews;
+        public IList<IFilePreview> Previews { get { if(!_previewsInitialized) { _previewsInitialized = true; _previews = new List<IFilePreview>(); } return _previews; } set { _previewsInitialized = true; _previews = value; } }
         public IFile RootFile => RootFileInternal;
         protected IFile RootFileInternal => this;
         protected IProperty UrlPropertyInternal { get; set; }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +28,9 @@ namespace Iql.Data.Evaluation
     public class PermissionResultPath
     {
         private IqlUserPermission _result = IqlUserPermission.Unset;
-        private readonly List<PermissionResult> _path = new List<PermissionResult>();
+        private bool _pathDelayedInitialized;
+        private List<PermissionResult> _pathDelayed;
+        private List<PermissionResult> _path { get { if(!_pathDelayedInitialized) { _pathDelayedInitialized = true; _pathDelayed = new List<PermissionResult>(); } return _pathDelayed; } set { _pathDelayedInitialized = true; _pathDelayed = value; } }
         public UserPermissionsManager Manager { get; }
         public object User { get; }
         public Type UserType { get; }

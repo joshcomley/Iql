@@ -47,8 +47,9 @@ namespace Iql.Data.Evaluation
                 Permission = permission;
             }
         }
-        private List<PermissionsEvaluationResult> _results = null;
-        private List<PermissionsEvaluationResult> Results { get => _results = _results ?? new List<PermissionsEvaluationResult>(); set => _results = value; }
+        private bool _resultsInitialized;
+        private List<PermissionsEvaluationResult> _results;
+        private List<PermissionsEvaluationResult> Results { get { if(!_resultsInitialized) { _resultsInitialized = true; _results = new List<PermissionsEvaluationResult>(); } return _results; } set { _resultsInitialized = true; _results = value; } }
         public PermissionsEvaluationSession(
             bool enforceLatest = false,
             EvaluationCacheMode cacheMode = EvaluationCacheMode.All,
@@ -643,8 +644,10 @@ namespace Iql.Data.Evaluation
         {
             Results = new List<PermissionsEvaluationResult>();
         }
+        private static bool _tempIdsDelayedInitialized;
+        private static Dictionary<object, string> _tempIdsDelayed;
 
-        private static Dictionary<object, string> _tempIds = new Dictionary<object, string>();
+        private static Dictionary<object, string> _tempIds { get { if(!_tempIdsDelayedInitialized) { _tempIdsDelayedInitialized = true; _tempIdsDelayed = new Dictionary<object, string>(); } return _tempIdsDelayed; } set { _tempIdsDelayedInitialized = true; _tempIdsDelayed = value; } }
         private string GetEntityKey(object entity, Type entityType, ITypeResolver typeResolver, PermissionsResultsCachingKind cachingKind)
         {
             if (entity == null)

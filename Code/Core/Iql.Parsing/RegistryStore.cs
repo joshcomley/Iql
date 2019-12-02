@@ -6,8 +6,9 @@ namespace Iql.Parsing
     public class RegistryStore<TInstance, TResolveTo>
         where TResolveTo : class
     {
-        private readonly Dictionary<Type, Func<TResolveTo>> _registry =
-            new Dictionary<Type, Func<TResolveTo>>();
+        private bool _registryDelayedInitialized;
+        private Dictionary<Type, Func<TResolveTo>> _registryDelayed;
+        private Dictionary<Type, Func<TResolveTo>> _registry { get { if(!_registryDelayedInitialized) { _registryDelayedInitialized = true; _registryDelayed =             new Dictionary<Type, Func<TResolveTo>>(); } return _registryDelayed; } set { _registryDelayedInitialized = true; _registryDelayed = value; } }
 
         public void Register(Type type, Func<TResolveTo> reducerType)
         {

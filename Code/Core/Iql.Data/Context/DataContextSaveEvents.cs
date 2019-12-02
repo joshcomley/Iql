@@ -9,7 +9,9 @@ namespace Iql.Data.Context
 {
     public class DataContextSaveEvents : OperationEvents<SaveChangesOperation, SaveChangesResult>
     {
-        private static List<SaveChangesOperation> _active = new List<SaveChangesOperation>();
+        private static bool _activeDelayedInitialized;
+        private static List<SaveChangesOperation> _activeDelayed;
+        private static List<SaveChangesOperation> _active { get { if(!_activeDelayedInitialized) { _activeDelayedInitialized = true; _activeDelayed = new List<SaveChangesOperation>(); } return _activeDelayed; } set { _activeDelayedInitialized = true; _activeDelayed = value; } }
 
         public DataContextSaveEvents(IOperationEvents<SaveChangesOperation, SaveChangesResult> global = null) : base(global)
         {

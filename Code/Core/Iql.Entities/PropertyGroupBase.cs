@@ -37,8 +37,10 @@ namespace Iql.Entities
 
             return false;
         }
+        private static bool SanitizedNamesDelayedInitialized;
+        private static Dictionary<string , string> SanitizedNamesDelayed;
 
-        private static readonly Dictionary<string , string> SanitizedNames = new Dictionary<string, string>();
+        private static Dictionary<string , string> SanitizedNames { get { if(!SanitizedNamesDelayedInitialized) { SanitizedNamesDelayedInitialized = true; SanitizedNamesDelayed = new Dictionary<string, string>(); } return SanitizedNamesDelayed; } set { SanitizedNamesDelayedInitialized = true; SanitizedNamesDelayed = value; } }
         private static string SanitizeName(string name)
         {
             string val;

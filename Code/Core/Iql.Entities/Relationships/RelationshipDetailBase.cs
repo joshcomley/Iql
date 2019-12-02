@@ -76,11 +76,13 @@ namespace Iql.Entities.Relationships
             //    }
             //}
         }
-        private List<ValueMapping> _valueMappings = null;
+        private bool _valueMappingsInitialized;
+        private List<ValueMapping> _valueMappings;
 
-        public List<ValueMapping> ValueMappings { get => _valueMappings = _valueMappings ?? new List<ValueMapping>(); set => _valueMappings = value; }
-        private List<RelationshipMapping> _relationshipMappings = null;
-        public List<RelationshipMapping> RelationshipMappings { get => _relationshipMappings = _relationshipMappings ?? new List<RelationshipMapping>(); set => _relationshipMappings = value; }
+        public List<ValueMapping> ValueMappings { get { if(!_valueMappingsInitialized) { _valueMappingsInitialized = true; _valueMappings = new List<ValueMapping>(); } return _valueMappings; } set { _valueMappingsInitialized = true; _valueMappings = value; } }
+        private bool _relationshipMappingsInitialized;
+        private List<RelationshipMapping> _relationshipMappings;
+        public List<RelationshipMapping> RelationshipMappings { get { if(!_relationshipMappingsInitialized) { _relationshipMappingsInitialized = true; _relationshipMappings = new List<RelationshipMapping>(); } return _relationshipMappings; } set { _relationshipMappingsInitialized = true; _relationshipMappings = value; } }
         public IRelationshipDetail OtherSide =>
             RelationshipSide == RelationshipSide.Source ? Relationship?.Target : Relationship?.Source;
         public RelationshipSide RelationshipSide { get; }
@@ -122,8 +124,10 @@ namespace Iql.Entities.Relationships
                 return null;
             }
         }
+        private bool _beingMarkedAsDirtyDelayedInitialized;
+        private List<object> _beingMarkedAsDirtyDelayed;
 
-        private readonly List<object> _beingMarkedAsDirty = new List<object>();
+        private List<object> _beingMarkedAsDirty { get { if(!_beingMarkedAsDirtyDelayedInitialized) { _beingMarkedAsDirtyDelayedInitialized = true; _beingMarkedAsDirtyDelayed = new List<object>(); } return _beingMarkedAsDirtyDelayed; } set { _beingMarkedAsDirtyDelayedInitialized = true; _beingMarkedAsDirtyDelayed = value; } }
         private EventSubscription _constraintsSubscription;
         private IProperty _property;
 

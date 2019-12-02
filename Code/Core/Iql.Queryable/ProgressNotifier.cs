@@ -4,7 +4,7 @@ namespace Iql.Queryable
 {
     public class ProgressNotifier
     {
-        private EventEmitter<ProgressNotifierEvent> _onProgress = null;
+        private EventEmitter<ProgressNotifierEvent> _onProgress;
         public EventEmitter<ProgressNotifierEvent> OnProgress => _onProgress = _onProgress ?? new EventEmitter<ProgressNotifierEvent>();
         public void NotifyProgress(double progress, bool isFinalNotification)
         {

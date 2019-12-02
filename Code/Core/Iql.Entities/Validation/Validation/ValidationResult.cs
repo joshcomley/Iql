@@ -9,8 +9,9 @@ namespace Iql.Entities.Validation.Validation
     {
         public T Entity { get; set; }
         public Type EntityType => typeof(T);
-        private List<ValidationError> _validationFailures = null;
-        public List<ValidationError> ValidationFailures { get => _validationFailures = _validationFailures ?? new List<ValidationError>(); set => _validationFailures = value; }
+        private bool _validationFailuresInitialized;
+        private List<ValidationError> _validationFailures;
+        public List<ValidationError> ValidationFailures { get { if(!_validationFailuresInitialized) { _validationFailuresInitialized = true; _validationFailures = new List<ValidationError>(); } return _validationFailures; } set { _validationFailuresInitialized = true; _validationFailures = value; } }
 
         protected ValidationResult(T entity)
         {

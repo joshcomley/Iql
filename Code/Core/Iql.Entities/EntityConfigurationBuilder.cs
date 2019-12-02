@@ -17,27 +17,33 @@ namespace Iql.Entities
 {
     public class EntityConfigurationBuilder : MetadataBase, IEntityConfigurationBuilder
     {
-        private readonly GuidManager _guidManager = new GuidManager();
+        private bool _guidManagerDelayedInitialized;
+        private GuidManager _guidManagerDelayed;
+        private GuidManager _guidManager { get { if(!_guidManagerDelayedInitialized) { _guidManagerDelayedInitialized = true; _guidManagerDelayed = new GuidManager(); } return _guidManagerDelayed; } set { _guidManagerDelayedInitialized = true; _guidManagerDelayed = value; } }
         public GuidManager GuidManager => _guidManager;
 
         private UserPermissionsManager _permissionsManager;
+        private bool _permissionRulesDelayedInitialized;
+        private List<IqlUserPermissionRule> _permissionRulesDelayed;
 
-        private readonly List<IqlUserPermissionRule> _permissionRules =
-            new List<IqlUserPermissionRule>();
+        private List<IqlUserPermissionRule> _permissionRules { get { if(!_permissionRulesDelayedInitialized) { _permissionRulesDelayedInitialized = true; _permissionRulesDelayed =             new List<IqlUserPermissionRule>(); } return _permissionRulesDelayed; } set { _permissionRulesDelayedInitialized = true; _permissionRulesDelayed = value; } }
         public List<IqlUserPermissionRule> PermissionRules =>
             _permissionRules.EnsureHasBuilder(this);
         public UserPermissionsManager PermissionManager =>
             _permissionsManager = _permissionsManager ?? new UserPermissionsManager(
                                this,
                                this);
+        private bool _entitiesDelayedInitialized;
+        private Dictionary<Type, IEntityConfiguration> _entitiesDelayed;
 
-        private readonly Dictionary<Type, IEntityConfiguration> _entities =
-            new Dictionary<Type, IEntityConfiguration>();
-        private readonly Dictionary<string, IEntityConfiguration> _entitiesByTypeName =
-            new Dictionary<string, IEntityConfiguration>();
+        private Dictionary<Type, IEntityConfiguration> _entities { get { if(!_entitiesDelayedInitialized) { _entitiesDelayedInitialized = true; _entitiesDelayed =             new Dictionary<Type, IEntityConfiguration>(); } return _entitiesDelayed; } set { _entitiesDelayedInitialized = true; _entitiesDelayed = value; } }
+        private bool _entitiesByTypeNameDelayedInitialized;
+        private Dictionary<string, IEntityConfiguration> _entitiesByTypeNameDelayed;
+        private Dictionary<string, IEntityConfiguration> _entitiesByTypeName { get { if(!_entitiesByTypeNameDelayedInitialized) { _entitiesByTypeNameDelayedInitialized = true; _entitiesByTypeNameDelayed =             new Dictionary<string, IEntityConfiguration>(); } return _entitiesByTypeNameDelayed; } set { _entitiesByTypeNameDelayedInitialized = true; _entitiesByTypeNameDelayed = value; } }
+        private static bool EntityConfigurationBuildersDelayedInitialized;
+        private static List<EntityConfigurationBuilder> EntityConfigurationBuildersDelayed;
 
-        private static readonly List<EntityConfigurationBuilder> EntityConfigurationBuilders =
-            new List<EntityConfigurationBuilder>();
+        private static List<EntityConfigurationBuilder> EntityConfigurationBuilders { get { if(!EntityConfigurationBuildersDelayedInitialized) { EntityConfigurationBuildersDelayedInitialized = true; EntityConfigurationBuildersDelayed =             new List<EntityConfigurationBuilder>(); } return EntityConfigurationBuildersDelayed; } set { EntityConfigurationBuildersDelayedInitialized = true; EntityConfigurationBuildersDelayed = value; } }
 
         public EntityConfigurationBuilder()
         {
@@ -94,8 +100,10 @@ namespace Iql.Entities
         {
             return _entities.ContainsKey(type);
         }
+        private bool _enumTypesDelayedInitialized;
+        private Dictionary<string, IEnumConfiguration> _enumTypesDelayed;
 
-        private readonly Dictionary<string, IEnumConfiguration> _enumTypes = new Dictionary<string, IEnumConfiguration>();
+        private Dictionary<string, IEnumConfiguration> _enumTypes { get { if(!_enumTypesDelayedInitialized) { _enumTypesDelayedInitialized = true; _enumTypesDelayed = new Dictionary<string, IEnumConfiguration>(); } return _enumTypesDelayed; } set { _enumTypesDelayedInitialized = true; _enumTypesDelayed = value; } }
         public IEnumerable<IEnumConfiguration> AllEnumTypes()
         {
             return _enumTypes.Values.ToArray();
@@ -205,11 +213,12 @@ namespace Iql.Entities
             }
             return _entities[type];
         }
-        private IqlServiceProvider _serviceProvider = null;
+        private IqlServiceProvider _serviceProvider;
 
         public IqlServiceProvider ServiceProvider => _serviceProvider = _serviceProvider ?? new IqlServiceProvider();
-        private List<IqlMethod> _methods = null;
-        public List<IqlMethod> Methods { get => _methods = _methods ?? new List<IqlMethod>(); set => _methods = value; }
+        private bool _methodsInitialized;
+        private List<IqlMethod> _methods;
+        public List<IqlMethod> Methods { get { if(!_methodsInitialized) { _methodsInitialized = true; _methods = new List<IqlMethod>(); } return _methods; } set { _methodsInitialized = true; _methods = value; } }
         public IEnumerable<IEnumConfiguration> EnumTypes => AllEnumTypes();
         public IEnumerable<IEntityConfiguration> EntityTypes => AllEntityTypes();
         public IEnumerable<IRelationship> Relationships => AllRelationships();
@@ -249,7 +258,7 @@ namespace Iql.Entities
         {
             return GraphFlattener.FlattenObjectGraphsInternal(this, entityType, entities);
         }
-                                                                        private EventEmitter<string> _resolvingType = null;
+                                                                        private EventEmitter<string> _resolvingType;
 
         //public Dictionary<Type, IList> FlattenDependencyGraph(object entity, Type entityType)
         //{

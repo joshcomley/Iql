@@ -18,7 +18,7 @@ namespace Iql.Data.DataStores.InMemory
 {
     public class InMemoryContext<TEntity> : IInMemoryContext where TEntity : class
     {
-        private Dictionary<string, object> _variables = null;
+        private Dictionary<string, object> _variables;
         public Dictionary<string, object> Variables => _variables = _variables ?? new Dictionary<string, object>();
         public object GetVariable(string name)
         {
@@ -115,8 +115,10 @@ namespace Iql.Data.DataStores.InMemory
             SourceList = SourceList.Where(predicate.Compile());
             return this;
         }
+        private bool _queueDelayedInitialized;
+        private List<Action> _queueDelayed;
 
-        private readonly List<Action> _queue = new List<Action>();
+        private List<Action> _queue { get { if(!_queueDelayedInitialized) { _queueDelayedInitialized = true; _queueDelayed = new List<Action>(); } return _queueDelayed; } set { _queueDelayedInitialized = true; _queueDelayed = value; } }
         private void Enqueue(Action action)
         {
             _queue.Add(action);
@@ -254,10 +256,14 @@ namespace Iql.Data.DataStores.InMemory
             }
             return IqlPointExpression.IntersectsPolygon(left.X, left.Y, right);
         }
+        private bool _matchedDelayedInitialized;
+        private Dictionary<object, bool> _matchedDelayed;
 
-        private readonly Dictionary<object, bool> _matched = new Dictionary<object, bool>();
+        private Dictionary<object, bool> _matched { get { if(!_matchedDelayedInitialized) { _matchedDelayedInitialized = true; _matchedDelayed = new Dictionary<object, bool>(); } return _matchedDelayed; } set { _matchedDelayedInitialized = true; _matchedDelayed = value; } }
+        private bool AllDataDelayedInitialized;
+        private Dictionary<Type, IList> AllDataDelayed;
 
-        public readonly Dictionary<Type, IList> AllData = new Dictionary<Type, IList>();
+        public Dictionary<Type, IList> AllData { get { if(!AllDataDelayedInitialized) { AllDataDelayedInitialized = true; AllDataDelayed = new Dictionary<Type, IList>(); } return AllDataDelayed; } set { AllDataDelayedInitialized = true; AllDataDelayed = value; } }
         public void AddMatchesTyped<TEntityMatch>(List<TEntityMatch> matches)
         {
             var type = typeof(TEntityMatch);

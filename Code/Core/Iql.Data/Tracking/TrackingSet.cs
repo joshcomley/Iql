@@ -60,11 +60,19 @@ namespace Iql.Data.Tracking
 
         public Type EntityType => typeof(T);
         private int _idCount = 0;
-        private readonly ChangeIgnorer _changeIgnorer = new ChangeIgnorer();
-        private readonly Dictionary<T, EntityObserver> _entityObservers = new Dictionary<T, EntityObserver>();
-        private readonly PropertyChangeIgnorer _keyChangeAllower = new PropertyChangeIgnorer();
+        private bool _changeIgnorerDelayedInitialized;
+        private ChangeIgnorer _changeIgnorerDelayed;
+        private ChangeIgnorer _changeIgnorer { get { if(!_changeIgnorerDelayedInitialized) { _changeIgnorerDelayedInitialized = true; _changeIgnorerDelayed = new ChangeIgnorer(); } return _changeIgnorerDelayed; } set { _changeIgnorerDelayedInitialized = true; _changeIgnorerDelayed = value; } }
+        private bool _entityObserversDelayedInitialized;
+        private Dictionary<T, EntityObserver> _entityObserversDelayed;
+        private Dictionary<T, EntityObserver> _entityObservers { get { if(!_entityObserversDelayedInitialized) { _entityObserversDelayedInitialized = true; _entityObserversDelayed = new Dictionary<T, EntityObserver>(); } return _entityObserversDelayed; } set { _entityObserversDelayedInitialized = true; _entityObserversDelayed = value; } }
+        private bool _keyChangeAllowerDelayedInitialized;
+        private PropertyChangeIgnorer _keyChangeAllowerDelayed;
+        private PropertyChangeIgnorer _keyChangeAllower { get { if(!_keyChangeAllowerDelayedInitialized) { _keyChangeAllowerDelayedInitialized = true; _keyChangeAllowerDelayed = new PropertyChangeIgnorer(); } return _keyChangeAllowerDelayed; } set { _keyChangeAllowerDelayedInitialized = true; _keyChangeAllowerDelayed = value; } }
+        private bool _trackingDelayedInitialized;
+        private Dictionary<object, object> _trackingDelayed;
 
-        private readonly Dictionary<object, object> _tracking = new Dictionary<object, object>();
+        private Dictionary<object, object> _tracking { get { if(!_trackingDelayedInitialized) { _trackingDelayedInitialized = true; _trackingDelayed = new Dictionary<object, object>(); } return _trackingDelayed; } set { _trackingDelayedInitialized = true; _trackingDelayed = value; } }
         private EntityConfiguration<T> _entityConfiguration;
 
         public AutoIntegerIdStrategy AutoIntegerIdStrategy { get; set; } = AutoIntegerIdStrategy.Positive;

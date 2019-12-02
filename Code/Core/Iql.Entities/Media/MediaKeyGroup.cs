@@ -11,9 +11,10 @@ namespace Iql.Entities
         public MediaKey<T> MediaKey { get; internal set; }
 
         IMediaKey IMediaKeyGroup.MediaKey => MediaKey;
-        private List<IMediaKeyPart> _parts = null;
+        private bool _partsInitialized;
+        private List<IMediaKeyPart> _parts;
 
-        public List<IMediaKeyPart> Parts { get => _parts = _parts ?? new List<IMediaKeyPart>(); set => _parts = value; }
+        public List<IMediaKeyPart> Parts { get { if(!_partsInitialized) { _partsInitialized = true; _parts = new List<IMediaKeyPart>(); } return _parts; } set { _partsInitialized = true; _parts = value; } }
 
         public string[] Evaluate(object entity)
         {

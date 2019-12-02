@@ -8,7 +8,9 @@ namespace Iql.OData
     public class ODataConfiguration
     {
         public IEntityConfigurationBuilder Builder { get; }
-        private readonly Dictionary<Type, string> _entitySets = new Dictionary<Type, string>();
+        private bool _entitySetsDelayedInitialized;
+        private Dictionary<Type, string> _entitySetsDelayed;
+        private Dictionary<Type, string> _entitySets { get { if(!_entitySetsDelayedInitialized) { _entitySetsDelayedInitialized = true; _entitySetsDelayed = new Dictionary<Type, string>(); } return _entitySetsDelayed; } set { _entitySetsDelayedInitialized = true; _entitySetsDelayed = value; } }
         public IHttpProvider HttpProvider { get; set; }
         public Func<string> ApiUriBase { get; set; }
 

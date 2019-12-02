@@ -152,9 +152,10 @@ namespace Iql.Entities
         public string FullKeyString => this.AsKeyString(true);
 
         public string TypeName { get; set; }
-        private static List<CompositeKey> _all = null;
+        private static bool _allInitialized;
+        private static List<CompositeKey> _all;
 
-        public static List<CompositeKey> All { get => _all = _all ?? new List<CompositeKey>(); set => _all = value; }
+        public static List<CompositeKey> All { get { if(!_allInitialized) { _allInitialized = true; _all = new List<CompositeKey>(); } return _all; } set { _allInitialized = true; _all = value; } }
 
         public CompositeKey(string typeName, int size)
         {

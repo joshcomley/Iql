@@ -11,9 +11,12 @@ namespace Iql.Data
 {
     public class EntityObserver
     {
-        private readonly Dictionary<string, KeyValuePair<IEventSubscriberBase, EventSubscription>> _subscriptions = new Dictionary<string, KeyValuePair<IEventSubscriberBase, EventSubscription>>();
-        private readonly Dictionary<IRelatedList, EventSubscription> _relatedListChangedSubscriptions =
-            new Dictionary<IRelatedList, EventSubscription>();
+        private bool _subscriptionsDelayedInitialized;
+        private Dictionary<string, KeyValuePair<IEventSubscriberBase, EventSubscription>> _subscriptionsDelayed;
+        private Dictionary<string, KeyValuePair<IEventSubscriberBase, EventSubscription>> _subscriptions { get { if(!_subscriptionsDelayedInitialized) { _subscriptionsDelayedInitialized = true; _subscriptionsDelayed = new Dictionary<string, KeyValuePair<IEventSubscriberBase, EventSubscription>>(); } return _subscriptionsDelayed; } set { _subscriptionsDelayedInitialized = true; _subscriptionsDelayed = value; } }
+        private bool _relatedListChangedSubscriptionsDelayedInitialized;
+        private Dictionary<IRelatedList, EventSubscription> _relatedListChangedSubscriptionsDelayed;
+        private Dictionary<IRelatedList, EventSubscription> _relatedListChangedSubscriptions { get { if(!_relatedListChangedSubscriptionsDelayedInitialized) { _relatedListChangedSubscriptionsDelayedInitialized = true; _relatedListChangedSubscriptionsDelayed =             new Dictionary<IRelatedList, EventSubscription>(); } return _relatedListChangedSubscriptionsDelayed; } set { _relatedListChangedSubscriptionsDelayedInitialized = true; _relatedListChangedSubscriptionsDelayed = value; } }
 
         public IEntityStateBase EntityState { get; }
         private IEntity Entity { get; }

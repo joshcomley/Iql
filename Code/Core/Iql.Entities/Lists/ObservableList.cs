@@ -8,8 +8,10 @@ namespace Iql.Entities.Lists
 {
     public class ObservableList<T> : IList<T>, IObservableList
     {
-        private readonly List<T> _rootList = new List<T>();
-        private EventEmitter<ObservableListChangeEvent<T>> _change = null;
+        private bool _rootListDelayedInitialized;
+        private List<T> _rootListDelayed;
+        private List<T> _rootList { get { if(!_rootListDelayedInitialized) { _rootListDelayedInitialized = true; _rootListDelayed = new List<T>(); } return _rootListDelayed; } set { _rootListDelayedInitialized = true; _rootListDelayed = value; } }
+        private EventEmitter<ObservableListChangeEvent<T>> _change;
 
         public EventEmitter<ObservableListChangeEvent<T>> Change => _change = _change ?? new EventEmitter<ObservableListChangeEvent<T>>();
 

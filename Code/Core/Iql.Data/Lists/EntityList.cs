@@ -7,7 +7,9 @@ namespace Iql.Data.Lists
 {
     public class EntityList<T> : ObservableList<T>
     {
-        private readonly Dictionary<IEntity, EventSubscription> _entitySubscriptions = new Dictionary<IEntity, EventSubscription>();
+        private bool _entitySubscriptionsDelayedInitialized;
+        private Dictionary<IEntity, EventSubscription> _entitySubscriptionsDelayed;
+        private Dictionary<IEntity, EventSubscription> _entitySubscriptions { get { if(!_entitySubscriptionsDelayedInitialized) { _entitySubscriptionsDelayedInitialized = true; _entitySubscriptionsDelayed = new Dictionary<IEntity, EventSubscription>(); } return _entitySubscriptionsDelayed; } set { _entitySubscriptionsDelayedInitialized = true; _entitySubscriptionsDelayed = value; } }
 
         protected override T AddItem(T item)
         {

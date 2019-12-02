@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,8 +34,9 @@ namespace Iql.Data.Rendering
         }
 
         public string Kind { get; set; }
-        private static readonly Dictionary<IPropertyContainer, PropertyDetail> Mapping =
-            new Dictionary<IPropertyContainer, PropertyDetail>();
+        private static bool MappingDelayedInitialized;
+        private static Dictionary<IPropertyContainer, PropertyDetail> MappingDelayed;
+        private static Dictionary<IPropertyContainer, PropertyDetail> Mapping { get { if(!MappingDelayedInitialized) { MappingDelayedInitialized = true; MappingDelayed =             new Dictionary<IPropertyContainer, PropertyDetail>(); } return MappingDelayed; } set { MappingDelayedInitialized = true; MappingDelayed = value; } }
         public static PropertyDetail For(IPropertyContainer property)
         {
             if (property == null)

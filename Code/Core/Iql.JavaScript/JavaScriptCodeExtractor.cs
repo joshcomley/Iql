@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -409,7 +409,9 @@ namespace Iql.JavaScript
                 $"function ({signature}) {{ {(isLambda ? "return " : "")}{copy}{(copy.EndsWith(";") ? "" : ";")} }}"
             );
         }
-        static Dictionary<string, JavaScriptFunctionBody> _results = new Dictionary<string, JavaScriptFunctionBody>();
+        private static bool _resultsDelayedInitialized;
+        private static Dictionary<string, JavaScriptFunctionBody> _resultsDelayed;
+        static Dictionary<string, JavaScriptFunctionBody> _results { get { if(!_resultsDelayedInitialized) { _resultsDelayedInitialized = true; _resultsDelayed = new Dictionary<string, JavaScriptFunctionBody>(); } return _resultsDelayed; } set { _resultsDelayedInitialized = true; _resultsDelayed = value; } }
         public static JavaScriptFunctionBody ExtractBody(string code, bool isLambda = true)
         {
             if (code == null)
@@ -438,9 +440,13 @@ namespace Iql.JavaScript
             _results.Add(code, functionBody);
             return functionBody;
         }
+        private static bool IsEs5TestDelayedInitialized;
+        private static Regex IsEs5TestDelayed;
 
-        private static readonly Regex IsEs5Test = new Regex(@"^function[\(\s]");
-        private static readonly Regex Regex = new Regex(@"\({0,1}\s*([A-Za-z_][A-Za-z0-9_,\s]*)\s*\){0,1}\s*\=\>\s*(.*)", RegexOptions.Compiled);
+        private static Regex IsEs5Test { get { if(!IsEs5TestDelayedInitialized) { IsEs5TestDelayedInitialized = true; IsEs5TestDelayed = new Regex(@"^function[\(\s]"); } return IsEs5TestDelayed; } set { IsEs5TestDelayedInitialized = true; IsEs5TestDelayed = value; } }
+        private static bool RegexDelayedInitialized;
+        private static Regex RegexDelayed;
+        private static Regex Regex { get { if(!RegexDelayedInitialized) { RegexDelayedInitialized = true; RegexDelayed = new Regex(@"\({0,1}\s*([A-Za-z_][A-Za-z0-9_,\s]*)\s*\){0,1}\s*\=\>\s*(.*)", RegexOptions.Compiled); } return RegexDelayed; } set { RegexDelayedInitialized = true; RegexDelayed = value; } }
 
         private static JavaScriptFunctionBody ExtractEs6Body(string code)
         {

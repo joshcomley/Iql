@@ -5,8 +5,9 @@ namespace Iql.Parsing.Reduction
     public class IqlTraverser
     {
         private readonly IqlReducerRegistryBase _registry;
-        private List<IqlExpression> _expressions = null;
-        internal List<IqlExpression> Expressions { get => _expressions = _expressions ?? new List<IqlExpression>(); set => _expressions = value; }
+        private bool _expressionsInitialized;
+        private List<IqlExpression> _expressions;
+        internal List<IqlExpression> Expressions { get { if(!_expressionsInitialized) { _expressionsInitialized = true; _expressions = new List<IqlExpression>(); } return _expressions; } set { _expressionsInitialized = true; _expressions = value; } }
         internal IqlTraverser(IqlReducerRegistryBase registry)
         {
             _registry = registry;

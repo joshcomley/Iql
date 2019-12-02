@@ -9,7 +9,7 @@ namespace Iql.Entities
         protected IFileUrlBase FileInternal { get; set; }
         public string Separator { get; set; } = "/";
         IFileUrlBase IMediaKey.File => FileInternal;
-        private IList<IMediaKeyGroup> _groups = null;
+        private IList<IMediaKeyGroup> _groups;
         public IList<IMediaKeyGroup> Groups => _groups = _groups ?? new List<IMediaKeyGroup>();
         public string[][] Evaluate(object entity)
         {

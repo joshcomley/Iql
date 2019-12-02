@@ -9,7 +9,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 {
     public class JavaScriptEvaluator
     {
-        private static readonly Dictionary<string, IqlExpression> IqlLookup = new Dictionary<string, IqlExpression>();
+        private static bool IqlLookupDelayedInitialized;
+        private static Dictionary<string, IqlExpression> IqlLookupDelayed;
+        private static Dictionary<string, IqlExpression> IqlLookup { get { if(!IqlLookupDelayedInitialized) { IqlLookupDelayedInitialized = true; IqlLookupDelayed = new Dictionary<string, IqlExpression>(); } return IqlLookupDelayed; } set { IqlLookupDelayedInitialized = true; IqlLookupDelayed = value; } }
         public static async Task<IqlExpressonEvaluationResult> EvaluateJavaScriptAsync(
             string expression,
             IContextEvaluator evaluator,

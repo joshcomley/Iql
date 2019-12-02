@@ -42,7 +42,9 @@ namespace Iql.Conversion
 #endif
             @"^([A-Za-z_][A-Za-z0-9_]{0,})\s+\=\>\s+\1\.([A-Za-z_][A-Za-z0-9_]{0,})+$"
         };
-        private static readonly Dictionary<string, Match> PropertyLambdaConversionCache = new Dictionary<string, Match>();
+        private static bool PropertyLambdaConversionCacheDelayedInitialized;
+        private static Dictionary<string, Match> PropertyLambdaConversionCacheDelayed;
+        private static Dictionary<string, Match> PropertyLambdaConversionCache { get { if(!PropertyLambdaConversionCacheDelayedInitialized) { PropertyLambdaConversionCacheDelayedInitialized = true; PropertyLambdaConversionCacheDelayed = new Dictionary<string, Match>(); } return PropertyLambdaConversionCacheDelayed; } set { PropertyLambdaConversionCacheDelayedInitialized = true; PropertyLambdaConversionCacheDelayed = value; } }
         public virtual ExpressionResult<IqlExpression> ConvertLambdaExpressionToIql<TEntity>(LambdaExpression expression
             , ITypeResolver typeResolver
 #if TypeScript

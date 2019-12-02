@@ -4,7 +4,9 @@ namespace Iql.Entities.DisplayFormatting
 {
     public class FormatterContext<TEntity>: IFormatterContext
     {
-        internal Dictionary<string, IqlExpression> ExpressionLookup = new Dictionary<string, IqlExpression>();
+        private bool ExpressionLookupDelayedInitialized;
+        private Dictionary<string, IqlExpression> ExpressionLookupDelayed;
+        internal Dictionary<string, IqlExpression> ExpressionLookup { get { if(!ExpressionLookupDelayedInitialized) { ExpressionLookupDelayedInitialized = true; ExpressionLookupDelayed = new Dictionary<string, IqlExpression>(); } return ExpressionLookupDelayed; } set { ExpressionLookupDelayedInitialized = true; ExpressionLookupDelayed = value; } }
         public TEntity Entity { get; set; }
         object IFormatterContext.Entity
         {

@@ -2,7 +2,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators
 {
     public class OperatorMap
     {
-        public static EnumMapper<OperatorType> OperatorTypes = new EnumMapper<OperatorType>()
+        private static bool OperatorTypesDelayedInitialized;
+        private static EnumMapper<OperatorType> OperatorTypesDelayed;
+        public static EnumMapper<OperatorType> OperatorTypes { get { if(!OperatorTypesDelayedInitialized) { OperatorTypesDelayedInitialized = true; OperatorTypesDelayed = new EnumMapper<OperatorType>()
             .Map(() => OperatorType.And, "&&")
             .Map(() => OperatorType.Or, "||")
             .Map(() => OperatorType.Assign, "=")
@@ -28,6 +30,6 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree.Operators
             .Map(() => OperatorType.DivideEquals, "/")
             .Map(() => OperatorType.BitwiseOr, "|")
             .Map(() => OperatorType.Has, "&")
-            .Map(() => OperatorType.BitwiseNot, "~");
+            .Map(() => OperatorType.BitwiseNot, "~"); } return OperatorTypesDelayed; } set { OperatorTypesDelayedInitialized = true; OperatorTypesDelayed = value; } }
     }
 }

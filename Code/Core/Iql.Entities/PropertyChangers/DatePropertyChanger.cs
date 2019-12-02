@@ -4,7 +4,7 @@ namespace Iql.Entities.PropertyChangers
 {
     public class DatePropertyChanger : ComplexPropertyChanger<DateTimeOffset>
     {
-        private static DatePropertyChanger _instance = null;
+        private static DatePropertyChanger _instance;
         public static DatePropertyChanger Instance => _instance = _instance ?? new DatePropertyChanger();
         protected override bool CheckEquivalence(DateTimeOffset newValue, DateTimeOffset oldValue)
         {

@@ -12,7 +12,7 @@ namespace Iql.Entities
         {
             EntityConfiguration = entityConfiguration;
         }
-        private IGenericTypeParameter[] _genericTypeParameters = null;
+        private IGenericTypeParameter[] _genericTypeParameters;
 
         public IGenericTypeParameter[] GenericTypeParameters => _genericTypeParameters = _genericTypeParameters ?? new IGenericTypeParameter[] { };
         public Type Type => EntityConfiguration?.Type;

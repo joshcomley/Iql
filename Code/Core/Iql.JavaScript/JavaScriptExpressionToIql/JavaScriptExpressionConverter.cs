@@ -300,7 +300,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         }
 
         private static string _PopIqlTemporaryGlobalObjectName = null;
-        private static Regex _PopIqlTemporaryGlobalObjectRegex = new Regex(@"[A-Za-z0-9_]+\._PopIqlTemporaryGlobalObject");
+        private static bool _PopIqlTemporaryGlobalObjectRegexDelayedInitialized;
+        private static Regex _PopIqlTemporaryGlobalObjectRegexDelayed;
+        private static Regex _PopIqlTemporaryGlobalObjectRegex { get { if(!_PopIqlTemporaryGlobalObjectRegexDelayedInitialized) { _PopIqlTemporaryGlobalObjectRegexDelayedInitialized = true; _PopIqlTemporaryGlobalObjectRegexDelayed = new Regex(@"[A-Za-z0-9_]+\._PopIqlTemporaryGlobalObject"); } return _PopIqlTemporaryGlobalObjectRegexDelayed; } set { _PopIqlTemporaryGlobalObjectRegexDelayedInitialized = true; _PopIqlTemporaryGlobalObjectRegexDelayed = value; } }
         private JavaScriptExpression ConvertIqlToJavaScript(IqlExpression expression
             , ITypeResolver typeResolver
             , Type rootEntityType = null

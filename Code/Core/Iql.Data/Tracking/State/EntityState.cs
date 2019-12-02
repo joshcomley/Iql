@@ -100,12 +100,12 @@ namespace Iql.Data.Tracking.State
                 }
             }
         }
-        private EventEmitter<ValueChangedEvent<bool>> _hasChangedChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _hasChangedChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged => _hasChangedChanged = _hasChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _hasChangedSinceSnapshotChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _hasChangedSinceSnapshotChanged;
         public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged => _hasChangedSinceSnapshotChanged = _hasChangedSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _attachedToTrackerChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _attachedToTrackerChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> AttachedToTrackerChanged => _attachedToTrackerChanged = _attachedToTrackerChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
@@ -122,7 +122,7 @@ namespace Iql.Data.Tracking.State
                 }
             }
         }
-        private EventEmitter<ValueChangedEvent<bool>> _pendingInsertChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _pendingInsertChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> PendingInsertChanged => _pendingInsertChanged = _pendingInsertChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
@@ -145,7 +145,7 @@ namespace Iql.Data.Tracking.State
         {
             PendingInsert = IsNew && !MarkedForAnyDeletion;
         }
-        private EventEmitter<ValueChangedEvent<bool>> _isAttachedToGraphChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _isAttachedToGraphChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> IsAttachedToGraphChanged => _isAttachedToGraphChanged = _isAttachedToGraphChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
         public Guid Id { get; set; }
@@ -225,10 +225,10 @@ namespace Iql.Data.Tracking.State
             Status = status;
             _settingStatus = false;
         }
-        private EventEmitter<MarkedForDeletionChangeEvent> _markedForDeletionChanged = null;
+        private EventEmitter<MarkedForDeletionChangeEvent> _markedForDeletionChanged;
 
         public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged => _markedForDeletionChanged = _markedForDeletionChanged ?? new EventEmitter<MarkedForDeletionChangeEvent>();
-        private EventEmitter<ValueChangedEvent<bool>> _isNewChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _isNewChanged;
         public EventEmitter<ValueChangedEvent<bool>> IsNewChanged => _isNewChanged = _isNewChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
         public string StateKey { get; set; }
 
@@ -378,7 +378,7 @@ namespace Iql.Data.Tracking.State
         }
 
         public Guid? PersistenceKey { get; set; }
-        private List<CascadeDeletion> _cascadeDeletedBy = null;
+        private List<CascadeDeletion> _cascadeDeletedBy;
         public List<CascadeDeletion> CascadeDeletedBy => _cascadeDeletedBy = _cascadeDeletedBy ?? new List<CascadeDeletion>();
 
         //private readonly AsyncEventEmitter<IqlEntityEvent<T>> _savingEmitter = new AsyncEventEmitter<IqlEntityEvent<T>>();
@@ -419,13 +419,13 @@ namespace Iql.Data.Tracking.State
 
         public bool Floating { get; set; }
         public DataTracker DataTracker { get; }
-        private IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> _statefulSaveEvents = null;
+        private IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> _statefulSaveEvents;
         public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> StatefulSaveEvents => _statefulSaveEvents = _statefulSaveEvents ?? new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
         IOperationEventsBase IStateful.StatefulSaveEvents => StatefulSaveEvents;
-        private IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> _saveEvents = null;
+        private IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> _saveEvents;
         public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> SaveEvents => _saveEvents = _saveEvents ?? new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
         IOperationEventsBase IStateful.SaveEvents => SaveEvents;
-        private IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> _abandonEvents = null;
+        private IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> _abandonEvents;
         public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents => _abandonEvents = _abandonEvents ?? new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
         IOperationEventsBase IStateful.AbandonEvents => AbandonEvents;
         public T Entity { get; }
@@ -477,12 +477,12 @@ namespace Iql.Data.Tracking.State
             CanNotifyStatusChange = true;
             NotifyStatusChange();
         }
-        private EventEmitter<ValueChangedEvent<EntityStatus>> _statusChanged = null;
+        private EventEmitter<ValueChangedEvent<EntityStatus>> _statusChanged;
 
         public EventEmitter<ValueChangedEvent<EntityStatus>> StatusChanged => _statusChanged = _statusChanged ?? new EventEmitter<ValueChangedEvent<EntityStatus>>();
-        private EventEmitter<ValueChangedEvent<bool>> _statusHasChangedChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _statusHasChangedChanged;
         public EventEmitter<ValueChangedEvent<bool>> StatusHasChangedChanged => _statusHasChangedChanged = _statusHasChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _statusHasChangedSinceSnapshotChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _statusHasChangedSinceSnapshotChanged;
         public EventEmitter<ValueChangedEvent<bool>> StatusHasChangedSinceSnapshotChanged => _statusHasChangedSinceSnapshotChanged = _statusHasChangedSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
         public bool StatusHasChanged
@@ -651,8 +651,10 @@ namespace Iql.Data.Tracking.State
                 propertyState.UpdateHasChanged(true);
             }
         }
+        private bool _operationsDelayedInitialized;
+        private Dictionary<Guid, IPropertyState[]> _operationsDelayed;
 
-        private readonly Dictionary<Guid, IPropertyState[]> _operations = new Dictionary<Guid, IPropertyState[]>();
+        private Dictionary<Guid, IPropertyState[]> _operations { get { if(!_operationsDelayedInitialized) { _operationsDelayedInitialized = true; _operationsDelayed = new Dictionary<Guid, IPropertyState[]>(); } return _operationsDelayed; } set { _operationsDelayedInitialized = true; _operationsDelayed = value; } }
         private bool _isAttachedToGraph;
         private bool _hasChanged;
         private bool _hasChangedSinceSnapshot;
@@ -812,8 +814,10 @@ namespace Iql.Data.Tracking.State
         }
 
         public IPropertyState[] PropertyStates => Properties.ToArray();
+        private bool _propertyStateByNameDelayedInitialized;
+        private Dictionary<string, IPropertyState> _propertyStateByNameDelayed;
 
-        private readonly Dictionary<string, IPropertyState> _propertyStateByName = new Dictionary<string, IPropertyState>();
+        private Dictionary<string, IPropertyState> _propertyStateByName { get { if(!_propertyStateByNameDelayedInitialized) { _propertyStateByNameDelayedInitialized = true; _propertyStateByNameDelayed = new Dictionary<string, IPropertyState>(); } return _propertyStateByNameDelayed; } set { _propertyStateByNameDelayedInitialized = true; _propertyStateByNameDelayed = value; } }
         public IPropertyState GetPropertyState(string name)
         {
             if (!_propertyStateByName.ContainsKey(name))

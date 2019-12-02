@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Iql.Events
 {
     public class EventEmitterExceptions
     {
-        private static readonly Dictionary<Type, Type> ThrowAlways = new Dictionary<Type, Type>();
+        private static bool ThrowAlwaysDelayedInitialized;
+        private static Dictionary<Type, Type> ThrowAlwaysDelayed;
+        private static Dictionary<Type, Type> ThrowAlways { get { if(!ThrowAlwaysDelayedInitialized) { ThrowAlwaysDelayedInitialized = true; ThrowAlwaysDelayed = new Dictionary<Type, Type>(); } return ThrowAlwaysDelayed; } set { ThrowAlwaysDelayedInitialized = true; ThrowAlwaysDelayed = value; } }
         public static void EnsureIsThrown<T>()
             where T : Exception
         {

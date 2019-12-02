@@ -17,7 +17,7 @@ namespace Iql.Data.Types
 {
     public class TypeResolver : ITypeResolver
     {
-        private EventEmitter<string> _resolvingType = null;
+        private EventEmitter<string> _resolvingType;
         public EventEmitter<string> ResolvingType => _resolvingType = _resolvingType ?? new EventEmitter<string>();
         public IContextEvaluator ContextEvaluator { get; set; }
         public TypeResolver()
@@ -142,7 +142,7 @@ namespace Iql.Data.Types
             Type = type;
             _genericTypeParameters = genericTypeParameters ?? new IGenericTypeParameter[] { };
         }
-        private IGenericTypeParameter[] _genericTypeParameters = null;
+        private IGenericTypeParameter[] _genericTypeParameters;
 
         public IGenericTypeParameter[] GenericTypeParameters => _genericTypeParameters = _genericTypeParameters ?? new IGenericTypeParameter[] { };
         public Type Type { get; }

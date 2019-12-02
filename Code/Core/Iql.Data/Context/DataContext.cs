@@ -45,7 +45,7 @@ namespace Iql.Data.Context
         {
             private DataTracker _offlineDataTracker;
             public DataTracker OfflineDataTracker => _offlineDataTracker;
-            private EventEmitter<OfflineChangeStateChangedEvent> _offlineStateChanged = null;
+            private EventEmitter<OfflineChangeStateChangedEvent> _offlineStateChanged;
             public EventEmitter<OfflineChangeStateChangedEvent> OfflineStateChanged => _offlineStateChanged = _offlineStateChanged ?? new EventEmitter<OfflineChangeStateChangedEvent>();
 
             public IEntityConfigurationBuilder EntityConfigurationBuilder { get; set; }
@@ -58,8 +58,10 @@ namespace Iql.Data.Context
                 _offlineDataTracker = new DataTracker(DataTrackerKind.Offline, entityConfigurationBuilder, "Offline", true);
             }
         }
+        private bool _offlineDataStoreDelayedInitialized;
+        private IOfflineDataStore _offlineDataStoreDelayed;
 
-        private IOfflineDataStore _offlineDataStore = new InMemoryDataStore("OfflineData", AutoIntegerIdStrategy.Negative);
+        private IOfflineDataStore _offlineDataStore { get { if(!_offlineDataStoreDelayedInitialized) { _offlineDataStoreDelayedInitialized = true; _offlineDataStoreDelayed = new InMemoryDataStore("OfflineData", AutoIntegerIdStrategy.Negative); } return _offlineDataStoreDelayed; } set { _offlineDataStoreDelayedInitialized = true; _offlineDataStoreDelayed = value; } }
 
         public DataContextEvents Events => _events = _events ?? new DataContextEvents();
 
@@ -134,6 +136,8 @@ namespace Iql.Data.Context
         {
             return (IEntityState<T>)TemporalDataTracker.AddEntity(entity);
         }
+                                                        private bool _configurationsDelayedInitialized;
+                                                        private Dictionary<string, object> _configurationsDelayed;
 
 
         //#if !TypeScript
@@ -143,10 +147,10 @@ namespace Iql.Data.Context
         //        }
         //#endif
 
-        private readonly Dictionary<string, object> _configurations =
-            new Dictionary<string, object>();
-        private static readonly Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuilders
-            = new Dictionary<Type, EntityConfigurationBuilder>();
+        private Dictionary<string, object> _configurations { get { if(!_configurationsDelayedInitialized) { _configurationsDelayedInitialized = true; _configurationsDelayed =             new Dictionary<string, object>(); } return _configurationsDelayed; } set { _configurationsDelayedInitialized = true; _configurationsDelayed = value; } }
+        private static bool EntityConfigurationsBuildersDelayedInitialized;
+        private static Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuildersDelayed;
+        private static Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuilders { get { if(!EntityConfigurationsBuildersDelayedInitialized) { EntityConfigurationsBuildersDelayedInitialized = true; EntityConfigurationsBuildersDelayed = new Dictionary<Type, EntityConfigurationBuilder>(); } return EntityConfigurationsBuildersDelayed; } set { EntityConfigurationsBuildersDelayedInitialized = true; EntityConfigurationsBuildersDelayed = value; } }
 
         public static Type FindDataContextTypeForEntityType(Type entityType)
         {
@@ -234,12 +238,11 @@ namespace Iql.Data.Context
                 return _temporalDataTracker;
             }
         }
+        private static bool SynchronisedDataContextConfigurationsDelayedInitialized;
+        private static Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>> SynchronisedDataContextConfigurationsDelayed;
 
-        private static readonly
-            Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>>
-            SynchronisedDataContextConfigurations
-                = new Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>
-                >();
+        private static Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>> SynchronisedDataContextConfigurations { get { if(!SynchronisedDataContextConfigurationsDelayedInitialized) { SynchronisedDataContextConfigurationsDelayedInitialized = true; SynchronisedDataContextConfigurationsDelayed = new Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>
+                >(); } return SynchronisedDataContextConfigurationsDelayed; } set { SynchronisedDataContextConfigurationsDelayedInitialized = true; SynchronisedDataContextConfigurationsDelayed = value; } }
         public DataTracker OfflineDataTracker => SupportsOffline ? SynchronisedConfiguration.OfflineDataTracker : null;
 
         private SynchronisedDataContextConfiguration SynchronisedConfiguration
@@ -265,7 +268,7 @@ namespace Iql.Data.Context
                 return _synchronisedConfiguration;
             }
         }
-        private static List<IDataContext> _allDataContexts = null;
+        private static List<IDataContext> _allDataContexts;
         internal static List<IDataContext> AllDataContexts => _allDataContexts = _allDataContexts ?? new List<IDataContext>();
         public DataContext(
             IDataStore dataStore = null,
@@ -512,8 +515,10 @@ namespace Iql.Data.Context
             }
             return null;
         }
+        private bool _dbSetsByEntityTypeDelayedInitialized;
+        private Dictionary<Type, PropertyInfo> _dbSetsByEntityTypeDelayed;
 
-        private readonly Dictionary<Type, PropertyInfo> _dbSetsByEntityType = new Dictionary<Type, PropertyInfo>();
+        private Dictionary<Type, PropertyInfo> _dbSetsByEntityType { get { if(!_dbSetsByEntityTypeDelayedInitialized) { _dbSetsByEntityTypeDelayedInitialized = true; _dbSetsByEntityTypeDelayed = new Dictionary<Type, PropertyInfo>(); } return _dbSetsByEntityTypeDelayed; } set { _dbSetsByEntityTypeDelayedInitialized = true; _dbSetsByEntityTypeDelayed = value; } }
 
         public IDbQueryable GetDbSetByEntityType(Type entityType)
         {
@@ -649,8 +654,10 @@ namespace Iql.Data.Context
                     .FindPropertyByLambdaExpression(relationship)
             );
         }
+        private bool _dbSetsBySetTypeDelayedInitialized;
+        private Dictionary<Type, PropertyInfo> _dbSetsBySetTypeDelayed;
 
-        private readonly Dictionary<Type, PropertyInfo> _dbSetsBySetType = new Dictionary<Type, PropertyInfo>();
+        private Dictionary<Type, PropertyInfo> _dbSetsBySetType { get { if(!_dbSetsBySetTypeDelayedInitialized) { _dbSetsBySetTypeDelayedInitialized = true; _dbSetsBySetTypeDelayed = new Dictionary<Type, PropertyInfo>(); } return _dbSetsBySetTypeDelayed; } set { _dbSetsBySetTypeDelayedInitialized = true; _dbSetsBySetTypeDelayed = value; } }
         public IDbQueryable GetDbSetBySetType(Type setType)
         {
             if (!_dbSetsBySetType.ContainsKey(setType))
@@ -1174,8 +1181,10 @@ namespace Iql.Data.Context
         }
 
         private class DefaultValuePlaceholder { }
+        private static bool DefaultValuePlaceholderInstanceDelayedInitialized;
+        private static DefaultValuePlaceholder DefaultValuePlaceholderInstanceDelayed;
 
-        private static readonly DefaultValuePlaceholder DefaultValuePlaceholderInstance = new DefaultValuePlaceholder();
+        private static DefaultValuePlaceholder DefaultValuePlaceholderInstance { get { if(!DefaultValuePlaceholderInstanceDelayedInitialized) { DefaultValuePlaceholderInstanceDelayedInitialized = true; DefaultValuePlaceholderInstanceDelayed = new DefaultValuePlaceholder(); } return DefaultValuePlaceholderInstanceDelayed; } set { DefaultValuePlaceholderInstanceDelayedInitialized = true; DefaultValuePlaceholderInstanceDelayed = value; } }
 
         private MethodInfo ValidateEntityInternalAsyncMethod
         {

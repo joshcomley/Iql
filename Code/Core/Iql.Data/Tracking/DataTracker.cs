@@ -22,12 +22,17 @@ namespace Iql.Data.Tracking
 {
     public class DataTracker : IJsonSerializable, IDataChangeProvider, IDisposable, ISnapshotManager, ILockable
     {
-        private readonly Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedParties =
-            new Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>>();
+        private bool _interestedPartiesDelayedInitialized;
+        private Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedPartiesDelayed;
+        private Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedParties { get { if(!_interestedPartiesDelayedInitialized) { _interestedPartiesDelayedInitialized = true; _interestedPartiesDelayed =             new Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>>(); } return _interestedPartiesDelayed; } set { _interestedPartiesDelayedInitialized = true; _interestedPartiesDelayed = value; } }
+        private bool _removedSnapshotsDelayedInitialized;
+        private List<TrackerSnapshot> _removedSnapshotsDelayed;
 
-        private readonly List<TrackerSnapshot> _removedSnapshots = new List<TrackerSnapshot>();
+        private List<TrackerSnapshot> _removedSnapshots { get { if(!_removedSnapshotsDelayedInitialized) { _removedSnapshotsDelayedInitialized = true; _removedSnapshotsDelayed = new List<TrackerSnapshot>(); } return _removedSnapshotsDelayed; } set { _removedSnapshotsDelayedInitialized = true; _removedSnapshotsDelayed = value; } }
+        private bool _snapshotsDelayedInitialized;
+        private List<TrackerSnapshot> _snapshotsDelayed;
 
-        private readonly List<TrackerSnapshot> _snapshots = new List<TrackerSnapshot>();
+        private List<TrackerSnapshot> _snapshots { get { if(!_snapshotsDelayedInitialized) { _snapshotsDelayedInitialized = true; _snapshotsDelayed = new List<TrackerSnapshot>(); } return _snapshotsDelayed; } set { _snapshotsDelayedInitialized = true; _snapshotsDelayed = value; } }
         private bool _hasChanges;
         private bool _hasChangesSinceSnapshot;
         private bool _hasSnapshot;
@@ -57,10 +62,10 @@ namespace Iql.Data.Tracking
                 _allDataTrackers.Add(this);
             }
         }
-        private DataTrackerState _stateSinceSnapshot = null;
+        private DataTrackerState _stateSinceSnapshot;
 
         public DataTrackerState StateSinceSnapshot => _stateSinceSnapshot = _stateSinceSnapshot ?? new DataTrackerState(true);
-        private DataTrackerState _stateSinceSave = null;
+        private DataTrackerState _stateSinceSave;
 
         public DataTrackerState StateSinceSave => _stateSinceSave = _stateSinceSave ?? new DataTrackerState(false);
 
@@ -79,10 +84,10 @@ namespace Iql.Data.Tracking
         //public IDataContext DataContext { get; set; }
 
         public IRelationshipObserver RelationshipObserver { get; }
-        private static List<DataTracker> __allDataTrackers = null;
+        private static List<DataTracker> __allDataTrackers;
 
         private static List<DataTracker> _allDataTrackers => __allDataTrackers = __allDataTrackers ?? new List<DataTracker>();
-        private EventEmitter<ValueChangedEvent<bool>> _hasSnapshotChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _hasSnapshotChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> HasSnapshotChanged => _hasSnapshotChanged = _hasSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
@@ -176,9 +181,9 @@ namespace Iql.Data.Tracking
                 RemoveLastSnapshot();
             }
         }
-        private EventEmitter<DataTracker> _snapshotAdding = null;
+        private EventEmitter<DataTracker> _snapshotAdding;
         public EventEmitter<DataTracker> SnapshotAdding => _snapshotAdding = _snapshotAdding ?? new EventEmitter<DataTracker>();
-        private EventEmitter<DataTracker> _snapshotAdded = null;
+        private EventEmitter<DataTracker> _snapshotAdded;
         public EventEmitter<DataTracker> SnapshotAdded => _snapshotAdded = _snapshotAdded ?? new EventEmitter<DataTracker>();
         public TrackerSnapshot AddSnapshot(bool? nullIfEmpty = null)
         {
@@ -338,7 +343,7 @@ namespace Iql.Data.Tracking
                 }
             }
         }
-        private EventEmitter<ValueChangedEvent<bool>> _hasRestorableSnapshotChanged = null;
+        private EventEmitter<ValueChangedEvent<bool>> _hasRestorableSnapshotChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> HasRestorableSnapshotChanged => _hasRestorableSnapshotChanged = _hasRestorableSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
         public bool HasRestorableSnapshot

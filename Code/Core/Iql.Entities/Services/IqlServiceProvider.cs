@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Iql.Entities.Services
@@ -11,8 +11,10 @@ namespace Iql.Entities.Services
         {
             BaseProvider = baseProvider;
         }
+        private bool _serviceRegistrationsDelayedInitialized;
+        private Dictionary<Type, IqlServiceRegistration> _serviceRegistrationsDelayed;
 
-        private Dictionary<Type, IqlServiceRegistration> _serviceRegistrations = new Dictionary<Type, IqlServiceRegistration>();
+        private Dictionary<Type, IqlServiceRegistration> _serviceRegistrations { get { if(!_serviceRegistrationsDelayedInitialized) { _serviceRegistrationsDelayedInitialized = true; _serviceRegistrationsDelayed = new Dictionary<Type, IqlServiceRegistration>(); } return _serviceRegistrationsDelayed; } set { _serviceRegistrationsDelayedInitialized = true; _serviceRegistrationsDelayed = value; } }
 
         public IqlServiceProvider Clear(bool onlySelf = false)
         {

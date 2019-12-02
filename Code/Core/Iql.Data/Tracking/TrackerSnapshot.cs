@@ -11,10 +11,12 @@ namespace Iql.Data.Tracking
     {
         public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
         public Guid Id { get; set; }
-        private Dictionary<IPropertyState, PropertySnapshot> _values = null;
-        public Dictionary<IPropertyState, PropertySnapshot> Values { get => _values = _values ?? new Dictionary<IPropertyState, PropertySnapshot>(); set => _values = value; }
-        private Dictionary<IEntityStateBase, EntitySnapshot> _entities = null;
-        public Dictionary<IEntityStateBase, EntitySnapshot> Entities { get => _entities = _entities ?? new Dictionary<IEntityStateBase, EntitySnapshot>(); set => _entities = value; }
+        private bool _valuesInitialized;
+        private Dictionary<IPropertyState, PropertySnapshot> _values;
+        public Dictionary<IPropertyState, PropertySnapshot> Values { get { if(!_valuesInitialized) { _valuesInitialized = true; _values = new Dictionary<IPropertyState, PropertySnapshot>(); } return _values; } set { _valuesInitialized = true; _values = value; } }
+        private bool _entitiesInitialized;
+        private Dictionary<IEntityStateBase, EntitySnapshot> _entities;
+        public Dictionary<IEntityStateBase, EntitySnapshot> Entities { get { if(!_entitiesInitialized) { _entitiesInitialized = true; _entities = new Dictionary<IEntityStateBase, EntitySnapshot>(); } return _entities; } set { _entitiesInitialized = true; _entities = value; } }
     }
 
     public class PropertySnapshot

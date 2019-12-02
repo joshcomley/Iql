@@ -36,8 +36,10 @@ namespace Iql.Data.Evaluation
         }
 
         public IEvaluationSession Session => this;
+        private bool _cachedEntitiesDelayedInitialized;
+        private Dictionary<string, object> _cachedEntitiesDelayed;
 
-        private readonly Dictionary<string, object> _cachedEntities = new Dictionary<string, object>();
+        private Dictionary<string, object> _cachedEntities { get { if(!_cachedEntitiesDelayedInitialized) { _cachedEntitiesDelayedInitialized = true; _cachedEntitiesDelayed = new Dictionary<string, object>(); } return _cachedEntitiesDelayed; } set { _cachedEntitiesDelayedInitialized = true; _cachedEntitiesDelayed = value; } }
         //private readonly Dictionary<string, object> _cachedExcludedEntities = new Dictionary<string, object>();
 
         //public void ExcludeFromCache(IEntityConfiguration entityConfiguration, CompositeKey compositeKey, object entity)
@@ -337,7 +339,7 @@ namespace Iql.Data.Evaluation
         {
             public IEntityConfiguration EntityConfiguration { get; }
             public object Entity { get; }
-            private List<string> _expandPaths = null;
+            private List<string> _expandPaths;
             public List<string> ExpandPaths => _expandPaths = _expandPaths ?? new List<string>();
 
             public ExpandGroupDefinition(IEntityConfiguration entityConfiguration, object entity)

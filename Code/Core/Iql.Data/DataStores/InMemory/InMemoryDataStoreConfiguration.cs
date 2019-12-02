@@ -10,7 +10,9 @@ namespace Iql.Data.DataStores.InMemory
     public class InMemoryDataStoreConfiguration
     {
         public IEntityConfigurationBuilder Builder { get; }
-        private readonly Dictionary<string, LambdaExpression> _sources = new Dictionary<string, LambdaExpression>();
+        private bool _sourcesDelayedInitialized;
+        private Dictionary<string, LambdaExpression> _sourcesDelayed;
+        private Dictionary<string, LambdaExpression> _sources { get { if(!_sourcesDelayedInitialized) { _sourcesDelayedInitialized = true; _sourcesDelayed = new Dictionary<string, LambdaExpression>(); } return _sourcesDelayed; } set { _sourcesDelayedInitialized = true; _sourcesDelayed = value; } }
 
         public InMemoryDataStoreConfiguration(IEntityConfigurationBuilder builder)
         {

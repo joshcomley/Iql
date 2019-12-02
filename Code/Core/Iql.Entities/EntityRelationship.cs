@@ -10,11 +10,13 @@ namespace Iql.Entities
         public bool ThisIsSource => !ThisIsTarget;
         public IRelationshipDetail ThisEnd { get; }
         public IRelationshipDetail OtherEnd { get; }
+        private static bool TargetMappingsDelayedInitialized;
+        private static Dictionary<IRelationship, EntityRelationship> TargetMappingsDelayed;
 
-        private static readonly Dictionary<IRelationship, EntityRelationship> TargetMappings
-            = new Dictionary<IRelationship, EntityRelationship>();
-        private static readonly Dictionary<IRelationship, EntityRelationship> SourceMappings
-            = new Dictionary<IRelationship, EntityRelationship>();
+        private static Dictionary<IRelationship, EntityRelationship> TargetMappings { get { if(!TargetMappingsDelayedInitialized) { TargetMappingsDelayedInitialized = true; TargetMappingsDelayed = new Dictionary<IRelationship, EntityRelationship>(); } return TargetMappingsDelayed; } set { TargetMappingsDelayedInitialized = true; TargetMappingsDelayed = value; } }
+        private static bool SourceMappingsDelayedInitialized;
+        private static Dictionary<IRelationship, EntityRelationship> SourceMappingsDelayed;
+        private static Dictionary<IRelationship, EntityRelationship> SourceMappings { get { if(!SourceMappingsDelayedInitialized) { SourceMappingsDelayedInitialized = true; SourceMappingsDelayed = new Dictionary<IRelationship, EntityRelationship>(); } return SourceMappingsDelayed; } set { SourceMappingsDelayedInitialized = true; SourceMappingsDelayed = value; } }
 
         public static EntityRelationship Get(IRelationship relationship, bool thisIsTarget)
         {

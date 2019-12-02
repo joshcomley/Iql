@@ -16,8 +16,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
         where TExpressionData : class
         where TExpressionResult : class
     {
-        private readonly Dictionary<string, Func<IExpressionParserBase>> _parsers =
-            new Dictionary<string, Func<IExpressionParserBase>>();
+        private bool _parsersDelayedInitialized;
+        private Dictionary<string, Func<IExpressionParserBase>> _parsersDelayed;
+        private Dictionary<string, Func<IExpressionParserBase>> _parsers { get { if(!_parsersDelayedInitialized) { _parsersDelayedInitialized = true; _parsersDelayed =             new Dictionary<string, Func<IExpressionParserBase>>(); } return _parsersDelayed; } set { _parsersDelayedInitialized = true; _parsersDelayed = value; } }
 
         public virtual TExpressionData NewData()
         {

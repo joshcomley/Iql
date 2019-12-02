@@ -4,7 +4,9 @@ namespace Iql.Entities
 {
     public abstract class MetadataCollectionBase
     {
-        protected readonly Dictionary<string, object> Dictionary = new Dictionary<string, object>();
+        private bool DictionaryDelayedInitialized;
+        private Dictionary<string, object> DictionaryDelayed;
+        protected Dictionary<string, object> Dictionary { get { if(!DictionaryDelayedInitialized) { DictionaryDelayedInitialized = true; DictionaryDelayed = new Dictionary<string, object>(); } return DictionaryDelayed; } set { DictionaryDelayedInitialized = true; DictionaryDelayed = value; } }
 
         public IMetadataCollection Clear()
         {

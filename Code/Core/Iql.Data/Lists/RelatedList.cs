@@ -39,7 +39,7 @@ namespace Iql.Data.Lists
                 }
             });
         }
-        private EventEmitter<RelatedListChangeEvent<TSource, TTarget>> _relatedListChange = null;
+        private EventEmitter<RelatedListChangeEvent<TSource, TTarget>> _relatedListChange;
 
         public EventEmitter<RelatedListChangeEvent<TSource, TTarget>> RelatedListChange => _relatedListChange = _relatedListChange ?? new EventEmitter<RelatedListChangeEvent<TSource, TTarget>>();
 

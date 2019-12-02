@@ -16,8 +16,10 @@ namespace Iql.Data.Crud.Operations.Results
         {
             Data = new Dictionary<Type, IList>();
         }
+        private bool _matchedDelayedInitialized;
+        private Dictionary<object, bool> _matchedDelayed;
 
-        private readonly Dictionary<object, bool> _matched = new Dictionary<object, bool>();
+        private Dictionary<object, bool> _matched { get { if(!_matchedDelayedInitialized) { _matchedDelayedInitialized = true; _matchedDelayed = new Dictionary<object, bool>(); } return _matchedDelayed; } set { _matchedDelayedInitialized = true; _matchedDelayed = value; } }
 
         IList IFlattenedGetDataResult.Root
         {

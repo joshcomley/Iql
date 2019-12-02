@@ -15,9 +15,10 @@ namespace Iql.Entities.DisplayFormatting
         {
             EntityConfiguration = entityConfiguration;
         }
+        private bool _formattersDelayedInitialized;
+        private Dictionary<string, EntityDisplayTextFormatter<TEntity>> _formattersDelayed;
 
-        private readonly Dictionary<string, EntityDisplayTextFormatter<TEntity>> _formatters
-            = new Dictionary<string, EntityDisplayTextFormatter<TEntity>>();
+        private Dictionary<string, EntityDisplayTextFormatter<TEntity>> _formatters { get { if(!_formattersDelayedInitialized) { _formattersDelayedInitialized = true; _formattersDelayed = new Dictionary<string, EntityDisplayTextFormatter<TEntity>>(); } return _formattersDelayed; } set { _formattersDelayedInitialized = true; _formattersDelayed = value; } }
 
         public IEnumerable<EntityDisplayTextFormatter<TEntity>> All => _formatters.Values.ToArray();
 

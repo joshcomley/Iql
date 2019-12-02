@@ -27,7 +27,7 @@ namespace Iql.Parsing.Types
             }
             Type = type;
         }
-        private IGenericTypeParameter[] _genericTypeParameters = null;
+        private IGenericTypeParameter[] _genericTypeParameters;
 
         public IGenericTypeParameter[] GenericTypeParameters => _genericTypeParameters = _genericTypeParameters ?? new IGenericTypeParameter[]{};
 

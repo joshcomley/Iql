@@ -4,7 +4,8 @@ namespace Iql.OData.IqlToODataExpression
 {
     public class ODataIqlData
     {
-        private Dictionary<string, string> _expands = null;
-        public Dictionary<string, string> Expands { get => _expands = _expands ?? new Dictionary<string, string>(); set => _expands = value; }
+        private bool _expandsInitialized;
+        private Dictionary<string, string> _expands;
+        public Dictionary<string, string> Expands { get { if(!_expandsInitialized) { _expandsInitialized = true; _expands = new Dictionary<string, string>(); } return _expands; } set { _expandsInitialized = true; _expands = value; } }
     }
 }

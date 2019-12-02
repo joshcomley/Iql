@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -13,7 +13,9 @@ namespace Iql.JavaScript.JavaScriptExpressionToExpressionTree
     //     http://jsep.from.so/
     public class JavaScriptExpressionStringToExpressionTreeParser
     {
-        private static Dictionary<string, JavaScriptExpressionNode> _parsed = new Dictionary<string, JavaScriptExpressionNode>();
+        private static bool _parsedDelayedInitialized;
+        private static Dictionary<string, JavaScriptExpressionNode> _parsedDelayed;
+        private static Dictionary<string, JavaScriptExpressionNode> _parsed { get { if(!_parsedDelayedInitialized) { _parsedDelayedInitialized = true; _parsedDelayed = new Dictionary<string, JavaScriptExpressionNode>(); } return _parsedDelayed; } set { _parsedDelayedInitialized = true; _parsedDelayed = value; } }
         private readonly string _expr;
         private int _index;
 

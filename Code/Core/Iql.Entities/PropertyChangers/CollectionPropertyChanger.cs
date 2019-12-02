@@ -10,7 +10,7 @@ namespace Iql.Entities.PropertyChangers
         {
             CanSilentlyChange = true;
         }
-        private static CollectionPropertyChanger _instance = null;
+        private static CollectionPropertyChanger _instance;
 
         public static CollectionPropertyChanger Instance => _instance = _instance ?? new CollectionPropertyChanger();
         protected override bool CheckEquivalence(IList remoteValue, IList localValue)

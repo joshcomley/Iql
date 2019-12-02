@@ -9,7 +9,9 @@ namespace Iql.OData.IqlToODataExpression
 {
     public class ODataIqlParserContext : ActionParserContext<ODataIqlData, ODataIqlExpressionAdapter, string, ODataOutput, ODataExpressionConverter>
     {
-        private List<string> _validRootReferenceVariables = new List<string>();
+        private bool _validRootReferenceVariablesDelayedInitialized;
+        private List<string> _validRootReferenceVariablesDelayed;
+        private List<string> _validRootReferenceVariables { get { if(!_validRootReferenceVariablesDelayedInitialized) { _validRootReferenceVariablesDelayedInitialized = true; _validRootReferenceVariablesDelayed = new List<string>(); } return _validRootReferenceVariablesDelayed; } set { _validRootReferenceVariablesDelayedInitialized = true; _validRootReferenceVariablesDelayed = value; } }
         public ODataIqlParserContext(ODataIqlExpressionAdapter adapter, Type currentEntityType, ODataExpressionConverter expressionConverter, ITypeResolver typeResolver) : base(adapter, currentEntityType, expressionConverter, typeResolver)
         {
         }

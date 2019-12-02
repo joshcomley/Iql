@@ -13,8 +13,9 @@ namespace Iql.Entities
         private string _title;
         private bool _titleSet;
         private UserPermissionsCollection _permissions;
-        private IMetadataCollection _metadata = null;
-        public IMetadataCollection Metadata { get => _metadata = _metadata ?? new MetadataCollection(); set => _metadata = value; }
+        private bool _metadataInitialized;
+        private IMetadataCollection _metadata;
+        public IMetadataCollection Metadata { get { if(!_metadataInitialized) { _metadataInitialized = true; _metadata = new MetadataCollection(); } return _metadata; } set { _metadataInitialized = true; _metadata = value; } }
 
         public virtual string Name
         {
@@ -129,8 +130,9 @@ namespace Iql.Entities
         public float GroupOrder { get; set; }
 
         public string Description { get; set; }
-        private List<string> _hints = null;
-        public List<string> Hints { get => _hints = _hints ?? new List<string>(); set => _hints = value; }
+        private bool _hintsInitialized;
+        private List<string> _hints;
+        public List<string> Hints { get { if(!_hintsInitialized) { _hintsInitialized = true; _hints = new List<string>(); } return _hints; } set { _hintsInitialized = true; _hints = value; } }
         public MetadataHint FindHint(string name, bool? onlySelf = false)
         {
             return HintHelper.FindHint(this, name, onlySelf);
@@ -146,9 +148,10 @@ namespace Iql.Entities
             HintHelper.RemoveHint(this, name, onlySelf);
             return this;
         }
-        private List<HelpText> _helpTexts = null;
+        private bool _helpTextsInitialized;
+        private List<HelpText> _helpTexts;
 
-        public List<HelpText> HelpTexts { get => _helpTexts = _helpTexts ?? new List<HelpText>(); set => _helpTexts = value; }
+        public List<HelpText> HelpTexts { get { if(!_helpTextsInitialized) { _helpTextsInitialized = true; _helpTexts = new List<HelpText>(); } return _helpTexts; } set { _helpTextsInitialized = true; _helpTexts = value; } }
 
         public IConfiguration SetHint(string name, string value = null)
         {

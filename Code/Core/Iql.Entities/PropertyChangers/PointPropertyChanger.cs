@@ -6,7 +6,7 @@ namespace Iql.Entities.PropertyChangers
         {
             CanSilentlyChange = true;
         }
-        private static PointPropertyChanger _instance = null;
+        private static PointPropertyChanger _instance;
 
         public static PointPropertyChanger Instance => _instance = _instance ?? new PointPropertyChanger();
         protected override bool CheckEquivalence(IqlPointExpression newValue, IqlPointExpression oldValue)

@@ -135,8 +135,9 @@ namespace Iql.Entities
         public bool IsSubTitleProperty => HasHint(KnownHints.SubTitle);
         public override IEntityConfiguration EntityConfiguration => EntityConfigurationInternal;
         public IEntityConfiguration EntityConfigurationInternal { get; set; }
-        private List<EntityRelationship> _relationshipSources = null;
-        public List<EntityRelationship> RelationshipSources { get => _relationshipSources = _relationshipSources ?? new List<EntityRelationship>(); set => _relationshipSources = value; }
+        private bool _relationshipSourcesInitialized;
+        private List<EntityRelationship> _relationshipSources;
+        public List<EntityRelationship> RelationshipSources { get { if(!_relationshipSourcesInitialized) { _relationshipSourcesInitialized = true; _relationshipSources = new List<EntityRelationship>(); } return _relationshipSources; } set { _relationshipSourcesInitialized = true; _relationshipSources = value; } }
         public bool Searchable { get; set; } = true;
 
         public virtual bool? Nullable
@@ -256,7 +257,9 @@ namespace Iql.Entities
         public override IqlPropertyKind Kind { get; set; }
 
         protected EntityRelationship _relationship;
-        private IList<IInferredValueConfiguration> _inferredValueConfigurations = new List<IInferredValueConfiguration>();
+        private bool _inferredValueConfigurationsDelayedInitialized;
+        private IList<IInferredValueConfiguration> _inferredValueConfigurationsDelayed;
+        private IList<IInferredValueConfiguration> _inferredValueConfigurations { get { if(!_inferredValueConfigurationsDelayedInitialized) { _inferredValueConfigurationsDelayedInitialized = true; _inferredValueConfigurationsDelayed = new List<IInferredValueConfiguration>(); } return _inferredValueConfigurationsDelayed; } set { _inferredValueConfigurationsDelayedInitialized = true; _inferredValueConfigurationsDelayed = value; } }
         private bool IsSearchableType => TypeDefinition != null && (TypeDefinition.Type == typeof(string) &&
                                                                     string.IsNullOrWhiteSpace(TypeDefinition.ConvertedFromType));
 

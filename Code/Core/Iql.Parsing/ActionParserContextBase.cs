@@ -56,11 +56,15 @@ namespace Iql.Parsing
         public TQueryAdapter Adapter { get; set; }
         public Type CurrentEntityType => TypeStack.LastOrDefault();
         public bool IsTypeRoot => TypeStack.Count == 1;
-        private List<Type> _typeStack = null;
+        private List<Type> _typeStack;
         public List<Type> TypeStack => _typeStack = _typeStack ?? new List<Type>();
         public Type RootEntityType { get; }
-        private Dictionary<IqlExpression, Type> _foundTypes = new Dictionary<IqlExpression, Type>();
-        private List<RootReferenceTypeMap> _rootReferenceResolvedTypes = new List<RootReferenceTypeMap>();
+        private bool _foundTypesDelayedInitialized;
+        private Dictionary<IqlExpression, Type> _foundTypesDelayed;
+        private Dictionary<IqlExpression, Type> _foundTypes { get { if(!_foundTypesDelayedInitialized) { _foundTypesDelayedInitialized = true; _foundTypesDelayed = new Dictionary<IqlExpression, Type>(); } return _foundTypesDelayed; } set { _foundTypesDelayedInitialized = true; _foundTypesDelayed = value; } }
+        private bool _rootReferenceResolvedTypesDelayedInitialized;
+        private List<RootReferenceTypeMap> _rootReferenceResolvedTypesDelayed;
+        private List<RootReferenceTypeMap> _rootReferenceResolvedTypes { get { if(!_rootReferenceResolvedTypesDelayedInitialized) { _rootReferenceResolvedTypesDelayedInitialized = true; _rootReferenceResolvedTypesDelayed = new List<RootReferenceTypeMap>(); } return _rootReferenceResolvedTypesDelayed; } set { _rootReferenceResolvedTypesDelayedInitialized = true; _rootReferenceResolvedTypesDelayed = value; } }
         protected virtual void SetEntityType(Type type, IqlExpression expression)
         {
 #if !TypeScript
@@ -112,7 +116,9 @@ namespace Iql.Parsing
         }
 
         public ITypeResolver TypeResolver { get; }
-        private readonly Dictionary<string, string> _rootEntityNames = new Dictionary<string, string>();
+        private bool _rootEntityNamesDelayedInitialized;
+        private Dictionary<string, string> _rootEntityNamesDelayed;
+        private Dictionary<string, string> _rootEntityNames { get { if(!_rootEntityNamesDelayedInitialized) { _rootEntityNamesDelayedInitialized = true; _rootEntityNamesDelayed = new Dictionary<string, string>(); } return _rootEntityNamesDelayed; } set { _rootEntityNamesDelayedInitialized = true; _rootEntityNamesDelayed = value; } }
         private string _rootEntityName;
 
         public string GetRootEntityName(IqlRootReferenceExpression rootReferenceExpression)
@@ -156,7 +162,7 @@ namespace Iql.Parsing
 
             return _rootEntityNames[name];
         }
-        private List<IqlExpression> _ancestors = null;
+        private List<IqlExpression> _ancestors;
 
         public List<IqlExpression> Ancestors => _ancestors = _ancestors ?? new List<IqlExpression>();
 
@@ -241,7 +247,7 @@ namespace Iql.Parsing
 
             return null;
         }
-        private Dictionary<IqlExpression, List<TParserOutput>> _outputMap = null;
+        private Dictionary<IqlExpression, List<TParserOutput>> _outputMap;
 
         public Dictionary<IqlExpression, List<TParserOutput>> OutputMap => _outputMap = _outputMap ?? new Dictionary<IqlExpression, List<TParserOutput>>();
 

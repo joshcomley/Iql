@@ -32,8 +32,10 @@ namespace Iql.Data.DataStores.InMemory
 
                 return Data[type];
             }
+            private bool _guidCountDelayedInitialized;
+            private Dictionary<Type, int> _guidCountDelayed;
 
-            private readonly Dictionary<Type, int> _guidCount = new Dictionary<Type, int>();
+            private Dictionary<Type, int> _guidCount { get { if(!_guidCountDelayedInitialized) { _guidCountDelayedInitialized = true; _guidCountDelayed = new Dictionary<Type, int>(); } return _guidCountDelayed; } set { _guidCountDelayedInitialized = true; _guidCountDelayed = value; } }
             public Guid NextIdGuid(Type entityType,  IProperty property)
             {
                 if (!_guidCount.ContainsKey(entityType))
@@ -77,8 +79,10 @@ namespace Iql.Data.DataStores.InMemory
 
                 return new Guid($"00000000-0000-0000-0000-{idStr}");
             }
+            private bool _idCountDelayedInitialized;
+            private Dictionary<Type, int> _idCountDelayed;
 
-            private readonly Dictionary<Type, int> _idCount = new Dictionary<Type, int>();
+            private Dictionary<Type, int> _idCount { get { if(!_idCountDelayedInitialized) { _idCountDelayedInitialized = true; _idCountDelayed = new Dictionary<Type, int>(); } return _idCountDelayed; } set { _idCountDelayedInitialized = true; _idCountDelayed = value; } }
             public int NextIdInteger(Type entityType,  IProperty property)
             {
                 if (!_idCount.ContainsKey(entityType))
@@ -123,8 +127,10 @@ namespace Iql.Data.DataStores.InMemory
             {
                 return NextIdGuid(entityType, property).ToString();
             }
+            private bool _setConfigurationsDelayedInitialized;
+            private Dictionary<Type, OfflineDataStoreSetConfiguration> _setConfigurationsDelayed;
 
-            private readonly Dictionary<Type, OfflineDataStoreSetConfiguration> _setConfigurations = new Dictionary<Type, OfflineDataStoreSetConfiguration>();
+            private Dictionary<Type, OfflineDataStoreSetConfiguration> _setConfigurations { get { if(!_setConfigurationsDelayedInitialized) { _setConfigurationsDelayedInitialized = true; _setConfigurationsDelayed = new Dictionary<Type, OfflineDataStoreSetConfiguration>(); } return _setConfigurationsDelayed; } set { _setConfigurationsDelayedInitialized = true; _setConfigurationsDelayed = value; } }
             public OfflineDataStoreSetConfiguration GetSetConfiguration(Type type)
             {
                 if (!_setConfigurations.ContainsKey(type))
@@ -133,7 +139,7 @@ namespace Iql.Data.DataStores.InMemory
                 }
                 return _setConfigurations[type];
             }
-            private Dictionary<Type, IList> _data = null;
+            private Dictionary<Type, IList> _data;
             public Dictionary<Type, IList> Data => _data = _data ?? new Dictionary<Type, IList>();
             private DataTracker _inMemoryDataTracker;
             public DataTracker InMemoryDataTracker
@@ -165,8 +171,10 @@ namespace Iql.Data.DataStores.InMemory
         }
 
         private static MethodInfo SynchroniseDataTypedMethod { get; }
+        private static bool DatabasesDelayedInitialized;
+        private static Dictionary<string, InMemoryDatabase> DatabasesDelayed;
 
-        private static readonly Dictionary<string, InMemoryDatabase> Databases = new Dictionary<string, InMemoryDatabase>();
+        private static Dictionary<string, InMemoryDatabase> Databases { get { if(!DatabasesDelayedInitialized) { DatabasesDelayedInitialized = true; DatabasesDelayed = new Dictionary<string, InMemoryDatabase>(); } return DatabasesDelayed; } set { DatabasesDelayedInitialized = true; DatabasesDelayed = value; } }
 
         private InMemoryDatabase Database => EnsureInMemoryDatabase();
 
@@ -210,8 +218,10 @@ namespace Iql.Data.DataStores.InMemory
         }
 
         private DataTracker InMemoryDataTracker => Database.InMemoryDataTracker;
+        private bool _cloneMapDelayedInitialized;
+        private Dictionary<object, object> _cloneMapDelayed;
 
-        private readonly Dictionary<object, object> _cloneMap = new Dictionary<object, object>();
+        private Dictionary<object, object> _cloneMap { get { if(!_cloneMapDelayedInitialized) { _cloneMapDelayedInitialized = true; _cloneMapDelayed = new Dictionary<object, object>(); } return _cloneMapDelayed; } set { _cloneMapDelayedInitialized = true; _cloneMapDelayed = value; } }
 
         public override string SerializeStateToJson()
         {

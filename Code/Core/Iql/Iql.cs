@@ -1,8 +1,10 @@
-﻿namespace Iql
+namespace Iql
 {
     public class Iql
     {
-        public static EnumMapper<IqlExpressionKind> ExpressionTypes = new EnumMapper<IqlExpressionKind>()
+        private static bool ExpressionTypesDelayedInitialized;
+        private static EnumMapper<IqlExpressionKind> ExpressionTypesDelayed;
+        public static EnumMapper<IqlExpressionKind> ExpressionTypes { get { if(!ExpressionTypesDelayedInitialized) { ExpressionTypesDelayedInitialized = true; ExpressionTypesDelayed = new EnumMapper<IqlExpressionKind>()
             .Map(() => IqlExpressionKind.Aggregate)
             .Map(() => IqlExpressionKind.Parenthesis)
             .Map(() => IqlExpressionKind.And)
@@ -47,6 +49,6 @@
             .Map(() => IqlExpressionKind.Any)
             .Map(() => IqlExpressionKind.All)
             .Map(() => IqlExpressionKind.Count)
-            ;
+; } return ExpressionTypesDelayed; } set { ExpressionTypesDelayedInitialized = true; ExpressionTypesDelayed = value; } }
     }
 }

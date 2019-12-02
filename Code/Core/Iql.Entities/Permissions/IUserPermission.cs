@@ -18,8 +18,9 @@ namespace Iql.Entities
     public class UserPermissionsCollection
     {
         public IEntityConfigurationContainer Builder { get; }
-        private List<string> _keys = null;
-        public List<string> Keys { get => _keys = _keys ?? new List<string>(); set => _keys = value; }
+        private bool _keysInitialized;
+        private List<string> _keys;
+        public List<string> Keys { get { if(!_keysInitialized) { _keysInitialized = true; _keys = new List<string>(); } return _keys; } set { _keysInitialized = true; _keys = value; } }
 
         public UserPermissionsCollection(IEntityConfigurationContainer builder = null)
         {

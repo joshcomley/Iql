@@ -5,7 +5,7 @@ namespace Iql.Entities.PropertyChangers
 {
     public class PolygonPropertyChanger : ComplexPropertyChanger<IqlPolygonExpression>
     {
-        private static PolygonPropertyChanger _instance = null;
+        private static PolygonPropertyChanger _instance;
         public static PolygonPropertyChanger Instance => _instance = _instance ?? new PolygonPropertyChanger();
         protected override bool CheckEquivalence(IqlPolygonExpression newValue, IqlPolygonExpression oldValue)
         {

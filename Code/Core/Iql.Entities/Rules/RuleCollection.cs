@@ -6,8 +6,9 @@ namespace Iql.Entities.Rules
     public abstract class RuleCollection<TRule> : IRuleCollection<TRule>
     where TRule : IRule
     {
-        private readonly Dictionary<string, TRule> _rulesDictionary
-            = new Dictionary<string, TRule>();
+        private bool _rulesDictionaryDelayedInitialized;
+        private Dictionary<string, TRule> _rulesDictionaryDelayed;
+        private Dictionary<string, TRule> _rulesDictionary { get { if(!_rulesDictionaryDelayedInitialized) { _rulesDictionaryDelayedInitialized = true; _rulesDictionaryDelayed = new Dictionary<string, TRule>(); } return _rulesDictionaryDelayed; } set { _rulesDictionaryDelayedInitialized = true; _rulesDictionaryDelayed = value; } }
 
         public TRule Get(string key)
         {
@@ -18,7 +19,7 @@ namespace Iql.Entities.Rules
 
             return default(TRule);
         }
-        private List<TRule> _all = null;
+        private List<TRule> _all;
 
         public List<TRule> All => _all = _all ?? new List<TRule>();
 
