@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Tracking.State;
 
@@ -17,6 +15,12 @@ namespace Iql.Data.Tracking
         private bool _entitiesInitialized;
         private Dictionary<IEntityStateBase, EntitySnapshot> _entities;
         public Dictionary<IEntityStateBase, EntitySnapshot> Entities { get { if(!_entitiesInitialized) { _entitiesInitialized = true; _entities = new Dictionary<IEntityStateBase, EntitySnapshot>(); } return _entities; } set { _entitiesInitialized = true; _entities = value; } }
+
+        public void Empty()
+        {
+            _values?.Clear();
+            _entities?.Clear();
+        }
     }
 
     public class PropertySnapshot
@@ -25,31 +29,11 @@ namespace Iql.Data.Tracking
         public object PreviousValue { get; set; }
         public object CurrentValue { get; set; }
     }
+
     public class EntitySnapshot
     {
-        private EntityStatus _previousValue;
-        private EntityStatus _currentValue;
         public IEntityStateBase State { get; set; }
-        private bool _previousValueSet = false;
-        private bool _currentValueSet = false;
-        public EntityStatus PreviousValue
-        {
-            get => _previousValue;
-            set
-            {
-                _previousValueSet = true;
-                _previousValue = value;
-            }
-        }
-
-        public EntityStatus CurrentValue
-        {
-            get => _currentValue;
-            set
-            {
-                _currentValueSet = true;
-                _currentValue = value;
-            }
-        }
+        public EntityStatus PreviousValue { get; set; }
+        public EntityStatus CurrentValue { get; set; }
     }
 }

@@ -181,10 +181,18 @@ namespace Iql.Data.Tracking
                 RemoveLastSnapshot();
             }
         }
-        private EventEmitter<DataTracker> _snapshotAdding;
-        public EventEmitter<DataTracker> SnapshotAdding => _snapshotAdding = _snapshotAdding ?? new EventEmitter<DataTracker>();
-        private EventEmitter<DataTracker> _snapshotAdded;
-        public EventEmitter<DataTracker> SnapshotAdded => _snapshotAdded = _snapshotAdded ?? new EventEmitter<DataTracker>();
+        private EventEmitter<SnapshotEvent> _snapshotAdding;
+        public EventEmitter<SnapshotEvent> SnapshotAdding => _snapshotAdding = _snapshotAdding ?? new EventEmitter<SnapshotEvent>();
+        private EventEmitter<SnapshotEvent> _snapshotAdded;
+        public EventEmitter<SnapshotEvent> SnapshotAdded => _snapshotAdded = _snapshotAdded ?? new EventEmitter<SnapshotEvent>();
+        private EventEmitter<SnapshotEvent> _snapshotRemoving;
+        public EventEmitter<SnapshotEvent> SnapshotRemoving => _snapshotRemoving = _snapshotRemoving ?? new EventEmitter<SnapshotEvent>();
+        private EventEmitter<SnapshotEvent> _snapshotRemoved;
+        public EventEmitter<SnapshotEvent> SnapshotRemoved => _snapshotRemoved = _snapshotRemoved ?? new EventEmitter<SnapshotEvent>();
+        private EventEmitter<SnapshotEvent> _snapshotReplacing;
+        public EventEmitter<SnapshotEvent> SnapshotReplacing => _snapshotReplacing = _snapshotReplacing ?? new EventEmitter<SnapshotEvent>();
+        private EventEmitter<SnapshotEvent> _snapshotReplaced;
+        public EventEmitter<SnapshotEvent> SnapshotReplaced => _snapshotReplaced = _snapshotReplaced ?? new EventEmitter<SnapshotEvent>();
         public TrackerSnapshot AddSnapshot(bool? nullIfEmpty = null)
         {
             var doNullIfEmpty = nullIfEmpty ?? false;
@@ -195,7 +203,6 @@ namespace Iql.Data.Tracking
 
             var isFirstSnapshot = !HasSnapshot;
 
-            SnapshotAdding.Emit(() => this);
             var snapshot = NewTrackerSnapshot();
             snapshot.Id = Guid.NewGuid();
             _isRestoring = true;
@@ -236,12 +243,12 @@ namespace Iql.Data.Tracking
 
                 propertyState.AddSnapshot();
             }
-
             _isRestoring = false;
+            SnapshotAdding.Emit(() => new SnapshotEvent(this, snapshot));
             ResetSnapshotState(true, true);
             _snapshots.Add(snapshot);
             UpdateHasSnapshot();
-            SnapshotAdded.Emit(() => this);
+            SnapshotAdded.Emit(() => new SnapshotEvent(this, snapshot));
             return snapshot;
         }
 
@@ -259,6 +266,10 @@ namespace Iql.Data.Tracking
 
         private bool RemoveLastSnapshotInternal(SnapshotRemoveKind? kind)
         {
+            if (!HasSnapshot)
+            {
+                return false;
+            }
             kind = kind ?? SnapshotRemoveKind.None;
             switch (kind)
             {
@@ -272,18 +283,25 @@ namespace Iql.Data.Tracking
             }
 
             var snapshotRemoved = TryRemoveLastSnapshotInternal();
-            if (kind == SnapshotRemoveKind.GoToPreSnapshotValues)
+            if (snapshotRemoved != null)
             {
-                SetSnapshotValues(snapshotRemoved, true);
-                StateSinceSnapshot.RemoveMatching(snapshotRemoved);
+                if (kind == SnapshotRemoveKind.GoToPreSnapshotValues)
+                {
+                    SetSnapshotValues(snapshotRemoved, true);
+                    StateSinceSnapshot.RemoveMatching(snapshotRemoved);
+                }
+                else
+                {
+                    StateSinceSnapshot.MergeWith(snapshotRemoved);
+                }
+                // All changes in save state but not in snapshot
+                _removedSnapshots.Add(snapshotRemoved);
             }
-            else
-            {
-                StateSinceSnapshot.MergeWith(snapshotRemoved);
-            }
-            // All changes in save state but not in snapshot
-            _removedSnapshots.Add(snapshotRemoved);
             UpdateHasSnapshot();
+            if(snapshotRemoved != null)
+            {
+                SnapshotRemoved.Emit(() => new SnapshotEvent(this, snapshotRemoved));
+            }
             //if (kind == SnapshotRemoveKind.GoToPreSnapshotValues)
             //{
             //    UndoChanges();
@@ -320,13 +338,20 @@ namespace Iql.Data.Tracking
         {
             if (HasSnapshot)
             {
-                var last = _snapshots.Last();
-                _snapshots.Remove(last);
+                var snapshot = LatestSnapshot();
+                SnapshotRemoving.Emit(() => new SnapshotEvent(this, snapshot));
+                _snapshots.Remove(snapshot);
                 UpdateHasSnapshot();
-                return last;
+                return snapshot;
             }
 
             return null;
+        }
+
+        private TrackerSnapshot LatestSnapshot()
+        {
+            var snapshot = _snapshots.LastOrDefault();
+            return snapshot;
         }
 
         public bool RestoreNextAbandonedSnapshot()
@@ -346,8 +371,16 @@ namespace Iql.Data.Tracking
 
         public TrackerSnapshot ReplaceLastSnapshot()
         {
-            RemoveLastSnapshot();
-            return AddSnapshot();
+            if (HasSnapshot)
+            {
+                var snapshot = LatestSnapshot();
+                SnapshotReplacing.Emit(() => new SnapshotEvent(this, snapshot));
+                RemoveLastSnapshot();
+                var newSnapshot = AddSnapshot();
+                SnapshotReplaced.Emit(() => new SnapshotReplacedEvent(this, snapshot, newSnapshot));
+                return newSnapshot;
+            }
+            return null;
         }
 
         public bool HasSnapshot
@@ -958,7 +991,8 @@ namespace Iql.Data.Tracking
         private Type ResolveTrackingSet<T>(T entity, out ITrackingSet set) where T : class
         {
             var entityType = typeof(T);
-            if (entityType == typeof(object))
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse (TypeScript)
+            if (entityType == typeof(object) || entityType == null)
             {
                 entityType = entity.GetType();
             }
@@ -1130,6 +1164,15 @@ namespace Iql.Data.Tracking
         ///     For internal use only.
         /// </summary>
         /// <param name="propertyState"></param>
+        public void NotifyHardReset(IPropertyState propertyState)
+        {
+            //NotifyRemoteValueChanged(propertyState);
+        }
+
+        /// <summary>
+        ///     For internal use only.
+        /// </summary>
+        /// <param name="propertyState"></param>
         public void NotifyRemoteValueChanged(IPropertyState propertyState)
         {
             var found = false;
@@ -1158,9 +1201,21 @@ namespace Iql.Data.Tracking
             {
                 ClearRestorableSnapshots();
             }
+            object cloneValue = null;
             if (propertyState.HasSnapshotValue && !propertyState.IsRelationshipCollection)
             {
-                propertyState.SetSnapshotValue(propertyState.PropertyChanger.CloneValue(propertyState.RemoteValue));
+                cloneValue = cloneValue ?? propertyState.PropertyChanger.CloneValue(propertyState.RemoteValue);
+                propertyState.SetSnapshotValue(cloneValue);
+            }
+            foreach (var snapshot in Snapshots)
+            {
+                cloneValue = cloneValue ?? propertyState.PropertyChanger.CloneValue(propertyState.RemoteValue);
+                if (snapshot.Values.ContainsKey(propertyState))
+                {
+                    var propertySnapshot = snapshot.Values[propertyState];
+                    propertySnapshot.CurrentValue = cloneValue;
+                    propertySnapshot.PreviousValue = cloneValue;
+                }
             }
         }
 
@@ -1448,6 +1503,27 @@ namespace Iql.Data.Tracking
 
             public IList Data { get; }
             public List<IEntityStateBase> States { get; }
+        }
+
+        public void NotifySaveApplied(
+            object[] entities, 
+            IProperty[] properties,
+            List<IEntityStateBase> failedEntitySaves)
+        {
+            for (var i = 0; i < Sets.Count; i++)
+            {
+                var set = Sets[i];
+                set.NotifySaveApplied(entities, properties, failedEntitySaves);
+            }
+        }
+
+        public void EmptySnapshots()
+        {
+            for (var i = 0; i < Snapshots.Length; i++)
+            {
+                var snapshot = Snapshots[i];
+                snapshot.Empty();
+            }
         }
     }
 }

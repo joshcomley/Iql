@@ -552,6 +552,11 @@ namespace Iql.Data.Tracking
             _tracking.Clear();
         }
 
+        public void NotifySaveApplied(object[] entities, IProperty[] properties, List<IEntityStateBase> failedEntitySaves)
+        {
+            
+        }
+
         void ITrackingSet.AbandonChangesForEntityState(IEntityStateBase state)
         {
             if (state.Entity is T)

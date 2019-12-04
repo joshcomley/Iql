@@ -20,7 +20,7 @@ using Iql.Extensions;
 
 namespace Iql.Data.Tracking.State
 {
-    [DebuggerDisplay("{Property.Name}")]
+    [DebuggerDisplay("{Property.Name} - any changes: ({HasAnyChanges}, {HasAnyChangesSinceSnapshot})")]
     public class PropertyState : IPropertyState
     {
         private bool _canUndo;
@@ -307,7 +307,7 @@ namespace Iql.Data.Tracking.State
         private void UpdateHasAnyChanges()
         {
             HasAnyChanges = HasChanges || HasNestedChanges;
-            HasAnyChangesSinceSnapshot = HasAnyChangesSinceSnapshot || HasNestedChangesSinceSnapshot;
+            HasAnyChangesSinceSnapshot = HasChangesSinceSnapshot || HasNestedChangesSinceSnapshot;
         }
 
         public object RemoteValue
@@ -344,10 +344,6 @@ namespace Iql.Data.Tracking.State
 
         public void SetSnapshotValue(object value)
         {
-            if (IsRelationshipCollection)
-            {
-                int a = 0;
-            }
             var newSnapshotValue = PropertyChanger.CloneValue(value);
             ObserveIfNecessary(_snapshotValue, newSnapshotValue, ChangeCalculationKind.Snapshot);
             _snapshotValue = newSnapshotValue;
@@ -359,10 +355,6 @@ namespace Iql.Data.Tracking.State
 
         public void ClearSnapshotValue()
         {
-            if (IsRelationshipCollection)
-            {
-                int a = 0;
-            }
             ClearSnapshotRelationshipChanges();
             HasSnapshotValue = false;
             _snapshotValue = null;
@@ -427,6 +419,7 @@ namespace Iql.Data.Tracking.State
                         }, "LocalValue");
                     }
                 }
+                UpdateHasChanged();
             }
         }
 
@@ -827,6 +820,7 @@ namespace Iql.Data.Tracking.State
             {
                 UpdateHasChangedSinceStart();
                 UpdateHasChangedSinceSnapshot();
+                UpdateHasAnyChanges();
                 if (ignoreRelationshipOtherSide != true)
                 {
                     for (var i = 0; i < SiblingStates.Length; i++)
@@ -971,6 +965,7 @@ namespace Iql.Data.Tracking.State
             EnsureRemoteValue();
             LocalValue = newValue;
             UpdateHasChanged();
+            DataTracker.NotifyHardReset(this);
         }
 
         public void SoftReset()
@@ -1313,6 +1308,11 @@ namespace Iql.Data.Tracking.State
             if (remoteValue != null && LocalValue == null)
             {
                 return true;
+            }
+
+            if (remoteValue == LocalValue)
+            {
+                return false;
             }
 
             if (EntityState != null)

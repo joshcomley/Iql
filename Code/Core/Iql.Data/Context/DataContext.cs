@@ -905,6 +905,7 @@ namespace Iql.Data.Context
             IEnumerable<IQueuedEntityCrudOperation> queue,
             bool forceOnline)
         {
+            var isOffline = !(forceOnline || !HasOfflineChanges);
             await Events.ContextEvents.EmitStartedAsync(() => saveChangesOperation);
             await saveChangesOperation.Events.EmitStartedAsync(() => saveChangesOperation);
 #if !TypeScript
@@ -953,6 +954,7 @@ namespace Iql.Data.Context
                 }
             }
 
+            var failedEntitySaves = new List<IEntityStateBase>();
             for (var i = 0; i < saveChangesResult.Results.Count; i++)
             {
                 var result = saveChangesResult.Results[i];
@@ -961,6 +963,10 @@ namespace Iql.Data.Context
                     await result.EntityState.StatefulSaveEvents.EmitSuccessAsync(() => result);
                     await result.EntityState.SaveEvents.EmitSuccessAsync(() => result);
                 }
+                else
+                {
+                    failedEntitySaves.Add(result.EntityState);
+                }
             }
 
             if (saveChangesResult.Results.Any(_ => _.Success))
@@ -968,6 +974,7 @@ namespace Iql.Data.Context
                 await saveChangesOperation.Events.EmitSuccessAsync(() => saveChangesResult);
                 await Events.ContextEvents.EmitSuccessAsync(() => saveChangesResult);
             }
+
             await saveChangesOperation.Events.EmitCompletedAsync(() => saveChangesResult);
             await Events.ContextEvents.EmitCompletedAsync(() => saveChangesResult);
             for (var i = 0; i < saveChangesResult.Results.Count; i++)
@@ -977,6 +984,14 @@ namespace Iql.Data.Context
                 await result.EntityState.SaveEvents.EmitCompletedAsync(() => result);
                 result.EntityState.ClearStatefulEvents();
             }
+
+            //var dataTracker = isOffline ? OfflineDataTracker : TemporalDataTracker;
+
+            TemporalDataTracker.NotifySaveApplied(
+                saveChangesOperation.Entities,
+                saveChangesOperation.Properties,
+                failedEntitySaves);
+
             return saveChangesResult;
         }
 
@@ -2241,6 +2256,11 @@ namespace Iql.Data.Context
         public void ClearSnapshots()
         {
             TemporalDataTracker.ClearSnapshots();
+        }
+
+        public void EmptySnapshots()
+        {
+            TemporalDataTracker.EmptySnapshots();
         }
 
         public TrackerSnapshot AddSnapshot(bool? nullIfEmpty = null)
