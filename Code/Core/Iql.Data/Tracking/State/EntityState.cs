@@ -308,6 +308,15 @@ namespace Iql.Data.Tracking.State
         public void SetSnapshotValue(EntityStatus snapshotStatus)
         {
             SnapshotStatus = snapshotStatus;
+            EventSubscription subscription = null;
+            subscription = DataTracker.HasSnapshotChanged.Subscribe(_ =>
+            {
+                if (!DataTracker.HasSnapshot)
+                {
+                    ClearSnapshotValue();
+                    subscription.Unsubscribe();
+                }
+            });
         }
 
         public void ClearStatefulEvents()
@@ -585,31 +594,35 @@ namespace Iql.Data.Tracking.State
 
         private void UpdateStatusHasChanged()
         {
-            if (SnapshotStatus == EntityStatus.Existing &&
-                Status == EntityStatus.ExistingAndPendingDelete)
-            {
-                StatusHasChanged = true;
-            }
-            else if (SnapshotStatus == EntityStatus.ExistingAndPendingDelete &&
-                Status == EntityStatus.Existing)
-            {
-                StatusHasChanged = true;
-            }
-            else if (SnapshotStatus == EntityStatus.New &&
-                Status == EntityStatus.NewAndDeleted)
-            {
-                StatusHasChanged = true;
-            }
-            else if (SnapshotStatus == EntityStatus.NewAndDeleted &&
-                Status == EntityStatus.New)
-            {
-                StatusHasChanged = true;
-            }
-            else
-            {
-                StatusHasChanged = false;
-            }
+            StatusHasChanged = AreStatusDifferent(SnapshotStatus, Status);
             NotifyStatusChange();
+        }
+
+        public static bool AreStatusDifferent(EntityStatus oldValue, EntityStatus newValue)
+        {
+            var hasChanged = false;
+            if (oldValue == EntityStatus.Existing &&
+                newValue == EntityStatus.ExistingAndPendingDelete)
+            {
+                hasChanged = true;
+            }
+            else if (oldValue == EntityStatus.ExistingAndPendingDelete &&
+                     newValue == EntityStatus.Existing)
+            {
+                hasChanged = true;
+            }
+            else if (oldValue == EntityStatus.New &&
+                     newValue == EntityStatus.NewAndDeleted)
+            {
+                hasChanged = true;
+            }
+            else if ((oldValue == EntityStatus.NewAndDeleted || oldValue == EntityStatus.Unattached) &&
+                     newValue == EntityStatus.New)
+            {
+                hasChanged = true;
+            }
+
+            return hasChanged;
         }
 
         private bool CanNotifyStatusChange { get; set; }

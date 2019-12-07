@@ -63,7 +63,7 @@ namespace Iql.Data.Tracking
             EmitChanged();
         }
 
-        public Dictionary<IEntityStateBase, EntitySnapshot> GetEntitiesChanged()
+        public Dictionary<IEntityStateBase, EntitySnapshot> GetEntitiesChanged(bool forceOppositeStatus = false)
         {
             var entityStates = _entitiesChanged.Keys.ToArray();
             var dic = new Dictionary<IEntityStateBase, EntitySnapshot>();
@@ -72,7 +72,7 @@ namespace Iql.Data.Tracking
                 var state = entityStates[i];
                 dic.Add(state, new EntitySnapshot
                 {
-                    PreviousValue = state.Status.Opposite(),
+                    PreviousValue = forceOppositeStatus ? state.Status.Opposite() : state.Status,
                     CurrentValue = state.Status,
                     State = state
                 });
@@ -81,26 +81,36 @@ namespace Iql.Data.Tracking
             return dic;
         }
 
-        public IPropertyState[] GetPropertiesChanged(bool allowRelationshipCollections = false)
+        public Dictionary<IPropertyState, PropertySnapshot> GetPropertiesChanged(bool allowRelationshipCollections = false)
         {
-            return _propertiesChanged.Keys.Where(_ =>
+            var lookup = new Dictionary<IPropertyState, PropertySnapshot>();
+            foreach (var propertyChanged in _propertiesChanged)
             {
-                //if (!allowRelationshipCollections && _.Property.Relationship != null && _.Property.TypeDefinition.IsCollection)
-                //{
-                //    return false;
-                //}
-                if (!TrackNewEntityProperties && _.EntityState.IsNew)
+                var propertyState = propertyChanged.Key;
+                if (!TrackNewEntityProperties && propertyState.EntityState.IsNew)
                 {
-                    return false;
+                    continue;
                 }
-                if (_entitiesChanged.ContainsKey(_.EntityState) &&
-                    _entitiesChanged[_.EntityState].Item2 == EntityStatus.NewAndDeleted)
+                if (_entitiesChanged.ContainsKey(propertyState.EntityState) &&
+                    _entitiesChanged[propertyState.EntityState].Item2 == EntityStatus.NewAndDeleted)
                 {
-                    return false;
+                    continue;
                 }
+                lookup.Add(propertyState, new PropertySnapshot()
+                {
+                    PreviousValue = propertyChanged.Value.Item1,
+                    CurrentValue = propertyChanged.Value.Item2,
+                    State = propertyState
+                });
+            }
 
-                return true;
-            }).ToArray();
+            return lookup;
+        }
+
+        public IPropertyState[] GetPropertiesChangedArray(bool allowRelationshipCollections = false)
+        {
+            var propertiesChanged = GetPropertiesChanged();
+            return propertiesChanged.Keys.ToArray();
         }
 
         public void UpdateStatusChanged<T>(T item, bool value, EntityStatus oldValue, EntityStatus newValue)
@@ -177,7 +187,7 @@ namespace Iql.Data.Tracking
 
         private void EmitChanged()
         {
-            _propertiesChangedCount = GetPropertiesChanged().Length;
+            _propertiesChangedCount = GetPropertiesChangedArray().Length;
             HasChanges = PropertiesChangedCount > 0 ||
                          EntitiesChangedCount > 0;
             //if (!PauseEvents)
@@ -309,14 +319,26 @@ namespace Iql.Data.Tracking
             return true;
         }
 
-        public void MergeWith(TrackerSnapshot snapshot)
+        public void MergeWithSnapshot(TrackerSnapshot snapshot)
         {
             MergeWithInternal(snapshot, true);
         }
 
+        public void MergeWithState(DataTrackerState state)
+        {
+            var propertiesChanged = state.GetPropertiesChanged();
+            var entitiesChanged = state.GetEntitiesChanged(false);
+            MergeWith(true, entitiesChanged, propertiesChanged);
+        }
+
         private void MergeWithInternal(TrackerSnapshot snapshot, bool add)
         {
-            foreach (var snapshotEntity in snapshot.Entities)
+            MergeWith(add, snapshot.Entities, snapshot.Values);
+        }
+
+        private void MergeWith(bool add, Dictionary<IEntityStateBase, EntitySnapshot> entitiesChanged, Dictionary<IPropertyState, PropertySnapshot> propertiesChanged)
+        {
+            foreach (var snapshotEntity in entitiesChanged)
             {
                 if (_entitiesChanged.ContainsKey(snapshotEntity.Key))
                 {
@@ -335,7 +357,8 @@ namespace Iql.Data.Tracking
                     );
                 }
             }
-            foreach (var snapshotProperty in snapshot.Values)
+
+            foreach (var snapshotProperty in propertiesChanged)
             {
                 if (_propertiesChanged.ContainsKey(snapshotProperty.Key))
                 {

@@ -297,6 +297,7 @@ namespace Iql.Tests.Tests.DataContextTests
             var entity3UndoDelete = await Db.GetEntityAsync<Client>(id3);
             var entity2KeepDeleteState = Db.GetEntityState(entity2KeepDelete);
             var entity3UndoDeleteState = Db.GetEntityState(entity3UndoDelete);
+            var stateSinceSave = Db.TemporalDataTracker.StateSinceSave;
             var newEntityKeep = new Client()
             {
                 Name = "New Client"
@@ -308,7 +309,13 @@ namespace Iql.Tests.Tests.DataContextTests
             var snapshot = Db.AddSnapshot();
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
             Assert.IsFalse(Db.HasChanges);
+            Db.HasChangesChanged.Subscribe(_ =>
+            {
+                int a = 0;
+            });
             Db.Clients.Add(newEntityKeep);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+            Assert.IsTrue(Db.HasChanges);
             Db.Clients.Add(newEntityUndo);
             Db.Clients.Delete(entity2KeepDelete);
             Db.Clients.Delete(entity3UndoDelete);
@@ -959,12 +966,15 @@ namespace Iql.Tests.Tests.DataContextTests
             Db.Clients.Add(entity2);
             entity2.Name = "def";
             var snapshot2 = Db.AddSnapshot();
+            var entity1State = Db.GetEntityState(entity1);
             var entity2State = Db.GetEntityState(entity2);
             Assert.AreEqual(EntityStatus.New, entity2State.Status);
+            Assert.AreEqual(EntityStatus.New, entity1State.Status);
 
             Db.RemoveLastSnapshot(SnapshotRemoveKind.GoToPreSnapshotValues);
 
             Assert.AreEqual(EntityStatus.NewAndDeleted, entity2State.Status);
+            Assert.AreEqual(EntityStatus.New, entity1State.Status);
 
             Db.RestoreNextAbandonedSnapshot();
 
@@ -3065,6 +3075,97 @@ namespace Iql.Tests.Tests.DataContextTests
             Db.Clients.Add(new Client());
             Assert.IsFalse(Db.HasRestorableSnapshot);
         }
+
+        [TestMethod]
+        public async Task TestAddingAPivotEntityInASnapshotAndRemovingTheSnapshot()
+        {
+            var dbClient = new Client
+            {
+                Id = 1212,
+                Name = "dbClient",
+                Description = "def"
+            };
+            var dbClientCategory = new ClientCategory
+            {
+                Id = 2222,
+                Name = "dbClientCategory"
+            };
+            var dbClientCategoryPivot = new ClientCategoryPivot
+            {
+                ClientId = 1212,
+                CategoryId = 2222
+            };
+            AppDbContext.InMemoryDb.Clients.Add(dbClient);
+            AppDbContext.InMemoryDb.ClientCategories.Add(dbClientCategory);
+            AppDbContext.InMemoryDb.ClientCategoriesPivot.Add(dbClientCategoryPivot);
+
+            var client = await Db.Clients.Expand(_ => _.Categories).GetWithKeyAsync(1212);
+            var clientState = Db.GetEntityState(client);
+            var clientCategoriesState = clientState.GetPropertyState(nameof(Client.Categories));
+            Assert.AreEqual(0, clientCategoriesState.ItemsAdded.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsRemoved.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsChanged.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsAddedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsRemovedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsChangedSinceSnapshot.Count);
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+
+            Db.AddSnapshot();
+            var stateSinceSave = Db.TemporalDataTracker.StateSinceSave;
+            var stateSinceSnapshot = Db.TemporalDataTracker.StateSinceSnapshot;
+            stateSinceSave.EntitiesChangedChanged.Subscribe(_ =>
+            {
+                int a = 0;
+            });
+            var newClientCategoryPivot = new ClientCategoryPivot
+            {
+                CategoryId = 2223
+            };
+            client.Categories.Add(newClientCategoryPivot);
+            var newClientCategoryPivotState = Db.GetEntityState(newClientCategoryPivot);
+            newClientCategoryPivotState.StatusChanged.Subscribe(_ =>
+            {
+                int a = 0;
+            });
+            Assert.AreEqual(1, clientCategoriesState.ItemsAdded.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsRemoved.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsChanged.Count);
+            Assert.AreEqual(1, clientCategoriesState.ItemsAddedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsRemovedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsChangedSinceSnapshot.Count);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+
+            Db.ReplaceLastSnapshot();
+
+            Assert.AreEqual(1, clientCategoriesState.ItemsAdded.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsRemoved.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsChanged.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsAddedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsRemovedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsChangedSinceSnapshot.Count);
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+
+            Db.RemoveLastSnapshot();
+
+            Assert.IsTrue(Db.HasChanges);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+
+            Db.UndoChanges();
+
+            Assert.AreEqual(0, clientCategoriesState.ItemsAdded.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsRemoved.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsChanged.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsAddedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsRemovedSinceSnapshot.Count);
+            Assert.AreEqual(0, clientCategoriesState.ItemsChangedSinceSnapshot.Count);
+            
+            Assert.IsFalse(Db.HasChanges);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+        }
+
 
         [TestMethod]
         public async Task TestDeletingAndRestoringPivotEntity()

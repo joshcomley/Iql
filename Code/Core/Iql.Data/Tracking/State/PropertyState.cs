@@ -351,6 +351,15 @@ namespace Iql.Data.Tracking.State
             HasSnapshotValue = true;
             UpdateSnapshotRelatedListChanged();
             UpdateHasChanged();
+            EventSubscription subscription = null;
+            subscription = DataTracker.HasSnapshotChanged.Subscribe(_ =>
+            {
+                if (!DataTracker.HasSnapshot)
+                {
+                    ClearSnapshotValue();
+                    subscription.Unsubscribe();
+                }
+            });
         }
 
         public void ClearSnapshotValue()
