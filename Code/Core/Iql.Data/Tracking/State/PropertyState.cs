@@ -114,11 +114,11 @@ namespace Iql.Data.Tracking.State
         public ObservableList<IEntityStateBase> ItemsChangedSinceSnapshot => _itemsChangedSinceSnapshot = _itemsChangedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
         public ObservableList<IEntityStateBase> ItemsRemovedSinceSnapshot => _itemsRemovedSinceSnapshot = _itemsRemovedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
         public ObservableList<IEntityStateBase> ItemsAddedSinceSnapshot => _itemsAddedSinceSnapshot = _itemsAddedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
+        
         private IqlEventSubscriberManager _eventSubscriptionManager;
-
         private IqlEventSubscriberManager EventSubscriberManager => _eventSubscriptionManager = _eventSubscriptionManager ?? new IqlEventSubscriberManager();
-        private IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> _statefulSaveEvents;
 
+        private IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> _statefulSaveEvents;
         public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> StatefulSaveEvents => _statefulSaveEvents = _statefulSaveEvents ?? new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
         private IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> _saveEvents;
 
@@ -481,7 +481,8 @@ namespace Iql.Data.Tracking.State
                                 new IEventSubscriberBase[]
                                 {
                                     propertyState.HasChangesChanged,
-                                    propertyState.RemoteValueChanged
+                                    propertyState.RemoteValueChanged,
+                                    propertyState.OnReset
                                 },
                                 (caller, _) =>
                             {
@@ -522,9 +523,10 @@ namespace Iql.Data.Tracking.State
                             manager.SubscribeAll(
                                 new IEventSubscriberBase[]
                                 {
-                                    propertyState.HasChangesSinceSnapshotChanged, 
+                                    propertyState.HasChangesSinceSnapshotChanged,
                                     propertyState.SnapshotValueChanged,
-                                    propertyState.RemoteValueChanged
+                                    propertyState.RemoteValueChanged,
+                                    propertyState.OnReset
                                 }, (caller, _) =>
                              {
                                  if (!DataTracker.AddingPropertySnapshots)
@@ -589,7 +591,7 @@ namespace Iql.Data.Tracking.State
                 }
                 else
                 {
-                    if (DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd, null, 
+                    if (DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd, null,
                             changeCalculationKind == ChangeCalculationKind.Remote ? CheckValueKind.Remote : CheckValueKind.Snapshot))
                     {
                         var isDisallowed = changeCalculationKind == ChangeCalculationKind.Remote && state.IsNew;
@@ -934,6 +936,12 @@ namespace Iql.Data.Tracking.State
 
             _isUpdatingHasChanged = false;
         }
+
+
+        private EventEmitter<IPropertyState> _onReset;
+        public EventEmitter<IPropertyState> OnReset => _onReset = _onReset ?? new EventEmitter<IPropertyState>().RegisterWith(_eventEmitterManager);
+
+
         private readonly IqlEventEmitterManager _eventEmitterManager = new IqlEventEmitterManager();
         private EventEmitter<ValueChangedEvent<bool>> _canUndoChanged;
 
@@ -950,9 +958,10 @@ namespace Iql.Data.Tracking.State
         private EventEmitter<ValueChangedEvent<bool>> _hasNestedChangesSinceSnapshotChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged => _hasNestedChangesSinceSnapshotChanged = _hasNestedChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
-        private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged;
 
+        private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged;
         public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
+        
         private EventEmitter<ValueChangedEvent<bool>> _hasAnyChangesChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesChanged => _hasAnyChangesChanged = _hasAnyChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
@@ -1038,6 +1047,7 @@ namespace Iql.Data.Tracking.State
             EnsureRemoteValue();
             LocalValue = newValue;
             UpdateHasChanged();
+            OnReset.Emit(() => this);
             DataTracker.NotifyHardReset(this);
         }
 
@@ -1470,8 +1480,8 @@ namespace Iql.Data.Tracking.State
         }
 
         private bool DoesRelationshipSourceMatch(
-            IEntityStateBase entityState, 
-            IRelationshipDetail relationshipDetail, 
+            IEntityStateBase entityState,
+            IRelationshipDetail relationshipDetail,
             object usEntity = null,
             CheckValueKind checkRemoteValue = CheckValueKind.Local)
         {
@@ -1566,7 +1576,8 @@ namespace Iql.Data.Tracking.State
             ObserveIfNecessary(oldValue, _remoteValueClone, ChangeCalculationKind.Remote);
             _remoteValue = value;
             UpdateHasChanged();
-            if (_remoteValue != oldValue)
+            var areEquivalent = PropertyChanger.AreEquivalent(_remoteValue, oldValue);
+            if (!areEquivalent)
             {
                 DataTracker.NotifyRemoteValueChanged(this);
                 RemoteValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));

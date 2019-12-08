@@ -1427,7 +1427,6 @@ namespace Iql.Tests.Tests
             var db = new HazceptionDataContext();
             try
             {
-
                 var examCandidateResults =
                     await db
                         .ExamCandidateResults

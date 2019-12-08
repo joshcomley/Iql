@@ -33,6 +33,7 @@ namespace Iql.Data.Crud.Operations
         DataTracker DataTracker { get; }
         Guid Guid { get; }
         //IEntityPropertyEvent
+        EventEmitter<IPropertyState> OnReset { get; }
         EventEmitter<ValueChangedEvent<object>> SnapshotValueChanged { get; }
         EventEmitter<ValueChangedEvent<bool>> HasSnapshotValueChanged { get; }
         EventEmitter<ValueChangedEvent<bool>> HasNestedChangesChanged { get; }
