@@ -88,10 +88,6 @@ namespace Iql.Data.Evaluation
             for (var i = 0; i < config.Properties.Count; i++)
             {
                 var property = config.Properties[i];
-                if(property.Name == "Client")
-                {
-                    int a = 0;
-                }
                 var inferredValueChanges = await TryGetInferredValueCustomInternalAsync(
                     alreadyInferredLookup, 
                     property,
@@ -352,10 +348,6 @@ namespace Iql.Data.Evaluation
                     }
 
                     var inferredWithIql = inferredWith.InferredWithIql;
-                    if(property.Name == "Client")
-                    {
-                        int a = 0;
-                    }
                     var result = await Session.EvaluateIqlCustomAsync(
                         inferredWithIql,
                         NewInferredValueContext(oldEntity, entity, isInitialize, property.EntityConfiguration.Type),

@@ -255,10 +255,6 @@ namespace Iql.Tests.Tests.DataContextTests
             var nameProperty = Db.EntityConfigurationContext.EntityType<Client>().FindProperty(nameof(Client.Name));
             var descriptionPropertyState = entityState.GetPropertyState(nameof(Client.Description));
             Assert.IsTrue(descriptionPropertyState.HasChangesSinceSnapshot);
-            Db.HasChangesSinceSnapshotChanged.Subscribe(_ =>
-            {
-                var a = 0;
-            });
             Db.UndoChanges(new[] {entity1}, new[] {nameProperty});
             Assert.AreEqual("abc", entity1.Name);
             Assert.AreEqual("123", entity1.Description);
@@ -312,10 +308,6 @@ namespace Iql.Tests.Tests.DataContextTests
             var snapshot = Db.AddSnapshot();
             Assert.IsFalse(Db.HasChangesSinceSnapshot);
             Assert.IsFalse(Db.HasChanges);
-            Db.HasChangesChanged.Subscribe(_ =>
-            {
-                int a = 0;
-            });
             Db.Clients.Add(newEntityKeep);
             Assert.IsTrue(Db.HasChangesSinceSnapshot);
             Assert.IsTrue(Db.HasChanges);
@@ -1398,10 +1390,6 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
             client1.Name = "a new name";
             Assert.AreEqual(6, clientType1.Clients.Count);
-            clientType1ClientsState.ItemsAdded.Change.Subscribe(_ =>
-            {
-                int a = 0;
-            });
             client2.TypeId = 7878;
             Assert.AreEqual(5, clientType1.Clients.Count);
             var newClient1 = new Client
@@ -1456,10 +1444,6 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
             var client2TypeIdState = client2State.GetPropertyState(nameof(Client.TypeId));
             var client7TypeIdState = client7State.GetPropertyState(nameof(Client.TypeId));
-            client7TypeIdState.HasChangesSinceSnapshotChanged.Subscribe(_ =>
-            {
-                int a = 0;
-            });
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
@@ -1572,10 +1556,6 @@ namespace Iql.Tests.Tests.DataContextTests
                 TypeId = clientType1.Id
             };
             Db.Clients.Add(newClient2);
-            clientType1ClientsState.ItemsAdded.Change.Subscribe(_ =>
-            {
-                int a = 0;
-            });
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
@@ -3232,20 +3212,12 @@ namespace Iql.Tests.Tests.DataContextTests
             Db.AddSnapshot();
             var stateSinceSave = Db.TemporalDataTracker.StateSinceSave;
             var stateSinceSnapshot = Db.TemporalDataTracker.StateSinceSnapshot;
-            stateSinceSave.EntitiesChangedChanged.Subscribe(_ =>
-            {
-                int a = 0;
-            });
             var newClientCategoryPivot = new ClientCategoryPivot
             {
                 CategoryId = 2223
             };
             client.Categories.Add(newClientCategoryPivot);
             var newClientCategoryPivotState = Db.GetEntityState(newClientCategoryPivot);
-            newClientCategoryPivotState.StatusChanged.Subscribe(_ =>
-            {
-                int a = 0;
-            });
             Assert.AreEqual(1, clientCategoriesState.ItemsAdded.Count);
             Assert.AreEqual(0, clientCategoriesState.ItemsRemoved.Count);
             Assert.AreEqual(0, clientCategoriesState.ItemsChanged.Count);

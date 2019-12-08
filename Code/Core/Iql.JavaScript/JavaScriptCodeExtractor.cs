@@ -35,10 +35,6 @@ namespace Iql.JavaScript
             var lastI = 0;
             for (var i = 0; i < code.Length; i++)
             {
-                if (i == 4959)
-                {
-                    int a = 0;
-                }
                 lastLastI = lastI;
                 lastI = i;
                 var ch = code[i];
@@ -88,7 +84,6 @@ namespace Iql.JavaScript
                         else if (i < code.Length - 1 && code[i + 1] != '*' && code[i + 1] != '/' && code[i + 1] != ' ' && code[i + 1] != '	')
                         {
                             // startIndex = i;
-                            var x = i;
                             // Regex
                             i++;
                             var squareBracketDepth = 0;
@@ -96,10 +91,6 @@ namespace Iql.JavaScript
                             var rStr = "" + code[i - 1];
                             while (true)
                             {
-                                if (i > code.Length - 1)
-                                {
-                                    int a = 0;
-                                }
                                 var rCh = code[i];
                                 rStr += rCh;
                                 var cancelEscape = false;
