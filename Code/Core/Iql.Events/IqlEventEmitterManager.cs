@@ -46,7 +46,7 @@ namespace Iql.Events
             }
         }
 
-        public async void Resume(string key = null)
+        public void Resume(string key = null)
         {
             for (var i = 0; i < _emitters.Count; i++)
             {
