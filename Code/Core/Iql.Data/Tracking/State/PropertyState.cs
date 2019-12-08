@@ -481,7 +481,6 @@ namespace Iql.Data.Tracking.State
                                 new IEventSubscriberBase[]
                                 {
                                     propertyState.HasChangesChanged,
-                                    propertyState.RemoteValueChanged,
                                     propertyState.OnReset
                                 },
                                 (caller, _) =>
@@ -525,7 +524,6 @@ namespace Iql.Data.Tracking.State
                                 {
                                     propertyState.HasChangesSinceSnapshotChanged,
                                     propertyState.SnapshotValueChanged,
-                                    propertyState.RemoteValueChanged,
                                     propertyState.OnReset
                                 }, (caller, _) =>
                              {
@@ -975,7 +973,6 @@ namespace Iql.Data.Tracking.State
 
         public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged => _remoteValueChanged = _remoteValueChanged ?? new EventEmitter<ValueChangedEvent<object>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<object>> _localValueChanged;
-        private bool _addingSnapshot;
 
         public EventEmitter<ValueChangedEvent<object>> LocalValueChanged => _localValueChanged = _localValueChanged ?? new EventEmitter<ValueChangedEvent<object>>().RegisterWith(_eventEmitterManager);
 
@@ -1169,9 +1166,7 @@ namespace Iql.Data.Tracking.State
         {
             //DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
             //DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
-            HasChangesChanged?.Dispose();
-            RemoteValueChanged?.Dispose();
-            LocalValueChanged?.Dispose();
+            _eventEmitterManager?.Dispose();
         }
 
         private bool CalculateHasChanged(object remoteValue, ChangeCalculationKind kind)
@@ -1580,7 +1575,10 @@ namespace Iql.Data.Tracking.State
             if (!areEquivalent)
             {
                 DataTracker.NotifyRemoteValueChanged(this);
-                RemoteValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
+                if(_remoteValueChanged != null)
+                {
+                    RemoteValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
+                }
             }
         }
 

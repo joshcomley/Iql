@@ -19,7 +19,7 @@ namespace Iql.Events
         EventSubscription SubscribeOnceAsync(Func<TEvent, Task> action, string key = null);
     }
 
-    public interface IEventEmitterRoot
+    public interface IEventEmitterRoot : IDisposable
     {
         bool IsPaused { get; }
         string Key { get; set; }

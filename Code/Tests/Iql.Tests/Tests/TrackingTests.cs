@@ -408,13 +408,13 @@ namespace Iql.Tests.Tests
             clientRemote.Name = "New Remote Name";
             Assert.AreEqual("Client Remote", propertyState.RemoteValue);
             Assert.AreEqual("My name", propertyState.LocalValue);
-            propertyState.RemoteValueChanged.Subscribe(_ =>
-            {
-            });
+            var hasChanged = false;
+            propertyState.RemoteValueChanged.Subscribe(_ => { hasChanged = true; });
             await Db.Clients.GetWithKeyAsync(1);
             Assert.AreEqual("New Remote Name", propertyState.RemoteValue);
             Assert.AreEqual("My name", propertyState.LocalValue);
             Assert.IsTrue(propertyState.HasChanges);
+            Assert.IsTrue(hasChanged);
         }
 
         [TestMethod]

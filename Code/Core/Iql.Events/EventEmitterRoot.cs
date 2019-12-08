@@ -29,5 +29,7 @@ namespace Iql.Events
             _isPaused = false;
             return ResumeInternalAsync();
         }
+
+        public abstract void Dispose();
     }
 }

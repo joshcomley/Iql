@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Iql.Events
 {
-    public class IqlEventEmitterManager
+    public class IqlEventEmitterManager : IDisposable
     {
         private bool _emittersDelayedInitialized;
         private List<IEventEmitterRoot> _subscriptionsDelayed;
@@ -60,6 +60,14 @@ namespace Iql.Events
         public void Register(IEventEmitterRoot emitter)
         {
             _emitters.Add(emitter);
+        }
+
+        public void Dispose()
+        {
+            foreach (var emitter in _emitters)
+            {
+                emitter.Dispose();
+            }
         }
     }
 }

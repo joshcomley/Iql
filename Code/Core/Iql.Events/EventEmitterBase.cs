@@ -148,13 +148,9 @@ namespace Iql.Events
                 SubscriptionsById.Clear();
                 Subscriptions.Clear();
             }
-            else
-            {
-
-            }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             UnsubscribeAll();
         }
