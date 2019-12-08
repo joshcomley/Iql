@@ -1572,6 +1572,10 @@ namespace Iql.Tests.Tests.DataContextTests
                 TypeId = clientType1.Id
             };
             Db.Clients.Add(newClient2);
+            clientType1ClientsState.ItemsAdded.Change.Subscribe(_ =>
+            {
+                int a = 0;
+            });
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
@@ -2620,20 +2624,7 @@ namespace Iql.Tests.Tests.DataContextTests
             var client7 = await Db.Clients.GetWithKeyAsync(4551);
             var client8 = await Db.Clients.GetWithKeyAsync(4552);
 
-            void AssertTypeIdTrue<T>(IEnumerable<T> collection, Func<IPropertyState, bool> action)
-                where T : IEntityStateBase
-            {
-                AssertAllTrue(collection, _ => action(_.GetPropertyState(nameof(Client.TypeId))));
-            }
-
-            void AssertTypeIdChanged<T>(IEnumerable<T> collection)
-                where T : IEntityStateBase
-            {
-                AssertAllTrue(collection, _ => _.IsNew || _.GetPropertyState(nameof(Client.TypeId)).HasChanges);
-            }
-
-            void AssertTypeIdChangedSinceSnapshot<T>(IEnumerable<T> collection)
-                where T : IEntityStateBase
+            void AssertTypeIdChangedSinceSnapshot(IEnumerable<IEntityStateBase> collection)
             {
                 AssertAllTrue(collection, _ => 
                     _.IsNew || _.GetPropertyState(nameof(Client.TypeId)).HasChangesSinceSnapshot);
