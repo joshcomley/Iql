@@ -16,6 +16,7 @@ using Iql.Entities.Events;
 using Iql.Entities.Exceptions;
 using Iql.Entities.Extensions;
 using Iql.Events;
+using Iql.Extensions;
 using Newtonsoft.Json;
 
 namespace Iql.Data.Tracking
@@ -62,17 +63,17 @@ namespace Iql.Data.Tracking
         private int _idCount = 0;
         private bool _changeIgnorerDelayedInitialized;
         private ChangeIgnorer _changeIgnorerDelayed;
-        private ChangeIgnorer _changeIgnorer { get { if(!_changeIgnorerDelayedInitialized) { _changeIgnorerDelayedInitialized = true; _changeIgnorerDelayed = new ChangeIgnorer(); } return _changeIgnorerDelayed; } set { _changeIgnorerDelayedInitialized = true; _changeIgnorerDelayed = value; } }
+        private ChangeIgnorer _changeIgnorer { get { if (!_changeIgnorerDelayedInitialized) { _changeIgnorerDelayedInitialized = true; _changeIgnorerDelayed = new ChangeIgnorer(); } return _changeIgnorerDelayed; } set { _changeIgnorerDelayedInitialized = true; _changeIgnorerDelayed = value; } }
         private bool _entityObserversDelayedInitialized;
         private Dictionary<T, EntityObserver> _entityObserversDelayed;
-        private Dictionary<T, EntityObserver> _entityObservers { get { if(!_entityObserversDelayedInitialized) { _entityObserversDelayedInitialized = true; _entityObserversDelayed = new Dictionary<T, EntityObserver>(); } return _entityObserversDelayed; } set { _entityObserversDelayedInitialized = true; _entityObserversDelayed = value; } }
+        private Dictionary<T, EntityObserver> _entityObservers { get { if (!_entityObserversDelayedInitialized) { _entityObserversDelayedInitialized = true; _entityObserversDelayed = new Dictionary<T, EntityObserver>(); } return _entityObserversDelayed; } set { _entityObserversDelayedInitialized = true; _entityObserversDelayed = value; } }
         private bool _keyChangeAllowerDelayedInitialized;
         private PropertyChangeIgnorer _keyChangeAllowerDelayed;
-        private PropertyChangeIgnorer _keyChangeAllower { get { if(!_keyChangeAllowerDelayedInitialized) { _keyChangeAllowerDelayedInitialized = true; _keyChangeAllowerDelayed = new PropertyChangeIgnorer(); } return _keyChangeAllowerDelayed; } set { _keyChangeAllowerDelayedInitialized = true; _keyChangeAllowerDelayed = value; } }
+        private PropertyChangeIgnorer _keyChangeAllower { get { if (!_keyChangeAllowerDelayedInitialized) { _keyChangeAllowerDelayedInitialized = true; _keyChangeAllowerDelayed = new PropertyChangeIgnorer(); } return _keyChangeAllowerDelayed; } set { _keyChangeAllowerDelayedInitialized = true; _keyChangeAllowerDelayed = value; } }
         private bool _trackingDelayedInitialized;
         private Dictionary<object, object> _trackingDelayed;
 
-        private Dictionary<object, object> _tracking { get { if(!_trackingDelayedInitialized) { _trackingDelayedInitialized = true; _trackingDelayed = new Dictionary<object, object>(); } return _trackingDelayed; } set { _trackingDelayedInitialized = true; _trackingDelayed = value; } }
+        private Dictionary<object, object> _tracking { get { if (!_trackingDelayedInitialized) { _trackingDelayedInitialized = true; _trackingDelayed = new Dictionary<object, object>(); } return _trackingDelayed; } set { _trackingDelayedInitialized = true; _trackingDelayed = value; } }
         private EntityConfiguration<T> _entityConfiguration;
 
         public AutoIntegerIdStrategy AutoIntegerIdStrategy { get; set; } = AutoIntegerIdStrategy.Positive;
@@ -193,6 +194,23 @@ namespace Iql.Data.Tracking
 
         internal override void RelationshipChanged(RelationshipChangedEvent relationshipChangedEvent)
         {
+            var entityState = GetEntityState(relationshipChangedEvent.Source);
+            if (entityState != null)
+            {
+                var propertyStates =
+                    relationshipChangedEvent.Relationship.Source.AllProperties
+                        .Select(_ => entityState.GetPropertyState(_.PropertyName))
+                        .ToArray();
+                foreach (var propertyState in propertyStates)
+                {
+                    propertyState.PauseEvents();
+                    propertyState.LocalValue = entityState.Entity.GetPropertyValueByName(propertyState.Property.PropertyName);
+                }
+                foreach (var propertyState in propertyStates)
+                {
+                    propertyState.ResumeEvents();
+                }
+            }
             //RemoveIfNecessary(relationshipChangedEvent.Source, relationshipChangedEvent.Relationship.Source.Type);
         }
 
@@ -405,7 +423,7 @@ namespace Iql.Data.Tracking
                 var entityState = GetEntityState(entity);
                 if (entityState.IsNew && !entityState.MarkedForAnyDeletion)
                 {
-                    inserts.Add(new AddEntityOperation<T>((IEntityState<T>) entityState, dataContext));
+                    inserts.Add(new AddEntityOperation<T>((IEntityState<T>)entityState, dataContext));
                 }
             }
 
@@ -430,7 +448,7 @@ namespace Iql.Data.Tracking
 
                 deletions.Add(new DeleteEntityOperation<T>(
                     key.Value.Key,
-                    (IEntityState<T>) key.Value.State,
+                    (IEntityState<T>)key.Value.State,
                     dataContext));
             }
 
@@ -554,7 +572,7 @@ namespace Iql.Data.Tracking
 
         public void NotifySaveApplied(object[] entities, IProperty[] properties, List<IEntityStateBase> failedEntitySaves)
         {
-            
+
         }
 
         void ITrackingSet.AbandonChangesForEntityState(IEntityStateBase state)
@@ -673,7 +691,7 @@ namespace Iql.Data.Tracking
         private bool IsEntityNew(object entity)
         {
             var state = DataTracker.GetEntityState(entity);
-            if(state != null)
+            if (state != null)
             {
                 return state.IsNew;
             }
@@ -902,7 +920,7 @@ namespace Iql.Data.Tracking
                                     {
                                         DataTracker.DeleteEntity(changeEvent.Item);
                                     }
-                                    else if(!state.MarkedForDeletion)
+                                    else if (!state.MarkedForDeletion)
                                     {
                                         state.MarkForCascadeDeletion(changeEvent.Item, relationship.Relationship);
                                     }
@@ -972,15 +990,15 @@ namespace Iql.Data.Tracking
         private void EntityPropertyChanging(IPropertyChangeEvent propertyChange)
         {
             var property = EntityConfiguration.FindProperty(propertyChange.PropertyName);
-            if (property.Kind.HasFlag(IqlPropertyKind.Key) ||
-                property.Kind.HasFlag(IqlPropertyKind.Relationship) ||
-                property.Kind.HasFlag(IqlPropertyKind.RelationshipKey) ||
-                property.Kind.HasFlag(IqlPropertyKind.Primitive))
+            if ((property.Kind.HasFlag(IqlPropertyKind.Key) ||
+                 property.Kind.HasFlag(IqlPropertyKind.Primitive)) &&
+                !property.Kind.HasFlag(IqlPropertyKind.Relationship) &&
+                !property.Kind.HasFlag(IqlPropertyKind.RelationshipKey))
             {
                 var entityState = GetEntityState(propertyChange.Entity);
                 if (entityState != null)
                 {
-                    var propertyState = entityState.GetPropertyState(property.Name);
+                    var propertyState = entityState.GetPropertyState(property.PropertyName);
                     propertyState.LocalValue = propertyChange.NewValue;
                 }
             }

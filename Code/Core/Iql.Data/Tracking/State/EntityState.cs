@@ -454,7 +454,7 @@ namespace Iql.Data.Tracking.State
             DataTracker = dataTracker;
             if (DataTracker != null)
             {
-                EventManager.Subscribe(DataTracker.HasSnapshotChanged, _ =>
+                EventSubscriberManager.Subscribe(DataTracker.HasSnapshotChanged, _ =>
                 {
                     CheckHasChanged();
                 });
@@ -671,7 +671,7 @@ namespace Iql.Data.Tracking.State
         private bool _isAttachedToGraph;
         private bool _hasChanged;
         private bool _hasChangedSinceSnapshot;
-        private IqlEventManager _eventManager;
+        private IqlEventSubscriberManager _eventSubscriptionManager;
         private EntityStatus _status = EntityStatus.Unattached;
         private bool _settingStatus = false;
         private bool _markedForCascadeDeletion;
@@ -682,7 +682,7 @@ namespace Iql.Data.Tracking.State
 
         private void MonitorSaveEvents()
         {
-            EventManager.SubscribeAsync(SaveEvents.StartedAsync,
+            EventSubscriberManager.SubscribeAsync(SaveEvents.StartedAsync,
                 async _ =>
                 {
                     if (_.Operation.Kind == IqlOperationKind.Update)
@@ -711,7 +711,7 @@ namespace Iql.Data.Tracking.State
                         _operations.Add(_.Operation.Id, PropertyStates.ToArray());
                     }
                 });
-            EventManager.SubscribeAsync(SaveEvents.SuccessfulAsync,
+            EventSubscriberManager.SubscribeAsync(SaveEvents.SuccessfulAsync,
                 async _ =>
                 {
                     if (_operations.ContainsKey(_.Operation.Id))
@@ -729,7 +729,7 @@ namespace Iql.Data.Tracking.State
                         }
                     }
                 });
-            EventManager.SubscribeAsync(SaveEvents.CompletedAsync,
+            EventSubscriberManager.SubscribeAsync(SaveEvents.CompletedAsync,
                 async _ =>
                 {
                     if (_operations.ContainsKey(_.Operation.Id))
@@ -751,7 +751,7 @@ namespace Iql.Data.Tracking.State
                 });
         }
 
-        private IqlEventManager EventManager => _eventManager = _eventManager ?? new IqlEventManager();
+        private IqlEventSubscriberManager EventSubscriberManager => _eventSubscriptionManager = _eventSubscriptionManager ?? new IqlEventSubscriberManager();
 
         public static IEntityStateBase New(object entity, Type entityType, IEntityConfiguration entityConfiguration)
         {
@@ -886,7 +886,7 @@ namespace Iql.Data.Tracking.State
         public void Dispose()
         {
             MarkedForDeletionChanged?.Dispose();
-            EventManager?.Dispose();
+            EventSubscriberManager?.Dispose();
             foreach (var propState in PropertyStates)
             {
                 propState.Dispose();

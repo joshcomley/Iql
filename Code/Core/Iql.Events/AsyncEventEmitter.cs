@@ -11,6 +11,13 @@ namespace Iql.Events
         {
 
         }
+
+        public AsyncEventEmitter<TEvent> RegisterWith(IqlEventEmitterManager manager)
+        {
+            manager.Register(this);
+            return this;
+        }
+
         EventSubscription IAsyncEventSubscriberBase.SubscribeAsync(Func<object, Task> action, string key = null, int? allowedCount = null)
         {
             return SubscribeAsync(async e =>
@@ -77,21 +84,14 @@ namespace Iql.Events
                     {
                         continue;
                     }
-                    try
+
+                    if (IsPaused)
                     {
-                        subscriptionAction.Subscription.RegisterCalled();
-                        await subscriptionAction.Action(ev);
-                        if (!subscriptionAction.Subscription.IsWithinAllowedCallCount && !subscriptionAction.Subscription.KeepSubscriptionAfterCallCount)
-                        {
-                            subscriptionAction.Subscription.Unsubscribe();
-                        }
+                        _queuedEmits.Add(async () => await EmitToSubscriptionAsync(subscriptionAction, ev));
                     }
-                    catch (Exception e)
+                    else
                     {
-                        if (EventEmitterExceptions.ShouldBeThrown(e))
-                        {
-                            throw e;
-                        }
+                        await EmitToSubscriptionAsync(subscriptionAction, ev);
                     }
                 }
 
@@ -116,6 +116,27 @@ namespace Iql.Events
             return default(TEvent);
         }
 
+        private static async Task EmitToSubscriptionAsync(SubscriptionAction<Func<TEvent, Task>> subscriptionAction, TEvent ev)
+        {
+            try
+            {
+                subscriptionAction.Subscription.RegisterCalled();
+                await subscriptionAction.Action(ev);
+                if (!subscriptionAction.Subscription.IsWithinAllowedCallCount &&
+                    !subscriptionAction.Subscription.KeepSubscriptionAfterCallCount)
+                {
+                    subscriptionAction.Subscription.Unsubscribe();
+                }
+            }
+            catch (Exception e)
+            {
+                if (EventEmitterExceptions.ShouldBeThrown(e))
+                {
+                    throw e;
+                }
+            }
+        }
+
         async Task<object> IAsyncEventEmitterBase.EmitAsync(Func<object> eventObjectFactory = null, Func<object, Task> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null)
         {
             var result = await EmitAsync(
@@ -123,6 +144,20 @@ namespace Iql.Events
                 afterEvent == null ? (Func<TEvent, Task>)null : async _ => { await afterEvent(_); },
                 subscriptions);
             return result;
+        }
+
+        private readonly List<Func<Task>> _queuedEmits = new List<Func<Task>>();
+        public override void ResumeInternal()
+        {
+            ResumeInternalAsync();
+        }
+        public override async Task ResumeInternalAsync()
+        {
+            foreach (var emit in _queuedEmits)
+            {
+                await emit();
+            }
+            _queuedEmits.Clear();
         }
     }
 }

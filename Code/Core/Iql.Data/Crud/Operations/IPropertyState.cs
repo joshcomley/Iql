@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Tracking;
@@ -13,6 +14,9 @@ namespace Iql.Data.Crud.Operations
 {
     public interface IPropertyState : IJsonSerializable, IStateful, IDisposable, ILockable
     {
+        object DebugKey { get; set; }
+        void PauseEvents();
+        void ResumeEvents();
         bool HasSnapshotValue { get; }
         // Non-new items with changes
         ObservableList<IEntityStateBase> ItemsChanged { get; }
@@ -29,6 +33,7 @@ namespace Iql.Data.Crud.Operations
         DataTracker DataTracker { get; }
         Guid Guid { get; }
         //IEntityPropertyEvent
+        EventEmitter<ValueChangedEvent<object>> SnapshotValueChanged { get; }
         EventEmitter<ValueChangedEvent<bool>> HasSnapshotValueChanged { get; }
         EventEmitter<ValueChangedEvent<bool>> HasNestedChangesChanged { get; }
         EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged { get; }

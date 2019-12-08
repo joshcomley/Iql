@@ -240,8 +240,23 @@ namespace Iql.Data.Tracking
                         CurrentValue = propertyState.PropertyChanger.CloneValue(propertyState.LocalValue)
                     });
                 }
+            }
 
-                propertyState.AddSnapshot();
+            //AddingPropertySnapshots = true;
+            foreach (var prop in items)
+            {
+                if (!prop.IsRelationshipCollection)
+                {
+                    prop.AddSnapshot();
+                }
+            }
+            //AddingPropertySnapshots = false;
+            foreach (var prop in items)
+            {
+                if (prop.IsRelationshipCollection)
+                {
+                    prop.AddSnapshot();
+                }
             }
             _isRestoring = false;
             SnapshotAdding.Emit(() => new SnapshotEvent(this, snapshot));
@@ -251,6 +266,8 @@ namespace Iql.Data.Tracking
             SnapshotAdded.Emit(() => new SnapshotEvent(this, snapshot));
             return snapshot;
         }
+
+        public bool AddingPropertySnapshots { get; private set; }
 
         public bool UndoChanges(object[] entities = null, object[] properties = null)
         {

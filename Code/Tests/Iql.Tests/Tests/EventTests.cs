@@ -13,7 +13,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new EventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.SubscribeOnce(emitter, _ => { counter++; });
             var sub2 = manager.SubscribeOnce(emitter, _ => { counter++; });
             var sub3 = manager.Subscribe(emitter, _ => { counter++; });
@@ -28,7 +28,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new AsyncEventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.SubscribeOnceAsync(emitter, async _ => { counter++; });
             var sub2 = manager.SubscribeOnceAsync(emitter, async _ => { counter++; });
             var sub3 = manager.SubscribeAsync(emitter, async _ => { counter++; });
@@ -43,7 +43,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new EventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.Subscribe(emitter, _ => { counter++; }, null, 1);
             var sub2 = manager.Subscribe(emitter, _ => { counter++; }, null, 1);
             var sub3 = manager.Subscribe(emitter, _ => { counter++; });
@@ -58,7 +58,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new AsyncEventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.SubscribeAsync(emitter, async _ => { counter++; }, null, 1);
             var sub2 = manager.SubscribeAsync(emitter, async _ => { counter++; }, null, 1);
             var sub3 = manager.SubscribeAsync(emitter, async _ => { counter++; });
@@ -73,7 +73,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new EventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.Subscribe(emitter, _ => { counter++; }, "a");
             var sub2 = manager.Subscribe(emitter, _ => { counter++; }, "a");
             var sub3 = manager.Subscribe(emitter, _ => { counter++; }, "b");
@@ -89,7 +89,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new EventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.Subscribe(emitter, _ => { counter++; }, "a");
             var sub2 = manager.Subscribe(emitter, _ => { counter++; }, "a");
             var sub3 = manager.Subscribe(emitter, _ => { counter++; }, "b");
@@ -105,7 +105,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new EventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.Subscribe(emitter, _ => { counter++; });
             var sub2 = manager.Subscribe(emitter, _ => { counter++; });
             var sub3 = manager.Subscribe(emitter, _ => { counter++; });
@@ -131,7 +131,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new EventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.Subscribe(emitter, _ => { counter++; }, "a");
             var sub2 = manager.Subscribe(emitter, _ => { counter++; }, "a");
             var sub3 = manager.Subscribe(emitter, _ => { counter++; }, "b");
@@ -147,7 +147,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new AsyncEventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.SubscribeAsync(emitter, async _ => { counter++; });
             var sub2 = manager.SubscribeAsync(emitter, async _ => { counter++; });
             var sub3 = manager.SubscribeAsync(emitter, async _ => { counter++; });
@@ -173,7 +173,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new AsyncEventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.SubscribeAsync(emitter, async _ => { counter++; }, "a");
             var sub2 = manager.SubscribeAsync(emitter, async _ => { counter++; }, "a");
             var sub3 = manager.SubscribeAsync(emitter, async _ => { counter++; }, "b");
@@ -214,7 +214,7 @@ namespace Iql.Tests.Tests
         {
             var counter = 0;
             var emitter = new EventEmitter<int>();
-            var manager = new IqlEventManager();
+            var manager = new IqlEventSubscriberManager();
             var sub1 = manager.Subscribe(emitter, _ => { counter++; }, "a");
             var sub2 = manager.Subscribe(emitter, _ => { counter++; }, "a");
             var sub3 = manager.Subscribe(emitter, _ => { counter++; }, "b");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Iql.Conversion;
 using Iql.Data.DataStores.InMemory;
 using Iql.Parsing.Types;
@@ -75,6 +76,14 @@ namespace Iql.Tests.Tests
                 Assert.IsTrue(e is TException || e.InnerException is TException);
             }
             Assert.AreEqual(exceptionCount, 1, $"Expected exception {typeof(TException).Name} not thrown.");
+        }
+
+        public void AssertAllTrue<T>(IEnumerable<T> collection, Func<T, bool> action)
+        {
+            foreach (var item in collection)
+            {
+                Assert.IsTrue(action(item));
+            }
         }
 
         public void AssertCollection(IList collection, params object[] args)

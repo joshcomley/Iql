@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Context;
@@ -20,7 +21,7 @@ using Iql.Extensions;
 
 namespace Iql.Data.Tracking.State
 {
-    [DebuggerDisplay("{Property.Name} - any changes: ({HasAnyChanges}, {HasAnyChangesSinceSnapshot})")]
+    [DebuggerDisplay("{Property.Name} - changes: (ac: {HasAnyChanges}, acss: {HasAnyChangesSinceSnapshot}, c: {HasChanges}, css: {HasChangesSinceSnapshot})")]
     public class PropertyState : IPropertyState
     {
         private bool _canUndo;
@@ -68,6 +69,18 @@ namespace Iql.Data.Tracking.State
             EnsureRemoteValue();
         }
 
+        public object DebugKey { get; set; }
+
+        public void PauseEvents()
+        {
+            _eventEmitterManager.Pause();
+        }
+
+        public void ResumeEvents()
+        {
+            _eventEmitterManager.Resume();
+        }
+
         private string Id
         {
             get
@@ -101,9 +114,9 @@ namespace Iql.Data.Tracking.State
         public ObservableList<IEntityStateBase> ItemsChangedSinceSnapshot => _itemsChangedSinceSnapshot = _itemsChangedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
         public ObservableList<IEntityStateBase> ItemsRemovedSinceSnapshot => _itemsRemovedSinceSnapshot = _itemsRemovedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
         public ObservableList<IEntityStateBase> ItemsAddedSinceSnapshot => _itemsAddedSinceSnapshot = _itemsAddedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
-        private IqlEventManager _eventManager;
+        private IqlEventSubscriberManager _eventSubscriptionManager;
 
-        private IqlEventManager EventManager => _eventManager = _eventManager ?? new IqlEventManager();
+        private IqlEventSubscriberManager EventSubscriberManager => _eventSubscriptionManager = _eventSubscriptionManager ?? new IqlEventSubscriberManager();
         private IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> _statefulSaveEvents;
 
         public IOperationEvents<IEntityPropertyEvent, IEntityPropertyEvent> StatefulSaveEvents => _statefulSaveEvents = _statefulSaveEvents ?? new OperationEvents<IEntityPropertyEvent, IEntityPropertyEvent>();
@@ -349,7 +362,7 @@ namespace Iql.Data.Tracking.State
             _snapshotValue = newSnapshotValue;
             ClearSnapshotRelationshipChanges();
             HasSnapshotValue = true;
-            UpdateSnapshotRelatedListChanged();
+            UpdateSnapshotRelatedListChanged(true);
             UpdateHasChanged();
             EventSubscription subscription = null;
             subscription = DataTracker.HasSnapshotChanged.Subscribe(_ =>
@@ -360,6 +373,7 @@ namespace Iql.Data.Tracking.State
                     subscription.Unsubscribe();
                 }
             });
+
         }
 
         public void ClearSnapshotValue()
@@ -400,6 +414,7 @@ namespace Iql.Data.Tracking.State
                 LocalValueSet = true;
                 var oldValue = _localValue;
                 _localValue = value;
+
                 UpdateHasChanged();
                 if (DataTracker != null && Property.Relationship != null && Property.Relationship.ThisIsSource)
                 {
@@ -415,14 +430,21 @@ namespace Iql.Data.Tracking.State
                 {
                     if (oldValue != null)
                     {
-                        EventManager.UnsubscribeAll("LocalValue");
+                        EventSubscriberManager.UnsubscribeAll("LocalValue");
                     }
 
                     if (value != null)
                     {
                         var relatedList = (IRelatedList)value;
                         var remoteList = (IEnumerable<object>)RemoteValue;
-                        EventManager.Subscribe(relatedList.RelatedListChange, _ =>
+                        if (DataTracker != null)
+                        {
+                            foreach (var item in relatedList)
+                            {
+                                Watch(DataTracker.GetEntityState(item));
+                            }
+                        }
+                        EventSubscriberManager.Subscribe(relatedList.RelatedListChange, _ =>
                         {
                             RelatedListUpdated(_, relatedList, remoteList);
                         }, "LocalValue");
@@ -432,200 +454,225 @@ namespace Iql.Data.Tracking.State
             }
         }
 
+        private Dictionary<IEntityStateBase, IqlEventSubscriberManager> _stateWatchers = new Dictionary<IEntityStateBase, IqlEventSubscriberManager>();
+        private Dictionary<IEntityStateBase, IqlEventSubscriberManager> _stateSinceSnapshotWatchers = new Dictionary<IEntityStateBase, IqlEventSubscriberManager>();
+
+        private void Watch(IEntityStateBase state)
+        {
+            if (state != null)
+            {
+                if (!_stateWatchers.ContainsKey(state))
+                {
+                    var manager = new IqlEventSubscriberManager();
+                    _stateWatchers.Add(state, manager);
+                    var states = GetRelationshipPropertyStates(state);
+                    manager.Subscribe(state.HasChangedChanged, _ =>
+                    {
+                        if (!DataTracker.AddingPropertySnapshots)
+                        {
+                            UpdateSnapshotRelatedListChanged();
+                        }
+                    });
+                    foreach (var propertyState in state.PropertyStates)
+                    {
+                        if (states.Contains(propertyState))
+                        {
+                            manager.SubscribeAll(
+                                new IEventSubscriberBase[]
+                                {
+                                    propertyState.HasChangesChanged,
+                                    propertyState.RemoteValueChanged
+                                },
+                                (caller, _) =>
+                            {
+                                if (!DataTracker.AddingPropertySnapshots)
+                                {
+                                    UpdateState(state, ChangeCalculationKind.Remote, ItemsAdded, ItemsRemoved, ItemsChanged, manager, _stateWatchers);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            manager.Subscribe(propertyState.HasChangesChanged, _ =>
+                            {
+                                if (!DataTracker.AddingPropertySnapshots)
+                                {
+                                    UpdateSnapshotRelatedListChanged();
+                                }
+                            });
+                        }
+                    }
+                }
+                if (!_stateSinceSnapshotWatchers.ContainsKey(state))
+                {
+                    var manager = new IqlEventSubscriberManager();
+                    _stateSinceSnapshotWatchers.Add(state, manager);
+                    var states = GetRelationshipPropertyStates(state);
+                    manager.Subscribe(state.HasChangedSinceSnapshotChanged, _ =>
+                    {
+                        if (!DataTracker.AddingPropertySnapshots)
+                        {
+                            UpdateSnapshotRelatedListChanged();
+                        }
+                    });
+                    foreach (var propertyState in state.PropertyStates)
+                    {
+                        if (states.Contains(propertyState))
+                        {
+                            manager.SubscribeAll(
+                                new IEventSubscriberBase[]
+                                {
+                                    propertyState.HasChangesSinceSnapshotChanged, 
+                                    propertyState.SnapshotValueChanged,
+                                    propertyState.RemoteValueChanged
+                                }, (caller, _) =>
+                             {
+                                 if (!DataTracker.AddingPropertySnapshots)
+                                 {
+                                     UpdateState(state, ChangeCalculationKind.Snapshot, ItemsAddedSinceSnapshot, ItemsRemovedSinceSnapshot, ItemsChangedSinceSnapshot, manager, _stateSinceSnapshotWatchers);
+                                 }
+                             });
+                        }
+                        else
+                        {
+                            manager.SubscribeAll(new IEventSubscriberBase[] { propertyState.HasChangesSinceSnapshotChanged, propertyState.SnapshotValueChanged }, (caller, _) =>
+                            {
+                                if (!DataTracker.AddingPropertySnapshots)
+                                {
+                                    UpdateSnapshotRelatedListChanged();
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        private IPropertyState[] GetRelationshipPropertyStates(IEntityStateBase state)
+        {
+            var properties = GetRelationshipProperties();
+            var states = properties.Select(_ => state.GetPropertyState(_.PropertyName))
+                .Where(_ => _ != null)
+                .ToArray();
+            return states;
+        }
+
+        private IProperty[] GetRelationshipProperties()
+        {
+            return Property.Relationship.OtherEnd.AllProperties;
+        }
+
+        private void UpdateState(IEntityStateBase state, ChangeCalculationKind changeCalculationKind,
+            ObservableList<IEntityStateBase> itemsAdded,
+            ObservableList<IEntityStateBase> itemsRemoved,
+            ObservableList<IEntityStateBase> itemsChanged,
+            IqlEventSubscriberManager subscriptionManager,
+            Dictionary<IEntityStateBase, IqlEventSubscriberManager> stateWatchers)
+        {
+            if (SanityCheckRelationshipSource(state, Property.Relationship.OtherEnd))
+            {
+                if (DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd))
+                {
+                    if (state.IsNew || HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd,
+                        changeCalculationKind))
+                    {
+                        if (!itemsAdded.Contains(state))
+                        {
+                            itemsAdded.Add(state);
+                        }
+                    }
+                    else
+                    {
+                        itemsAdded.Remove(state);
+                        itemsRemoved.Remove(state);
+                    }
+                }
+                else
+                {
+                    if (DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd, null, 
+                            changeCalculationKind == ChangeCalculationKind.Remote ? CheckValueKind.Remote : CheckValueKind.Snapshot))
+                    {
+                        var isDisallowed = changeCalculationKind == ChangeCalculationKind.Remote && state.IsNew;
+                        if (!isDisallowed && !itemsRemoved.Contains(state))
+                        {
+                            itemsRemoved.Add(state);
+                        }
+                    }
+                    else
+                    {
+                        itemsChanged.Remove(state);
+                        itemsAdded.Remove(state);
+                        itemsRemoved.Remove(state);
+                        subscriptionManager.UnsubscribeAll();
+                        stateWatchers.Remove(state);
+                    }
+                }
+                UpdateSnapshotRelatedListChanged();
+            }
+        }
+
         private void RelatedListUpdated(IRelatedListChangeEvent _, IRelatedList relatedList, IEnumerable<object> remoteList)
         {
             if (EntityState != null)
             {
-                switch (_.Kind)
+                var state = DataTracker.GetEntityState(_.Item);
+                if (state != null)
                 {
-                    case RelatedListChangeKind.Added:
-                        RelatedListItemAdded(_, relatedList);
-                        break;
-                    case RelatedListChangeKind.Removed:
-                        RelatedListItemRemoved(_, relatedList, remoteList);
-                        break;
+                    switch (_.Kind)
+                    {
+                        case RelatedListChangeKind.Added:
+                            if (state.IsNew || HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote))
+                            {
+                                ItemsAdded.Add(state);
+                            }
+                            if (state.IsNew || HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot))
+                            {
+                                ItemsAddedSinceSnapshot.Add(state);
+                            }
+                            Watch(state);
+                            UpdateHasChanged();
+                            //RelatedListItemAdded(_, relatedList);
+                            break;
+                        case RelatedListChangeKind.Removed:
+                            if (state.IsNew)
+                            {
+                                ItemsAdded.Remove(state);
+                                ItemsAddedSinceSnapshot.Remove(state);
+                            }
+                            else
+                            {
+                                ItemsRemoved.Add(state);
+                                ItemsRemovedSinceSnapshot.Add(state);
+                            }
+                            Watch(state);
+                            UpdateHasChanged();
+                            //RelatedListItemRemoved(_, relatedList, remoteList);
+                            break;
+                    }
                 }
             }
+            UpdateSnapshotRelatedListChanged();
             UpdateHasChanged();
         }
 
         private void RelatedListItemRemoved(IRelatedListChangeEvent _, IRelatedList relatedList, IEnumerable<object> remoteList)
         {
-            var itemState = DataTracker.GetEntityState(_.Item);
-            if (itemState != null)
-            {
-                if (!IsLocked)
-                {
-                    if (ItemsAdded.Contains(itemState))
-                    {
-                        ItemsAdded.Remove(itemState);
-                        //DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
-                    }
-                    else if (!itemState.IsNew)
-                    {
-                        if (!ItemsRemoved.Contains(itemState))
-                        {
-                            ItemsRemoved.Add(itemState);
-                        }
-                    }
-                }
-
-                DataTracker.RegisterInterest(_.Item, GetInterestKey(
-                        removedKey),
-                    (entityState, propertyState) =>
-                    {
-                        if (!IsLocked)
-                        {
-                            if (propertyState != null &&
-                                !propertyState.GroupStates.Any(gp => gp.Property == RelationshipOtherEndProperty))
-                            {
-                                return;
-                            }
-
-                            //var wasAdded = ItemsAdded.Contains(entityState);
-                            //if (!entityState.HasChanges)
-                            //{
-                            //    ItemsAdded.Remove(entityState);
-                            //    ItemsRemoved.Remove(entityState);
-                            //    ItemsChanged.Remove(entityState);
-                            //}
-                            if (!entityState.HasChangedSinceSnapshot)
-                            {
-                                ItemsAddedSinceSnapshot.Remove(entityState);
-                                ItemsRemovedSinceSnapshot.Remove(entityState);
-                                ItemsChangedSinceSnapshot.Remove(entityState);
-                            }
-
-                            if (HasRelationshipSourceChanged(entityState, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote))
-                            {
-                                if (!DoesRelationshipSourceMatchUs(entityState, Property.Relationship.OtherEnd) &&
-                                    !relatedList.Contains(entityState.Entity))
-                                {
-                                    if (remoteList.Contains(entityState) && !ItemsAdded.Contains(entityState) &&
-                                        !ItemsRemoved.Contains(entityState))
-                                    {
-                                        ItemsRemoved.Add(entityState);
-                                    }
-                                }
-
-                                //else
-                                //{
-                                //    if (ItemsRemoved.Contains(entityState))
-                                //    {
-                                //        ItemsRemoved.Remove(entityState);
-                                //    }
-                                //}
-                            }
-                            else
-                            {
-                                if ((remoteList.Contains(entityState.Entity) || !DoesRelationshipSourceMatchUs(entityState, Property.Relationship.OtherEnd))
-                                    && ItemsRemoved.Contains(entityState))
-                                {
-                                    ItemsRemoved.Remove(entityState);
-                                    DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
-                                    DataTracker.UnregisterInterest(_.Item, GetInterestKey(removedKey));
-                                }
-                            }
-                        }
-
-                        UpdateSnapshotRelatedListChanged();
-                    });
-                UpdateSnapshotRelatedListChanged();
-            }
+            UpdateSnapshotRelatedListChanged();
         }
 
         private void RelatedListItemAdded(IRelatedListChangeEvent _, IRelatedList relatedList)
         {
-            var itemState = DataTracker.GetEntityState(_.Item);
-            if (itemState != null)
-            {
-                var watch = true;
-                if (!IsLocked)
-                {
-                    if (itemState.IsNew && !ItemsAdded.Contains(itemState))
-                    {
-                        ItemsAdded.Add(itemState);
-                    }
-                    else if (ItemsRemoved.Contains(itemState))
-                    {
-                        ItemsRemoved.Remove(itemState);
-                    }
-                }
-
-                if (watch)
-                {
-                    DataTracker.RegisterInterest(_.Item, GetInterestKey(addedKey),
-                        (entityState, propertyState) =>
-                        {
-                            if (!IsLocked)
-                            {
-                                if (propertyState != null &&
-                                    !propertyState.GroupStates.Any(
-                                        gp => gp.Property == RelationshipOtherEndProperty))
-                                {
-                                    return;
-                                }
-
-                                //if (!entityState.HasChanges)
-                                //{
-                                //    ItemsAdded.Remove(entityState);
-                                //    ItemsRemoved.Remove(entityState);
-                                //    ItemsChanged.Remove(entityState);
-                                //}
-                                if (!entityState.HasChangedSinceSnapshot)
-                                {
-                                    ItemsAddedSinceSnapshot.Remove(entityState);
-                                    ItemsRemovedSinceSnapshot.Remove(entityState);
-                                    ItemsChangedSinceSnapshot.Remove(entityState);
-                                }
-
-                                if (relatedList.Contains(entityState.Entity) &&
-                                    (entityState.IsNew ||
-                                     (HasRelationshipSourceChanged(entityState, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote) &&
-                                      DoesRelationshipSourceMatchUs(entityState, Property.Relationship.OtherEnd))
-                                     ))
-                                {
-                                    if (relatedList.Contains(entityState.Entity))
-                                    {
-                                        if (!ItemsRemoved.Contains(entityState) &&
-                                            !ItemsAdded.Contains(entityState))
-                                        {
-                                            ItemsAdded.Add(entityState);
-                                        }
-                                    }
-
-                                    //else
-                                    //{
-                                    //    if (ItemsAdded.Contains(entityState))
-                                    //    {
-                                    //        ItemsAdded.Remove(entityState);
-                                    //    }
-                                    //}
-                                }
-                                else
-                                {
-                                    if (ItemsAdded.Contains(entityState))
-                                    {
-                                        ItemsAdded.Remove(entityState);
-                                        //DataTracker.UnregisterInterest(_.Item, GetInterestKey(addedKey));
-                                    }
-                                }
-                            }
-
-                            UpdateSnapshotRelatedListChanged();
-                        });
-                }
-
-                UpdateSnapshotRelatedListChanged();
-            }
+            UpdateSnapshotRelatedListChanged();
         }
 
-        public void UpdateSnapshotRelatedListChanged()
+        public void UpdateSnapshotRelatedListChanged(bool updateAddedAndRemoved = false)
         {
             if (IsLocked || !IsRelationshipCollection)
             {
                 return;
             }
+
+            //updateAddedAndRemoved = false;
             var relatedList = ((IRelatedList)LocalValue);
             if (HasSnapshotValue)
             {
@@ -640,19 +687,21 @@ namespace Iql.Data.Tracking.State
                     var state = DataTracker.GetEntityState(item);
                     if (state != null &&
                         !snapshotList.Contains(item) &&
-                        DoesRelationshipSourceMatchUs(state, Property.Relationship.OtherEnd) && 
+                        DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd) &&
                         (state.IsNew || HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot))
                         )
                     {
                         addedSinceSnapshot.Add(item);
+                        Watch(state);
                     }
 
                     if (state != null && !state.IsNew && !ItemsAdded.Contains(item) && state.HasChanged &&
                         !HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd,
                             ChangeCalculationKind.Remote) &&
-                        DoesRelationshipSourceMatchUs(state, Property.Relationship.OtherEnd))
+                        DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd))
                     {
                         changed.Add(state.Entity);
+                        Watch(state);
                     }
                 }
 
@@ -663,20 +712,25 @@ namespace Iql.Data.Tracking.State
                     if (!relatedList.Contains(item))
                     {
                         removedSinceSnapshot.Add(item);
+                        Watch(state);
                     }
-                    else if (state != null && 
+                    else if (state != null &&
                              HasRelationshipSourceOtherPropertyChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot) &&
                              !HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot) &&
-                             DoesRelationshipSourceMatchUs(state, Property.Relationship.OtherEnd))
+                             DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd))
                     {
                         changedSinceSnapshot.Add(item);
+                        Watch(state);
                     }
                 }
 
                 ChangeList(ItemsChanged, changed);
-                ChangeList(ItemsAddedSinceSnapshot, addedSinceSnapshot);
                 ChangeList(ItemsChangedSinceSnapshot, changedSinceSnapshot);
-                ChangeList(ItemsRemovedSinceSnapshot, removedSinceSnapshot);
+                if (updateAddedAndRemoved)
+                {
+                    ChangeList(ItemsAddedSinceSnapshot, addedSinceSnapshot);
+                    ChangeList(ItemsRemovedSinceSnapshot, removedSinceSnapshot);
+                }
             }
             else
             {
@@ -688,25 +742,30 @@ namespace Iql.Data.Tracking.State
                     if (state != null)
                     {
                         if (!state.IsNew && !ItemsAdded.Contains(item) &&
-                            !HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote) &&
-                            DoesRelationshipSourceMatchUs(state, Property.Relationship.OtherEnd))
+                            DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd))
                         {
-                            if (state.HasChanged)
+                            if (!HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote) && state.HasChanged)
                             {
                                 changed.Add(state);
+                                Watch(state);
                             }
-                            if (state.HasChangedSinceSnapshot)
+                            if (!HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot) && state.HasChangedSinceSnapshot)
                             {
                                 changedSinceSnapshot.Add(state);
+                                Watch(state);
                             }
                         }
                     }
                 }
 
                 ChangeEntityStateList(ItemsChanged, changed);
-                ChangeEntityStateList(ItemsAddedSinceSnapshot, ItemsAdded);
                 ChangeEntityStateList(ItemsChangedSinceSnapshot, changedSinceSnapshot);
-                ChangeEntityStateList(ItemsRemovedSinceSnapshot, ItemsRemoved);
+                if (updateAddedAndRemoved)
+                {
+                    ChangeEntityStateList(ItemsAddedSinceSnapshot, ItemsAdded);
+                    ChangeEntityStateList(ItemsRemovedSinceSnapshot, ItemsRemoved);
+                }
+
                 //if (!DataTracker.HasSnapshot)
                 //{
                 //    ChangeEntityStateList(ItemsAddedSinceSnapshot, ItemsAdded);
@@ -875,36 +934,41 @@ namespace Iql.Data.Tracking.State
 
             _isUpdatingHasChanged = false;
         }
+        private readonly IqlEventEmitterManager _eventEmitterManager = new IqlEventEmitterManager();
         private EventEmitter<ValueChangedEvent<bool>> _canUndoChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> CanUndoChanged => _canUndoChanged = _canUndoChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> CanUndoChanged => _canUndoChanged = _canUndoChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<object>> _snapshotValueChanged;
+
+        public EventEmitter<ValueChangedEvent<object>> SnapshotValueChanged => _snapshotValueChanged = _snapshotValueChanged ?? new EventEmitter<ValueChangedEvent<object>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<bool>> _hasSnapshotValueChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotValueChanged => _hasSnapshotValueChanged = _hasSnapshotValueChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotValueChanged => _hasSnapshotValueChanged = _hasSnapshotValueChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<bool>> _hasNestedChangesChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesChanged => _hasNestedChangesChanged = _hasNestedChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesChanged => _hasNestedChangesChanged = _hasNestedChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<bool>> _hasNestedChangesSinceSnapshotChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged => _hasNestedChangesSinceSnapshotChanged = _hasNestedChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged => _hasNestedChangesSinceSnapshotChanged = _hasNestedChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<bool>> _hasAnyChangesChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesChanged => _hasAnyChangesChanged = _hasAnyChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesChanged => _hasAnyChangesChanged = _hasAnyChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<bool>> _hasAnyChangesSinceSnapshotChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesSinceSnapshotChanged => _hasAnyChangesSinceSnapshotChanged = _hasAnyChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesSinceSnapshotChanged => _hasAnyChangesSinceSnapshotChanged = _hasAnyChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<bool>> _hasChangesSinceSnapshotChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged => _hasChangesSinceSnapshotChanged = _hasChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged => _hasChangesSinceSnapshotChanged = _hasChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<object>> _remoteValueChanged;
 
-        public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged => _remoteValueChanged = _remoteValueChanged ?? new EventEmitter<ValueChangedEvent<object>>();
+        public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged => _remoteValueChanged = _remoteValueChanged ?? new EventEmitter<ValueChangedEvent<object>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<object>> _localValueChanged;
+        private bool _addingSnapshot;
 
-        public EventEmitter<ValueChangedEvent<object>> LocalValueChanged => _localValueChanged = _localValueChanged ?? new EventEmitter<ValueChangedEvent<object>>();
+        public EventEmitter<ValueChangedEvent<object>> LocalValueChanged => _localValueChanged = _localValueChanged ?? new EventEmitter<ValueChangedEvent<object>>().RegisterWith(_eventEmitterManager);
 
         public IPropertyState[] SiblingStates
         {
@@ -1338,8 +1402,9 @@ namespace Iql.Data.Tracking.State
         private bool HasRelationshipSourceChanged(IEntityStateBase entityState, IRelationshipDetail relationshipDetail,
             ChangeCalculationKind kind)
         {
-            var constraints = relationshipDetail.Constraints;
-            for (var i = 0; i < constraints.Length; i++)
+            var constraints = relationshipDetail.Constraints.ToList();
+            constraints.Add(relationshipDetail.Property);
+            for (var i = 0; i < constraints.Count; i++)
             {
                 var constraint = constraints[i];
                 var propertyState = entityState.GetPropertyState(constraint.Name);
@@ -1373,8 +1438,49 @@ namespace Iql.Data.Tracking.State
             return false;
         }
 
-        private bool DoesRelationshipSourceMatchUs(IEntityStateBase entityState, IRelationshipDetail relationshipDetail)
+        private bool SanityCheckRelationshipSource(IEntityStateBase entityState, IRelationshipDetail relationshipDetail)
         {
+            var entityValue = entityState.GetPropertyState(relationshipDetail.Property.PropertyName).LocalValue;
+            if (entityValue == null)
+            {
+                return true;
+            }
+
+            if (DataTracker != null)
+            {
+                var state = DataTracker.GetEntityState(entityValue);
+                if (state.IsNew)
+                {
+                    var constraints = relationshipDetail.Constraints;
+                    foreach (var constraint in constraints)
+                    {
+                        if (!entityState.GetPropertyState(constraint.PropertyName).IsDefaultValue(constraint.TypeDefinition))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    return DoesRelationshipSourceMatch(entityState, relationshipDetail, state.Entity);
+                }
+            }
+
+            return false;
+        }
+
+        private bool DoesRelationshipSourceMatch(
+            IEntityStateBase entityState, 
+            IRelationshipDetail relationshipDetail, 
+            object usEntity = null,
+            CheckValueKind checkRemoteValue = CheckValueKind.Local)
+        {
+            usEntity = usEntity ?? EntityState.Entity;
+            var usEntityState = DataTracker.GetEntityState(usEntity);
+            if (entityState.GetPropertyState(relationshipDetail.Property.PropertyName).LocalValue == usEntity)
+            {
+                return true;
+            }
             var constraints = relationshipDetail.Constraints;
             for (var i = 0; i < constraints.Length; i++)
             {
@@ -1382,9 +1488,25 @@ namespace Iql.Data.Tracking.State
                 var propertyState = entityState.GetPropertyState(constraint.Name);
                 if (propertyState != null)
                 {
+                    object oldValue;
+                    switch (checkRemoteValue)
+                    {
+                        case CheckValueKind.Local:
+                            oldValue = propertyState.LocalValue;
+                            break;
+                        case CheckValueKind.Remote:
+                            oldValue = propertyState.RemoteValue;
+                            break;
+                        case CheckValueKind.Snapshot:
+                            oldValue = propertyState.HasSnapshotValue ? propertyState.SnapshotValue : propertyState.RemoteValue;
+                            break;
+                        default:
+                            oldValue = propertyState.LocalValue;
+                            break;
+                    }
                     if (!propertyState.PropertyChanger.AreEquivalent(
-                        relationshipDetail.OtherSide.Constraints[i].GetValue(EntityState.Entity),
-                        propertyState.LocalValue))
+                        usEntityState.GetPropertyState(relationshipDetail.OtherSide.Constraints[i].PropertyName).LocalValue,
+                        oldValue))
                     {
                         return false;
                     }
@@ -1556,6 +1678,13 @@ namespace Iql.Data.Tracking.State
         {
             return $"{Id}-{key}";
         }
+    }
+
+    internal enum CheckValueKind
+    {
+        Remote,
+        Local,
+        Snapshot
     }
 
     internal enum CheckMode

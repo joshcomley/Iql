@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Iql.Events
@@ -16,9 +17,9 @@ namespace Iql.Events
             Action = action;
         }
     }
-    public class EventEmitterBase<TEvent, TSubscriptionAction> : IEventSubscriberRoot
+    public abstract class EventEmitterBase<TEvent, TSubscriptionAction> : EventEmitterRoot, IEventSubscriberRoot
     {
-        public EventEmitterBase(BackfireMode backfireMode = BackfireMode.None)
+        protected EventEmitterBase(BackfireMode backfireMode = BackfireMode.None)
         {
             BackfireMode = backfireMode;
         }
@@ -136,7 +137,8 @@ namespace Iql.Events
                         OnUnsubscribe.Emit(() => sub);
                         if (key != null)
                         {
-                            SubscriptionsById.Remove(sub.Id);;                        }
+                            SubscriptionsById.Remove(sub.Id);
+;                        }
                     }
                 }
             }

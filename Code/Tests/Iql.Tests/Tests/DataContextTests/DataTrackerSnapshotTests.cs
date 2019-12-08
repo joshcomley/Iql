@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
+using Iql.Data.Crud.Operations;
 using Iql.Data.Tracking;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
@@ -1451,6 +1454,12 @@ namespace Iql.Tests.Tests.DataContextTests
             AssertCollection(clientType1ClientsState.ItemsChangedSinceSnapshot, client4State);
             AssertCollection(clientType1ClientsState.ItemsAddedSinceSnapshot, newClient2State, client7State);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemovedSinceSnapshot.Count);
+            var client2TypeIdState = client2State.GetPropertyState(nameof(Client.TypeId));
+            var client7TypeIdState = client7State.GetPropertyState(nameof(Client.TypeId));
+            client7TypeIdState.HasChangesSinceSnapshotChanged.Subscribe(_ =>
+            {
+                int a = 0;
+            });
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
@@ -2457,6 +2466,66 @@ namespace Iql.Tests.Tests.DataContextTests
         }
 
         [TestMethod]
+        public async Task TestUnwrapNestedSnapshotCollectionPropertyChange()
+        {
+            var dbClientType1 = new ClientType
+            {
+                Id = 1212,
+                Name = "dbClientType1",
+            };
+            var dbClientType2 = new ClientType
+            {
+                Id = 1213,
+                Name = "dbClientType1",
+            };
+            var dbClient1 = new Client
+            {
+                Id = 4545,
+                Name = "dbClient1",
+                Description = "def",
+                TypeId = 1212
+            };
+            AppDbContext.InMemoryDb.ClientTypes.Add(dbClientType1);
+            AppDbContext.InMemoryDb.ClientTypes.Add(dbClientType2);
+            AppDbContext.InMemoryDb.Clients.Add(dbClient1);
+            var clientTypes = await Db.ClientTypes.Expand(_ => _.Clients).ToListAsync();
+            var clientType1 = clientTypes.Single(_ => _.Id == 1212);
+            var clientType1State = Db.GetEntityState(clientType1);
+            var clientType1ClientsState = clientType1State.GetPropertyState(nameof(ClientType.Clients));
+            var clientType2 = clientTypes.Single(_ => _.Id == 1213);
+            var clientType2State = Db.GetEntityState(clientType2);
+            var clientType2ClientsState = clientType2State.GetPropertyState(nameof(ClientType.Clients));
+            var client1 = await Db.Clients.GetWithKeyAsync(4545);
+            var client1State = Db.GetEntityState(client1);
+            var client1TypeIdState = client1State.GetPropertyState(nameof(Client.TypeId));
+
+            var snapshot1 = Db.AddSnapshot();
+            Assert.AreEqual(0, clientType2ClientsState.ItemsAddedSinceSnapshot.Count);
+            Assert.IsFalse(client1TypeIdState.HasChangesSinceSnapshot);
+            //client1.TypeId = 1213;
+            clientType2.Clients.Add(client1);
+            Assert.AreEqual(1, clientType2ClientsState.ItemsAddedSinceSnapshot.Count);
+            Assert.IsTrue(client1TypeIdState.HasChangesSinceSnapshot);
+            var snapshot2 = Db.AddSnapshot();
+            var newClient2 = new Client
+            {
+                Name = "New client 2",
+                TypeId = 1213
+            };
+            Db.Clients.Add(newClient2);
+            var snapshot3 = Db.AddSnapshot();
+            Assert.AreEqual(0, clientType2ClientsState.ItemsAddedSinceSnapshot.Count);
+            Assert.IsFalse(client1TypeIdState.HasChangesSinceSnapshot);
+            //client1.TypeId = 1212;
+            Db.RemoveLastSnapshot();
+            Assert.AreEqual(1, clientType2ClientsState.ItemsAddedSinceSnapshot.Count);
+            Assert.IsFalse(client1TypeIdState.HasChangesSinceSnapshot);
+            Db.RemoveLastSnapshot();
+            Assert.AreEqual(2, clientType2ClientsState.ItemsAddedSinceSnapshot.Count);
+            Assert.IsTrue(client1TypeIdState.HasChangesSinceSnapshot);
+        }
+
+        [TestMethod]
         public async Task TestUnwrapNestedSnapshotCollectionPropertyChanges()
         {
             var dbClientType1 = new ClientType
@@ -2550,6 +2619,34 @@ namespace Iql.Tests.Tests.DataContextTests
             var client6 = await Db.Clients.GetWithKeyAsync(4550);
             var client7 = await Db.Clients.GetWithKeyAsync(4551);
             var client8 = await Db.Clients.GetWithKeyAsync(4552);
+
+            void AssertTypeIdTrue<T>(IEnumerable<T> collection, Func<IPropertyState, bool> action)
+                where T : IEntityStateBase
+            {
+                AssertAllTrue(collection, _ => action(_.GetPropertyState(nameof(Client.TypeId))));
+            }
+
+            void AssertTypeIdChanged<T>(IEnumerable<T> collection)
+                where T : IEntityStateBase
+            {
+                AssertAllTrue(collection, _ => _.IsNew || _.GetPropertyState(nameof(Client.TypeId)).HasChanges);
+            }
+
+            void AssertTypeIdChangedSinceSnapshot<T>(IEnumerable<T> collection)
+                where T : IEntityStateBase
+            {
+                AssertAllTrue(collection, _ => 
+                    _.IsNew || _.GetPropertyState(nameof(Client.TypeId)).HasChangesSinceSnapshot);
+            }
+
+            void AssertCollections()
+            {
+                AssertTypeIdChangedSinceSnapshot(clientType1ClientsState.ItemsAddedSinceSnapshot);
+                AssertTypeIdChangedSinceSnapshot(clientType1ClientsState.ItemsRemovedSinceSnapshot);
+                AssertTypeIdChangedSinceSnapshot(clientType2ClientsState.ItemsAddedSinceSnapshot);
+                AssertTypeIdChangedSinceSnapshot(clientType2ClientsState.ItemsRemovedSinceSnapshot);
+            }
+
             Assert.AreEqual(4, clientType1.Clients.Count);
             Assert.AreEqual(4, clientType2.Clients.Count);
 
@@ -2568,6 +2665,7 @@ namespace Iql.Tests.Tests.DataContextTests
 
             clientType1.Clients.Add(client3);
 
+            AssertCollections();
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(1, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2583,6 +2681,7 @@ namespace Iql.Tests.Tests.DataContextTests
 
             clientType1.Clients.Add(client4);
 
+            AssertCollections();
             Assert.AreEqual(0, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(2, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2598,6 +2697,7 @@ namespace Iql.Tests.Tests.DataContextTests
 
             client1.Name = $"{client1.Name} - changed";
 
+            AssertCollections();
             Assert.AreEqual(1, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(2, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2613,6 +2713,7 @@ namespace Iql.Tests.Tests.DataContextTests
 
             client2.Name = $"{client2.Name} - changed";
 
+            AssertCollections();
             Assert.AreEqual(2, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(2, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2629,6 +2730,7 @@ namespace Iql.Tests.Tests.DataContextTests
             // Snapshot 1
             Db.AddSnapshot();
 
+            AssertCollections();
             Assert.AreEqual(2, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(2, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2646,6 +2748,7 @@ namespace Iql.Tests.Tests.DataContextTests
             var client1NameState = client1State.GetPropertyState(nameof(Client.Name));
             client1.Name = "dbClient1";
 
+            AssertCollections();
             Assert.AreEqual(1, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(2, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2670,6 +2773,7 @@ namespace Iql.Tests.Tests.DataContextTests
             };
             Db.Clients.Add(newClient);
 
+            AssertCollections();
             Assert.AreEqual(2, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(3, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2686,6 +2790,7 @@ namespace Iql.Tests.Tests.DataContextTests
             // Snapshot 3
             Db.AddSnapshot();
 
+            AssertCollections();
             Assert.AreEqual(2, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(3, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2707,6 +2812,7 @@ namespace Iql.Tests.Tests.DataContextTests
             };
             Db.Clients.Add(newClient2);
 
+            AssertCollections();
             Assert.AreEqual(3, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(4, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2723,6 +2829,7 @@ namespace Iql.Tests.Tests.DataContextTests
             // Move client8 from type 2 to type 1
             clientType1.Clients.Add(client8);
 
+            AssertCollections();
             Assert.AreEqual(3, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(5, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2739,6 +2846,7 @@ namespace Iql.Tests.Tests.DataContextTests
             // Snapshot 4
             Db.AddSnapshot();
 
+            AssertCollections();
             Assert.AreEqual(3, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(5, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2759,6 +2867,7 @@ namespace Iql.Tests.Tests.DataContextTests
             };
             Db.Clients.Add(newClient3);
 
+            AssertCollections();
             Assert.AreEqual(3, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(6, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2772,9 +2881,24 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.AreEqual(0, clientType2ClientsState.ItemsAddedSinceSnapshot.Count);
             Assert.AreEqual(0, clientType2ClientsState.ItemsRemovedSinceSnapshot.Count);
 
+            var newClient3State = Db.GetEntityState(newClient3);
+            var newClient3TypeIdState = newClient3State.GetPropertyState(nameof(Client.TypeId));
+            var newClient2State = Db.GetEntityState(newClient2);
+            var newClient2TypeIdState = newClient2State.GetPropertyState(nameof(Client.TypeId));
+            var client8State = Db.GetEntityState(client8);
+            var client8TypeIdState = client8State.GetPropertyState(nameof(Client.TypeId));
+
             // Snapshot 4
             Db.RemoveLastSnapshot();
+            var states = clientType1ClientsState.ItemsAdded.Select(_ => _.GetPropertyState(nameof(Client.TypeId)))
+                .ToArray();
+            var states2 = clientType1ClientsState.ItemsAdded.Select(_ => _.GetPropertyState(nameof(Client.Type)))
+                .ToArray();
 
+            AssertCollections();
+            Assert.IsTrue(clientType1ClientsState.ItemsAddedSinceSnapshot.Contains(newClient3State));
+            Assert.IsTrue(clientType1ClientsState.ItemsAddedSinceSnapshot.Contains(newClient2State));
+            Assert.IsTrue(clientType1ClientsState.ItemsAddedSinceSnapshot.Contains(client8State));
             Assert.AreEqual(3, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(6, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2791,6 +2915,7 @@ namespace Iql.Tests.Tests.DataContextTests
             // Snapshot 3
             Db.RemoveLastSnapshot();
 
+            AssertCollections();
             Assert.AreEqual(3, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(6, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2807,6 +2932,7 @@ namespace Iql.Tests.Tests.DataContextTests
             // Snapshot 2
             Db.RemoveLastSnapshot();
 
+            AssertCollections();
             Assert.AreEqual(3, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(6, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);
@@ -2823,6 +2949,7 @@ namespace Iql.Tests.Tests.DataContextTests
             // Snapshot 1
             Db.RemoveLastSnapshot();
 
+            AssertCollections();
             Assert.AreEqual(3, clientType1ClientsState.ItemsChanged.Count);
             Assert.AreEqual(6, clientType1ClientsState.ItemsAdded.Count);
             Assert.AreEqual(0, clientType1ClientsState.ItemsRemoved.Count);

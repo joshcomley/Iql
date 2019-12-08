@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Iql.Events
 {
@@ -9,6 +10,12 @@ namespace Iql.Events
         public EventEmitter(BackfireMode backfireMode = BackfireMode.None) : base(backfireMode)
         {
 
+        }
+
+        public EventEmitter<TEvent> RegisterWith(IqlEventEmitterManager manager)
+        {
+            manager.Register(this);
+            return this;
         }
 
         public int SubscriptionCount => Subscriptions?.Count ?? 0;
@@ -77,18 +84,13 @@ namespace Iql.Events
                     {
                         continue;
                     }
-                    try
+                    if (IsPaused)
                     {
-                        subscriptionAction.Subscription.RegisterCalled();
-                        subscriptionAction.Action(ev);
-                        if (!subscriptionAction.Subscription.IsWithinAllowedCallCount && !subscriptionAction.Subscription.KeepSubscriptionAfterCallCount)
-                        {
-                            subscriptionAction.Subscription.Unsubscribe();
-                        }
+                        _queuedEmits.Add(() => EmitToSubscription(subscriptionAction, ev));
                     }
-                    catch (Exception e)
+                    else
                     {
-                        ValidateException(e);
+                        EmitToSubscription(subscriptionAction, ev);
                     }
                 }
 
@@ -110,6 +112,24 @@ namespace Iql.Events
             return default(TEvent);
         }
 
+        private static void EmitToSubscription(SubscriptionAction<Action<TEvent>> subscriptionAction, TEvent ev)
+        {
+            try
+            {
+                subscriptionAction.Subscription.RegisterCalled();
+                subscriptionAction.Action(ev);
+                if (!subscriptionAction.Subscription.IsWithinAllowedCallCount &&
+                    !subscriptionAction.Subscription.KeepSubscriptionAfterCallCount)
+                {
+                    subscriptionAction.Subscription.Unsubscribe();
+                }
+            }
+            catch (Exception e)
+            {
+                ValidateException(e);
+            }
+        }
+
         private static void ValidateException(Exception e)
         {
             if (e != null)
@@ -127,9 +147,26 @@ namespace Iql.Events
         object IEventEmitterBase.Emit(Func<object> eventObjectFactory = null, Action<object> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null)
         {
             return Emit(
-                eventObjectFactory == null ? (Func<TEvent>) null : () => { return (TEvent) eventObjectFactory(); },
-                afterEvent == null ? (Action<TEvent>) null : _ => { afterEvent(_); },
+                eventObjectFactory == null ? (Func<TEvent>)null : () => { return (TEvent)eventObjectFactory(); },
+                afterEvent == null ? (Action<TEvent>)null : _ => { afterEvent(_); },
                 subscriptions);
+        }
+
+        private readonly List<Action> _queuedEmits = new List<Action>();
+        public override Task ResumeInternalAsync()
+        {
+            ResumeInternal();
+            return Task.FromResult<object>(null);
+        }
+
+        public override void ResumeInternal()
+        {
+            foreach (var emit in _queuedEmits)
+            {
+                emit();
+            }
+
+            _queuedEmits.Clear();
         }
     }
 }

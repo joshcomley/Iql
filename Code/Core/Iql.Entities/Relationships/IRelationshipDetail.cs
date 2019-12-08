@@ -16,5 +16,6 @@ namespace Iql.Entities.Relationships
         CompositeKey GetCompositeKey(object entityOrCompositeKey, bool inverse = false);
         void MarkDirty(object entity);
         IProperty[] Constraints { get; }
+        IProperty[] AllProperties { get; }
     }
 }

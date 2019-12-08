@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Extensions;
+using Iql.Data.Lists;
 using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Events;
+using Iql.Extensions;
 
 namespace Iql.Data.Tracking
 {
@@ -20,11 +22,11 @@ namespace Iql.Data.Tracking
         }
         private bool _entitiesChangedDelayedInitialized;
         private Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>> _entitiesChangedDelayed;
-        private Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>> _entitiesChanged { get { if(!_entitiesChangedDelayedInitialized) { _entitiesChangedDelayedInitialized = true; _entitiesChangedDelayed =             new Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>>(); } return _entitiesChangedDelayed; } set { _entitiesChangedDelayedInitialized = true; _entitiesChangedDelayed = value; } }
+        private Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>> _entitiesChanged { get { if (!_entitiesChangedDelayedInitialized) { _entitiesChangedDelayedInitialized = true; _entitiesChangedDelayed = new Dictionary<IEntityStateBase, Tuple<EntityStatus, EntityStatus>>(); } return _entitiesChangedDelayed; } set { _entitiesChangedDelayedInitialized = true; _entitiesChangedDelayed = value; } }
         private bool _propertiesChangedDelayedInitialized;
         private Dictionary<IPropertyState, Tuple<object, object>> _propertiesChangedDelayed;
 
-        private Dictionary<IPropertyState, Tuple<object, object>> _propertiesChanged { get { if(!_propertiesChangedDelayedInitialized) { _propertiesChangedDelayedInitialized = true; _propertiesChangedDelayed = new Dictionary<IPropertyState, Tuple<object, object>>(); } return _propertiesChangedDelayed; } set { _propertiesChangedDelayedInitialized = true; _propertiesChangedDelayed = value; } }
+        private Dictionary<IPropertyState, Tuple<object, object>> _propertiesChanged { get { if (!_propertiesChangedDelayedInitialized) { _propertiesChangedDelayedInitialized = true; _propertiesChangedDelayed = new Dictionary<IPropertyState, Tuple<object, object>>(); } return _propertiesChangedDelayed; } set { _propertiesChangedDelayedInitialized = true; _propertiesChangedDelayed = value; } }
         private bool _hasChanges;
         private int _propertiesChangedCount = 0;
         private EventEmitter<DataTrackerState> _changed;
@@ -328,7 +330,7 @@ namespace Iql.Data.Tracking
         {
             var propertiesChanged = state.GetPropertiesChanged();
             var entitiesChanged = state.GetEntitiesChanged(false);
-            MergeWith(true, entitiesChanged, propertiesChanged);
+            MergeWith(true, entitiesChanged, propertiesChanged, true);
         }
 
         private void MergeWithInternal(TrackerSnapshot snapshot, bool add)
@@ -336,7 +338,11 @@ namespace Iql.Data.Tracking
             MergeWith(add, snapshot.Entities, snapshot.Values);
         }
 
-        private void MergeWith(bool add, Dictionary<IEntityStateBase, EntitySnapshot> entitiesChanged, Dictionary<IPropertyState, PropertySnapshot> propertiesChanged)
+        private void MergeWith(
+            bool add,
+            Dictionary<IEntityStateBase, EntitySnapshot> entitiesChanged,
+            Dictionary<IPropertyState, PropertySnapshot> propertiesChanged,
+            bool cloneRelationshipCollectionState = false)
         {
             foreach (var snapshotEntity in entitiesChanged)
             {
@@ -360,6 +366,10 @@ namespace Iql.Data.Tracking
 
             foreach (var snapshotProperty in propertiesChanged)
             {
+                if (snapshotProperty.Key.IsRelationshipCollection)
+                {
+                    continue;
+                }
                 if (_propertiesChanged.ContainsKey(snapshotProperty.Key))
                 {
                     _propertiesChanged.Remove(snapshotProperty.Key);
@@ -368,6 +378,58 @@ namespace Iql.Data.Tracking
                 if (add)
                 {
                     snapshotProperty.Key.SetSnapshotValue(snapshotProperty.Value.PreviousValue);
+                    //if (_propertiesChanged.ContainsKey(snapshotProperty.Key))
+                    //{
+                    //    _propertiesChanged.Remove(snapshotProperty.Key);
+                    //}
+                    //_propertiesChanged.Add(
+                    //    snapshotProperty.Key,
+                    //    new Tuple<object, object>(
+                    //        snapshotProperty.Value.PreviousValue,
+                    //        snapshotProperty.Value.CurrentValue
+                    //    )
+                    //);
+                }
+            }
+            foreach (var snapshotProperty in propertiesChanged)
+            {
+                if (!snapshotProperty.Key.IsRelationshipCollection)
+                {
+                    continue;
+                }
+                if (_propertiesChanged.ContainsKey(snapshotProperty.Key))
+                {
+                    _propertiesChanged.Remove(snapshotProperty.Key);
+                }
+
+                if (add)
+                {
+                    if (!cloneRelationshipCollectionState)
+                    {
+                        snapshotProperty.Key.SetSnapshotValue(snapshotProperty.Value.PreviousValue);
+                    }
+                    else
+                    {
+                        var all = new List<object>();
+                        var list = (IRelatedList)snapshotProperty.Key.LocalValue;
+                        if (list != null)
+                        {
+                            var added = snapshotProperty.Key.ItemsAdded.Select(_ => _.Entity).ToArray();
+                            foreach (var item in list)
+                            {
+                                if (!added.Contains(item))
+                                {
+                                    all.Add(item);
+                                }
+                            }
+                        }
+                        all.AddRange(snapshotProperty.Key.ItemsRemoved.Select(_ => _.Entity));
+                        snapshotProperty.Key.SetSnapshotValue(all);
+                    }
+                    //if (_propertiesChanged.ContainsKey(snapshotProperty.Key))
+                    //{
+                    //    _propertiesChanged.Remove(snapshotProperty.Key);
+                    //}
                     //_propertiesChanged.Add(
                     //    snapshotProperty.Key,
                     //    new Tuple<object, object>(

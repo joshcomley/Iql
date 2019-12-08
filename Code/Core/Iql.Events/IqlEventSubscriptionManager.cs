@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Iql.Events
 {
-    public class IqlEventManager : IDisposable
+    public class IqlEventSubscriberManager : IDisposable
     {
         private bool _subscriptionsDelayedInitialized;
         private List<EventSubscription> _subscriptionsDelayed;
@@ -60,6 +60,20 @@ namespace Iql.Events
                     _subscriptions[i].Unsubscribe();
                 }
             }
+        }
+
+        public EventSubscription[] SubscribeAll(IEnumerable<IEventSubscriberBase> subscribers, Action<IEventSubscriberBase, object> action, string key = null,
+            int? allowedCount = null)
+        {
+            var subscriptions = new List<EventSubscription>();
+            foreach (var subscriber in subscribers)
+            {
+                var sub = subscriber.Subscribe(_ => { action(subscriber, _); },
+                    key, allowedCount);
+                _subscriptions.Add(sub);
+                subscriptions.Add(sub);
+            }
+            return subscriptions.ToArray();
         }
 
         public EventSubscription Subscribe<T>(IEventSubscriber<T> subscriber, Action<T> action, string key = null, int? allowedCount = null)

@@ -19,11 +19,19 @@ namespace Iql.Events
         EventSubscription SubscribeOnceAsync(Func<TEvent, Task> action, string key = null);
     }
 
-    public interface IAsyncEventEmitterBase
+    public interface IEventEmitterRoot
+    {
+        bool IsPaused { get; }
+        string Key { get; set; }
+        void Pause();
+        void Resume();
+        Task ResumeAsync();
+    }
+    public interface IAsyncEventEmitterBase : IEventEmitterRoot
     {
         Task<object> EmitAsync(Func<object> eventObjectFactory = null, Func<object, Task> afterEventAsync = null, IEnumerable<EventSubscription> subscriptions = null);
     }
-    public interface IEventEmitterBase
+    public interface IEventEmitterBase : IEventEmitterRoot
     {
         object Emit(Func<object> eventObjectFactory = null, Action<object> afterEvent = null, IEnumerable<EventSubscription> subscriptions = null);
     }
