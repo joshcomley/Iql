@@ -13,32 +13,38 @@ namespace Iql.Data.Lists
         where TSource : class
     {
         public RelatedList(
-            TSource owner = null, 
-            string property = null, 
+            TSource owner = null,
+            string property = null,
             IEnumerable<TTarget> source = null)
         {
             Owner = owner;
             PropertyName = property;
             this.Initialize(source);
-            Change.Subscribe(e =>
-            {
-                switch (e.Kind)
-                {
-                    case ObservableListChangeKind.Adding:
-                        EmitRelatedListEvent(e, null, RelatedListChangeKind.Adding);
-                        break;
-                    case ObservableListChangeKind.Added:
-                        EmitRelatedListEvent(e, null, RelatedListChangeKind.Added);
-                        break;
-                    case ObservableListChangeKind.Removed:
-                        EmitRelatedListEvent(e, null, RelatedListChangeKind.Removed);
-                        break;
-                    case ObservableListChangeKind.Removing:
-                        EmitRelatedListEvent(e, null, RelatedListChangeKind.Removing);
-                        break;
-                }
-            });
         }
+
+        protected override ObservableListChangeEvent<TTarget> EmitEvent(TTarget item, ObservableListChangeKind kind, Func<ObservableListChangeEvent<TTarget>> eventObjectFactory)
+        {
+            var ev = base.EmitEvent(item, kind, eventObjectFactory);
+            ObservableListChangeEvent<TTarget> evUs = null;
+            switch (kind)
+            {
+                case ObservableListChangeKind.Adding:
+                    evUs = EmitRelatedListEvent(eventObjectFactory, null, RelatedListChangeKind.Adding);
+                    break;
+                case ObservableListChangeKind.Added:
+                    evUs = EmitRelatedListEvent(eventObjectFactory, null, RelatedListChangeKind.Added);
+                    break;
+                case ObservableListChangeKind.Removed:
+                    evUs = EmitRelatedListEvent(eventObjectFactory, null, RelatedListChangeKind.Removed);
+                    break;
+                case ObservableListChangeKind.Removing:
+                    evUs = EmitRelatedListEvent(eventObjectFactory, null, RelatedListChangeKind.Removing);
+                    break;
+            }
+
+            return ev ?? evUs;
+        }
+
         private EventEmitter<RelatedListChangeEvent<TSource, TTarget>> _relatedListChange;
 
         public EventEmitter<RelatedListChangeEvent<TSource, TTarget>> RelatedListChange => _relatedListChange = _relatedListChange ?? new EventEmitter<RelatedListChangeEvent<TSource, TTarget>>();
@@ -67,9 +73,16 @@ namespace Iql.Data.Lists
             EmitRelatedListEvent(null, key, RelatedListChangeKind.Removed);
         }
 
-        private void EmitRelatedListEvent(ObservableListChangeEvent<TTarget> observableListChangeEvent, CompositeKey itemKey, RelatedListChangeKind kind)
+        private ObservableListChangeEvent<TTarget> EmitRelatedListEvent(Func<ObservableListChangeEvent<TTarget>> observableListChangeEvent, CompositeKey itemKey, RelatedListChangeKind kind)
         {
-            RelatedListChange.Emit(() => new RelatedListChangeEvent<TSource, TTarget>(observableListChangeEvent, Owner, itemKey, kind, this));
+            if (_relatedListChange != null)
+            {
+                ObservableListChangeEvent<TTarget> ev = null;
+                RelatedListChange.Emit(() => new RelatedListChangeEvent<TSource, TTarget>(ev = (observableListChangeEvent == null ? null : observableListChangeEvent()), Owner, itemKey, kind, this));
+                return ev;
+            }
+
+            return null;
         }
     }
 }

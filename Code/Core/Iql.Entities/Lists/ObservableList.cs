@@ -10,7 +10,7 @@ namespace Iql.Entities.Lists
     {
         private bool _rootListDelayedInitialized;
         private List<T> _rootListDelayed;
-        private List<T> _rootList { get { if(!_rootListDelayedInitialized) { _rootListDelayedInitialized = true; _rootListDelayed = new List<T>(); } return _rootListDelayed; } set { _rootListDelayedInitialized = true; _rootListDelayed = value; } }
+        private List<T> _rootList { get { if (!_rootListDelayedInitialized) { _rootListDelayedInitialized = true; _rootListDelayed = new List<T>(); } return _rootListDelayed; } set { _rootListDelayedInitialized = true; _rootListDelayed = value; } }
         private EventEmitter<ObservableListChangeEvent<T>> _change;
 
         public EventEmitter<ObservableListChangeEvent<T>> Change => _change = _change ?? new EventEmitter<ObservableListChangeEvent<T>>();
@@ -42,12 +42,12 @@ namespace Iql.Entities.Lists
             var eventResult = Emit((T)item, ObservableListChangeKind.Adding);
             if (eventResult == null || !eventResult.Disallow)
             {
-                item = (T) (eventResult?.Item ?? item);
+                item = (T)(eventResult?.Item ?? item);
                 _rootList.Add((T)item);
                 var addedEventResult = Emit((T)item, ObservableListChangeKind.Added);
                 if (addedEventResult != null && addedEventResult.Disallow)
                 {
-                    _rootList.Remove((T) item);
+                    _rootList.Remove((T)item);
                     return default(T);
                 }
                 return item;
@@ -175,9 +175,24 @@ namespace Iql.Entities.Lists
             set { _rootList[index] = value; }
         }
 
-        private ObservableListChangeEvent<T> Emit(T item, ObservableListChangeKind kind)
+        protected ObservableListChangeEvent<T> Emit(T item, ObservableListChangeKind kind)
         {
-            return Change.Emit(() => new ObservableListChangeEvent<T>(item, kind, this));
+            return EmitEvent(item, kind, EventObjectFactory(item, kind));
+        }
+
+        protected virtual ObservableListChangeEvent<T> EmitEvent(T item, ObservableListChangeKind kind, Func<ObservableListChangeEvent<T>> eventObjectFactory)
+        {
+            if (_change == null)
+            {
+                return null;
+            }
+            return Change.Emit(eventObjectFactory);
+        }
+
+        protected Func<ObservableListChangeEvent<T>> EventObjectFactory(T item, ObservableListChangeKind kind)
+        {
+            ObservableListChangeEvent<T> ev = null;
+            return () => ev = ev ?? new ObservableListChangeEvent<T>(item, kind, this);
         }
     }
 }

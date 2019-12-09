@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Context;
@@ -22,12 +20,140 @@ namespace Iql.Data.Tracking.State
     public class EntityState<T> : IEntityState<T>
         where T : class
     {
-        private bool _markedForDeletion;
+        private IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> _abandonEvents;
         private bool _attachedToTracker = true;
-        private bool _pendingInsert;
+        private EventEmitter<ValueChangedEvent<bool>> _attachedToTrackerChanged;
+        private List<CascadeDeletion> _cascadeDeletedBy;
+        private IqlEventSubscriberManager _eventSubscriptionManager;
+        private bool _hasChanged;
+        private EventEmitter<ValueChangedEvent<bool>> _hasChangedChanged;
+        private bool _hasChangedSinceSnapshot;
+        private EventEmitter<ValueChangedEvent<bool>> _hasChangedSinceSnapshotChanged;
+        private bool _isAttachedToGraph;
+        private EventEmitter<ValueChangedEvent<bool>> _isAttachedToGraphChanged;
+
+        private bool _isLocked;
         private bool _isNew;
-        private CompositeKey _remoteKey;
+        private EventEmitter<ValueChangedEvent<bool>> _isNewChanged;
         private CompositeKey _localKey;
+        private bool _markedForCascadeDeletion;
+        private bool _markedForDeletion;
+        private EventEmitter<MarkedForDeletionChangeEvent> _markedForDeletionChanged;
+        private Dictionary<Guid, IPropertyState[]> _operationsDelayed;
+        private bool _operationsDelayedInitialized;
+        private bool _pendingInsert;
+        private EventEmitter<ValueChangedEvent<bool>> _pendingInsertChanged;
+        private Dictionary<string, IPropertyState> _propertyStateByNameDelayed;
+        private bool _propertyStateByNameDelayedInitialized;
+        private CompositeKey _remoteKey;
+        private IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> _saveEvents;
+        private bool _settingStatus;
+        private IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> _statefulSaveEvents;
+        private EntityStatus _status = EntityStatus.Unattached;
+        private EventEmitter<ValueChangedEvent<EntityStatus>> _statusChanged;
+        private EventEmitter<ValueChangedEvent<bool>> _statusHasChangedChanged;
+        private EventEmitter<ValueChangedEvent<bool>> _statusHasChangedSinceSnapshotChanged;
+        private TrackingSet<T> _trackingSet;
+
+        public EntityState(
+            DataTracker dataTracker,
+            T entity,
+            Type entityType,
+            IEntityConfiguration entityConfiguration,
+            bool isNew)
+        {
+            Id = Guid.NewGuid();
+            DataTracker = dataTracker;
+            if (DataTracker != null)
+            {
+                EventSubscriberManager.Subscribe(DataTracker.HasSnapshotChanged, _ => { CheckHasChanged(); });
+            }
+
+            Entity = entity;
+            EntityType = entityType;
+            EntityConfiguration = entityConfiguration;
+            Properties = new List<IPropertyState>();
+            for (var i = 0; i < EntityConfiguration.Properties.Count; i++)
+            {
+                var property = EntityConfiguration.Properties[i];
+                var propertyState = new PropertyState(property, this);
+                Properties.Add(propertyState);
+                propertyState.HasChangesChanged.Subscribe(_ => CheckHasChanged());
+                propertyState.HasChangesSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
+                propertyState.HasSnapshotValueChanged.Subscribe(_ => CheckHasChanged());
+            }
+
+            UpdateHasChanges();
+            LocalKey = entityConfiguration.GetCompositeKey(entity);
+            if (isNew)
+            {
+                PendingInsert = true;
+            }
+
+            IsNew = isNew;
+            SnapshotStatus = Status;
+            MonitorSaveEvents();
+            CanNotifyStatusChange = true;
+            NotifyStatusChange();
+        }
+
+        private TrackingSet<T> TrackingSet
+        {
+            get
+            {
+                if (_trackingSet == null && DataTracker != null)
+                {
+                    _trackingSet = DataTracker.TrackingSet<T>();
+                }
+
+                return _trackingSet;
+            }
+        }
+
+        private bool CanNotifyStatusChange { get; }
+
+        private Dictionary<Guid, IPropertyState[]> _operations
+        {
+            get
+            {
+                if (!_operationsDelayedInitialized)
+                {
+                    _operationsDelayedInitialized = true;
+                    _operationsDelayed = new Dictionary<Guid, IPropertyState[]>();
+                }
+
+                return _operationsDelayed;
+            }
+            set
+            {
+                _operationsDelayedInitialized = true;
+                _operationsDelayed = value;
+            }
+        }
+
+        private IqlEventSubscriberManager EventSubscriberManager => _eventSubscriptionManager =
+            _eventSubscriptionManager ?? new IqlEventSubscriberManager();
+
+        private List<IPropertyState> Properties { get; }
+
+        private Dictionary<string, IPropertyState> _propertyStateByName
+        {
+            get
+            {
+                if (!_propertyStateByNameDelayedInitialized)
+                {
+                    _propertyStateByNameDelayedInitialized = true;
+                    _propertyStateByNameDelayed = new Dictionary<string, IPropertyState>();
+                }
+
+                return _propertyStateByNameDelayed;
+            }
+            set
+            {
+                _propertyStateByNameDelayedInitialized = true;
+                _propertyStateByNameDelayed = value;
+            }
+        }
 
         // TODO: This somehow needs to be maintained
         public bool AttachedToTracker
@@ -42,17 +168,19 @@ namespace Iql.Data.Tracking.State
                     DataTracker.NotifyAttachedToTrackerChanged(this, value);
                     AttachedToTrackerChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
                 }
+
                 UpdateStatus();
             }
         }
 
-        private bool _isLocked = false;
         public ILockable Parent => DataTracker;
         public bool IsLocked => _isLocked || Parent == null || Parent.IsLocked;
+
         public void Lock()
         {
             _isLocked = true;
         }
+
         public void Unlock()
         {
             _isLocked = false;
@@ -62,7 +190,7 @@ namespace Iql.Data.Tracking.State
         {
             HasChanged = IsNew || Properties.Any(_ => _.HasChanges);
             var hasSnapshots = DataTracker != null && DataTracker.HasSnapshot;
-            HasChangedSinceSnapshot = (!hasSnapshots && HasChanged) || Properties.Any(_ => _.HasChangesSinceSnapshot);
+            HasChangedSinceSnapshot = !hasSnapshots && HasChanged || Properties.Any(_ => _.HasChangesSinceSnapshot);
         }
 
         public bool HasChanged
@@ -100,14 +228,15 @@ namespace Iql.Data.Tracking.State
                 }
             }
         }
-        private EventEmitter<ValueChangedEvent<bool>> _hasChangedChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged => _hasChangedChanged = _hasChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _hasChangedSinceSnapshotChanged;
-        public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged => _hasChangedSinceSnapshotChanged = _hasChangedSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _attachedToTrackerChanged;
+        public EventEmitter<ValueChangedEvent<bool>> HasChangedChanged => _hasChangedChanged =
+            _hasChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
-        public EventEmitter<ValueChangedEvent<bool>> AttachedToTrackerChanged => _attachedToTrackerChanged = _attachedToTrackerChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged => _hasChangedSinceSnapshotChanged =
+            _hasChangedSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+
+        public EventEmitter<ValueChangedEvent<bool>> AttachedToTrackerChanged => _attachedToTrackerChanged =
+            _attachedToTrackerChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
         public bool PendingInsert
         {
@@ -122,9 +251,9 @@ namespace Iql.Data.Tracking.State
                 }
             }
         }
-        private EventEmitter<ValueChangedEvent<bool>> _pendingInsertChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> PendingInsertChanged => _pendingInsertChanged = _pendingInsertChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> PendingInsertChanged => _pendingInsertChanged =
+            _pendingInsertChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
         public bool IsAttachedToGraph
         {
@@ -141,13 +270,9 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        private void UpdatePendingInsert()
-        {
-            PendingInsert = IsNew && !MarkedForAnyDeletion;
-        }
-        private EventEmitter<ValueChangedEvent<bool>> _isAttachedToGraphChanged;
+        public EventEmitter<ValueChangedEvent<bool>> IsAttachedToGraphChanged => _isAttachedToGraphChanged =
+            _isAttachedToGraphChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
-        public EventEmitter<ValueChangedEvent<bool>> IsAttachedToGraphChanged => _isAttachedToGraphChanged = _isAttachedToGraphChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
         public Guid Id { get; set; }
 
         //private CompositeKey _remoteKey;
@@ -164,6 +289,7 @@ namespace Iql.Data.Tracking.State
                     //_remoteKey = null;
                     MarkedForDeletion = false;
                 }
+
                 if (old != value)
                 {
                     IsNewChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
@@ -179,57 +305,12 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        private void UpdateStatus()
-        {
-            if (_settingStatus)
-            {
-                return;
-            }
+        public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged => _markedForDeletionChanged =
+            _markedForDeletionChanged ?? new EventEmitter<MarkedForDeletionChangeEvent>();
 
-            _settingStatus = true;
-            var status = EntityStatus.Unattached;
-            if (AttachedToTracker)
-            {
-                if (IsNew)
-                {
-                    if (PendingInsert)
-                    {
-                        status = EntityStatus.New;
-                    }
-                    else
-                    {
-                        status = EntityStatus.NewAndDeleted;
-                    }
-                }
-                else
-                {
-                    if (MarkedForDeletion)
-                    {
-                        status = EntityStatus.ExistingAndPendingDelete;
-                    }
-                    else if (AttachedToTracker)
-                    {
-                        status = EntityStatus.Existing;
-                    }
-                    else
-                    {
-                        status = EntityStatus.ExistingAndDeleted;
-                    }
-                }
-            }
-            else if (!IsNew)
-            {
-                status = EntityStatus.ExistingAndDeleted;
-            }
+        public EventEmitter<ValueChangedEvent<bool>> IsNewChanged =>
+            _isNewChanged = _isNewChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
-            Status = status;
-            _settingStatus = false;
-        }
-        private EventEmitter<MarkedForDeletionChangeEvent> _markedForDeletionChanged;
-
-        public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged => _markedForDeletionChanged = _markedForDeletionChanged ?? new EventEmitter<MarkedForDeletionChangeEvent>();
-        private EventEmitter<ValueChangedEvent<bool>> _isNewChanged;
-        public EventEmitter<ValueChangedEvent<bool>> IsNewChanged => _isNewChanged = _isNewChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
         public string StateKey { get; set; }
 
 
@@ -245,6 +326,7 @@ namespace Iql.Data.Tracking.State
                     MarkedForDeletionChanged.Emit(() => new MarkedForDeletionChangeEvent(this, value));
                     UpdatePendingInsert();
                 }
+
                 UpdateStatus();
             }
         }
@@ -285,8 +367,10 @@ namespace Iql.Data.Tracking.State
                 {
                     continue;
                 }
+
                 state.AbandonChanges();
             }
+
             MarkedForDeletion = false;
             MarkedForCascadeDeletion = false;
             AbandonEvents.EmitCompletedAsync(() => ev);
@@ -342,6 +426,7 @@ namespace Iql.Data.Tracking.State
                 var propertyState = Properties[i];
                 propertyState.HardReset();
             }
+
             //_remoteKey = EntityConfiguration.GetCompositeKey(Entity);
         }
 
@@ -351,6 +436,7 @@ namespace Iql.Data.Tracking.State
             {
                 IsNew = false;
             }
+
             for (var i = 0; i < Properties.Count; i++)
             {
                 var propertyState = Properties[i];
@@ -374,7 +460,8 @@ namespace Iql.Data.Tracking.State
 
         public CompositeKey KeyBeforeChanges()
         {
-            var compositeKey = new CompositeKey(EntityConfiguration.TypeName, EntityConfiguration.Key.Properties.Length);
+            var compositeKey =
+                new CompositeKey(EntityConfiguration.TypeName, EntityConfiguration.Key.Properties.Length);
             for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
             {
                 var property = EntityConfiguration.Key.Properties[i];
@@ -383,12 +470,14 @@ namespace Iql.Data.Tracking.State
                     GetPropertyState(property.Name).RemoteValue,
                     property.TypeDefinition);
             }
+
             return compositeKey;
         }
 
         public Guid? PersistenceKey { get; set; }
-        private List<CascadeDeletion> _cascadeDeletedBy;
-        public List<CascadeDeletion> CascadeDeletedBy => _cascadeDeletedBy = _cascadeDeletedBy ?? new List<CascadeDeletion>();
+
+        public List<CascadeDeletion> CascadeDeletedBy =>
+            _cascadeDeletedBy = _cascadeDeletedBy ?? new List<CascadeDeletion>();
 
         //private readonly AsyncEventEmitter<IqlEntityEvent<T>> _savingEmitter = new AsyncEventEmitter<IqlEntityEvent<T>>();
         //public IAsyncEventSubscriber<IqlEntityEvent<T>> SavingAsync => _savingEmitter;
@@ -428,95 +517,42 @@ namespace Iql.Data.Tracking.State
 
         public bool Floating { get; set; }
         public DataTracker DataTracker { get; }
-        private IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> _statefulSaveEvents;
-        public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> StatefulSaveEvents => _statefulSaveEvents = _statefulSaveEvents ?? new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
+
+        public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> StatefulSaveEvents => _statefulSaveEvents =
+            _statefulSaveEvents ?? new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
+
         IOperationEventsBase IStateful.StatefulSaveEvents => StatefulSaveEvents;
-        private IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> _saveEvents;
-        public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> SaveEvents => _saveEvents = _saveEvents ?? new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
+
+        public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> SaveEvents => _saveEvents =
+            _saveEvents ?? new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
+
         IOperationEventsBase IStateful.SaveEvents => SaveEvents;
-        private IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> _abandonEvents;
-        public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents => _abandonEvents = _abandonEvents ?? new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
+
+        public IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents => _abandonEvents =
+            _abandonEvents ?? new OperationEvents<AbandonChangeEvent, AbandonChangeEvent>();
+
         IOperationEventsBase IStateful.AbandonEvents => AbandonEvents;
         public T Entity { get; }
         object IEntityStateBase.Entity => Entity;
+
         public Type EntityType { get; }
+
         //public IDataContext DataContext => DataTracker.DataContext;
         public IEntityConfiguration EntityConfiguration { get; }
 
-        public EntityState(
-            DataTracker dataTracker,
-            T entity,
-            Type entityType,
-            IEntityConfiguration entityConfiguration,
-            bool isNew)
-        {
-            Id = Guid.NewGuid();
-            DataTracker = dataTracker;
-            if (DataTracker != null)
-            {
-                EventSubscriberManager.Subscribe(DataTracker.HasSnapshotChanged, _ =>
-                {
-                    CheckHasChanged();
-                });
-            }
-            Entity = entity;
-            EntityType = entityType;
-            EntityConfiguration = entityConfiguration;
-            Properties = new List<IPropertyState>();
-            for (var i = 0; i < EntityConfiguration.Properties.Count; i++)
-            {
-                var property = EntityConfiguration.Properties[i];
-                var propertyState = new PropertyState(property, this);
-                Properties.Add(propertyState);
-                propertyState.HasChangesChanged.Subscribe(_ => CheckHasChanged());
-                propertyState.HasChangesSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
-                propertyState.HasSnapshotValueChanged.Subscribe(_ => CheckHasChanged());
-                ;
-            }
+        public EventEmitter<ValueChangedEvent<EntityStatus>> StatusChanged =>
+            _statusChanged = _statusChanged ?? new EventEmitter<ValueChangedEvent<EntityStatus>>();
 
-            UpdateHasChanges();
-            LocalKey = entityConfiguration.GetCompositeKey(entity);
-            if (isNew)
-            {
-                PendingInsert = true;
-            }
-            IsNew = isNew;
-            _snapshotStatus = Status;
-            MonitorSaveEvents();
-            CanNotifyStatusChange = true;
-            NotifyStatusChange();
-        }
-        private EventEmitter<ValueChangedEvent<EntityStatus>> _statusChanged;
+        public EventEmitter<ValueChangedEvent<bool>> StatusHasChangedChanged => _statusHasChangedChanged =
+            _statusHasChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
-        public EventEmitter<ValueChangedEvent<EntityStatus>> StatusChanged => _statusChanged = _statusChanged ?? new EventEmitter<ValueChangedEvent<EntityStatus>>();
-        private EventEmitter<ValueChangedEvent<bool>> _statusHasChangedChanged;
-        public EventEmitter<ValueChangedEvent<bool>> StatusHasChangedChanged => _statusHasChangedChanged = _statusHasChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _statusHasChangedSinceSnapshotChanged;
-        public EventEmitter<ValueChangedEvent<bool>> StatusHasChangedSinceSnapshotChanged => _statusHasChangedSinceSnapshotChanged = _statusHasChangedSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool>> StatusHasChangedSinceSnapshotChanged =>
+            _statusHasChangedSinceSnapshotChanged =
+                _statusHasChangedSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
 
-        public bool StatusHasChanged
-        {
-            get { return _statusHasChanged; }
-            set { _statusHasChanged = value; }
-        }
+        public bool StatusHasChanged { get; set; }
 
-        public bool StatusHasChangedSinceSnapshot
-        {
-            get { return _statusHasChangedSinceSnapshot; }
-            set { _statusHasChangedSinceSnapshot = value; }
-        }
-
-        private TrackingSet<T> TrackingSet
-        {
-            get
-            {
-                if (_trackingSet == null && DataTracker != null)
-                {
-                    _trackingSet = DataTracker.TrackingSet<T>();
-                }
-                return _trackingSet;
-            }
-        }
+        public bool StatusHasChangedSinceSnapshot { get; set; }
 
         public EntityStatus Status
         {
@@ -542,6 +578,7 @@ namespace Iql.Data.Tracking.State
                             {
                                 TrackingSet.AddEntity(Entity);
                             }
+
                             break;
                         case EntityStatus.NewAndDeleted:
                             AttachedToTracker = true;
@@ -574,8 +611,10 @@ namespace Iql.Data.Tracking.State
                             {
                                 TrackingSet.UntrackEntity(Entity);
                             }
+
                             break;
                     }
+
                     _settingStatus = false;
                 }
 
@@ -590,6 +629,164 @@ namespace Iql.Data.Tracking.State
 
                 UpdateStatusHasChanged();
             }
+        }
+
+        public EntityStatus SnapshotStatus { get; protected set; } = EntityStatus.Unattached;
+
+        public void UpdateHasChanges()
+        {
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var propertyState = Properties[i];
+                if (propertyState.Property.TypeDefinition.Kind == IqlType.Collection)
+                {
+                    continue;
+                }
+
+                propertyState.UpdateHasChanged(true);
+            }
+
+            for (var i = 0; i < Properties.Count; i++)
+            {
+                var propertyState = Properties[i];
+                if (propertyState.Property.TypeDefinition.Kind != IqlType.Collection)
+                {
+                    continue;
+                }
+
+                propertyState.UpdateHasChanged(true);
+            }
+        }
+
+        public IPropertyState[] GetChangedProperties(IProperty[] properties = null)
+        {
+            var propertyStates = PropertyStates.Where(ps =>
+                    ps.HasChanges && !ps.Property.Kind.HasFlag(IqlPropertyKind.Relationship) &&
+                    (properties == null || properties.Contains(ps.Property)))
+                .ToArray();
+            return propertyStates;
+        }
+
+        object IEntityStateBase.EntityBeforeChanges()
+        {
+            return EntityBeforeChanges();
+        }
+
+        public IPropertyState[] PropertyStates => Properties.ToArray();
+
+        public IPropertyState GetPropertyState(string name)
+        {
+            if (!_propertyStateByName.ContainsKey(name))
+            {
+                var state = Properties.SingleOrDefault(p => p.Property.PropertyName == name);
+                if (state != null)
+                {
+                    _propertyStateByName.Add(name, state);
+                    return state;
+                }
+
+                return null;
+            }
+
+            return _propertyStateByName[name];
+        }
+
+        public IPropertyState FindPropertyState(string name)
+        {
+            var state = Properties.FirstOrDefault(p => p.Property.PropertyName == name);
+            state = state ?? Properties.FirstOrDefault(p => p.Property.PrimaryProperty.PropertyName == name);
+            state = state ?? Properties.FirstOrDefault(p => p.Property.PrimaryProperty.GetGroupProperties()
+                        .Any(_ => _.Name == name));
+            state = state ?? Properties.FirstOrDefault(p =>
+                        p.Property.PropertyGroup != null && p.Property.PropertyGroup.Name == name);
+            return state;
+        }
+
+        public bool HasValidKey()
+        {
+            return CompositeKey.IsValid(EntityConfiguration, Entity, IsNew);
+        }
+
+        public string SerializeToJson()
+        {
+            return this.ToJson();
+        }
+
+        public object PrepareForJson()
+        {
+            return new
+            {
+                Id,
+                CurrentKey = LocalKey.PrepareForJson(),
+                PersistenceKey,
+                IsNew,
+                MarkedForDeletion,
+                MarkedForCascadeDeletion,
+                PropertyStates = PropertyStates.Where(_ => IsNew || _.HasChanges).Select(_ => _.PrepareForJson())
+                    .Where(_ => _ != null)
+            };
+        }
+
+        public void Dispose()
+        {
+            MarkedForDeletionChanged?.Dispose();
+            EventSubscriberManager?.Dispose();
+            foreach (var propState in PropertyStates)
+            {
+                propState.Dispose();
+            }
+        }
+
+        private void UpdatePendingInsert()
+        {
+            PendingInsert = IsNew && !MarkedForAnyDeletion;
+        }
+
+        private void UpdateStatus()
+        {
+            if (_settingStatus)
+            {
+                return;
+            }
+
+            _settingStatus = true;
+            var status = EntityStatus.Unattached;
+            if (AttachedToTracker)
+            {
+                if (IsNew)
+                {
+                    if (PendingInsert)
+                    {
+                        status = EntityStatus.New;
+                    }
+                    else
+                    {
+                        status = EntityStatus.NewAndDeleted;
+                    }
+                }
+                else
+                {
+                    if (MarkedForDeletion)
+                    {
+                        status = EntityStatus.ExistingAndPendingDelete;
+                    }
+                    else if (AttachedToTracker)
+                    {
+                        status = EntityStatus.Existing;
+                    }
+                    else
+                    {
+                        status = EntityStatus.ExistingAndDeleted;
+                    }
+                }
+            }
+            else if (!IsNew)
+            {
+                status = EntityStatus.ExistingAndDeleted;
+            }
+
+            Status = status;
+            _settingStatus = false;
         }
 
         private void UpdateStatusHasChanged()
@@ -625,8 +822,6 @@ namespace Iql.Data.Tracking.State
             return hasChanged;
         }
 
-        private bool CanNotifyStatusChange { get; set; }
-
         private void NotifyStatusChange()
         {
             if (DataTracker != null && CanNotifyStatusChange)
@@ -637,49 +832,6 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        public EntityStatus SnapshotStatus
-        {
-            get => _snapshotStatus;
-            protected set => _snapshotStatus = value;
-        }
-
-        public void UpdateHasChanges()
-        {
-            for (var i = 0; i < Properties.Count; i++)
-            {
-                var propertyState = Properties[i];
-                if (propertyState.Property.TypeDefinition.Kind == IqlType.Collection)
-                {
-                    continue;
-                }
-                propertyState.UpdateHasChanged(true);
-            }
-            for (var i = 0; i < Properties.Count; i++)
-            {
-                var propertyState = Properties[i];
-                if (propertyState.Property.TypeDefinition.Kind != IqlType.Collection)
-                {
-                    continue;
-                }
-                propertyState.UpdateHasChanged(true);
-            }
-        }
-        private bool _operationsDelayedInitialized;
-        private Dictionary<Guid, IPropertyState[]> _operationsDelayed;
-
-        private Dictionary<Guid, IPropertyState[]> _operations { get { if(!_operationsDelayedInitialized) { _operationsDelayedInitialized = true; _operationsDelayed = new Dictionary<Guid, IPropertyState[]>(); } return _operationsDelayed; } set { _operationsDelayedInitialized = true; _operationsDelayed = value; } }
-        private bool _isAttachedToGraph;
-        private bool _hasChanged;
-        private bool _hasChangedSinceSnapshot;
-        private IqlEventSubscriberManager _eventSubscriptionManager;
-        private EntityStatus _status = EntityStatus.Unattached;
-        private bool _settingStatus = false;
-        private bool _markedForCascadeDeletion;
-        private bool _statusHasChanged;
-        private bool _statusHasChangedSinceSnapshot;
-        private EntityStatus _snapshotStatus = EntityStatus.Unattached;
-        private TrackingSet<T> _trackingSet;
-
         private void MonitorSaveEvents()
         {
             EventSubscriberManager.SubscribeAsync(SaveEvents.StartedAsync,
@@ -687,7 +839,7 @@ namespace Iql.Data.Tracking.State
                 {
                     if (_.Operation.Kind == IqlOperationKind.Update)
                     {
-                        var updateOp = (IUpdateEntityOperation)_.Operation;
+                        var updateOp = (IUpdateEntityOperation) _.Operation;
                         var changed = updateOp.GetChangedProperties();
                         for (var i = 0; i < changed.Length; i++)
                         {
@@ -699,6 +851,7 @@ namespace Iql.Data.Tracking.State
                                     new IqlEntityPropertyEvent<T>(_.Operation, propState.Property, this, propState));
                             }
                         }
+
                         _operations.Add(_.Operation.Id, changed);
                     }
                     else if (_.Operation.Kind == IqlOperationKind.Add)
@@ -708,6 +861,7 @@ namespace Iql.Data.Tracking.State
                             await propState.SaveEvents.EmitStartedAsync(() =>
                                 new IqlEntityPropertyEvent<T>(_.Operation, propState.Property, this, propState));
                         }
+
                         _operations.Add(_.Operation.Id, PropertyStates.ToArray());
                     }
                 });
@@ -751,21 +905,11 @@ namespace Iql.Data.Tracking.State
                 });
         }
 
-        private IqlEventSubscriberManager EventSubscriberManager => _eventSubscriptionManager = _eventSubscriptionManager ?? new IqlEventSubscriberManager();
-
         public static IEntityStateBase New(object entity, Type entityType, IEntityConfiguration entityConfiguration)
         {
             return (IEntityStateBase)
-                Activator.CreateInstance(typeof(EntityState<>).MakeGenericType(entityType),
-                new object[] { entity, entityType, entityConfiguration });
-        }
-
-        public IPropertyState[] GetChangedProperties(IProperty[] properties = null)
-        {
-            var propertyStates = PropertyStates.Where(ps =>
-                    ps.HasChanges && !ps.Property.Kind.HasFlag(IqlPropertyKind.Relationship) && (properties == null || properties.Contains(ps.Property)))
-                .ToArray();
-            return propertyStates;
+                Activator.CreateInstance(typeof(EntityState<>).MakeGenericType(entityType), entity, entityType,
+                    entityConfiguration);
         }
 
         public bool HasRelationshipChanged(IProperty relationshipProperty)
@@ -774,6 +918,7 @@ namespace Iql.Data.Tracking.State
             {
                 return false;
             }
+
             if (relationshipProperty.Kind.HasFlag(IqlPropertyKind.Relationship))
             {
                 var relationshipEntity = relationshipProperty.GetValue(Entity);
@@ -781,6 +926,7 @@ namespace Iql.Data.Tracking.State
                 {
                     return true;
                 }
+
                 var relationshipEntityState = DataTracker
                     .TrackingSetByType(relationshipProperty.Relationship.OtherEnd.Type)
                     .FindMatchingEntityState(relationshipEntity);
@@ -802,14 +948,14 @@ namespace Iql.Data.Tracking.State
 
             return false;
         }
-        private List<IPropertyState> Properties { get; }
 
         public T EntityBeforeChanges()
         {
             if (IsNew)
             {
-                return default(T);
+                return default;
             }
+
             var entity = Entity.Clone(EntityConfiguration.Builder, EntityType);
             foreach (var property in Properties)
             {
@@ -818,79 +964,8 @@ namespace Iql.Data.Tracking.State
                     property.Property.SetValue(entity, property.RemoteValue);
                 }
             }
-            return (T)entity;
-        }
 
-        object IEntityStateBase.EntityBeforeChanges()
-        {
-            return EntityBeforeChanges();
-        }
-
-        public IPropertyState[] PropertyStates => Properties.ToArray();
-        private bool _propertyStateByNameDelayedInitialized;
-        private Dictionary<string, IPropertyState> _propertyStateByNameDelayed;
-
-        private Dictionary<string, IPropertyState> _propertyStateByName { get { if(!_propertyStateByNameDelayedInitialized) { _propertyStateByNameDelayedInitialized = true; _propertyStateByNameDelayed = new Dictionary<string, IPropertyState>(); } return _propertyStateByNameDelayed; } set { _propertyStateByNameDelayedInitialized = true; _propertyStateByNameDelayed = value; } }
-        public IPropertyState GetPropertyState(string name)
-        {
-            if (!_propertyStateByName.ContainsKey(name))
-            {
-                var state = Properties.SingleOrDefault(p => p.Property.PropertyName == name);
-                if (state != null)
-                {
-                    _propertyStateByName.Add(name, state);
-                    return state;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            return _propertyStateByName[name];
-        }
-
-        public IPropertyState FindPropertyState(string name)
-        {
-            var state = Properties.FirstOrDefault(p => p.Property.PropertyName == name);
-            state = state ?? Properties.FirstOrDefault(p => p.Property.PrimaryProperty.PropertyName == name);
-            state = state ?? Properties.FirstOrDefault(p => p.Property.PrimaryProperty.GetGroupProperties()
-                        .Any(_ => _.Name == name));
-            state = state ?? Properties.FirstOrDefault(p => p.Property.PropertyGroup != null && p.Property.PropertyGroup.Name == name);
-            return state;
-        }
-
-        public bool HasValidKey()
-        {
-            return CompositeKey.IsValid(EntityConfiguration, Entity, IsNew);
-        }
-
-        public string SerializeToJson()
-        {
-            return this.ToJson();
-        }
-
-        public object PrepareForJson()
-        {
-            return new
-            {
-                Id,
-                CurrentKey = LocalKey.PrepareForJson(),
-                PersistenceKey,
-                IsNew,
-                MarkedForDeletion,
-                MarkedForCascadeDeletion,
-                PropertyStates = PropertyStates.Where(_ => IsNew || _.HasChanges).Select(_ => _.PrepareForJson()).Where(_ => _ != null)
-            };
-        }
-
-        public void Dispose()
-        {
-            MarkedForDeletionChanged?.Dispose();
-            EventSubscriberManager?.Dispose();
-            foreach (var propState in PropertyStates)
-            {
-                propState.Dispose();
-            }
+            return (T) entity;
         }
     }
 }

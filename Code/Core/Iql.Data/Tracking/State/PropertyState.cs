@@ -114,7 +114,7 @@ namespace Iql.Data.Tracking.State
         public ObservableList<IEntityStateBase> ItemsChangedSinceSnapshot => _itemsChangedSinceSnapshot = _itemsChangedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
         public ObservableList<IEntityStateBase> ItemsRemovedSinceSnapshot => _itemsRemovedSinceSnapshot = _itemsRemovedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
         public ObservableList<IEntityStateBase> ItemsAddedSinceSnapshot => _itemsAddedSinceSnapshot = _itemsAddedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
-        
+
         private IqlEventSubscriberManager _eventSubscriptionManager;
         private IqlEventSubscriberManager EventSubscriberManager => _eventSubscriptionManager = _eventSubscriptionManager ?? new IqlEventSubscriberManager();
 
@@ -454,8 +454,8 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        private Dictionary<IEntityStateBase, IqlEventSubscriberManager> _stateWatchers = new Dictionary<IEntityStateBase, IqlEventSubscriberManager>();
-        private Dictionary<IEntityStateBase, IqlEventSubscriberManager> _stateSinceSnapshotWatchers = new Dictionary<IEntityStateBase, IqlEventSubscriberManager>();
+        private readonly Dictionary<IEntityStateBase, IqlEventSubscriberManager> _stateWatchers = new Dictionary<IEntityStateBase, IqlEventSubscriberManager>();
+        private readonly Dictionary<IEntityStateBase, IqlEventSubscriberManager> _stateSinceSnapshotWatchers = new Dictionary<IEntityStateBase, IqlEventSubscriberManager>();
 
         private void Watch(IEntityStateBase state)
         {
@@ -465,84 +465,60 @@ namespace Iql.Data.Tracking.State
                 {
                     var manager = new IqlEventSubscriberManager();
                     _stateWatchers.Add(state, manager);
-                    var states = GetRelationshipPropertyStates(state);
+                    var relationshipPropertyStates = GetRelationshipPropertyStates(state);
                     manager.Subscribe(state.HasChangedChanged, _ =>
                     {
-                        if (!DataTracker.AddingPropertySnapshots)
-                        {
-                            UpdateSnapshotRelatedListChanged();
-                        }
+                        UpdateSnapshotRelatedListChanged();
                     });
-                    foreach (var propertyState in state.PropertyStates)
+                    for (var i = 0; i < relationshipPropertyStates.Length; i++)
                     {
-                        if (states.Contains(propertyState))
-                        {
-                            manager.SubscribeAll(
-                                new IEventSubscriberBase[]
-                                {
-                                    propertyState.HasChangesChanged,
-                                    propertyState.OnReset
-                                },
-                                (caller, _) =>
+                        var propertyState = relationshipPropertyStates[i];
+                        manager.SubscribeAll(
+                            new IEventSubscriberBase[]
                             {
-                                if (!DataTracker.AddingPropertySnapshots)
-                                {
-                                    UpdateState(state, ChangeCalculationKind.Remote, ItemsAdded, ItemsRemoved, ItemsChanged, manager, _stateWatchers);
-                                }
-                            });
-                        }
-                        else
-                        {
-                            manager.Subscribe(propertyState.HasChangesChanged, _ =>
+                                propertyState.HasChangesChanged,
+                                propertyState.OnReset
+                            },
+                            (caller, _) =>
                             {
-                                if (!DataTracker.AddingPropertySnapshots)
-                                {
-                                    UpdateSnapshotRelatedListChanged();
-                                }
+                                UpdateState(state,
+                                    ChangeCalculationKind.Remote,
+                                    ItemsAdded,
+                                    ItemsRemoved,
+                                    ItemsChanged,
+                                    manager,
+                                    _stateWatchers);
                             });
-                        }
                     }
                 }
                 if (!_stateSinceSnapshotWatchers.ContainsKey(state))
                 {
                     var manager = new IqlEventSubscriberManager();
                     _stateSinceSnapshotWatchers.Add(state, manager);
-                    var states = GetRelationshipPropertyStates(state);
+                    var relationshipPropertyStates = GetRelationshipPropertyStates(state);
                     manager.Subscribe(state.HasChangedSinceSnapshotChanged, _ =>
                     {
-                        if (!DataTracker.AddingPropertySnapshots)
-                        {
-                            UpdateSnapshotRelatedListChanged();
-                        }
+                        UpdateSnapshotRelatedListChanged();
                     });
-                    foreach (var propertyState in state.PropertyStates)
+                    for (var i = 0; i < relationshipPropertyStates.Length; i++)
                     {
-                        if (states.Contains(propertyState))
-                        {
-                            manager.SubscribeAll(
-                                new IEventSubscriberBase[]
-                                {
-                                    propertyState.HasChangesSinceSnapshotChanged,
-                                    propertyState.SnapshotValueChanged,
-                                    propertyState.OnReset
-                                }, (caller, _) =>
-                             {
-                                 if (!DataTracker.AddingPropertySnapshots)
-                                 {
-                                     UpdateState(state, ChangeCalculationKind.Snapshot, ItemsAddedSinceSnapshot, ItemsRemovedSinceSnapshot, ItemsChangedSinceSnapshot, manager, _stateSinceSnapshotWatchers);
-                                 }
-                             });
-                        }
-                        else
-                        {
-                            manager.SubscribeAll(new IEventSubscriberBase[] { propertyState.HasChangesSinceSnapshotChanged, propertyState.SnapshotValueChanged }, (caller, _) =>
+                        var propertyState = relationshipPropertyStates[i];
+                        manager.SubscribeAll(
+                            new IEventSubscriberBase[]
                             {
-                                if (!DataTracker.AddingPropertySnapshots)
-                                {
-                                    UpdateSnapshotRelatedListChanged();
-                                }
+                                propertyState.HasChangesSinceSnapshotChanged,
+                                propertyState.OnReset
+                            },
+                            (caller, _) =>
+                            {
+                                UpdateState(state,
+                                    ChangeCalculationKind.Snapshot,
+                                    ItemsAddedSinceSnapshot,
+                                    ItemsRemovedSinceSnapshot,
+                                    ItemsChangedSinceSnapshot,
+                                    manager,
+                                    _stateSinceSnapshotWatchers);
                             });
-                        }
                     }
                 }
             }
@@ -550,16 +526,11 @@ namespace Iql.Data.Tracking.State
 
         private IPropertyState[] GetRelationshipPropertyStates(IEntityStateBase state)
         {
-            var properties = GetRelationshipProperties();
+            var properties = Property.Relationship.OtherEnd.AllProperties;
             var states = properties.Select(_ => state.GetPropertyState(_.PropertyName))
                 .Where(_ => _ != null)
                 .ToArray();
             return states;
-        }
-
-        private IProperty[] GetRelationshipProperties()
-        {
-            return Property.Relationship.OtherEnd.AllProperties;
         }
 
         private void UpdateState(IEntityStateBase state, ChangeCalculationKind changeCalculationKind,
@@ -653,16 +624,6 @@ namespace Iql.Data.Tracking.State
             }
             UpdateSnapshotRelatedListChanged();
             UpdateHasChanged();
-        }
-
-        private void RelatedListItemRemoved(IRelatedListChangeEvent _, IRelatedList relatedList, IEnumerable<object> remoteList)
-        {
-            UpdateSnapshotRelatedListChanged();
-        }
-
-        private void RelatedListItemAdded(IRelatedListChangeEvent _, IRelatedList relatedList)
-        {
-            UpdateSnapshotRelatedListChanged();
         }
 
         public void UpdateSnapshotRelatedListChanged(bool updateAddedAndRemoved = false)
@@ -959,7 +920,7 @@ namespace Iql.Data.Tracking.State
 
         private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged;
         public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
-        
+
         private EventEmitter<ValueChangedEvent<bool>> _hasAnyChangesChanged;
 
         public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesChanged => _hasAnyChangesChanged = _hasAnyChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
@@ -1575,7 +1536,7 @@ namespace Iql.Data.Tracking.State
             if (!areEquivalent)
             {
                 DataTracker.NotifyRemoteValueChanged(this);
-                if(_remoteValueChanged != null)
+                if (_remoteValueChanged != null)
                 {
                     RemoteValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
                 }

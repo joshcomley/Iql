@@ -242,7 +242,6 @@ namespace Iql.Data.Tracking
                 }
             }
 
-            //AddingPropertySnapshots = true;
             foreach (var prop in items)
             {
                 if (!prop.IsRelationshipCollection)
@@ -250,7 +249,6 @@ namespace Iql.Data.Tracking
                     prop.AddSnapshot();
                 }
             }
-            //AddingPropertySnapshots = false;
             foreach (var prop in items)
             {
                 if (prop.IsRelationshipCollection)
@@ -266,8 +264,6 @@ namespace Iql.Data.Tracking
             SnapshotAdded.Emit(() => new SnapshotEvent(this, snapshot));
             return snapshot;
         }
-
-        public bool AddingPropertySnapshots { get; private set; }
 
         public bool UndoChanges(object[] entities = null, object[] properties = null)
         {

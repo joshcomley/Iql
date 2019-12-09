@@ -78,28 +78,39 @@ namespace Iql.Server.Serialization.Serialization.Converters
             writer.WriteValue(json);
         }
 
+        public static Dictionary<Tuple<ITypeResolver, bool, bool>, JsonSerializerSettings> _settingsLookup =
+            new Dictionary<Tuple<ITypeResolver, bool, bool>, JsonSerializerSettings>();
         private static void WritePropertyGroupDirect(
             ITypeResolver typeResolver,
-            JsonWriter writer, 
-            object value, 
+            JsonWriter writer,
+            object value,
             bool allowAnyPropertyConversion = true,
             bool rootIsRelationship = false)
         {
-            var indented = Formatting.Indented;
-            var settings = new JsonSerializerSettings
+            var key = new Tuple<ITypeResolver, bool, bool>(typeResolver, allowAnyPropertyConversion,
+                rootIsRelationship);
+            JsonSerializerSettings settings;
+            if (!_settingsLookup.ContainsKey(key))
             {
-                ContractResolver = new InterfaceContractResolver()
-            };
-            if (!rootIsRelationship)
-            {
-                settings.Converters.Add(new RelationshipConverter(typeResolver, true));
+                settings = new JsonSerializerSettings
+                {
+                    ContractResolver = new InterfaceContractResolver()
+                };
+                if (!rootIsRelationship)
+                {
+                    settings.Converters.Add(new RelationshipConverter(typeResolver, true));
+                }
+                settings.Converters.Add(new ExpressionJsonConverter(typeResolver));
+                settings.Converters.Add(new TypeToIqlTypeConverter());
+                settings.Converters.Add(new IPropertyConverter(typeResolver, true, allowAnyPropertyConversion));
+                //settings.Converters.Add(new IPropertyConverter());
+                _settingsLookup.Add(key, settings);
             }
-            settings.Converters.Add(new ExpressionJsonConverter(typeResolver));
-            settings.Converters.Add(new TypeToIqlTypeConverter());
-            settings.Converters.Add(new IPropertyConverter(typeResolver, true, allowAnyPropertyConversion));
-            //settings.Converters.Add(new IPropertyConverter());
-            var ppp = writer.Path;
-            var serialized = JsonConvert.SerializeObject(value, value.GetType(), indented, settings);
+            else
+            {
+                settings = _settingsLookup[key];
+            }
+            var serialized = JsonConvert.SerializeObject(value, value.GetType(), Formatting.Indented, settings);
             writer.WriteRawValue(serialized);
         }
 
@@ -208,8 +219,8 @@ namespace Iql.Server.Serialization.Serialization.Converters
             {
                 return typeof(IProperty).IsAssignableFrom(objectType) || typeof(IRelationshipDetail).IsAssignableFrom(objectType);
             }
-            return 
-                !typeof(IPropertyCollection).IsAssignableFrom(objectType) && !typeof(IPropertyPath).IsAssignableFrom(objectType) && 
+            return
+                !typeof(IPropertyCollection).IsAssignableFrom(objectType) && !typeof(IPropertyPath).IsAssignableFrom(objectType) &&
                 typeof(IPropertyGroup).IsAssignableFrom(objectType);
         }
     }
