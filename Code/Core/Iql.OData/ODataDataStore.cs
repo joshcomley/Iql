@@ -1,4 +1,4 @@
-﻿using Iql.Data.Context;
+using Iql.Data.Context;
 using Iql.Data.Crud;
 using Iql.Data.Crud.Operations;
 using Iql.Data.Crud.Operations.Queued;
@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using Iql.Data.Lists;
 using Iql.Data.Serialization;
 using Iql.Entities.Functions;
+using Iql.Events;
 
 namespace Iql.OData
 {
@@ -62,7 +63,7 @@ namespace Iql.OData
                     if (EntityConfigurationBuilder.IsEntityType(responseElementType))
                     {
                         var flattenedResponse = await ParseODataEntityResponseByTypeAsync(responseElementType, httpResult, isCollectionResult);
-                        DataSetRetrieved.Emit(() => new DataSetRetrievedEvent(flattenedResponse));
+                        DataSetRetrieved.EmitIfExists(() => new DataSetRetrievedEvent(flattenedResponse));
                         var dbList = flattenedResponse.ToDbList();
                         var list = dbList.ToList(responseElementType);
 #if TypeScript

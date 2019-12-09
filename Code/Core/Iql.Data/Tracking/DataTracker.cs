@@ -257,11 +257,11 @@ namespace Iql.Data.Tracking
                 }
             }
             _isRestoring = false;
-            SnapshotAdding.Emit(() => new SnapshotEvent(this, snapshot));
+            _snapshotAdding.EmitIfExists(() => new SnapshotEvent(this, snapshot));
             ResetSnapshotState(true, true);
             _snapshots.Add(snapshot);
             UpdateHasSnapshot();
-            SnapshotAdded.Emit(() => new SnapshotEvent(this, snapshot));
+            _snapshotAdded.EmitIfExists(() => new SnapshotEvent(this, snapshot));
             return snapshot;
         }
 
@@ -332,7 +332,7 @@ namespace Iql.Data.Tracking
             }
             if(snapshotRemoved != null)
             {
-                SnapshotRemoved.Emit(() => new SnapshotEvent(this, snapshotRemoved));
+                _snapshotRemoved.EmitIfExists(() => new SnapshotEvent(this, snapshotRemoved));
             }
             if (snapshotRemoved != null)
             {
@@ -377,7 +377,7 @@ namespace Iql.Data.Tracking
             if (HasSnapshot)
             {
                 var snapshot = LatestSnapshot();
-                SnapshotRemoving.Emit(() => new SnapshotEvent(this, snapshot));
+                _snapshotRemoving.EmitIfExists(() => new SnapshotEvent(this, snapshot));
                 _snapshots.Remove(snapshot);
                 UpdateHasSnapshot();
                 return snapshot;
@@ -412,10 +412,10 @@ namespace Iql.Data.Tracking
             if (HasSnapshot)
             {
                 var snapshot = LatestSnapshot();
-                SnapshotReplacing.Emit(() => new SnapshotEvent(this, snapshot));
+                _snapshotReplacing.EmitIfExists(() => new SnapshotEvent(this, snapshot));
                 RemoveLastSnapshot();
                 var newSnapshot = AddSnapshot();
-                SnapshotReplaced.Emit(() => new SnapshotReplacedEvent(this, snapshot, newSnapshot));
+                _snapshotReplaced.EmitIfExists(() => new SnapshotReplacedEvent(this, snapshot, newSnapshot));
                 return newSnapshot;
             }
             return null;
@@ -430,7 +430,7 @@ namespace Iql.Data.Tracking
                 _hasSnapshot = value;
                 if (old != value)
                 {
-                    HasSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _hasSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                 }
             }
         }
@@ -446,7 +446,7 @@ namespace Iql.Data.Tracking
                 _hasRestorableSnapshot = value;
                 if (old != value)
                 {
-                    HasRestorableSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _hasRestorableSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                 }
             }
         }
@@ -893,7 +893,7 @@ namespace Iql.Data.Tracking
 
         protected virtual void EmitStateChangedEvent()
         {
-            //StateChanged.Emit(() => new OfflineChangeStateChangedEvent(this));
+            //_stateChanged.EmitIfExists(() => new OfflineChangeStateChangedEvent(this));
         }
 
         public void ApplyUpdate<TEntity>(QueuedUpdateEntityOperation<TEntity> operation, bool isOffline)

@@ -53,7 +53,7 @@ namespace Iql.Data.Tracking
                 _hasChanges = value;
                 if (old != value)
                 {
-                    HasChangesChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _hasChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace Iql.Data.Tracking
                          EntitiesChangedCount > 0;
             //if (!PauseEvents)
             {
-                Changed.Emit(() => this);
+                _changed.EmitIfExists(() => this);
             }
         }
 

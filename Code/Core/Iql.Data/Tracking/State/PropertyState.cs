@@ -103,7 +103,7 @@ namespace Iql.Data.Tracking.State
                 _hasSnapshotValue = value;
                 if (old != value)
                 {
-                    HasSnapshotValueChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _hasSnapshotValueChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                 }
             }
         }
@@ -207,7 +207,7 @@ namespace Iql.Data.Tracking.State
                     return;
                 }
                 _hasAnyChanges = value;
-                HasAnyChangesChanged.Emit(() => new ValueChangedEvent<bool>(!_hasAnyChanges, value));
+                _hasAnyChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(!_hasAnyChanges, value));
             }
         }
 
@@ -222,7 +222,7 @@ namespace Iql.Data.Tracking.State
                     return;
                 }
                 _hasAnyChangesSinceSnapshot = value;
-                HasAnyChangesSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(!_hasAnyChangesSinceSnapshot, value));
+                _hasAnyChangesSinceSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool>(!_hasAnyChangesSinceSnapshot, value));
             }
         }
 
@@ -241,7 +241,7 @@ namespace Iql.Data.Tracking.State
                         EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, HasChanges, value);
                     }
 
-                    HasChangesSinceSnapshotChanged.Emit(
+                    _hasChangesSinceSnapshotChanged.EmitIfExists(
                         () => new ValueChangedEvent<bool>(old, value));
                     if (EntityState != null)
                     {
@@ -261,7 +261,7 @@ namespace Iql.Data.Tracking.State
                 _canUndo = value;
                 if (value != old)
                 {
-                    CanUndoChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _canUndoChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                 }
             }
         }
@@ -301,7 +301,7 @@ namespace Iql.Data.Tracking.State
                     {
                         EntityState.DataTracker.NotifyChangedChanged(this, _hasChanged);
                     }
-                    HasChangesChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _hasChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                     if (EntityState != null)
                     {
                         EntityState.CheckHasChanged();
@@ -423,7 +423,7 @@ namespace Iql.Data.Tracking.State
 
                 if (oldValue != value)
                 {
-                    LocalValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
+                    _localValueChanged.EmitIfExists(() => new ValueChangedEvent<object>(oldValue, value));
                 }
 
                 if (Property.Relationship != null && Property.TypeDefinition.Kind == IqlType.Collection)
@@ -794,7 +794,7 @@ namespace Iql.Data.Tracking.State
                     return;
                 }
                 _hasNestedChanges = value;
-                HasNestedChangesChanged.Emit(() => new ValueChangedEvent<bool>(!_hasNestedChanges, value));
+                _hasNestedChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(!_hasNestedChanges, value));
                 UpdateHasAnyChanges();
             }
         }
@@ -809,7 +809,7 @@ namespace Iql.Data.Tracking.State
                     return;
                 }
                 _hasNestedChangesSinceStart = value;
-                HasNestedChangesSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(!_hasNestedChangesSinceStart, value));
+                _hasNestedChangesSinceSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool>(!_hasNestedChangesSinceStart, value));
                 UpdateHasAnyChanges();
             }
         }
@@ -1005,7 +1005,7 @@ namespace Iql.Data.Tracking.State
             EnsureRemoteValue();
             LocalValue = newValue;
             UpdateHasChanged();
-            OnReset.Emit(() => this);
+            _onReset.EmitIfExists(() => this);
             DataTracker.NotifyHardReset(this);
         }
 
@@ -1033,7 +1033,7 @@ namespace Iql.Data.Tracking.State
             {
                 var ev = new AbandonChangeEvent(EntityState, this);
                 AbandonEvents.EmitStartedAsync(() => ev);
-                StateEvents.AbandoningPropertyChange.Emit(() => ev);
+                StateEvents.AbandoningPropertyChange.EmitIfExists(() => ev);
                 // If collection: restore the original entities to the current list
                 if (Property.TypeDefinition.Kind == IqlType.Collection)
                 {
@@ -1047,7 +1047,7 @@ namespace Iql.Data.Tracking.State
                 HardReset();
                 AbandonEvents.EmitSuccessAsync(() => ev);
                 AbandonEvents.EmitCompletedAsync(() => ev);
-                StateEvents.AbandonedPropertyChange.Emit(() => ev);
+                StateEvents.AbandonedPropertyChange.EmitIfExists(() => ev);
                 //PropertyChanger.ApplyTo(_oldObjectClone, _oldObject);
             }
 
@@ -1538,7 +1538,7 @@ namespace Iql.Data.Tracking.State
                 DataTracker.NotifyRemoteValueChanged(this);
                 if (_remoteValueChanged != null)
                 {
-                    RemoteValueChanged.Emit(() => new ValueChangedEvent<object>(oldValue, value));
+                    _remoteValueChanged.EmitIfExists(() => new ValueChangedEvent<object>(oldValue, value));
                 }
             }
         }
@@ -1566,7 +1566,7 @@ namespace Iql.Data.Tracking.State
         //    HasNestedChanges = CalculateHasNestedChanges(LocalValue, ChangeCalculationKind.Remote);
         //    if (oldValue != HasNestedChanges)
         //    {
-        //        HasNestedChangesChanged.Emit(() => new ValueChangedEvent<bool>(oldValue, HasNestedChanges));
+        //        _hasNestedChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(oldValue, HasNestedChanges));
         //        if (EntityState != null)
         //        {
         //            EntityState.CheckHasChanged();
@@ -1580,7 +1580,7 @@ namespace Iql.Data.Tracking.State
         //    HasNestedChangesSinceSnapshot = CalculateHasNestedChanges(LocalValue, ChangeCalculationKind.Snapshot);
         //    if (oldValue != HasNestedChangesSinceSnapshot)
         //    {
-        //        HasNestedChangesSinceSnapshotChanged.Emit(() =>
+        //        _hasNestedChangesSinceSnapshotChanged.EmitIfExists(() =>
         //            new ValueChangedEvent<bool>(oldValue, HasNestedChangesSinceSnapshot));
         //        if (EntityState != null)
         //        {

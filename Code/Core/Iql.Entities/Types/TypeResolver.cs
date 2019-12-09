@@ -99,7 +99,7 @@ namespace Iql.Data.Types
 
         public virtual IIqlTypeMetadata ResolveTypeFromTypeName(string fullTypeName)
         {
-            ResolvingType.Emit(() => fullTypeName);
+            _resolvingType.EmitIfExists(() => fullTypeName);
             var typeName = CleanTypeName(fullTypeName);
             if (string.IsNullOrWhiteSpace(typeName))
             {

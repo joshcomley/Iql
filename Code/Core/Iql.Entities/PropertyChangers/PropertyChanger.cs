@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Iql.Entities.Events;
 using Iql.Events;
 
@@ -25,7 +25,7 @@ namespace Iql.Entities.PropertyChangers
                 changedSet = true;
                 if (changed)
                 {
-                    propertyChangingEvent.Emit(() => new PropertyChangeEvent<TEntity>(propertyName, entity, oldValue, newValue));
+                    propertyChangingEvent.EmitIfExists(() => new PropertyChangeEvent<TEntity>(propertyName, entity, oldValue, newValue));
                 }
             }
 
@@ -34,7 +34,7 @@ namespace Iql.Entities.PropertyChangers
             {
                 if (changedSet ? changed : !AreEquivalent(newValue, oldValue))
                 {
-                    propertyChangedEvent.Emit(() => new PropertyChangeEvent<TEntity>(propertyName, entity, oldValue, newValue));
+                    propertyChangedEvent.EmitIfExists(() => new PropertyChangeEvent<TEntity>(propertyName, entity, oldValue, newValue));
                 }
             }
         }

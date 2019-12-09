@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Iql.Data.Events;
 using Iql.Entities.Events;
 using Iql.Events;
@@ -51,7 +51,7 @@ namespace Iql.Data
                 changedSet = true;
                 if (changed)
                 {
-                    this.PropertyChanging.Emit(() => new PropertyChangeEvent<T>(propertyName, this, oldValue, value));
+                    this._propertyChanging.EmitIfExists(() => new PropertyChangeEvent<T>(propertyName, this, oldValue, value));
                 }
             }
 
@@ -65,7 +65,7 @@ namespace Iql.Data
                 }
                 if (changed)
                 {
-                    this.PropertyChanged.Emit(() => new PropertyChangeEvent<T>(propertyName, this, oldValue, value));
+                    this._propertyChanged.EmitIfExists(() => new PropertyChangeEvent<T>(propertyName, this, oldValue, value));
                 }
             }
         }

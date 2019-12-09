@@ -9,7 +9,7 @@ namespace Iql.Queryable
         public void NotifyProgress(double progress, bool isFinalNotification)
         {
             CurrentProgress = progress;
-            OnProgress.Emit(() => new ProgressNotifierEvent(progress, isFinalNotification));
+            _onProgress.EmitIfExists(() => new ProgressNotifierEvent(progress, isFinalNotification));
         }
 
         public double CurrentProgress { get; private set; }

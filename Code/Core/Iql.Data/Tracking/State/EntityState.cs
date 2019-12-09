@@ -166,7 +166,7 @@ namespace Iql.Data.Tracking.State
                 if (old != value)
                 {
                     DataTracker.NotifyAttachedToTrackerChanged(this, value);
-                    AttachedToTrackerChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _attachedToTrackerChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                 }
 
                 UpdateStatus();
@@ -202,7 +202,7 @@ namespace Iql.Data.Tracking.State
                 _hasChanged = value;
                 if (old != value)
                 {
-                    HasChangedChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _hasChangedChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                     if (DataTracker != null)
                     {
                         DataTracker.NotifyEntityHasChangedChanged(this);
@@ -220,7 +220,7 @@ namespace Iql.Data.Tracking.State
                 _hasChangedSinceSnapshot = value;
                 if (old != value)
                 {
-                    HasChangedSinceSnapshotChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _hasChangedSinceSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                     if (DataTracker != null)
                     {
                         DataTracker.NotifyEntityHasChangedSinceSnapshotChanged(this);
@@ -247,7 +247,7 @@ namespace Iql.Data.Tracking.State
                 _pendingInsert = value;
                 if (old != value)
                 {
-                    PendingInsertChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _pendingInsertChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                 }
             }
         }
@@ -264,7 +264,7 @@ namespace Iql.Data.Tracking.State
                 _isAttachedToGraph = value;
                 if (old != value)
                 {
-                    IsAttachedToGraphChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _isAttachedToGraphChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                     UpdatePendingInsert();
                 }
             }
@@ -292,7 +292,7 @@ namespace Iql.Data.Tracking.State
 
                 if (old != value)
                 {
-                    IsNewChanged.Emit(() => new ValueChangedEvent<bool>(old, value));
+                    _isNewChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
                     UpdatePendingInsert();
                     CheckHasChanged();
                     if (DataTracker != null)
@@ -323,7 +323,7 @@ namespace Iql.Data.Tracking.State
                 _markedForDeletion = value;
                 if (changed)
                 {
-                    MarkedForDeletionChanged.Emit(() => new MarkedForDeletionChangeEvent(this, value));
+                    _markedForDeletionChanged.EmitIfExists(() => new MarkedForDeletionChangeEvent(this, value));
                     UpdatePendingInsert();
                 }
 
@@ -359,7 +359,7 @@ namespace Iql.Data.Tracking.State
         {
             var ev = new AbandonChangeEvent(this, null);
             AbandonEvents.EmitStartedAsync(() => ev);
-            StateEvents.AbandoningEntityChanges.Emit(() => ev);
+            StateEvents.AbandoningEntityChanges.EmitIfExists(() => ev);
             for (var i = 0; i < Properties.Count; i++)
             {
                 var state = Properties[i];
@@ -376,7 +376,7 @@ namespace Iql.Data.Tracking.State
             AbandonEvents.EmitCompletedAsync(() => ev);
             AbandonEvents.EmitSuccessAsync(() => ev);
             ClearStatefulEvents();
-            StateEvents.AbandonedEntityChanges.Emit(() => ev);
+            StateEvents.AbandonedEntityChanges.EmitIfExists(() => ev);
         }
 
         public void AddSnapshot()
@@ -620,7 +620,7 @@ namespace Iql.Data.Tracking.State
 
                 if (old != value)
                 {
-                    StatusChanged.Emit(() => new ValueChangedEvent<EntityStatus>(old, value));
+                    _statusChanged.EmitIfExists(() => new ValueChangedEvent<EntityStatus>(old, value));
                     //if (DataTracker != null)
                     //{
                     //    DataTracker.NotifyStatusChanged(this, value);

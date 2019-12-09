@@ -181,7 +181,7 @@ namespace Iql.Entities
                 _readKind = value;
                 if (oldValue != value && _readKindChanged != null)
                 {
-                    ReadKindChanged.Emit(() => new ValueChangedEvent<IqlPropertyReadKind>(oldValue, value));
+                    _readKindChanged.EmitIfExists(() => new ValueChangedEvent<IqlPropertyReadKind>(oldValue, value));
                 }
             }
         }
@@ -195,7 +195,7 @@ namespace Iql.Entities
                 _editKind = value;
                 if (oldValue != value && _editKindChanged != null)
                 {
-                    EditKindChanged.Emit(() => new ValueChangedEvent<IqlPropertyEditKind>(oldValue, value));
+                    _editKindChanged.EmitIfExists(() => new ValueChangedEvent<IqlPropertyEditKind>(oldValue, value));
                 }
             }
         }

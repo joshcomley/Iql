@@ -111,7 +111,7 @@ namespace Iql.Events
 
         //    public highlight(entity: any, on: boolean)
         //    {
-        //        this.entityHighlight.Emit(() => new IqlEntityHighlightedEvent(on, entity));
+        //        this._entityHighlight.EmitIfExists(() => new IqlEntityHighlightedEvent(on, entity));
         //    }
 
         //    private dic = new Dictionary<any, IqlEventSubscriber>();

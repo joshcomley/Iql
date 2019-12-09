@@ -997,7 +997,7 @@ namespace Iql.Data.Context
 
         protected virtual void EmitOfflineChangeStateEvent()
         {
-            OfflineStateChanged.Emit(() => new OfflineChangeStateChangedEvent(this, OfflineDataTracker, HasOfflineChanges));
+            OfflineStateChanged.EmitIfExists(() => new OfflineChangeStateChangedEvent(this, OfflineDataTracker, HasOfflineChanges));
         }
 
         protected virtual Task PerformAsync<TEntity>(

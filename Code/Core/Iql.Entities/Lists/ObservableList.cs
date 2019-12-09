@@ -186,7 +186,7 @@ namespace Iql.Entities.Lists
             {
                 return null;
             }
-            return Change.Emit(eventObjectFactory);
+            return _change.EmitIfExists(eventObjectFactory);
         }
 
         protected Func<ObservableListChangeEvent<T>> EventObjectFactory(T item, ObservableListChangeKind kind)

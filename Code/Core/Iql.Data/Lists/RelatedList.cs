@@ -78,7 +78,7 @@ namespace Iql.Data.Lists
             if (_relatedListChange != null)
             {
                 ObservableListChangeEvent<TTarget> ev = null;
-                RelatedListChange.Emit(() => new RelatedListChangeEvent<TSource, TTarget>(ev = (observableListChangeEvent == null ? null : observableListChangeEvent()), Owner, itemKey, kind, this));
+                _relatedListChange.EmitIfExists(() => new RelatedListChangeEvent<TSource, TTarget>(ev = (observableListChangeEvent == null ? null : observableListChangeEvent()), Owner, itemKey, kind, this));
                 return ev;
             }
 

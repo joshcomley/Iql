@@ -90,26 +90,26 @@ namespace Iql.Data.QueryContainer
             var lastReloadId = _lastReloadId;
             // Build the query
             QueryBuilding = true;
-            await QueryBuildingChanged.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+            await _queryBuildingChanged.EmitIfExistsAsync(() => new QueryPipeChangedEvent<T>(this));
             if (lastReloadId != _lastReloadId)
             {
                 return false;
             }
             var pipe = new QueryPipeEvent<T>(this);
-            await Pipe.EmitAsync(() => pipe);
+            await _pipe.EmitIfExistsAsync(() => pipe);
             if (lastReloadId != _lastReloadId)
             {
                 return false;
             }
             QueryBuilding = false;
-            await QueryBuildingChanged.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+            await _queryBuildingChanged.EmitIfExistsAsync(() => new QueryPipeChangedEvent<T>(this));
             if (lastReloadId != _lastReloadId)
             {
                 return false;
             }
 
             // Broadcast the final query
-            await QueryBuilt.EmitAsync(() => new QueryPipeInspectorEvent<T>(pipe.Query));
+            await _queryBuilt.EmitIfExistsAsync(() => new QueryPipeInspectorEvent<T>(pipe.Query));
             if (lastReloadId != _lastReloadId)
             {
                 return false;
@@ -145,7 +145,7 @@ namespace Iql.Data.QueryContainer
                 }
 
                 // Broadcast the final results
-                await ResultsLoaded.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+                await _resultsLoaded.EmitIfExistsAsync(() => new QueryPipeChangedEvent<T>(this));
             }
 
             return canUpdate;
@@ -156,12 +156,12 @@ namespace Iql.Data.QueryContainer
 
         private void EmitEvent(EventEmitter<QueryPipeChangedEvent<T>> emitter)
         {
-            emitter.Emit(() => new QueryPipeChangedEvent<T>(this));
+            emitter.EmitIfExists(() => new QueryPipeChangedEvent<T>(this));
         }
 
         private async Task EmitEventAsync(AsyncEventEmitter<QueryPipeChangedEvent<T>> emitter)
         {
-            await emitter.EmitAsync(() => new QueryPipeChangedEvent<T>(this));
+            await emitter.EmitIfExistsAsync(() => new QueryPipeChangedEvent<T>(this));
         }
     }
 }

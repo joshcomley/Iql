@@ -437,7 +437,7 @@ namespace Iql.Data.Relationships
                 if (!targetTrackingSet
                     .IsMatchingEntityTracked(newValue))
                 {
-                    UntrackedEntityAdded.Emit(() => new UntrackedEntityAddedEvent(newValue));
+                    _untrackedEntityAdded.EmitIfExists(() => new UntrackedEntityAddedEvent(newValue));
                     Observe(newValue, targetType);
                 }
             }
@@ -872,7 +872,7 @@ namespace Iql.Data.Relationships
                 _moving.Remove(source);
             }
 
-            RelationshipChanged.Emit(() => new RelationshipChangedEvent(source, relationship));
+            _relationshipChanged.EmitIfExists(() => new RelationshipChangedEvent(source, relationship));
         }
 
         private void CheckIfAttachedToGraph(object entity)

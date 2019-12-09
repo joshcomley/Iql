@@ -119,7 +119,7 @@ namespace Iql.Events
                 Subscriptions.Remove(sub);
                 if (_onUnsubscribe != null)
                 {
-                    OnUnsubscribe.Emit(() => sub);
+                    _onUnsubscribe.EmitIfExists(() => sub);
                 }
             }
 
@@ -134,7 +134,7 @@ namespace Iql.Events
                 {
                     if(key == null || sub.Key == key)
                     {
-                        OnUnsubscribe.Emit(() => sub);
+                        _onUnsubscribe.EmitIfExists(() => sub);
                         if (key != null)
                         {
                             SubscriptionsById.Remove(sub.Id);
@@ -198,7 +198,7 @@ namespace Iql.Events
             _subscriptions = SubscriptionsById.Values.ToList();
             if (_onSubscribe != null)
             {
-                OnSubscribe.Emit(() => sub);
+                _onSubscribe.EmitIfExists(() => sub);
             }
             return sub;
         }

@@ -34,8 +34,8 @@ namespace Iql.Data.Context
                 (Global as ISaveEventsInternal)?.Increment();
                 await Global.EmitStartedAsync(ev);
             }
-            await StartedAsync.EmitAsync(ev);
-            Started.Emit(ev);
+            await _savingStartedAsync.EmitIfExistsAsync(ev);
+            _savingStarted.EmitIfExists(ev);
         }
 
         Task IOperationEventsBase.EmitStartedAsync(Func<object> ev)
@@ -49,8 +49,8 @@ namespace Iql.Data.Context
             {
                 await Global.EmitSuccessAsync(ev);
             }
-            await SuccessfulAsync.EmitAsync(ev);
-            Successful.Emit(ev);
+            await _saveSuccessfulAsync.EmitIfExistsAsync(ev);
+            _saveSuccessful.EmitIfExists(ev);
         }
 
         Task IOperationEventsBase.EmitSuccessAsync(Func<object> ev)
@@ -65,8 +65,8 @@ namespace Iql.Data.Context
                 (Global as ISaveEventsInternal)?.Decrement();
                 await Global.EmitCompletedAsync(ev);
             }
-            await CompletedAsync.EmitAsync(ev);
-            Completed.Emit(ev);
+            await _savingCompletedAsync.EmitIfExistsAsync(ev);
+            _savingCompleted.EmitIfExists(ev);
         }
 
         public void UnsubscribeAll()
