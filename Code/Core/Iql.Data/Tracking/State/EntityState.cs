@@ -953,7 +953,7 @@ namespace Iql.Data.Tracking.State
         {
             if (IsNew)
             {
-                return default;
+                return default(T);
             }
 
             var entity = Entity.Clone(EntityConfiguration.Builder, EntityType);

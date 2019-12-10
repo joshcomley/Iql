@@ -6,6 +6,7 @@ namespace Iql.Entities.Lists
 {
     public interface IObservableList : IList
     {
+        bool EnsureUnique { get; set; }
         IEventSubscriber<IObservableListChangeEvent> Change { get; }
 #if TypeScript
         void Clear();

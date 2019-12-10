@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Entities.Lists.Events;
 using Iql.Events;
 
@@ -8,10 +9,48 @@ namespace Iql.Entities.Lists
 {
     public class ObservableList<T> : IList<T>, IObservableList
     {
+        private bool _rootLookupDelayedInitialized;
+        private Dictionary<T, bool> _rootLookupDelayed;
+        private Dictionary<T, bool> _rootLookup { get { if (!_rootLookupDelayedInitialized) { _rootLookupDelayedInitialized = true; _rootLookupDelayed = new Dictionary<T, bool>(); } return _rootLookupDelayed; } set { _rootLookupDelayedInitialized = true; _rootLookupDelayed = value; } }
+
         private bool _rootListDelayedInitialized;
         private List<T> _rootListDelayed;
         private List<T> _rootList { get { if (!_rootListDelayedInitialized) { _rootListDelayedInitialized = true; _rootListDelayed = new List<T>(); } return _rootListDelayed; } set { _rootListDelayedInitialized = true; _rootListDelayed = value; } }
         private EventEmitter<ObservableListChangeEvent<T>> _change;
+        private bool _ensureUnique;
+        private bool _noEvents;
+
+        public virtual bool EnsureUnique
+        {
+            get => _ensureUnique;
+            set
+            {
+                var old = _ensureUnique;
+                _ensureUnique = value;
+                if (old != value)
+                {
+                    if (value)
+                    {
+                        if (_rootLookupDelayed != null && _rootListDelayed != null)
+                        {
+                            _rootLookup.Clear();
+                            for (var i = 0; i < _rootListDelayed.Count; i++)
+                            {
+                                var item = _rootListDelayed[i];
+                                _rootLookup.Add(item, true);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (_rootLookupDelayed != null)
+                        {
+                            _rootLookup.Clear();
+                        }
+                    }
+                }
+            }
+        }
 
         public EventEmitter<ObservableListChangeEvent<T>> Change => _change = _change ?? new EventEmitter<ObservableListChangeEvent<T>>();
 
@@ -39,15 +78,33 @@ namespace Iql.Entities.Lists
 
         protected virtual T AddItem(T item)
         {
+            if (EnsureUnique && _rootLookup.ContainsKey(item))
+            {
+                return default(T);
+            }
             var eventResult = Emit((T)item, ObservableListChangeKind.Adding);
             if (eventResult == null || !eventResult.Disallow)
             {
                 item = (T)(eventResult?.Item ?? item);
+                if (EnsureUnique && _rootLookup.ContainsKey(item))
+                {
+                    return default(T);
+                }
+                _noEvents = true;
                 _rootList.Add((T)item);
+                _noEvents = false;
+                if (EnsureUnique)
+                {
+                    _rootLookup.Add((T)item, true);
+                }
                 var addedEventResult = Emit((T)item, ObservableListChangeKind.Added);
                 if (addedEventResult != null && addedEventResult.Disallow)
                 {
                     _rootList.Remove((T)item);
+                    if (EnsureUnique)
+                    {
+                        _rootLookup.Remove((T)item);
+                    }
                     return default(T);
                 }
                 return item;
@@ -72,7 +129,11 @@ namespace Iql.Entities.Lists
 
         public virtual void Clear()
         {
-            _rootList.Clear();
+            var copy = _rootList.ToList();
+            for (var i = 0; i < copy.Count; i++)
+            {
+                Remove(copy[i]);
+            }
         }
 
         public bool Contains(object value)
@@ -83,11 +144,6 @@ namespace Iql.Entities.Lists
         public int IndexOf(object value)
         {
             return ((IList)_rootList).IndexOf(value);
-        }
-
-        public void Insert(int index, object value)
-        {
-            Insert(index, (T)value);
         }
 
         void IList.Remove(object value)
@@ -122,31 +178,9 @@ namespace Iql.Entities.Lists
 
         public bool Contains(T item)
         {
-            return _rootList.Contains(item);
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            _rootList.CopyTo(array, arrayIndex);
-        }
-
-        public void CopyTo(Array array, int index)
-        {
-            ((ICollection)_rootList).CopyTo(array, index);
-        }
-
-        public int Count => _rootList.Count;
-
-        public bool IsSynchronized => ((ICollection)_rootList).IsSynchronized;
-
-        public object SyncRoot => ((ICollection)_rootList).SyncRoot;
-
-        public bool IsReadOnly => false;
-
-        object IList.this[int index]
-        {
-            get { return ((IList)_rootList)[index]; }
-            set { ((IList)_rootList)[index] = value; }
+            return EnsureUnique
+                ? _rootLookup.ContainsKey(item)
+                : _rootList.Contains(item);
         }
 
         public int IndexOf(T item)
@@ -159,21 +193,101 @@ namespace Iql.Entities.Lists
             _rootList.Insert(index, item);
         }
 
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            _rootList.CopyTo(array, arrayIndex);
+        }
+
+        public void CopyTo(Array array, int index)
+        {
+            ((ICollection)_rootList).CopyTo(array, index);
+        }
+
         public virtual void RemoveAt(int index)
         {
             var item = this[index];
-            Emit(item, ObservableListChangeKind.Removing);
+            var ev = Emit(item, ObservableListChangeKind.Removing);
+            if (ev != null && ev.Disallow)
+            {
+                return;
+            }
+
+            _noEvents = true;
             _rootList.RemoveAt(index);
+            _noEvents = false;
+            if (EnsureUnique)
+            {
+                _rootLookup.Remove(item);
+            }
             Emit(item, ObservableListChangeKind.Removed);
         }
 
-        public bool IsFixedSize => ((IList)_rootList).IsFixedSize;
+        public void Insert(int index, object value)
+        {
+            Insert(index, (T)value);
+        }
 
         public T this[int index]
         {
-            get { return _rootList[index]; }
-            set { _rootList[index] = value; }
+            get
+            {
+                return _rootList[index];
+            }
+            set
+            {
+                if (!_noEvents && EnsureUnique && _rootLookup.ContainsKey((T)value))
+                {
+                    return;
+                }
+                var old = _rootList[index];
+                if (Equals(old, value))
+                {
+                    return;
+                }
+
+                if (!_noEvents)
+                {
+                    var ev = Emit(old, ObservableListChangeKind.Removing);
+                    if (ev != null && ev.Disallow)
+                    {
+                        return;
+                    }
+                }
+
+                _rootLookup.Remove(old);
+                _rootList[index] = default(T);
+                if (!_noEvents)
+                {
+                    Emit(old, ObservableListChangeKind.Removed);
+                    var ev = Emit(value, ObservableListChangeKind.Adding);
+                    if (ev != null && ev.Disallow)
+                    {
+                        RemoveAt(index);
+                        return;
+                    }
+                }
+                _rootList[index] = value;
+                if (!_noEvents)
+                {
+                    Emit(value, ObservableListChangeKind.Added);
+                }
+                _rootLookup.Add(value, true);
+            }
         }
+
+        object IList.this[int index]
+        {
+            get => this[index];
+            set => this[index] = (T)value;
+        }
+
+        public int Count => _rootList.Count;
+
+        public bool IsSynchronized => ((ICollection)_rootList).IsSynchronized;
+
+        public object SyncRoot => ((ICollection)_rootList).SyncRoot;
+
+        public bool IsReadOnly => false; public bool IsFixedSize => ((IList)_rootList).IsFixedSize;
 
         protected ObservableListChangeEvent<T> Emit(T item, ObservableListChangeKind kind)
         {

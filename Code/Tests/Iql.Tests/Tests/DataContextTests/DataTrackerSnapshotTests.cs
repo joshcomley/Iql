@@ -3175,6 +3175,39 @@ namespace Iql.Tests.Tests.DataContextTests
         }
 
         [TestMethod]
+        public async Task TestDeletingAPivotEntity()
+        {
+            var dbClient = new Client
+            {
+                Id = 1212,
+                Name = "dbClient",
+                Description = "def"
+            };
+            var dbClientCategory = new ClientCategory
+            {
+                Id = 2222,
+                Name = "dbClientCategory"
+            };
+            var dbClientCategoryPivot = new ClientCategoryPivot
+            {
+                ClientId = 1212,
+                CategoryId = 2222
+            };
+            AppDbContext.InMemoryDb.Clients.Add(dbClient);
+            AppDbContext.InMemoryDb.ClientCategories.Add(dbClientCategory);
+            AppDbContext.InMemoryDb.ClientCategoriesPivot.Add(dbClientCategoryPivot);
+            var clientCategory = await Db.ClientCategories.Expand(_ => _.Clients).GetWithKeyAsync(2222);
+            var clientCategoryState = Db.GetEntityState(clientCategory);
+            var clientCategoryClientsState = clientCategoryState.GetPropertyState(nameof(ClientCategory.Clients));
+            Assert.AreEqual(0, clientCategoryClientsState.ItemsRemoved.Count);
+            Assert.AreEqual(0, clientCategoryClientsState.ItemsRemovedSinceSnapshot.Count);
+            Db.AddSnapshot();
+            clientCategory.Clients.Remove(clientCategory.Clients[0]);
+            Assert.AreEqual(1, clientCategoryClientsState.ItemsRemoved.Count);
+            Assert.AreEqual(1, clientCategoryClientsState.ItemsRemovedSinceSnapshot.Count);
+        }
+
+        [TestMethod]
         public async Task TestAddingAPivotEntityInASnapshotAndRemovingTheSnapshot()
         {
             var dbClient = new Client

@@ -108,12 +108,12 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        public ObservableList<IEntityStateBase> ItemsChanged => _itemsChanged = _itemsChanged ?? new ObservableList<IEntityStateBase>();
-        public ObservableList<IEntityStateBase> ItemsRemoved => _itemsRemoved = _itemsRemoved ?? new ObservableList<IEntityStateBase>();
-        public ObservableList<IEntityStateBase> ItemsAdded => _itemsAdded = _itemsAdded ?? new ObservableList<IEntityStateBase>();
-        public ObservableList<IEntityStateBase> ItemsChangedSinceSnapshot => _itemsChangedSinceSnapshot = _itemsChangedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
-        public ObservableList<IEntityStateBase> ItemsRemovedSinceSnapshot => _itemsRemovedSinceSnapshot = _itemsRemovedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
-        public ObservableList<IEntityStateBase> ItemsAddedSinceSnapshot => _itemsAddedSinceSnapshot = _itemsAddedSinceSnapshot ?? new ObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsChanged => _itemsChanged = _itemsChanged ?? new UniqueObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsRemoved => _itemsRemoved = _itemsRemoved ?? new UniqueObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsAdded => _itemsAdded = _itemsAdded ?? new UniqueObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsChangedSinceSnapshot => _itemsChangedSinceSnapshot = _itemsChangedSinceSnapshot ?? new UniqueObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsRemovedSinceSnapshot => _itemsRemovedSinceSnapshot = _itemsRemovedSinceSnapshot ?? new UniqueObservableList<IEntityStateBase>();
+        public ObservableList<IEntityStateBase> ItemsAddedSinceSnapshot => _itemsAddedSinceSnapshot = _itemsAddedSinceSnapshot ?? new UniqueObservableList<IEntityStateBase>();
 
         private IqlEventSubscriberManager _eventSubscriptionManager;
         private IqlEventSubscriberManager EventSubscriberManager => _eventSubscriptionManager = _eventSubscriptionManager ?? new IqlEventSubscriberManager();
@@ -600,6 +600,16 @@ namespace Iql.Data.Tracking.State
                             {
                                 ItemsAddedSinceSnapshot.Add(state);
                             }
+                            //if ((state.IsNew || HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote)) &&
+                            //    !ItemsAdded.Contains(state))
+                            //{
+                            //    ItemsAdded.Add(state);
+                            //}
+                            //if ((state.IsNew || HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot)) &&
+                            //    !ItemsAddedSinceSnapshot.Contains(state))
+                            //{
+                            //    ItemsAddedSinceSnapshot.Add(state);
+                            //}
                             Watch(state);
                             UpdateHasChanged();
                             //RelatedListItemAdded(_, relatedList);
@@ -610,10 +620,18 @@ namespace Iql.Data.Tracking.State
                                 ItemsAdded.Remove(state);
                                 ItemsAddedSinceSnapshot.Remove(state);
                             }
-                            else
+                            else 
                             {
                                 ItemsRemoved.Add(state);
                                 ItemsRemovedSinceSnapshot.Add(state);
+                                //if (!ItemsRemoved.Contains(state))
+                                //{
+                                //    ItemsRemoved.Add(state);
+                                //}
+                                //if (!ItemsRemovedSinceSnapshot.Contains(state))
+                                //{
+                                //    ItemsRemovedSinceSnapshot.Add(state);
+                                //}
                             }
                             Watch(state);
                             UpdateHasChanged();
