@@ -132,8 +132,6 @@ namespace Iql.Data.Tracking.State
             get { return _propertyChanger = _propertyChanger ?? Property.TypeDefinition.ResolveChanger(); }
         }
 
-        public string HasChangedText { get; private set; }
-
         public bool IsRelationshipCollection
         {
             get
@@ -547,10 +545,7 @@ namespace Iql.Data.Tracking.State
                     if (state.IsNew || HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd,
                         changeCalculationKind))
                     {
-                        if (!itemsAdded.Contains(state))
-                        {
-                            itemsAdded.Add(state);
-                        }
+                        itemsAdded.Add(state);
                     }
                     else
                     {
