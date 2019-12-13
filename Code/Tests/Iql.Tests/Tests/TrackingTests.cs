@@ -20,6 +20,45 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task TestChangeLocalPropertyEventIsFiredWhenEntityIsUpdated()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 7,
+                Name = "Test client",
+                TypeId = 2
+            });
+            var clientState = await Db.Clients.GetStateWithKeyAsync(7);
+            var nameState = clientState.GetPropertyState(nameof(Client.Name));
+            var localValueChangedCount = 0;
+            var entityPropertyLocalValueChangedCount = 0;
+            Tuple<string, string> localValueChangedLog = null;
+            Tuple<string, string> entityPropertyLocalValueChangedLog = null;
+            nameState.LocalValueChanged.Subscribe(_ =>
+            {
+                localValueChangedCount++;
+                localValueChangedLog = new Tuple<string, string>((string)_.NewValue, clientState.Entity.Name);
+            });
+            clientState.PropertyLocalValueChanged.Subscribe(_ =>
+            {
+                entityPropertyLocalValueChangedCount++;
+                entityPropertyLocalValueChangedLog = new Tuple<string, string>((string)_.NewValue, clientState.Entity.Name);
+            });
+            nameState.LocalValue = "New value 1";
+            Assert.AreEqual(1, localValueChangedCount);
+            Assert.AreEqual(1, entityPropertyLocalValueChangedCount);
+            Assert.AreEqual(localValueChangedLog.Item1, localValueChangedLog.Item2, "Property event has wrong value");
+            Assert.AreEqual(entityPropertyLocalValueChangedLog.Item1, entityPropertyLocalValueChangedLog.Item2, "Entity event has wrong value");
+            localValueChangedLog = null;
+            entityPropertyLocalValueChangedLog = null;
+            clientState.Entity.Name = "New value 2";
+            Assert.AreEqual(2, localValueChangedCount);
+            Assert.AreEqual(2, entityPropertyLocalValueChangedCount);
+            Assert.AreEqual(localValueChangedLog.Item1, localValueChangedLog.Item2, "Entity property event has wrong value");
+            Assert.AreEqual(entityPropertyLocalValueChangedLog.Item1, entityPropertyLocalValueChangedLog.Item2, "Entity event has wrong value");
+        }
+
+        [TestMethod]
         public async Task TestGetDataContextForUntrackedEntity()
         {
             AppDbContext.InMemoryDb.Clients.Add(new Client
@@ -192,8 +231,8 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(person.Id, personTypeMap.PersonId);
             Assert.AreEqual(person, personTypeMap.Person);
         }
-		
-		[TestMethod]
+
+        [TestMethod]
         public async Task
             AddingAnEntityToARelatedListWithTheRelationshipReferenceAlreadySetShouldStillPropogateKeyValues()
         {

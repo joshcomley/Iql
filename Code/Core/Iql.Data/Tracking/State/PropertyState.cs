@@ -404,11 +404,18 @@ namespace Iql.Data.Tracking.State
 
         private IProperty RelationshipOtherEndProperty => _relationshipOtherEndProperty = _relationshipOtherEndProperty ?? Property.Relationship.OtherEnd.Property;
 
+        private bool _settingLocalValue = false;
         public object LocalValue
         {
             get => LocalValueSet ? _localValue : RemoteValue;
             set
             {
+                if (_settingLocalValue)
+                {
+                    return;
+                }
+
+                _settingLocalValue = true;
                 LocalValueSet = true;
                 var oldValue = _localValue;
                 _localValue = value;
@@ -419,6 +426,10 @@ namespace Iql.Data.Tracking.State
                     DataTracker.NotifyLocalValueChanged(this);
                 }
 
+                if(EntityState != null)
+                {
+                    Property.SetValue(EntityState.Entity, value);
+                }
                 if (oldValue != value)
                 {
                     EntityState?.NotifyPropertyLocalValueChange(oldValue, value, this);
@@ -450,6 +461,7 @@ namespace Iql.Data.Tracking.State
                     }
                 }
                 UpdateHasChanged();
+                _settingLocalValue = false;
             }
         }
 

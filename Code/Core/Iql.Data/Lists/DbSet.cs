@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Data.DataStores;
+using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Entities.Functions;
 using Iql.Entities.Relationships;
@@ -63,6 +64,11 @@ namespace Iql.Data.Lists
         public async Task<T> GetWithKeyAsync(TKey key)
         {
             return (await GetWithKeyWithResponseAsync(key)).Data;
+        }
+
+        public async Task<IEntityState<T>> GetStateWithKeyAsync(TKey key)
+        {
+            return (await GetWithKeyWithResponseAsync(key)).EntityState;
         }
 
         public async Task<T> GetWithKeyOrEntityAsync(object keyOrEntity)
