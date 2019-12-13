@@ -1,19 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Iql.Data.Tracking;
 
 namespace Iql.Data.Crud.Operations.Results
 {
     public class FlattenedGetDataResult<T> : DataResult<T, Dictionary<Type, IList>>, IFlattenedGetDataResult
         where T : class
     {
+        public DataTracker DataTracker { get; }
         public bool IsOffline { get; set; }
         public FlattenedGetDataResult(
+            DataTracker dataTracker,
             Dictionary<Type, IList> data,
             GetDataOperation<T> operation,
             bool success,
             RequestStatus requestStatus = RequestStatus.Online) : base(data, operation, success, requestStatus)
         {
+            DataTracker = dataTracker;
             Data = new Dictionary<Type, IList>();
         }
         private bool _matchedDelayedInitialized;

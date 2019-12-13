@@ -1051,12 +1051,12 @@ namespace Iql.Data.Context
 
             var flattened = new Dictionary<Type, IList>();
             flattened.Add(typeof(T), list);
-            var flattenedGetDataResult = new FlattenedGetDataResult<T>(flattened, getOperation, getDataResult.Success);
+            var flattenedGetDataResult = new FlattenedGetDataResult<T>(DataTracker, flattened, getOperation, getDataResult.Success);
             flattenedGetDataResult.Root = list;
             flattenedGetDataResult.Queryable = this;
             var dbList = await DataContext.TrackGetDataResultAsync(
                 flattenedGetDataResult);
-            var result = new GetDataResult<T>(getDataResult.IsOffline, dbList, getOperation, getDataResult.Success);
+            var result = new GetDataResult<T>(getDataResult.IsOffline, DataTracker, dbList, getOperation, getDataResult.Success);
             return result;
         }
 

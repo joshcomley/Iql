@@ -5,17 +5,32 @@ using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Extensions;
 using Iql.Data.Paging;
+using Iql.Data.Tracking;
+using Iql.Data.Tracking.State;
 using Iql.Queryable.Operations;
 
 namespace Iql.Data.Lists
 {
     public class DbList<T> : EntityList<T>, IDbList where T : class
     {
-        public DbList(IEnumerable<T> source = null)
+        public DbList(DataTracker dataTracker, IEnumerable<T> source = null)
         {
+            DataTracker = dataTracker;
+            TrackingSet = dataTracker?.TrackingSet<T>();
             this.Initialize(source);
         }
 
+        public EntityState<T>[] States()
+        {
+            if (TrackingSet == null)
+            {
+                return new EntityState<T>[] { };
+            }
+            return this.Select(_ => (EntityState<T>)TrackingSet.GetEntityState(_)).Where(_ => _ != null).ToArray();
+        }
+
+        public DataTracker DataTracker { get; }
+        public TrackingSet<T> TrackingSet { get; }
         public DbQueryable<T> SourceQueryable { get; set; }
         public bool Success { get; set; }
         public PagingInfo PagingInfo { get; set; }
@@ -23,7 +38,7 @@ namespace Iql.Data.Lists
         IDbQueryable IDbList.SourceQueryable
         {
             get => SourceQueryable;
-            set => SourceQueryable = (DbQueryable<T>) value;
+            set => SourceQueryable = (DbQueryable<T>)value;
         }
 
         async Task IDbList.LoadNextPage()
@@ -64,18 +79,20 @@ namespace Iql.Data.Lists
         public bool HasPreviousPage => PagingInfo != null && PagingInfo.Page > 0;
 
         public bool HasNextPage => PagingInfo != null && PagingInfo.Page + 1 < PagingInfo.PageCount;
-        
+
         public DbQueryable<T> NewNextPageQuery()
         {
             if (PagingInfo == null)
             {
                 throw new Exception("No page size defined for this query result");
             }
+
             var queryable = SourceQueryable.Copy();
             if (!HasNextPage)
             {
                 return queryable;
             }
+
             return queryable.Skip(PagingInfo.PageSize).Take(PagingInfo.PageSize);
         }
 
@@ -86,6 +103,7 @@ namespace Iql.Data.Lists
             {
                 Merge(result);
             }
+
             return result.Success;
         }
 
@@ -102,6 +120,7 @@ namespace Iql.Data.Lists
             {
                 Merge(result);
             }
+
             return result.Success;
         }
 
@@ -143,11 +162,13 @@ namespace Iql.Data.Lists
             {
                 throw new Exception("No page size defined for this query result");
             }
+
             var queryable = SourceQueryable.Copy();
             if (PagingInfo.Page == 0)
             {
                 return queryable;
             }
+
             var lastSkipOperation = queryable.Operations.Last(o => o is SkipOperation) as SkipOperation;
             var lastTakeOperation = queryable.Operations.Last(o => o is TakeOperation) as TakeOperation;
             if (lastSkipOperation != null)
@@ -158,6 +179,7 @@ namespace Iql.Data.Lists
             {
                 queryable = queryable.Skip(-PagingInfo.PageSize);
             }
+
             if (lastTakeOperation != null)
             {
                 queryable.Operations.Remove(lastTakeOperation);
@@ -166,6 +188,7 @@ namespace Iql.Data.Lists
             {
                 queryable = queryable.Take(-PagingInfo.PageSize);
             }
+
             return queryable;
         }
     }

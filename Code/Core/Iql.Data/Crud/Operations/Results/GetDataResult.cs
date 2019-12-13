@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Iql.Data.Lists;
+using Iql.Data.Tracking;
 
 namespace Iql.Data.Crud.Operations.Results
 {
     public class AggregatedGetDataResult<T> : IAggregatedGetDataResult
         where T : class
     {
+        public DataTracker DataTracker { get; }
         public long? TotalCount { get; set; }
         public IList Root { get; set; }
         public GetDataResult<T>[] Results { get; }
-        IGetDataResult[] IAggregatedGetDataResult.Results => Results.Select(_ => (IGetDataResult) _).ToArray();
+        IGetDataResult[] IAggregatedGetDataResult.Results => Results.Select(_ => (IGetDataResult)_).ToArray();
         public DbList<T> Data { get; }
 
         public AggregatedGetDataResult(GetDataResult<T>[] results)
@@ -24,7 +26,8 @@ namespace Iql.Data.Crud.Operations.Results
                 var result = results[i];
                 list.AddRange(result.Data);
             }
-            Data = new DbList<T>(list);
+            DataTracker = results.Length > 0 ? results[0].DataTracker : null;
+            Data = new DbList<T>(DataTracker, list);
             Data.Success = results.All(_ => _.Success);
         }
     }
@@ -34,11 +37,13 @@ namespace Iql.Data.Crud.Operations.Results
     {
         object IGetDataResult.Data => Data;
         public bool IsOffline { get; set; }
+        public DataTracker DataTracker { get; }
 
-        public GetDataResult(bool isOffline, DbList<T> data, GetDataOperation<T> operation, bool success) : base(data,
+        public GetDataResult(bool isOffline, DataTracker dataTracker, DbList<T> data, GetDataOperation<T> operation, bool success) : base(data,
             operation, success)
         {
             IsOffline = isOffline;
+            DataTracker = dataTracker;
         }
     }
 }

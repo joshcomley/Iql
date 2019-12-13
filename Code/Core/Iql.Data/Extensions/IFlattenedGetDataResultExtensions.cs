@@ -34,7 +34,7 @@ namespace Iql.Data.Extensions
         public static DbList<T> ToDbList<T>(this FlattenedGetDataResult<T> response)
             where T : class
         {
-            var dbList = new DbList<T>();
+            var dbList = new DbList<T>(response.DataTracker);
             dbList.SourceQueryable = (DbQueryable<T>)response.Queryable;
             if (response.Root != null)
             {

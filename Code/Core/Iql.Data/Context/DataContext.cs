@@ -35,6 +35,7 @@ using Iql.Events;
 using Iql.Extensions;
 using Iql.Parsing;
 using Iql.Parsing.Types;
+using Iql.Queryable;
 using Iql.Queryable.Operations;
 
 namespace Iql.Data.Context
@@ -61,7 +62,7 @@ namespace Iql.Data.Context
         private bool _offlineDataStoreDelayedInitialized;
         private IOfflineDataStore _offlineDataStoreDelayed;
 
-        private IOfflineDataStore _offlineDataStore { get { if(!_offlineDataStoreDelayedInitialized) { _offlineDataStoreDelayedInitialized = true; _offlineDataStoreDelayed = new InMemoryDataStore("OfflineData", AutoIntegerIdStrategy.Negative); } return _offlineDataStoreDelayed; } set { _offlineDataStoreDelayedInitialized = true; _offlineDataStoreDelayed = value; } }
+        private IOfflineDataStore _offlineDataStore { get { if (!_offlineDataStoreDelayedInitialized) { _offlineDataStoreDelayedInitialized = true; _offlineDataStoreDelayed = new InMemoryDataStore("OfflineData", AutoIntegerIdStrategy.Negative); } return _offlineDataStoreDelayed; } set { _offlineDataStoreDelayedInitialized = true; _offlineDataStoreDelayed = value; } }
 
         public DataContextEvents Events => _events = _events ?? new DataContextEvents();
 
@@ -136,8 +137,8 @@ namespace Iql.Data.Context
         {
             return (IEntityState<T>)TemporalDataTracker.AddEntity(entity);
         }
-                                                        private bool _configurationsDelayedInitialized;
-                                                        private Dictionary<string, object> _configurationsDelayed;
+        private bool _configurationsDelayedInitialized;
+        private Dictionary<string, object> _configurationsDelayed;
 
 
         //#if !TypeScript
@@ -147,10 +148,10 @@ namespace Iql.Data.Context
         //        }
         //#endif
 
-        private Dictionary<string, object> _configurations { get { if(!_configurationsDelayedInitialized) { _configurationsDelayedInitialized = true; _configurationsDelayed =             new Dictionary<string, object>(); } return _configurationsDelayed; } set { _configurationsDelayedInitialized = true; _configurationsDelayed = value; } }
+        private Dictionary<string, object> _configurations { get { if (!_configurationsDelayedInitialized) { _configurationsDelayedInitialized = true; _configurationsDelayed = new Dictionary<string, object>(); } return _configurationsDelayed; } set { _configurationsDelayedInitialized = true; _configurationsDelayed = value; } }
         private static bool EntityConfigurationsBuildersDelayedInitialized;
         private static Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuildersDelayed;
-        private static Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuilders { get { if(!EntityConfigurationsBuildersDelayedInitialized) { EntityConfigurationsBuildersDelayedInitialized = true; EntityConfigurationsBuildersDelayed = new Dictionary<Type, EntityConfigurationBuilder>(); } return EntityConfigurationsBuildersDelayed; } set { EntityConfigurationsBuildersDelayedInitialized = true; EntityConfigurationsBuildersDelayed = value; } }
+        private static Dictionary<Type, EntityConfigurationBuilder> EntityConfigurationsBuilders { get { if (!EntityConfigurationsBuildersDelayedInitialized) { EntityConfigurationsBuildersDelayedInitialized = true; EntityConfigurationsBuildersDelayed = new Dictionary<Type, EntityConfigurationBuilder>(); } return EntityConfigurationsBuildersDelayed; } set { EntityConfigurationsBuildersDelayedInitialized = true; EntityConfigurationsBuildersDelayed = value; } }
 
         public static Type FindDataContextTypeForEntityType(Type entityType)
         {
@@ -241,8 +242,19 @@ namespace Iql.Data.Context
         private static bool SynchronisedDataContextConfigurationsDelayedInitialized;
         private static Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>> SynchronisedDataContextConfigurationsDelayed;
 
-        private static Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>> SynchronisedDataContextConfigurations { get { if(!SynchronisedDataContextConfigurationsDelayedInitialized) { SynchronisedDataContextConfigurationsDelayedInitialized = true; SynchronisedDataContextConfigurationsDelayed = new Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>
-                >(); } return SynchronisedDataContextConfigurationsDelayed; } set { SynchronisedDataContextConfigurationsDelayedInitialized = true; SynchronisedDataContextConfigurationsDelayed = value; } }
+        private static Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>> SynchronisedDataContextConfigurations
+        {
+            get
+            {
+                if (!SynchronisedDataContextConfigurationsDelayedInitialized)
+                {
+                    SynchronisedDataContextConfigurationsDelayedInitialized = true; SynchronisedDataContextConfigurationsDelayed = new Dictionary<IEntityConfigurationBuilder, Dictionary<string, SynchronisedDataContextConfiguration>
+>();
+                }
+                return SynchronisedDataContextConfigurationsDelayed;
+            }
+            set { SynchronisedDataContextConfigurationsDelayedInitialized = true; SynchronisedDataContextConfigurationsDelayed = value; }
+        }
         public DataTracker OfflineDataTracker => SupportsOffline ? SynchronisedConfiguration.OfflineDataTracker : null;
 
         private SynchronisedDataContextConfiguration SynchronisedConfiguration
@@ -425,7 +437,7 @@ namespace Iql.Data.Context
                 }
                 return _hasOfflineChangesChanged;
             }
-        } 
+        }
 
         public bool TrackEntities { get; set; } = true;
         public string SynchronicityKey { get; set; } = Guid.NewGuid().ToString();
@@ -518,7 +530,7 @@ namespace Iql.Data.Context
         private bool _dbSetsByEntityTypeDelayedInitialized;
         private Dictionary<Type, PropertyInfo> _dbSetsByEntityTypeDelayed;
 
-        private Dictionary<Type, PropertyInfo> _dbSetsByEntityType { get { if(!_dbSetsByEntityTypeDelayedInitialized) { _dbSetsByEntityTypeDelayedInitialized = true; _dbSetsByEntityTypeDelayed = new Dictionary<Type, PropertyInfo>(); } return _dbSetsByEntityTypeDelayed; } set { _dbSetsByEntityTypeDelayedInitialized = true; _dbSetsByEntityTypeDelayed = value; } }
+        private Dictionary<Type, PropertyInfo> _dbSetsByEntityType { get { if (!_dbSetsByEntityTypeDelayedInitialized) { _dbSetsByEntityTypeDelayedInitialized = true; _dbSetsByEntityTypeDelayed = new Dictionary<Type, PropertyInfo>(); } return _dbSetsByEntityTypeDelayed; } set { _dbSetsByEntityTypeDelayedInitialized = true; _dbSetsByEntityTypeDelayed = value; } }
 
         public IDbQueryable GetDbSetByEntityType(Type entityType)
         {
@@ -657,7 +669,7 @@ namespace Iql.Data.Context
         private bool _dbSetsBySetTypeDelayedInitialized;
         private Dictionary<Type, PropertyInfo> _dbSetsBySetTypeDelayed;
 
-        private Dictionary<Type, PropertyInfo> _dbSetsBySetType { get { if(!_dbSetsBySetTypeDelayedInitialized) { _dbSetsBySetTypeDelayedInitialized = true; _dbSetsBySetTypeDelayed = new Dictionary<Type, PropertyInfo>(); } return _dbSetsBySetTypeDelayed; } set { _dbSetsBySetTypeDelayedInitialized = true; _dbSetsBySetTypeDelayed = value; } }
+        private Dictionary<Type, PropertyInfo> _dbSetsBySetType { get { if (!_dbSetsBySetTypeDelayedInitialized) { _dbSetsBySetTypeDelayedInitialized = true; _dbSetsBySetTypeDelayed = new Dictionary<Type, PropertyInfo>(); } return _dbSetsBySetTypeDelayed; } set { _dbSetsBySetTypeDelayedInitialized = true; _dbSetsBySetTypeDelayed = value; } }
         public IDbQueryable GetDbSetBySetType(Type setType)
         {
             if (!_dbSetsBySetType.ContainsKey(setType))
@@ -1199,7 +1211,7 @@ namespace Iql.Data.Context
         private static bool DefaultValuePlaceholderInstanceDelayedInitialized;
         private static DefaultValuePlaceholder DefaultValuePlaceholderInstanceDelayed;
 
-        private static DefaultValuePlaceholder DefaultValuePlaceholderInstance { get { if(!DefaultValuePlaceholderInstanceDelayedInitialized) { DefaultValuePlaceholderInstanceDelayedInitialized = true; DefaultValuePlaceholderInstanceDelayed = new DefaultValuePlaceholder(); } return DefaultValuePlaceholderInstanceDelayed; } set { DefaultValuePlaceholderInstanceDelayedInitialized = true; DefaultValuePlaceholderInstanceDelayed = value; } }
+        private static DefaultValuePlaceholder DefaultValuePlaceholderInstance { get { if (!DefaultValuePlaceholderInstanceDelayedInitialized) { DefaultValuePlaceholderInstanceDelayedInitialized = true; DefaultValuePlaceholderInstanceDelayed = new DefaultValuePlaceholder(); } return DefaultValuePlaceholderInstanceDelayed; } set { DefaultValuePlaceholderInstanceDelayedInitialized = true; DefaultValuePlaceholderInstanceDelayed = value; } }
 
         private MethodInfo ValidateEntityInternalAsyncMethod
         {
@@ -1853,7 +1865,7 @@ namespace Iql.Data.Context
         public virtual async Task<CountDataResult<TEntity>> CountAsync<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class
         {
-            var response = new FlattenedGetDataResult<TEntity>(null, operation, true);
+            var response = new FlattenedGetDataResult<TEntity>(null, null, operation, true);
             var queuedGetDataOperation = new QueuedGetDataOperation<TEntity>(
                 operation,
                 response);
@@ -1914,7 +1926,8 @@ namespace Iql.Data.Context
                 }
             }
 
-            var response = new FlattenedGetDataResult<TEntity>(null, operation, true);
+            var localDataTracker = ResolveDataTracker(operation.Queryable, this);
+            var response = new FlattenedGetDataResult<TEntity>(localDataTracker, null, operation, true);
             response.Queryable = operation.Queryable;
             // perform get and set up tracking on the objects
             var queuedGetDataOperation = new QueuedGetDataOperation<TEntity>(
@@ -1946,7 +1959,7 @@ namespace Iql.Data.Context
             foreach (var grouping in all)
             {
                 var list = grouping.Value;
-                foreach(var item in list)
+                foreach (var item in list)
                 {
                     var entityStateBase = GetEntityState(item);
                     if (entityStateBase != null)
@@ -1957,7 +1970,7 @@ namespace Iql.Data.Context
             }
 
             var getDataResult =
-                new GetDataResult<TEntity>(response.IsOffline, dbList, operation, response.IsSuccessful())
+                new GetDataResult<TEntity>(response.IsOffline, localDataTracker, dbList, operation, response.IsSuccessful())
                 {
                     TotalCount = response.TotalCount
                 };
@@ -1965,6 +1978,24 @@ namespace Iql.Data.Context
             ApplyPaging(dbList, response);
 
             return getDataResult;
+        }
+
+        public static DataTracker ResolveDataTracker(IQueryableBase sourceQueryable, IDataContext dataContext)
+        {
+            bool shouldTrackResults = dataContext.TrackEntities;
+            if (sourceQueryable != null && sourceQueryable.TrackEntities.HasValue)
+            {
+                shouldTrackResults = sourceQueryable.TrackEntities.Value;
+            }
+
+            var localDataTracker = dataContext.TemporalDataTracker;
+            if (!shouldTrackResults)
+            {
+                localDataTracker = new DataContextDataTracker(dataContext, DataTrackerKind.Temporal, dataContext.EntityConfigurationContext,
+                    "No Tracking", false, true);
+            }
+
+            return localDataTracker;
         }
 
         private async Task RunGetAsync<TEntity>(QueuedGetDataOperation<TEntity> queuedGetDataOperation, FlattenedGetDataResult<TEntity> response)
@@ -2004,25 +2035,15 @@ namespace Iql.Data.Context
             response.Data = EntityConfigurationContext.EnsureTypedResult(response.Data);
             response.Root = EntityConfigurationContext.EnsureTypedList<TEntity>(response.Root);
 #endif
-            var dbList = new DbList<TEntity>();
-            dbList.SourceQueryable = (DbQueryable<TEntity>)response.Queryable;
+            var sourceQueryable = (DbQueryable<TEntity>)response.Queryable;
+            var localDataTracker = response.DataTracker;
+            var dbList = new DbList<TEntity>(localDataTracker);
+            dbList.SourceQueryable = sourceQueryable;
             // Flatten before we merge because the merge will update the result data set with
             // tracked data
             dbList.Success = response.IsSuccessful();
             if (dbList.Success)
             {
-                var shouldTrackResults = TrackEntities;
-                if (dbList.SourceQueryable != null && dbList.SourceQueryable.TrackEntities.HasValue)
-                {
-                    shouldTrackResults = dbList.SourceQueryable.TrackEntities.Value;
-                }
-
-                var localDataTracker = TemporalDataTracker;
-                if (!shouldTrackResults)
-                {
-                    localDataTracker = new DataContextDataTracker(this, DataTrackerKind.Temporal, EntityConfigurationContext, "No Tracking", false, true);
-                }
-
                 void TrackResponse(DataTracker dataTracker)
                 {
                     if (
@@ -2070,7 +2091,7 @@ namespace Iql.Data.Context
                     }
                 }
 
-                if (shouldTrackResults && !response.IsOffline)
+                if (localDataTracker.LiveTracking && !response.IsOffline)
                 {
                     this.ForMatchingDataContexts(dataContext =>
                     {

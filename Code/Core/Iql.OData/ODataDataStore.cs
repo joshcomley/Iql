@@ -291,10 +291,14 @@ namespace Iql.OData
             FlattenedGetDataResult<TEntity> result = null)
             where TEntity : class
         {
-            result = result ?? new FlattenedGetDataResult<TEntity>(
-                         new Dictionary<Type, IList>(),
-                         new GetDataOperation<TEntity>(null, null),
-                         false);
+            if(result == null)
+            {
+                result = new FlattenedGetDataResult<TEntity>(
+                    null,
+                    new Dictionary<Type, IList>(),
+                    new GetDataOperation<TEntity>(null, null),
+                    false);
+            }
             if (httpResult.IsOffline)
             {
                 result.RequestStatus = RequestStatus.Offline;
