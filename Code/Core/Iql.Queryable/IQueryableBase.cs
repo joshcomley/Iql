@@ -37,17 +37,27 @@ namespace Iql.Queryable
             , EvaluateContext evaluateContext = null
 #endif
             );
+        Task<object> SingleAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<object> SingleOrDefaultAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
         Task<object> FirstAsync(LambdaExpression expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
-        Task<object> LastAsync(LambdaExpression expression = null
+        Task<object> FirstOrDefaultAsync(LambdaExpression expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
         );
-        Task<object> FirstOrDefaultAsync(LambdaExpression expression = null
+        Task<object> LastAsync(LambdaExpression expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif

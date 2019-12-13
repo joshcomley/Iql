@@ -713,6 +713,72 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task GetSingleState()
+        {
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            });
+            var person = await Db.People.NoTracking().WithKey(1).Expand(p => p.Types).SingleStateAsync();
+            Assert.IsFalse(person.IsTracked);
+            var personTracked = await Db.People.WithKey(1).Expand(p => p.Types).SingleStateAsync();
+            Assert.IsTrue(personTracked.IsTracked);
+        }
+
+        [TestMethod]
+        public async Task GetEntityStatesNonTracked()
+        {
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            });
+            var persons = await Db.People.NoTracking().WithKey(1).Expand(p => p.Types).ToListAsync();
+            var states = persons.States();
+            Assert.AreEqual(1, states.Length);
+            Assert.IsFalse(states[0].IsTracked);
+        }
+
+        [TestMethod]
+        public async Task GetEntityStatesTracked()
+        {
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            });
+            var persons = await Db.People.WithKey(1).Expand(p => p.Types).ToListAsync();
+            var states = persons.States();
+            Assert.AreEqual(1, states.Length);
+            Assert.IsTrue(states[0].IsTracked);
+        }
+
+        [TestMethod]
         public async Task RemovingAPivotEntity()
         {
             AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType

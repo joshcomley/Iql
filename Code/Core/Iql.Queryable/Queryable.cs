@@ -355,7 +355,11 @@ namespace Iql.Queryable
             , EvaluateContext evaluateContext = null
 #endif
         );
-
+        public abstract Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
         public abstract Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -366,6 +370,11 @@ namespace Iql.Queryable
             , EvaluateContext evaluateContext = null
 #endif
             );
+        public abstract Task<T> SingleAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
         public abstract Task<T> FirstAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
@@ -404,6 +413,30 @@ namespace Iql.Queryable
             );
         }
 
+        async Task<object> IQueryableBase.SingleAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await SingleAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
+        async Task<object> IQueryableBase.SingleOrDefaultAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await SingleOrDefaultAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+, evaluateContext
+#endif
+            );
+        }
         async Task<object> IQueryableBase.FirstOrDefaultAsync(LambdaExpression expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null

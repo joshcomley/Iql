@@ -400,7 +400,7 @@ namespace Iql.Data.Context
             return SearchPropertiesWithTerms(searchTerms, properties);
         }
 
-        public async Task<T> SingleAsync(Expression<Func<T, bool>> expression = null
+        public override async Task<T> SingleAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -411,6 +411,33 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
                 )).Data;
+        }
+
+        public async Task<EntityState<T>> SingleStateAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await SingleWithResponseAsync(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            )).EntityState;
+        }
+
+
+        public async Task<EntityState<T>> SingleOrDefaultStateAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await SingleOrDefaultWithResponseAsync(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            ))?.EntityState;
         }
 
         public async Task<GetSingleResult<T>> SingleWithResponseAsync(Expression<Func<T, bool>> expression = null
@@ -445,7 +472,7 @@ namespace Iql.Data.Context
             return ResolveSingle(result);
         }
 
-        public async Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> expression = null
+        public override async Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -501,6 +528,32 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
             )).Data;
+        }
+
+        public async Task<EntityState<T>> FirstStateAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await FirstWithResponseAsync(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            )).EntityState;
+        }
+
+        public async Task<EntityState<T>> FirstOrDefaultStateAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await FirstOrDefaultWithResponseAsync(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            ))?.EntityState;
         }
 
         public async Task<GetSingleResult<T>> FirstWithResponseAsync(Expression<Func<T, bool>> expression = null
@@ -592,6 +645,32 @@ namespace Iql.Data.Context
                                 , evaluateContext
 #endif
             )).Data;
+        }
+
+        public async Task<EntityState<T>> LastStateAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await LastWithResponseAsync(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            )).EntityState;
+        }
+
+        public async Task<EntityState<T>> LastOrDefaultStateAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return (await LastOrDefaultWithResponseAsync(expression
+#if TypeScript
+                                , evaluateContext
+#endif
+            )).EntityState;
         }
 
         public async Task<GetSingleResult<T>> LastWithResponseAsync(Expression<Func<T, bool>> expression = null
@@ -817,6 +896,26 @@ namespace Iql.Data.Context
 #endif
             );
             return result?.Data;
+        }
+
+        public async Task<EntityState<T>[]> ToStateListAsync(Expression<Func<T, bool>> expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            var result = await ToListWithResponseAsync(expression
+#if TypeScript
+                , evaluateContext
+#endif
+            );
+            var data = result?.Data;
+            if(data != null)
+            {
+                return data.States();
+            }
+
+            return null;
         }
 
         async Task<IDbList> IDbQueryable.ToListAsync(LambdaExpression expression = null
@@ -1127,6 +1226,7 @@ namespace Iql.Data.Context
             }
             return new GetSingleResult<T>(
                 result.Data[0],
+                result.Data.States().SingleOrDefault(),
                 result.Operation,
                 result.Success);
         }
@@ -1148,6 +1248,7 @@ namespace Iql.Data.Context
             }
             return new GetSingleResult<T>(
                 data,
+                result.Data.States().SingleOrDefault(),
                 result.Operation,
                 result.Success);
         }
@@ -1160,6 +1261,7 @@ namespace Iql.Data.Context
             }
             return new GetSingleResult<T>(
                 result.Data[0],
+                result.Data.States().SingleOrDefault(),
                 result.Operation,
                 result.Success);
         }
@@ -1169,6 +1271,7 @@ namespace Iql.Data.Context
             var data = result.Data.Count < 1 ? null : result.Data[0];
             return new GetSingleResult<T>(
                 data,
+                result.Data.States().SingleOrDefault(),
                 result.Operation,
                 result.Success);
         }
@@ -1179,8 +1282,11 @@ namespace Iql.Data.Context
             {
                 throw new Exception("No entities returned for \"Last\" call");
             }
+
+            var data = result.Data[result.Data.Count];
             return new GetSingleResult<T>(
-                result.Data[result.Data.Count],
+                data,
+                result.Data.States().SingleOrDefault(_ => _ == data),
                 result.Operation,
                 result.Success);
         }
@@ -1190,6 +1296,7 @@ namespace Iql.Data.Context
             var data = result.Data.Count < 1 ? null : result.Data[result.Data.Count];
             return new GetSingleResult<T>(
                 data,
+                result.Data.States().SingleOrDefault(_ => _ == data),
                 result.Operation,
                 result.Success);
         }
@@ -1404,6 +1511,163 @@ namespace Iql.Data.Context
         {
             return Add((T)entity);
         }
+
+        async Task<IEntityStateBase> IDbQueryable.SingleStateAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await SingleStateAsync((Expression<Func<T, bool>>) expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IEntityStateBase> IDbQueryable.SingleOrDefaultStateAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await SingleOrDefaultStateAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IGetSingleResult> IDbQueryable.SingleWithResponseAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await SingleWithResponseAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IGetSingleResult> IDbQueryable.SingleOrDefaultWithResponseAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await SingleOrDefaultWithResponseAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IEntityStateBase> IDbQueryable.FirstStateAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await FirstStateAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IEntityStateBase> IDbQueryable.FirstOrDefaultStateAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await FirstOrDefaultStateAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IGetSingleResult> IDbQueryable.FirstWithResponseAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await FirstWithResponseAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IGetSingleResult> IDbQueryable.FirstOrDefaultWithResponseAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await FirstOrDefaultWithResponseAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IEntityStateBase> IDbQueryable.LastStateAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await LastStateAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IEntityStateBase> IDbQueryable.LastOrDefaultStateAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await LastOrDefaultStateAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IGetSingleResult> IDbQueryable.LastWithResponseAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await LastWithResponseAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
+        async Task<IGetSingleResult> IDbQueryable.LastOrDefaultWithResponseAsync(LambdaExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return await LastOrDefaultWithResponseAsync((Expression<Func<T, bool>>)expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
 
         public override void DeleteEntity(object entity)
         {

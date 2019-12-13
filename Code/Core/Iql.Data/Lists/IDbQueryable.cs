@@ -23,6 +23,66 @@ namespace Iql.Data.Lists
     {
         void DeleteEntity(object entity);
         IEntityStateBase Add(object entity);
+        Task<IEntityStateBase> SingleStateAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IEntityStateBase> SingleOrDefaultStateAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IGetSingleResult> SingleWithResponseAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IGetSingleResult> SingleOrDefaultWithResponseAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IEntityStateBase> FirstStateAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IEntityStateBase> FirstOrDefaultStateAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IGetSingleResult> FirstWithResponseAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IGetSingleResult> FirstOrDefaultWithResponseAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IEntityStateBase> LastStateAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IEntityStateBase> LastOrDefaultStateAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IGetSingleResult> LastWithResponseAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+        Task<IGetSingleResult> LastOrDefaultWithResponseAsync(LambdaExpression expression = null
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
         Task<IDbList> ToListAsync(LambdaExpression expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
