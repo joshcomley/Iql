@@ -15,8 +15,8 @@ namespace Iql.Entities
         string Placeholder { get; set; }
         bool Sortable { get; set; }
         bool Matches(params string[] names);
-        EventEmitter<ValueChangedEvent<IqlPropertyEditKind>> EditKindChanged { get; }
-        EventEmitter<ValueChangedEvent<IqlPropertyReadKind>> ReadKindChanged { get; }
+        EventEmitter<ValueChangedEvent<IqlPropertyEditKind, IPropertyGroup>> EditKindChanged { get; }
+        EventEmitter<ValueChangedEvent<IqlPropertyReadKind, IPropertyGroup>> ReadKindChanged { get; }
         IPropertyGroup SetReadOnlyAndHidden();
         IPropertyGroup SetReadOnly();
         IPropertyGroup SetEditorReadOnly();

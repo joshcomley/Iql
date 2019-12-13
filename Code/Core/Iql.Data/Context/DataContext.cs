@@ -408,7 +408,7 @@ namespace Iql.Data.Context
 
         public bool HasOfflineChanges => OfflineDataTracker != null && OfflineDataTracker.HasChanges;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasOfflineChangesChanged
+        public EventEmitter<ValueChangedEvent<bool, DataTrackerState>> HasOfflineChangesChanged
         {
             get
             {
@@ -420,7 +420,7 @@ namespace Iql.Data.Context
                     }
                     else
                     {
-                        _hasOfflineChangesChanged = new EventEmitter<ValueChangedEvent<bool>>();
+                        _hasOfflineChangesChanged = new EventEmitter<ValueChangedEvent<bool, DataTrackerState>>();
                     }
                 }
                 return _hasOfflineChangesChanged;
@@ -1213,7 +1213,7 @@ namespace Iql.Data.Context
         private IDataStore _dataStore;
         private SynchronisedDataContextConfiguration _synchronisedConfiguration;
         private DataContextEvents _events;
-        private EventEmitter<ValueChangedEvent<bool>> _hasOfflineChangesChanged;
+        private EventEmitter<ValueChangedEvent<bool, DataTrackerState>> _hasOfflineChangesChanged;
 
         private MethodInfo ValidateEntityPropertyInternalAsyncMethod
         {
@@ -2285,8 +2285,8 @@ namespace Iql.Data.Context
 
         public bool HasChangesSinceSnapshot => TemporalDataTracker.HasChangesSinceSnapshot;
         public bool HasChanges => TemporalDataTracker.HasChanges;
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged => TemporalDataTracker.HasChangesSinceSnapshotChanged;
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => TemporalDataTracker.HasChangesChanged;
+        public EventEmitter<ValueChangedEvent<bool, DataTrackerState>> HasChangesSinceSnapshotChanged => TemporalDataTracker.HasChangesSinceSnapshotChanged;
+        public EventEmitter<ValueChangedEvent<bool, DataTrackerState>> HasChangesChanged => TemporalDataTracker.HasChangesChanged;
         public TrackerSnapshot[] Snapshots => TemporalDataTracker.Snapshots;
 
         public int SnapshotsCount => TemporalDataTracker.SnapshotsCount;

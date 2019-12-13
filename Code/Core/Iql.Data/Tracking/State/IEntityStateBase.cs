@@ -13,9 +13,12 @@ namespace Iql.Data.Tracking.State
 {
     public interface IEntityStateBase : IJsonSerializable, IStateful, IDisposable, ILockable
     {
-        EventEmitter<ValueChangedEvent<EntityStatus>> StatusChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> StatusHasChangedChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> StatusHasChangedSinceSnapshotChanged { get; }
+        bool IsTracked { get; }
+        bool IsIqlEntityState { get; }
+        EventEmitter<ValueChangedEvent<object, IPropertyState>> PropertyLocalValueChanged { get; }
+        EventEmitter<ValueChangedEvent<EntityStatus, IEntityStateBase>> StatusChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> StatusHasChangedChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> StatusHasChangedSinceSnapshotChanged { get; }
         bool StatusHasChanged { get; }
         bool StatusHasChangedSinceSnapshot { get; }
         EntityStatus Status { get; set; }
@@ -26,12 +29,12 @@ namespace Iql.Data.Tracking.State
         void CheckHasChanged();
         bool HasChanged { get; }
         bool HasChangedSinceSnapshot { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasChangedChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasChangedSinceSnapshotChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> AttachedToTrackerChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> PendingInsertChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> IsAttachedToGraphChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> IsNewChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangedChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangedSinceSnapshotChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> AttachedToTrackerChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> PendingInsertChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsAttachedToGraphChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsNewChanged { get; }
         EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }
         bool AttachedToTracker { get; set; }
         bool PendingInsert { get; }
@@ -67,5 +70,12 @@ namespace Iql.Data.Tracking.State
         void UnmarkForDeletion();
         void AbandonPropertyChanges(IProperty[] properties);
         void AddSnapshot();
+        /// <summary>
+        /// For internal use only.
+        /// </summary>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
+        /// <param name="propertyState"></param>
+        void NotifyPropertyLocalValueChange(object oldValue, object newValue, IPropertyState propertyState);
     }
 }

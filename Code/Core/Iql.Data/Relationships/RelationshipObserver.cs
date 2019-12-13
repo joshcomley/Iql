@@ -65,6 +65,8 @@ namespace Iql.Data.Relationships
                 .GetMethod(nameof(PairListTyped));
             MapListTypedMethod = typeof(RelationshipObserver)
                 .GetMethod(nameof(MapListTyped));
+            RestoreRelationshipsTypedMethod = typeof(RelationshipObserver)
+                .GetMethod(nameof(RestoreRelationshipsTyped));
         }
 
         public RelationshipObserver(DataTracker dataTracker)
@@ -76,6 +78,7 @@ namespace Iql.Data.Relationships
         public static MethodInfo MapListTypedMethod { get; set; }
         public static MethodInfo PairListTypedMethod { get; set; }
         public static MethodInfo WatchListTypedMethod { get; set; }
+        public static MethodInfo RestoreRelationshipsTypedMethod { get; set; }
         public DataTracker DataTracker { get; }
 
         public IEntityConfigurationBuilder EntityConfigurationContext { get; set; }
@@ -204,6 +207,20 @@ namespace Iql.Data.Relationships
             return false;
         }
 
+        public void RestoreRelationships(object entity, Type entityType)
+        {
+            RestoreRelationshipsTypedMethod.InvokeGeneric(this, new object[] {entity}, entityType);
+        }
+
+        public void RestoreRelationshipsTyped<T>(T entity)
+            where T : class
+        {
+            var entities = new List<T>();
+            entities.Add(entity);
+            MapListTyped(entities);
+            PairListTyped(entities);
+        }
+
         public void DeleteRelationships(object entity, Type entityType)
         {
             var relationships = EntityConfigurationContext.GetEntityByType(entityType)
@@ -213,9 +230,22 @@ namespace Iql.Data.Relationships
                 var relationship = relationships[i];
                 if (!relationship.ThisIsTarget)
                 {
-                    entity.SetPropertyValue(
-                        relationship.Relationship.Source.Property,
-                        null);
+                    var target = entity.GetPropertyValue(relationship.Relationship.Source.Property);
+                    if (target != null)
+                    {
+                        var targetCollection =
+                            target.GetPropertyValue(relationship.Relationship.Target.Property) as IRelatedList;
+                        if(targetCollection != null)
+                        {
+                            _propertyChangeIgnorer.IgnoreAndRunEvenIfAlreadyIgnored(() =>
+                            {
+                                targetCollection.Remove(entity);
+                            }, new []{ relationship.Relationship.Target.Property }, target);
+                        }
+                    }
+                    //entity.SetPropertyValue(
+                    //    relationship.Relationship.Source.Property,
+                    //    null);
                 }
             }
         }

@@ -19,6 +19,7 @@ namespace Iql.Data.Relationships
         bool IsAttachedToAnotherEntity(object entity, Type entityType);
         bool IsDetachedPivot(object entity, Type entityType);
         void DeleteRelationships(object entity, Type type);
+        void RestoreRelationships(object entity, Type entityType);
         void Clear();
     }
 }

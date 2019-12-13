@@ -103,7 +103,7 @@ namespace Iql.Data.Tracking.State
                 _hasSnapshotValue = value;
                 if (old != value)
                 {
-                    _hasSnapshotValueChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
+                    _hasSnapshotValueChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(old, value, this));
                 }
             }
         }
@@ -205,7 +205,7 @@ namespace Iql.Data.Tracking.State
                     return;
                 }
                 _hasAnyChanges = value;
-                _hasAnyChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(!_hasAnyChanges, value));
+                _hasAnyChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(!_hasAnyChanges, value, this));
             }
         }
 
@@ -220,7 +220,7 @@ namespace Iql.Data.Tracking.State
                     return;
                 }
                 _hasAnyChangesSinceSnapshot = value;
-                _hasAnyChangesSinceSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool>(!_hasAnyChangesSinceSnapshot, value));
+                _hasAnyChangesSinceSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(!_hasAnyChangesSinceSnapshot, value, this));
             }
         }
 
@@ -240,7 +240,7 @@ namespace Iql.Data.Tracking.State
                     }
 
                     _hasChangesSinceSnapshotChanged.EmitIfExists(
-                        () => new ValueChangedEvent<bool>(old, value));
+                        () => new ValueChangedEvent<bool, IPropertyState>(old, value, this));
                     if (EntityState != null)
                     {
                         EntityState.CheckHasChanged();
@@ -259,7 +259,7 @@ namespace Iql.Data.Tracking.State
                 _canUndo = value;
                 if (value != old)
                 {
-                    _canUndoChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
+                    _canUndoChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(old, value, this));
                 }
             }
         }
@@ -299,7 +299,7 @@ namespace Iql.Data.Tracking.State
                     {
                         EntityState.DataTracker.NotifyChangedChanged(this, _hasChanged);
                     }
-                    _hasChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
+                    _hasChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(old, value, this));
                     if (EntityState != null)
                     {
                         EntityState.CheckHasChanged();
@@ -421,7 +421,8 @@ namespace Iql.Data.Tracking.State
 
                 if (oldValue != value)
                 {
-                    _localValueChanged.EmitIfExists(() => new ValueChangedEvent<object>(oldValue, value));
+                    EntityState?.NotifyPropertyLocalValueChange(oldValue, value, this);
+                    _localValueChanged.EmitIfExists(() => new ValueChangedEvent<object, IPropertyState>(oldValue, value, this));
                 }
 
                 if (Property.Relationship != null && Property.TypeDefinition.Kind == IqlType.Collection)
@@ -595,6 +596,15 @@ namespace Iql.Data.Tracking.State
                             {
                                 ItemsAddedSinceSnapshot.Add(state);
                             }
+
+                            if (ItemsRemoved.Contains(state))
+                            {
+                                ItemsRemoved.Remove(state);
+                            }
+                            if (ItemsRemovedSinceSnapshot.Contains(state))
+                            {
+                                ItemsRemovedSinceSnapshot.Remove(state);
+                            }
                             //if ((state.IsNew || HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote)) &&
                             //    !ItemsAdded.Contains(state))
                             //{
@@ -613,7 +623,10 @@ namespace Iql.Data.Tracking.State
                             if (state.IsNew)
                             {
                                 ItemsAdded.Remove(state);
-                                ItemsAddedSinceSnapshot.Remove(state);
+                                if(DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd, null, CheckValueKind.Snapshot))
+                                {
+                                    ItemsRemovedSinceSnapshot.Add(state);
+                                }
                             }
                             else 
                             {
@@ -807,7 +820,7 @@ namespace Iql.Data.Tracking.State
                     return;
                 }
                 _hasNestedChanges = value;
-                _hasNestedChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(!_hasNestedChanges, value));
+                _hasNestedChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(!_hasNestedChanges, value, this));
                 UpdateHasAnyChanges();
             }
         }
@@ -822,7 +835,7 @@ namespace Iql.Data.Tracking.State
                     return;
                 }
                 _hasNestedChangesSinceStart = value;
-                _hasNestedChangesSinceSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool>(!_hasNestedChangesSinceStart, value));
+                _hasNestedChangesSinceSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(!_hasNestedChangesSinceStart, value, this));
                 UpdateHasAnyChanges();
             }
         }
@@ -915,40 +928,40 @@ namespace Iql.Data.Tracking.State
 
 
         private readonly IqlEventEmitterManager _eventEmitterManager = new IqlEventEmitterManager();
-        private EventEmitter<ValueChangedEvent<bool>> _canUndoChanged;
+        private EventEmitter<ValueChangedEvent<bool, IPropertyState>> _canUndoChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> CanUndoChanged => _canUndoChanged = _canUndoChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
-        private EventEmitter<ValueChangedEvent<object>> _snapshotValueChanged;
+        public EventEmitter<ValueChangedEvent<bool, IPropertyState>> CanUndoChanged => _canUndoChanged = _canUndoChanged ?? new EventEmitter<ValueChangedEvent<bool, IPropertyState>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<object, IPropertyState>> _snapshotValueChanged;
 
-        public EventEmitter<ValueChangedEvent<object>> SnapshotValueChanged => _snapshotValueChanged = _snapshotValueChanged ?? new EventEmitter<ValueChangedEvent<object>>().RegisterWith(_eventEmitterManager);
-        private EventEmitter<ValueChangedEvent<bool>> _hasSnapshotValueChanged;
+        public EventEmitter<ValueChangedEvent<object, IPropertyState>> SnapshotValueChanged => _snapshotValueChanged = _snapshotValueChanged ?? new EventEmitter<ValueChangedEvent<object, IPropertyState>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<bool, IPropertyState>> _hasSnapshotValueChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotValueChanged => _hasSnapshotValueChanged = _hasSnapshotValueChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
-        private EventEmitter<ValueChangedEvent<bool>> _hasNestedChangesChanged;
+        public EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasSnapshotValueChanged => _hasSnapshotValueChanged = _hasSnapshotValueChanged ?? new EventEmitter<ValueChangedEvent<bool, IPropertyState>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<bool, IPropertyState>> _hasNestedChangesChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesChanged => _hasNestedChangesChanged = _hasNestedChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
-        private EventEmitter<ValueChangedEvent<bool>> _hasNestedChangesSinceSnapshotChanged;
+        public EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasNestedChangesChanged => _hasNestedChangesChanged = _hasNestedChangesChanged ?? new EventEmitter<ValueChangedEvent<bool, IPropertyState>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<bool, IPropertyState>> _hasNestedChangesSinceSnapshotChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged => _hasNestedChangesSinceSnapshotChanged = _hasNestedChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
+        public EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasNestedChangesSinceSnapshotChanged => _hasNestedChangesSinceSnapshotChanged = _hasNestedChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool, IPropertyState>>().RegisterWith(_eventEmitterManager);
 
-        private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged;
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<bool, IPropertyState>> _hasChangesChanged;
+        public EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool, IPropertyState>>().RegisterWith(_eventEmitterManager);
 
-        private EventEmitter<ValueChangedEvent<bool>> _hasAnyChangesChanged;
+        private EventEmitter<ValueChangedEvent<bool, IPropertyState>> _hasAnyChangesChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesChanged => _hasAnyChangesChanged = _hasAnyChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
-        private EventEmitter<ValueChangedEvent<bool>> _hasAnyChangesSinceSnapshotChanged;
+        public EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasAnyChangesChanged => _hasAnyChangesChanged = _hasAnyChangesChanged ?? new EventEmitter<ValueChangedEvent<bool, IPropertyState>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<bool, IPropertyState>> _hasAnyChangesSinceSnapshotChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasAnyChangesSinceSnapshotChanged => _hasAnyChangesSinceSnapshotChanged = _hasAnyChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
-        private EventEmitter<ValueChangedEvent<bool>> _hasChangesSinceSnapshotChanged;
+        public EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasAnyChangesSinceSnapshotChanged => _hasAnyChangesSinceSnapshotChanged = _hasAnyChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool, IPropertyState>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<bool, IPropertyState>> _hasChangesSinceSnapshotChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged => _hasChangesSinceSnapshotChanged = _hasChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>().RegisterWith(_eventEmitterManager);
-        private EventEmitter<ValueChangedEvent<object>> _remoteValueChanged;
+        public EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasChangesSinceSnapshotChanged => _hasChangesSinceSnapshotChanged = _hasChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool, IPropertyState>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<object, IPropertyState>> _remoteValueChanged;
 
-        public EventEmitter<ValueChangedEvent<object>> RemoteValueChanged => _remoteValueChanged = _remoteValueChanged ?? new EventEmitter<ValueChangedEvent<object>>().RegisterWith(_eventEmitterManager);
-        private EventEmitter<ValueChangedEvent<object>> _localValueChanged;
+        public EventEmitter<ValueChangedEvent<object, IPropertyState>> RemoteValueChanged => _remoteValueChanged = _remoteValueChanged ?? new EventEmitter<ValueChangedEvent<object, IPropertyState>>().RegisterWith(_eventEmitterManager);
+        private EventEmitter<ValueChangedEvent<object, IPropertyState>> _localValueChanged;
 
-        public EventEmitter<ValueChangedEvent<object>> LocalValueChanged => _localValueChanged = _localValueChanged ?? new EventEmitter<ValueChangedEvent<object>>().RegisterWith(_eventEmitterManager);
+        public EventEmitter<ValueChangedEvent<object, IPropertyState>> LocalValueChanged => _localValueChanged = _localValueChanged ?? new EventEmitter<ValueChangedEvent<object, IPropertyState>>().RegisterWith(_eventEmitterManager);
 
         public IPropertyState[] SiblingStates
         {
@@ -1548,10 +1561,13 @@ namespace Iql.Data.Tracking.State
             var areEquivalent = PropertyChanger.AreEquivalent(_remoteValue, oldValue);
             if (!areEquivalent)
             {
-                DataTracker.NotifyRemoteValueChanged(this);
+                if(DataTracker != null)
+                {
+                    DataTracker.NotifyRemoteValueChanged(this);
+                }
                 if (_remoteValueChanged != null)
                 {
-                    _remoteValueChanged.EmitIfExists(() => new ValueChangedEvent<object>(oldValue, value));
+                    _remoteValueChanged.EmitIfExists(() => new ValueChangedEvent<object, IPropertyState>(oldValue, value, this));
                 }
             }
         }
@@ -1579,7 +1595,7 @@ namespace Iql.Data.Tracking.State
         //    HasNestedChanges = CalculateHasNestedChanges(LocalValue, ChangeCalculationKind.Remote);
         //    if (oldValue != HasNestedChanges)
         //    {
-        //        _hasNestedChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(oldValue, HasNestedChanges));
+        //        _hasNestedChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(oldValue, HasNestedChanges));
         //        if (EntityState != null)
         //        {
         //            EntityState.CheckHasChanged();
@@ -1594,7 +1610,7 @@ namespace Iql.Data.Tracking.State
         //    if (oldValue != HasNestedChangesSinceSnapshot)
         //    {
         //        _hasNestedChangesSinceSnapshotChanged.EmitIfExists(() =>
-        //            new ValueChangedEvent<bool>(oldValue, HasNestedChangesSinceSnapshot));
+        //            new ValueChangedEvent<bool, IPropertyState>(oldValue, HasNestedChangesSinceSnapshot));
         //        if (EntityState != null)
         //        {
         //            EntityState.CheckHasChanged();

@@ -102,7 +102,7 @@ namespace Iql.Data.Context
         //Task<SaveChangesResult> CommitQueueAsync(IEnumerable<IQueuedOperation> operations);
         SaveChangesOperation GetSaveChangesOperation(object[] entities = null, IProperty[] properties = null);
         bool HasOfflineChanges { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasOfflineChangesChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, DataTrackerState>> HasOfflineChangesChanged { get; }
         Task<SaveChangesResult> SaveChangesAsync(IEnumerable<object> entities = null, IEnumerable<IProperty> properties = null);
         Task<SaveChangesResult> SaveOfflineChangesAsync();
         bool TrackEntities { get; set; }

@@ -120,6 +120,32 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task TestPropertyChangeEventOnEntityState()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 7,
+                Name = "Test client"
+            });
+            var client = await Db.Clients.GetWithKeyAsync(7);
+            var state = Db.GetEntityState(client);
+            var changeCount = 0;
+            state.PropertyLocalValueChanged.Subscribe(e => { changeCount++; });
+            client.AverageIncome = 7;
+            Assert.AreEqual(1, changeCount);
+            client.AverageIncome = 7;
+            Assert.AreEqual(1, changeCount);
+            client.AverageIncome = 8;
+            Assert.AreEqual(2, changeCount);
+            client.AverageIncome = 8;
+            Assert.AreEqual(2, changeCount);
+            client.Name = "New";
+            Assert.AreEqual(3, changeCount);
+            client.AverageIncome = 7;
+            Assert.AreEqual(4, changeCount);
+        }
+
+        [TestMethod]
         public async Task RetrievingLatestDataFromRemoteDatabaseDoesNotOverrideLocalChanges()
         {
             var unchanged = "Unchanged";
@@ -667,6 +693,26 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task DetermineIfNonTrackedEntitiesAreTracked()
+        {
+            AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.People.Add(new Person
+            {
+                Id = 1
+            });
+            AppDbContext.InMemoryDb.PeopleTypeMap.Add(new PersonTypeMap
+            {
+                PersonId = 1,
+                TypeId = 1
+            });
+            var person = await Db.People.NoTracking().WithKey(1).Expand(p => p.Types).SingleAsync();
+            Assert.IsFalse(Db.IsTracked(person));
+        }
+
+        [TestMethod]
         public async Task RemovingAPivotEntity()
         {
             AppDbContext.InMemoryDb.PeopleTypes.Add(new PersonType
@@ -684,7 +730,8 @@ namespace Iql.Tests.Tests
             });
             var person = await Db.People.WithKey(1).Expand(p => p.Types).SingleAsync();
             Assert.AreEqual(1, person.Types.Count);
-            person.Types.Remove(person.Types[0]);
+            var personTypeMap = person.Types[0];
+            Db.Delete(personTypeMap);
             Assert.AreEqual(0, person.Types.Count);
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);

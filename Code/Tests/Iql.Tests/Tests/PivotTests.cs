@@ -39,15 +39,15 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(pivot.ClientId, 7);
             Assert.AreEqual(pivot.CategoryId, 9);
             var state = Db.DeleteEntity(pivot);
-            Assert.AreEqual(pivot.ClientId, 0);
-            Assert.AreEqual(pivot.CategoryId, 0);
+            Assert.AreEqual(pivot.ClientId, 7);
+            Assert.AreEqual(pivot.CategoryId, 9);
             Assert.IsTrue(state.MarkedForDeletion);
             var pivot2 = await Db.ClientCategoriesPivot.GetWithCompositeKeyAsync(CompositeKey.Ensure(cloudPivot,
                 Db.EntityConfigurationContext.EntityType<ClientCategoryPivot>()));
             Assert.AreEqual(pivot, pivot2);
             Assert.IsTrue(state.MarkedForDeletion);
-            Assert.AreEqual(pivot.ClientId, 0);
-            Assert.AreEqual(pivot.CategoryId, 0);
+            Assert.AreEqual(pivot.ClientId, 7);
+            Assert.AreEqual(pivot.CategoryId, 9);
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
             Assert.IsFalse(Db.IsTracked(pivot));

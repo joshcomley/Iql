@@ -22,6 +22,7 @@ namespace Iql.Data.Tracking
 {
     public class DataTracker : IJsonSerializable, IDataChangeProvider, IDisposable, ISnapshotManager, ILockable
     {
+        public bool LiveTracking { get; }
         private bool _interestedPartiesDelayedInitialized;
         private Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedPartiesDelayed;
         private Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedParties { get { if (!_interestedPartiesDelayedInitialized) { _interestedPartiesDelayedInitialized = true; _interestedPartiesDelayed = new Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>>(); } return _interestedPartiesDelayed; } set { _interestedPartiesDelayedInitialized = true; _interestedPartiesDelayed = value; } }
@@ -48,6 +49,7 @@ namespace Iql.Data.Tracking
             bool offline = false,
             bool silent = false)
         {
+            LiveTracking = !silent;
             Kind = kind;
             EntityConfigurationBuilder = entityConfigurationBuilder;
             Name = name;
@@ -64,10 +66,10 @@ namespace Iql.Data.Tracking
         }
         private DataTrackerState _stateSinceSnapshot;
 
-        public DataTrackerState StateSinceSnapshot => _stateSinceSnapshot = _stateSinceSnapshot ?? new DataTrackerState(true);
+        public DataTrackerState StateSinceSnapshot => _stateSinceSnapshot = _stateSinceSnapshot ?? new DataTrackerState(this, true);
         private DataTrackerState _stateSinceSave;
 
-        public DataTrackerState StateSinceSave => _stateSinceSave = _stateSinceSave ?? new DataTrackerState(false);
+        public DataTrackerState StateSinceSave => _stateSinceSave = _stateSinceSave ?? new DataTrackerState(this, false);
 
         //public EventEmitter<OfflineChangeStateChangedEvent> StateChanged { get; } = new EventEmitter<OfflineChangeStateChangedEvent>();
         public string SynchronicityKey => Name;
@@ -87,9 +89,9 @@ namespace Iql.Data.Tracking
         private static List<DataTracker> __allDataTrackers;
 
         private static List<DataTracker> _allDataTrackers => __allDataTrackers = __allDataTrackers ?? new List<DataTracker>();
-        private EventEmitter<ValueChangedEvent<bool>> _hasSnapshotChanged;
+        private EventEmitter<ValueChangedEvent<bool, DataTracker>> _hasSnapshotChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasSnapshotChanged => _hasSnapshotChanged = _hasSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool, DataTracker>> HasSnapshotChanged => _hasSnapshotChanged = _hasSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool, DataTracker>>();
 
         public List<IEntityCrudOperationBase> GetInserts(IDataContext dataContext = null, object[] entities = null)
         {
@@ -430,13 +432,13 @@ namespace Iql.Data.Tracking
                 _hasSnapshot = value;
                 if (old != value)
                 {
-                    _hasSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
+                    _hasSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool, DataTracker>(old, value, this));
                 }
             }
         }
-        private EventEmitter<ValueChangedEvent<bool>> _hasRestorableSnapshotChanged;
+        private EventEmitter<ValueChangedEvent<bool, DataTracker>> _hasRestorableSnapshotChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasRestorableSnapshotChanged => _hasRestorableSnapshotChanged = _hasRestorableSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool, DataTracker>> HasRestorableSnapshotChanged => _hasRestorableSnapshotChanged = _hasRestorableSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool, DataTracker>>();
         public bool HasRestorableSnapshot
         {
             get => _hasRestorableSnapshot;
@@ -446,7 +448,7 @@ namespace Iql.Data.Tracking
                 _hasRestorableSnapshot = value;
                 if (old != value)
                 {
-                    _hasRestorableSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
+                    _hasRestorableSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool, DataTracker>(old, value, this));
                 }
             }
         }
@@ -462,10 +464,10 @@ namespace Iql.Data.Tracking
 
         public bool HasChanges => StateSinceSave.HasChanges;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged =>
+        public EventEmitter<ValueChangedEvent<bool, DataTrackerState>> HasChangesSinceSnapshotChanged =>
             StateSinceSnapshot.HasChangesChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => StateSinceSave.HasChangesChanged;
+        public EventEmitter<ValueChangedEvent<bool, DataTrackerState>> HasChangesChanged => StateSinceSave.HasChangesChanged;
 
         public TrackerSnapshot[] Snapshots => (_snapshots ?? new List<TrackerSnapshot>()).ToArray();
         public int SnapshotsCount => Snapshots.Length;

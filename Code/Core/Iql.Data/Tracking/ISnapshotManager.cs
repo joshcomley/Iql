@@ -1,4 +1,3 @@
-using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Events;
 
@@ -18,8 +17,8 @@ namespace Iql.Data.Tracking
         bool HasRestorableSnapshot { get; }
         bool HasChangesSinceSnapshot { get; }
         bool HasChanges { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasChangesChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, DataTrackerState>> HasChangesSinceSnapshotChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, DataTrackerState>> HasChangesChanged { get; }
         TrackerSnapshot[] Snapshots { get; }
         int SnapshotsCount { get; }
         TrackerSnapshot[] RestorableSnapshots { get; }

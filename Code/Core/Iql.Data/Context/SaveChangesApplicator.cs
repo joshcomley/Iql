@@ -586,7 +586,8 @@ namespace Iql.Data.Context
                 mappedEntity,
                 typeof(TMap),
                 DataContext.EntityConfigurationContext.EntityType<TMap>(),
-                true);
+                true,
+                false);
             return dummyEntityState;
         }
 

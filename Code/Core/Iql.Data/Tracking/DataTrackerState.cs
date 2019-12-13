@@ -14,10 +14,12 @@ namespace Iql.Data.Tracking
 {
     public class DataTrackerState
     {
+        public DataTracker DataTracker { get; }
         public bool TrackNewEntityProperties { get; set; }
 
-        public DataTrackerState(bool trackNewEntityProperties)
+        public DataTrackerState(DataTracker dataTracker, bool trackNewEntityProperties)
         {
+            DataTracker = dataTracker;
             TrackNewEntityProperties = trackNewEntityProperties;
         }
         private bool _entitiesChangedDelayedInitialized;
@@ -34,15 +36,15 @@ namespace Iql.Data.Tracking
 
         public int PropertiesChangedCount => _propertiesChangedCount;
         public int EntitiesChangedCount => _entitiesChanged.Count;
-        private EventEmitter<ValueChangedEvent<bool>> _propertiesChangedChanged;
+        private EventEmitter<ValueChangedEvent<bool, DataTrackerState>> _propertiesChangedChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> PropertiesChangedChanged => _propertiesChangedChanged = _propertiesChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _entitiesChangedChanged;
+        public EventEmitter<ValueChangedEvent<bool, DataTrackerState>> PropertiesChangedChanged => _propertiesChangedChanged = _propertiesChangedChanged ?? new EventEmitter<ValueChangedEvent<bool, DataTrackerState>>();
+        private EventEmitter<ValueChangedEvent<bool, DataTrackerState>> _entitiesChangedChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> EntitiesChangedChanged => _entitiesChangedChanged = _entitiesChangedChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
-        private EventEmitter<ValueChangedEvent<bool>> _hasChangesChanged;
+        public EventEmitter<ValueChangedEvent<bool, DataTrackerState>> EntitiesChangedChanged => _entitiesChangedChanged = _entitiesChangedChanged ?? new EventEmitter<ValueChangedEvent<bool, DataTrackerState>>();
+        private EventEmitter<ValueChangedEvent<bool, DataTrackerState>> _hasChangesChanged;
 
-        public EventEmitter<ValueChangedEvent<bool>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool>>();
+        public EventEmitter<ValueChangedEvent<bool, DataTrackerState>> HasChangesChanged => _hasChangesChanged = _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool, DataTrackerState>>();
 
         public bool HasChanges
         {
@@ -53,7 +55,7 @@ namespace Iql.Data.Tracking
                 _hasChanges = value;
                 if (old != value)
                 {
-                    _hasChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool>(old, value));
+                    _hasChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool, DataTrackerState>(old, value, this));
                 }
             }
         }
@@ -171,7 +173,7 @@ namespace Iql.Data.Tracking
                     lookup.Add(item, new Tuple<TValue, TValue>(oldValue, newValue));
                     //if (!PauseEvents)
                     {
-                        resolved.Item2.Emit(() => new ValueChangedEvent<bool>(false, true));
+                        resolved.Item2.Emit(() => new ValueChangedEvent<bool, DataTrackerState>(false, true, this));
                     }
                     EmitChanged();
                 }
@@ -181,7 +183,7 @@ namespace Iql.Data.Tracking
                 lookup.Remove(item);
                 //if (!PauseEvents)
                 {
-                    resolved.Item2.Emit(() => new ValueChangedEvent<bool>(true, false));
+                    resolved.Item2.Emit(() => new ValueChangedEvent<bool, DataTrackerState>(true, false, this));
                 }
                 EmitChanged();
             }

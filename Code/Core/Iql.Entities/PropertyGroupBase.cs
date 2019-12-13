@@ -161,16 +161,16 @@ namespace Iql.Entities
         }
 
 
-        private EventEmitter<ValueChangedEvent<IqlPropertyEditKind>> _editKindChanged;
-        private EventEmitter<ValueChangedEvent<IqlPropertyReadKind>> _readKindChanged;
+        private EventEmitter<ValueChangedEvent<IqlPropertyEditKind, IPropertyGroup>> _editKindChanged;
+        private EventEmitter<ValueChangedEvent<IqlPropertyReadKind, IPropertyGroup>> _readKindChanged;
         private IqlPropertyEditKind _editKind = IqlPropertyEditKind.Edit;
         private IqlPropertyReadKind _readKind = IqlPropertyReadKind.Display;
 
-        public EventEmitter<ValueChangedEvent<IqlPropertyEditKind>> EditKindChanged => _editKindChanged =
-            _editKindChanged ?? new EventEmitter<ValueChangedEvent<IqlPropertyEditKind>>();
+        public EventEmitter<ValueChangedEvent<IqlPropertyEditKind, IPropertyGroup>> EditKindChanged => _editKindChanged =
+            _editKindChanged ?? new EventEmitter<ValueChangedEvent<IqlPropertyEditKind, IPropertyGroup>>();
 
-        public EventEmitter<ValueChangedEvent<IqlPropertyReadKind>> ReadKindChanged => _readKindChanged =
-            _readKindChanged ?? new EventEmitter<ValueChangedEvent<IqlPropertyReadKind>>();
+        public EventEmitter<ValueChangedEvent<IqlPropertyReadKind, IPropertyGroup>> ReadKindChanged => _readKindChanged =
+            _readKindChanged ?? new EventEmitter<ValueChangedEvent<IqlPropertyReadKind, IPropertyGroup>>();
 
         public virtual IqlPropertyReadKind ReadKind
         {
@@ -181,7 +181,7 @@ namespace Iql.Entities
                 _readKind = value;
                 if (oldValue != value && _readKindChanged != null)
                 {
-                    _readKindChanged.EmitIfExists(() => new ValueChangedEvent<IqlPropertyReadKind>(oldValue, value));
+                    _readKindChanged.EmitIfExists(() => new ValueChangedEvent<IqlPropertyReadKind, IPropertyGroup>(oldValue, value, this));
                 }
             }
         }
@@ -195,7 +195,7 @@ namespace Iql.Entities
                 _editKind = value;
                 if (oldValue != value && _editKindChanged != null)
                 {
-                    _editKindChanged.EmitIfExists(() => new ValueChangedEvent<IqlPropertyEditKind>(oldValue, value));
+                    _editKindChanged.EmitIfExists(() => new ValueChangedEvent<IqlPropertyEditKind, IPropertyGroup>(oldValue, value, this));
                 }
             }
         }

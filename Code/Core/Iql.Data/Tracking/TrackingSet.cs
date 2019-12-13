@@ -95,7 +95,8 @@ namespace Iql.Data.Tracking
             if (rootTrackingSet.IsEntityTracked(entity))
             {
                 var state = rootTrackingSet.FindMatchingEntityState(entity);
-                state.MarkedForDeletion = false;
+                state.UnmarkForDeletion();
+                DataTracker.RelationshipObserver.Observe(entity, typeof(T));
                 return (IEntityState<T>)state;
             }
             var entityType = typeof(T);
@@ -601,6 +602,8 @@ namespace Iql.Data.Tracking
             };
         }
 
+        public bool LiveTracking => DataTracker.LiveTracking;
+
         public IEntityStateBase[] GetChangedStates()
         {
             var allStates = EntitiesByKey.Values
@@ -646,7 +649,8 @@ namespace Iql.Data.Tracking
                 (T)entity,
                 typeof(T),
                 EntityConfiguration,
-                isNew);
+                isNew,
+                LiveTracking);
             TrackState(entityState);
             return entityState;
         }

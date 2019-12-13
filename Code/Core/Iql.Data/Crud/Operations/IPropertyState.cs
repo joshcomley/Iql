@@ -34,17 +34,17 @@ namespace Iql.Data.Crud.Operations
         Guid Guid { get; }
         //IEntityPropertyEvent
         EventEmitter<IPropertyState> OnReset { get; }
-        EventEmitter<ValueChangedEvent<object>> SnapshotValueChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasSnapshotValueChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasNestedChangesChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasNestedChangesSinceSnapshotChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> CanUndoChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasChangesChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasAnyChangesChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasAnyChangesSinceSnapshotChanged { get; }
-        EventEmitter<ValueChangedEvent<bool>> HasChangesSinceSnapshotChanged { get; }
-        EventEmitter<ValueChangedEvent<object>> RemoteValueChanged { get; }
-        EventEmitter<ValueChangedEvent<object>> LocalValueChanged { get; }
+        EventEmitter<ValueChangedEvent<object, IPropertyState>> SnapshotValueChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasSnapshotValueChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasNestedChangesChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasNestedChangesSinceSnapshotChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IPropertyState>> CanUndoChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasChangesChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasAnyChangesChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasAnyChangesSinceSnapshotChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IPropertyState>> HasChangesSinceSnapshotChanged { get; }
+        EventEmitter<ValueChangedEvent<object, IPropertyState>> RemoteValueChanged { get; }
+        EventEmitter<ValueChangedEvent<object, IPropertyState>> LocalValueChanged { get; }
         IPropertyState[] SiblingStates { get; }
         IPropertyState[] GroupStates { get; }
         IEntityStateBase EntityState { get; }
