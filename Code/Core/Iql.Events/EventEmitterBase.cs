@@ -19,6 +19,11 @@ namespace Iql.Events
     }
     public abstract class EventEmitterBase<TEvent, TSubscriptionAction> : EventEmitterRoot, IEventSubscriberRoot
     {
+        public EventEmitter<IEventSubscriberRoot> SubscriptionCountChanged => _subscriptionCountChanged = _subscriptionCountChanged ?? new EventEmitter<IEventSubscriberRoot>();
+
+        private int _subscriptionCount = 0;
+        public int SubscriptionCount => _subscriptionCount;
+
         protected EventEmitterBase(BackfireMode backfireMode = BackfireMode.None)
         {
             BackfireMode = backfireMode;
@@ -103,6 +108,7 @@ namespace Iql.Events
             }
         }
         private List<TEvent> _backfires;
+        private EventEmitter<IEventSubscriberRoot> _subscriptionCountChanged;
 
         public List<TEvent> Backfires => _backfires = _backfires ?? new List<TEvent>();
 
@@ -124,6 +130,7 @@ namespace Iql.Events
             }
 
             SubscriptionsById.Remove(subscription);
+            UpdateSubscriptionCount();
         }
 
         public void UnsubscribeAll(string key = null)
@@ -148,6 +155,7 @@ namespace Iql.Events
                 SubscriptionsById.Clear();
                 Subscriptions.Clear();
             }
+            UpdateSubscriptionCount();
         }
 
         public override void Dispose()
@@ -196,11 +204,19 @@ namespace Iql.Events
             sub.AllowedCallCount = allowedCount;
             SubscriptionsById.Add(id, sub);
             _subscriptions = SubscriptionsById.Values.ToList();
-            if (_onSubscribe != null)
-            {
-                _onSubscribe.EmitIfExists(() => sub);
-            }
+            _onSubscribe.EmitIfExists(() => sub);
+            UpdateSubscriptionCount();
             return sub;
+        }
+
+        private void UpdateSubscriptionCount()
+        {
+            var old = _subscriptionCount;
+            _subscriptionCount = SubscriptionsById.Count;
+            if (old != _subscriptionCount)
+            {
+                _subscriptionCountChanged.EmitIfExists(() => this);
+            }
         }
     }
 }

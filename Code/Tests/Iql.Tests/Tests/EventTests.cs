@@ -9,6 +9,38 @@ namespace Iql.Tests.Tests
     public class EventTests
     {
         [TestMethod]
+        public void SubscriptionCountTest()
+        {
+            var counter = 0;
+            var emitter = new EventEmitter<int>();
+            emitter.SubscriptionCountChanged.Subscribe(_ => { counter++; });
+            Assert.AreEqual(0, emitter.SubscriptionCount);
+            var manager = new IqlEventSubscriberManager();
+            var sub1 = manager.SubscribeOnce(emitter, _ => {  });
+            Assert.AreEqual(1, emitter.SubscriptionCount);
+            var sub2 = manager.SubscribeOnce(emitter, _ => {  });
+            Assert.AreEqual(2, emitter.SubscriptionCount);
+            var sub3 = manager.Subscribe(emitter, _ => {  });
+            var sub4 = manager.Subscribe(emitter, _ => {  }, "key1");
+            var sub5 = manager.Subscribe(emitter, _ => {  }, "key2");
+            var sub6 = manager.Subscribe(emitter, _ => {  });
+            Assert.AreEqual(6, emitter.SubscriptionCount);
+            emitter.Emit(() => 0);
+            Assert.AreEqual(4, emitter.SubscriptionCount);
+            emitter.Emit(() => 0);
+            Assert.AreEqual(4, emitter.SubscriptionCount);
+            manager.UnsubscribeAll("key1");
+            Assert.AreEqual(3, emitter.SubscriptionCount);
+            manager.UnsubscribeAll("key1");
+            Assert.AreEqual(3, emitter.SubscriptionCount);
+            sub6.Unsubscribe();
+            Assert.AreEqual(2, emitter.SubscriptionCount);
+            manager.UnsubscribeAll();
+            Assert.AreEqual(0, emitter.SubscriptionCount);
+            Assert.AreEqual(12, counter);
+        }
+
+        [TestMethod]
         public void EventSubscribeOnceTest()
         {
             var counter = 0;

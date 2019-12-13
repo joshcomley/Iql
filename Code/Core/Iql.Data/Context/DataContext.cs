@@ -467,7 +467,12 @@ namespace Iql.Data.Context
             {
                 entityConfiguration = EntityConfigurationContext.GetEntityByType(entityType);
             }
-            return entityConfiguration == null ? null : TemporalDataTracker.TrackingSetByType(entityType).FindMatchingEntityState(entity);
+
+            if (entityConfiguration == null)
+            {
+                return null;
+            }
+            return TemporalDataTracker.TrackingSetByType(entityType).FindMatchingEntityState(entity) ?? EntityStates.Find(entity);
         }
 
         public T GetConfiguration<T>() where T : class
@@ -2182,8 +2187,7 @@ namespace Iql.Data.Context
 
         public static IEntityStateBase FindEntityState(object entity)
         {
-            var dataContext = FindDataContextForEntity(entity);
-            return dataContext?.GetEntityState(entity);
+            return EntityStates.Find(entity);
         }
 
         public Task<bool> QueryAnyAsync(IqlDataSetQueryExpression query, ITypeResolver typeResolver = null

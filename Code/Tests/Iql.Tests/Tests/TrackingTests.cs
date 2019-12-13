@@ -710,6 +710,8 @@ namespace Iql.Tests.Tests
             });
             var person = await Db.People.NoTracking().WithKey(1).Expand(p => p.Types).SingleAsync();
             Assert.IsFalse(Db.IsTracked(person));
+            var entityState = DataContext.FindEntityState(person);
+            Assert.IsNotNull(entityState);
         }
 
         [TestMethod]

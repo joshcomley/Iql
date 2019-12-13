@@ -69,12 +69,12 @@ namespace Iql.Events
 
     public interface IEventSubscriberRoot : IEventUnsubscriber, IEventSubscriberSubscriber
     {
-
+        int SubscriptionCount { get; }
+        EventEmitter<IEventSubscriberRoot> SubscriptionCountChanged { get; }
     }
 
     public interface IEventSubscriberBase : IEventSubscriberRoot
     {
-        int SubscriptionCount { get; }
         EventSubscription Subscribe(Action<object> propertyChangeEvent, string key = null, int? allowedCount = null);
         EventSubscription SubscribeOnce(Action<object> propertyChangeEvent, string key = null);
     }

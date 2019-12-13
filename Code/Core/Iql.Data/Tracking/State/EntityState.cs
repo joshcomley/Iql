@@ -73,6 +73,7 @@ namespace Iql.Data.Tracking.State
             }
 
             Entity = entity;
+            EntityStates.Register(this);
             EntityType = entityType;
             EntityConfiguration = entityConfiguration;
             Properties = new List<IPropertyState>();
@@ -349,7 +350,7 @@ namespace Iql.Data.Tracking.State
 
         public void UnmarkForDeletion()
         {
-            if(MarkedForAnyDeletion)
+            if (MarkedForAnyDeletion)
             {
                 MarkedForDeletion = false;
                 MarkedForCascadeDeletion = false;
