@@ -75,6 +75,7 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
                 if (typeof(IEntityConfiguration).IsAssignableFrom(type))
                 {
                     resolvedType = typeof(IEntityMetadata);
+                    ignoreProperties.AddRange(new[] { nameof(IEntityConfiguration.SetNameSet) });
                 }
                 if (typeof(IEntityConfigurationBuilder).IsAssignableFrom(type))
                 {
@@ -92,9 +93,9 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
                 {
                     ignoreProperties.AddRange(new[]
                     {
-                    nameof(IqlUserPermissionRule.EntityConfigurationBuilder),
-                    nameof(IqlUserPermissionRule.UserType)
-                });
+                        nameof(IqlUserPermissionRule.EntityConfigurationBuilder),
+                        nameof(IqlUserPermissionRule.UserType)
+                    });
                 }
                 if (typeof(IProperty).IsAssignableFrom(type))
                 {
@@ -192,7 +193,12 @@ namespace Iql.Server.Serialization.Serialization.Resolvers
                 }
                 if (typeof(IPropertyGroup).IsAssignableFrom(type))
                 {
-                    ignoreProperties.AddRange(new[] { nameof(IPropertyPath.PropertyGroup), nameof(IPropertyPath.EntityConfiguration) });
+                    ignoreProperties.AddRange(new[]
+                    {
+                        nameof(IPropertyPath.PropertyGroup), 
+                        nameof(IPropertyPath.EntityConfiguration),
+                        nameof(IPropertyGroup.CanWriteSet)
+                    });
                 }
 
                 var eventEmitterProperties = resolvedType.GetPublicProperties()

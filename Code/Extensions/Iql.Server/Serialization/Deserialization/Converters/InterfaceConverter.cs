@@ -150,7 +150,8 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                 var jobj = serializer.Deserialize(reader) as JObject;
                 if (jobj != null)
                 {
-                    if (jobj.ContainsKey("Path"))
+                    var jobjString = jobj.ToString();
+                    if (jobj.ContainsKey("Paths"))
                     {
                         var propertyPath = EntityConfigurationParser.DeserializeFromJson<PropertyPathJson>(jobj.ToString(), Details);
                         var entityConfigIndex = Details.CurrentEntityConfigurationIndex;

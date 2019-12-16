@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Iql.Entities;
 using Iql.Entities.Geography;
 using Iql.Entities.NestedSets;
@@ -17,12 +18,14 @@ namespace Iql.Server.Serialization.Serialization.Converters
         public ITypeResolver TypeResolver { get; }
         public bool IsNested { get; }
         public bool SkipFirst { get; }
+        public string Path { get; }
         private bool _hasSkippedFirst = false;
-        public IPropertyConverter(ITypeResolver typeResolver, bool isNested = false, bool skipFirst = false)
+        public IPropertyConverter(ITypeResolver typeResolver, bool isNested = false, bool skipFirst = false, string path = "")
         {
             TypeResolver = typeResolver;
             IsNested = isNested;
             SkipFirst = skipFirst;
+            Path = path;
         }
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -40,7 +43,7 @@ namespace Iql.Server.Serialization.Serialization.Converters
                     if (writer.Path == nameof(IRelationship.Source) ||
                         writer.Path == nameof(IRelationship.Target))
                     {
-                        WritePropertyGroupDirect(TypeResolver, writer, value, true, true);
+                        WritePropertyGroupDirect(TypeResolver, writer, value, Path,  true, true);
                     }
                     else
                     {
@@ -58,10 +61,10 @@ namespace Iql.Server.Serialization.Serialization.Converters
                         nameof(IEntityMetadata.Files),
                         $@"{nameof(IEntityMetadata.Relationships)}\[[0-9]+\]\.({nameof(IRelationship.Source)}|{nameof(IRelationship.Target)})",
                     });
-                    if (JsonPathHelper.IsEntityConfigurationProperty(writer.Path, false, $"({directConversion})"))
+                    if (JsonPathHelper.IsEntityConfigurationProperty(path, false, $"({directConversion})"))
                     {
                         // All properties below here must be references
-                        WritePropertyGroupDirect(TypeResolver, writer, value);
+                        WritePropertyGroupDirect(TypeResolver, writer, value, Path);
                     }
                     else //if (value is IPropertyGroup)
                     {
@@ -84,6 +87,7 @@ namespace Iql.Server.Serialization.Serialization.Converters
             ITypeResolver typeResolver,
             JsonWriter writer,
             object value,
+            string currentPath,
             bool allowAnyPropertyConversion = true,
             bool rootIsRelationship = false)
         {
@@ -102,7 +106,6 @@ namespace Iql.Server.Serialization.Serialization.Converters
                 }
                 settings.Converters.Add(new ExpressionJsonConverter(typeResolver));
                 settings.Converters.Add(new TypeToIqlTypeConverter());
-                settings.Converters.Add(new IPropertyConverter(typeResolver, true, allowAnyPropertyConversion));
                 //settings.Converters.Add(new IPropertyConverter());
                 _settingsLookup.Add(key, settings);
             }
@@ -110,6 +113,12 @@ namespace Iql.Server.Serialization.Serialization.Converters
             {
                 settings = _settingsLookup[key];
             }
+
+            var existingPropertyConverter = settings.Converters.SingleOrDefault(_ => _ is IPropertyConverter);
+            settings.Converters.Remove(existingPropertyConverter);
+            settings.Converters.Add(new IPropertyConverter(typeResolver, true, allowAnyPropertyConversion,
+                $"{currentPath}/{writer.Path}".Trim('/')));
+
             var serialized = JsonConvert.SerializeObject(value, value.GetType(), Formatting.Indented, settings);
             writer.WriteRawValue(serialized);
         }
@@ -184,6 +193,11 @@ namespace Iql.Server.Serialization.Serialization.Converters
                         }
                         // path = string.Join(",", properties.Select(p => p.Name));
                         break;
+                }
+
+                if (path == "InferredChainFromSelf")
+                {
+                    int a = 0;
                 }
                 var serialized = new SerializedPropertyGroup
                 {
