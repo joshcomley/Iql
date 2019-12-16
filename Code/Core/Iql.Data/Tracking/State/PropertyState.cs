@@ -479,7 +479,7 @@ namespace Iql.Data.Tracking.State
                     var relationshipPropertyStates = GetRelationshipPropertyStates(state);
                     manager.SubscribeAll(new IEventSubscriberBase[]
                     {
-                        state.HasChangedChanged,
+                        state.HasChangesChanged,
                         state.StatusChanged
                     }, (caller, _) =>
                     {
@@ -523,7 +523,7 @@ namespace Iql.Data.Tracking.State
                     var relationshipPropertyStates = GetRelationshipPropertyStates(state);
                     manager.SubscribeAll(new IEventSubscriberBase[]
                     {
-                        state.HasChangedSinceSnapshotChanged,
+                        state.HasChangesSinceSnapshotChanged,
                         state.StatusChanged
                     }, (caller, _) =>
                     {
@@ -722,7 +722,7 @@ namespace Iql.Data.Tracking.State
                         Watch(state);
                     }
 
-                    if (state != null && !state.IsNew && !ItemsAdded.Contains(item) && state.HasChanged &&
+                    if (state != null && !state.IsNew && !ItemsAdded.Contains(item) && state.HasChanges &&
                         !HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd,
                             ChangeCalculationKind.Remote) &&
                         DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd))
@@ -771,12 +771,12 @@ namespace Iql.Data.Tracking.State
                         if (!state.IsNew && !ItemsAdded.Contains(item) &&
                             DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd))
                         {
-                            if (!HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote) && state.HasChanged)
+                            if (!HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Remote) && state.HasChanges)
                             {
                                 changed.Add(state);
                                 Watch(state);
                             }
-                            if (!HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot) && state.HasChangedSinceSnapshot)
+                            if (!HasRelationshipSourceChanged(state, Property.Relationship.OtherEnd, ChangeCalculationKind.Snapshot) && state.HasChangesSinceSnapshot)
                             {
                                 changedSinceSnapshot.Add(state);
                                 Watch(state);
@@ -1118,7 +1118,7 @@ namespace Iql.Data.Tracking.State
             }
 
             ClearStatefulEvents();
-            //_hasChanged = false;
+            //_hasChanges = false;
         }
 
         public void ClearStatefulEvents()
@@ -1319,7 +1319,7 @@ namespace Iql.Data.Tracking.State
                 return false;
             }
 
-            return kind == ChangeCalculationKind.Remote ? state.HasChanged : state.HasChangedSinceSnapshot;
+            return kind == ChangeCalculationKind.Remote ? state.HasChanges : state.HasChangesSinceSnapshot;
         }
 
         private bool RelationshipTargetHasChanged(object remoteValue, ChangeCalculationKind kind)

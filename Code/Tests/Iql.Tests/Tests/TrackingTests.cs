@@ -20,6 +20,116 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task TestHasNestedChanges()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2,
+                Name = "Test client type"
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 7,
+                Name = "Test client",
+                TypeId = 2,
+                CreatedByUserId = "abc"
+            });
+            var type = await Db.ClientTypes.Expand(_ => _.Clients).GetStateWithKeyAsync(2);
+            Assert.IsFalse(type.HasChanges);
+            Assert.IsFalse(type.HasNestedChanges);
+            Assert.IsFalse(type.HasAnyChanges);
+            type.Entity.Name = "blah";
+            Assert.IsTrue(type.HasChanges);
+            Assert.IsFalse(type.HasNestedChanges);
+            Assert.IsTrue(type.HasAnyChanges);
+            Db.UndoChanges();
+            Assert.IsFalse(type.HasChanges);
+            Assert.IsFalse(type.HasNestedChanges);
+            Assert.IsFalse(type.HasAnyChanges);
+            type.Entity.Clients[0].Name = "blah";
+            Assert.IsFalse(type.HasChanges);
+            Assert.IsTrue(type.HasNestedChanges);
+            Assert.IsTrue(type.HasAnyChanges);
+            type.Entity.Name = "blah";
+            Assert.IsTrue(type.HasChanges);
+            Assert.IsTrue(type.HasNestedChanges);
+            Assert.IsTrue(type.HasAnyChanges);
+            Db.UndoChanges();
+            Assert.IsFalse(type.HasChanges);
+            Assert.IsFalse(type.HasNestedChanges);
+            Assert.IsFalse(type.HasAnyChanges);
+        }
+
+
+        [TestMethod]
+        public async Task TestHasNestedChangesWithUnwrappingSnapshots()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2,
+                Name = "Test client type"
+            });
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 7,
+                Name = "Test client",
+                TypeId = 2,
+                CreatedByUserId = "abc"
+            });
+            var type = await Db.ClientTypes.Expand(_ => _.Clients).GetStateWithKeyAsync(2);
+            Db.AddSnapshot();
+            Assert.IsFalse(type.HasChanges);
+            Assert.IsFalse(type.HasChangesSinceSnapshot);
+            Assert.IsFalse(type.HasNestedChanges);
+            Assert.IsFalse(type.HasNestedChangesSinceSnapshot);
+            Assert.IsFalse(type.HasAnyChanges);
+            Assert.IsFalse(type.HasAnyChangesSinceSnapshot);
+            type.Entity.Name = "blah";
+            Assert.IsTrue(type.HasChanges);
+            Assert.IsTrue(type.HasChangesSinceSnapshot);
+            Assert.IsFalse(type.HasNestedChanges);
+            Assert.IsFalse(type.HasNestedChangesSinceSnapshot);
+            Assert.IsTrue(type.HasAnyChanges);
+            Assert.IsTrue(type.HasAnyChangesSinceSnapshot);
+            Db.UndoChanges();
+            Db.AddSnapshot();
+            Assert.IsFalse(type.HasChanges);
+            Assert.IsFalse(type.HasChangesSinceSnapshot);
+            Assert.IsFalse(type.HasNestedChanges);
+            Assert.IsFalse(type.HasNestedChangesSinceSnapshot);
+            Assert.IsFalse(type.HasAnyChanges);
+            Assert.IsFalse(type.HasAnyChangesSinceSnapshot);
+            type.Entity.Clients[0].Name = "blah";
+            Assert.IsFalse(type.HasChanges);
+            Assert.IsFalse(type.HasChangesSinceSnapshot);
+            Assert.IsTrue(type.HasNestedChanges);
+            Assert.IsTrue(type.HasNestedChangesSinceSnapshot);
+            Assert.IsTrue(type.HasAnyChanges);
+            Assert.IsTrue(type.HasAnyChangesSinceSnapshot);
+            type.Entity.Name = "blah";
+            Assert.IsTrue(type.HasChanges);
+            Assert.IsTrue(type.HasChangesSinceSnapshot);
+            Assert.IsTrue(type.HasNestedChanges);
+            Assert.IsTrue(type.HasNestedChangesSinceSnapshot);
+            Assert.IsTrue(type.HasAnyChanges);
+            Assert.IsTrue(type.HasAnyChangesSinceSnapshot);
+            Db.RemoveLastSnapshot();
+            Assert.IsTrue(type.HasChanges);
+            Assert.IsTrue(type.HasChangesSinceSnapshot);
+            Assert.IsTrue(type.HasNestedChanges);
+            Assert.IsTrue(type.HasNestedChangesSinceSnapshot);
+            Assert.IsTrue(type.HasAnyChanges);
+            Assert.IsTrue(type.HasAnyChangesSinceSnapshot);
+            Db.UndoChanges();
+            Assert.IsFalse(type.HasChanges);
+            Assert.IsFalse(type.HasChangesSinceSnapshot);
+            Assert.IsFalse(type.HasNestedChanges);
+            Assert.IsFalse(type.HasNestedChangesSinceSnapshot);
+            Assert.IsFalse(type.HasAnyChanges);
+            Assert.IsFalse(type.HasAnyChangesSinceSnapshot);
+        }
+
+        [TestMethod]
         public async Task TestChangeLocalPropertyEventIsFiredWhenEntityIsUpdated()
         {
             AppDbContext.InMemoryDb.Clients.Add(new Client
@@ -83,18 +193,18 @@ namespace Iql.Tests.Tests
             });
             var client = await Db.Clients.GetWithKeyAsync(7);
             var state = Db.GetEntityState(client);
-            Assert.IsFalse(state.HasChanged);
+            Assert.IsFalse(state.HasChanges);
             var hasChangedChangedCount = 0;
-            state.HasChangedChanged.Subscribe(_ =>
+            state.HasChangesChanged.Subscribe(_ =>
             {
                 hasChangedChangedCount++;
             });
             Assert.AreEqual(0, hasChangedChangedCount);
             client.Name = "Blah";
-            Assert.IsTrue(state.HasChanged);
+            Assert.IsTrue(state.HasChanges);
             Assert.AreEqual(1, hasChangedChangedCount);
             client.Name = "Test client";
-            Assert.IsFalse(state.HasChanged);
+            Assert.IsFalse(state.HasChanges);
             Assert.AreEqual(2, hasChangedChangedCount);
         }
 

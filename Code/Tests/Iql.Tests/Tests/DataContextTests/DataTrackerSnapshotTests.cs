@@ -545,7 +545,7 @@ namespace Iql.Tests.Tests.DataContextTests
             var snapshot = Db.AddSnapshot();
             Db.Clients.Add(newClient);
             var entityState = Db.GetEntityState(newClient);
-            Assert.IsFalse(entityState.HasChangedSinceSnapshot);
+            Assert.IsFalse(entityState.HasChangesSinceSnapshot);
             for (var i = 0; i < entityState.PropertyStates.Length; i++)
             {
                 var propertyState = entityState.PropertyStates[i];
@@ -554,7 +554,7 @@ namespace Iql.Tests.Tests.DataContextTests
 
             var namePropertyState = entityState.GetPropertyState(nameof(Client.Name));
             newClient.Name = "def";
-            Assert.IsTrue(entityState.HasChangedSinceSnapshot);
+            Assert.IsTrue(entityState.HasChangesSinceSnapshot);
             Assert.IsTrue(namePropertyState.HasChangesSinceSnapshot);
         }
 
@@ -1244,13 +1244,13 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
             var clientState = Db.GetEntityState(client);
             var nameState = clientState.GetPropertyState(nameof(Client.Name));
-            Assert.IsFalse(clientState.HasChanged);
-            Assert.IsFalse(clientState.HasChangedSinceSnapshot);
+            Assert.IsFalse(clientState.HasChanges);
+            Assert.IsFalse(clientState.HasChangesSinceSnapshot);
             Assert.IsFalse(nameState.HasChanges);
             Assert.IsFalse(nameState.HasChangesSinceSnapshot);
             client.Name = "def";
-            Assert.IsTrue(clientState.HasChanged);
-            Assert.IsTrue(clientState.HasChangedSinceSnapshot);
+            Assert.IsTrue(clientState.HasChanges);
+            Assert.IsTrue(clientState.HasChangesSinceSnapshot);
             Assert.IsTrue(nameState.HasChanges);
             Assert.IsTrue(nameState.HasChangesSinceSnapshot);
             Assert.IsFalse(relationshipCollection1.HasChanges);
@@ -1262,8 +1262,8 @@ namespace Iql.Tests.Tests.DataContextTests
             Assert.IsFalse(relationshipCollection2.HasNestedChanges);
             Assert.IsFalse(relationshipCollection2.HasNestedChangesSinceSnapshot);
             client.Name = "abc";
-            Assert.IsFalse(clientState.HasChanged);
-            Assert.IsFalse(clientState.HasChangedSinceSnapshot);
+            Assert.IsFalse(clientState.HasChanges);
+            Assert.IsFalse(clientState.HasChangesSinceSnapshot);
             Assert.IsFalse(nameState.HasChanges);
             Assert.IsFalse(nameState.HasChangesSinceSnapshot);
             Assert.IsFalse(relationshipCollection1.HasChanges);

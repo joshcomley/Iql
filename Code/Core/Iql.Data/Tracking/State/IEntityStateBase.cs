@@ -27,10 +27,18 @@ namespace Iql.Data.Tracking.State
         void SetSnapshotValue(EntityStatus value);
         void UpdateHasChanges();
         void CheckHasChanged();
-        bool HasChanged { get; }
-        bool HasChangedSinceSnapshot { get; }
-        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangedChanged { get; }
-        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangedSinceSnapshotChanged { get; }
+        bool HasChanges { get; }
+        bool HasChangesSinceSnapshot { get; }
+        bool HasNestedChanges { get; }
+        bool HasNestedChangesSinceSnapshot { get; }
+        bool HasAnyChanges { get; }
+        bool HasAnyChangesSinceSnapshot { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangesChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangesSinceSnapshotChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasNestedChangesChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasNestedChangesSinceSnapshotChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasAnyChangesChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasAnyChangesSinceSnapshotChanged { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> AttachedToTrackerChanged { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> PendingInsertChanged { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsAttachedToGraphChanged { get; }

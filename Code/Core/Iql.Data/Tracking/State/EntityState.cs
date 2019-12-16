@@ -25,10 +25,18 @@ namespace Iql.Data.Tracking.State
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _attachedToTrackerChanged;
         private List<CascadeDeletion> _cascadeDeletedBy;
         private IqlEventSubscriberManager _eventSubscriptionManager;
-        private bool _hasChanged;
-        private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _hasChangedChanged;
-        private bool _hasChangedSinceSnapshot;
-        private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _hasChangedSinceSnapshotChanged;
+        private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _hasAnyChangedChanged;
+        private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _hasAnyChangedSinceSnapshotChanged;
+        private bool _hasAnyChanges;
+        private bool _hasAnyChangesSinceSnapshot;
+        private bool _hasChanges;
+        private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _hasChangesChanged;
+        private bool _hasChangesSinceSnapshot;
+        private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _hasChangesSinceSnapshotChanged;
+        private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _hasNestedChangedChanged;
+        private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _hasNestedChangedSinceSnapshotChanged;
+        private bool _hasNestedChanges;
+        private bool _hasNestedChangesSinceSnapshot;
         private bool _isAttachedToGraph;
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _isAttachedToGraphChanged;
 
@@ -43,6 +51,7 @@ namespace Iql.Data.Tracking.State
         private bool _operationsDelayedInitialized;
         private bool _pendingInsert;
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _pendingInsertChanged;
+        private EventEmitter<ValueChangedEvent<object, IPropertyState>> _propertyLocalValueChanged;
         private Dictionary<string, IPropertyState> _propertyStateByNameDelayed;
         private bool _propertyStateByNameDelayedInitialized;
         private CompositeKey _remoteKey;
@@ -54,7 +63,6 @@ namespace Iql.Data.Tracking.State
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _statusHasChangedChanged;
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _statusHasChangedSinceSnapshotChanged;
         private TrackingSet<T> _trackingSet;
-        private EventEmitter<ValueChangedEvent<object, IPropertyState>> _propertyLocalValueChanged;
 
         public EntityState(
             DataTracker dataTracker,
@@ -84,6 +92,8 @@ namespace Iql.Data.Tracking.State
                 Properties.Add(propertyState);
                 propertyState.HasChangesChanged.Subscribe(_ => CheckHasChanged());
                 propertyState.HasChangesSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
+                propertyState.HasNestedChangesChanged.Subscribe(_ => CheckHasChanged());
+                propertyState.HasNestedChangesSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
                 propertyState.HasSnapshotValueChanged.Subscribe(_ => CheckHasChanged());
             }
 
@@ -170,7 +180,8 @@ namespace Iql.Data.Tracking.State
                 if (old != value)
                 {
                     DataTracker.NotifyAttachedToTrackerChanged(this, value);
-                    _attachedToTrackerChanged.EmitIfExists(() => new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    _attachedToTrackerChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
                 }
 
                 UpdateStatus();
@@ -192,21 +203,26 @@ namespace Iql.Data.Tracking.State
 
         public void CheckHasChanged()
         {
-            HasChanged = IsNew || Properties.Any(_ => _.HasChanges);
             var hasSnapshots = DataTracker != null && DataTracker.HasSnapshot;
-            HasChangedSinceSnapshot = !hasSnapshots && HasChanged || Properties.Any(_ => _.HasChangesSinceSnapshot);
+            HasChanges = IsNew || Properties.Any(_ => _.HasChanges);
+            HasChangesSinceSnapshot = !hasSnapshots && HasChanges || Properties.Any(_ => _.HasChangesSinceSnapshot);
+            HasNestedChanges = Properties.Any(_ => _.HasNestedChanges);
+            HasNestedChangesSinceSnapshot = Properties.Any(_ => _.HasNestedChangesSinceSnapshot);
+            HasAnyChanges = HasChanges || HasNestedChanges;
+            HasAnyChangesSinceSnapshot = HasChangesSinceSnapshot || HasNestedChangesSinceSnapshot;
         }
 
-        public bool HasChanged
+        public bool HasChanges
         {
-            get => _hasChanged;
+            get => _hasChanges;
             set
             {
-                var old = _hasChanged;
-                _hasChanged = value;
+                var old = _hasChanges;
+                _hasChanges = value;
                 if (old != value)
                 {
-                    _hasChangedChanged.EmitIfExists(() => new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    _hasChangesChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
                     if (DataTracker != null)
                     {
                         DataTracker.NotifyEntityHasChangedChanged(this);
@@ -215,16 +231,17 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        public bool HasChangedSinceSnapshot
+        public bool HasChangesSinceSnapshot
         {
-            get => _hasChangedSinceSnapshot;
+            get => _hasChangesSinceSnapshot;
             set
             {
-                var old = _hasChangedSinceSnapshot;
-                _hasChangedSinceSnapshot = value;
+                var old = _hasChangesSinceSnapshot;
+                _hasChangesSinceSnapshot = value;
                 if (old != value)
                 {
-                    _hasChangedSinceSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    _hasChangesSinceSnapshotChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
                     if (DataTracker != null)
                     {
                         DataTracker.NotifyEntityHasChangedSinceSnapshotChanged(this);
@@ -233,14 +250,107 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangedChanged => _hasChangedChanged =
-            _hasChangedChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangesChanged => _hasChangesChanged =
+            _hasChangesChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
 
-        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangedSinceSnapshotChanged => _hasChangedSinceSnapshotChanged =
-            _hasChangedSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasChangesSinceSnapshotChanged =>
+            _hasChangesSinceSnapshotChanged =
+                _hasChangesSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
 
-        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> AttachedToTrackerChanged => _attachedToTrackerChanged =
-            _attachedToTrackerChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+        public bool HasNestedChanges
+        {
+            get => _hasNestedChanges;
+            set
+            {
+                var old = _hasNestedChanges;
+                _hasNestedChanges = value;
+                if (old != value)
+                {
+                    _hasNestedChangedChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    //if (DataTracker != null)
+                    //{
+                    //    DataTracker.NotifyEntityHasNestedChangedChanged(this);
+                    //}
+                }
+            }
+        }
+
+        public bool HasNestedChangesSinceSnapshot
+        {
+            get => _hasNestedChangesSinceSnapshot;
+            set
+            {
+                var old = _hasNestedChangesSinceSnapshot;
+                _hasNestedChangesSinceSnapshot = value;
+                if (old != value)
+                {
+                    _hasNestedChangedSinceSnapshotChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    //if (DataTracker != null)
+                    //{
+                    //    DataTracker.NotifyEntityHasNestedChangedSinceSnapshotChanged(this);
+                    //}
+                }
+            }
+        }
+
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasNestedChangesChanged =>
+            _hasNestedChangedChanged =
+                _hasNestedChangedChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasNestedChangesSinceSnapshotChanged =>
+            _hasNestedChangedSinceSnapshotChanged =
+                _hasNestedChangedSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+
+        public bool HasAnyChanges
+        {
+            get => _hasAnyChanges;
+            set
+            {
+                var old = _hasAnyChanges;
+                _hasAnyChanges = value;
+                if (old != value)
+                {
+                    _hasAnyChangedChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    //if (DataTracker != null)
+                    //{
+                    //    DataTracker.NotifyEntityHasAnyChangedChanged(this);
+                    //}
+                }
+            }
+        }
+
+        public bool HasAnyChangesSinceSnapshot
+        {
+            get => _hasAnyChangesSinceSnapshot;
+            set
+            {
+                var old = _hasAnyChangesSinceSnapshot;
+                _hasAnyChangesSinceSnapshot = value;
+                if (old != value)
+                {
+                    _hasAnyChangedSinceSnapshotChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    //if (DataTracker != null)
+                    //{
+                    //    DataTracker.NotifyEntityHasAnyChangedSinceSnapshotChanged(this);
+                    //}
+                }
+            }
+        }
+
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasAnyChangesChanged => _hasAnyChangedChanged =
+            _hasAnyChangedChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasAnyChangesSinceSnapshotChanged =>
+            _hasAnyChangedSinceSnapshotChanged =
+                _hasAnyChangedSinceSnapshotChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> AttachedToTrackerChanged =>
+            _attachedToTrackerChanged =
+                _attachedToTrackerChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
 
         public bool PendingInsert
         {
@@ -251,7 +361,8 @@ namespace Iql.Data.Tracking.State
                 _pendingInsert = value;
                 if (old != value)
                 {
-                    _pendingInsertChanged.EmitIfExists(() => new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    _pendingInsertChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
                 }
             }
         }
@@ -268,14 +379,16 @@ namespace Iql.Data.Tracking.State
                 _isAttachedToGraph = value;
                 if (old != value)
                 {
-                    _isAttachedToGraphChanged.EmitIfExists(() => new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    _isAttachedToGraphChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
                     UpdatePendingInsert();
                 }
             }
         }
 
-        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsAttachedToGraphChanged => _isAttachedToGraphChanged =
-            _isAttachedToGraphChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsAttachedToGraphChanged =>
+            _isAttachedToGraphChanged =
+                _isAttachedToGraphChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
 
         public Guid Id { get; set; }
 
@@ -396,7 +509,7 @@ namespace Iql.Data.Tracking.State
         }
 
         /// <summary>
-        /// For internal use only.
+        ///     For internal use only.
         /// </summary>
         /// <param name="oldValue"></param>
         /// <param name="newValue"></param>
@@ -566,13 +679,16 @@ namespace Iql.Data.Tracking.State
         public bool IsTracked { get; }
         public bool IsIqlEntityState => true;
 
-        public EventEmitter<ValueChangedEvent<object, IPropertyState>> PropertyLocalValueChanged => _propertyLocalValueChanged = _propertyLocalValueChanged ?? new EventEmitter<ValueChangedEvent<object, IPropertyState>>();
+        public EventEmitter<ValueChangedEvent<object, IPropertyState>> PropertyLocalValueChanged =>
+            _propertyLocalValueChanged = _propertyLocalValueChanged ??
+                                         new EventEmitter<ValueChangedEvent<object, IPropertyState>>();
 
         public EventEmitter<ValueChangedEvent<EntityStatus, IEntityStateBase>> StatusChanged =>
             _statusChanged = _statusChanged ?? new EventEmitter<ValueChangedEvent<EntityStatus, IEntityStateBase>>();
 
-        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> StatusHasChangedChanged => _statusHasChangedChanged =
-            _statusHasChangedChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> StatusHasChangedChanged =>
+            _statusHasChangedChanged =
+                _statusHasChangedChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
 
         public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> StatusHasChangedSinceSnapshotChanged =>
             _statusHasChangedSinceSnapshotChanged =
@@ -648,7 +764,8 @@ namespace Iql.Data.Tracking.State
 
                 if (old != value)
                 {
-                    _statusChanged.EmitIfExists(() => new ValueChangedEvent<EntityStatus, IEntityStateBase>(old, value, this));
+                    _statusChanged.EmitIfExists(() =>
+                        new ValueChangedEvent<EntityStatus, IEntityStateBase>(old, value, this));
                     //if (DataTracker != null)
                     //{
                     //    DataTracker.NotifyStatusChanged(this, value);
@@ -867,7 +984,7 @@ namespace Iql.Data.Tracking.State
                 {
                     if (_.Operation.Kind == IqlOperationKind.Update)
                     {
-                        var updateOp = (IUpdateEntityOperation)_.Operation;
+                        var updateOp = (IUpdateEntityOperation) _.Operation;
                         var changed = updateOp.GetChangedProperties();
                         for (var i = 0; i < changed.Length; i++)
                         {
@@ -993,7 +1110,7 @@ namespace Iql.Data.Tracking.State
                 }
             }
 
-            return (T)entity;
+            return (T) entity;
         }
     }
 }
