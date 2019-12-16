@@ -9,8 +9,8 @@ using Iql.Data.DataStores;
 using System;
 using System.Collections.Generic;
 using Iql.OData.Methods;
-using System.Linq.Expressions;
 using Iql;
+using System.Linq.Expressions;
 using Iql.Entities.Rules.Display;
 using Iql.Entities.InferredValues;
 using Iql.Entities.Metadata;
@@ -1004,7 +1004,7 @@ namespace IqlSampleApp.ApiContext.Base
                 },
                 UserTypeName = "ApplicationUser"
             });
-            builder.EntityType<ApplicationUser>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean).ConfigureProperty(p => p.IsLockedOut, p => {
+            builder.DefineEntityType<ApplicationUser>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean).ConfigureProperty(p => p.IsLockedOut, p => {
                 p.PropertyName = "IsLockedOut";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1041,7 +1041,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.FriendlyName = "Email";
                 p.Hints = new List<string>(new[]
                 {
-                    "Iql:EmailAddress"
+                    "Iql.Forms:EmailAddress"
                 });
                 p.Name = "Email";
                 p.Title = "Email";
@@ -1382,8 +1382,8 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Sites";
                 p.Title = "Sites";
             });
-            builder.EntityType<ApplicationUser>().HasOne(p => p.Client).WithMany(p => p.Users).WithConstraint(p => p.ClientId, p => p.Id);
-            builder.EntityType<ApplicationUser>().Configure(p => {
+            builder.DefineEntityType<ApplicationUser>().HasOne(p => p.Client).WithMany(p => p.Users).WithConstraint(p => p.ClientId, p => p.Id);
+            builder.DefineEntityType<ApplicationUser>().Configure(p => {
                 p.SetFriendlyName = "Users";
                 p.SetName = "Users";
                 p.FriendlyName = "Application User";
@@ -1754,7 +1754,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ApplicationLog>().HasKey(p => p.Id, IqlType.Unknown, false).DefineConvertedProperty(p => p.Id, "Guid", false, IqlType.String).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<ApplicationLog>().HasKey(p => p.Id, IqlType.Unknown, false).DefineConvertedProperty(p => p.Id, "Guid", false, IqlType.String).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -1800,14 +1800,14 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Kind";
                 p.Title = "Kind";
             });
-            builder.EntityType<ApplicationLog>().Configure(p => {
+            builder.DefineEntityType<ApplicationLog>().Configure(p => {
                 p.SetFriendlyName = "Application Logs";
                 p.SetName = "ApplicationLogs";
                 p.FriendlyName = "Application Log";
                 p.Name = "ApplicationLog";
                 p.Title = "ApplicationLog";
             });
-            builder.EntityType<Client>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<Client>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2159,9 +2159,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Sites";
                 p.Title = "Sites";
             });
-            builder.EntityType<Client>().HasOne(p => p.Type).WithMany(p => p.Clients).WithConstraint(p => p.TypeId, p => p.Id);
-            builder.EntityType<Client>().HasOne(p => p.CreatedByUser).WithMany(p => p.ClientsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<Client>().Configure(p => {
+            builder.DefineEntityType<Client>().HasOne(p => p.Type).WithMany(p => p.Clients).WithConstraint(p => p.TypeId, p => p.Id);
+            builder.DefineEntityType<Client>().HasOne(p => p.CreatedByUser).WithMany(p => p.ClientsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<Client>().Configure(p => {
                 p.SetFriendlyName = "Clients";
                 p.SetName = "Clients";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -2307,7 +2307,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ClientType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<ClientType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2335,7 +2335,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Clients";
                 p.Title = "Clients";
             });
-            builder.EntityType<ClientType>().Configure(p => {
+            builder.DefineEntityType<ClientType>().Configure(p => {
                 p.SetFriendlyName = "Client Types";
                 p.SetName = "ClientTypes";
                 p.FriendlyName = "Client Type";
@@ -2505,7 +2505,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ClientCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<ClientCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2533,14 +2533,14 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Clients";
                 p.Title = "Clients";
             });
-            builder.EntityType<ClientCategory>().Configure(p => {
+            builder.DefineEntityType<ClientCategory>().Configure(p => {
                 p.SetFriendlyName = "Client Categories";
                 p.SetName = "ClientCategories";
                 p.FriendlyName = "Client Category";
                 p.Name = "ClientCategory";
                 p.Title = "ClientCategory";
             });
-            builder.EntityType<ClientCategoryPivot>().HasCompositeKey(false, p => p.ClientId, p => p.CategoryId).DefineProperty(p => p.ClientId, false, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
+            builder.DefineEntityType<ClientCategoryPivot>().HasCompositeKey(false, p => p.ClientId, p => p.CategoryId).DefineProperty(p => p.ClientId, false, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
                 p.PropertyName = "ClientId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2577,16 +2577,16 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Category";
                 p.Title = "Category";
             });
-            builder.EntityType<ClientCategoryPivot>().HasOne(p => p.Client).WithMany(p => p.Categories).WithConstraint(p => p.ClientId, p => p.Id);
-            builder.EntityType<ClientCategoryPivot>().HasOne(p => p.Category).WithMany(p => p.Clients).WithConstraint(p => p.CategoryId, p => p.Id);
-            builder.EntityType<ClientCategoryPivot>().Configure(p => {
+            builder.DefineEntityType<ClientCategoryPivot>().HasOne(p => p.Client).WithMany(p => p.Categories).WithConstraint(p => p.ClientId, p => p.Id);
+            builder.DefineEntityType<ClientCategoryPivot>().HasOne(p => p.Category).WithMany(p => p.Clients).WithConstraint(p => p.CategoryId, p => p.Id);
+            builder.DefineEntityType<ClientCategoryPivot>().Configure(p => {
                 p.SetFriendlyName = "Client Categories Pivot";
                 p.SetName = "ClientCategoriesPivot";
                 p.FriendlyName = "Client Category Pivot";
                 p.Name = "ClientCategoryPivot";
                 p.Title = "ClientCategoryPivot";
             });
-            builder.EntityType<DocumentCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<DocumentCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -2838,8 +2838,8 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Documents";
                 p.Title = "Documents";
             });
-            builder.EntityType<DocumentCategory>().HasOne(p => p.CreatedByUser).WithMany(p => p.DocumentCategoriesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<DocumentCategory>().Configure(p => {
+            builder.DefineEntityType<DocumentCategory>().HasOne(p => p.CreatedByUser).WithMany(p => p.DocumentCategoriesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<DocumentCategory>().Configure(p => {
                 p.SetFriendlyName = "Document Categories";
                 p.SetName = "DocumentCategories";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -2958,7 +2958,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<SiteDocument>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CategoryId, false, IqlType.Integer).ConfigureProperty(p => p.CategoryId, p => {
+            builder.DefineEntityType<SiteDocument>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CategoryId, false, IqlType.Integer).ConfigureProperty(p => p.CategoryId, p => {
                 p.PropertyName = "CategoryId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3237,10 +3237,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             });
-            builder.EntityType<SiteDocument>().HasOne(p => p.Category).WithMany(p => p.Documents).WithConstraint(p => p.CategoryId, p => p.Id);
-            builder.EntityType<SiteDocument>().HasOne(p => p.Site).WithMany(p => p.Documents).WithConstraint(p => p.SiteId, p => p.Id);
-            builder.EntityType<SiteDocument>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteDocumentsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<SiteDocument>().Configure(p => {
+            builder.DefineEntityType<SiteDocument>().HasOne(p => p.Category).WithMany(p => p.Documents).WithConstraint(p => p.CategoryId, p => p.Id);
+            builder.DefineEntityType<SiteDocument>().HasOne(p => p.Site).WithMany(p => p.Documents).WithConstraint(p => p.SiteId, p => p.Id);
+            builder.DefineEntityType<SiteDocument>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteDocumentsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<SiteDocument>().Configure(p => {
                 p.SetFriendlyName = "Site Documents";
                 p.SetName = "SiteDocuments";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -3359,7 +3359,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ReportActionsTaken>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.FaultReportId, false, IqlType.Integer).ConfigureProperty(p => p.FaultReportId, p => {
+            builder.DefineEntityType<ReportActionsTaken>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.FaultReportId, false, IqlType.Integer).ConfigureProperty(p => p.FaultReportId, p => {
                 p.PropertyName = "FaultReportId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3620,9 +3620,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefinePropertyValidation(p => p.Notes, entity => (((entity.Notes == null ? null : entity.Notes.ToUpper()) != null) || ((entity.Notes == null ? null : entity.Notes.ToUpper()) != ("" == null ? null : "".ToUpper()))), "Please enter some actions taken notes", "6").DefinePropertyValidation(p => p.Notes, entity => (entity.Notes.Length > 5), "Please enter at least five characters for notes", "7");
-            builder.EntityType<ReportActionsTaken>().HasOne(p => p.PersonReport).WithMany(p => p.ActionsTaken).WithConstraint(p => p.FaultReportId, p => p.Id);
-            builder.EntityType<ReportActionsTaken>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultActionsTakenCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<ReportActionsTaken>().Configure(p => {
+            builder.DefineEntityType<ReportActionsTaken>().HasOne(p => p.PersonReport).WithMany(p => p.ActionsTaken).WithConstraint(p => p.FaultReportId, p => p.Id);
+            builder.DefineEntityType<ReportActionsTaken>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultActionsTakenCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<ReportActionsTaken>().Configure(p => {
                 p.SetFriendlyName = "Report Actions Taken";
                 p.SetName = "ReportActionsTaken";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -3741,7 +3741,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ReportCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<ReportCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -3993,8 +3993,8 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ReportTypes";
                 p.Title = "ReportTypes";
             });
-            builder.EntityType<ReportCategory>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultCategoriesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<ReportCategory>().Configure(p => {
+            builder.DefineEntityType<ReportCategory>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultCategoriesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<ReportCategory>().Configure(p => {
                 p.SetFriendlyName = "Report Categories";
                 p.SetName = "ReportCategories";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -4113,7 +4113,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ReportDefaultRecommendation>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<ReportDefaultRecommendation>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4374,8 +4374,8 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Recommendations";
                 p.Title = "Recommendations";
             });
-            builder.EntityType<ReportDefaultRecommendation>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultDefaultRecommendationsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<ReportDefaultRecommendation>().Configure(p => {
+            builder.DefineEntityType<ReportDefaultRecommendation>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultDefaultRecommendationsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<ReportDefaultRecommendation>().Configure(p => {
                 p.SetFriendlyName = "Report Default Recommendations";
                 p.SetName = "ReportDefaultRecommendations";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -4494,7 +4494,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ReportRecommendation>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.ReportId, false, IqlType.Integer).ConfigureProperty(p => p.ReportId, p => {
+            builder.DefineEntityType<ReportRecommendation>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.ReportId, false, IqlType.Integer).ConfigureProperty(p => p.ReportId, p => {
                 p.PropertyName = "ReportId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -4773,10 +4773,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             });
-            builder.EntityType<ReportRecommendation>().HasOne(p => p.PersonReport).WithMany(p => p.Recommendations).WithConstraint(p => p.ReportId, p => p.Id);
-            builder.EntityType<ReportRecommendation>().HasOne(p => p.Recommendation).WithMany(p => p.Recommendations).WithConstraint(p => p.RecommendationId, p => p.Id);
-            builder.EntityType<ReportRecommendation>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultRecommendationsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<ReportRecommendation>().Configure(p => {
+            builder.DefineEntityType<ReportRecommendation>().HasOne(p => p.PersonReport).WithMany(p => p.Recommendations).WithConstraint(p => p.ReportId, p => p.Id);
+            builder.DefineEntityType<ReportRecommendation>().HasOne(p => p.Recommendation).WithMany(p => p.Recommendations).WithConstraint(p => p.RecommendationId, p => p.Id);
+            builder.DefineEntityType<ReportRecommendation>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultRecommendationsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<ReportRecommendation>().Configure(p => {
                 p.SetFriendlyName = "Report Recommendations";
                 p.SetName = "ReportRecommendations";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -4895,7 +4895,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ReportType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<ReportType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5165,9 +5165,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FaultReports";
                 p.Title = "FaultReports";
             });
-            builder.EntityType<ReportType>().HasOne(p => p.Category).WithMany(p => p.ReportTypes).WithConstraint(p => p.CategoryId, p => p.Id);
-            builder.EntityType<ReportType>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultTypesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<ReportType>().Configure(p => {
+            builder.DefineEntityType<ReportType>().HasOne(p => p.Category).WithMany(p => p.ReportTypes).WithConstraint(p => p.CategoryId, p => p.Id);
+            builder.DefineEntityType<ReportType>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultTypesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<ReportType>().Configure(p => {
                 p.SetFriendlyName = "Report Types";
                 p.SetName = "ReportTypes";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -5286,7 +5286,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<Project>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
+            builder.DefineEntityType<Project>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
@@ -5538,8 +5538,8 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             });
-            builder.EntityType<Project>().HasOne(p => p.CreatedByUser).WithMany(p => p.ProjectCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<Project>().Configure(p => {
+            builder.DefineEntityType<Project>().HasOne(p => p.CreatedByUser).WithMany(p => p.ProjectCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<Project>().Configure(p => {
                 p.SetFriendlyName = "Projects";
                 p.SetName = "Projects";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -5658,7 +5658,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ReportReceiverEmailAddress>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
+            builder.DefineEntityType<ReportReceiverEmailAddress>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
                 p.PropertyName = "SiteId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -5919,9 +5919,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             });
-            builder.EntityType<ReportReceiverEmailAddress>().HasOne(p => p.Site).WithMany(p => p.AdditionalSendReportsTo).WithConstraint(p => p.SiteId, p => p.Id);
-            builder.EntityType<ReportReceiverEmailAddress>().HasOne(p => p.CreatedByUser).WithMany(p => p.ReportReceiverEmailAddressesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<ReportReceiverEmailAddress>().Configure(p => {
+            builder.DefineEntityType<ReportReceiverEmailAddress>().HasOne(p => p.Site).WithMany(p => p.AdditionalSendReportsTo).WithConstraint(p => p.SiteId, p => p.Id);
+            builder.DefineEntityType<ReportReceiverEmailAddress>().HasOne(p => p.CreatedByUser).WithMany(p => p.ReportReceiverEmailAddressesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<ReportReceiverEmailAddress>().Configure(p => {
                 p.SetFriendlyName = "Report Receiver Email Addresses";
                 p.SetName = "ReportReceiverEmailAddresses";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -6040,7 +6040,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<RiskAssessment>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
+            builder.DefineEntityType<RiskAssessment>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
                 p.PropertyName = "SiteInspectionId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6301,9 +6301,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RiskAssessmentSolution";
                 p.Title = "RiskAssessmentSolution";
             });
-            builder.EntityType<RiskAssessment>().HasOne(p => p.SiteInspection).WithMany(p => p.RiskAssessments).WithConstraint(p => p.SiteInspectionId, p => p.Id);
-            builder.EntityType<RiskAssessment>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<RiskAssessment>().Configure(p => {
+            builder.DefineEntityType<RiskAssessment>().HasOne(p => p.SiteInspection).WithMany(p => p.RiskAssessments).WithConstraint(p => p.SiteInspectionId, p => p.Id);
+            builder.DefineEntityType<RiskAssessment>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<RiskAssessment>().Configure(p => {
                 p.SetFriendlyName = "Risk Assessments";
                 p.SetName = "RiskAssessments";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -6422,7 +6422,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<RiskAssessmentSolution>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.RiskAssessmentId, false, IqlType.Integer).ConfigureProperty(p => p.RiskAssessmentId, p => {
+            builder.DefineEntityType<RiskAssessmentSolution>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.RiskAssessmentId, false, IqlType.Integer).ConfigureProperty(p => p.RiskAssessmentId, p => {
                 p.PropertyName = "RiskAssessmentId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6674,9 +6674,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             });
-            builder.EntityType<RiskAssessmentSolution>().HasOne(p => p.RiskAssessment).WithOne(p => p.RiskAssessmentSolution).WithConstraint(p => p.RiskAssessmentId, p => p.Id);
-            builder.EntityType<RiskAssessmentSolution>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentSolutionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<RiskAssessmentSolution>().Configure(p => {
+            builder.DefineEntityType<RiskAssessmentSolution>().HasOne(p => p.RiskAssessment).WithOne(p => p.RiskAssessmentSolution).WithConstraint(p => p.RiskAssessmentId, p => p.Id);
+            builder.DefineEntityType<RiskAssessmentSolution>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentSolutionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<RiskAssessmentSolution>().Configure(p => {
                 p.SetFriendlyName = "Risk Assessment Solutions";
                 p.SetName = "RiskAssessmentSolutions";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -6686,7 +6686,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RiskAssessmentSolution";
                 p.Title = "RiskAssessmentSolution";
             });
-            builder.EntityType<RiskAssessmentAnswer>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.QuestionId, false, IqlType.Integer).ConfigureProperty(p => p.QuestionId, p => {
+            builder.DefineEntityType<RiskAssessmentAnswer>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.QuestionId, false, IqlType.Integer).ConfigureProperty(p => p.QuestionId, p => {
                 p.PropertyName = "QuestionId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -6956,9 +6956,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             });
-            builder.EntityType<RiskAssessmentAnswer>().HasOne(p => p.Question).WithMany(p => p.Answers).WithConstraint(p => p.QuestionId, p => p.Id);
-            builder.EntityType<RiskAssessmentAnswer>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentAnswersCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<RiskAssessmentAnswer>().Configure(p => {
+            builder.DefineEntityType<RiskAssessmentAnswer>().HasOne(p => p.Question).WithMany(p => p.Answers).WithConstraint(p => p.QuestionId, p => p.Id);
+            builder.DefineEntityType<RiskAssessmentAnswer>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentAnswersCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<RiskAssessmentAnswer>().Configure(p => {
                 p.SetFriendlyName = "Risk Assessment Answers";
                 p.SetName = "RiskAssessmentAnswers";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -7077,7 +7077,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<RiskAssessmentQuestion>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<RiskAssessmentQuestion>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -7329,8 +7329,8 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             });
-            builder.EntityType<RiskAssessmentQuestion>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentQuestionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<RiskAssessmentQuestion>().Configure(p => {
+            builder.DefineEntityType<RiskAssessmentQuestion>().HasOne(p => p.CreatedByUser).WithMany(p => p.RiskAssessmentQuestionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<RiskAssessmentQuestion>().Configure(p => {
                 p.SetFriendlyName = "Risk Assessment Questions";
                 p.SetName = "RiskAssessmentQuestions";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -7449,7 +7449,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<Person>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Location, true, IqlType.GeographyPoint).ConfigureProperty(p => p.Location, p => {
+            builder.DefineEntityType<Person>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Location, true, IqlType.GeographyPoint).ConfigureProperty(p => p.Location, p => {
                 p.PropertyName = "Location";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
@@ -8537,14 +8537,14 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Reports";
                 p.Title = "Reports";
             }).DefineEntityValidation(entity => ((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))) && (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))), "Please enter either a title or a description", "NoTitleOrDescription").DefineEntityValidation(entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == ("Josh" == null ? null : "Josh".ToUpper())) && ((entity.Description == null ? null : entity.Description.ToUpper()) != ("Josh" == null ? null : "Josh".ToUpper()))), "If the name is 'Josh' please match it in the description", "JoshCheck").DefineDisplayFormatter(entity => entity.Title, "Default").DefineDisplayFormatter(entity => (((entity.Title + " (") + entity.Id) + ")"), "Report").DefineRelationshipFilterRule(p => p.Site, entity => ((entity.Owner.ClientId == 0) ? (Expression<Func<Site, bool>>)(entity2 => true) : entity2 => (entity2.ClientId == entity.Owner.ClientId)), "1", "").DefineRelationshipFilterRule(p => p.Loading, entity => entity2 => ((entity2.Name == null ? null : entity2.Name.ToUpper()) == ("some constant" == null ? null : "some constant".ToUpper())), "2", "").DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person title", "EmptyTitle").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 50)), "Please enter less than fifty characters", "TitleMaxLength").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length < 3)), "Please enter at least three characters for the person's title", "TitleMinLength").DefinePropertyValidation(p => p.Description, entity => (((entity.Description == null ? null : entity.Description.ToUpper()) == null) || ((entity.Description.Trim() == null ? null : entity.Description.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a person description", "EmptyDescription");
-            builder.EntityType<Person>().HasOne(p => p.Client).WithMany(p => p.People).WithConstraint(p => p.ClientId, p => p.Id);
-            builder.EntityType<Person>().HasOne(p => p.InferredFromUserClient).WithMany(p => p.InferredPeople).WithConstraint(p => p.InferredFromUserClientId, p => p.Id);
-            builder.EntityType<Person>().HasOne(p => p.Site).WithMany(p => p.People).WithConstraint(p => p.SiteId, p => p.Id);
-            builder.EntityType<Person>().HasOne(p => p.SiteArea).WithMany(p => p.People).WithConstraint(p => p.SiteAreaId, p => p.Id);
-            builder.EntityType<Person>().HasOne(p => p.Type).WithMany(p => p.People).WithConstraint(p => p.TypeId, p => p.Id);
-            builder.EntityType<Person>().HasOne(p => p.Loading).WithMany(p => p.People).WithConstraint(p => p.LoadingId, p => p.Id);
-            builder.EntityType<Person>().HasOne(p => p.CreatedByUser).WithMany(p => p.PeopleCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<Person>().Configure(p => {
+            builder.DefineEntityType<Person>().HasOne(p => p.Client).WithMany(p => p.People).WithConstraint(p => p.ClientId, p => p.Id);
+            builder.DefineEntityType<Person>().HasOne(p => p.InferredFromUserClient).WithMany(p => p.InferredPeople).WithConstraint(p => p.InferredFromUserClientId, p => p.Id);
+            builder.DefineEntityType<Person>().HasOne(p => p.Site).WithMany(p => p.People).WithConstraint(p => p.SiteId, p => p.Id);
+            builder.DefineEntityType<Person>().HasOne(p => p.SiteArea).WithMany(p => p.People).WithConstraint(p => p.SiteAreaId, p => p.Id);
+            builder.DefineEntityType<Person>().HasOne(p => p.Type).WithMany(p => p.People).WithConstraint(p => p.TypeId, p => p.Id);
+            builder.DefineEntityType<Person>().HasOne(p => p.Loading).WithMany(p => p.People).WithConstraint(p => p.LoadingId, p => p.Id);
+            builder.DefineEntityType<Person>().HasOne(p => p.CreatedByUser).WithMany(p => p.PeopleCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<Person>().Configure(p => {
                 p.PreviewPropertyName = "Photo";
                 p.SetFriendlyName = "People";
                 p.SetName = "People";
@@ -8675,7 +8675,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<PersonInspection>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
+            builder.DefineEntityType<PersonInspection>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
                 p.PropertyName = "SiteInspectionId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -8990,9 +8990,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             });
-            builder.EntityType<PersonInspection>().HasOne(p => p.SiteInspection).WithMany(p => p.PersonInspections).WithConstraint(p => p.SiteInspectionId, p => p.Id);
-            builder.EntityType<PersonInspection>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonInspectionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<PersonInspection>().Configure(p => {
+            builder.DefineEntityType<PersonInspection>().HasOne(p => p.SiteInspection).WithMany(p => p.PersonInspections).WithConstraint(p => p.SiteInspectionId, p => p.Id);
+            builder.DefineEntityType<PersonInspection>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonInspectionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<PersonInspection>().Configure(p => {
                 p.SetFriendlyName = "Person Inspections";
                 p.SetName = "PersonInspections";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -9111,7 +9111,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<PersonLoading>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<PersonLoading>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -9363,8 +9363,8 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefinePropertyValidation(p => p.Name, entity => (((entity.Name == null ? null : entity.Name.ToUpper()) != null) && ((entity.Name == null ? null : entity.Name.ToUpper()) != ("" == null ? null : "".ToUpper()))), "Please enter a loading name", "3");
-            builder.EntityType<PersonLoading>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonLoadingsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<PersonLoading>().Configure(p => {
+            builder.DefineEntityType<PersonLoading>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonLoadingsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<PersonLoading>().Configure(p => {
                 p.SetFriendlyName = "Person Loadings";
                 p.SetName = "PersonLoadings";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -9483,7 +9483,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<PersonType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<PersonType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -9744,8 +9744,8 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PeopleMap";
                 p.Title = "PeopleMap";
             });
-            builder.EntityType<PersonType>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonTypesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<PersonType>().Configure(p => {
+            builder.DefineEntityType<PersonType>().HasOne(p => p.CreatedByUser).WithMany(p => p.PersonTypesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<PersonType>().Configure(p => {
                 p.SetFriendlyName = "Person Types";
                 p.SetName = "PersonTypes";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -9864,7 +9864,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<PersonTypeMap>().HasCompositeKey(true, p => p.PersonId, p => p.TypeId).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
+            builder.DefineEntityType<PersonTypeMap>().HasCompositeKey(true, p => p.PersonId, p => p.TypeId).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
                 p.PropertyName = "PersonId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -10019,9 +10019,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Type";
                 p.Title = "Type";
             });
-            builder.EntityType<PersonTypeMap>().HasOne(p => p.Person).WithMany(p => p.Types).WithConstraint(p => p.PersonId, p => p.Id);
-            builder.EntityType<PersonTypeMap>().HasOne(p => p.Type).WithMany(p => p.PeopleMap).WithConstraint(p => p.TypeId, p => p.Id);
-            builder.EntityType<PersonTypeMap>().Configure(p => {
+            builder.DefineEntityType<PersonTypeMap>().HasOne(p => p.Person).WithMany(p => p.Types).WithConstraint(p => p.PersonId, p => p.Id);
+            builder.DefineEntityType<PersonTypeMap>().HasOne(p => p.Type).WithMany(p => p.PeopleMap).WithConstraint(p => p.TypeId, p => p.Id);
+            builder.DefineEntityType<PersonTypeMap>().Configure(p => {
                 p.SetFriendlyName = "Person Types Map";
                 p.SetName = "PersonTypesMap";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -10139,7 +10139,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<PersonReport>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
+            builder.DefineEntityType<PersonReport>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
                 p.PropertyName = "PersonId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -10445,10 +10445,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefinePropertyValidation(p => p.Title, entity => (((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper()))), "Please enter a valid report title", "4").DefinePropertyValidation(p => p.Title, entity => (!((((entity.Title == null ? null : entity.Title.ToUpper()) == null) || ((entity.Title.Trim() == null ? null : entity.Title.Trim().ToUpper()) == ("" == null ? null : "".ToUpper())))) && (entity.Title.Trim().Length > 5)), "Please enter less than five characters", "5");
-            builder.EntityType<PersonReport>().HasOne(p => p.Person).WithMany(p => p.Reports).WithConstraint(p => p.PersonId, p => p.Id);
-            builder.EntityType<PersonReport>().HasOne(p => p.Type).WithMany(p => p.FaultReports).WithConstraint(p => p.TypeId, p => p.Id);
-            builder.EntityType<PersonReport>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultReportsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<PersonReport>().Configure(p => {
+            builder.DefineEntityType<PersonReport>().HasOne(p => p.Person).WithMany(p => p.Reports).WithConstraint(p => p.PersonId, p => p.Id);
+            builder.DefineEntityType<PersonReport>().HasOne(p => p.Type).WithMany(p => p.FaultReports).WithConstraint(p => p.TypeId, p => p.Id);
+            builder.DefineEntityType<PersonReport>().HasOne(p => p.CreatedByUser).WithMany(p => p.FaultReportsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<PersonReport>().Configure(p => {
                 p.SetFriendlyName = "Person Reports";
                 p.SetName = "PersonReports";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -10567,7 +10567,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<Site>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<Site>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -11248,10 +11248,10 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Users";
                 p.Title = "Users";
             }).DefinePropertyDisplayRuleByExpression(p => p.Id, entity => (entity.ClientId != 0), "8", "", DisplayRuleKind.DisplayIf, DisplayRuleAppliesToKind.NewAndEdit).DefinePropertyValidation(p => p.FullAddress, entity => (((entity.FullAddress == null ? null : entity.FullAddress.ToUpper()) == null) || ((entity.FullAddress == null ? null : entity.FullAddress.ToUpper()) == ("" == null ? null : "".ToUpper()))), "", "9");
-            builder.EntityType<Site>().HasOne(p => p.Parent).WithMany(p => p.Children).WithConstraint(p => p.ParentId, p => p.Id);
-            builder.EntityType<Site>().HasOne(p => p.Client).WithMany(p => p.Sites).WithConstraint(p => p.ClientId, p => p.Id);
-            builder.EntityType<Site>().HasOne(p => p.CreatedByUser).WithMany(p => p.SitesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<Site>().Configure(p => {
+            builder.DefineEntityType<Site>().HasOne(p => p.Parent).WithMany(p => p.Children).WithConstraint(p => p.ParentId, p => p.Id);
+            builder.DefineEntityType<Site>().HasOne(p => p.Client).WithMany(p => p.Sites).WithConstraint(p => p.ClientId, p => p.Id);
+            builder.DefineEntityType<Site>().HasOne(p => p.CreatedByUser).WithMany(p => p.SitesCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<Site>().Configure(p => {
                 p.HasNestedSet(p_ns => p_ns.Left, p_ns => p_ns.Right, p_ns => p_ns.LeftOf, p_ns => p_ns.RightOf, p_ns => p_ns.Key, p_ns => p_ns.Level, p_ns => p_ns.ParentId, p_ns => p_ns.Parent, p_ns => p_ns.Id, "", "", p_ns => {
                     p_ns.CanWrite = true;
                     p_ns.Kind = IqlPropertyKind.SimpleCollection;
@@ -11377,7 +11377,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<SiteArea>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<SiteArea>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -11638,9 +11638,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineDisplayFormatter(entity => (((entity.Site == null) ? "no site" : entity.Site.Name) + ((entity.CreatedByUser == null) ? "" : (" - " + entity.CreatedByUser.FullName))), "Default");
-            builder.EntityType<SiteArea>().HasOne(p => p.Site).WithMany(p => p.Areas).WithConstraint(p => p.SiteId, p => p.Id);
-            builder.EntityType<SiteArea>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteAreasCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<SiteArea>().Configure(p => {
+            builder.DefineEntityType<SiteArea>().HasOne(p => p.Site).WithMany(p => p.Areas).WithConstraint(p => p.SiteId, p => p.Id);
+            builder.DefineEntityType<SiteArea>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteAreasCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<SiteArea>().Configure(p => {
                 p.SetFriendlyName = "Site Areas";
                 p.SetName = "SiteAreas";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -11650,7 +11650,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteArea";
                 p.Title = "SiteArea";
             });
-            builder.EntityType<SiteInspection>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
+            builder.DefineEntityType<SiteInspection>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
                 p.PropertyName = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -11938,9 +11938,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineDisplayFormatter(entity => (((((entity.Site.Name + " - ") + entity.EndTime) + " (") + ((entity.CreatedByUser == null) ? "no creator" : entity.CreatedByUser.FullName)) + ")"), "Default");
-            builder.EntityType<SiteInspection>().HasOne(p => p.Site).WithMany(p => p.SiteInspections).WithConstraint(p => p.SiteId, p => p.Id);
-            builder.EntityType<SiteInspection>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteInspectionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<SiteInspection>().Configure(p => {
+            builder.DefineEntityType<SiteInspection>().HasOne(p => p.Site).WithMany(p => p.SiteInspections).WithConstraint(p => p.SiteId, p => p.Id);
+            builder.DefineEntityType<SiteInspection>().HasOne(p => p.CreatedByUser).WithMany(p => p.SiteInspectionsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<SiteInspection>().Configure(p => {
                 p.SetFriendlyName = "Site Inspections";
                 p.SetName = "SiteInspections";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -12059,7 +12059,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<UserSetting>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
+            builder.DefineEntityType<UserSetting>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
                 p.PropertyName = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
@@ -12345,9 +12345,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "User";
                 p.Title = "User";
             });
-            builder.EntityType<UserSetting>().HasOne(p => p.CreatedByUser).WithMany(p => p.UserSettingsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
-            builder.EntityType<UserSetting>().HasOne(p => p.User).WithMany(p => p.UserSettings).WithConstraint(p => p.UserId, p => p.Id);
-            builder.EntityType<UserSetting>().Configure(p => {
+            builder.DefineEntityType<UserSetting>().HasOne(p => p.CreatedByUser).WithMany(p => p.UserSettingsCreated).WithConstraint(p => p.CreatedByUserId, p => p.Id);
+            builder.DefineEntityType<UserSetting>().HasOne(p => p.User).WithMany(p => p.UserSettings).WithConstraint(p => p.UserId, p => p.Id);
+            builder.DefineEntityType<UserSetting>().Configure(p => {
                 p.SetFriendlyName = "User Settings";
                 p.SetName = "UserSettings";
                 p.DefaultBrowseSortExpression = "CreatedDate";
@@ -12357,7 +12357,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "UserSetting";
                 p.Title = "UserSetting";
             });
-            builder.EntityType<UserSite>().HasCompositeKey(false, p => p.SiteId, p => p.UserId).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
+            builder.DefineEntityType<UserSite>().HasCompositeKey(false, p => p.SiteId, p => p.UserId).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
                 p.PropertyName = "SiteId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
@@ -12394,9 +12394,9 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Site";
                 p.Title = "Site";
             });
-            builder.EntityType<UserSite>().HasOne(p => p.User).WithMany(p => p.Sites).WithConstraint(p => p.UserId, p => p.Id);
-            builder.EntityType<UserSite>().HasOne(p => p.Site).WithMany(p => p.Users).WithConstraint(p => p.SiteId, p => p.Id);
-            builder.EntityType<UserSite>().Configure(p => {
+            builder.DefineEntityType<UserSite>().HasOne(p => p.User).WithMany(p => p.Sites).WithConstraint(p => p.UserId, p => p.Id);
+            builder.DefineEntityType<UserSite>().HasOne(p => p.Site).WithMany(p => p.Users).WithConstraint(p => p.SiteId, p => p.Id);
+            builder.DefineEntityType<UserSite>().Configure(p => {
                 p.SetFriendlyName = "User Sites";
                 p.SetName = "UserSites";
                 p.FriendlyName = "User Site";
@@ -12512,7 +12512,7 @@ namespace IqlSampleApp.ApiContext.Base
                     }
                 };
             });
-            builder.EntityType<ApplicationUser>().Configure(rel => {
+            builder.DefineEntityType<ApplicationUser>("ApplicationUser").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
                     rel_cnf.ValueMappings.Add(new ValueMapping(rel_cnf)
                     {
@@ -12806,7 +12806,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Sites";
                 });
             });
-            builder.EntityType<Client>().Configure(rel => {
+            builder.DefineEntityType<Client>("Client").Configure(rel => {
                 rel.FindCollectionRelationship(rel_p => rel_p.Users).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
@@ -12862,7 +12862,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Sites";
                 });
             });
-            builder.EntityType<ClientType>().Configure(rel => {
+            builder.DefineEntityType<ClientType>("ClientType").Configure(rel => {
                 rel.FindCollectionRelationship(rel_p => rel_p.Clients).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
@@ -12872,7 +12872,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Clients";
                 });
             });
-            builder.EntityType<ClientCategory>().Configure(rel => {
+            builder.DefineEntityType<ClientCategory>("ClientCategory").Configure(rel => {
                 rel.FindCollectionRelationship(rel_p => rel_p.Clients).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.ReadOnlyEditDisplayKind = ReadOnlyEditDisplayKind.Hide;
@@ -12882,7 +12882,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Clients";
                 });
             });
-            builder.EntityType<ClientCategoryPivot>().Configure(rel => {
+            builder.DefineEntityType<ClientCategoryPivot>("ClientCategoryPivot").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.Client).Configure(rel_cnf => {
                     rel_cnf.CanWrite = true;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -12898,7 +12898,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Category";
                 });
             });
-            builder.EntityType<DocumentCategory>().Configure(rel => {
+            builder.DefineEntityType<DocumentCategory>("DocumentCategory").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -12915,7 +12915,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Documents";
                 });
             });
-            builder.EntityType<SiteDocument>().Configure(rel => {
+            builder.DefineEntityType<SiteDocument>("SiteDocument").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -12938,7 +12938,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Site";
                 });
             });
-            builder.EntityType<Site>().Configure(rel => {
+            builder.DefineEntityType<Site>("Site").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13017,7 +13017,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Users";
                 });
             });
-            builder.EntityType<ReportActionsTaken>().Configure(rel => {
+            builder.DefineEntityType<ReportActionsTaken>("ReportActionsTaken").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13033,7 +13033,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Person Report";
                 });
             });
-            builder.EntityType<PersonReport>().Configure(rel => {
+            builder.DefineEntityType<PersonReport>("PersonReport").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13072,7 +13072,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Type";
                 });
             });
-            builder.EntityType<ReportCategory>().Configure(rel => {
+            builder.DefineEntityType<ReportCategory>("ReportCategory").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13089,7 +13089,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Report Types";
                 });
             });
-            builder.EntityType<ReportDefaultRecommendation>().Configure(rel => {
+            builder.DefineEntityType<ReportDefaultRecommendation>("ReportDefaultRecommendation").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13106,7 +13106,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Recommendations";
                 });
             });
-            builder.EntityType<ReportRecommendation>().Configure(rel => {
+            builder.DefineEntityType<ReportRecommendation>("ReportRecommendation").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13129,7 +13129,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Recommendation";
                 });
             });
-            builder.EntityType<ReportType>().Configure(rel => {
+            builder.DefineEntityType<ReportType>("ReportType").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13153,7 +13153,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Category";
                 });
             });
-            builder.EntityType<Project>().Configure(rel => {
+            builder.DefineEntityType<Project>("Project").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13162,7 +13162,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Created By User";
                 });
             });
-            builder.EntityType<ReportReceiverEmailAddress>().Configure(rel => {
+            builder.DefineEntityType<ReportReceiverEmailAddress>("ReportReceiverEmailAddress").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13178,7 +13178,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Site";
                 });
             });
-            builder.EntityType<RiskAssessment>().Configure(rel => {
+            builder.DefineEntityType<RiskAssessment>("RiskAssessment").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13194,7 +13194,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Site Inspection";
                 });
             });
-            builder.EntityType<SiteInspection>().Configure(rel => {
+            builder.DefineEntityType<SiteInspection>("SiteInspection").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13226,7 +13226,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Person Inspections";
                 });
             });
-            builder.EntityType<RiskAssessmentSolution>().Configure(rel => {
+            builder.DefineEntityType<RiskAssessmentSolution>("RiskAssessmentSolution").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13235,7 +13235,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Created By User";
                 });
             });
-            builder.EntityType<RiskAssessmentAnswer>().Configure(rel => {
+            builder.DefineEntityType<RiskAssessmentAnswer>("RiskAssessmentAnswer").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13251,7 +13251,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Question";
                 });
             });
-            builder.EntityType<RiskAssessmentQuestion>().Configure(rel => {
+            builder.DefineEntityType<RiskAssessmentQuestion>("RiskAssessmentQuestion").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13268,7 +13268,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Answers";
                 });
             });
-            builder.EntityType<Person>().Configure(rel => {
+            builder.DefineEntityType<Person>("Person").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13392,7 +13392,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Types";
                 });
             });
-            builder.EntityType<SiteArea>().Configure(rel => {
+            builder.DefineEntityType<SiteArea>("SiteArea").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13416,7 +13416,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "People";
                 });
             });
-            builder.EntityType<PersonType>().Configure(rel => {
+            builder.DefineEntityType<PersonType>("PersonType").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13441,7 +13441,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "People Map";
                 });
             });
-            builder.EntityType<PersonLoading>().Configure(rel => {
+            builder.DefineEntityType<PersonLoading>("PersonLoading").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13458,7 +13458,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "People";
                 });
             });
-            builder.EntityType<PersonInspection>().Configure(rel => {
+            builder.DefineEntityType<PersonInspection>("PersonInspection").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13474,7 +13474,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Site Inspection";
                 });
             });
-            builder.EntityType<PersonTypeMap>().Configure(rel => {
+            builder.DefineEntityType<PersonTypeMap>("PersonTypeMap").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.Person).Configure(rel_cnf => {
                     rel_cnf.CanWrite = true;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13490,7 +13490,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Type";
                 });
             });
-            builder.EntityType<UserSetting>().Configure(rel => {
+            builder.DefineEntityType<UserSetting>("UserSetting").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.CreatedByUser).Configure(rel_cnf => {
                     rel_cnf.CanWrite = false;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13506,7 +13506,7 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "User";
                 });
             });
-            builder.EntityType<UserSite>().Configure(rel => {
+            builder.DefineEntityType<UserSite>("UserSite").Configure(rel => {
                 rel.FindRelationship(rel_p => rel_p.User).Configure(rel_cnf => {
                     rel_cnf.CanWrite = true;
                     rel_cnf.EditKind = IqlPropertyEditKind.Edit;
@@ -13522,14 +13522,14 @@ namespace IqlSampleApp.ApiContext.Base
                     rel_cnf.Title = "Site";
                 });
             });
-            builder.EntityType<Site>().SetDisplay("", DisplayConfigurationKind.Edit, (ec, displayConfiguration) => {
+            builder.DefineEntityType<Site>("Site").SetDisplay("", DisplayConfigurationKind.Edit, (ec, displayConfiguration) => {
                 displayConfiguration.SetProperties(ec, _ => _.FindRelationship(_1 => _1.Client), _ => _.FindPropertyByExpression(_1 => _1.Name), _ => _.FindRelationship(_1 => _1.Parent), _ => _.PropertyCollection(_1 => _1.FindPropertyByExpression(_2 => _2.Address), _2 => _2.FindPropertyByExpression(_3 => _3.PostCode)).Configure(coll3 => {
                     coll3.ContentAlignment = ContentAlignment.Horizontal;
                     coll3.CanWrite = true;
                     coll3.FriendlyName = "Site Address";
                     coll3.Hints = new List<string>(new[]
                     {
-                        "Iql:HelpText:Top"
+                        "Iql.Forms:HelpText:Top"
                     });
                     coll3.Name = "Site Address";
                     coll3.Title = "Site Address";
