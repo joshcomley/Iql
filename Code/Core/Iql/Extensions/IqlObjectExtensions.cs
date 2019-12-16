@@ -25,7 +25,16 @@ namespace Iql.Extensions
                 return null;
             }
 #endif
-            return type.GetRuntimeProperty(propertyName)?.GetValue(obj);
+            var property = type.GetRuntimeProperty(propertyName);
+            if(property == null)
+            {
+#if !TypeScript
+                return type.GetRuntimeField(propertyName)?.GetValue(obj);
+#else
+                return null;
+#endif
+            }
+            return property.GetValue(obj);
         }
 
         public static T GetPropertyValueByNameAs<T>(this object obj, string propertyName)

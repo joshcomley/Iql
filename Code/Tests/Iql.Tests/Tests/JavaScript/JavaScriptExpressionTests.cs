@@ -1,5 +1,5 @@
 ﻿using Iql.Parsing;
-#if TypeScript || CustomEvaluate
+#if TypeScript || CustomEvaluate || true
 using System;
 using Iql.JavaScript.JavaScriptExpressionToIql;
 #else
@@ -25,7 +25,7 @@ namespace Iql.Tests.Tests.JavaScript
     [TestClass]
     public class JavaScriptExpressionTests : TestsBase
     {
-#if TypeScript || CustomEvaluate
+#if TypeScript || CustomEvaluate || true
         [TestMethod]
         public void TestWebPackedJavaScript()
         {
@@ -47,6 +47,22 @@ namespace Iql.Tests.Tests.JavaScript
             //function(_) { return _.IsClosed == false && _.CreatedByUserId == _brandless_iql__WEBPACK_IMPORTED_MODULE_10__[/* IqlCurrentUser */ ""t""].Get().Id && _.CreatedDate > today; }
         }
 #endif
+        public string EntityType = "abc";
+
+        [TestMethod]
+        public void TestThis()
+        {
+            //_ => _.EntityType == this.parameters.EntityType
+            var converter = new JavaScriptExpressionConverter();
+            var expression = converter.ConvertJavaScriptStringToIql<ApplicationUser>(@"function (c) { return c.FullName == this.EntityType; }", TypeResolver,
+                new EvaluateContext((name) => { return this; }));
+            var lambda = expression.Expression as IqlLambdaExpression;
+            Assert.AreEqual(IqlExpressionKind.IsEqualTo, lambda.Body.Kind);
+            var javascript =
+                converter.ConvertIqlToExpressionStringByType(expression.Expression, TypeResolver, typeof(ApplicationUser));
+            Assert.AreEqual(@"function(entity, context) { return ((((entity || {}).FullName == null) ? null : ((entity || {}).FullName || '').toUpperCase()) === 'ABC'); }",
+                javascript);
+        }
 
         [TestMethod]
         public void TestConditionalExpression()

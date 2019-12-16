@@ -96,22 +96,45 @@ namespace Iql.Entities
             return compositeKey;
         }
 
-        public static CompositeKey Ensure(object entityOrKey, IEntityConfiguration entityConfiguration)
+        public static CompositeKey Ensure(object entityOrKey, IEntityConfiguration entityConfiguration = null)
         {
+            return EnsureWithBuilder(entityOrKey, entityConfiguration?.Builder, entityConfiguration);
+        }
+
+        public static CompositeKey EnsureWithBuilder(object entityOrKey, IEntityConfigurationBuilder entityConfigurationBuilder,
+            IEntityConfiguration entityConfiguration = null)
+        {
+            if (entityConfigurationBuilder == null && entityConfiguration != null)
+            {
+                entityConfigurationBuilder = entityConfiguration.Builder;
+            }
+            if (entityOrKey is string)
+            {
+                return FromKeyString((string)entityOrKey, entityConfigurationBuilder, entityConfiguration);
+            }
             if (entityOrKey == null)
             {
                 return null;
             }
-            if (entityOrKey.GetType() == entityConfiguration.Type)
+
+            if (entityConfiguration == null)
+            {
+                entityConfiguration = entityConfigurationBuilder.GetEntityByType(entityOrKey.GetType());
+                if (entityConfiguration != null)
+                {
+                    return ExtractCompositeKey(entityOrKey, entityConfiguration);
+                    //return entityConfiguration.GetCompositeKey(entityOrKey);
+                }
+            }
+            else if (entityOrKey.GetType() == entityConfiguration.Type)
             {
                 return ExtractCompositeKey(entityOrKey, entityConfiguration);
-                //return entityConfiguration.GetCompositeKey(entityOrKey);
             }
             if (entityOrKey is CompositeKey)
             {
                 return entityOrKey as CompositeKey;
             }
-            if (entityOrKey.IsValueType())
+            if (entityConfiguration != null && entityOrKey.IsValueType())
             {
                 return GetCompositeKeyFromSingularKey(entityOrKey, entityConfiguration);
             }
@@ -155,7 +178,7 @@ namespace Iql.Entities
         private static bool _allInitialized;
         private static List<CompositeKey> _all;
 
-        public static List<CompositeKey> All { get { if(!_allInitialized) { _allInitialized = true; _all = new List<CompositeKey>(); } return _all; } set { _allInitialized = true; _all = value; } }
+        public static List<CompositeKey> All { get { if (!_allInitialized) { _allInitialized = true; _all = new List<CompositeKey>(); } return _all; } set { _allInitialized = true; _all = value; } }
 
         public CompositeKey(string typeName, int size)
         {

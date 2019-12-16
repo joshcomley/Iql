@@ -14,11 +14,12 @@ using Iql.JavaScript.IqlToJavaScriptExpression;
 using Iql.JavaScript.IqlToJavaScriptExpression.Parsers;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree;
 using Iql.JavaScript.JavaScriptExpressionToExpressionTree.Nodes;
+using Iql.Parsing;
 using Iql.Parsing.Expressions;
 using Iql.Parsing.Reduction;
 using Iql.Parsing.Types;
 
-#if TypeScript || CustomEvaluate
+#if TypeScript || CustomEvaluate || true
 using Iql.Parsing;
 #endif
 
@@ -59,12 +60,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
 
         public ExpressionResult<IqlExpression> ConvertJavaScriptStringToIql<TEntity>(string code
             , ITypeResolver typeResolver
-#if TypeScript
             , EvaluateContext evaluateContext = null
-#endif
-#if CustomEvaluate
-            , EvaluateContext evaluateContext = null
-#endif
         ) where TEntity : class
         {
             var ctx = this;
@@ -75,9 +71,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
                 new JavaScriptExpressionNodeParseContext<TEntity>(
                     typeResolver,
                     this,
-#if TypeScript || CustomEvaluate
                     evaluateContext,
-#endif
                     null,
                     body.ParameterNames.FirstOrDefault() ?? "");
             var expressionResult = new ExpressionResult<IqlExpression>();
@@ -122,7 +116,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             if (typeResolver != null)
             {
                 var iqlRedudcer = new IqlReducer(
-#if TypeScript || CustomEvaluate
+#if TypeScript || CustomEvaluate || true
                     evaluateContext
 #endif
                 );

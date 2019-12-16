@@ -11,12 +11,12 @@ namespace Iql.Parsing.Reduction
         private readonly IqlReducerRegistryBase _registry;
 
         public IqlReducer(
-#if TypeScript || CustomEvaluate
+#if TypeScript || CustomEvaluate || true
             EvaluateContext evaluateContext = null, 
 #endif
             IqlReducerRegistryBase registry = null)
         {
-#if TypeScript || CustomEvaluate
+#if TypeScript || CustomEvaluate || true
             EvaluateContext = evaluateContext;
 #endif
             if (registry == null)
@@ -33,7 +33,7 @@ namespace Iql.Parsing.Reduction
             }
         }
 
-#if TypeScript || CustomEvaluate
+#if TypeScript || CustomEvaluate || true
         public EvaluateContext EvaluateContext { get; }
 #endif
 

@@ -12,7 +12,7 @@ namespace Iql.Parsing.Reduction.Reducers
             //}
             object value = expression.Value;
             var type = expression.ReturnType;
-#if TypeScript
+#if TypeScript || CustomEvaluate || true
             if (reducer.EvaluateContext != null)
             {
                 value = reducer.EvaluateContext.Evaluate(expression.VariableName);

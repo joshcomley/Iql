@@ -113,6 +113,23 @@ namespace Iql.Server.OData.Net
             await base.OnAfterDeleteAsync(key, entity, result);
         }
 
+        [HttpGet]
+        // [EnableQuery]
+        public override async Task<IActionResult> Get([ModelBinder(typeof(KeyValueBinder))]KeyValuePair<string, object>[] key)
+        {
+            IActionResult result;
+            var entityQuery = await GetEntityQuery(key);
+            if (entityQuery == null || entityQuery.Count() != 1)
+            {
+                result = NotFound();
+            }
+            else
+            {
+                result = Ok(entityQuery.Single());
+            }
+            return result;
+        }
+
         private readonly Dictionary<DeleteActionResult, List<Func<Task>>> _deleteMediaTasks = new Dictionary<DeleteActionResult, List<Func<Task>>>();
         protected override async Task<DeleteActionResult> DeleteEntityAsync(KeyValuePair<string, object>[] key, TModel entity)
         {
@@ -611,8 +628,11 @@ namespace Iql.Server.OData.Net
             lifetime = TimeSpan.FromDays(1);
             var newUrl = await MediaManager.SetMediaUriAsync(populatedEntity, file, mediaAccessKind, lifetime);
             var newValue = propertyMetadata.GetValue(populatedEntity) as string;
-            if (oldValue != newValue)
+            var uri = new Uri(newValue);
+            var clippedUri = $"{uri.Scheme}://{uri.Host}{(uri.Port == 80 ? "" : $":{uri.Port}")}{uri.LocalPath}";
+            if (oldValue != clippedUri)
             {
+                propertyMetadata.SetValue(populatedEntity, clippedUri);
                 await ODataMediaManager.Context.SaveChangesAsync();
             }
             return newUrl;

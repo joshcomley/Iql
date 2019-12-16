@@ -76,6 +76,20 @@ namespace Iql.Events
             return subscriptions.ToArray();
         }
 
+        public EventSubscription[] SubscribeAllAsync(IEnumerable<IAsyncEventSubscriberBase> subscribers, Func<IAsyncEventSubscriberBase, object, Task> action, string key = null,
+            int? allowedCount = null)
+        {
+            var subscriptions = new List<EventSubscription>();
+            foreach (var subscriber in subscribers)
+            {
+                var sub = subscriber.SubscribeAsync(async _ => { await action(subscriber, _); },
+                    key, allowedCount);
+                _subscriptions.Add(sub);
+                subscriptions.Add(sub);
+            }
+            return subscriptions.ToArray();
+        }
+
         public EventSubscription Subscribe<T>(IEventSubscriber<T> subscriber, Action<T> action, string key = null, int? allowedCount = null)
         {
             var sub = subscriber.Subscribe(action, key, allowedCount);

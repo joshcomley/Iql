@@ -2,6 +2,7 @@
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Queryable.Extensions;
+using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
 
@@ -10,6 +11,25 @@ namespace Iql.Tests.Tests
     [TestClass]
     public class CompositeKeyTests : TestsBase
     {
+        [TestMethod]
+        public async Task EnsureCompositeKeyWithEntityConfiguration()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 7,
+                Name = "Test client",
+                TypeId = 2
+            });
+            var client = await Db.Clients.GetWithKeyAsync(7);
+            var compositeKey = CompositeKey.EnsureWithBuilder(client, Db.EntityConfigurationContext);
+            var expectedFullKeyString = "Client>Id:7";
+            Assert.AreEqual(expectedFullKeyString, compositeKey.FullKeyString);
+            Assert.AreEqual(expectedFullKeyString, CompositeKey.EnsureWithBuilder(client, Db.EntityConfigurationContext).FullKeyString);
+            Assert.AreEqual(expectedFullKeyString, CompositeKey.EnsureWithBuilder(compositeKey, Db.EntityConfigurationContext).FullKeyString);
+            Assert.AreEqual(expectedFullKeyString, CompositeKey.EnsureWithBuilder(expectedFullKeyString, Db.EntityConfigurationContext).FullKeyString);
+
+        }
+
         [TestMethod]
         public async Task ConvertingCompositeKeyFromKeyStringWithNames()
         {

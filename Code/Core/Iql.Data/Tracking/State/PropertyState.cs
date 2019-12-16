@@ -477,9 +477,23 @@ namespace Iql.Data.Tracking.State
                     var manager = new IqlEventSubscriberManager();
                     _stateWatchers.Add(state, manager);
                     var relationshipPropertyStates = GetRelationshipPropertyStates(state);
-                    manager.Subscribe(state.HasChangedChanged, _ =>
+                    manager.SubscribeAll(new IEventSubscriberBase[]
+                    {
+                        state.HasChangedChanged,
+                        state.StatusChanged
+                    }, (caller, _) =>
                     {
                         UpdateSnapshotRelatedListChanged();
+                        if (state.Status == EntityStatus.ExistingAndDeleted)
+                        {
+                            UpdateState(state,
+                                ChangeCalculationKind.Remote,
+                                ItemsAdded,
+                                ItemsRemoved,
+                                ItemsChanged,
+                                manager,
+                                _stateWatchers);
+                        }
                     });
                     for (var i = 0; i < relationshipPropertyStates.Length; i++)
                     {
@@ -507,9 +521,23 @@ namespace Iql.Data.Tracking.State
                     var manager = new IqlEventSubscriberManager();
                     _stateSinceSnapshotWatchers.Add(state, manager);
                     var relationshipPropertyStates = GetRelationshipPropertyStates(state);
-                    manager.Subscribe(state.HasChangedSinceSnapshotChanged, _ =>
+                    manager.SubscribeAll(new IEventSubscriberBase[]
+                    {
+                        state.HasChangedSinceSnapshotChanged,
+                        state.StatusChanged
+                    }, (caller, _) =>
                     {
                         UpdateSnapshotRelatedListChanged();
+                        if (state.Status == EntityStatus.ExistingAndDeleted)
+                        {
+                            UpdateState(state,
+                                ChangeCalculationKind.Snapshot,
+                                ItemsAddedSinceSnapshot,
+                                ItemsRemovedSinceSnapshot,
+                                ItemsChangedSinceSnapshot,
+                                manager,
+                                _stateSinceSnapshotWatchers);
+                        }
                     });
                     for (var i = 0; i < relationshipPropertyStates.Length; i++)
                     {

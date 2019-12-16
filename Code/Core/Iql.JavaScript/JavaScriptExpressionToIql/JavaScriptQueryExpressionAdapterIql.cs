@@ -15,6 +15,7 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql
             RegisterParser(() => new CompoundJavaScriptExpressionNodeParserIql<T>());
             RegisterParser(() => new MemberJavaScriptExpressionParserIql<T>());
             RegisterParser(() => new LiteralJavaScriptExpressionParserIql<T>());
+            RegisterParser(() => new ThisJavaScriptExpressionParserIql<T>());
             RegisterParser(() => new UnaryJavaScriptExpressionParserIql<T>());
             RegisterParser(() => new PropertyIdentifierJavaScriptExpressionParserIql<T>());
         }
