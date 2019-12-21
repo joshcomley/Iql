@@ -238,6 +238,7 @@ namespace Iql.Server
         {
             builder.EntityType<T>().Configure(config =>
             {
+                config.DefinePropertyValidation(_ => _.Name, entity => entity.Name == "" || entity.Name == null, "Please enter a name.");
                 config.TitlePropertyName = nameof(IHasName.Name);
                 config.ConfigureProperty(p => p.Name, p =>
                 {

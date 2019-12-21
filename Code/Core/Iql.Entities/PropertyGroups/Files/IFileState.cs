@@ -7,5 +7,6 @@
         string UploadedByUserId { get; set; }
         string UploadedFromDeviceId { get; set; }
         string Url { get; set; }
+        bool DeleteAfterUpload { get; set; }
     }
 }

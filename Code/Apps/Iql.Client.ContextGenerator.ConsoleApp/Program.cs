@@ -47,7 +47,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                     // D:\Code\Playgrounds\lazyNinjas
                     //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
                     await GenerateWebAndMobile(isiteUrl,
-                        @"D:\Code\i-site\Code\Web2\src\app\generated\DataContext",
+                        @"D:\Code\i-site\Code\Web\src\app\generated\DataContext",
                         @"D:\Code\i-site\Code\Mobile\i-site\src\app\generated\DataContext",
                         @"D:\Code\i-site\Code\Api\src\ISite.App.Media.Azure\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);

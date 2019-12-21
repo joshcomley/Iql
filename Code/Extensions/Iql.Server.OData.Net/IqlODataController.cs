@@ -125,7 +125,7 @@ namespace Iql.Server.OData.Net
             }
             else
             {
-                result = Ok(entityQuery.Single());
+                result = Ok(new SingleResult<TModel>(entityQuery));
             }
             return result;
         }
@@ -576,36 +576,56 @@ namespace Iql.Server.OData.Net
                             await ODataMediaManager.Context.SaveChangesAsync();
                         }
                     }
-                    var revisionKeysForMediaProperty =
-                        file.VersionProperty;
-                    var requiresNewPreviews =
-                        revisionKeysForMediaProperty != null &&
-                        HasChangedPropertyValue(currentEntity, patch, revisionKeysForMediaProperty.PropertyName);
-                    // TODO: Only refresh previews if file version has changed
-                    if (requiresNewPreviews)
+                    if (EnqueueThumbnails)
                     {
-                        foreach (var filePreview_ in file.Previews)
+                        var revisionKeysForMediaProperty =
+                            file.VersionProperty;
+                        var requiresNewPreviews =
+                            revisionKeysForMediaProperty != null &&
+                            HasChangedPropertyValue(currentEntity, patch, revisionKeysForMediaProperty.PropertyName);
+                        // TODO: Only refresh previews if file version has changed
+                        if (requiresNewPreviews)
                         {
-                            var filePreview = (IFileUrl<TModel>)filePreview_;
-                            var previewProperty = filePreview.UrlProperty;
-                            populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, file);
-                            populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, filePreview);
-                            var sourceUrl = await MediaManager.SetMediaUriAsync(populatedEntity, file, MediaAccessKind.ReadOnly);
-                            // Should be preview
-                            var targetUrl = await MediaManager.SetMediaUriAsync(populatedEntity, filePreview, MediaAccessKind.Admin);
-                            // Should be preview
-                            var targetUrlReadOnly = await MediaManager.SetMediaUriAsync(populatedEntity, filePreview, MediaAccessKind.ReadOnly);
-                            previewProperty.SetValue(populatedEntity, targetUrlReadOnly);
-                            await ODataMediaManager.Context.SaveChangesAsync();
-                            // Should be preview
-                            await MediaManager.DeleteAsync(populatedEntity, filePreview);
-                            await EnqueueThumbnailRequest(sourceUrl, targetUrl);
-                            UpdateFileUrlWithVersion(currentEntity, patch, filePreview);
+                            await UpdatePreviewsAsync(currentEntity, patch, file, entityKey);
                         }
                     }
                 }
             }
             await base.OnAfterPostAndPatchAsync(currentEntity, patch, prePatchObject);
+        }
+
+        public virtual bool EnqueueThumbnails => false;
+        public virtual async Task UpdatePreviewsAsync(TModel currentEntity, Delta<TModel> patch, File<TModel> file, KeyValuePair<string, object>[] entityKey)
+        {
+            TModel populatedEntity;
+            foreach (var filePreview_ in file.Previews)
+            {
+                try
+                {
+                    var filePreview = (IFileUrl<TModel>)filePreview_;
+                    var previewProperty = filePreview.UrlProperty;
+                    populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, file);
+                    populatedEntity = await PreloadMediaKeyDependenciesAsync(entityKey, filePreview);
+                    var sourceUrl =
+                        await MediaManager.SetMediaUriAsync(populatedEntity, file, MediaAccessKind.ReadOnly);
+                    // Should be preview
+                    var targetUrl =
+                        await MediaManager.SetMediaUriAsync(populatedEntity, filePreview, MediaAccessKind.Admin);
+                    // Should be preview
+                    var targetUrlReadOnly =
+                        await MediaManager.SetMediaUriAsync(populatedEntity, filePreview, MediaAccessKind.ReadOnly);
+                    previewProperty.SetValue(populatedEntity, targetUrlReadOnly);
+                    await ODataMediaManager.Context.SaveChangesAsync();
+                    // Should be preview
+                    await MediaManager.DeleteAsync(populatedEntity, filePreview);
+                    await EnqueueThumbnailRequest(sourceUrl, targetUrl);
+                    UpdateFileUrlWithVersion(currentEntity, patch, filePreview);
+                }
+                catch (Exception e)
+                {
+                    // TODO: Log exception message
+                }
+            }
         }
 
         protected abstract Task EnqueueThumbnailRequest(string sourceUrl, string targetUrl);

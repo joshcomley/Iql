@@ -35,7 +35,7 @@ namespace Iql.Entities.Extensions
                 {
                     return true;
                 }
-                var defaultDate = (DateTimeOffset)type.DefaultValue();
+                var defaultDate = (DateTimeOffset) type.DefaultValue(true);
                 var date = (DateTimeOffset) value;
                 return defaultDate.Ticks == date.Ticks;
             }

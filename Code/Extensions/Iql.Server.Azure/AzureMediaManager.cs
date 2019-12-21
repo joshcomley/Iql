@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using Iql.Entities;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Server.Media;
 using Microsoft.Azure.Storage;
@@ -62,12 +63,13 @@ namespace Iql.Server.Azure
             MediaAccessKind accessKind,
             TimeSpan? lifetime = null)
         {
-            if (file.MediaKey == null)
+            var mediaKey = file.MediaKey ?? file.RootFile?.MediaKey;
+            if (mediaKey == null)
             {
                 throw new ArgumentException("Must have a MediaKey to get a MediaUri");
             }
 
-            if (file.MediaKey.Groups.Count != 2)
+            if (mediaKey.Groups.Count != 2)
             {
                 throw new ArgumentException("Azure MediaKey must consist of two groups");
             }
@@ -124,8 +126,9 @@ namespace Iql.Server.Azure
         protected async Task<CloudBlockBlob> BuildCloudBlockBlobAsync<T>(T entity, IFileUrl<T> file, bool createIfNotExists)
             where T : class
         {
-            var containerName = file.MediaKey.Groups[0].EvaluateToString(entity);
-            var id = file.MediaKey.Groups[1].EvaluateToString(entity);
+            var fileMediaKey = file.MediaKey ?? file.RootFile?.MediaKey;
+            var containerName = fileMediaKey.Groups[0].EvaluateToString(entity);
+            var id = fileMediaKey.Groups[1].EvaluateToString(entity);
 
             CloudBlockBlob cloudBlockBlob = null;
             if (!string.IsNullOrWhiteSpace(containerName))

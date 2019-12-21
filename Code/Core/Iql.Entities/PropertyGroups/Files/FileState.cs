@@ -8,6 +8,7 @@ namespace Iql.Entities.PropertyGroups.Files
         public string UploadedFromDeviceId { get; set; }
         public bool IsUploading { get; set; }
         public string Url { get; set; }
+        public bool DeleteAfterUpload { get; set; }
         public string ContentType { get; set; }
 
         public static IFileState TryGetFileState(IProperty stateProperty, object entity)

@@ -14,6 +14,22 @@ namespace Iql.Tests.Tests.Validation
     [TestClass]
     public class ValidationTests : TestsBase
     {
+        //[TestMethod]
+        //public async Task TestValidation2()
+        //{
+        //    Db.EntityConfigurationContext.ValidateInferredWithClientSide = true;
+        //    var site = new Site();
+        //    Db.Sites.Add(site);
+        //    var validationResults = await Db.ValidateEntityAsync(site, false);
+        //    var result = await Db.SaveChangesAsync();
+        //    Assert.IsFalse(result.Success);
+        //    AssertPropertyValidationFailures(
+        //        result,
+        //        new ExpectedPropertyValidationFailure(nameof(Site.Name),
+        //            ValidationDefaults.DefaultRequiredAutoValidationFailureKey,
+        //            ValidationDefaults.DefaultRequiredAutoValidationFailureMessage));
+        //}
+
         [TestMethod]
         public async Task EmptyInferredWithShouldFailValidationIfValidateClientSideIsTrue()
         {
