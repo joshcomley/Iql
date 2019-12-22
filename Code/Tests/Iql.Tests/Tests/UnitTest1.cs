@@ -153,7 +153,7 @@ namespace Iql.Tests.Tests
             // Change name a second time, the old value should still be the *original* value
             client.Name = "Me2";
             Assert.AreEqual(1, state.GetChangedProperties().Length);
-            change = state.GetChangedProperties().Single(_ => _.Property.PropertyName == nameof(Client.Name));
+            change = state.GetChangedProperties().Single(_ => _.Property.Name == nameof(Client.Name));
             Assert.AreEqual("Client 1", change.RemoteValue);
             Assert.AreEqual("Me2", change.LocalValue);
             Assert.AreEqual(nameProperty, change.Property);
@@ -164,7 +164,7 @@ namespace Iql.Tests.Tests
             // We should see no new property changes
             client.Description = null;
             Assert.AreEqual(1, state.GetChangedProperties().Length);
-            change = state.GetChangedProperties().Single(_ => _.Property.PropertyName == nameof(Client.Name));
+            change = state.GetChangedProperties().Single(_ => _.Property.Name == nameof(Client.Name));
             Assert.AreEqual("Client 1", change.RemoteValue);
             Assert.AreEqual("Me2", change.LocalValue);
             Assert.AreEqual(nameProperty, change.Property);
@@ -174,7 +174,7 @@ namespace Iql.Tests.Tests
             // Change description
             client.Description = "A new description";
             Assert.AreEqual(2, state.GetChangedProperties().Length);
-            change = state.GetChangedProperties().Single(_ => _.Property.PropertyName == nameof(Client.Description));
+            change = state.GetChangedProperties().Single(_ => _.Property.Name == nameof(Client.Description));
             Assert.AreEqual(null, change.RemoteValue);
             Assert.AreEqual("A new description", change.LocalValue);
             Assert.AreEqual(descriptionProperty, change.Property);
@@ -184,7 +184,7 @@ namespace Iql.Tests.Tests
             // Change description again
             client.Description = "Another new description";
             Assert.AreEqual(2, state.GetChangedProperties().Length);
-            change = state.GetChangedProperties().Single(_ => _.Property.PropertyName == nameof(Client.Description));
+            change = state.GetChangedProperties().Single(_ => _.Property.Name == nameof(Client.Description));
             Assert.AreEqual(null, change.RemoteValue);
             Assert.AreEqual("Another new description", change.LocalValue);
             Assert.AreEqual(descriptionProperty, change.Property);
@@ -194,7 +194,7 @@ namespace Iql.Tests.Tests
             // Change name back to the original value should remove the change record
             client.Name = "Client 1";
             Assert.AreEqual(1, state.GetChangedProperties().Length);
-            change = state.GetChangedProperties().Single(_ => _.Property.PropertyName == nameof(Client.Description));
+            change = state.GetChangedProperties().Single(_ => _.Property.Name == nameof(Client.Description));
             Assert.AreEqual(null, change.RemoteValue);
             Assert.AreEqual("Another new description", change.LocalValue);
             Assert.AreEqual(descriptionProperty, change.Property);

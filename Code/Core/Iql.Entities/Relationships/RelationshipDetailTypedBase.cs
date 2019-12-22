@@ -13,7 +13,7 @@ namespace Iql.Entities.Relationships
     {
         protected override string ResolveName()
         {
-            return Property?.Name;
+            return ((IMetadata) Property)?.Name;
         }
 
         protected RelationshipDetailTypedBase(

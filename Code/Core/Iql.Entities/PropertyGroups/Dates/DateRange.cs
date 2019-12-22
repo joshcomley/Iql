@@ -11,7 +11,7 @@ namespace Iql.Entities.PropertyGroups.Dates
 
         protected override string ResolveName()
         {
-            var parts = new[] {StartDateProperty?.Name, EndDateProperty?.Name}.Where(_ =>
+            var parts = new[] {((IMetadata) StartDateProperty)?.Name, ((IMetadata) EndDateProperty)?.Name}.Where(_ =>
                 !string.IsNullOrWhiteSpace(_)).ToArray();
             return parts.Length == 0
                 ? "DateRange"

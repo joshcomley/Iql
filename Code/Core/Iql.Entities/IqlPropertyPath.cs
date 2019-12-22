@@ -243,7 +243,7 @@ namespace Iql.Entities
         public static IqlPropertyPath FromProperty(IProperty property, string rootVariableName = null)
         {
             return FromString(
-                property.EntityConfiguration.Builder, property.Name, property.EntityConfiguration.TypeMetadata, null, rootVariableName);
+                property.EntityConfiguration.Builder, ((IMetadata) property).Name, property.EntityConfiguration.TypeMetadata, null, rootVariableName);
         }
 
         public static IqlPropertyPath FromPropertyExpression(

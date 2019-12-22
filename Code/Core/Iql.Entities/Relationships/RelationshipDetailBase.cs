@@ -230,12 +230,12 @@ namespace Iql.Entities.Relationships
                 var constraint = constraints[i];
                 var value =
                     entity is CompositeKey
-                        ? (entity as CompositeKey).Keys.Single(k => k.Name == constraint.PropertyName).Value
+                        ? (entity as CompositeKey).Keys.Single(k => k.Name == constraint.Name).Value
                         : entity.GetPropertyValue(constraint);
                 var keyValue = new KeyValue(
                     inverse
-                        ? inverseConstraints[i].PropertyName
-                        : constraint.PropertyName,
+                        ? inverseConstraints[i].Name
+                        : constraint.Name,
                     value,
                     constraint.TypeDefinition);
                 compositeKey.Keys[i] = keyValue;

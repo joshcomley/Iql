@@ -256,7 +256,7 @@ namespace Iql.Data.Context
                 var key = entityToFilterKey.Keys[i];
                 keyExpressions.Add(
                     new IqlIsEqualToExpression(
-                        new IqlPropertyExpression(relationship.Constraints[i].PropertyName, new IqlRootReferenceExpression("child")),
+                        new IqlPropertyExpression(relationship.Constraints[i].Name, new IqlRootReferenceExpression("child")),
                         new IqlLiteralExpression(key.Value, key.ValueType.ToIqlType())));
             }
             var all = new IqlNotExpression(
@@ -762,8 +762,8 @@ namespace Iql.Data.Context
             if (string.IsNullOrWhiteSpace(resolvedSort))
             {
                 var sortProperty = (EntityConfiguration.ResolveSearchProperties().FirstOrDefault()?.PathToHere ??
-                                    EntityConfiguration.Key.Properties.FirstOrDefault()?.PropertyName ??
-                                    EntityConfiguration.Properties.FirstOrDefault()?.PropertyName);
+                                    EntityConfiguration.Key.Properties.FirstOrDefault()?.Name ??
+                                    EntityConfiguration.Properties.FirstOrDefault()?.Name);
                 resolvedSort = sortProperty;
             }
             if (string.IsNullOrWhiteSpace(resolvedSort))
@@ -1137,11 +1137,11 @@ namespace Iql.Data.Context
                 for (int j = 0; j < entityConfiguration.Properties.Count; j++)
                 {
                     IProperty property = entityConfiguration.Properties[j];
-                    var mappedProperty = definition.ResolvePropertyMap(property.PropertyName);
+                    var mappedProperty = definition.ResolvePropertyMap(property.Name);
                     if (mappedProperty != null)
                     {
-                        mappedItem.SetPropertyValueByName(property.PropertyName,
-                            item.GetPropertyValueByName(mappedProperty.CustomProperty.PropertyName));
+                        mappedItem.SetPropertyValueByName(property.Name,
+                            item.GetPropertyValueByName(mappedProperty.CustomProperty.Name));
                     }
                 }
 
@@ -1318,7 +1318,7 @@ namespace Iql.Data.Context
         public DbQueryable<T> ExpandAllCollectionRelationships()
         {
             return AllCollectionRelationships(
-                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.PropertyName));
+                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.Name));
         }
 
         IDbQueryable IDbQueryable.ExpandAllCollectionRelationships()
@@ -1336,13 +1336,13 @@ namespace Iql.Data.Context
                     {
                         return queryable;
                     }
-                    else if (detail.Property.PropertyName == name && detail.CountProperty != null)
+                    else if (detail.Property.Name == name && detail.CountProperty != null)
                     {
-                        return queryable.ExpandRelationship(detail.CountProperty.PropertyName);
+                        return queryable.ExpandRelationship(detail.CountProperty.Name);
                     }
-                    else if (detail.CountProperty != null && detail.CountProperty.PropertyName == name)
+                    else if (detail.CountProperty != null && detail.CountProperty.Name == name)
                     {
-                        return queryable.ExpandRelationship(detail.CountProperty.PropertyName);
+                        return queryable.ExpandRelationship(detail.CountProperty.Name);
                     }
                     return queryable;
                 });
@@ -1355,7 +1355,7 @@ namespace Iql.Data.Context
                 {
                     if (detail.CountProperty != null)
                     {
-                        return queryable.ExpandRelationship(detail.CountProperty.PropertyName);
+                        return queryable.ExpandRelationship(detail.CountProperty.Name);
                     }
                     return queryable;
                 });
@@ -1364,7 +1364,7 @@ namespace Iql.Data.Context
         public DbQueryable<T> ExpandAllSingleRelationships()
         {
             return AllSingleRelationships(
-                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.PropertyName));
+                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.Name));
         }
 
         public DbQueryable<T> Expand<TTarget>(
@@ -1412,7 +1412,7 @@ namespace Iql.Data.Context
         public DbQueryable<T> ExpandAll()
         {
             return AllRelationships(
-                (queryable, relationship, detail) => queryable.ExpandRelationship(detail.Property.Name));
+                (queryable, relationship, detail) => queryable.ExpandRelationship(((IMetadata) detail.Property).Name));
         }
 
         public DbQueryable<T> ExpandQuery(
@@ -1465,7 +1465,7 @@ namespace Iql.Data.Context
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
-                    if (entityConfig.FindProperty(detail.Property.Name).TypeDefinition.IsCollection)
+                    if (entityConfig.FindProperty(((IMetadata) detail.Property).Name).TypeDefinition.IsCollection)
                     {
                         return action(queryable, relationship, detail);
                     }
@@ -1480,7 +1480,7 @@ namespace Iql.Data.Context
             return AllRelationships(
                 (queryable, relationship, detail) =>
                 {
-                    if (!entityConfig.FindProperty(detail.Property.Name).TypeDefinition.IsCollection)
+                    if (!entityConfig.FindProperty(((IMetadata) detail.Property).Name).TypeDefinition.IsCollection)
                     {
                         return action(queryable, relationship, detail);
                     }
@@ -1919,7 +1919,7 @@ namespace Iql.Data.Context
                     {
                         iqlExpandExpression.Count = true;
                         property = property.Relationship.ThisEnd.CountProperty;
-                        iqlExpandExpression.NavigationProperty.PropertyName = property.PropertyName;
+                        iqlExpandExpression.NavigationProperty.PropertyName = property.Name;
                     }
                     var expandEntityType = property.Relationship.OtherEnd.EntityConfiguration.Type;
                     var expandDbSet = DataContext.GetDbSetByEntityType(expandEntityType);

@@ -27,11 +27,11 @@ namespace Iql.Data.Queryable
                 var relationship = propertyGroup as IRelationshipDetail;
                 if (relationship.IsCollection && !fullCollectionExpand && relationship.CountProperty != null)
                 {
-                    query = query.ExpandRelationship(relationship.CountProperty.Name);
+                    query = query.ExpandRelationship(((IMetadata) relationship.CountProperty).Name);
                 }
                 else
                 {
-                    query = query.ExpandRelationship(relationship.Property.Name);
+                    query = query.ExpandRelationship(((IMetadata) relationship.Property).Name);
                 }
             }
             else if (propertyGroup is PropertyPath)

@@ -164,7 +164,7 @@ namespace Iql.Entities
                     {
                         result.Add(IqlPropertyPath.FromString(
                             Builder,
-                            $"{property.PropertyName}/{paths[j].PathToHere}",
+                            $"{property.Name}/{paths[j].PathToHere}",
                             TypeMetadata,
                             null,
                             rootVariableName));
@@ -258,14 +258,14 @@ namespace Iql.Entities
         public RelationshipDetail<T, TProperty> FindRelationship<TProperty>(Expression<Func<T, TProperty>> propertyName)
         {
             var property = FindPropertyByExpression(propertyName);
-            var relationship = FindRelationshipByName(property.Name);
+            var relationship = FindRelationshipByName(((IMetadata) property).Name);
             return (RelationshipDetail<T, TProperty>)relationship.ThisEnd;
         }
 
         public CollectionRelationshipDetail<T, TOtherEnd> FindCollectionRelationship<TOtherEnd>(Expression<Func<T, IEnumerable<TOtherEnd>>> propertyName)
         {
             var property = FindPropertyByExpression(propertyName);
-            var relationship = FindRelationshipByName(property.Name);
+            var relationship = FindRelationshipByName(((IMetadata) property).Name);
             return (CollectionRelationshipDetail<T, TOtherEnd>)relationship.ThisEnd;
         }
         private bool _propertyByNameLookupDelayedInitialized;
@@ -276,7 +276,7 @@ namespace Iql.Entities
         {
             if (!_propertyByNameLookup.ContainsKey(name))
             {
-                var property = (IEntityProperty<T>)Properties.SingleOrDefault(p => p.PropertyName.ToLower() == name.ToLower());
+                var property = (IEntityProperty<T>)Properties.SingleOrDefault(p => p.Name.ToLower() == name.ToLower());
                 if (property != null)
                 {
                     _propertyByNameLookup.Add(name, property);
@@ -349,7 +349,7 @@ namespace Iql.Entities
 
         private void TrySetKey(string propertyName)
         {
-            if (Key != null && Key.Properties.Any(p => p.Name == propertyName))
+            if (Key != null && Key.Properties.Any(p => ((IMetadata) p).Name == propertyName))
             {
                 var property = FindProperty(propertyName);
                 if (property != null)

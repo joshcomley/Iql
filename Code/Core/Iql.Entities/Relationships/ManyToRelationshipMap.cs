@@ -49,7 +49,7 @@ namespace Iql.Entities.Relationships
         //        _targetEntityConfiguration.Relationships.Add(relationship);
         //    }
         //    EntityConfigurationRelationshipHelper.TryAssignRelationshipToProperty(_sourceEntityConfiguration, relationship.Source.Property.Name);
-        //    //_targetEntityConfiguration.TryAssignRelationshipToProperty(relationship.Target.Property.PropertyName);
+        //    //_targetEntityConfiguration.TryAssignRelationshipToProperty(relationship.Target.Property.Name);
         //    return relationship;
         //}
     }

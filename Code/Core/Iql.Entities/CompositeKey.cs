@@ -90,7 +90,7 @@ namespace Iql.Entities
                     property = entityConfiguration.Key.Properties[i];
                     valueStr = part == "NULL" ? null : part;
                 }
-                compositeKey.Keys[i] = new KeyValue(property.Name, property.TypeDefinition.EnsureValueType(valueStr), property.TypeDefinition);
+                compositeKey.Keys[i] = new KeyValue(((IMetadata) property).Name, property.TypeDefinition.EnsureValueType(valueStr), property.TypeDefinition);
             }
 
             return compositeKey;
@@ -149,7 +149,7 @@ namespace Iql.Entities
             {
                 var property = entityConfiguration.Key.Properties[i];
                 compositeKey.Keys[i] =
-                    new KeyValue(property.Name, entityOrKey.GetPropertyValue(property), property.TypeDefinition);
+                    new KeyValue(((IMetadata) property).Name, entityOrKey.GetPropertyValue(property), property.TypeDefinition);
             }
 
             return compositeKey;
@@ -163,7 +163,7 @@ namespace Iql.Entities
             }
 
             var compositeKey = new CompositeKey(entityConfiguration.TypeName, 1);
-            var propertyName = entityConfiguration.Key.Properties.First().Name;
+            var propertyName = ((IMetadata) entityConfiguration.Key.Properties.First()).Name;
             compositeKey.Keys[0] = new KeyValue(
                 propertyName,
                 key,

@@ -68,7 +68,7 @@ namespace Iql.Data.Extensions
                             for (var j = 0; j < parentConstraints.Keys.Length; j++)
                             {
                                 var constraint = parentConstraints.Keys[j];
-                                entity.SetPropertyValueByName(ourConstraints[j].Name, constraint.Value);
+                                entity.SetPropertyValueByName(((IMetadata) ourConstraints[j]).Name, constraint.Value);
                             }
                         }
                     }

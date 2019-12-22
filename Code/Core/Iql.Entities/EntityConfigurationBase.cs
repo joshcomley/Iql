@@ -421,7 +421,7 @@ namespace Iql.Entities
                 var name = TitlePropertyName;
                 if (!string.IsNullOrWhiteSpace(name))
                 {
-                    return Properties.SingleOrDefault(p => p.Name == TitlePropertyName);
+                    return Properties.SingleOrDefault(p => ((IMetadata) p).Name == TitlePropertyName);
                 }
                 return null;
             }
@@ -512,7 +512,7 @@ namespace Iql.Entities
                                 index += increment;
                                 return GetOrder(p, index);
                             })
-                            .FirstOrDefault()?.PropertyName;
+                            .FirstOrDefault()?.Name;
                         return _autoTitlePropertyName;
                     }
 
@@ -635,7 +635,7 @@ namespace Iql.Entities
 
         public EntityRelationship FindRelationshipByName(string propertyName)
         {
-            return AllRelationships().SingleOrDefault(r => r.ThisEnd.Property.Name == propertyName);
+            return AllRelationships().SingleOrDefault(r => ((IMetadata) r.ThisEnd.Property).Name == propertyName);
         }
 
         public bool EntityHasKey(object entity, CompositeKey key)
@@ -643,7 +643,7 @@ namespace Iql.Entities
             var isMatch = true;
             foreach (var id in Key.Properties)
             {
-                var compositeKeyValue = key.Keys.SingleOrDefault(k => k.Name == id.Name);
+                var compositeKeyValue = key.Keys.SingleOrDefault(k => k.Name == ((IMetadata) id).Name);
                 if (compositeKeyValue == null)
                 {
                     return false;
@@ -751,7 +751,7 @@ namespace Iql.Entities
             var result = _propertiesMap.ContainsKey(name) ? _propertiesMap[name] : null;
             if (result == null)
             {
-                result = Properties.SingleOrDefault(_ => _.Name == name);
+                result = Properties.SingleOrDefault(_ => ((IMetadata) _).Name == name);
             }
 
             return result;

@@ -13,7 +13,7 @@ namespace Iql.Data.Tracking
             {
                 var part = key.Keys[i];
                 compositeKey.Keys[i] = new KeyValue(part.Name, part.Value,
-                    entityConfiguration.Properties.Single(_ => _.PropertyName == part.Name).TypeDefinition);
+                    entityConfiguration.Properties.Single(_ => _.Name == part.Name).TypeDefinition);
                 compositeKey.Keys[i].Name = part.Name;
                 compositeKey.Keys[i].Value = part.Value;
             }

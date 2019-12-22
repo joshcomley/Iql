@@ -46,9 +46,9 @@ namespace Iql.Data.Context
             var checks = new List<IqlExpression>();
             foreach (var property in keyDefinition.Properties)
             {
-                var keyValue = key.Keys.Single(k => k.Name == property.Name);
+                var keyValue = key.Keys.Single(k => k.Name == ((IMetadata) property).Name);
                 var propertyExpression = new IqlPropertyExpression(
-                    property.Name,
+                    ((IMetadata) property).Name,
                     root,
                     keyValue.Value.GetType().ToIqlType());
                 var check = new IqlIsEqualToExpression(

@@ -168,7 +168,7 @@ namespace Iql.Data.Relationships
                                 relationship.Source.Property,
                                 targetEntity.Item
                             );
-                            var list = (IList<TSource>)targetEntity.Lists[relationship.Target.Property.Name];
+                            var list = (IList<TSource>)targetEntity.Lists[((IMetadata) relationship.Target.Property).Name];
                             list.Add((TSource)sourceEntity);
                         }
                     }
@@ -178,7 +178,7 @@ namespace Iql.Data.Relationships
             if (assignRelationships)
             {
                 var targetCountProperty = relationship.Target.EntityConfiguration.FindProperty(
-                    $"{relationship.Target.Property.Name}Count");
+                    $"{((IMetadata) relationship.Target.Property).Name}Count");
                 if (targetCountProperty != null && targetCountProperty.Kind.HasFlag(IqlPropertyKind.Count))
                 {
                     foreach (var targetEntity in targetDictionary)
@@ -187,13 +187,13 @@ namespace Iql.Data.Relationships
                         if (targetCountProperty.PropertyInfo.PropertyType == typeof(long))
                         {
                             targetEntity.Value.Item.SetPropertyValue(targetCountProperty,
-                                (long)targetEntity.Value.Lists[relationship.Target.Property.Name].Count);
+                                (long)targetEntity.Value.Lists[((IMetadata) relationship.Target.Property).Name].Count);
                         }
                         else
                         {
 #endif
                             targetEntity.Value.Item.SetPropertyValue(targetCountProperty,
-                                targetEntity.Value.Lists[relationship.Target.Property.Name].Count);
+                                targetEntity.Value.Lists[((IMetadata) relationship.Target.Property).Name].Count);
 #if !TypeScript
                         }
 #endif
@@ -249,7 +249,7 @@ namespace Iql.Data.Relationships
                         var property = properties[j];
                         compositeKey.Keys[j] = 
                             new KeyValue(
-                                property.Name,
+                                ((IMetadata) property).Name,
                                 entity.GetPropertyValue(property),
                                 property.TypeDefinition);
                     }
@@ -260,13 +260,13 @@ namespace Iql.Data.Relationships
 
                     if (relationship.IsCollection)
                     {
-                        itemAndList.Lists.Add(relationship.Property.Name,
+                        itemAndList.Lists.Add(((IMetadata) relationship.Property).Name,
                             entity.GetPropertyValueAs<IList>(
                                 relationship.Property));
                     }
                     else
                     {
-                        itemAndList.Entities.Add(relationship.Property.Name,
+                        itemAndList.Entities.Add(((IMetadata) relationship.Property).Name,
                             entity.GetPropertyValue(
                                 relationship.Property));
                     }
@@ -306,7 +306,7 @@ namespace Iql.Data.Relationships
                     for (var j = 0; j < properties.Length; j++)
                     {
                         var property = properties[j];
-                        compositeKey.Keys[j] = new KeyValue(property.Name,
+                        compositeKey.Keys[j] = new KeyValue(((IMetadata) property).Name,
                             entity.GetPropertyValue(property),
                             property.TypeDefinition);
                     }

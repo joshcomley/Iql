@@ -96,7 +96,7 @@ namespace Iql.Server
             {
                 foreach (var prop in new[]
                 {
-                    config.FindProperty(nameof(IdentityUser.EmailConfirmed)) ,
+                    config.FindProperty(nameof(IdentityUser.EmailConfirmed)),
                     config.FindProperty(nameof(IdentityUser.PhoneNumberConfirmed)),
                     config.FindProperty(nameof(IdentityUser.TwoFactorEnabled))
                 })
@@ -106,6 +106,15 @@ namespace Iql.Server
                         prop.EditKind = IqlPropertyEditKind.Display;
                     }
                 }
+                config.ConfigureProperty(_ => _.Email, p =>
+                {
+                    p.Nullable = false;
+                    p.HasHint(FormHints.EmailAddress);
+                });
+                config.ConfigureProperty(_ => _.PhoneNumber, p =>
+                {
+                    p.HasHint(FormHints.PhoneNumber);
+                });
             });
         }
 
@@ -140,7 +149,7 @@ namespace Iql.Server
             typeof(AllConfigurator<TService>)
                 .GetMethod(nameof(ConfigurePersistenceKey), BindingFlags.Static | BindingFlags.NonPublic)
                 .MakeGenericMethod(p.EntityConfiguration.Type)
-                .Invoke(null, new object[] {p});
+                .Invoke(null, new object[] { p });
         }
 
         private static void ConfigurePersistenceKey<T>(IEntityProperty<T> p) where T : class

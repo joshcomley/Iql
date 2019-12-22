@@ -13,7 +13,6 @@ namespace Iql.Entities
         ITypeDefinition TypeDefinition { get; set; }
         bool AutoSearchKind { get; set; }
         IqlPropertySearchKind SearchKind { get; set; }
-        string PropertyName { get; set; }
         bool Searchable { get; set; }
         bool? Nullable { get; set; }
         void SetInferredWithExpression(LambdaExpression value, bool onlyIfNew = false, InferredValueKind kind = InferredValueKind.Always, bool canOverride = false, params string[] onlyWhenPropertyChanges);

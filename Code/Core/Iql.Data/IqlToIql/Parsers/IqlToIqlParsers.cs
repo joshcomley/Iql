@@ -260,7 +260,7 @@ namespace Iql.Data.IqlToIql.Parsers
                 .FindProperty(action.PropertyName);
             if (property != null && property.Kind.HasFlag(IqlPropertyKind.Count))
             {
-                action.PropertyName = property.EntityProperty().Relationship.ThisEnd.Property.Name;
+                action.PropertyName = ((IMetadata) property.EntityProperty().Relationship.ThisEnd.Property).Name;
                 return new IqlCountExpression(null, action, null);
             }
             parser.ResolveSpecialTypeMap(specialTypeMap =>
@@ -271,7 +271,7 @@ namespace Iql.Data.IqlToIql.Parsers
                     var mappedProperty = specialTypeMap.ResolvePropertyMap(action.PropertyName);
                     if (mappedProperty != null)
                     {
-                        action.PropertyName = mappedProperty.CustomProperty.PropertyName;
+                        action.PropertyName = mappedProperty.CustomProperty.Name;
                         action.ReturnType = mappedProperty.CustomProperty.TypeDefinition.ToIqlType();
                     }
                 }

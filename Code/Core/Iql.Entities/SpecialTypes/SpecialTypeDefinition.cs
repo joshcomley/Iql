@@ -27,7 +27,7 @@ namespace Iql.Entities.SpecialTypes
 
         public virtual PropertyMap ResolvePropertyMapInverse(string customPropertyName)
         {
-            return PropertyMaps.SingleOrDefault(_ => _.CustomProperty.Name == customPropertyName);
+            return PropertyMaps.SingleOrDefault(_ => ((IMetadata) _.CustomProperty).Name == customPropertyName);
         }
 
         public abstract PropertyMap[] PropertyMaps { get; }

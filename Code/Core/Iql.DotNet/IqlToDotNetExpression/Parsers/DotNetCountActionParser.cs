@@ -69,11 +69,11 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
         //{
         //    var accessors = new List<string>();
         //    var expression = propertyExpression;
-        //    accessors.Add(expression.PropertyName);
+        //    accessors.Add(expression.Name);
         //    while (expression.Parent is IqlPropertyExpression)
         //    {
         //        expression = expression.Parent as IqlPropertyExpression;
-        //        accessors.Add(expression.PropertyName);
+        //        accessors.Add(expression.Name);
         //    }
         //    accessors.Reverse();
         //    return accessors.ToArray();

@@ -688,36 +688,36 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             if (cr != null)
             {
                 sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.CustomReportsDefinition)} = {nameof(IEntityConfigurationBuilder.CustomReportsDefinition)}.{nameof(CustomReportsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{cr.EntityConfiguration.Name}>(),
-                _ => _.{cr.IdProperty.PropertyName},
-                _ => _.{cr.UserIdProperty.PropertyName},
-                _ => _.{cr.NameProperty.PropertyName},
-                _ => _.{cr.EntityTypeProperty.PropertyName},
-                _ => _.{cr.IqlProperty.PropertyName},
-                _ => _.{cr.FieldsProperty.PropertyName},
-                _ => _.{cr.SortProperty.PropertyName},
-                _ => _.{cr.SortDescendingProperty.PropertyName},
-                _ => _.{cr.SearchProperty.PropertyName}
+                _ => _.{cr.IdProperty.Name},
+                _ => _.{cr.UserIdProperty.Name},
+                _ => _.{cr.NameProperty.Name},
+                _ => _.{cr.EntityTypeProperty.Name},
+                _ => _.{cr.IqlProperty.Name},
+                _ => _.{cr.FieldsProperty.Name},
+                _ => _.{cr.SortProperty.Name},
+                _ => _.{cr.SortDescendingProperty.Name},
+                _ => _.{cr.SearchProperty.Name}
                 );");
             }
             var us = Schema.EntityConfigurationDocument.UserSettingsDefinition as UserSettingsDefinition;
             if (us != null)
             {
                 sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UserSettingsDefinition)} = {nameof(IEntityConfigurationBuilder.UserSettingsDefinition)}.{nameof(UserSettingsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{us.EntityConfiguration.Name}>(),
-                _ => _.{us.IdProperty.PropertyName},
-                _ => _.{us.UserIdProperty.PropertyName},
-                _ => _.{us.Key1Property.PropertyName},
-                _ => _.{us.Key2Property.PropertyName},
-                _ => _.{us.Key3Property.PropertyName},
-                _ => _.{us.Key4Property.PropertyName},
-                _ => _.{us.ValueProperty.PropertyName}
+                _ => _.{us.IdProperty.Name},
+                _ => _.{us.UserIdProperty.Name},
+                _ => _.{us.Key1Property.Name},
+                _ => _.{us.Key2Property.Name},
+                _ => _.{us.Key3Property.Name},
+                _ => _.{us.Key4Property.Name},
+                _ => _.{us.ValueProperty.Name}
                 );");
             }
             var u = Schema.EntityConfigurationDocument.UsersDefinition as UsersDefinition;
             if (u != null)
             {
                 sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UsersDefinition)} = {nameof(IEntityConfigurationBuilder.UsersDefinition)}.{nameof(UsersDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{u.EntityConfiguration.Name}>(),
-                _ => _.{u.IdProperty.PropertyName},
-                _ => _.{u.NameProperty.PropertyName}
+                _ => _.{u.IdProperty.Name},
+                _ => _.{u.NameProperty.Name}
                 );");
             }
             return sb.ToString();
@@ -1038,7 +1038,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                         {
                                             file.UrlProperty == null
                                                 ? "null"
-                                                : $"{subLambda} => {subLambda}.{file.UrlProperty.PropertyName}",
+                                                : $"{subLambda} => {subLambda}.{file.UrlProperty.Name}",
                                             $@"new Guid(""{file.Guid.ToString()}"")"
                                         };
                                     var config = await ConfigureMetadataAsync(file, null, subLambda, false);
@@ -1151,7 +1151,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 var sbFilePreviews = new StringBuilder();
                                 foreach (var filePreview in filePreviews)
                                 {
-                                    sbFilePreviews.Append($"{lambdaKey}.{nameof(File<object>.AddPreview)}(fp => fp.{filePreview.UrlProperty.PropertyName}, new Guid(\"{filePreview.Guid}\"), {nameof(IqlPreviewKind)}.{filePreview.Kind.ToString()}, {(filePreview.MaxWidth == null ? "null" : filePreview.MaxWidth.Value.ToString())}, {(filePreview.MaxHeight == null ? "null" : filePreview.MaxHeight.Value.ToString())}, {String(filePreview.Key)}, {await ConfigureMetadataAsync(filePreview, null, "fp", false)});");
+                                    sbFilePreviews.Append($"{lambdaKey}.{nameof(File<object>.AddPreview)}(fp => fp.{filePreview.UrlProperty.Name}, new Guid(\"{filePreview.Guid}\"), {nameof(IqlPreviewKind)}.{filePreview.Kind.ToString()}, {(filePreview.MaxWidth == null ? "null" : filePreview.MaxWidth.Value.ToString())}, {(filePreview.MaxHeight == null ? "null" : filePreview.MaxHeight.Value.ToString())}, {String(filePreview.Key)}, {await ConfigureMetadataAsync(filePreview, null, "fp", false)});");
                                 }
 
                                 assign = sbFilePreviews.ToString();
@@ -1165,7 +1165,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             if (entityMetadata.PersistenceKeyProperty != null)
                             {
                                 sb.Append(
-                                    $"{lambdaKey}.{nameof(IEntityMetadata.PersistenceKeyProperty)} = {lambdaKey}.{nameof(IEntityConfiguration.FindProperty)}(\"{entityMetadata.PersistenceKeyProperty.PropertyName}\");");
+                                    $"{lambdaKey}.{nameof(IEntityMetadata.PersistenceKeyProperty)} = {lambdaKey}.{nameof(IEntityConfiguration.FindProperty)}(\"{entityMetadata.PersistenceKeyProperty.Name}\");");
                             }
                             dealtWith = true;
                         }

@@ -464,7 +464,7 @@ namespace Iql.Data.Context
             for (var i = 0; i < properties.Count; i++)
             {
                 var property = properties[i];
-                var mappedProperty = definition.ResolvePropertyMap(property.PropertyName);
+                var mappedProperty = definition.ResolvePropertyMap(property.Name);
                 mappedProperty.CustomProperty.SetValue(mappedEntity,
                     property.GetValue(add.Operation.EntityState.Entity));
             }
@@ -490,7 +490,7 @@ namespace Iql.Data.Context
                 for (var i = 0; i < properties.Count; i++)
                 {
                     var property = properties[i];
-                    var mappedProperty = definition.ResolvePropertyMap(property.PropertyName);
+                    var mappedProperty = definition.ResolvePropertyMap(property.Name);
                     property.SetValue(remoteEntity,
                         mappedProperty.CustomProperty.GetValue(mappedResult.RemoteEntity));
                 }
@@ -513,7 +513,7 @@ namespace Iql.Data.Context
             for (var i = 0; i < operationKey.Keys.Length; i++)
             {
                 remappedCompositeKey.Keys[i] = new KeyValue(
-                    definition.ResolvePropertyMap(operationKey.Keys[i].Name).CustomProperty.PropertyName,
+                    definition.ResolvePropertyMap(operationKey.Keys[i].Name).CustomProperty.Name,
                     operationKey.Keys[i].Value,
                     operationKey.Keys[i].ValueType);
                 mappedEntity.SetPropertyValueByName(remappedCompositeKey.Keys[i].Name,
@@ -553,12 +553,12 @@ namespace Iql.Data.Context
             for (var i = 0; i < update.Operation.EntityState.PropertyStates.Length; i++)
             {
                 var sourcePropertyState = update.Operation.EntityState.PropertyStates[i];
-                var mappedProperty = definition.ResolvePropertyMap(sourcePropertyState.Property.PropertyName);
+                var mappedProperty = definition.ResolvePropertyMap(sourcePropertyState.Property.Name);
                 var targetPropertyState = dummyEntityState.PropertyStates.Single(p => p.Property == mappedProperty.CustomProperty);
                 targetPropertyState.RemoteValue = sourcePropertyState.RemoteValue;
                 targetPropertyState.LocalValue = sourcePropertyState.LocalValue;
                 mappedEntity.SetPropertyValueByName(
-                    mappedProperty.CustomProperty.PropertyName,
+                    mappedProperty.CustomProperty.Name,
                     sourcePropertyState.LocalValue);
             }
 

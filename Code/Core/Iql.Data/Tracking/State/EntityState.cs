@@ -602,8 +602,8 @@ namespace Iql.Data.Tracking.State
             {
                 var property = EntityConfiguration.Key.Properties[i];
                 compositeKey.Keys[i] = new KeyValue(
-                    property.Name,
-                    GetPropertyState(property.Name).RemoteValue,
+                    ((IMetadata) property).Name,
+                    GetPropertyState(((IMetadata) property).Name).RemoteValue,
                     property.TypeDefinition);
             }
 
@@ -647,7 +647,7 @@ namespace Iql.Data.Tracking.State
             for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
             {
                 var key = EntityConfiguration.Key.Properties[i];
-                key.SetValue(Entity, LocalKey.Keys.Single(_ => _.Name == key.PropertyName).Value);
+                key.SetValue(Entity, LocalKey.Keys.Single(_ => _.Name == key.Name).Value);
             }
         }
 
@@ -823,7 +823,7 @@ namespace Iql.Data.Tracking.State
         {
             if (!_propertyStateByName.ContainsKey(name))
             {
-                var state = Properties.SingleOrDefault(p => p.Property.PropertyName == name);
+                var state = Properties.SingleOrDefault(p => p.Property.Name == name);
                 if (state != null)
                 {
                     _propertyStateByName.Add(name, state);
@@ -838,8 +838,8 @@ namespace Iql.Data.Tracking.State
 
         public IPropertyState FindPropertyState(string name)
         {
-            var state = Properties.FirstOrDefault(p => p.Property.PropertyName == name);
-            state = state ?? Properties.FirstOrDefault(p => p.Property.PrimaryProperty.PropertyName == name);
+            var state = Properties.FirstOrDefault(p => p.Property.Name == name);
+            state = state ?? Properties.FirstOrDefault(p => p.Property.PrimaryProperty.Name == name);
             state = state ?? Properties.FirstOrDefault(p => p.Property.PrimaryProperty.GetGroupProperties()
                         .Any(_ => _.Name == name));
             state = state ?? Properties.FirstOrDefault(p =>
@@ -1082,7 +1082,7 @@ namespace Iql.Data.Tracking.State
                     for (var i = 0; i < thisEndConstraints.Length; i++)
                     {
                         var constraint = thisEndConstraints[i];
-                        var constraintState = GetPropertyState(constraint.Name);
+                        var constraintState = GetPropertyState(((IMetadata) constraint).Name);
                         if (constraintState.HasChanges)
                         {
                             return true;

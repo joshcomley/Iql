@@ -130,7 +130,7 @@ namespace Iql.Entities
         public bool IsLongitudeProperty => Equals(GeographicPoint?.LongitudeProperty, this);
         public bool IsLatitudeProperty => Equals(GeographicPoint?.LatitudeProperty, this);
         public bool IsLongitudeOrLatitudeProperty => IsLongitudeProperty || IsLatitudeProperty;
-        public bool IsTitleProperty => EntityConfiguration?.TitlePropertyName == Name || EntityConfiguration?.TitleProperty == this;
+        public bool IsTitleProperty => EntityConfiguration?.TitlePropertyName == ((MetadataBase) this).Name || EntityConfiguration?.TitleProperty == this;
         public bool IsPreviewProperty => EntityConfiguration?.PreviewPropertyName != null && EntityConfiguration?.PreviewPropertyName == File?.Name;
         public bool IsSubTitleProperty => HasHint(KnownHints.SubTitle);
         public override IEntityConfiguration EntityConfiguration => EntityConfigurationInternal;
@@ -353,7 +353,6 @@ namespace Iql.Entities
 
         internal IProperty CountRelationshipProperty { get; set; }
 
-        public string PropertyName { get; set; }
         public abstract Func<object, object> GetValue { get; set; }
         public abstract Func<object, object, object> SetValue { get; set; }
 

@@ -428,7 +428,7 @@ namespace Iql.OData
             for (var i = 0; i < changedProperties.Length; i++)
             {
                 var property = changedProperties[i];
-                properties.Add(property.Property.Name);
+                properties.Add(((IMetadata) property.Property).Name);
             }
 
             var entityConfiguration = EntityConfigurationBuilder.EntityType<TEntity>();
@@ -436,7 +436,7 @@ namespace Iql.OData
             for (var i = 0; i < keys.Length; i++)
             {
                 var key = keys[i];
-                properties.Add(key.Name);
+                properties.Add(((IMetadata) key).Name);
             }
 
             var json = JsonDataSerializer.SerializeEntityPropertiesToJson(
@@ -552,7 +552,7 @@ namespace Iql.OData
                                     var property = EntityConfigurationBuilder.EntityType<TEntity>()
                                         .FindProperty(propertyName);
                                     index = Convert.ToInt32(pathPart.Substring(openBracketIndex + 1));
-                                    var relationship = FindRelationship(currentEntityType, property.Name);
+                                    var relationship = FindRelationship(currentEntityType, ((IMetadata) property).Name);
                                     if (relationship != null)
                                     {
                                         var relationshipEntityType = relationship.Type;
@@ -600,7 +600,7 @@ namespace Iql.OData
                                     var propertyName = pathPart;
                                     var property = EntityConfigurationBuilder.EntityType<TEntity>()
                                         .FindProperty(propertyName);
-                                    var relationship = FindRelationship(currentEntityType, property.Name);
+                                    var relationship = FindRelationship(currentEntityType, ((IMetadata) property).Name);
                                     if (relationship != null)
                                     {
                                         var relationshipEntityType = relationship.Type;
@@ -657,7 +657,7 @@ namespace Iql.OData
                 var end = relationship.Source.EntityConfiguration == entityConfiguration
                     ? relationship.Source
                     : relationship.Target;
-                if (end.Property.Name == property)
+                if (((IMetadata) end.Property).Name == property)
                 {
                     return end;
                 }

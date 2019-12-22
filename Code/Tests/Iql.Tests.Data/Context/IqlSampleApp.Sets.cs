@@ -38,7 +38,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ApplicationUser), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(ApplicationUser));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(ApplicationUser bindingParameter, string property)
@@ -99,7 +99,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(Client), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(Client));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(Client bindingParameter, string property)
@@ -129,7 +129,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ClientType), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(ClientType));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(ClientType bindingParameter, string property)
@@ -168,7 +168,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(DocumentCategory), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(DocumentCategory));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(DocumentCategory bindingParameter, string property)
@@ -191,7 +191,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(SiteDocument), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(SiteDocument));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(SiteDocument bindingParameter, string property)
@@ -214,7 +214,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ReportActionsTaken), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(ReportActionsTaken));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(ReportActionsTaken bindingParameter, string property)
@@ -237,7 +237,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ReportCategory), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(ReportCategory));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(ReportCategory bindingParameter, string property)
@@ -260,7 +260,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ReportDefaultRecommendation), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(ReportDefaultRecommendation));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(ReportDefaultRecommendation bindingParameter, string property)
@@ -283,7 +283,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ReportRecommendation), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(ReportRecommendation));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(ReportRecommendation bindingParameter, string property)
@@ -306,7 +306,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ReportType), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(ReportType));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(ReportType bindingParameter, string property)
@@ -329,7 +329,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(Project), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(Project));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(Project bindingParameter, string property)
@@ -352,7 +352,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(ReportReceiverEmailAddress), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(ReportReceiverEmailAddress));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(ReportReceiverEmailAddress bindingParameter, string property)
@@ -375,7 +375,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(RiskAssessment), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(RiskAssessment));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(RiskAssessment bindingParameter, string property)
@@ -406,7 +406,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(RiskAssessmentAnswer), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(RiskAssessmentAnswer));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(RiskAssessmentAnswer bindingParameter, string property)
@@ -429,7 +429,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(RiskAssessmentQuestion), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(RiskAssessmentQuestion));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(RiskAssessmentQuestion bindingParameter, string property)
@@ -452,7 +452,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(Person), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(Person));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(Person bindingParameter, string property)
@@ -475,7 +475,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(PersonInspection), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(PersonInspection));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(PersonInspection bindingParameter, string property)
@@ -498,7 +498,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(PersonLoading), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(PersonLoading));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(PersonLoading bindingParameter, string property)
@@ -521,7 +521,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(PersonType), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(PersonType));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(PersonType bindingParameter, string property)
@@ -544,7 +544,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(PersonTypeMap), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(PersonTypeMap));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(PersonTypeMap bindingParameter, string property)
@@ -567,7 +567,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(PersonReport), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(PersonReport));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(PersonReport bindingParameter, string property)
@@ -590,7 +590,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(Site), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(Site));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(Site bindingParameter, string property)
@@ -621,7 +621,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(SiteInspection), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(SiteInspection));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(SiteInspection bindingParameter, string property)
@@ -652,7 +652,7 @@ namespace IqlSampleApp.Sets
         {
             var parameters = new List<ODataParameter>();
             parameters.Add(new ODataParameter(bindingParameter, typeof(UserSite), "bindingParameter", true));
-            parameters.Add(new ODataParameter(PropertyName, typeof(string), "PropertyName", false));
+            parameters.Add(new ODataParameter(PropertyName, typeof(string), "Name", false));
             return ((ODataDataStore) this.DataContext.DataStore).Method(parameters, ODataMethodType.Action, ODataMethodScopeKind.Entity, "IqlSampleApp", "IncrementVersion", typeof(UserSite));
         }
         public virtual ODataDataMethodRequest<string>GetMediaUploadUrl(UserSite bindingParameter, string property)

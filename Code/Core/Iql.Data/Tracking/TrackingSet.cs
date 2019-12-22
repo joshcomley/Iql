@@ -200,12 +200,12 @@ namespace Iql.Data.Tracking
             {
                 var propertyStates =
                     relationshipChangedEvent.Relationship.Source.AllProperties
-                        .Select(_ => entityState.GetPropertyState(_.PropertyName))
+                        .Select(_ => entityState.GetPropertyState(_.Name))
                         .ToArray();
                 foreach (var propertyState in propertyStates)
                 {
                     propertyState.PauseEvents();
-                    propertyState.LocalValue = entityState.Entity.GetPropertyValueByName(propertyState.Property.PropertyName);
+                    propertyState.LocalValue = entityState.Entity.GetPropertyValueByName(propertyState.Property.Name);
                 }
                 foreach (var propertyState in propertyStates)
                 {
@@ -764,7 +764,7 @@ namespace Iql.Data.Tracking
                 for (var i = 0; i < EntityConfiguration.Key.Properties.Length; i++)
                 {
                     var key = EntityConfiguration.Key.Properties[i];
-                    key.SetValue(entity, compositeKey.Keys.Single(_ => _.Name == key.PropertyName).Value);
+                    key.SetValue(entity, compositeKey.Keys.Single(_ => _.Name == key.Name).Value);
                 }
                 state = CreateEntityState(entity, true);
             }
@@ -870,7 +870,7 @@ namespace Iql.Data.Tracking
                                 if (sourceConstraint.Kind.HasFlag(IqlPropertyKind.Key) &&
                                     sourceConstraint.Relationship.OtherEnd == relationship.ThisEnd)
                                 {
-                                    compositeKey.Keys.Single(key => key.Name == sourceConstraint.Name)
+                                    compositeKey.Keys.Single(key => key.Name == ((IMetadata) sourceConstraint).Name)
                                         .Value = targetConstraint.GetValue(changeEvent.Owner);
                                 }
                             }
@@ -1002,7 +1002,7 @@ namespace Iql.Data.Tracking
                 var entityState = GetEntityState(propertyChange.Entity);
                 if (entityState != null)
                 {
-                    var propertyState = entityState.GetPropertyState(property.PropertyName);
+                    var propertyState = entityState.GetPropertyState(property.Name);
                     propertyState.LocalValue = propertyChange.NewValue;
                 }
             }
@@ -1129,7 +1129,7 @@ namespace Iql.Data.Tracking
                         state.IsNew = false;
                         foreach (var propertyState in map.OldPropertyValues)
                         {
-                            var newPropertyState = state.GetPropertyState(propertyState.Property.Name);
+                            var newPropertyState = state.GetPropertyState(((IMetadata) propertyState.Property).Name);
                             newPropertyState.RemoteValue = propertyState.RemoteValue;
                             newPropertyState.LocalValue = propertyState.Property.GetValue(state.Entity);
                         }

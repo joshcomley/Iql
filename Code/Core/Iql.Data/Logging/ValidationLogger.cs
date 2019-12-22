@@ -79,7 +79,7 @@ namespace Iql.Data.Logging
             {
                 return;
             }
-            _sb.AppendLine($"Property - {validationResult.Property.PropertyName}:");
+            _sb.AppendLine($"Property - {validationResult.Property.Name}:");
             ParseValidationFailures(
                 validationResult.ValidationFailures);
         }

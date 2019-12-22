@@ -239,9 +239,9 @@ namespace Iql.Data.Evaluation
             )
         {
             alreadyInferredLookup = alreadyInferredLookup ?? new Dictionary<string, InferredValueChanges>();
-            if (alreadyInferredLookup.ContainsKey(property.PropertyName))
+            if (alreadyInferredLookup.ContainsKey(property.Name))
             {
-                return alreadyInferredLookup[property.PropertyName];
+                return alreadyInferredLookup[property.Name];
             }
             trackResults = trackResults == null ? dataEvaluator.IsTracked(entity) : trackResults.Value;
             //Func<InferredValueChanges> noChangeResult = () => new InferredValueChanges(
@@ -261,7 +261,7 @@ namespace Iql.Data.Evaluation
             }
             Func<object, string, Task<object>> propertyValueResolverAsync = async (obj, propertyName) =>
             {
-                if (obj != entity || propertyName == property.PropertyName)
+                if (obj != entity || propertyName == property.Name)
                 {
                     return obj.GetPropertyValueByName(propertyName);
                 }
@@ -434,9 +434,9 @@ namespace Iql.Data.Evaluation
 
 
             var inferredValueChanges = new InferredValueChanges(oldEntity, entity, property, changes.ToArray());
-            if (!alreadyInferredLookup.ContainsKey(property.Name))
+            if (!alreadyInferredLookup.ContainsKey(((IMetadata) property).Name))
             {
-                alreadyInferredLookup.Add(property.PropertyName, inferredValueChanges);
+                alreadyInferredLookup.Add(property.Name, inferredValueChanges);
             }
             return inferredValueChanges;
         }

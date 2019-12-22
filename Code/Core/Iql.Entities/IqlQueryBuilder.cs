@@ -24,7 +24,7 @@ namespace Iql.Data.Queryable
                 {
                     var primaryKey = entityConfiguration.Key.Properties[0];
                     compositeKey = new CompositeKey(entityConfiguration.TypeName, 1);
-                    compositeKey.Keys[0] = new KeyValue(primaryKey.Name, id, primaryKey.TypeDefinition);
+                    compositeKey.Keys[0] = new KeyValue(((IMetadata) primaryKey).Name, id, primaryKey.TypeDefinition);
                 }
                 else
                 {
@@ -35,7 +35,7 @@ namespace Iql.Data.Queryable
                         var value = keyProperty.GetValue(id);
                         if (value != null)
                         {
-                            compositeKey.Keys[i] = new KeyValue(keyProperty.Name, value, keyProperty.TypeDefinition);
+                            compositeKey.Keys[i] = new KeyValue(((IMetadata) keyProperty).Name, value, keyProperty.TypeDefinition);
                         }
                     }
                 }

@@ -48,7 +48,7 @@ namespace Iql.Entities.Relationships
 
         protected void UpdateConstraintKey()
         {
-            ConstraintKey = string.Join(",", Constraints.Select(c => c.TargetKeyProperty.Name));
+            ConstraintKey = string.Join(",", Constraints.Select(c => ((IMetadata) c.TargetKeyProperty).Name));
             QualifiedConstraintKey = $"{Target.Type.Name}:{ConstraintKey}";
         }
     }

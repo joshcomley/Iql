@@ -72,8 +72,8 @@ namespace Iql.Entities
             Expression<Func<TOwner, TProperty>> propertyGetterExpression)
         {
             EntityConfigurationInternal = entityConfiguration;
+            ((MetadataBase) this).Name = name;
             Name = name;
-            PropertyName = name;
             if (readOnly.HasValue)
             {
                 SetEditorReadOnly();
@@ -115,13 +115,13 @@ namespace Iql.Entities
                     {
                         if (entityType == EntityConfigurationInternal.SpecialTypeDefinition.InternalType)
                         {
-                            return EntityConfigurationInternal.SpecialTypeDefinition.ResolvePropertyMapInverse(PropertyName)
+                            return EntityConfigurationInternal.SpecialTypeDefinition.ResolvePropertyMapInverse(Name)
                                 .CustomProperty.SetValue(o, v);
                         }
 
                         if (entityType == EntityConfigurationInternal.SpecialTypeDefinition.EntityConfiguration.Type)
                         {
-                            return EntityConfigurationInternal.SpecialTypeDefinition.ResolvePropertyMap(PropertyName)
+                            return EntityConfigurationInternal.SpecialTypeDefinition.ResolvePropertyMap(Name)
                                 .CustomProperty.SetValue(o, v);
                         }
                     }
@@ -192,7 +192,7 @@ namespace Iql.Entities
         public Expression<Func<TOwner, TProperty>> PropertyGetterExpressionTyped { get; set; }
 
         public Expression<Func<TOwner, TProperty, TProperty>> PropertySetterExpressionTyped =>
-            _propertySetterExpressionTyped = _propertySetterExpressionTyped ?? GetAssignmentLambda<TOwner, TProperty>(PropertyName);
+            _propertySetterExpressionTyped = _propertySetterExpressionTyped ?? GetAssignmentLambda<TOwner, TProperty>(Name);
 
         public Func<TOwner, TProperty> PropertyGetterTyped { get; set; }
 

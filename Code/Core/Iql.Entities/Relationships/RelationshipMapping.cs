@@ -84,10 +84,10 @@ namespace Iql.Entities.Relationships
                 var otherEndConstraint = path.Property.EntityProperty().Relationship.ThisEnd.Constraints[i];
                 var p = propertyExpression.Clone();
                 p.Parent = rootRefBackup ?? p.Parent;
-                p.PropertyName = otherEndConstraint.PropertyName;
+                p.PropertyName = otherEndConstraint.Name;
                 equalityExpessions.Add(GetEqualityExpression(
                     mapping.Property.EntityConfiguration.Name,
-                    thisEndConstraint.PropertyName,
+                    thisEndConstraint.Name,
                     p));
             }
             var iql = CreateRelationshipFilterIql(

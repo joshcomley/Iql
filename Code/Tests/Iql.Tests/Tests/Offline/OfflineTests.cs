@@ -352,14 +352,14 @@ namespace Iql.Tests.Tests.Offline
                 Assert.AreEqual(2, clientChangedProperties.Length);
 
                 var clientNameChange =
-                    clientChangedProperties.SingleOrDefault(_ => _.Property.PropertyName == nameof(Client.Name));
+                    clientChangedProperties.SingleOrDefault(_ => _.Property.Name == nameof(Client.Name));
                 Assert.IsNotNull(clientNameChange);
 
                 Assert.AreEqual(oldClientName, clientNameChange.RemoteValue);
                 Assert.AreEqual("Changed", clientNameChange.LocalValue);
 
                 var clientTypeIdChange =
-                    clientChangedProperties.SingleOrDefault(_ => _.Property.PropertyName == nameof(Client.TypeId));
+                    clientChangedProperties.SingleOrDefault(_ => _.Property.Name == nameof(Client.TypeId));
                 Assert.IsNotNull(clientTypeIdChange);
                 Assert.AreEqual(oldClientTypeId, clientTypeIdChange.RemoteValue);
                 Assert.AreEqual(2, clientTypeIdChange.LocalValue);
@@ -370,7 +370,7 @@ namespace Iql.Tests.Tests.Offline
                 Assert.AreEqual(1, clientTypeChangedProperties.Length);
 
                 var clientTypeNameChange =
-                    clientTypeChangedProperties.SingleOrDefault(_ => _.Property.PropertyName == nameof(ClientType.Name));
+                    clientTypeChangedProperties.SingleOrDefault(_ => _.Property.Name == nameof(ClientType.Name));
                 Assert.IsNotNull(clientTypeNameChange);
                 Assert.AreEqual(oldClientTypeName, clientTypeNameChange.RemoteValue);
                 Assert.AreEqual("A new name", clientTypeNameChange.LocalValue);
@@ -1032,7 +1032,7 @@ namespace Iql.Tests.Tests.Offline
             for (var i = 0; i < properties.Length; i++)
             {
                 var property = properties[i];
-                var match = changedProperties.FirstOrDefault(_ => _.Property.PropertyName == property);
+                var match = changedProperties.FirstOrDefault(_ => _.Property.Name == property);
                 Assert.IsNotNull(match);
             }
         }

@@ -67,7 +67,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -115,7 +115,7 @@
     ""Kind"": 7
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""IsLockedOut"",
+  ""Name"": ""IsLockedOut"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -163,7 +163,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ClientId"",
+  ""Name"": ""ClientId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -211,7 +211,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Email"",
+  ""Name"": ""Email"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -261,7 +261,7 @@
     ""Kind"": 9
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Permissions"",
+  ""Name"": ""Permissions"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -309,7 +309,7 @@
     ""Kind"": 9
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""UserType"",
+  ""Name"": ""UserType"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -357,7 +357,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""FullName"",
+  ""Name"": ""FullName"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -405,7 +405,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -453,7 +453,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""UserName"",
+  ""Name"": ""UserName"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -501,7 +501,7 @@
     ""Kind"": 7
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""EmailConfirmed"",
+  ""Name"": ""EmailConfirmed"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -549,7 +549,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""PhoneNumber"",
+  ""Name"": ""PhoneNumber"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -597,7 +597,7 @@
     ""Kind"": 7
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PhoneNumberConfirmed"",
+  ""Name"": ""PhoneNumberConfirmed"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -645,7 +645,7 @@
     ""Kind"": 7
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""TwoFactorEnabled"",
+  ""Name"": ""TwoFactorEnabled"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -693,7 +693,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""LockoutEnd"",
+  ""Name"": ""LockoutEnd"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -741,7 +741,7 @@
     ""Kind"": 7
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""LockoutEnabled"",
+  ""Name"": ""LockoutEnabled"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -789,7 +789,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Client"",
+  ""Name"": ""Client"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -837,7 +837,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -885,7 +885,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ClientsCreated"",
+  ""Name"": ""ClientsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -933,7 +933,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ClientsCreatedCount"",
+  ""Name"": ""ClientsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -981,7 +981,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""DocumentCategoriesCreated"",
+  ""Name"": ""DocumentCategoriesCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1029,7 +1029,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""DocumentCategoriesCreatedCount"",
+  ""Name"": ""DocumentCategoriesCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1077,7 +1077,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteDocumentsCreated"",
+  ""Name"": ""SiteDocumentsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1125,7 +1125,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteDocumentsCreatedCount"",
+  ""Name"": ""SiteDocumentsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1173,7 +1173,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultActionsTakenCreated"",
+  ""Name"": ""FaultActionsTakenCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1221,7 +1221,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultActionsTakenCreatedCount"",
+  ""Name"": ""FaultActionsTakenCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1269,7 +1269,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultCategoriesCreated"",
+  ""Name"": ""FaultCategoriesCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1317,7 +1317,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultCategoriesCreatedCount"",
+  ""Name"": ""FaultCategoriesCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1365,7 +1365,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultDefaultRecommendationsCreated"",
+  ""Name"": ""FaultDefaultRecommendationsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1413,7 +1413,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultDefaultRecommendationsCreatedCount"",
+  ""Name"": ""FaultDefaultRecommendationsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1461,7 +1461,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultRecommendationsCreated"",
+  ""Name"": ""FaultRecommendationsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1509,7 +1509,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultRecommendationsCreatedCount"",
+  ""Name"": ""FaultRecommendationsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1557,7 +1557,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultTypesCreated"",
+  ""Name"": ""FaultTypesCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1605,7 +1605,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultTypesCreatedCount"",
+  ""Name"": ""FaultTypesCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1653,7 +1653,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ProjectCreated"",
+  ""Name"": ""ProjectCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1701,7 +1701,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ProjectCreatedCount"",
+  ""Name"": ""ProjectCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1749,7 +1749,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ReportReceiverEmailAddressesCreated"",
+  ""Name"": ""ReportReceiverEmailAddressesCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1797,7 +1797,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ReportReceiverEmailAddressesCreatedCount"",
+  ""Name"": ""ReportReceiverEmailAddressesCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1845,7 +1845,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentsCreated"",
+  ""Name"": ""RiskAssessmentsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1893,7 +1893,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentsCreatedCount"",
+  ""Name"": ""RiskAssessmentsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1941,7 +1941,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentSolutionsCreated"",
+  ""Name"": ""RiskAssessmentSolutionsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -1989,7 +1989,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentSolutionsCreatedCount"",
+  ""Name"": ""RiskAssessmentSolutionsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2037,7 +2037,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentAnswersCreated"",
+  ""Name"": ""RiskAssessmentAnswersCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2085,7 +2085,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentAnswersCreatedCount"",
+  ""Name"": ""RiskAssessmentAnswersCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2133,7 +2133,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentQuestionsCreated"",
+  ""Name"": ""RiskAssessmentQuestionsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2181,7 +2181,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentQuestionsCreatedCount"",
+  ""Name"": ""RiskAssessmentQuestionsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2229,7 +2229,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PeopleCreated"",
+  ""Name"": ""PeopleCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2277,7 +2277,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PeopleCreatedCount"",
+  ""Name"": ""PeopleCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2325,7 +2325,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonInspectionsCreated"",
+  ""Name"": ""PersonInspectionsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2373,7 +2373,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonInspectionsCreatedCount"",
+  ""Name"": ""PersonInspectionsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2421,7 +2421,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonLoadingsCreated"",
+  ""Name"": ""PersonLoadingsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2469,7 +2469,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonLoadingsCreatedCount"",
+  ""Name"": ""PersonLoadingsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2517,7 +2517,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonTypesCreated"",
+  ""Name"": ""PersonTypesCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2565,7 +2565,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonTypesCreatedCount"",
+  ""Name"": ""PersonTypesCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2613,7 +2613,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultReportsCreated"",
+  ""Name"": ""FaultReportsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2661,7 +2661,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultReportsCreatedCount"",
+  ""Name"": ""FaultReportsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2709,7 +2709,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SitesCreated"",
+  ""Name"": ""SitesCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2757,7 +2757,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SitesCreatedCount"",
+  ""Name"": ""SitesCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2805,7 +2805,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteAreasCreated"",
+  ""Name"": ""SiteAreasCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2853,7 +2853,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteAreasCreatedCount"",
+  ""Name"": ""SiteAreasCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2901,7 +2901,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteInspectionsCreated"",
+  ""Name"": ""SiteInspectionsCreated"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2949,7 +2949,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteInspectionsCreatedCount"",
+  ""Name"": ""SiteInspectionsCreatedCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -2997,7 +2997,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Sites"",
+  ""Name"": ""Sites"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -3045,7 +3045,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SitesCount"",
+  ""Name"": ""SitesCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -3134,7 +3134,7 @@
       ""Container"": null,
       ""Expression"": {
         ""Body"": {
-          ""PropertyName"": ""CreatedByUser"",
+          ""Name"": ""CreatedByUser"",
           ""IsIqlExpression"": true,
           ""Key"": null,
           ""Kind"": 30,
@@ -5754,7 +5754,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Users"",
+  ""Name"": ""Users"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -5802,7 +5802,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -5850,7 +5850,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""TypeId"",
+  ""Name"": ""TypeId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -5898,7 +5898,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -5946,7 +5946,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -5994,7 +5994,7 @@
     ""Kind"": 6
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""AverageSales"",
+  ""Name"": ""AverageSales"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6042,7 +6042,7 @@
     ""Kind"": 6
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""AverageIncome"",
+  ""Name"": ""AverageIncome"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6090,7 +6090,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Category"",
+  ""Name"": ""Category"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6138,7 +6138,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Description"",
+  ""Name"": ""Description"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -6186,7 +6186,7 @@
     ""Kind"": 6
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Discount"",
+  ""Name"": ""Discount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6234,7 +6234,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6282,7 +6282,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6330,7 +6330,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -6380,7 +6380,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6428,7 +6428,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""UsersCount"",
+  ""Name"": ""UsersCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6476,7 +6476,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Type"",
+  ""Name"": ""Type"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6524,7 +6524,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -6572,7 +6572,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""People"",
+  ""Name"": ""People"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6620,7 +6620,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PeopleCount"",
+  ""Name"": ""PeopleCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6668,7 +6668,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Sites"",
+  ""Name"": ""Sites"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6716,7 +6716,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SitesCount"",
+  ""Name"": ""SitesCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -6805,7 +6805,7 @@
       ""Container"": null,
       ""Expression"": {
         ""Body"": {
-          ""PropertyName"": ""CreatedByUser"",
+          ""Name"": ""CreatedByUser"",
           ""IsIqlExpression"": true,
           ""Key"": null,
           ""Kind"": 30,
@@ -7276,13 +7276,13 @@
       ""Container"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Type\"",\""Kind\"":6,\""Children\"":null}"",
       ""Expression"": {
         ""Body"": {
-          ""PropertyName"": ""Type"",
+          ""Name"": ""Type"",
           ""IsIqlExpression"": true,
           ""Key"": null,
           ""Kind"": 30,
           ""ReturnType"": 1,
           ""Parent"": {
-            ""PropertyName"": ""Client"",
+            ""Name"": ""Client"",
             ""IsIqlExpression"": true,
             ""Key"": null,
             ""Kind"": 30,
@@ -7558,7 +7558,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -7606,7 +7606,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -7654,7 +7654,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Module"",
+  ""Name"": ""Module"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -7702,7 +7702,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Message"",
+  ""Name"": ""Message"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -7750,7 +7750,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Kind"",
+  ""Name"": ""Kind"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -7840,7 +7840,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Clients"",
+  ""Name"": ""Clients"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -7888,7 +7888,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -7936,7 +7936,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -7984,7 +7984,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ClientsCount"",
+  ""Name"": ""ClientsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -8174,7 +8174,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -8222,7 +8222,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -8270,7 +8270,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -8318,7 +8318,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -8366,7 +8366,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -8414,7 +8414,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -8464,7 +8464,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -8512,7 +8512,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -8560,7 +8560,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Documents"",
+  ""Name"": ""Documents"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -8608,7 +8608,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""DocumentsCount"",
+  ""Name"": ""DocumentsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -8897,7 +8897,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -8945,7 +8945,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CategoryId"",
+  ""Name"": ""CategoryId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -8993,7 +8993,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteId"",
+  ""Name"": ""SiteId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -9041,7 +9041,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -9089,7 +9089,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Title"",
+  ""Name"": ""Title"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -9137,7 +9137,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -9185,7 +9185,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -9233,7 +9233,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -9283,7 +9283,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -9331,7 +9331,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Category"",
+  ""Name"": ""Category"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -9379,7 +9379,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Site"",
+  ""Name"": ""Site"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -9427,7 +9427,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -9815,7 +9815,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Documents"",
+  ""Name"": ""Documents"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -9863,7 +9863,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -9911,7 +9911,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""AdditionalSendReportsTo"",
+  ""Name"": ""AdditionalSendReportsTo"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -9959,7 +9959,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""People"",
+  ""Name"": ""People"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -10007,7 +10007,7 @@
     ""Kind"": 20
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Location"",
+  ""Name"": ""Location"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10055,7 +10055,7 @@
     ""Kind"": 22
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Area"",
+  ""Name"": ""Area"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10103,7 +10103,7 @@
     ""Kind"": 24
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Line"",
+  ""Name"": ""Line"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10151,7 +10151,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ParentId"",
+  ""Name"": ""ParentId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10199,7 +10199,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ClientId"",
+  ""Name"": ""ClientId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10247,7 +10247,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10295,14 +10295,14 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""FullAddress"",
+  ""Name"": ""FullAddress"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": {
     ""Body"": {
       ""Left"": {
         ""Left"": {
-          ""PropertyName"": ""Address"",
+          ""Name"": ""Address"",
           ""IsIqlExpression"": true,
           ""Key"": null,
           ""Kind"": 30,
@@ -10335,7 +10335,7 @@
         ""Parent"": null
       },
       ""Right"": {
-        ""PropertyName"": ""PostCode"",
+        ""Name"": ""PostCode"",
         ""IsIqlExpression"": true,
         ""Key"": null,
         ""Kind"": 30,
@@ -10400,7 +10400,7 @@
       {
         ""Key"": ""7"",
         ""Message"": """",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Site</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>FullAddress</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>FullAddress</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>FullAddress</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>FullAddress</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Site</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>FullAddress</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>FullAddress</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>FullAddress</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Site</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>FullAddress</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -10427,7 +10427,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Address"",
+  ""Name"": ""Address"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10475,7 +10475,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""PostCode"",
+  ""Name"": ""PostCode"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10523,7 +10523,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10571,7 +10571,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Left"",
+  ""Name"": ""Left"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -10619,7 +10619,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Right"",
+  ""Name"": ""Right"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -10667,7 +10667,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -10715,7 +10715,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -10763,7 +10763,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -10813,7 +10813,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -10861,7 +10861,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""DocumentsCount"",
+  ""Name"": ""DocumentsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -10909,7 +10909,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""AdditionalSendReportsToCount"",
+  ""Name"": ""AdditionalSendReportsToCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -10957,7 +10957,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PeopleCount"",
+  ""Name"": ""PeopleCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -11005,7 +11005,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Parent"",
+  ""Name"": ""Parent"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -11053,7 +11053,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Children"",
+  ""Name"": ""Children"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -11101,7 +11101,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ChildrenCount"",
+  ""Name"": ""ChildrenCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -11149,18 +11149,18 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Client"",
+  ""Name"": ""Client"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": {
     ""Body"": {
-      ""PropertyName"": ""Client"",
+      ""Name"": ""Client"",
       ""IsIqlExpression"": true,
       ""Key"": null,
       ""Kind"": 30,
       ""ReturnType"": 1,
       ""Parent"": {
-        ""PropertyName"": ""CreatedByUser"",
+        ""Name"": ""CreatedByUser"",
         ""IsIqlExpression"": true,
         ""Key"": null,
         ""Kind"": 30,
@@ -11241,7 +11241,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -11289,7 +11289,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Areas"",
+  ""Name"": ""Areas"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -11337,7 +11337,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""AreasCount"",
+  ""Name"": ""AreasCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -11385,7 +11385,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteInspections"",
+  ""Name"": ""SiteInspections"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -11433,7 +11433,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteInspectionsCount"",
+  ""Name"": ""SiteInspectionsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -11481,7 +11481,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Users"",
+  ""Name"": ""Users"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -11529,7 +11529,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""UsersCount"",
+  ""Name"": ""UsersCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -12014,13 +12014,13 @@
       ""Container"": ""{\""Type\"":\""Client\"",\""Paths\"":\""Type\"",\""Kind\"":6,\""Children\"":null}"",
       ""Expression"": {
         ""Body"": {
-          ""PropertyName"": ""Type"",
+          ""Name"": ""Type"",
           ""IsIqlExpression"": true,
           ""Key"": null,
           ""Kind"": 30,
           ""ReturnType"": 1,
           ""Parent"": {
-            ""PropertyName"": ""Client"",
+            ""Name"": ""Client"",
             ""IsIqlExpression"": true,
             ""Key"": null,
             ""Kind"": 30,
@@ -12598,7 +12598,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -12646,7 +12646,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultReportId"",
+  ""Name"": ""FaultReportId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -12694,7 +12694,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -12742,7 +12742,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Notes"",
+  ""Name"": ""Notes"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -12769,12 +12769,12 @@
       {
         ""Key"": ""5"",
         ""Message"": ""Please enter some actions taken notes"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Notes</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Notes</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Notes</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Notes</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Notes</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       },
       {
         ""Key"": ""6"",
         ""Message"": ""Please enter at least five characters for notes"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsGreaterThanExpression\"">\r\n    <Kind>IsGreaterThan</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlStringLengthExpression\"">\r\n      <Kind>StringLength</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Parent xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Notes</PropertyName>\r\n      </Parent>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Value xsi:type=\""xsd:int\"">5</Value>\r\n      <InferredReturnType>Integer</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlIsGreaterThanExpression\"">\r\n    <Kind>IsGreaterThan</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlStringLengthExpression\"">\r\n      <Kind>StringLength</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Parent xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>ReportActionsTaken</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <Name>Notes</Name>\r\n      </Parent>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>Integer</ReturnType>\r\n      <Value xsi:type=\""xsd:int\"">5</Value>\r\n      <InferredReturnType>Integer</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -12801,7 +12801,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -12849,7 +12849,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -12897,7 +12897,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -12947,7 +12947,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -12995,7 +12995,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonReport"",
+  ""Name"": ""PersonReport"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13043,7 +13043,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -13332,7 +13332,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ActionsTaken"",
+  ""Name"": ""ActionsTaken"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13380,7 +13380,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13428,7 +13428,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Recommendations"",
+  ""Name"": ""Recommendations"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13476,7 +13476,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonId"",
+  ""Name"": ""PersonId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13524,7 +13524,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""TypeId"",
+  ""Name"": ""TypeId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13572,7 +13572,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -13620,7 +13620,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Title"",
+  ""Name"": ""Title"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -13647,12 +13647,12 @@
       {
         ""Key"": ""3"",
         ""Message"": ""Please enter a valid report title"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Title</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Title</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Title</Name>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>PersonReport</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Title</Name>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       },
       {
         ""Key"": ""4"",
         ""Message"": ""Please enter less than five characters"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">5</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>PersonReport</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Title</Name>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>PersonReport</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Title</Name>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <Name>Title</Name>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>PersonReport</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <Name>Title</Name>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonReport</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Title</Name>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">5</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -13679,7 +13679,7 @@
     ""Kind"": 9
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Status"",
+  ""Name"": ""Status"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13727,7 +13727,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13775,7 +13775,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13823,7 +13823,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -13873,7 +13873,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13921,7 +13921,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ActionsTakenCount"",
+  ""Name"": ""ActionsTakenCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -13969,7 +13969,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RecommendationsCount"",
+  ""Name"": ""RecommendationsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -14017,7 +14017,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Person"",
+  ""Name"": ""Person"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -14065,7 +14065,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Type"",
+  ""Name"": ""Type"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -14113,7 +14113,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -14699,7 +14699,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -14747,7 +14747,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -14795,7 +14795,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -14843,7 +14843,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -14891,7 +14891,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -14939,7 +14939,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -14989,7 +14989,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -15037,7 +15037,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -15085,7 +15085,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ReportTypes"",
+  ""Name"": ""ReportTypes"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -15133,7 +15133,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ReportTypesCount"",
+  ""Name"": ""ReportTypesCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -15422,7 +15422,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -15470,7 +15470,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -15518,7 +15518,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -15566,7 +15566,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Text"",
+  ""Name"": ""Text"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -15614,7 +15614,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -15662,7 +15662,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -15710,7 +15710,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -15760,7 +15760,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -15808,7 +15808,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -15856,7 +15856,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Recommendations"",
+  ""Name"": ""Recommendations"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -15904,7 +15904,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RecommendationsCount"",
+  ""Name"": ""RecommendationsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -16193,7 +16193,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -16241,7 +16241,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ReportId"",
+  ""Name"": ""ReportId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -16289,7 +16289,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RecommendationId"",
+  ""Name"": ""RecommendationId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -16337,7 +16337,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -16385,7 +16385,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Notes"",
+  ""Name"": ""Notes"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -16433,7 +16433,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -16481,7 +16481,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -16529,7 +16529,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -16579,7 +16579,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -16627,7 +16627,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonReport"",
+  ""Name"": ""PersonReport"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -16675,7 +16675,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Recommendation"",
+  ""Name"": ""Recommendation"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -16723,7 +16723,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -17111,7 +17111,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -17159,7 +17159,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CategoryId"",
+  ""Name"": ""CategoryId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -17207,7 +17207,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -17255,7 +17255,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -17303,7 +17303,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -17351,7 +17351,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -17399,7 +17399,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -17447,7 +17447,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -17497,7 +17497,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Category"",
+  ""Name"": ""Category"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -17545,7 +17545,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -17593,7 +17593,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultReports"",
+  ""Name"": ""FaultReports"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -17641,7 +17641,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""FaultReportsCount"",
+  ""Name"": ""FaultReportsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18029,7 +18029,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18077,7 +18077,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -18125,7 +18125,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Title"",
+  ""Name"": ""Title"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18173,7 +18173,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Description"",
+  ""Name"": ""Description"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -18221,7 +18221,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18269,7 +18269,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18317,7 +18317,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -18367,7 +18367,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18415,7 +18415,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -18605,7 +18605,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18653,7 +18653,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteId"",
+  ""Name"": ""SiteId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18701,7 +18701,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -18749,7 +18749,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""EmailAddress"",
+  ""Name"": ""EmailAddress"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -18797,7 +18797,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18845,7 +18845,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18893,7 +18893,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -18943,7 +18943,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -18991,7 +18991,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Site"",
+  ""Name"": ""Site"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -19039,7 +19039,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -19328,7 +19328,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -19376,7 +19376,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteInspectionId"",
+  ""Name"": ""SiteInspectionId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -19424,7 +19424,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -19472,7 +19472,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -19520,7 +19520,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -19568,7 +19568,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -19618,7 +19618,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -19666,7 +19666,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteInspection"",
+  ""Name"": ""SiteInspection"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -19714,7 +19714,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -19762,7 +19762,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentSolution"",
+  ""Name"": ""RiskAssessmentSolution"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20150,7 +20150,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessments"",
+  ""Name"": ""RiskAssessments"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20198,7 +20198,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20246,7 +20246,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonInspections"",
+  ""Name"": ""PersonInspections"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20294,7 +20294,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteId"",
+  ""Name"": ""SiteId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20342,7 +20342,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -20390,7 +20390,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""StartTime"",
+  ""Name"": ""StartTime"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20438,7 +20438,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""EndTime"",
+  ""Name"": ""EndTime"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20486,7 +20486,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20534,7 +20534,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20582,7 +20582,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -20632,7 +20632,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20680,7 +20680,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentsCount"",
+  ""Name"": ""RiskAssessmentsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20728,7 +20728,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonInspectionsCount"",
+  ""Name"": ""PersonInspectionsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20776,7 +20776,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Site"",
+  ""Name"": ""Site"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -20824,7 +20824,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -21311,7 +21311,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -21359,7 +21359,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessmentId"",
+  ""Name"": ""RiskAssessmentId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -21407,7 +21407,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -21455,7 +21455,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -21503,7 +21503,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -21551,7 +21551,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -21601,7 +21601,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -21649,7 +21649,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""RiskAssessment"",
+  ""Name"": ""RiskAssessment"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -21697,7 +21697,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -21986,7 +21986,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -22034,7 +22034,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""QuestionId"",
+  ""Name"": ""QuestionId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -22082,7 +22082,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -22130,7 +22130,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""SpecificHazard"",
+  ""Name"": ""SpecificHazard"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -22178,7 +22178,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""PrecautionsToControlHazard"",
+  ""Name"": ""PrecautionsToControlHazard"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -22226,7 +22226,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -22274,7 +22274,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -22322,7 +22322,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -22372,7 +22372,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -22420,7 +22420,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Question"",
+  ""Name"": ""Question"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -22468,7 +22468,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -22757,7 +22757,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Answers"",
+  ""Name"": ""Answers"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -22805,7 +22805,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -22853,7 +22853,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -22901,7 +22901,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -22949,7 +22949,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -22997,7 +22997,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -23045,7 +23045,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23095,7 +23095,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -23143,7 +23143,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""AnswersCount"",
+  ""Name"": ""AnswersCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -23191,7 +23191,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23451,20 +23451,20 @@
         ""All"": [
           {
             ""Key"": ""Default"",
-            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </Parent>\r\n    <PropertyName>Title</PropertyName>\r\n  </Body>\r\n</IqlLambdaExpression>""
+            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </Parent>\r\n    <Name>Title</Name>\r\n  </Body>\r\n</IqlLambdaExpression>""
           },
           {
             ""Key"": ""Report"",
-            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAddExpression\"">\r\n    <Kind>Add</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlAddExpression\"">\r\n      <Kind>Add</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlAddExpression\"">\r\n        <Kind>Add</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>Person</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Title</PropertyName>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\""> (</Value>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>Person</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Id</PropertyName>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <Value xsi:type=\""xsd:string\"">)</Value>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAddExpression\"">\r\n    <Kind>Add</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlAddExpression\"">\r\n      <Kind>Add</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlAddExpression\"">\r\n        <Kind>Add</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n            <Kind>RootReference</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>Person</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <Name>Title</Name>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\""> (</Value>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>Person</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <Name>Id</Name>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <Value xsi:type=\""xsd:string\"">)</Value>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
           },
           {
             ""Key"": ""ReportLong"",
-            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAddExpression\"">\r\n    <Kind>Add</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlAddExpression\"">\r\n      <Kind>Add</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlAddExpression\"">\r\n        <Kind>Add</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlAddExpression\"">\r\n          <Kind>Add</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlAddExpression\"">\r\n            <Kind>Add</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Value xsi:type=\""xsd:string\""> - </Value>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Left>\r\n          <Right xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Type</PropertyName>\r\n                </Parent>\r\n                <PropertyName>CreatedByUser</PropertyName>\r\n              </Parent>\r\n              <PropertyName>Client</PropertyName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\""> (</Value>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>Person</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <PropertyName>Id</PropertyName>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <Value xsi:type=\""xsd:string\"">)</Value>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+            ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAddExpression\"">\r\n    <Kind>Add</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlAddExpression\"">\r\n      <Kind>Add</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlAddExpression\"">\r\n        <Kind>Add</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlAddExpression\"">\r\n          <Kind>Add</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlAddExpression\"">\r\n            <Kind>Add</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Title</Name>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Value xsi:type=\""xsd:string\""> - </Value>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Left>\r\n          <Right xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <Name>Type</Name>\r\n                </Parent>\r\n                <Name>CreatedByUser</Name>\r\n              </Parent>\r\n              <Name>Client</Name>\r\n            </Parent>\r\n            <Name>Name</Name>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\""> (</Value>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>Person</EntityTypeName>\r\n          <VariableName>entity</VariableName>\r\n        </Parent>\r\n        <Name>Id</Name>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlLiteralExpression\"">\r\n      <Kind>Literal</Kind>\r\n      <ReturnType>String</ReturnType>\r\n      <Value xsi:type=\""xsd:string\"">)</Value>\r\n      <InferredReturnType>String</InferredReturnType>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
           }
         ],
         ""Default"": {
           ""Key"": ""Default"",
-          ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </Parent>\r\n    <PropertyName>Title</PropertyName>\r\n  </Body>\r\n</IqlLambdaExpression>""
+          ""FormatterExpression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlPropertyExpression\"">\r\n    <Kind>Property</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </Parent>\r\n    <Name>Title</Name>\r\n  </Body>\r\n</IqlLambdaExpression>""
         }
       },
       ""EntityValidation"": {
@@ -23472,12 +23472,12 @@
           {
             ""Key"": ""NoTitleOrDescription"",
             ""Message"": ""Please enter either a title or a description"",
-            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Description</PropertyName>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Description</PropertyName>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Title</Name>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Title</Name>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Title</Name>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Title</Name>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlOrExpression\"">\r\n      <Kind>Or</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Description</Name>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Description</Name>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Left>\r\n      <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n        <Kind>IsEqualTo</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlConditionExpression\"">\r\n          <Kind>Condition</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n            <Kind>IsEqualTo</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Left xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Description</Name>\r\n              </Parent>\r\n            </Left>\r\n            <Right xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </Right>\r\n          </Test>\r\n          <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </IfTrue>\r\n          <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n            <Kind>StringToUpperCase</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n              <Kind>StringTrim</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Description</Name>\r\n              </Parent>\r\n            </Parent>\r\n          </IfFalse>\r\n        </Left>\r\n        <Right xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Value xsi:type=\""xsd:string\"" />\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </Right>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
           },
           {
             ""Key"": ""JoshCheck"",
             ""Message"": ""If the name is 'Josh' please match it in the description"",
-            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+            ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Title</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Title</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Description</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Description</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"">JOSH</Value>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
           }
         ]
       },
@@ -23507,7 +23507,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -23555,7 +23555,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ClientId"",
+  ""Name"": ""ClientId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23603,7 +23603,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteId"",
+  ""Name"": ""SiteId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23651,7 +23651,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteAreaId"",
+  ""Name"": ""SiteAreaId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23699,7 +23699,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""TypeId"",
+  ""Name"": ""TypeId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23747,7 +23747,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""LoadingId"",
+  ""Name"": ""LoadingId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23795,7 +23795,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23843,7 +23843,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Key"",
+  ""Name"": ""Key"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23891,7 +23891,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Title"",
+  ""Name"": ""Title"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23918,17 +23918,17 @@
       {
         ""Key"": ""EmptyTitle"",
         ""Message"": ""Please enter a person title"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Title</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Title</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Title</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Title</Name>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Title</Name>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       },
       {
         ""Key"": ""TitleMaxLength"",
         ""Message"": ""Please enter less than fifty characters"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">50</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Title</Name>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Title</Name>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <Name>Title</Name>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <Name>Title</Name>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsGreaterThanExpression\"">\r\n      <Kind>IsGreaterThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Title</Name>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">50</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       },
       {
         ""Key"": ""TitleMinLength"",
         ""Message"": ""Please enter at least three characters for the person's title"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <PropertyName>Title</PropertyName>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <PropertyName>Title</PropertyName>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsLessThanExpression\"">\r\n      <Kind>IsLessThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Title</PropertyName>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">3</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlNotExpression\"">\r\n      <Kind>Not</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Expression xsi:type=\""IqlOrExpression\"">\r\n        <Kind>Or</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Title</Name>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                <Kind>Property</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                  <Kind>RootReference</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <InferredReturnType>Unknown</InferredReturnType>\r\n                  <EntityTypeName>Person</EntityTypeName>\r\n                  <VariableName>entity</VariableName>\r\n                </Parent>\r\n                <Name>Title</Name>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Left>\r\n        <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlConditionExpression\"">\r\n            <Kind>Condition</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n              <Kind>IsEqualTo</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Left xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <Name>Title</Name>\r\n                </Parent>\r\n              </Left>\r\n              <Right xsi:type=\""IqlLiteralExpression\"">\r\n                <Kind>Literal</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <InferredReturnType>String</InferredReturnType>\r\n              </Right>\r\n            </Test>\r\n            <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n              <Kind>Literal</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <InferredReturnType>String</InferredReturnType>\r\n            </IfTrue>\r\n            <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n              <Kind>StringToUpperCase</Kind>\r\n              <ReturnType>String</ReturnType>\r\n              <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n                <Kind>StringTrim</Kind>\r\n                <ReturnType>String</ReturnType>\r\n                <Parent xsi:type=\""IqlPropertyExpression\"">\r\n                  <Kind>Property</Kind>\r\n                  <ReturnType>Unknown</ReturnType>\r\n                  <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                    <Kind>RootReference</Kind>\r\n                    <ReturnType>Unknown</ReturnType>\r\n                    <InferredReturnType>Unknown</InferredReturnType>\r\n                    <EntityTypeName>Person</EntityTypeName>\r\n                    <VariableName>entity</VariableName>\r\n                  </Parent>\r\n                  <Name>Title</Name>\r\n                </Parent>\r\n              </Parent>\r\n            </IfFalse>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Value xsi:type=\""xsd:string\"" />\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Right>\r\n      </Expression>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsLessThanExpression\"">\r\n      <Kind>IsLessThan</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlStringLengthExpression\"">\r\n        <Kind>StringLength</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n          <Kind>StringTrim</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Title</Name>\r\n          </Parent>\r\n        </Parent>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>Integer</ReturnType>\r\n        <Value xsi:type=\""xsd:int\"">3</Value>\r\n        <InferredReturnType>Integer</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -23955,7 +23955,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Description"",
+  ""Name"": ""Description"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -23982,7 +23982,7 @@
       {
         ""Key"": ""EmptyDescription"",
         ""Message"": ""Please enter a person description"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Description</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <PropertyName>Description</PropertyName>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>Person</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlOrExpression\"">\r\n    <Kind>Or</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Description</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>Person</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Description</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Description</Name>\r\n            </Parent>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlStringTrimExpression\"">\r\n            <Kind>StringTrim</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <Parent xsi:type=\""IqlPropertyExpression\"">\r\n              <Kind>Property</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n                <Kind>RootReference</Kind>\r\n                <ReturnType>Unknown</ReturnType>\r\n                <InferredReturnType>Unknown</InferredReturnType>\r\n                <EntityTypeName>Person</EntityTypeName>\r\n                <VariableName>entity</VariableName>\r\n              </Parent>\r\n              <Name>Description</Name>\r\n            </Parent>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -24009,7 +24009,7 @@
     ""Kind"": 9
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Category"",
+  ""Name"": ""Category"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -24057,7 +24057,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -24105,7 +24105,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -24153,7 +24153,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -24203,7 +24203,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -24251,7 +24251,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Client"",
+  ""Name"": ""Client"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -24299,7 +24299,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Site"",
+  ""Name"": ""Site"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -24347,7 +24347,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteArea"",
+  ""Name"": ""SiteArea"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -24371,7 +24371,7 @@
       {
         ""Key"": ""1"",
         ""Message"": """",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <InferredReturnType>Unknown</InferredReturnType>\r\n        <EntityTypeName>SiteArea</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>SiteArea</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Owner</PropertyName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <InferredReturnType>Unknown</InferredReturnType>\r\n        <EntityTypeName>SiteArea</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>SiteArea</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <Name>SiteId</Name>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <Name>Owner</Name>\r\n        </Parent>\r\n        <Name>SiteId</Name>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -24401,7 +24401,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Type"",
+  ""Name"": ""Type"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -24449,7 +24449,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Loading"",
+  ""Name"": ""Loading"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -24497,7 +24497,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -24545,7 +24545,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Types"",
+  ""Name"": ""Types"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -24593,7 +24593,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""TypesCount"",
+  ""Name"": ""TypesCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -24641,7 +24641,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Reports"",
+  ""Name"": ""Reports"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -24689,7 +24689,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ReportsCount"",
+  ""Name"": ""ReportsCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -24943,7 +24943,7 @@
       ""Container"": null,
       ""Expression"": {
         ""Body"": {
-          ""PropertyName"": ""Site"",
+          ""Name"": ""Site"",
           ""IsIqlExpression"": true,
           ""Key"": null,
           ""Kind"": 30,
@@ -25007,7 +25007,7 @@
       {
         ""Key"": ""1"",
         ""Message"": """",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <InferredReturnType>Unknown</InferredReturnType>\r\n        <EntityTypeName>SiteArea</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>SiteArea</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Owner</PropertyName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <InferredReturnType>Unknown</InferredReturnType>\r\n        <EntityTypeName>SiteArea</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>SiteArea</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <Name>SiteId</Name>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <Name>Owner</Name>\r\n        </Parent>\r\n        <Name>SiteId</Name>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -25620,7 +25620,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""People"",
+  ""Name"": ""People"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -25668,7 +25668,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -25716,7 +25716,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteId"",
+  ""Name"": ""SiteId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -25764,7 +25764,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -25812,7 +25812,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -25860,7 +25860,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -25908,7 +25908,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -25958,7 +25958,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26006,7 +26006,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PeopleCount"",
+  ""Name"": ""PeopleCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26054,7 +26054,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Site"",
+  ""Name"": ""Site"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26102,7 +26102,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -26158,7 +26158,7 @@
       ""Container"": null,
       ""Expression"": {
         ""Body"": {
-          ""PropertyName"": ""Site"",
+          ""Name"": ""Site"",
           ""IsIqlExpression"": true,
           ""Key"": null,
           ""Kind"": 30,
@@ -26222,7 +26222,7 @@
       {
         ""Key"": ""1"",
         ""Message"": """",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <InferredReturnType>Unknown</InferredReturnType>\r\n        <EntityTypeName>SiteArea</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>SiteArea</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <PropertyName>Owner</PropertyName>\r\n        </Parent>\r\n        <PropertyName>SiteId</PropertyName>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlLambdaExpression\"">\r\n    <Kind>Lambda</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Parameters>\r\n      <IqlRootReferenceExpression>\r\n        <Kind>RootReference</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <InferredReturnType>Unknown</InferredReturnType>\r\n        <EntityTypeName>SiteArea</EntityTypeName>\r\n        <VariableName>entity2</VariableName>\r\n      </IqlRootReferenceExpression>\r\n    </Parameters>\r\n    <Body xsi:type=\""IqlIsEqualToExpression\"">\r\n      <Kind>IsEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n          <Kind>RootReference</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <InferredReturnType>Unknown</InferredReturnType>\r\n          <EntityTypeName>SiteArea</EntityTypeName>\r\n          <VariableName>entity2</VariableName>\r\n        </Parent>\r\n        <Name>SiteId</Name>\r\n      </Left>\r\n      <Right xsi:type=\""IqlPropertyExpression\"">\r\n        <Kind>Property</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Parent xsi:type=\""IqlPropertyExpression\"">\r\n          <Kind>Property</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Parent xsi:type=\""IqlVariableExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <InferredReturnType>Unknown</InferredReturnType>\r\n            <EntityTypeName>RelationshipFilterContext&lt;Person&gt;</EntityTypeName>\r\n            <VariableName>entity</VariableName>\r\n          </Parent>\r\n          <Name>Owner</Name>\r\n        </Parent>\r\n        <Name>SiteId</Name>\r\n      </Right>\r\n    </Body>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -26538,7 +26538,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""People"",
+  ""Name"": ""People"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26586,7 +26586,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26634,7 +26634,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -26682,7 +26682,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Title"",
+  ""Name"": ""Title"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26730,7 +26730,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26778,7 +26778,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26826,7 +26826,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -26876,7 +26876,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26924,7 +26924,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PeopleCount"",
+  ""Name"": ""PeopleCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -26972,7 +26972,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -27020,7 +27020,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PeopleMap"",
+  ""Name"": ""PeopleMap"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -27068,7 +27068,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PeopleMapCount"",
+  ""Name"": ""PeopleMapCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -27456,7 +27456,7 @@
     ""Kind"": 2
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""People"",
+  ""Name"": ""People"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -27504,7 +27504,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -27552,7 +27552,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -27600,7 +27600,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -27627,7 +27627,7 @@
       {
         ""Key"": ""2"",
         ""Message"": ""Please enter a loading name"",
-        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>PersonLoading</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <PropertyName>Name</PropertyName>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
+        ""Expression"": ""<?xml version=\""1.0\"" encoding=\""utf-16\""?>\r\n<IqlLambdaExpression xmlns:xsi=\""http://www.w3.org/2001/XMLSchema-instance\"" xmlns:xsd=\""http://www.w3.org/2001/XMLSchema\"">\r\n  <Kind>Lambda</Kind>\r\n  <ReturnType>Unknown</ReturnType>\r\n  <Parameters>\r\n    <IqlRootReferenceExpression>\r\n      <Kind>RootReference</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <InferredReturnType>Unknown</InferredReturnType>\r\n      <EntityTypeName>PersonLoading</EntityTypeName>\r\n      <VariableName>entity</VariableName>\r\n    </IqlRootReferenceExpression>\r\n  </Parameters>\r\n  <Body xsi:type=\""IqlAndExpression\"">\r\n    <Kind>And</Kind>\r\n    <ReturnType>Unknown</ReturnType>\r\n    <Left xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Name</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Name</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Left>\r\n    <Right xsi:type=\""IqlIsNotEqualToExpression\"">\r\n      <Kind>IsNotEqualTo</Kind>\r\n      <ReturnType>Unknown</ReturnType>\r\n      <Left xsi:type=\""IqlConditionExpression\"">\r\n        <Kind>Condition</Kind>\r\n        <ReturnType>Unknown</ReturnType>\r\n        <Test xsi:type=\""IqlIsEqualToExpression\"">\r\n          <Kind>IsEqualTo</Kind>\r\n          <ReturnType>Unknown</ReturnType>\r\n          <Left xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Name</Name>\r\n          </Left>\r\n          <Right xsi:type=\""IqlLiteralExpression\"">\r\n            <Kind>Literal</Kind>\r\n            <ReturnType>String</ReturnType>\r\n            <InferredReturnType>String</InferredReturnType>\r\n          </Right>\r\n        </Test>\r\n        <IfTrue xsi:type=\""IqlLiteralExpression\"">\r\n          <Kind>Literal</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <InferredReturnType>String</InferredReturnType>\r\n        </IfTrue>\r\n        <IfFalse xsi:type=\""IqlStringToUpperCaseExpression\"">\r\n          <Kind>StringToUpperCase</Kind>\r\n          <ReturnType>String</ReturnType>\r\n          <Parent xsi:type=\""IqlPropertyExpression\"">\r\n            <Kind>Property</Kind>\r\n            <ReturnType>Unknown</ReturnType>\r\n            <Parent xsi:type=\""IqlRootReferenceExpression\"">\r\n              <Kind>RootReference</Kind>\r\n              <ReturnType>Unknown</ReturnType>\r\n              <InferredReturnType>Unknown</InferredReturnType>\r\n              <EntityTypeName>PersonLoading</EntityTypeName>\r\n              <VariableName>entity</VariableName>\r\n            </Parent>\r\n            <Name>Name</Name>\r\n          </Parent>\r\n        </IfFalse>\r\n      </Left>\r\n      <Right xsi:type=\""IqlLiteralExpression\"">\r\n        <Kind>Literal</Kind>\r\n        <ReturnType>String</ReturnType>\r\n        <Value xsi:type=\""xsd:string\"" />\r\n        <InferredReturnType>String</InferredReturnType>\r\n      </Right>\r\n    </Right>\r\n  </Body>\r\n</IqlLambdaExpression>""
       }
     ]
   },
@@ -27654,7 +27654,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -27702,7 +27702,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -27750,7 +27750,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -27800,7 +27800,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -27848,7 +27848,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PeopleCount"",
+  ""Name"": ""PeopleCount"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -27896,7 +27896,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -28185,7 +28185,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28233,7 +28233,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteInspectionId"",
+  ""Name"": ""SiteInspectionId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28281,7 +28281,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUserId"",
+  ""Name"": ""CreatedByUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -28329,7 +28329,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonId"",
+  ""Name"": ""PersonId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28377,7 +28377,7 @@
     ""Kind"": 9
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""InspectionStatus"",
+  ""Name"": ""InspectionStatus"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28425,7 +28425,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""StartTime"",
+  ""Name"": ""StartTime"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28473,7 +28473,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""EndTime"",
+  ""Name"": ""EndTime"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28521,7 +28521,7 @@
     ""Kind"": 9
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""ReasonForFailure"",
+  ""Name"": ""ReasonForFailure"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28569,7 +28569,7 @@
     ""Kind"": 7
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""IsDesignRequired"",
+  ""Name"": ""IsDesignRequired"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28617,7 +28617,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""DrawingNumber"",
+  ""Name"": ""DrawingNumber"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -28665,7 +28665,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28713,7 +28713,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28761,7 +28761,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""RevisionKey"",
+  ""Name"": ""RevisionKey"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -28811,7 +28811,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersistenceKey"",
+  ""Name"": ""PersistenceKey"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28859,7 +28859,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteInspection"",
+  ""Name"": ""SiteInspection"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -28907,7 +28907,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedByUser"",
+  ""Name"": ""CreatedByUser"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -29197,7 +29197,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""PersonId"",
+  ""Name"": ""PersonId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -29245,7 +29245,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""TypeId"",
+  ""Name"": ""TypeId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -29293,7 +29293,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Notes"",
+  ""Name"": ""Notes"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -29341,7 +29341,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Description"",
+  ""Name"": ""Description"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -29389,7 +29389,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Guid"",
+  ""Name"": ""Guid"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -29437,7 +29437,7 @@
     ""Kind"": 8
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""CreatedDate"",
+  ""Name"": ""CreatedDate"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -29485,7 +29485,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Person"",
+  ""Name"": ""Person"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -29533,7 +29533,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Type"",
+  ""Name"": ""Type"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -29823,7 +29823,7 @@
     ""Kind"": 5
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SiteId"",
+  ""Name"": ""SiteId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -29871,7 +29871,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""UserId"",
+  ""Name"": ""UserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -29919,7 +29919,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""User"",
+  ""Name"": ""User"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -29967,7 +29967,7 @@
     ""Kind"": 1
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Site"",
+  ""Name"": ""Site"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -30256,7 +30256,7 @@
     ""Kind"": 12
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""MyId"",
+  ""Name"": ""MyId"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -30304,7 +30304,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""MyUserId"",
+  ""Name"": ""MyUserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30352,7 +30352,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""MyName"",
+  ""Name"": ""MyName"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -30400,7 +30400,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""MyEntityType"",
+  ""Name"": ""MyEntityType"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30448,7 +30448,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""MyIql"",
+  ""Name"": ""MyIql"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30496,7 +30496,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""MyFields"",
+  ""Name"": ""MyFields"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30544,7 +30544,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""MySort"",
+  ""Name"": ""MySort"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30592,7 +30592,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""MySortDescending"",
+  ""Name"": ""MySortDescending"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30640,7 +30640,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""MySearch"",
+  ""Name"": ""MySearch"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30730,7 +30730,7 @@
     ""Kind"": 12
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""Id"",
+  ""Name"": ""Id"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -30778,7 +30778,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""UserId"",
+  ""Name"": ""UserId"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30826,7 +30826,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Name"",
+  ""Name"": ""Name"",
   ""Searchable"": true,
   ""Nullable"": false,
   ""InferredWithIql"": null,
@@ -30874,7 +30874,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""EntityType"",
+  ""Name"": ""EntityType"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30922,7 +30922,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Iql"",
+  ""Name"": ""Iql"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -30970,7 +30970,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Fields"",
+  ""Name"": ""Fields"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -31018,7 +31018,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Sort"",
+  ""Name"": ""Sort"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -31066,7 +31066,7 @@
     ""Kind"": 7
   },
   ""SearchKind"": 1,
-  ""PropertyName"": ""SortDescending"",
+  ""Name"": ""SortDescending"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,
@@ -31114,7 +31114,7 @@
     ""Kind"": 4
   },
   ""SearchKind"": 3,
-  ""PropertyName"": ""Search"",
+  ""Name"": ""Search"",
   ""Searchable"": true,
   ""Nullable"": true,
   ""InferredWithIql"": null,

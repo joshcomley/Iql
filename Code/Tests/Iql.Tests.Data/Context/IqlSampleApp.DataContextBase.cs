@@ -1005,7 +1005,7 @@ namespace IqlSampleApp.ApiContext.Base
                 UserTypeName = "ApplicationUser"
             });
             builder.DefineEntityType<ApplicationUser>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.IsLockedOut, false, IqlType.Boolean).ConfigureProperty(p => p.IsLockedOut, p => {
-                p.PropertyName = "IsLockedOut";
+                p.Name = "IsLockedOut";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1015,7 +1015,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "IsLockedOut";
                 p.Permissions.UseRule("SuperUser");
             }).DefineProperty(p => p.ClientId, true, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
-                p.PropertyName = "ClientId";
+                p.Name = "ClientId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1024,7 +1024,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ClientId";
                 p.Title = "ClientId";
             }).DefineProperty(p => p.Id, false, IqlType.String).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1033,7 +1033,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.Email, true, IqlType.String).ConfigureProperty(p => p.Email, p => {
-                p.PropertyName = "Email";
+                p.Name = "Email";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1046,7 +1046,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Email";
                 p.Title = "Email";
             }).DefineProperty(p => p.Permissions, false, IqlType.Enum).ConfigureProperty(p => p.Permissions, p => {
-                p.PropertyName = "Permissions";
+                p.Name = "Permissions";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1055,7 +1055,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Permissions";
                 p.Title = "Permissions";
             }).DefineProperty(p => p.UserType, false, IqlType.Enum).ConfigureProperty(p => p.UserType, p => {
-                p.PropertyName = "UserType";
+                p.Name = "UserType";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1064,7 +1064,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "UserType";
                 p.Title = "UserType";
             }).DefineProperty(p => p.FullName, false, IqlType.String).ConfigureProperty(p => p.FullName, p => {
-                p.PropertyName = "FullName";
+                p.Name = "FullName";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1073,7 +1073,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FullName";
                 p.Title = "FullName";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1082,7 +1082,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.UserName, true, IqlType.String).ConfigureProperty(p => p.UserName, p => {
-                p.PropertyName = "UserName";
+                p.Name = "UserName";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1091,7 +1091,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "UserName";
                 p.Title = "UserName";
             }).DefineProperty(p => p.EmailConfirmed, false, IqlType.Boolean).ConfigureProperty(p => p.EmailConfirmed, p => {
-                p.PropertyName = "EmailConfirmed";
+                p.Name = "EmailConfirmed";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1101,7 +1101,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "EmailConfirmed";
                 p.Title = "EmailConfirmed";
             }).DefineProperty(p => p.PhoneNumber, true, IqlType.String).ConfigureProperty(p => p.PhoneNumber, p => {
-                p.PropertyName = "PhoneNumber";
+                p.Name = "PhoneNumber";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1110,7 +1110,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PhoneNumber";
                 p.Title = "PhoneNumber";
             }).DefineProperty(p => p.PhoneNumberConfirmed, false, IqlType.Boolean).ConfigureProperty(p => p.PhoneNumberConfirmed, p => {
-                p.PropertyName = "PhoneNumberConfirmed";
+                p.Name = "PhoneNumberConfirmed";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1120,7 +1120,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PhoneNumberConfirmed";
                 p.Title = "PhoneNumberConfirmed";
             }).DefineProperty(p => p.TwoFactorEnabled, false, IqlType.Boolean).ConfigureProperty(p => p.TwoFactorEnabled, p => {
-                p.PropertyName = "TwoFactorEnabled";
+                p.Name = "TwoFactorEnabled";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1130,7 +1130,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "TwoFactorEnabled";
                 p.Title = "TwoFactorEnabled";
             }).DefineProperty(p => p.LockoutEnd, true, IqlType.Date).ConfigureProperty(p => p.LockoutEnd, p => {
-                p.PropertyName = "LockoutEnd";
+                p.Name = "LockoutEnd";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1139,7 +1139,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "LockoutEnd";
                 p.Title = "LockoutEnd";
             }).DefineProperty(p => p.LockoutEnabled, false, IqlType.Boolean).ConfigureProperty(p => p.LockoutEnabled, p => {
-                p.PropertyName = "LockoutEnabled";
+                p.Name = "LockoutEnabled";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1148,7 +1148,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "LockoutEnabled";
                 p.Title = "LockoutEnabled";
             }).DefineProperty(p => p.Client, true, IqlType.Unknown).ConfigureProperty(p => p.Client, p => {
-                p.PropertyName = "Client";
+                p.Name = "Client";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1157,7 +1157,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Client";
                 p.Title = "Client";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).DefineCollectionProperty(p => p.ClientsCreated, p => p.ClientsCreatedCount).ConfigureProperty(p => p.ClientsCreated, p => {
-                p.PropertyName = "ClientsCreated";
+                p.Name = "ClientsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1166,7 +1166,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ClientsCreated";
                 p.Title = "ClientsCreated";
             }).DefineCollectionProperty(p => p.DocumentCategoriesCreated, p => p.DocumentCategoriesCreatedCount).ConfigureProperty(p => p.DocumentCategoriesCreated, p => {
-                p.PropertyName = "DocumentCategoriesCreated";
+                p.Name = "DocumentCategoriesCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1175,7 +1175,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "DocumentCategoriesCreated";
                 p.Title = "DocumentCategoriesCreated";
             }).DefineCollectionProperty(p => p.SiteDocumentsCreated, p => p.SiteDocumentsCreatedCount).ConfigureProperty(p => p.SiteDocumentsCreated, p => {
-                p.PropertyName = "SiteDocumentsCreated";
+                p.Name = "SiteDocumentsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1184,7 +1184,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteDocumentsCreated";
                 p.Title = "SiteDocumentsCreated";
             }).DefineCollectionProperty(p => p.FaultActionsTakenCreated, p => p.FaultActionsTakenCreatedCount).ConfigureProperty(p => p.FaultActionsTakenCreated, p => {
-                p.PropertyName = "FaultActionsTakenCreated";
+                p.Name = "FaultActionsTakenCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1193,7 +1193,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FaultActionsTakenCreated";
                 p.Title = "FaultActionsTakenCreated";
             }).DefineCollectionProperty(p => p.FaultCategoriesCreated, p => p.FaultCategoriesCreatedCount).ConfigureProperty(p => p.FaultCategoriesCreated, p => {
-                p.PropertyName = "FaultCategoriesCreated";
+                p.Name = "FaultCategoriesCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1202,7 +1202,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FaultCategoriesCreated";
                 p.Title = "FaultCategoriesCreated";
             }).DefineCollectionProperty(p => p.FaultDefaultRecommendationsCreated, p => p.FaultDefaultRecommendationsCreatedCount).ConfigureProperty(p => p.FaultDefaultRecommendationsCreated, p => {
-                p.PropertyName = "FaultDefaultRecommendationsCreated";
+                p.Name = "FaultDefaultRecommendationsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1211,7 +1211,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FaultDefaultRecommendationsCreated";
                 p.Title = "FaultDefaultRecommendationsCreated";
             }).DefineCollectionProperty(p => p.FaultRecommendationsCreated, p => p.FaultRecommendationsCreatedCount).ConfigureProperty(p => p.FaultRecommendationsCreated, p => {
-                p.PropertyName = "FaultRecommendationsCreated";
+                p.Name = "FaultRecommendationsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1220,7 +1220,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FaultRecommendationsCreated";
                 p.Title = "FaultRecommendationsCreated";
             }).DefineCollectionProperty(p => p.FaultTypesCreated, p => p.FaultTypesCreatedCount).ConfigureProperty(p => p.FaultTypesCreated, p => {
-                p.PropertyName = "FaultTypesCreated";
+                p.Name = "FaultTypesCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1229,7 +1229,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FaultTypesCreated";
                 p.Title = "FaultTypesCreated";
             }).DefineCollectionProperty(p => p.ProjectCreated, p => p.ProjectCreatedCount).ConfigureProperty(p => p.ProjectCreated, p => {
-                p.PropertyName = "ProjectCreated";
+                p.Name = "ProjectCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1238,7 +1238,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ProjectCreated";
                 p.Title = "ProjectCreated";
             }).DefineCollectionProperty(p => p.ReportReceiverEmailAddressesCreated, p => p.ReportReceiverEmailAddressesCreatedCount).ConfigureProperty(p => p.ReportReceiverEmailAddressesCreated, p => {
-                p.PropertyName = "ReportReceiverEmailAddressesCreated";
+                p.Name = "ReportReceiverEmailAddressesCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1247,7 +1247,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ReportReceiverEmailAddressesCreated";
                 p.Title = "ReportReceiverEmailAddressesCreated";
             }).DefineCollectionProperty(p => p.RiskAssessmentsCreated, p => p.RiskAssessmentsCreatedCount).ConfigureProperty(p => p.RiskAssessmentsCreated, p => {
-                p.PropertyName = "RiskAssessmentsCreated";
+                p.Name = "RiskAssessmentsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1256,7 +1256,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RiskAssessmentsCreated";
                 p.Title = "RiskAssessmentsCreated";
             }).DefineCollectionProperty(p => p.RiskAssessmentSolutionsCreated, p => p.RiskAssessmentSolutionsCreatedCount).ConfigureProperty(p => p.RiskAssessmentSolutionsCreated, p => {
-                p.PropertyName = "RiskAssessmentSolutionsCreated";
+                p.Name = "RiskAssessmentSolutionsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1265,7 +1265,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RiskAssessmentSolutionsCreated";
                 p.Title = "RiskAssessmentSolutionsCreated";
             }).DefineCollectionProperty(p => p.RiskAssessmentAnswersCreated, p => p.RiskAssessmentAnswersCreatedCount).ConfigureProperty(p => p.RiskAssessmentAnswersCreated, p => {
-                p.PropertyName = "RiskAssessmentAnswersCreated";
+                p.Name = "RiskAssessmentAnswersCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1274,7 +1274,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RiskAssessmentAnswersCreated";
                 p.Title = "RiskAssessmentAnswersCreated";
             }).DefineCollectionProperty(p => p.RiskAssessmentQuestionsCreated, p => p.RiskAssessmentQuestionsCreatedCount).ConfigureProperty(p => p.RiskAssessmentQuestionsCreated, p => {
-                p.PropertyName = "RiskAssessmentQuestionsCreated";
+                p.Name = "RiskAssessmentQuestionsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1283,7 +1283,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RiskAssessmentQuestionsCreated";
                 p.Title = "RiskAssessmentQuestionsCreated";
             }).DefineCollectionProperty(p => p.PeopleCreated, p => p.PeopleCreatedCount).ConfigureProperty(p => p.PeopleCreated, p => {
-                p.PropertyName = "PeopleCreated";
+                p.Name = "PeopleCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1292,7 +1292,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PeopleCreated";
                 p.Title = "PeopleCreated";
             }).DefineCollectionProperty(p => p.PersonInspectionsCreated, p => p.PersonInspectionsCreatedCount).ConfigureProperty(p => p.PersonInspectionsCreated, p => {
-                p.PropertyName = "PersonInspectionsCreated";
+                p.Name = "PersonInspectionsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1301,7 +1301,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersonInspectionsCreated";
                 p.Title = "PersonInspectionsCreated";
             }).DefineCollectionProperty(p => p.PersonLoadingsCreated, p => p.PersonLoadingsCreatedCount).ConfigureProperty(p => p.PersonLoadingsCreated, p => {
-                p.PropertyName = "PersonLoadingsCreated";
+                p.Name = "PersonLoadingsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1310,7 +1310,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersonLoadingsCreated";
                 p.Title = "PersonLoadingsCreated";
             }).DefineCollectionProperty(p => p.PersonTypesCreated, p => p.PersonTypesCreatedCount).ConfigureProperty(p => p.PersonTypesCreated, p => {
-                p.PropertyName = "PersonTypesCreated";
+                p.Name = "PersonTypesCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1319,7 +1319,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersonTypesCreated";
                 p.Title = "PersonTypesCreated";
             }).DefineCollectionProperty(p => p.FaultReportsCreated, p => p.FaultReportsCreatedCount).ConfigureProperty(p => p.FaultReportsCreated, p => {
-                p.PropertyName = "FaultReportsCreated";
+                p.Name = "FaultReportsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1328,7 +1328,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FaultReportsCreated";
                 p.Title = "FaultReportsCreated";
             }).DefineCollectionProperty(p => p.SitesCreated, p => p.SitesCreatedCount).ConfigureProperty(p => p.SitesCreated, p => {
-                p.PropertyName = "SitesCreated";
+                p.Name = "SitesCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1337,7 +1337,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SitesCreated";
                 p.Title = "SitesCreated";
             }).DefineCollectionProperty(p => p.SiteAreasCreated, p => p.SiteAreasCreatedCount).ConfigureProperty(p => p.SiteAreasCreated, p => {
-                p.PropertyName = "SiteAreasCreated";
+                p.Name = "SiteAreasCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1346,7 +1346,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteAreasCreated";
                 p.Title = "SiteAreasCreated";
             }).DefineCollectionProperty(p => p.SiteInspectionsCreated, p => p.SiteInspectionsCreatedCount).ConfigureProperty(p => p.SiteInspectionsCreated, p => {
-                p.PropertyName = "SiteInspectionsCreated";
+                p.Name = "SiteInspectionsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1355,7 +1355,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteInspectionsCreated";
                 p.Title = "SiteInspectionsCreated";
             }).DefineCollectionProperty(p => p.UserSettingsCreated, p => p.UserSettingsCreatedCount).ConfigureProperty(p => p.UserSettingsCreated, p => {
-                p.PropertyName = "UserSettingsCreated";
+                p.Name = "UserSettingsCreated";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1364,7 +1364,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "UserSettingsCreated";
                 p.Title = "UserSettingsCreated";
             }).DefineCollectionProperty(p => p.UserSettings, p => p.UserSettingsCount).ConfigureProperty(p => p.UserSettings, p => {
-                p.PropertyName = "UserSettings";
+                p.Name = "UserSettings";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1373,7 +1373,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "UserSettings";
                 p.Title = "UserSettings";
             }).DefineCollectionProperty(p => p.Sites, p => p.SitesCount).ConfigureProperty(p => p.Sites, p => {
-                p.PropertyName = "Sites";
+                p.Name = "Sites";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1439,7 +1439,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -1755,7 +1755,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<ApplicationLog>().HasKey(p => p.Id, IqlType.Unknown, false).DefineConvertedProperty(p => p.Id, "Guid", false, IqlType.String).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1764,7 +1764,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1773,7 +1773,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.Module, true, IqlType.String).ConfigureProperty(p => p.Module, p => {
-                p.PropertyName = "Module";
+                p.Name = "Module";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1782,7 +1782,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Module";
                 p.Title = "Module";
             }).DefineProperty(p => p.Message, true, IqlType.String).ConfigureProperty(p => p.Message, p => {
-                p.PropertyName = "Message";
+                p.Name = "Message";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1791,7 +1791,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Message";
                 p.Title = "Message";
             }).DefineProperty(p => p.Kind, true, IqlType.String).ConfigureProperty(p => p.Kind, p => {
-                p.PropertyName = "Kind";
+                p.Name = "Kind";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1808,7 +1808,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ApplicationLog";
             });
             builder.DefineEntityType<Client>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -1817,7 +1817,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.TypeId, false, IqlType.Integer).ConfigureProperty(p => p.TypeId, p => {
-                p.PropertyName = "TypeId";
+                p.Name = "TypeId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1826,7 +1826,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "TypeId";
                 p.Title = "TypeId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -1873,7 +1873,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.AverageSales, false, IqlType.Decimal).ConfigureProperty(p => p.AverageSales, p => {
-                p.PropertyName = "AverageSales";
+                p.Name = "AverageSales";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1882,7 +1882,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "AverageSales";
                 p.Title = "AverageSales";
             }).DefineProperty(p => p.AverageIncome, false, IqlType.Decimal).ConfigureProperty(p => p.AverageIncome, p => {
-                p.PropertyName = "AverageIncome";
+                p.Name = "AverageIncome";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1892,7 +1892,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "AverageIncome";
                 p.Permissions.UseRule("PropertyRule1").UseRule("PropertyRule2");
             }).DefineProperty(p => p.Category, false, IqlType.Integer).ConfigureProperty(p => p.Category, p => {
-                p.PropertyName = "Category";
+                p.Name = "Category";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1901,7 +1901,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Category";
                 p.Title = "Category";
             }).DefineProperty(p => p.Description, true, IqlType.String).ConfigureProperty(p => p.Description, p => {
-                p.PropertyName = "Description";
+                p.Name = "Description";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1910,7 +1910,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Description";
                 p.Title = "Description";
             }).DefineProperty(p => p.Discount, false, IqlType.Decimal).ConfigureProperty(p => p.Discount, p => {
-                p.PropertyName = "Discount";
+                p.Name = "Discount";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1919,7 +1919,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Discount";
                 p.Title = "Discount";
             }).DefineProperty(p => p.Name, false, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -1928,7 +1928,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -1977,7 +1977,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -2028,7 +2028,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2043,7 +2043,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -2092,7 +2092,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineCollectionProperty(p => p.Users, p => p.UsersCount).ConfigureProperty(p => p.Users, p => {
-                p.PropertyName = "Users";
+                p.Name = "Users";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2101,7 +2101,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Users";
                 p.Title = "Users";
             }).DefineProperty(p => p.Type, false, IqlType.Unknown).ConfigureProperty(p => p.Type, p => {
-                p.PropertyName = "Type";
+                p.Name = "Type";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2110,7 +2110,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Type";
                 p.Title = "Type";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2123,7 +2123,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineCollectionProperty(p => p.Categories, p => p.CategoriesCount).ConfigureProperty(p => p.Categories, p => {
-                p.PropertyName = "Categories";
+                p.Name = "Categories";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2132,7 +2132,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Categories";
                 p.Title = "Categories";
             }).DefineCollectionProperty(p => p.People, p => p.PeopleCount).ConfigureProperty(p => p.People, p => {
-                p.PropertyName = "People";
+                p.Name = "People";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2141,7 +2141,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "People";
                 p.Title = "People";
             }).DefineCollectionProperty(p => p.InferredPeople, p => p.InferredPeopleCount).ConfigureProperty(p => p.InferredPeople, p => {
-                p.PropertyName = "InferredPeople";
+                p.Name = "InferredPeople";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2150,7 +2150,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "InferredPeople";
                 p.Title = "InferredPeople";
             }).DefineCollectionProperty(p => p.Sites, p => p.SitesCount).ConfigureProperty(p => p.Sites, p => {
-                p.PropertyName = "Sites";
+                p.Name = "Sites";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2199,7 +2199,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -2308,7 +2308,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<ClientType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2317,7 +2317,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2326,7 +2326,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineCollectionProperty(p => p.Clients, p => p.ClientsCount).ConfigureProperty(p => p.Clients, p => {
-                p.PropertyName = "Clients";
+                p.Name = "Clients";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2422,7 +2422,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -2506,7 +2506,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<ClientCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2515,7 +2515,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2524,7 +2524,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineCollectionProperty(p => p.Clients, p => p.ClientsCount).ConfigureProperty(p => p.Clients, p => {
-                p.PropertyName = "Clients";
+                p.Name = "Clients";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2541,7 +2541,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ClientCategory";
             });
             builder.DefineEntityType<ClientCategoryPivot>().HasCompositeKey(false, p => p.ClientId, p => p.CategoryId).DefineProperty(p => p.ClientId, false, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
-                p.PropertyName = "ClientId";
+                p.Name = "ClientId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2550,7 +2550,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ClientId";
                 p.Title = "ClientId";
             }).DefineProperty(p => p.CategoryId, false, IqlType.Integer).ConfigureProperty(p => p.CategoryId, p => {
-                p.PropertyName = "CategoryId";
+                p.Name = "CategoryId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2559,7 +2559,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CategoryId";
                 p.Title = "CategoryId";
             }).DefineProperty(p => p.Client, false, IqlType.Unknown).ConfigureProperty(p => p.Client, p => {
-                p.PropertyName = "Client";
+                p.Name = "Client";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2568,7 +2568,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Client";
                 p.Title = "Client";
             }).DefineProperty(p => p.Category, false, IqlType.Unknown).ConfigureProperty(p => p.Category, p => {
-                p.PropertyName = "Category";
+                p.Name = "Category";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2587,7 +2587,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "ClientCategoryPivot";
             });
             builder.DefineEntityType<DocumentCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2596,7 +2596,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -2643,7 +2643,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2652,7 +2652,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -2701,7 +2701,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -2752,7 +2752,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2767,7 +2767,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -2816,7 +2816,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2829,7 +2829,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineCollectionProperty(p => p.Documents, p => p.DocumentsCount).ConfigureProperty(p => p.Documents, p => {
-                p.PropertyName = "Documents";
+                p.Name = "Documents";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -2875,7 +2875,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -2959,7 +2959,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<SiteDocument>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CategoryId, false, IqlType.Integer).ConfigureProperty(p => p.CategoryId, p => {
-                p.PropertyName = "CategoryId";
+                p.Name = "CategoryId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2968,7 +2968,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CategoryId";
                 p.Title = "CategoryId";
             }).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
-                p.PropertyName = "SiteId";
+                p.Name = "SiteId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -2977,7 +2977,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteId";
                 p.Title = "SiteId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3024,7 +3024,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Title, true, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.PropertyName = "Title";
+                p.Name = "Title";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -3033,7 +3033,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Title";
                 p.Title = "Title";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3082,7 +3082,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -3091,7 +3091,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3142,7 +3142,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -3157,7 +3157,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3206,7 +3206,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.Category, false, IqlType.Unknown).ConfigureProperty(p => p.Category, p => {
-                p.PropertyName = "Category";
+                p.Name = "Category";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -3215,7 +3215,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Category";
                 p.Title = "Category";
             }).DefineProperty(p => p.Site, false, IqlType.Unknown).ConfigureProperty(p => p.Site, p => {
-                p.PropertyName = "Site";
+                p.Name = "Site";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -3224,7 +3224,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Site";
                 p.Title = "Site";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -3276,7 +3276,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -3360,7 +3360,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<ReportActionsTaken>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.FaultReportId, false, IqlType.Integer).ConfigureProperty(p => p.FaultReportId, p => {
-                p.PropertyName = "FaultReportId";
+                p.Name = "FaultReportId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -3369,7 +3369,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FaultReportId";
                 p.Title = "FaultReportId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3416,7 +3416,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Notes, true, IqlType.String).ConfigureProperty(p => p.Notes, p => {
-                p.PropertyName = "Notes";
+                p.Name = "Notes";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -3425,7 +3425,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Notes";
                 p.Title = "Notes";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3474,7 +3474,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -3483,7 +3483,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3534,7 +3534,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -3549,7 +3549,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3598,7 +3598,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.PersonReport, false, IqlType.Unknown).ConfigureProperty(p => p.PersonReport, p => {
-                p.PropertyName = "PersonReport";
+                p.Name = "PersonReport";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -3607,7 +3607,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersonReport";
                 p.Title = "PersonReport";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -3658,7 +3658,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -3742,7 +3742,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<ReportCategory>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -3751,7 +3751,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3798,7 +3798,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -3807,7 +3807,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3856,7 +3856,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3907,7 +3907,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -3922,7 +3922,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -3971,7 +3971,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -3984,7 +3984,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineCollectionProperty(p => p.ReportTypes, p => p.ReportTypesCount).ConfigureProperty(p => p.ReportTypes, p => {
-                p.PropertyName = "ReportTypes";
+                p.Name = "ReportTypes";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -4030,7 +4030,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -4114,7 +4114,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<ReportDefaultRecommendation>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -4123,7 +4123,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -4170,7 +4170,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -4179,7 +4179,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineProperty(p => p.Text, true, IqlType.String).ConfigureProperty(p => p.Text, p => {
-                p.PropertyName = "Text";
+                p.Name = "Text";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -4188,7 +4188,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Text";
                 p.Title = "Text";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -4237,7 +4237,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -4288,7 +4288,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -4303,7 +4303,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -4352,7 +4352,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -4365,7 +4365,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineCollectionProperty(p => p.Recommendations, p => p.RecommendationsCount).ConfigureProperty(p => p.Recommendations, p => {
-                p.PropertyName = "Recommendations";
+                p.Name = "Recommendations";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -4411,7 +4411,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -4495,7 +4495,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<ReportRecommendation>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.ReportId, false, IqlType.Integer).ConfigureProperty(p => p.ReportId, p => {
-                p.PropertyName = "ReportId";
+                p.Name = "ReportId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -4504,7 +4504,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ReportId";
                 p.Title = "ReportId";
             }).DefineProperty(p => p.RecommendationId, false, IqlType.Integer).ConfigureProperty(p => p.RecommendationId, p => {
-                p.PropertyName = "RecommendationId";
+                p.Name = "RecommendationId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -4513,7 +4513,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RecommendationId";
                 p.Title = "RecommendationId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -4560,7 +4560,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Notes, true, IqlType.String).ConfigureProperty(p => p.Notes, p => {
-                p.PropertyName = "Notes";
+                p.Name = "Notes";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -4569,7 +4569,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Notes";
                 p.Title = "Notes";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -4618,7 +4618,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -4627,7 +4627,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -4678,7 +4678,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -4693,7 +4693,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -4742,7 +4742,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.PersonReport, false, IqlType.Unknown).ConfigureProperty(p => p.PersonReport, p => {
-                p.PropertyName = "PersonReport";
+                p.Name = "PersonReport";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -4751,7 +4751,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersonReport";
                 p.Title = "PersonReport";
             }).DefineProperty(p => p.Recommendation, false, IqlType.Unknown).ConfigureProperty(p => p.Recommendation, p => {
-                p.PropertyName = "Recommendation";
+                p.Name = "Recommendation";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -4760,7 +4760,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Recommendation";
                 p.Title = "Recommendation";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -4812,7 +4812,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -4896,7 +4896,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<ReportType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -4905,7 +4905,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CategoryId, false, IqlType.Integer).ConfigureProperty(p => p.CategoryId, p => {
-                p.PropertyName = "CategoryId";
+                p.Name = "CategoryId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -4914,7 +4914,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CategoryId";
                 p.Title = "CategoryId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -4961,7 +4961,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -4970,7 +4970,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5019,7 +5019,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5070,7 +5070,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -5085,7 +5085,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5134,7 +5134,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.Category, false, IqlType.Unknown).ConfigureProperty(p => p.Category, p => {
-                p.PropertyName = "Category";
+                p.Name = "Category";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -5143,7 +5143,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Category";
                 p.Title = "Category";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -5156,7 +5156,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineCollectionProperty(p => p.FaultReports, p => p.FaultReportsCount).ConfigureProperty(p => p.FaultReports, p => {
-                p.PropertyName = "FaultReports";
+                p.Name = "FaultReports";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -5203,7 +5203,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -5287,7 +5287,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<Project>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5334,7 +5334,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Title, false, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.PropertyName = "Title";
+                p.Name = "Title";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -5343,7 +5343,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Title";
                 p.Title = "Title";
             }).DefineProperty(p => p.Description, true, IqlType.String).ConfigureProperty(p => p.Description, p => {
-                p.PropertyName = "Description";
+                p.Name = "Description";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -5352,7 +5352,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Description";
                 p.Title = "Description";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5401,7 +5401,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -5410,7 +5410,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5461,7 +5461,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -5476,7 +5476,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5525,7 +5525,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -5575,7 +5575,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -5659,7 +5659,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<ReportReceiverEmailAddress>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
-                p.PropertyName = "SiteId";
+                p.Name = "SiteId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -5668,7 +5668,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteId";
                 p.Title = "SiteId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5715,7 +5715,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.EmailAddress, true, IqlType.String).ConfigureProperty(p => p.EmailAddress, p => {
-                p.PropertyName = "EmailAddress";
+                p.Name = "EmailAddress";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -5724,7 +5724,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "EmailAddress";
                 p.Title = "EmailAddress";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5773,7 +5773,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -5782,7 +5782,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5833,7 +5833,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -5848,7 +5848,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -5897,7 +5897,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.Site, false, IqlType.Unknown).ConfigureProperty(p => p.Site, p => {
-                p.PropertyName = "Site";
+                p.Name = "Site";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -5906,7 +5906,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Site";
                 p.Title = "Site";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -5957,7 +5957,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -6041,7 +6041,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<RiskAssessment>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
-                p.PropertyName = "SiteInspectionId";
+                p.Name = "SiteInspectionId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -6050,7 +6050,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteInspectionId";
                 p.Title = "SiteInspectionId";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -6059,7 +6059,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6106,7 +6106,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6155,7 +6155,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6206,7 +6206,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -6221,7 +6221,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6270,7 +6270,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.SiteInspection, false, IqlType.Unknown).ConfigureProperty(p => p.SiteInspection, p => {
-                p.PropertyName = "SiteInspection";
+                p.Name = "SiteInspection";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -6279,7 +6279,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteInspection";
                 p.Title = "SiteInspection";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -6292,7 +6292,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineProperty(p => p.RiskAssessmentSolution, false, IqlType.Unknown).ConfigureProperty(p => p.RiskAssessmentSolution, p => {
-                p.PropertyName = "RiskAssessmentSolution";
+                p.Name = "RiskAssessmentSolution";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -6339,7 +6339,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -6423,7 +6423,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<RiskAssessmentSolution>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.RiskAssessmentId, false, IqlType.Integer).ConfigureProperty(p => p.RiskAssessmentId, p => {
-                p.PropertyName = "RiskAssessmentId";
+                p.Name = "RiskAssessmentId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -6432,7 +6432,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RiskAssessmentId";
                 p.Title = "RiskAssessmentId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6479,7 +6479,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6528,7 +6528,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -6537,7 +6537,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6588,7 +6588,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -6603,7 +6603,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6652,7 +6652,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.RiskAssessment, false, IqlType.Unknown).ConfigureProperty(p => p.RiskAssessment, p => {
-                p.PropertyName = "RiskAssessment";
+                p.Name = "RiskAssessment";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -6661,7 +6661,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RiskAssessment";
                 p.Title = "RiskAssessment";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -6687,7 +6687,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "RiskAssessmentSolution";
             });
             builder.DefineEntityType<RiskAssessmentAnswer>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.QuestionId, false, IqlType.Integer).ConfigureProperty(p => p.QuestionId, p => {
-                p.PropertyName = "QuestionId";
+                p.Name = "QuestionId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -6696,7 +6696,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "QuestionId";
                 p.Title = "QuestionId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6743,7 +6743,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.SpecificHazard, true, IqlType.String).ConfigureProperty(p => p.SpecificHazard, p => {
-                p.PropertyName = "SpecificHazard";
+                p.Name = "SpecificHazard";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -6752,7 +6752,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SpecificHazard";
                 p.Title = "SpecificHazard";
             }).DefineProperty(p => p.PrecautionsToControlHazard, true, IqlType.String).ConfigureProperty(p => p.PrecautionsToControlHazard, p => {
-                p.PropertyName = "PrecautionsToControlHazard";
+                p.Name = "PrecautionsToControlHazard";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -6761,7 +6761,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PrecautionsToControlHazard";
                 p.Title = "PrecautionsToControlHazard";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6810,7 +6810,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -6819,7 +6819,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6870,7 +6870,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -6885,7 +6885,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -6934,7 +6934,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.Question, false, IqlType.Unknown).ConfigureProperty(p => p.Question, p => {
-                p.PropertyName = "Question";
+                p.Name = "Question";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -6943,7 +6943,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Question";
                 p.Title = "Question";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -6994,7 +6994,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -7078,7 +7078,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<RiskAssessmentQuestion>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -7087,7 +7087,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -7134,7 +7134,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7143,7 +7143,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -7192,7 +7192,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -7243,7 +7243,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -7258,7 +7258,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -7307,7 +7307,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineCollectionProperty(p => p.Answers, p => p.AnswersCount).ConfigureProperty(p => p.Answers, p => {
-                p.PropertyName = "Answers";
+                p.Name = "Answers";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -7316,7 +7316,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Answers";
                 p.Title = "Answers";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -7366,7 +7366,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -7450,7 +7450,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<Person>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Location, true, IqlType.GeographyPoint).ConfigureProperty(p => p.Location, p => {
-                p.PropertyName = "Location";
+                p.Name = "Location";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -7497,7 +7497,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Location";
                 p.Title = "Location";
             }).DefineProperty(p => p.ClientId, true, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
-                p.PropertyName = "ClientId";
+                p.Name = "ClientId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7506,7 +7506,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ClientId";
                 p.Title = "ClientId";
             }).DefineProperty(p => p.InferredFromUserClientId, true, IqlType.Integer).ConfigureProperty(p => p.InferredFromUserClientId, p => {
-                p.PropertyName = "InferredFromUserClientId";
+                p.Name = "InferredFromUserClientId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -7559,7 +7559,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "InferredFromUserClientId";
                 p.Title = "InferredFromUserClientId";
             }).DefineProperty(p => p.SiteId, true, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
-                p.PropertyName = "SiteId";
+                p.Name = "SiteId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7568,7 +7568,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteId";
                 p.Title = "SiteId";
             }).DefineProperty(p => p.SiteAreaId, true, IqlType.Integer).ConfigureProperty(p => p.SiteAreaId, p => {
-                p.PropertyName = "SiteAreaId";
+                p.Name = "SiteAreaId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7577,7 +7577,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteAreaId";
                 p.Title = "SiteAreaId";
             }).DefineProperty(p => p.TypeId, true, IqlType.Integer).ConfigureProperty(p => p.TypeId, p => {
-                p.PropertyName = "TypeId";
+                p.Name = "TypeId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7586,7 +7586,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "TypeId";
                 p.Title = "TypeId";
             }).DefineProperty(p => p.LoadingId, true, IqlType.Integer).ConfigureProperty(p => p.LoadingId, p => {
-                p.PropertyName = "LoadingId";
+                p.Name = "LoadingId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7595,7 +7595,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "LoadingId";
                 p.Title = "LoadingId";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -7604,7 +7604,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -7651,7 +7651,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.PhotoUrl, true, IqlType.String).ConfigureProperty(p => p.PhotoUrl, p => {
-                p.PropertyName = "PhotoUrl";
+                p.Name = "PhotoUrl";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7660,7 +7660,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PhotoUrl";
                 p.Title = "PhotoUrl";
             }).DefineProperty(p => p.PhotoState, true, IqlType.String).ConfigureProperty(p => p.PhotoState, p => {
-                p.PropertyName = "PhotoState";
+                p.Name = "PhotoState";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7669,7 +7669,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PhotoState";
                 p.Title = "PhotoState";
             }).DefineProperty(p => p.PhotoRevisionKey, true, IqlType.String).ConfigureProperty(p => p.PhotoRevisionKey, p => {
-                p.PropertyName = "PhotoRevisionKey";
+                p.Name = "PhotoRevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7678,7 +7678,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PhotoRevisionKey";
                 p.Title = "PhotoRevisionKey";
             }).DefineProperty(p => p.Birthday, true, IqlType.Date).ConfigureProperty(p => p.Birthday, p => {
-                p.PropertyName = "Birthday";
+                p.Name = "Birthday";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -7848,7 +7848,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Birthday";
                 p.Title = "Birthday";
             }).DefineProperty(p => p.Key, true, IqlType.String).ConfigureProperty(p => p.Key, p => {
-                p.PropertyName = "Key";
+                p.Name = "Key";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -7857,7 +7857,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Key";
                 p.Title = "Key";
             }).DefineProperty(p => p.InferredWhenKeyChanges, true, IqlType.String).ConfigureProperty(p => p.InferredWhenKeyChanges, p => {
-                p.PropertyName = "InferredWhenKeyChanges";
+                p.Name = "InferredWhenKeyChanges";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8025,7 +8025,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "InferredWhenKeyChanges";
                 p.Title = "InferredWhenKeyChanges";
             }).DefineProperty(p => p.IsComplete, false, IqlType.Boolean).ConfigureProperty(p => p.IsComplete, p => {
-                p.PropertyName = "IsComplete";
+                p.Name = "IsComplete";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8035,7 +8035,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "IsComplete";
                 p.Title = "IsComplete";
             }).DefineProperty(p => p.HasPaid, true, IqlType.Boolean).ConfigureProperty(p => p.HasPaid, p => {
-                p.PropertyName = "HasPaid";
+                p.Name = "HasPaid";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8044,7 +8044,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "HasPaid";
                 p.Title = "HasPaid";
             }).DefineProperty(p => p.Title, true, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.PropertyName = "Title";
+                p.Name = "Title";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8053,7 +8053,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Title";
                 p.Title = "Title";
             }).DefineProperty(p => p.Description, true, IqlType.String).ConfigureProperty(p => p.Description, p => {
-                p.PropertyName = "Description";
+                p.Name = "Description";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8151,7 +8151,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Description";
                 p.Title = "Description";
             }).DefineProperty(p => p.Skills, false, IqlType.Enum).ConfigureProperty(p => p.Skills, p => {
-                p.PropertyName = "Skills";
+                p.Name = "Skills";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8194,7 +8194,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "Skills";
                 p.Permissions.UseRule("SkillsPermission").UseRule("SkillsPermissionOnlyReadAttemptedOverride");
             }).DefineProperty(p => p.Category, false, IqlType.Enum).ConfigureProperty(p => p.Category, p => {
-                p.PropertyName = "Category";
+                p.Name = "Category";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8236,7 +8236,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Category";
                 p.Title = "Category";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8285,7 +8285,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8336,7 +8336,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -8351,7 +8351,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8400,7 +8400,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.Client, true, IqlType.Unknown).ConfigureProperty(p => p.Client, p => {
-                p.PropertyName = "Client";
+                p.Name = "Client";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8461,7 +8461,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Client";
                 p.Title = "Client";
             }).DefineProperty(p => p.InferredFromUserClient, true, IqlType.Unknown).ConfigureProperty(p => p.InferredFromUserClient, p => {
-                p.PropertyName = "InferredFromUserClient";
+                p.Name = "InferredFromUserClient";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8470,7 +8470,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "InferredFromUserClient";
                 p.Title = "InferredFromUserClient";
             }).DefineProperty(p => p.Site, true, IqlType.Unknown).ConfigureProperty(p => p.Site, p => {
-                p.PropertyName = "Site";
+                p.Name = "Site";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8479,7 +8479,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Site";
                 p.Title = "Site";
             }).DefineProperty(p => p.SiteArea, true, IqlType.Unknown).ConfigureProperty(p => p.SiteArea, p => {
-                p.PropertyName = "SiteArea";
+                p.Name = "SiteArea";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8488,7 +8488,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteArea";
                 p.Title = "SiteArea";
             }).DefineProperty(p => p.Type, true, IqlType.Unknown).ConfigureProperty(p => p.Type, p => {
-                p.PropertyName = "Type";
+                p.Name = "Type";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8497,7 +8497,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Type";
                 p.Title = "Type";
             }).DefineProperty(p => p.Loading, true, IqlType.Unknown).ConfigureProperty(p => p.Loading, p => {
-                p.PropertyName = "Loading";
+                p.Name = "Loading";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8506,7 +8506,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Loading";
                 p.Title = "Loading";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -8519,7 +8519,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineCollectionProperty(p => p.Types, p => p.TypesCount).ConfigureProperty(p => p.Types, p => {
-                p.PropertyName = "Types";
+                p.Name = "Types";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -8528,7 +8528,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Types";
                 p.Title = "Types";
             }).DefineCollectionProperty(p => p.Reports, p => p.ReportsCount).ConfigureProperty(p => p.Reports, p => {
-                p.PropertyName = "Reports";
+                p.Name = "Reports";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -8592,7 +8592,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -8676,7 +8676,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<PersonInspection>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.SiteInspectionId, false, IqlType.Integer).ConfigureProperty(p => p.SiteInspectionId, p => {
-                p.PropertyName = "SiteInspectionId";
+                p.Name = "SiteInspectionId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8685,7 +8685,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteInspectionId";
                 p.Title = "SiteInspectionId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8732,7 +8732,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
-                p.PropertyName = "PersonId";
+                p.Name = "PersonId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8741,7 +8741,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersonId";
                 p.Title = "PersonId";
             }).DefineProperty(p => p.InspectionStatus, false, IqlType.Enum).ConfigureProperty(p => p.InspectionStatus, p => {
-                p.PropertyName = "InspectionStatus";
+                p.Name = "InspectionStatus";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8750,7 +8750,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "InspectionStatus";
                 p.Title = "InspectionStatus";
             }).DefineProperty(p => p.StartTime, false, IqlType.Date).ConfigureProperty(p => p.StartTime, p => {
-                p.PropertyName = "StartTime";
+                p.Name = "StartTime";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8759,7 +8759,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "StartTime";
                 p.Title = "StartTime";
             }).DefineProperty(p => p.EndTime, false, IqlType.Date).ConfigureProperty(p => p.EndTime, p => {
-                p.PropertyName = "EndTime";
+                p.Name = "EndTime";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8768,7 +8768,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "EndTime";
                 p.Title = "EndTime";
             }).DefineProperty(p => p.ReasonForFailure, false, IqlType.Enum).ConfigureProperty(p => p.ReasonForFailure, p => {
-                p.PropertyName = "ReasonForFailure";
+                p.Name = "ReasonForFailure";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8777,7 +8777,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ReasonForFailure";
                 p.Title = "ReasonForFailure";
             }).DefineProperty(p => p.IsDesignRequired, false, IqlType.Boolean).ConfigureProperty(p => p.IsDesignRequired, p => {
-                p.PropertyName = "IsDesignRequired";
+                p.Name = "IsDesignRequired";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8786,7 +8786,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "IsDesignRequired";
                 p.Title = "IsDesignRequired";
             }).DefineProperty(p => p.DrawingNumber, true, IqlType.String).ConfigureProperty(p => p.DrawingNumber, p => {
-                p.PropertyName = "DrawingNumber";
+                p.Name = "DrawingNumber";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8795,7 +8795,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "DrawingNumber";
                 p.Title = "DrawingNumber";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8844,7 +8844,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -8853,7 +8853,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8904,7 +8904,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -8919,7 +8919,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -8968,7 +8968,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.SiteInspection, false, IqlType.Unknown).ConfigureProperty(p => p.SiteInspection, p => {
-                p.PropertyName = "SiteInspection";
+                p.Name = "SiteInspection";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -8977,7 +8977,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteInspection";
                 p.Title = "SiteInspection";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9028,7 +9028,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -9112,7 +9112,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<PersonLoading>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9121,7 +9121,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -9168,7 +9168,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -9177,7 +9177,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -9226,7 +9226,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -9277,7 +9277,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9292,7 +9292,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -9341,7 +9341,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineCollectionProperty(p => p.People, p => p.PeopleCount).ConfigureProperty(p => p.People, p => {
-                p.PropertyName = "People";
+                p.Name = "People";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9350,7 +9350,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "People";
                 p.Title = "People";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9400,7 +9400,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -9484,7 +9484,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<PersonType>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9493,7 +9493,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -9540,7 +9540,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Title, false, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.PropertyName = "Title";
+                p.Name = "Title";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -9549,7 +9549,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Title";
                 p.Title = "Title";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -9598,7 +9598,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -9649,7 +9649,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9664,7 +9664,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -9713,7 +9713,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineCollectionProperty(p => p.People, p => p.PeopleCount).ConfigureProperty(p => p.People, p => {
-                p.PropertyName = "People";
+                p.Name = "People";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9722,7 +9722,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "People";
                 p.Title = "People";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9735,7 +9735,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineCollectionProperty(p => p.PeopleMap, p => p.PeopleMapCount).ConfigureProperty(p => p.PeopleMap, p => {
-                p.PropertyName = "PeopleMap";
+                p.Name = "PeopleMap";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -9781,7 +9781,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -9865,7 +9865,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<PersonTypeMap>().HasCompositeKey(true, p => p.PersonId, p => p.TypeId).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
-                p.PropertyName = "PersonId";
+                p.Name = "PersonId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -9874,7 +9874,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersonId";
                 p.Title = "PersonId";
             }).DefineProperty(p => p.TypeId, false, IqlType.Integer).ConfigureProperty(p => p.TypeId, p => {
-                p.PropertyName = "TypeId";
+                p.Name = "TypeId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -9883,7 +9883,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "TypeId";
                 p.Title = "TypeId";
             }).DefineProperty(p => p.Notes, true, IqlType.String).ConfigureProperty(p => p.Notes, p => {
-                p.PropertyName = "Notes";
+                p.Name = "Notes";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -9892,7 +9892,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Notes";
                 p.Title = "Notes";
             }).DefineProperty(p => p.Description, true, IqlType.String).ConfigureProperty(p => p.Description, p => {
-                p.PropertyName = "Description";
+                p.Name = "Description";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -9901,7 +9901,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Description";
                 p.Title = "Description";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -9950,7 +9950,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10001,7 +10001,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.Person, false, IqlType.Unknown).ConfigureProperty(p => p.Person, p => {
-                p.PropertyName = "Person";
+                p.Name = "Person";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10010,7 +10010,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Person";
                 p.Title = "Person";
             }).DefineProperty(p => p.Type, false, IqlType.Unknown).ConfigureProperty(p => p.Type, p => {
-                p.PropertyName = "Type";
+                p.Name = "Type";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10056,7 +10056,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -10140,7 +10140,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<PersonReport>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.PersonId, false, IqlType.Integer).ConfigureProperty(p => p.PersonId, p => {
-                p.PropertyName = "PersonId";
+                p.Name = "PersonId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10149,7 +10149,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersonId";
                 p.Title = "PersonId";
             }).DefineProperty(p => p.TypeId, false, IqlType.Integer).ConfigureProperty(p => p.TypeId, p => {
-                p.PropertyName = "TypeId";
+                p.Name = "TypeId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10158,7 +10158,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "TypeId";
                 p.Title = "TypeId";
             }).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10167,7 +10167,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10214,7 +10214,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Title, true, IqlType.String).ConfigureProperty(p => p.Title, p => {
-                p.PropertyName = "Title";
+                p.Name = "Title";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10223,7 +10223,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Title";
                 p.Title = "Title";
             }).DefineProperty(p => p.Status, false, IqlType.Enum).ConfigureProperty(p => p.Status, p => {
-                p.PropertyName = "Status";
+                p.Name = "Status";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10232,7 +10232,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Status";
                 p.Title = "Status";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10281,7 +10281,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10332,7 +10332,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10347,7 +10347,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10396,7 +10396,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineCollectionProperty(p => p.ActionsTaken, p => p.ActionsTakenCount).ConfigureProperty(p => p.ActionsTaken, p => {
-                p.PropertyName = "ActionsTaken";
+                p.Name = "ActionsTaken";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10405,7 +10405,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ActionsTaken";
                 p.Title = "ActionsTaken";
             }).DefineCollectionProperty(p => p.Recommendations, p => p.RecommendationsCount).ConfigureProperty(p => p.Recommendations, p => {
-                p.PropertyName = "Recommendations";
+                p.Name = "Recommendations";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10414,7 +10414,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Recommendations";
                 p.Title = "Recommendations";
             }).DefineProperty(p => p.Person, false, IqlType.Unknown).ConfigureProperty(p => p.Person, p => {
-                p.PropertyName = "Person";
+                p.Name = "Person";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10423,7 +10423,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Person";
                 p.Title = "Person";
             }).DefineProperty(p => p.Type, false, IqlType.Unknown).ConfigureProperty(p => p.Type, p => {
-                p.PropertyName = "Type";
+                p.Name = "Type";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10432,7 +10432,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Type";
                 p.Title = "Type";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10484,7 +10484,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -10568,7 +10568,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<Site>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10577,7 +10577,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.Location, true, IqlType.GeographyPoint).ConfigureProperty(p => p.Location, p => {
-                p.PropertyName = "Location";
+                p.Name = "Location";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10586,7 +10586,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Location";
                 p.Title = "Location";
             }).DefineProperty(p => p.Area, true, IqlType.GeographyPolygon).ConfigureProperty(p => p.Area, p => {
-                p.PropertyName = "Area";
+                p.Name = "Area";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10595,7 +10595,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Area";
                 p.Title = "Area";
             }).DefineProperty(p => p.Line, true, IqlType.GeographyLine).ConfigureProperty(p => p.Line, p => {
-                p.PropertyName = "Line";
+                p.Name = "Line";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10604,7 +10604,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Line";
                 p.Title = "Line";
             }).DefineProperty(p => p.ParentId, true, IqlType.Integer).ConfigureProperty(p => p.ParentId, p => {
-                p.PropertyName = "ParentId";
+                p.Name = "ParentId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10613,7 +10613,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ParentId";
                 p.Title = "ParentId";
             }).DefineProperty(p => p.ClientId, true, IqlType.Integer).ConfigureProperty(p => p.ClientId, p => {
-                p.PropertyName = "ClientId";
+                p.Name = "ClientId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10622,7 +10622,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "ClientId";
                 p.Title = "ClientId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10669,7 +10669,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.InferredChainFromSelf, true, IqlType.String).ConfigureProperty(p => p.InferredChainFromSelf, p => {
-                p.PropertyName = "InferredChainFromSelf";
+                p.Name = "InferredChainFromSelf";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10724,7 +10724,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "InferredChainFromSelf";
                 p.Title = "InferredChainFromSelf";
             }).DefineProperty(p => p.InferredChainFromUserName, true, IqlType.String).ConfigureProperty(p => p.InferredChainFromUserName, p => {
-                p.PropertyName = "InferredChainFromUserName";
+                p.Name = "InferredChainFromUserName";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10771,7 +10771,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "InferredChainFromUserName";
                 p.Title = "InferredChainFromUserName";
             }).DefineProperty(p => p.FullAddress, true, IqlType.String).ConfigureProperty(p => p.FullAddress, p => {
-                p.PropertyName = "FullAddress";
+                p.Name = "FullAddress";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10863,7 +10863,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "FullAddress";
                 p.Title = "FullAddress";
             }).DefineProperty(p => p.Address, true, IqlType.String).ConfigureProperty(p => p.Address, p => {
-                p.PropertyName = "Address";
+                p.Name = "Address";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10872,7 +10872,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Address";
                 p.Title = "Address";
             }).DefineProperty(p => p.PostCode, true, IqlType.String).ConfigureProperty(p => p.PostCode, p => {
-                p.PropertyName = "PostCode";
+                p.Name = "PostCode";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10881,7 +10881,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PostCode";
                 p.Title = "PostCode";
             }).DefineProperty(p => p.Key, true, IqlType.String).ConfigureProperty(p => p.Key, p => {
-                p.PropertyName = "Key";
+                p.Name = "Key";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -10936,7 +10936,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Key";
                 p.Title = "Key";
             }).DefineProperty(p => p.Name, true, IqlType.String).ConfigureProperty(p => p.Name, p => {
-                p.PropertyName = "Name";
+                p.Name = "Name";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -10945,7 +10945,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Name";
                 p.Title = "Name";
             }).DefineProperty(p => p.LeftOf, true, IqlType.Integer).ConfigureProperty(p => p.LeftOf, p => {
-                p.PropertyName = "LeftOf";
+                p.Name = "LeftOf";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10954,7 +10954,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "LeftOf";
                 p.Title = "LeftOf";
             }).DefineProperty(p => p.RightOf, true, IqlType.Integer).ConfigureProperty(p => p.RightOf, p => {
-                p.PropertyName = "RightOf";
+                p.Name = "RightOf";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10963,7 +10963,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RightOf";
                 p.Title = "RightOf";
             }).DefineProperty(p => p.Level, false, IqlType.Integer).ConfigureProperty(p => p.Level, p => {
-                p.PropertyName = "Level";
+                p.Name = "Level";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10972,7 +10972,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Level";
                 p.Title = "Level";
             }).DefineProperty(p => p.Left, false, IqlType.Integer).ConfigureProperty(p => p.Left, p => {
-                p.PropertyName = "Left";
+                p.Name = "Left";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10981,7 +10981,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Left";
                 p.Title = "Left";
             }).DefineProperty(p => p.Right, false, IqlType.Integer).ConfigureProperty(p => p.Right, p => {
-                p.PropertyName = "Right";
+                p.Name = "Right";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -10990,7 +10990,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Right";
                 p.Title = "Right";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11039,7 +11039,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11090,7 +11090,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11105,7 +11105,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11154,7 +11154,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineCollectionProperty(p => p.Documents, p => p.DocumentsCount).ConfigureProperty(p => p.Documents, p => {
-                p.PropertyName = "Documents";
+                p.Name = "Documents";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11163,7 +11163,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Documents";
                 p.Title = "Documents";
             }).DefineCollectionProperty(p => p.AdditionalSendReportsTo, p => p.AdditionalSendReportsToCount).ConfigureProperty(p => p.AdditionalSendReportsTo, p => {
-                p.PropertyName = "AdditionalSendReportsTo";
+                p.Name = "AdditionalSendReportsTo";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11172,7 +11172,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "AdditionalSendReportsTo";
                 p.Title = "AdditionalSendReportsTo";
             }).DefineCollectionProperty(p => p.People, p => p.PeopleCount).ConfigureProperty(p => p.People, p => {
-                p.PropertyName = "People";
+                p.Name = "People";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11181,7 +11181,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "People";
                 p.Title = "People";
             }).DefineProperty(p => p.Parent, true, IqlType.Unknown).ConfigureProperty(p => p.Parent, p => {
-                p.PropertyName = "Parent";
+                p.Name = "Parent";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11190,7 +11190,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Parent";
                 p.Title = "Parent";
             }).DefineCollectionProperty(p => p.Children, p => p.ChildrenCount).ConfigureProperty(p => p.Children, p => {
-                p.PropertyName = "Children";
+                p.Name = "Children";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11199,7 +11199,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Children";
                 p.Title = "Children";
             }).DefineProperty(p => p.Client, true, IqlType.Unknown).ConfigureProperty(p => p.Client, p => {
-                p.PropertyName = "Client";
+                p.Name = "Client";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -11208,7 +11208,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Client";
                 p.Title = "Client";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11221,7 +11221,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineCollectionProperty(p => p.Areas, p => p.AreasCount).ConfigureProperty(p => p.Areas, p => {
-                p.PropertyName = "Areas";
+                p.Name = "Areas";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11230,7 +11230,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Areas";
                 p.Title = "Areas";
             }).DefineCollectionProperty(p => p.SiteInspections, p => p.SiteInspectionsCount).ConfigureProperty(p => p.SiteInspections, p => {
-                p.PropertyName = "SiteInspections";
+                p.Name = "SiteInspections";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11239,7 +11239,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteInspections";
                 p.Title = "SiteInspections";
             }).DefineCollectionProperty(p => p.Users, p => p.UsersCount).ConfigureProperty(p => p.Users, p => {
-                p.PropertyName = "Users";
+                p.Name = "Users";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11294,7 +11294,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -11378,7 +11378,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<SiteArea>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11387,7 +11387,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
-                p.PropertyName = "SiteId";
+                p.Name = "SiteId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -11396,7 +11396,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteId";
                 p.Title = "SiteId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11443,7 +11443,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11492,7 +11492,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11543,7 +11543,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11558,7 +11558,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11607,7 +11607,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineCollectionProperty(p => p.People, p => p.PeopleCount).ConfigureProperty(p => p.People, p => {
-                p.PropertyName = "People";
+                p.Name = "People";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11616,7 +11616,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "People";
                 p.Title = "People";
             }).DefineProperty(p => p.Site, false, IqlType.Unknown).ConfigureProperty(p => p.Site, p => {
-                p.PropertyName = "Site";
+                p.Name = "Site";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -11625,7 +11625,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Site";
                 p.Title = "Site";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11651,7 +11651,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "SiteArea";
             });
             builder.DefineEntityType<SiteInspection>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.Id, false, IqlType.Integer).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11660,7 +11660,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
-                p.PropertyName = "SiteId";
+                p.Name = "SiteId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -11669,7 +11669,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteId";
                 p.Title = "SiteId";
             }).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11716,7 +11716,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.StartTime, false, IqlType.Date).ConfigureProperty(p => p.StartTime, p => {
-                p.PropertyName = "StartTime";
+                p.Name = "StartTime";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -11725,7 +11725,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "StartTime";
                 p.Title = "StartTime";
             }).DefineProperty(p => p.EndTime, false, IqlType.Date).ConfigureProperty(p => p.EndTime, p => {
-                p.PropertyName = "EndTime";
+                p.Name = "EndTime";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -11734,7 +11734,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "EndTime";
                 p.Title = "EndTime";
             }).DefineConvertedProperty(p => p.Guid, "Guid", false, IqlType.String).ConfigureProperty(p => p.Guid, p => {
-                p.PropertyName = "Guid";
+                p.Name = "Guid";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11783,7 +11783,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Guid";
                 p.Title = "Guid";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11834,7 +11834,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11849,7 +11849,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -11898,7 +11898,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineCollectionProperty(p => p.RiskAssessments, p => p.RiskAssessmentsCount).ConfigureProperty(p => p.RiskAssessments, p => {
-                p.PropertyName = "RiskAssessments";
+                p.Name = "RiskAssessments";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11907,7 +11907,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RiskAssessments";
                 p.Title = "RiskAssessments";
             }).DefineCollectionProperty(p => p.PersonInspections, p => p.PersonInspectionsCount).ConfigureProperty(p => p.PersonInspections, p => {
-                p.PropertyName = "PersonInspections";
+                p.Name = "PersonInspections";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11916,7 +11916,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersonInspections";
                 p.Title = "PersonInspections";
             }).DefineProperty(p => p.Site, false, IqlType.Unknown).ConfigureProperty(p => p.Site, p => {
-                p.PropertyName = "Site";
+                p.Name = "Site";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -11925,7 +11925,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Site";
                 p.Title = "Site";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -11976,7 +11976,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {
@@ -12060,7 +12060,7 @@ namespace IqlSampleApp.ApiContext.Base
                 };
             });
             builder.DefineEntityType<UserSetting>().HasKey(p => p.Id, IqlType.Unknown, false).DefineProperty(p => p.CreatedByUserId, true, IqlType.String).ConfigureProperty(p => p.CreatedByUserId, p => {
-                p.PropertyName = "CreatedByUserId";
+                p.Name = "CreatedByUserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -12107,7 +12107,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUserId";
                 p.Title = "CreatedByUserId";
             }).DefineProperty(p => p.Key1, false, IqlType.String).ConfigureProperty(p => p.Key1, p => {
-                p.PropertyName = "Key1";
+                p.Name = "Key1";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12116,7 +12116,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Key1";
                 p.Title = "Key1";
             }).DefineConvertedProperty(p => p.Id, "Guid", false, IqlType.String).ConfigureProperty(p => p.Id, p => {
-                p.PropertyName = "Id";
+                p.Name = "Id";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -12125,7 +12125,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Id";
                 p.Title = "Id";
             }).DefineProperty(p => p.UserId, true, IqlType.String).ConfigureProperty(p => p.UserId, p => {
-                p.PropertyName = "UserId";
+                p.Name = "UserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -12172,7 +12172,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "UserId";
                 p.Title = "UserId";
             }).DefineProperty(p => p.Key2, true, IqlType.String).ConfigureProperty(p => p.Key2, p => {
-                p.PropertyName = "Key2";
+                p.Name = "Key2";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12181,7 +12181,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Key2";
                 p.Title = "Key2";
             }).DefineProperty(p => p.Key3, true, IqlType.String).ConfigureProperty(p => p.Key3, p => {
-                p.PropertyName = "Key3";
+                p.Name = "Key3";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12190,7 +12190,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Key3";
                 p.Title = "Key3";
             }).DefineProperty(p => p.Key4, true, IqlType.String).ConfigureProperty(p => p.Key4, p => {
-                p.PropertyName = "Key4";
+                p.Name = "Key4";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12199,7 +12199,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Key4";
                 p.Title = "Key4";
             }).DefineProperty(p => p.Value, true, IqlType.String).ConfigureProperty(p => p.Value, p => {
-                p.PropertyName = "Value";
+                p.Name = "Value";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12208,7 +12208,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "Value";
                 p.Title = "Value";
             }).DefineProperty(p => p.CreatedDate, false, IqlType.Date).ConfigureProperty(p => p.CreatedDate, p => {
-                p.PropertyName = "CreatedDate";
+                p.Name = "CreatedDate";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -12259,7 +12259,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedDate";
                 p.Title = "CreatedDate";
             }).DefineProperty(p => p.RevisionKey, true, IqlType.String).ConfigureProperty(p => p.RevisionKey, p => {
-                p.PropertyName = "RevisionKey";
+                p.Name = "RevisionKey";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -12274,7 +12274,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "RevisionKey";
                 p.Title = "RevisionKey";
             }).DefineConvertedProperty(p => p.PersistenceKey, "Guid", false, IqlType.String).ConfigureProperty(p => p.PersistenceKey, p => {
-                p.PropertyName = "PersistenceKey";
+                p.Name = "PersistenceKey";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>
                 {
@@ -12323,7 +12323,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "PersistenceKey";
                 p.Title = "PersistenceKey";
             }).DefineProperty(p => p.CreatedByUser, true, IqlType.Unknown).ConfigureProperty(p => p.CreatedByUser, p => {
-                p.PropertyName = "CreatedByUser";
+                p.Name = "CreatedByUser";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = false;
@@ -12336,7 +12336,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "CreatedByUser";
                 p.Title = "CreatedByUser";
             }).DefineProperty(p => p.User, false, IqlType.Unknown).ConfigureProperty(p => p.User, p => {
-                p.PropertyName = "User";
+                p.Name = "User";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12358,7 +12358,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Title = "UserSetting";
             });
             builder.DefineEntityType<UserSite>().HasCompositeKey(false, p => p.SiteId, p => p.UserId).DefineProperty(p => p.SiteId, false, IqlType.Integer).ConfigureProperty(p => p.SiteId, p => {
-                p.PropertyName = "SiteId";
+                p.Name = "SiteId";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12367,7 +12367,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "SiteId";
                 p.Title = "SiteId";
             }).DefineProperty(p => p.UserId, true, IqlType.String).ConfigureProperty(p => p.UserId, p => {
-                p.PropertyName = "UserId";
+                p.Name = "UserId";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12376,7 +12376,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "UserId";
                 p.Title = "UserId";
             }).DefineProperty(p => p.User, false, IqlType.Unknown).ConfigureProperty(p => p.User, p => {
-                p.PropertyName = "User";
+                p.Name = "User";
                 p.Nullable = true;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12385,7 +12385,7 @@ namespace IqlSampleApp.ApiContext.Base
                 p.Name = "User";
                 p.Title = "User";
             }).DefineProperty(p => p.Site, false, IqlType.Unknown).ConfigureProperty(p => p.Site, p => {
-                p.PropertyName = "Site";
+                p.Name = "Site";
                 p.Nullable = false;
                 p.InferredValueConfigurations = new List<IInferredValueConfiguration>();
                 p.CanWrite = true;
@@ -12429,7 +12429,7 @@ namespace IqlSampleApp.ApiContext.Base
                             },
                             new IqlMethodParameter
                             {
-                                Name = "PropertyName",
+                                Name = "Name",
                                 IsBindingParameter = false,
                                 Type = new TypeDetail
                                 {

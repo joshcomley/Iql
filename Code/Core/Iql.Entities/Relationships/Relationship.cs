@@ -38,7 +38,7 @@ namespace Iql.Entities.Relationships
             if (sourceProperty != null && sourceProperty.Kind.HasFlag(IqlPropertyKind.Primitive))
             {
                 sourceProperty.Kind = sourceProperty.Kind | IqlPropertyKind.RelationshipKey;
-                sourceProperty.Relationship = Source.EntityConfiguration.FindRelationshipByName(Source.Property.Name);
+                sourceProperty.Relationship = Source.EntityConfiguration.FindRelationshipByName(((IMetadata) Source.Property).Name);
             }
             var targetProperty = Target.EntityConfiguration.FindOrDefinePropertyByName(
                 targetIqlProperty.PropertyName,
@@ -46,7 +46,7 @@ namespace Iql.Entities.Relationships
             if (targetProperty != null && targetProperty.Kind.HasFlag(IqlPropertyKind.Primitive))
             {
                 //targetProperty.Kind = targetProperty.Kind | IqlPropertyKind.RelationshipKey;
-                targetProperty.RelationshipSources.Add(Target.EntityConfiguration.FindRelationshipByName(Target.Property.Name));
+                targetProperty.RelationshipSources.Add(Target.EntityConfiguration.FindRelationshipByName(((IMetadata) Target.Property).Name));
             }
             Constraints.Add(new RelationshipConstraint(
                 Builder.EntityType<TSource>().FindProperty(sourceIqlProperty.PropertyName),

@@ -13,7 +13,7 @@ namespace Iql.Entities
 
         internal static void TryAssignRelationshipToPropertyDefinition(IEntityConfiguration entityConfiguration, IProperty definition, bool tryAssignOtherEnd = true)
         {
-            var relationship = entityConfiguration.FindRelationshipByName(definition.Name);
+            var relationship = entityConfiguration.FindRelationshipByName(((IMetadata) definition).Name);
             if (relationship != null)
             {
                 definition.Kind = IqlPropertyKind.Relationship;
@@ -21,19 +21,19 @@ namespace Iql.Entities
                 var otherEndConfiguration = entityConfiguration.Builder.GetEntityByType(relationship.OtherEnd.Type);
                 foreach (var constraint in relationship.Relationship.Constraints)
                 {
-                    var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.Name);
+                    var constraintProperty = otherEndConfiguration.FindProperty(((IMetadata) constraint.SourceKeyProperty).Name);
                     if (constraintProperty != null &&
                         !constraintProperty.Kind.HasFlag(IqlPropertyKind.RelationshipKey) &&
                         !constraintProperty.Kind.HasFlag(IqlPropertyKind.Key))
                     {
                         constraintProperty.Kind = constraintProperty.Kind | IqlPropertyKind.RelationshipKey;
-                        constraintProperty.Relationship = otherEndConfiguration.FindRelationshipByName(relationship.OtherEnd.Property.Name);
+                        constraintProperty.Relationship = otherEndConfiguration.FindRelationshipByName(((IMetadata) relationship.OtherEnd.Property).Name);
                     }
                 }
                 if (tryAssignOtherEnd)
                 {
                     TryAssignRelationshipToProperty(
-                        otherEndConfiguration, relationship.OtherEnd.Property.Name, false);
+                        otherEndConfiguration, ((IMetadata) relationship.OtherEnd.Property).Name, false);
                 }
             }
             else
@@ -42,7 +42,7 @@ namespace Iql.Entities
                 {
                     foreach (var constraint in relationshipMatch.Relationship.Constraints)
                     {
-                        if (constraint.SourceKeyProperty.Name == definition.Name &&
+                        if (((IMetadata) constraint.SourceKeyProperty).Name == ((IMetadata) definition).Name &&
                             !definition.Kind.HasFlag(IqlPropertyKind.RelationshipKey) &&
                             !definition.Kind.HasFlag(IqlPropertyKind.Key))
                         {

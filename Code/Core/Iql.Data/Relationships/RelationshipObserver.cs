@@ -500,7 +500,7 @@ namespace Iql.Data.Relationships
                 relationship,
                 compositeKey =>
                 {
-                    compositeKey.Keys.Single(k => k.Name == property.Name)
+                    compositeKey.Keys.Single(k => k.Name == ((IMetadata) property).Name)
                         .Value = oldValue;
                 });
             property.Relationship.ThisEnd.MarkDirty(entity);

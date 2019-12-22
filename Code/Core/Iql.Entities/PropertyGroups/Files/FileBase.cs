@@ -16,7 +16,7 @@ namespace Iql.Entities.PropertyGroups.Files
 
         protected override string ResolveName()
         {
-            return UrlPropertyInternal?.Name ?? "File";
+            return ((IMetadata) UrlPropertyInternal)?.Name ?? "File";
         }
 
         public FileBase(

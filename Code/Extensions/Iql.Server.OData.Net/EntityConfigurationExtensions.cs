@@ -230,19 +230,19 @@
 //                if (typeof(IDisplayRule).IsAssignableFrom(type))
 //                {
 //                    return base.CreateProperties(typeof(IDisplayRule), memberSerialization)
-//                        .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
+//                        .Where(p => p.Name != nameof(IRuleBase<string>.Run))
 //                        .ToList();
 //                }
 //                if (typeof(IRelationshipRule).IsAssignableFrom(type))
 //                {
 //                    return base.CreateProperties(typeof(IRelationshipRule), memberSerialization)
-//                        .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
+//                        .Where(p => p.Name != nameof(IRuleBase<string>.Run))
 //                        .ToList();
 //                }
 //                if (typeof(IBinaryRule).IsAssignableFrom(type))
 //                {
 //                    return base.CreateProperties(typeof(IBinaryRule), memberSerialization)
-//                        .Where(p => p.PropertyName != nameof(IRuleBase<string>.Run))
+//                        .Where(p => p.Name != nameof(IRuleBase<string>.Run))
 //                        .ToList();
 //                }
 //                //if (type == typeof(IRuleCollection<IBinaryRule>))

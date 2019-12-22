@@ -220,7 +220,7 @@ namespace Iql.Data.Serialization
 
                     if (!isCollectionRoot && entityType != null)
                     {
-                        var entityProperty = entityType.Properties.SingleOrDefault(p => p.PropertyName == prop.Name);
+                        var entityProperty = entityType.Properties.SingleOrDefault(p => p.Name == prop.Name);
                         if (entityProperty != null)
                         {
                             if (entityProperty.Kind == IqlPropertyKind.Relationship)
@@ -300,7 +300,7 @@ namespace Iql.Data.Serialization
                     continue;
                 }
 
-                obj[key.Name] = new JValue(entity.GetPropertyValueByName(key.Name));
+                obj[((IMetadata) key).Name] = new JValue(entity.GetPropertyValueByName(((IMetadata) key).Name));
             }
 
             foreach (var property in propertiesToSerialize)
@@ -333,7 +333,7 @@ namespace Iql.Data.Serialization
 
                 if (property.TypeDefinition.IsCollection)
                 {
-                    obj[property.Name] = new JArray(propertyValue);
+                    obj[((IMetadata) property).Name] = new JArray(propertyValue);
                 }
                 else
                 {
@@ -341,18 +341,18 @@ namespace Iql.Data.Serialization
                     {
                         if (propertyValue == null && !property.TypeDefinition.Nullable)
                         {
-                            obj[property.Name] = "0001-01-01T00:00:00.0+00:00";
+                            obj[((IMetadata) property).Name] = "0001-01-01T00:00:00.0+00:00";
                         }
                         else
                         {
                             var normalizedDate = propertyValue == null ? null : ((DateTimeOffset) propertyValue).NormalizeDate();
-                            obj[property.Name] = new JValue(normalizedDate);
+                            obj[((IMetadata) property).Name] = new JValue(normalizedDate);
                         }
                     }
                     else if (property.TypeDefinition.ConvertedFromType == KnownPrimitiveTypes.Guid &&
                              !property.TypeDefinition.Nullable && propertyValue == null)
                     {
-                        obj[property.Name] = "00000000-0000-0000-0000-000000000000";
+                        obj[((IMetadata) property).Name] = "00000000-0000-0000-0000-000000000000";
                     }
                     else if (property.TypeDefinition.Kind == IqlType.Enum)
                     {
@@ -397,11 +397,11 @@ namespace Iql.Data.Serialization
 #endif
                         }
 
-                        obj[property.Name] = new JValue(value);
+                        obj[((IMetadata) property).Name] = new JValue(value);
                     }
                     else
                     {
-                        obj[property.Name] = new JValue(propertyValue);
+                        obj[((IMetadata) property).Name] = new JValue(propertyValue);
                     }
                 }
             }
@@ -419,7 +419,7 @@ namespace Iql.Data.Serialization
                 return;
             }
             var container = new JObject();
-            obj[propertyProperty.Name] = container;
+            obj[((IMetadata) propertyProperty).Name] = container;
             string typeName = "";
             object coordinates = null;
             switch (propertyProperty.TypeDefinition.Kind)

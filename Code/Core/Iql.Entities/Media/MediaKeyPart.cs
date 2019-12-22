@@ -25,7 +25,7 @@ namespace Iql.Entities
                     }
 
                     currentConfig = child.Relationship.OtherEnd.Property.EntityConfiguration;
-                    relationshipParts.Add(child.Name);
+                    relationshipParts.Add(((IMetadata) child).Name);
                 }
 
                 var path = string.Join("/", relationshipParts);

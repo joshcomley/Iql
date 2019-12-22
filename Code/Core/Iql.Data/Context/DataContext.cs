@@ -638,7 +638,7 @@ namespace Iql.Data.Context
                 compositeKey = new CompositeKey(relationship.EntityConfiguration.TypeName, thisEndConstraints.Length);
                 for (var i = 0; i < thisEndConstraints.Length; i++)
                 {
-                    compositeKey.Keys[i] = new KeyValue(otherEndConstraints[i].Name,
+                    compositeKey.Keys[i] = new KeyValue(((IMetadata) otherEndConstraints[i]).Name,
                         thisEndConstraints[i].GetValue(entity),
                         thisEndConstraints[i].TypeDefinition);
                 }

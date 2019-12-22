@@ -29,7 +29,7 @@ namespace Iql.Entities
                     return true;
                 }
 
-                if (prop != null && name == SanitizeName(prop.PropertyName))
+                if (prop != null && name == SanitizeName(prop.Name))
                 {
                     return true;
                 }

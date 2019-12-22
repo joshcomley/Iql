@@ -52,7 +52,7 @@ namespace Iql.Server.Media
                 var collectionRelationship = relationship.ThisEnd as ITargetRelationshipSourceDetail;
                 if (collectionRelationship != null && relationship.ThisIsTarget && collectionRelationship.SupportsCascadeDelete)
                 {
-                    expands.Add(relationship.ThisEnd.Property.PropertyName);
+                    expands.Add(relationship.ThisEnd.Property.Name);
                     relationships.Add(collectionRelationship);
                 }
             }

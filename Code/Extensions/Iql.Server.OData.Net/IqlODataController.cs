@@ -207,14 +207,14 @@ namespace Iql.Server.OData.Net
             var mptt = new MpttManager<TKey, TNullableKey, TTreeKey>(
                 () => Data.Context,
                 key,
-                nestedSet.LeftProperty.PropertyName,
-                nestedSet.RightProperty.PropertyName,
-                nestedSet.LeftOfProperty.PropertyName,
-                nestedSet.RightOfProperty.PropertyName,
-                nestedSet.IdProperty.PropertyName,
-                nestedSet.ParentIdProperty.PropertyName,
-                nestedSet.LevelProperty.PropertyName,
-                nestedSet.KeyProperty.PropertyName,
+                nestedSet.LeftProperty.Name,
+                nestedSet.RightProperty.Name,
+                nestedSet.LeftOfProperty.Name,
+                nestedSet.RightOfProperty.Name,
+                nestedSet.IdProperty.Name,
+                nestedSet.ParentIdProperty.Name,
+                nestedSet.LevelProperty.Name,
+                nestedSet.KeyProperty.Name,
                 Data.Context.Model.FindEntityType(typeof(TModel)).Relational().TableName
             );
             var id = nestedSet.IdProperty.GetValue(entity);
@@ -265,14 +265,14 @@ namespace Iql.Server.OData.Net
             var mptt = new MpttManager<TKey, TNullableKey, TTreeKey>(
                 () => Data.Context,
                 key,
-                nestedSet.LeftProperty.PropertyName,
-                nestedSet.RightProperty.PropertyName,
-                nestedSet.LeftOfProperty.PropertyName,
-                nestedSet.RightOfProperty.PropertyName,
-                nestedSet.IdProperty.PropertyName,
-                nestedSet.ParentIdProperty.PropertyName,
-                nestedSet.LevelProperty.PropertyName,
-                nestedSet.KeyProperty.PropertyName,
+                nestedSet.LeftProperty.Name,
+                nestedSet.RightProperty.Name,
+                nestedSet.LeftOfProperty.Name,
+                nestedSet.RightOfProperty.Name,
+                nestedSet.IdProperty.Name,
+                nestedSet.ParentIdProperty.Name,
+                nestedSet.LevelProperty.Name,
+                nestedSet.KeyProperty.Name,
                 Data.Context.Model.FindEntityType(typeof(TModel)).Relational().TableName
             );
             var id = nestedSet.IdProperty.GetValue(currentEntity);
@@ -288,8 +288,8 @@ namespace Iql.Server.OData.Net
                 await mptt.MoveToAsync((TKey)id, (TNullableKey)rightOf, NodeMoveKind.Right);
             }
             else if (
-                patch.GetChangedPropertyNames().Any(_ => _ == nestedSet.ParentIdProperty.PropertyName) &&
-                patch.TryGetPropertyValue(nestedSet.ParentIdProperty.PropertyName, out var value))
+                patch.GetChangedPropertyNames().Any(_ => _ == nestedSet.ParentIdProperty.Name) &&
+                patch.TryGetPropertyValue(nestedSet.ParentIdProperty.Name, out var value))
             {
                 if (!Equals(value, parentId) && !Equals(value, null) && !Equals(value, default(TNullableKey)))
                 {
@@ -306,14 +306,14 @@ namespace Iql.Server.OData.Net
             var mptt = new MpttManager<TKey, TNullableKey, TTreeKey>(
                 () => Data.Context,
                 key,
-                nestedSet.LeftProperty.PropertyName,
-                nestedSet.RightProperty.PropertyName,
-                nestedSet.LeftOfProperty.PropertyName,
-                nestedSet.RightOfProperty.PropertyName,
-                nestedSet.IdProperty.PropertyName,
-                nestedSet.ParentIdProperty.PropertyName,
-                nestedSet.LevelProperty.PropertyName,
-                nestedSet.KeyProperty.PropertyName,
+                nestedSet.LeftProperty.Name,
+                nestedSet.RightProperty.Name,
+                nestedSet.LeftOfProperty.Name,
+                nestedSet.RightOfProperty.Name,
+                nestedSet.IdProperty.Name,
+                nestedSet.ParentIdProperty.Name,
+                nestedSet.LevelProperty.Name,
+                nestedSet.KeyProperty.Name,
                 Data.Context.Model.FindEntityType(typeof(TModel)).Relational().TableName
             );
             var id = nestedSet.IdProperty.GetValue(postedEntity);
@@ -364,7 +364,7 @@ namespace Iql.Server.OData.Net
             //    var changedProperties = patch.GetChangedPropertyNames();
             //    foreach (var file in EntityConfiguration.Files)
             //    {
-            //        if (file.VersionProperty != null && changedProperties.Contains(file.VersionProperty.PropertyName))
+            //        if (file.VersionProperty != null && changedProperties.Contains(file.VersionProperty.Name))
             //        {
             //            OnNewFileReceived
             //        }
@@ -433,7 +433,7 @@ namespace Iql.Server.OData.Net
                     var param = Expression.Parameter(typeof(TModel));
                     var pred = Expression.Lambda(
                         Expression.Equal(
-                            Expression.Property(param, EntityConfiguration.PersistenceKeyProperty.PropertyName),
+                            Expression.Property(param, EntityConfiguration.PersistenceKeyProperty.Name),
                             Expression.Constant(value)
                         ),
                         param
@@ -467,7 +467,7 @@ namespace Iql.Server.OData.Net
                     if (file.VersionProperty != null &&
                         (
                             (patch == null && !Equals(null,
-                                 currentEntity.GetPropertyValueByName(file.VersionProperty.PropertyName)))
+                                 currentEntity.GetPropertyValueByName(file.VersionProperty.Name)))
                             ||
                             (patch != null && patch.GetChangedPropertyNames().Contains(file.VersionProperty.Name))
                         )
@@ -502,16 +502,16 @@ namespace Iql.Server.OData.Net
                 }
                 else
                 {
-                    if (patch.TryGetPropertyValue(file.RootFile.VersionProperty.PropertyName, out var v))
+                    if (patch.TryGetPropertyValue(file.RootFile.VersionProperty.Name, out var v))
                     {
                         version = (string)v;
                     }
                 }
                 var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-                query[$"iql_{file.UrlProperty.PropertyName}_{file.RootFile.VersionProperty.PropertyName}"] = version;
+                query[$"iql_{file.UrlProperty.Name}_{file.RootFile.VersionProperty.Name}"] = version;
                 uriBuilder.Query = query.ToString();
                 url = uriBuilder.ToString();
-                patch?.TrySetPropertyValue(file.UrlProperty.PropertyName, url);
+                patch?.TrySetPropertyValue(file.UrlProperty.Name, url);
                 file.UrlProperty.SetValue(currentEntity, url);
             }
         }
@@ -582,7 +582,7 @@ namespace Iql.Server.OData.Net
                             file.VersionProperty;
                         var requiresNewPreviews =
                             revisionKeysForMediaProperty != null &&
-                            HasChangedPropertyValue(currentEntity, patch, revisionKeysForMediaProperty.PropertyName);
+                            HasChangedPropertyValue(currentEntity, patch, revisionKeysForMediaProperty.Name);
                         // TODO: Only refresh previews if file version has changed
                         if (requiresNewPreviews)
                         {

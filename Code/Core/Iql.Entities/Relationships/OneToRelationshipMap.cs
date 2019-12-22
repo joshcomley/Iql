@@ -36,18 +36,18 @@ namespace Iql.Entities.Relationships
                 property
             );
             //relationship.Type == RelationshipType.OneToOne
-            var sourceRelationshipMatch = _sourceEntityConfiguration.FindRelationshipByName(relationship.Source.Property.Name);
+            var sourceRelationshipMatch = _sourceEntityConfiguration.FindRelationshipByName(((IMetadata) relationship.Source.Property).Name);
             if (sourceRelationshipMatch == null)
             {
                 _sourceEntityConfiguration.Relationships.Add(relationship);
             }
-            var targetRelationshipMatch = _targetEntityConfiguration.FindRelationshipByName(relationship.Target.Property.Name);
+            var targetRelationshipMatch = _targetEntityConfiguration.FindRelationshipByName(((IMetadata) relationship.Target.Property).Name);
             if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration) &&
                 targetRelationshipMatch == null)
             {
                 _targetEntityConfiguration.Relationships.Add(relationship);
             }
-            EntityConfigurationRelationshipHelper.TryAssignRelationshipToProperty(_sourceEntityConfiguration, relationship.Source.Property.Name);
+            EntityConfigurationRelationshipHelper.TryAssignRelationshipToProperty(_sourceEntityConfiguration, ((IMetadata) relationship.Source.Property).Name);
             return relationship;
         }
 
@@ -60,17 +60,17 @@ namespace Iql.Entities.Relationships
                 _property,
                 property
             );
-            if (_sourceEntityConfiguration.FindRelationshipByName(relationship.Source.Property.Name) == null)
+            if (_sourceEntityConfiguration.FindRelationshipByName(((IMetadata) relationship.Source.Property).Name) == null)
             {
                 _sourceEntityConfiguration.Relationships.Add(relationship);
             }
             if (!Equals(_sourceEntityConfiguration, _targetEntityConfiguration) &&
-                _targetEntityConfiguration.FindRelationshipByName(relationship.Target.Property.Name) == null)
+                _targetEntityConfiguration.FindRelationshipByName(((IMetadata) relationship.Target.Property).Name) == null)
             {
                 _targetEntityConfiguration.Relationships.Add(relationship);
             }
-            EntityConfigurationRelationshipHelper.TryAssignRelationshipToProperty(_sourceEntityConfiguration, relationship.Source.Property.Name);
-            //_targetEntityConfiguration.TryAssignRelationshipToProperty(relationship.Target.Property.PropertyName);
+            EntityConfigurationRelationshipHelper.TryAssignRelationshipToProperty(_sourceEntityConfiguration, ((IMetadata) relationship.Source.Property).Name);
+            //_targetEntityConfiguration.TryAssignRelationshipToProperty(relationship.Target.Property.Name);
             return relationship;
         }
     }

@@ -170,7 +170,7 @@ namespace Iql.Data.Tracking.State
                 {
                     _relationshipPropertyState = Property.Relationship.ThisEnd.Property == Property
                         ? this
-                        : EntityState.GetPropertyState(Property.Relationship.ThisEnd.Property.PropertyName);
+                        : EntityState.GetPropertyState(Property.Relationship.ThisEnd.Property.Name);
                 }
 
                 return _relationshipPropertyState;
@@ -566,7 +566,7 @@ namespace Iql.Data.Tracking.State
         private IPropertyState[] GetRelationshipPropertyStates(IEntityStateBase state)
         {
             var properties = Property.Relationship.OtherEnd.AllProperties;
-            var states = properties.Select(_ => state.GetPropertyState(_.PropertyName))
+            var states = properties.Select(_ => state.GetPropertyState(_.Name))
                 .Where(_ => _ != null)
                 .ToArray();
             return states;
@@ -1046,7 +1046,7 @@ namespace Iql.Data.Tracking.State
                         {
                             var properties = Property.PropertyGroup.GetGroupProperties();
                             _groupStates = properties.Where(_ => _.GroupKind == IqlPropertyGroupKind.Primitive)
-                                .Select(_ => EntityState.GetPropertyState(((IProperty)_).PropertyName))
+                                .Select(_ => EntityState.GetPropertyState(((IProperty)_).Name))
                                 .Where(_ => _ != null)
                                 .ToArray();
                         }
@@ -1183,7 +1183,7 @@ namespace Iql.Data.Tracking.State
             {
                 RemoteValue,
                 LocalValue = Property.GetValue(EntityState.Entity),
-                Property = Property.PropertyName,
+                Property = Property.Name,
                 Data,
                 Guid
             };
@@ -1247,7 +1247,7 @@ namespace Iql.Data.Tracking.State
                 for (var i = 0; i < Property.Relationship.ThisEnd.Constraints.Length; i++)
                 {
                     var key = Property.Relationship.ThisEnd.Constraints[i];
-                    if (EntityState.GetPropertyState(key.PropertyName).HasChanges)
+                    if (EntityState.GetPropertyState(key.Name).HasChanges)
                     {
                         canMatchToKey = false;
                     }
@@ -1380,7 +1380,7 @@ namespace Iql.Data.Tracking.State
             for (var i = 0; i < _otherSideProperties.Count; i++)
             {
                 var prop = _otherSideProperties[i];
-                var propState = state.GetPropertyState(prop.PropertyName);
+                var propState = state.GetPropertyState(prop.Name);
                 if (propState != null)
                 {
                     if (kind == ChangeCalculationKind.Remote && propState.HasChanges)
@@ -1439,7 +1439,7 @@ namespace Iql.Data.Tracking.State
             for (var i = 0; i < constraints.Count; i++)
             {
                 var constraint = constraints[i];
-                var propertyState = entityState.GetPropertyState(constraint.Name);
+                var propertyState = entityState.GetPropertyState(((IMetadata) constraint).Name);
                 if (propertyState != null)
                 {
                     var hasChangedValue = kind == ChangeCalculationKind.Remote
@@ -1472,7 +1472,7 @@ namespace Iql.Data.Tracking.State
 
         private bool SanityCheckRelationshipSource(IEntityStateBase entityState, IRelationshipDetail relationshipDetail)
         {
-            var entityValue = entityState.GetPropertyState(relationshipDetail.Property.PropertyName).LocalValue;
+            var entityValue = entityState.GetPropertyState(relationshipDetail.Property.Name).LocalValue;
             if (entityValue == null)
             {
                 return true;
@@ -1486,7 +1486,7 @@ namespace Iql.Data.Tracking.State
                     var constraints = relationshipDetail.Constraints;
                     foreach (var constraint in constraints)
                     {
-                        if (!entityState.GetPropertyState(constraint.PropertyName).IsDefaultValue(constraint.TypeDefinition))
+                        if (!entityState.GetPropertyState(constraint.Name).IsDefaultValue(constraint.TypeDefinition))
                         {
                             return false;
                         }
@@ -1509,7 +1509,7 @@ namespace Iql.Data.Tracking.State
         {
             usEntity = usEntity ?? EntityState.Entity;
             var usEntityState = DataTracker.GetEntityState(usEntity);
-            if (entityState.GetPropertyState(relationshipDetail.Property.PropertyName).LocalValue == usEntity)
+            if (entityState.GetPropertyState(relationshipDetail.Property.Name).LocalValue == usEntity)
             {
                 return true;
             }
@@ -1517,7 +1517,7 @@ namespace Iql.Data.Tracking.State
             for (var i = 0; i < constraints.Length; i++)
             {
                 var constraint = constraints[i];
-                var propertyState = entityState.GetPropertyState(constraint.Name);
+                var propertyState = entityState.GetPropertyState(((IMetadata) constraint).Name);
                 if (propertyState != null)
                 {
                     object oldValue;
@@ -1537,7 +1537,7 @@ namespace Iql.Data.Tracking.State
                             break;
                     }
                     if (!propertyState.PropertyChanger.AreEquivalent(
-                        usEntityState.GetPropertyState(relationshipDetail.OtherSide.Constraints[i].PropertyName).LocalValue,
+                        usEntityState.GetPropertyState(relationshipDetail.OtherSide.Constraints[i].Name).LocalValue,
                         oldValue))
                     {
                         return false;
@@ -1623,7 +1623,7 @@ namespace Iql.Data.Tracking.State
             var state = DataTracker.GetEntityState(relationshipPropertyValue);
             if (state != null)
             {
-                return state.GetPropertyState(Property.Relationship.OtherEnd.Property.PropertyName);
+                return state.GetPropertyState(Property.Relationship.OtherEnd.Property.Name);
             }
 
             return null;

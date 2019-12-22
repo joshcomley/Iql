@@ -15,7 +15,7 @@ namespace Iql.Entities
 
         //public static string GetPropertyName<T>(this Expression<Func<T, object>> expression, IEntityConfiguration entityConfiguration)
         //{
-        //    return EntitiesExpressionExtensions.ToIqlPropertyExpression(expression, entityConfiguration)?.PropertyName;
+        //    return EntitiesExpressionExtensions.ToIqlPropertyExpression(expression, entityConfiguration)?.Name;
         //}
     }
 }
