@@ -1839,6 +1839,22 @@ namespace Iql.Data.Context
             return await WithCompositeKey(key).SingleOrDefaultWithResponseAsync();
         }
 
+        public async Task<IEntityState<T>> GetStateWithCompositeKeyAsync(CompositeKey key)
+        {
+            return (await GetWithCompositeKeyWithResponseAsync(key)).EntityState;
+        }
+
+        public async Task<IEntityState<T>> GetStateWithKeyAsync(object key)
+        {
+            var result = await GetWithKeyWithResponseAsync(key);
+            return result?.EntityState;
+        }
+
+        public async Task<GetSingleResult<T>> GetWithKeyWithResponseAsync(object key)
+        {
+            return await WithKey(key).SingleOrDefaultWithResponseAsync();
+        }
+
         public override async Task<IqlDataSetQueryExpression> ToIqlAsync(
             IExpressionToIqlConverter expressionConverter = null
 #if TypeScript

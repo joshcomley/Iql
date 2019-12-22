@@ -57,7 +57,14 @@ namespace IqlSampleApp.Data.Entities
         [NotMapped]
         public bool IsLockedOut
         {
-            get { return LockoutEnd > DateTime.Now; }
+            get { return LockoutEnabled && LockoutEnd > DateTime.Now; }
+            set { }
+        }
+
+        [NotMapped]
+        public bool IsEnabled
+        {
+            get { return !IsLockedOut; }
             set { }
         }
     }

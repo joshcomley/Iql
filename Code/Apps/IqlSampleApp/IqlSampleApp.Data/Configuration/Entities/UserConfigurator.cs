@@ -71,7 +71,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
             user.Ignore(p => p.PasswordHash);
             user.Ignore(p => p.AccessFailedCount);
             user.Property(p => p.IsLockedOut);
-            ;
+            user.Property(p => p.IsEnabled);
             user
                 .HasOptional(
                     c => c.Client,
