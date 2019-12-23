@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Crud.Operations;
@@ -42,8 +43,11 @@ namespace Iql.Data.Tracking.State
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> AttachedToTrackerChanged { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> PendingInsertChanged { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsAttachedToGraphChanged { get; }
+        EventEmitter<IEntityStateBase> Fetched { get; }
+        AsyncEventEmitter<IEntityStateBase> FetchedAsync { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsNewChanged { get; }
         EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }
+        Task NotifyFetchedAsync();
         bool AttachedToTracker { get; set; }
         bool PendingInsert { get; }
         //IAsyncEventSubscriber<IEntityEvent> SavingAsync { get; }

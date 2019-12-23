@@ -2031,6 +2031,46 @@ namespace Iql.Data.Context
 
         public bool RefreshDisabled { get; set; }
 
+        private async Task TrackResponseAsync<TEntity>(DataTracker dataTracker, DataTracker localDataTracker, DbList<TEntity> dbList,
+            FlattenedGetDataResult<TEntity> response)
+            where TEntity : class
+        {
+            if (
+                dataTracker == localDataTracker ||
+                dataTracker.EntityConfigurationBuilder == EntityConfigurationContext
+            )
+            {
+                var dealtWith = new Dictionary<object, object>();
+                if (response.Root != null)
+                {
+                    for (var i = 0; i < response.Root.Count; i++)
+                    {
+                        var item = response.Root[i];
+                        var trackingSet = dataTracker.TrackingSetByType(typeof(TEntity));
+                        var state = trackingSet.Synchronise(item, false, true, null);
+                        await state.NotifyFetchedAsync();
+                        if (dataTracker == localDataTracker)
+                        {
+                            dbList.Add((TEntity)state.Entity);
+                        }
+                        dealtWith.Add(item, item);
+                    }
+                }
+
+                foreach (var pair in response.Data)
+                {
+                    for (var i = 0; i < pair.Value.Count; i++)
+                    {
+                        var item = pair.Value[i];
+                        if (!dealtWith.ContainsKey(item))
+                        {
+                            dataTracker.TrackingSetByType(pair.Key)
+                                .Synchronise(item, false, true, null);
+                        }
+                    }
+                }
+            }
+        }
         public async Task<DbList<TEntity>> TrackGetDataResultAsync<TEntity>(
             FlattenedGetDataResult<TEntity> response)
             where TEntity : class
@@ -2049,43 +2089,7 @@ namespace Iql.Data.Context
             dbList.Success = response.IsSuccessful();
             if (dbList.Success)
             {
-                void TrackResponse(DataTracker dataTracker)
-                {
-                    if (
-                        dataTracker == localDataTracker ||
-                        dataTracker.EntityConfigurationBuilder == EntityConfigurationContext
-                        )
-                    {
-                        var dealtWith = new Dictionary<object, object>();
-                        if (response.Root != null)
-                        {
-                            for (var i = 0; i < response.Root.Count; i++)
-                            {
-                                var item = response.Root[i];
-                                var trackingSet = dataTracker.TrackingSetByType(typeof(TEntity));
-                                var state = trackingSet.Synchronise(item, false, true, null);
-                                if (dataTracker == localDataTracker)
-                                {
-                                    dbList.Add((TEntity)state.Entity);
-                                }
-                                dealtWith.Add(item, item);
-                            }
-                        }
 
-                        foreach (var pair in response.Data)
-                        {
-                            for (var i = 0; i < pair.Value.Count; i++)
-                            {
-                                var item = pair.Value[i];
-                                if (!dealtWith.ContainsKey(item))
-                                {
-                                    dataTracker.TrackingSetByType(pair.Key)
-                                        .Synchronise(item, false, true, null);
-                                }
-                            }
-                        }
-                    }
-                }
 
                 if (SupportsOffline && response.Queryable.AllowOffline != false)
                 {
@@ -2098,21 +2102,26 @@ namespace Iql.Data.Context
 
                 if (localDataTracker.LiveTracking && !response.IsOffline)
                 {
+                    var contexts = new List<IDataContext>();
                     this.ForMatchingDataContexts(dataContext =>
                     {
-                        TrackResponse(dataContext.TemporalDataTracker);
+                        contexts.Add(dataContext);
+                    });
+                    foreach (var dataContext in contexts)
+                    {
+                        await TrackResponseAsync(dataContext.TemporalDataTracker, localDataTracker, dbList, response);
                         if (dataContext.OfflineDataTracker != null)
                         {
-                            TrackResponse(dataContext.OfflineDataTracker);
+                            await TrackResponseAsync(dataContext.OfflineDataTracker, localDataTracker, dbList, response);
                         }
-                    });
+                    }
                 }
                 else
                 {
-                    TrackResponse(localDataTracker);
+                    await TrackResponseAsync(localDataTracker, localDataTracker, dbList, response);
                     if (OfflineDataTracker != null && !response.IsOffline)
                     {
-                        TrackResponse(OfflineDataTracker);
+                        await TrackResponseAsync(OfflineDataTracker, localDataTracker, dbList, response);
                     }
                 }
             }

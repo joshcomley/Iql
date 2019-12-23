@@ -20,6 +20,24 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task TestFetched()
+        {
+            AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
+            {
+                Id = 2,
+                Name = "Test client type"
+            });
+            var fetchedCount = 0;
+            var type = await Db.ClientTypes.Expand(_ => _.Clients).GetStateWithKeyAsync(2);
+            type.Fetched.Subscribe(_ => { fetchedCount++; });
+            var type2 = await Db.ClientTypes.Expand(_ => _.Clients).GetStateWithKeyAsync(2);
+            Assert.AreEqual(type, type2);
+            Assert.AreEqual(1, fetchedCount);
+            await Db.RefreshEntityAsync(type.Entity);
+            Assert.AreEqual(2, fetchedCount);
+        }
+
+        [TestMethod]
         public async Task TestHasNestedChanges()
         {
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Iql.Conversion;
 using Iql.Conversion.State;
 using Iql.Data.Context;
@@ -39,6 +40,8 @@ namespace Iql.Data.Tracking.State
         private bool _hasNestedChangesSinceSnapshot;
         private bool _isAttachedToGraph;
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _isAttachedToGraphChanged;
+        private EventEmitter<IEntityStateBase> _fetched;
+        private AsyncEventEmitter<IEntityStateBase> _fetchedAsync;
 
         private bool _isLocked;
         private bool _isNew;
@@ -167,6 +170,12 @@ namespace Iql.Data.Tracking.State
                 _propertyStateByNameDelayedInitialized = true;
                 _propertyStateByNameDelayed = value;
             }
+        }
+
+        public async Task NotifyFetchedAsync()
+        {
+            _fetched.EmitIfExists(() => this);
+            await _fetchedAsync.EmitIfExistsAsync(() => this);
         }
 
         // TODO: This somehow needs to be maintained
@@ -389,6 +398,14 @@ namespace Iql.Data.Tracking.State
         public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsAttachedToGraphChanged =>
             _isAttachedToGraphChanged =
                 _isAttachedToGraphChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+
+        public EventEmitter<IEntityStateBase> Fetched =>
+            _fetched =
+                _fetched ?? new EventEmitter<IEntityStateBase>();
+
+        public AsyncEventEmitter<IEntityStateBase> FetchedAsync =>
+            _fetchedAsync =
+                _fetchedAsync ?? new AsyncEventEmitter<IEntityStateBase>();
 
         public Guid Id { get; set; }
 
