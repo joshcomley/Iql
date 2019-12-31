@@ -100,6 +100,72 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task ExampleTest()
+        {
+            var query = Db
+                .Clients
+                .Where(client => client.Name.Contains("abc"))
+                .Expand(client => client.People)
+                .OrderBy(client => client.Name);
+            var uri = await query.ResolveODataUriAsync();
+            var someClient = Db.Clients.WithKey(123);
+            uri = await someClient.ResolveODataUriAsync();
+            var instance = new IqlDataSetQueryExpression
+            {
+                DataSet = new IqlDataSetReferenceExpression
+                {
+                    Name = "Clients",
+                    Kind = IqlExpressionKind.DataSetReference,
+                    ReturnType = IqlType.Collection
+                },
+                EntityTypeName = "Client",
+                WithKey = new IqlWithKeyExpression
+                {
+                    KeyEqualToExpressions = new List<IqlIsEqualToExpression>
+                    {
+                        new IqlIsEqualToExpression
+                        {
+                            Left = new IqlPropertyExpression
+                            {
+                                PropertyName = "Id",
+                                Kind = IqlExpressionKind.Property,
+                                ReturnType = IqlType.Unknown,
+                                Parent = new IqlRootReferenceExpression
+                                {
+                                    VariableName = "entity",
+                                    Kind = IqlExpressionKind.RootReference
+                                }
+                            },
+                            Right = new IqlLiteralExpression
+                            {
+                                Value = 123,
+                                InferredReturnType = IqlType.Integer,
+                                Kind = IqlExpressionKind.Literal
+                            },
+                            Kind = IqlExpressionKind.IsEqualTo,
+                            ReturnType = IqlType.Boolean
+                        }
+                    },
+                    Kind = IqlExpressionKind.WithKey,
+                    ReturnType = IqlType.Class
+                },
+                Parameters = new List<IqlRootReferenceExpression>
+                {
+                    new IqlRootReferenceExpression
+                    {
+                        EntityTypeName = "Client",
+                        InferredReturnType = IqlType.Unknown,
+                        Kind = IqlExpressionKind.RootReference,
+                        ReturnType = IqlType.Unknown
+                    }
+                },
+                Kind = IqlExpressionKind.DataSetQuery,
+                ReturnType = IqlType.Class
+            };
+            //var iql = new CSharpObjectSerializer().SerializeToString(await someClient.ToIqlAsync());
+        }
+
+        [TestMethod]
         public async Task TestSearchPivotWithExclude()
         {
             var query = Db.ClientCategoriesPivot.Search(
@@ -168,8 +234,8 @@ namespace Iql.Tests.Tests.OData
                 "abc",
                 IqlSearchKind.Primary,
                 null,
-                new[] {IqlPropertyPath.FromExpression<ClientCategoryPivot>(_ => _.Category, TypeResolver)},
-                new object[] {excludeClient, excludeClientByKey});
+                new[] { IqlPropertyPath.FromExpression<ClientCategoryPivot>(_ => _.Category, TypeResolver) },
+                new object[] { excludeClient, excludeClientByKey });
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=((contains($it/Name,'abc') and not(Categories/any(child:(child/CategoryId eq 7)))) and ((((not(($it/Id eq 100)) and not(($it/Id eq 103))) and not(($it/Id eq 9))) and not(($it/Id eq 15))) and not(($it/Id eq 26))))", uri);
