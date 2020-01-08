@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GeoAPI.Geometries;
+﻿using System.Collections.Generic;
 using IqlSampleApp.Data;
 using IqlSampleApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite.Geometries;
+using Coordinate = NetTopologySuite.Geometries.Coordinate;
 
 namespace IqlSampleApp.Controllers
 {

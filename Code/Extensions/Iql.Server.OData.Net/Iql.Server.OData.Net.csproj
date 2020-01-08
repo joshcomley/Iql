@@ -12,16 +12,15 @@
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10054-1-Debug" />
-        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10111-1-Debug" />
-        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10111-1-Debug" />
+        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10071-1-Debug" />
+        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10113-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.2.0-pre-0014" />
-    <PackageReference Include="NetTopologySuite.Core" Version="1.15.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.1.0.9" />
+    <PackageReference Include="NetTopologySuite.Core" Version="1.15.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />

@@ -144,7 +144,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(ODataModelBuilder builder)
         {
-            builder.MapSpatial<Person>(_ => _.EdmLocation, _ => _.Location);
+            builder.UseNetTopology();
             builder.EntityType<Person>()
                 .HasOptional(
                     s => s.Client,

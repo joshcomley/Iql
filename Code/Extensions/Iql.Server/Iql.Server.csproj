@@ -10,13 +10,13 @@
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.Data" Version="0.0.40017-10111-1-Debug" />
+        <PackageReference Include="Brandless.Data" Version="0.0.40017-10113-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />

@@ -140,8 +140,6 @@ namespace IqlSampleApp.Data
 
             builder.Entity<Site>().Ignore(_ => _.LeftOf).Ignore(_ => _.RightOf);
 
-            builder.UseServiceProviderForFilters(_serviceProvider);
-
             builder.BuildNavigationPropertiesFromOData(ODataModel.ModelBuilder);
             //builder
             //    .Entity<Person>()

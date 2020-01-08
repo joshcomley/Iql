@@ -1585,18 +1585,14 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 OutputClassNameStaticProperty = false,
                 OutputClassPropertiesDeclared = false,
                 OutputJsonClassConversion = false,
-                PrintOutput = false,
                 PrintOutputFiles = false,
                 WrapGettersAndSetters = false,
                 OutputSelector = outputSelector
             };
             await settings.MetadataReferences.AddReferenceAsync<HelpText>();
             await settings.MetadataReferences.AddReferenceAsync<ValidationRuleCollection>();
-            var task = CSharpToTypescriptConverter.ConvertToTypeScriptAsync(
-                serialized,
-                settings);
-            task.Wait();
-            var typescript = task.Result;
+            var converter = new CSharpToTypeScriptConverter(settings);
+            var typescript = await converter.ConvertToTypeScriptAsync(serialized);
             return outputSelector.Extracted;
         }
     }

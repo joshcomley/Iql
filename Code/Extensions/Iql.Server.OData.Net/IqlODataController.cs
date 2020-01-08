@@ -215,7 +215,7 @@ namespace Iql.Server.OData.Net
                 nestedSet.ParentIdProperty.Name,
                 nestedSet.LevelProperty.Name,
                 nestedSet.KeyProperty.Name,
-                Data.Context.Model.FindEntityType(typeof(TModel)).Relational().TableName
+                Data.Context.Model.FindEntityType(typeof(TModel)).GetTableName()
             );
             var id = nestedSet.IdProperty.GetValue(entity);
             return mptt.DeleteAsync((TKey)id);
@@ -273,7 +273,7 @@ namespace Iql.Server.OData.Net
                 nestedSet.ParentIdProperty.Name,
                 nestedSet.LevelProperty.Name,
                 nestedSet.KeyProperty.Name,
-                Data.Context.Model.FindEntityType(typeof(TModel)).Relational().TableName
+                Data.Context.Model.FindEntityType(typeof(TModel)).GetTableName()
             );
             var id = nestedSet.IdProperty.GetValue(currentEntity);
             var parentId = nestedSet.ParentIdProperty.GetValue(prePatchEntity);
@@ -314,7 +314,7 @@ namespace Iql.Server.OData.Net
                 nestedSet.ParentIdProperty.Name,
                 nestedSet.LevelProperty.Name,
                 nestedSet.KeyProperty.Name,
-                Data.Context.Model.FindEntityType(typeof(TModel)).Relational().TableName
+                Data.Context.Model.FindEntityType(typeof(TModel)).GetTableName()
             );
             var id = nestedSet.IdProperty.GetValue(postedEntity);
             var parentId = nestedSet.ParentIdProperty.GetValue(postedEntity);

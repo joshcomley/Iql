@@ -9,17 +9,16 @@ using Iql.Server.OData.Net;
 using IqlSampleApp.Data;
 using IqlSampleApp.Data.Contracts;
 using IqlSampleApp.Data.Entities;
-using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace IqlSampleApp
 {
@@ -43,7 +42,7 @@ namespace IqlSampleApp
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             OData = services.AddOData();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(_ => _.EnableEndpointRouting = false);
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // Configure the context to use Microsoft SQL Server.
@@ -59,7 +58,7 @@ namespace IqlSampleApp
         public IODataBuilder OData { get; set; }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -72,7 +71,6 @@ namespace IqlSampleApp
                 builder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
                 builder.MapODataServiceRoute("odata", "odata", model.Model);
             });
-            OData.UseODataNetTopologySuite(model.Model);
             app.UseIql<IIqlSampleAppService>(config =>
             {
                 config.ConfigureFromOData<IIqlSampleAppService>(model.ModelBuilder);

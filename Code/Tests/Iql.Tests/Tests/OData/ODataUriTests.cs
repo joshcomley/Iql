@@ -528,10 +528,7 @@ namespace Iql.Tests.Tests.OData
 
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            var reducedValue = "463202.03500926";
-#if TypeScript
-            reducedValue = "463202.03500926046";
-#endif
+            var reducedValue = "463202.03500926046";
             Assert.AreEqual($@"http://localhost:28000/odata/Sites?$filter=(geo.length($it/Line) lt {reducedValue})", uri);
         }
 

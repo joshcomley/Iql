@@ -94,9 +94,9 @@ namespace Iql.OData.TypeScript.Generator.DataContext
             GeneratedContext cSharpContext = new GeneratedContext(OutputKind.CSharp, outputFiles.ToArray());
             if (outputKind == OutputKind.TypeScript)
             {
-                var conversionCollection = new ConversionCollection();
+                var conversionCollection = new TypeSharpProject();
                 conversionCollection.Name = "datacontext";
-                conversionCollection.AddFiles(outputFiles.Select(_ => new ConversionFileEntry(_.Path, _.Contents)).ToArray());
+                conversionCollection.AddFiles(outputFiles.Select(_ => new TypeSharpFile(_.Path, _.Contents)).ToArray());
                 var defaultConversionSettings = new DefaultConversionSettings
                 {
                     OutputClassFunctionsDeclared = false,
@@ -124,9 +124,8 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 await defaultConversionSettings.MetadataReferences.AddReferenceAsync<ODataConfiguration>("@brandless/iql.odata", true);
                 await defaultConversionSettings.MetadataReferences.AddReferenceAsync<IqlSyncResult>("@brandless/iql.forms", true);
 
-                var result = await CSharpToTypescriptConverter.ConvertToTypeScriptAsync(
-                    new[] { conversionCollection },
-                    defaultConversionSettings
+                var result = await new CSharpToTypeScriptConverter(defaultConversionSettings).ConvertToTypeScriptAsync(
+                    new[] { conversionCollection }
                 );
                 var newOutputFiles = new List<GeneratedFile>();
                 foreach (var convertedFile in result.SourceOutputFiles)
