@@ -1,16 +1,6 @@
 ﻿<Project>
-  <Import Project="..\..\..\version.xml" />
+  <Import Project="..\..\Build\Build.props" />
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;netcoreapp2.1;netstandard2.0</TargetFrameworks>
-    <PackageTags>IQL</PackageTags>
-    <Product>IQL</Product>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\..\Build\Key.snk</AssemblyOriginatorKeyFile>
-    <PublicSign Condition="'$(OS)' != 'Windows_NT'">True</PublicSign>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/joshcomley/Iql</RepositoryUrl>
-    <VersionSuffix Condition="'$(VersionSuffix)' != '' And '$(BuildNumber)' != ''">$(VersionSuffix)-$(BuildNumber)</VersionSuffix>
-    <DebugType Condition="'$(Configuration)' == 'Debug' AND '$(OS)' == 'Windows_NT'">full</DebugType>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 </Project>

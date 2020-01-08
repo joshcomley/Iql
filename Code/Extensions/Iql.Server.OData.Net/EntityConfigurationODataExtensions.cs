@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Brandless.AspNetCore.OData.Extensions.Extensions;
 using Iql.Entities;
 using Iql.Entities.Functions;
-using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Server.OData.Net.Geography;
@@ -16,8 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Edm;
-using Microsoft.Spatial;
-using NetTopologySuite.Geometries;
 
 namespace Iql.Server.OData.Net
 {
