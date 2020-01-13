@@ -166,5 +166,18 @@ namespace Iql.Events
 
             _queuedEmits.Clear();
         }
+
+        public new EventEmitter<TEvent> Configure(Action<EventEmitter<TEvent>> onHasSubscription,
+            Action<EventEmitter<TEvent>> onHasNoSubscription = null)
+        {
+            return (EventEmitter<TEvent>) ConfigureBase(
+                onHasSubscription == null
+                    ? (Action<IEventSubscriberRoot>) null
+                    : _ => onHasSubscription((EventEmitter<TEvent>) _),
+                onHasNoSubscription == null
+                    ? (Action<IEventSubscriberRoot>) null
+                    : _ => onHasNoSubscription((EventEmitter<TEvent>) _)
+            );
+        }
     }
 }

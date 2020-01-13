@@ -19,6 +19,12 @@ namespace Iql.Events
     }
     public abstract class EventEmitterBase<TEvent, TSubscriptionAction> : EventEmitterRoot, IEventSubscriberRoot
     {
+        public EventEmitter<IEventSubscriberRoot> HasSubscriptionChanged => _hasSubscriptionChanged = _hasSubscriptionChanged ?? new EventEmitter<IEventSubscriberRoot>();
+
+        public bool HasSubscription => _hasSubscription;
+        public Action<IEventSubscriberRoot> OnHasSubscription { get; set; }
+        public Action<IEventSubscriberRoot> OnHasNoSubscription { get; set; }
+
         public EventEmitter<IEventSubscriberRoot> SubscriptionCountChanged => _subscriptionCountChanged = _subscriptionCountChanged ?? new EventEmitter<IEventSubscriberRoot>();
 
         private int _subscriptionCount = 0;
@@ -53,7 +59,7 @@ namespace Iql.Events
                     }
                 }
             }
-            if(subscriptionActions == null)
+            if (subscriptionActions == null)
             {
                 return null;
             }
@@ -109,6 +115,8 @@ namespace Iql.Events
         }
         private List<TEvent> _backfires;
         private EventEmitter<IEventSubscriberRoot> _subscriptionCountChanged;
+        private EventEmitter<IEventSubscriberRoot> _hasSubscriptionChanged;
+        private bool _hasSubscription;
 
         public List<TEvent> Backfires => _backfires = _backfires ?? new List<TEvent>();
 
@@ -139,13 +147,14 @@ namespace Iql.Events
             {
                 foreach (var sub in Subscriptions)
                 {
-                    if(key == null || sub.Key == key)
+                    if (key == null || sub.Key == key)
                     {
                         _onUnsubscribe.EmitIfExists(() => sub);
                         if (key != null)
                         {
                             SubscriptionsById.Remove(sub.Id);
-;                        }
+                            ;
+                        }
                     }
                 }
             }
@@ -172,7 +181,7 @@ namespace Iql.Events
             {
                 if (!alreadyCreated)
                 {
-                    ev = eventObjectFactory == null ? (TEvent) (object) null : eventObjectFactory();
+                    ev = eventObjectFactory == null ? (TEvent)(object)null : eventObjectFactory();
                 }
 
                 alreadyCreated = true;
@@ -217,6 +226,46 @@ namespace Iql.Events
             {
                 _subscriptionCountChanged.EmitIfExists(() => this);
             }
+
+            UpdateHasSubscription(_subscriptionCount > 0);
+        }
+
+        private void UpdateHasSubscription(bool hasSubscription)
+        {
+            var old = _hasSubscription;
+            _hasSubscription = hasSubscription;
+            if (old != hasSubscription)
+            {
+                _hasSubscriptionChanged.EmitIfExists(() => this);
+                if (hasSubscription)
+                {
+                    if (OnHasSubscription != null)
+                    {
+                        OnHasSubscription(this);
+                    }
+                }
+                else
+                {
+                    if (OnHasNoSubscription != null)
+                    {
+                        OnHasNoSubscription(this);
+                    }
+                }
+            }
+        }
+
+        protected EventEmitterBase<TEvent, TSubscriptionAction> ConfigureBase(Action<IEventSubscriberRoot> onHasSubscription,
+            Action<IEventSubscriberRoot> onHasNoSubscription = null)
+        {
+            OnHasSubscription = onHasSubscription;
+            OnHasNoSubscription = onHasNoSubscription;
+            return this;
+        }
+
+        IEventSubscriberRoot IEventSubscriberRoot.Configure(Action<IEventSubscriberRoot> onHasSubscription,
+            Action<IEventSubscriberRoot> onHasNoSubscription = null)
+        {
+            return ConfigureBase(onHasSubscription, onHasNoSubscription);
         }
     }
 }

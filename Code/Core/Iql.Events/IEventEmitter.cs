@@ -70,7 +70,14 @@ namespace Iql.Events
     public interface IEventSubscriberRoot : IEventUnsubscriber, IEventSubscriberSubscriber
     {
         int SubscriptionCount { get; }
+        bool HasSubscription { get; }
+        Action<IEventSubscriberRoot> OnHasSubscription { get; set; }
+        Action<IEventSubscriberRoot> OnHasNoSubscription { get; set; }
+
+        IEventSubscriberRoot Configure(Action<IEventSubscriberRoot> onHasSubscription,
+            Action<IEventSubscriberRoot> onHasNoSubscription = null);
         EventEmitter<IEventSubscriberRoot> SubscriptionCountChanged { get; }
+        EventEmitter<IEventSubscriberRoot> HasSubscriptionChanged { get; }
     }
 
     public interface IEventSubscriberBase : IEventSubscriberRoot

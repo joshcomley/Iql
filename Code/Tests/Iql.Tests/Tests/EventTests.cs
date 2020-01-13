@@ -9,6 +9,75 @@ namespace Iql.Tests.Tests
     public class EventTests
     {
         [TestMethod]
+        public void SubscriptionConfigureTest()
+        {
+            var hasSubscriptionsCounter = 0;
+            var hasNoSubscriptionsCounter = 0;
+            var emitter = new EventEmitter<int>();
+            var manager = new IqlEventSubscriberManager();
+            emitter.Configure(_ => { hasSubscriptionsCounter++; }, _ => { hasNoSubscriptionsCounter++; });
+            Assert.AreEqual(0, hasSubscriptionsCounter);
+            Assert.AreEqual(0, hasNoSubscriptionsCounter);
+            manager.Subscribe(emitter, _ => { });
+            Assert.AreEqual(1, hasSubscriptionsCounter);
+            Assert.AreEqual(0, hasNoSubscriptionsCounter);
+            manager.Subscribe(emitter, _ => { });
+            manager.Subscribe(emitter, _ => { });
+            manager.Subscribe(emitter, _ => { });
+            manager.Subscribe(emitter, _ => { });
+            Assert.AreEqual(1, hasSubscriptionsCounter);
+            Assert.AreEqual(0, hasNoSubscriptionsCounter);
+            manager.UnsubscribeAll();
+            Assert.AreEqual(1, hasSubscriptionsCounter);
+            Assert.AreEqual(1, hasNoSubscriptionsCounter);
+            manager.UnsubscribeAll();
+            manager.UnsubscribeAll();
+            manager.UnsubscribeAll();
+            manager.UnsubscribeAll();
+            Assert.AreEqual(1, hasSubscriptionsCounter);
+            Assert.AreEqual(1, hasNoSubscriptionsCounter);
+        }
+
+        [TestMethod]
+        public void SubscriptionConfigureSubscribeTest()
+        {
+            var hasSubscriptionsCounter = 0;
+            var hasNoSubscriptionsCounter = 0;
+            var emitter = new EventEmitter<int>();
+            var manager = new IqlEventSubscriberManager();
+            emitter.Configure(_ => { hasSubscriptionsCounter++; }, _ => { hasNoSubscriptionsCounter++; });
+            Assert.AreEqual(0, hasSubscriptionsCounter);
+            Assert.AreEqual(0, hasNoSubscriptionsCounter);
+            manager.Subscribe(emitter, _ => { });
+            Assert.AreEqual(1, hasSubscriptionsCounter);
+            Assert.AreEqual(0, hasNoSubscriptionsCounter);
+            emitter.Emit(() => 0);
+            Assert.AreEqual(1, hasSubscriptionsCounter);
+            Assert.AreEqual(0, hasNoSubscriptionsCounter);
+            emitter.Dispose();
+            Assert.AreEqual(1, hasSubscriptionsCounter);
+            Assert.AreEqual(1, hasNoSubscriptionsCounter);
+        }
+
+        [TestMethod]
+        public void SubscriptionConfigureSubscribeOnceTest()
+        {
+            var hasSubscriptionsCounter = 0;
+            var hasNoSubscriptionsCounter = 0;
+            var emitter = new EventEmitter<int>();
+            var manager = new IqlEventSubscriberManager();
+            emitter.Configure(_ => { hasSubscriptionsCounter++; }, _ => { hasNoSubscriptionsCounter++; });
+            Assert.AreEqual(0, hasSubscriptionsCounter);
+            Assert.AreEqual(0, hasNoSubscriptionsCounter);
+            manager.SubscribeOnce(emitter, _ => { });
+            Assert.AreEqual(1, hasSubscriptionsCounter);
+            Assert.AreEqual(0, hasNoSubscriptionsCounter);
+            emitter.Emit(() => 0);
+            Assert.AreEqual(1, hasSubscriptionsCounter);
+            Assert.AreEqual(1, hasNoSubscriptionsCounter);
+        }
+
+        [TestMethod]
         public void SubscriptionCountTest()
         {
             var counter = 0;
