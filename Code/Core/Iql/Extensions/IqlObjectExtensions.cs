@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Newtonsoft.Json.Linq;
 
 namespace Iql.Extensions
@@ -44,13 +45,24 @@ namespace Iql.Extensions
 
         public static object SetPropertyValueByName<T>(this T obj, string propertyName, object value)
         {
+            if (obj == null)
+            {
+                throw new Exception(
+                    $"Cannot set property \"{propertyName}\" on null object.");
+            }
             if (obj is JToken)
             {
                 (obj as JToken)[propertyName] = (JToken)((value is JToken) ? value : new JValue(value));
             }
             else
             {
-                obj.GetType().GetRuntimeProperty(propertyName).SetValue(obj, value);
+                var runtimeProperty = obj.GetType().GetRuntimeProperty(propertyName);
+                if (runtimeProperty == null)
+                {
+                    throw new Exception(
+                        $"Unable to find property \"{propertyName}\" on object of type \"{obj.GetType().FullName}\".");
+                }
+                runtimeProperty.SetValue(obj, value);
             }
 
             return value;
