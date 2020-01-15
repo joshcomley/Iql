@@ -139,12 +139,14 @@ namespace Iql.Entities
                 keyString,
                 objectGraphRoot);
 
-            foreach (var relationship in graphEntityConfiguration.AllRelationships())
+            for (var i = 0; i < graphEntityConfiguration.AllRelationships.Length; i++)
             {
+                var relationship = graphEntityConfiguration.AllRelationships[i];
                 if (relationship.ThisIsTarget && dependenciesOnly)
                 {
                     continue;
                 }
+
                 var relationshipValue = resolveRelationshipValue(objectGraphRoot, relationship.ThisEnd);
                 var childType = relationship.OtherEnd.Type;
                 if (relationshipValue != null)
@@ -152,15 +154,17 @@ namespace Iql.Entities
                     var isArray = relationshipValue is IEnumerable && !(relationshipValue is string);
                     if (isArray)
                     {
-                        var list = (IList)relationshipValue;
+                        var list = (IList) relationshipValue;
                         foreach (var item in list)
                         {
-                            FlattenObjectGraphRecursive(builder, item, childType, dictionary, result, recursionLookup, dependenciesOnly, resolveRelationshipValue);
+                            FlattenObjectGraphRecursive(builder, item, childType, dictionary, result, recursionLookup,
+                                dependenciesOnly, resolveRelationshipValue);
                         }
                     }
                     else
                     {
-                        FlattenObjectGraphRecursive(builder, relationshipValue, childType, dictionary, result, recursionLookup, dependenciesOnly, resolveRelationshipValue);
+                        FlattenObjectGraphRecursive(builder, relationshipValue, childType, dictionary, result,
+                            recursionLookup, dependenciesOnly, resolveRelationshipValue);
                     }
                 }
             }

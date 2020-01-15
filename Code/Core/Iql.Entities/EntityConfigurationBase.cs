@@ -180,7 +180,7 @@ namespace Iql.Entities
         public IPropertyGroup[] AllPropertyGroups()
         {
             var list = new List<IPropertyGroup>();
-            var relationships = AllRelationships();
+            var relationships = AllRelationships;
             if (relationships != null)
             {
                 foreach (var relationship in relationships)
@@ -603,39 +603,39 @@ namespace Iql.Entities
         public bool DefaultBrowseSortDescending { get; set; }
         public string DefaultSearchSortExpression { get; set; }
         public bool DefaultSearchSortDescending { get; set; }
-        private bool _allRelationshipsDelayedInitialized;
-        private List<EntityRelationship> _allRelationshipsDelayed;
 
+        private EntityRelationship[] _allRelationships = null;
 
-        private List<EntityRelationship> _allRelationships { get { if(!_allRelationshipsDelayedInitialized) { _allRelationshipsDelayedInitialized = true; _allRelationshipsDelayed = new List<EntityRelationship>(); } return _allRelationshipsDelayed; } set { _allRelationshipsDelayedInitialized = true; _allRelationshipsDelayed = value; } }
-
-        public List<EntityRelationship> AllRelationships()
+        public EntityRelationship[] AllRelationships
         {
-            if (_allRelationships == null)
+            get
             {
-                var list = new List<EntityRelationship>();
-                foreach (var relationship in Relationships)
+                if (_allRelationships == null)
                 {
-                    var ends = new[] { relationship.Source, relationship.Target };
-                    for (var i = 0; i < ends.Length; i++)
+                    var list = new List<EntityRelationship>();
+                    foreach (var relationship in Relationships)
                     {
-                        if (Equals(ends[i].EntityConfiguration, this))
+                        var ends = new[] {relationship.Source, relationship.Target};
+                        for (var i = 0; i < ends.Length; i++)
                         {
-                            var relationshipMatch = EntityRelationship.Get(relationship, i == 1);
-                            list.Add(relationshipMatch);
+                            if (Equals(ends[i].EntityConfiguration, this))
+                            {
+                                var relationshipMatch = EntityRelationship.Get(relationship, i == 1);
+                                list.Add(relationshipMatch);
+                            }
                         }
                     }
+
+                    _allRelationships = list.ToArray();
                 }
 
-                _allRelationships = list;
+                return _allRelationships;
             }
-
-            return _allRelationships;
         }
 
         public EntityRelationship FindRelationshipByName(string propertyName)
         {
-            return AllRelationships().SingleOrDefault(r => ((IMetadata) r.ThisEnd.Property).Name == propertyName);
+            return AllRelationships.SingleOrDefault(r => ((IMetadata) r.ThisEnd.Property).Name == propertyName);
         }
 
         public bool EntityHasKey(object entity, CompositeKey key)

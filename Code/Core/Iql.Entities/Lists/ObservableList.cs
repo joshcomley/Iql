@@ -129,11 +129,25 @@ namespace Iql.Entities.Lists
 
         public virtual void Clear()
         {
-            var copy = _rootList.ToList();
-            for (var i = 0; i < copy.Count; i++)
+            var i = 0;
+            var count = Count;
+            while (Count > i)
             {
-                Remove(copy[i]);
+                RemoveAt(i);
+                if (Count == count)
+                {
+                    i++;
+                }
+                else
+                {
+                    count = Count;
+                }
             }
+            //var copy = _rootList.ToList();
+            //for (var i = 0; i < copy.Count; i++)
+            //{
+            //    Remove(copy[i]);
+            //}
         }
 
         public bool Contains(object value)

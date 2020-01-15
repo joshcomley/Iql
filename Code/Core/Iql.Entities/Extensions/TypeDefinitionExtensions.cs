@@ -1,11 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using Iql.Extensions;
 
 namespace Iql.Entities.Extensions
 {
     public static class TypeDefinitionExtensions
     {
+        private static readonly Dictionary<ITypeDefinition, IqlType> ToIqlTypeCache = new Dictionary<ITypeDefinition, IqlType>();
         public static IqlType ToIqlType(this ITypeDefinition type)
+        {
+            if (!ToIqlTypeCache.ContainsKey(type))
+            {
+                ToIqlTypeCache.Add(type, ToIqlTypeInternal(type));
+            }
+
+            return ToIqlTypeCache[type];
+        }
+
+        private static IqlType ToIqlTypeInternal(ITypeDefinition type)
         {
             if (type == null)
             {

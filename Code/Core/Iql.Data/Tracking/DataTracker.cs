@@ -433,6 +433,15 @@ namespace Iql.Data.Tracking
                 if (old != value)
                 {
                     _hasSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool, DataTracker>(old, value, this));
+                    for (var i = 0; i < Sets.Count; i++)
+                    {
+                        var set = Sets[i];
+                        var allEntityStates = set.AllEntityStates();
+                        for (var j = 0; j < allEntityStates.Length; j++)
+                        {
+                            allEntityStates[j].CheckHasChanged();
+                        }
+                    }
                 }
             }
         }

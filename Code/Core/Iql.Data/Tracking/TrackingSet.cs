@@ -130,6 +130,7 @@ namespace Iql.Data.Tracking
         }
         public IEntityState<T> AttachEntity(T entity, bool isLocal)
         {
+            //return (IEntityState<T>) AttachEntityInternal(entity, isLocal);
             IEntityStateBase entityState = null;
             var flattened = EntityConfiguration.Builder.FlattenObjectGraph(entity, typeof(T));
             foreach (var pair in flattened)
@@ -160,8 +161,7 @@ namespace Iql.Data.Tracking
                 throw new Exception("This entity is already tracked by another context.");
             }
 
-            var isAlreadyTracked = _tracking.ContainsKey(entity);
-            if (!isAlreadyTracked)
+            if (!_tracking.ContainsKey(entity))
             {
                 _tracking.Add(entity, entity);
                 if (isLocal &&
@@ -181,10 +181,10 @@ namespace Iql.Data.Tracking
 
                 var entityState = CreateEntityState(entity, isLocal);
                 Watch(entityState.Entity);
-                if (!isLocal)
-                {
-                    entityState.HardReset();
-                }
+                //if (!isLocal)
+                //{
+                //    entityState.HardReset();
+                //}
                 TrackRemoteKey(entityState, null, !isLocal);
 
                 return entityState;

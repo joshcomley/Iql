@@ -194,7 +194,7 @@ namespace Iql.Data.Context
 
         public Task<Dictionary<IProperty, IList>> LoadAllRelationshipsAsync(T entity, LoadRelationshipMode mode = LoadRelationshipMode.Both)
         {
-            IEnumerable<EntityRelationship> relationships = EntityConfiguration.AllRelationships();
+            IEnumerable<EntityRelationship> relationships = EntityConfiguration.AllRelationships;
             switch (mode)
             {
                 case LoadRelationshipMode.Collections:

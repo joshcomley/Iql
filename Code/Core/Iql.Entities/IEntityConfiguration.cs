@@ -55,7 +55,7 @@ namespace Iql.Entities
         IProperty FindProperty(string name);
         IProperty FindOrDefinePropertyByName(string name, Type elementType);
         EntityRelationship FindRelationshipByName(string propertyName);
-        List<EntityRelationship> AllRelationships();
+        EntityRelationship[] AllRelationships { get; }
         bool EntityHasKey(object entity, CompositeKey key);
         bool KeysMatch(object left, object right);
         CompositeKey GetCompositeKey(object entity);

@@ -252,12 +252,12 @@ namespace Iql.Server.Serialization.Deserialization.Converters
                     if (set) { root.SetValueAtPropertyPath(mapping.Key, dr); }
                     return dr;
                 case IqlPropertyGroupKind.Relationship:
-                    var entityConfiguration = entityMetadata as IEntityConfiguration;
+                    var entityConfiguration = entityMetadata;
                     //var property2 = entityMetadata.Properties.Single(p => p.Name == @group.Paths);
                     //var rel = entityMetadata.Relationships.Single(p => p.Source.Property.Name == @group.Paths);
                     //if (set) { document.SetValueAtPropertyPath(mapping.Key, rel.Source); }
                     //return rel.Source;
-                    var entityRelationships = entityConfiguration.AllRelationships();
+                    var entityRelationships = entityConfiguration.AllRelationships;
                     var rel = entityRelationships.Single(p => p.ThisEnd.Property.Name == @group.Paths);
                     if (set) { root.SetValueAtPropertyPath(mapping.Key, rel.ThisEnd); }
                     return rel.ThisEnd;

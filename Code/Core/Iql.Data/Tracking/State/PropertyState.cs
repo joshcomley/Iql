@@ -67,6 +67,7 @@ namespace Iql.Data.Tracking.State
             Property = property;
             EntityState = entityState;
             EnsureRemoteValue();
+            _booted = true;
         }
 
         public object DebugKey { get; set; }
@@ -104,6 +105,7 @@ namespace Iql.Data.Tracking.State
                 if (old != value)
                 {
                     _hasSnapshotValueChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(old, value, this));
+                    EntityState?.CheckHasChanged();
                 }
             }
         }
@@ -241,6 +243,7 @@ namespace Iql.Data.Tracking.State
 
                     _hasChangesSinceSnapshotChanged.EmitIfExists(
                         () => new ValueChangedEvent<bool, IPropertyState>(old, value, this));
+                    EntityState?.CheckHasChanged();
                     if (EntityState != null)
                     {
                         EntityState.CheckHasChanged();
@@ -300,6 +303,7 @@ namespace Iql.Data.Tracking.State
                         EntityState.DataTracker.NotifyChangedChanged(this, _hasChanged);
                     }
                     _hasChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(old, value, this));
+                    EntityState?.CheckHasChanged();
                     if (EntityState != null)
                     {
                         EntityState.CheckHasChanged();
@@ -861,6 +865,7 @@ namespace Iql.Data.Tracking.State
                 }
                 _hasNestedChanges = value;
                 _hasNestedChangesChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(!_hasNestedChanges, value, this));
+                EntityState?.CheckHasChanged();
                 UpdateHasAnyChanges();
             }
         }
@@ -876,6 +881,7 @@ namespace Iql.Data.Tracking.State
                 }
                 _hasNestedChangesSinceStart = value;
                 _hasNestedChangesSinceSnapshotChanged.EmitIfExists(() => new ValueChangedEvent<bool, IPropertyState>(!_hasNestedChangesSinceStart, value, this));
+                EntityState?.CheckHasChanged();
                 UpdateHasAnyChanges();
             }
         }
@@ -1000,6 +1006,7 @@ namespace Iql.Data.Tracking.State
 
         public EventEmitter<ValueChangedEvent<object, IPropertyState>> RemoteValueChanged => _remoteValueChanged = _remoteValueChanged ?? new EventEmitter<ValueChangedEvent<object, IPropertyState>>().RegisterWith(_eventEmitterManager);
         private EventEmitter<ValueChangedEvent<object, IPropertyState>> _localValueChanged;
+        private bool _booted = false;
 
         public EventEmitter<ValueChangedEvent<object, IPropertyState>> LocalValueChanged => _localValueChanged = _localValueChanged ?? new EventEmitter<ValueChangedEvent<object, IPropertyState>>().RegisterWith(_eventEmitterManager);
 
@@ -1589,25 +1596,41 @@ namespace Iql.Data.Tracking.State
         {
             var oldValue = _remoteValue;
             _remoteValueClone = PropertyChanger.CloneValue(value);
-            if (IsRelationshipCollection)
+            if (_booted && IsRelationshipCollection)
             {
-                ItemsChanged.Clear();
-                ItemsRemoved.Clear();
-                ItemsAdded.Clear();
+                if (_itemsChanged != null)
+                {
+                    ItemsChanged.Clear();
+                }
+                if (_itemsRemoved != null)
+                {
+                    ItemsRemoved.Clear();
+                }
+                if (_itemsAdded != null)
+                {
+                    ItemsAdded.Clear();
+                }
             }
             ObserveIfNecessary(oldValue, _remoteValueClone, ChangeCalculationKind.Remote);
             _remoteValue = value;
-            UpdateHasChanged();
-            var areEquivalent = PropertyChanger.AreEquivalent(_remoteValue, oldValue);
-            if (!areEquivalent)
+            if(_booted)
             {
-                if(DataTracker != null)
+                UpdateHasChanged();
+            }
+
+            if (_booted)
+            {
+                var areEquivalent = PropertyChanger.AreEquivalent(_remoteValue, oldValue);
+                if (!areEquivalent)
                 {
-                    DataTracker.NotifyRemoteValueChanged(this);
-                }
-                if (_remoteValueChanged != null)
-                {
-                    _remoteValueChanged.EmitIfExists(() => new ValueChangedEvent<object, IPropertyState>(oldValue, value, this));
+                    if (DataTracker != null)
+                    {
+                        DataTracker.NotifyRemoteValueChanged(this);
+                    }
+                    if (_remoteValueChanged != null)
+                    {
+                        _remoteValueChanged.EmitIfExists(() => new ValueChangedEvent<object, IPropertyState>(oldValue, value, this));
+                    }
                 }
             }
         }

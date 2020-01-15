@@ -132,12 +132,24 @@ namespace Iql.Extensions
                        typeof(string).IsAssignableFrom(type);
         }
 
+        private static readonly Dictionary<Type, IqlType> ToIqlTypeCache = new Dictionary<Type, IqlType>();
         public static IqlType ToIqlType(this Type type)
         {
             if (type == null)
             {
                 return IqlType.Unknown;
             }
+
+            if (!ToIqlTypeCache.ContainsKey(type))
+            {
+                ToIqlTypeCache.Add(type, ToIqlTypeInternal(type));
+            }
+
+            return ToIqlTypeCache[type];
+        }
+
+        private static IqlType ToIqlTypeInternal(Type type)
+        {
             var underlyingType = Nullable.GetUnderlyingType(type);
             if (underlyingType != null)
             {
@@ -186,18 +198,19 @@ namespace Iql.Extensions
             {
                 return IqlType.Boolean;
             }
-            if (new[] { typeof(short), typeof(int), typeof(long) }.Contains(type))
+            if (new[] {typeof(short), typeof(int), typeof(long)}.Contains(type))
             {
                 return IqlType.Integer;
             }
-            if (new[] { typeof(decimal), typeof(float), typeof(double) }.Contains(type))
+            if (new[] {typeof(decimal), typeof(float), typeof(double)}.Contains(type))
             {
                 return IqlType.Decimal;
             }
-            if (new[] { typeof(DateTime), typeof(DateTimeOffset) }.Contains(type))
+            if (new[] {typeof(DateTime), typeof(DateTimeOffset)}.Contains(type))
             {
                 return IqlType.Date;
             }
+
             return IqlType.Unknown;
         }
 

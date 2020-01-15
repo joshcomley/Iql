@@ -95,7 +95,7 @@ namespace Iql.Data.Serialization
                 try
                 {
                     var deserialized =
-                        (SerializedEntitySet[]) JsonConvert.DeserializeObject(json, typeof(SerializedEntitySet[]));
+                        (SerializedEntitySet[])JsonConvert.DeserializeObject(json, typeof(SerializedEntitySet[]));
                     foreach (var set in deserialized)
                     {
                         var entityConfiguration = builder.GetEntityByTypeName(set.Type);
@@ -182,13 +182,6 @@ namespace Iql.Data.Serialization
 
         private static JToken ParseEntityInternal(JToken jvalue, IEntityConfiguration entityType, bool isCollectionRoot, IProperty property = null)
         {
-            if (property != null)
-            {
-                if (property.TypeDefinition.Kind.IsGeographic())
-                {
-                    return jvalue as JObject == null ? null : JObject.FromObject(JsonDataSerializer.ConvertODataGeographyToIqlGeography(jvalue as JObject, property.TypeDefinition.Kind));
-                }
-            }
             if (jvalue is JArray)
             {
                 foreach (var child in (JArray)jvalue)
@@ -227,9 +220,13 @@ namespace Iql.Data.Serialization
                             {
                                 jobj[prop.Name] = ParseEntityInternal(value, entityProperty.Relationship.OtherEnd.EntityConfiguration, false, entityProperty);
                             }
+                            else if (entityProperty.TypeDefinition.Kind.IsGeographic())
+                            {
+                                jobj[prop.Name] = value as JObject == null ? null : JObject.FromObject(JsonDataSerializer.ConvertODataGeographyToIqlGeography(value as JObject, entityProperty.TypeDefinition.Kind));
+                            }
                             else
                             {
-                                jobj[prop.Name] = ParseEntityInternal(value, entityType, false, entityProperty);
+                                jobj[prop.Name] = value;
                             }
                         }
                     }
@@ -249,8 +246,8 @@ namespace Iql.Data.Serialization
         }
 
         private static JObject SerializePropertyChangesInternal(
-            IEntityConfiguration entityConfiguration, 
-            object entity, 
+            IEntityConfiguration entityConfiguration,
+            object entity,
             bool isNew,
             bool allowAllKeys,
             IEnumerable<IPropertyState> properties)
@@ -273,10 +270,10 @@ namespace Iql.Data.Serialization
         }
 
         private static JObject SerializePropertiesInternal(
-            IEntityConfiguration entityConfiguration, 
-            object entity, 
+            IEntityConfiguration entityConfiguration,
+            object entity,
             bool isNew,
-            bool allowAllKeys, 
+            bool allowAllKeys,
             IProperty[] propertiesToSerialize)
         {
             var obj = new JObject();
@@ -300,7 +297,7 @@ namespace Iql.Data.Serialization
                     continue;
                 }
 
-                obj[((IMetadata) key).Name] = new JValue(entity.GetPropertyValueByName(((IMetadata) key).Name));
+                obj[((IMetadata)key).Name] = new JValue(entity.GetPropertyValueByName(((IMetadata)key).Name));
             }
 
             foreach (var property in propertiesToSerialize)
@@ -333,7 +330,7 @@ namespace Iql.Data.Serialization
 
                 if (property.TypeDefinition.IsCollection)
                 {
-                    obj[((IMetadata) property).Name] = new JArray(propertyValue);
+                    obj[((IMetadata)property).Name] = new JArray(propertyValue);
                 }
                 else
                 {
@@ -341,18 +338,18 @@ namespace Iql.Data.Serialization
                     {
                         if (propertyValue == null && !property.TypeDefinition.Nullable)
                         {
-                            obj[((IMetadata) property).Name] = "0001-01-01T00:00:00.0+00:00";
+                            obj[((IMetadata)property).Name] = "0001-01-01T00:00:00.0+00:00";
                         }
                         else
                         {
-                            var normalizedDate = propertyValue == null ? null : ((DateTimeOffset) propertyValue).NormalizeDate();
-                            obj[((IMetadata) property).Name] = new JValue(normalizedDate);
+                            var normalizedDate = propertyValue == null ? null : ((DateTimeOffset)propertyValue).NormalizeDate();
+                            obj[((IMetadata)property).Name] = new JValue(normalizedDate);
                         }
                     }
                     else if (property.TypeDefinition.ConvertedFromType == KnownPrimitiveTypes.Guid &&
                              !property.TypeDefinition.Nullable && propertyValue == null)
                     {
-                        obj[((IMetadata) property).Name] = "00000000-0000-0000-0000-000000000000";
+                        obj[((IMetadata)property).Name] = "00000000-0000-0000-0000-000000000000";
                     }
                     else if (property.TypeDefinition.Kind == IqlType.Enum)
                     {
@@ -370,38 +367,38 @@ namespace Iql.Data.Serialization
                             {
                                 try
                                 {
-                                    value = ((long) propertyValue).ToString();
+                                    value = ((long)propertyValue).ToString();
                                 }
                                 catch
                                 {
-                                    value = ((int) propertyValue).ToString();
+                                    value = ((int)propertyValue).ToString();
                                 }
                             }
                             else if (enumUnderlyingType == typeof(short))
                             {
                                 try
                                 {
-                                    value = ((short) propertyValue).ToString();
+                                    value = ((short)propertyValue).ToString();
                                 }
                                 catch
                                 {
-                                    value = ((int) propertyValue).ToString();
+                                    value = ((int)propertyValue).ToString();
                                 }
                             }
                             else
                             {
-                                value = ((int) propertyValue).ToString();
+                                value = ((int)propertyValue).ToString();
                             }
 #else
                             value = propertyValue.ToString();
 #endif
                         }
 
-                        obj[((IMetadata) property).Name] = new JValue(value);
+                        obj[((IMetadata)property).Name] = new JValue(value);
                     }
                     else
                     {
-                        obj[((IMetadata) property).Name] = new JValue(propertyValue);
+                        obj[((IMetadata)property).Name] = new JValue(propertyValue);
                     }
                 }
             }
@@ -419,7 +416,7 @@ namespace Iql.Data.Serialization
                 return;
             }
             var container = new JObject();
-            obj[((IMetadata) propertyProperty).Name] = container;
+            obj[((IMetadata)propertyProperty).Name] = container;
             string typeName = "";
             object coordinates = null;
             switch (propertyProperty.TypeDefinition.Kind)

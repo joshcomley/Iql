@@ -69,8 +69,8 @@ namespace Iql.Data
 
         public void RegisterRelatedListChanged(Action<IRelatedListChangeEvent> action)
         {
-            var matches = EntityState.EntityConfiguration.AllRelationships();
-            for (var j = 0; j < matches.Count; j++)
+            var matches = EntityState.EntityConfiguration.AllRelationships;
+            for (var j = 0; j < matches.Length; j++)
             {
                 var relationship = matches[j];
                 if (relationship.ThisEnd.IsCollection)

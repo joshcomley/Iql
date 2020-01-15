@@ -110,7 +110,10 @@ namespace Iql.Data.Relationships
                     }
                 }
 
-                filtered.Add(grouping.Key, filteredList);
+                if (filteredList.Count > 0)
+                {
+                    filtered.Add(grouping.Key, filteredList);
+                }
             }
 
             foreach (var item in filtered)
@@ -183,8 +186,8 @@ namespace Iql.Data.Relationships
             }
 
             var entityConfiguration = EntityConfigurationContext.GetEntityByType(entityType);
-            var relationships = entityConfiguration.AllRelationships();
-            for (var i = 0; i < relationships.Count; i++)
+            var relationships = entityConfiguration.AllRelationships;
+            for (var i = 0; i < relationships.Length; i++)
             {
                 var relationship = relationships[i];
                 if (relationship.ThisIsTarget &&
@@ -224,8 +227,8 @@ namespace Iql.Data.Relationships
         public void DeleteRelationships(object entity, Type entityType)
         {
             var relationships = EntityConfigurationContext.GetEntityByType(entityType)
-                .AllRelationships();
-            for (var i = 0; i < relationships.Count; i++)
+                .AllRelationships;
+            for (var i = 0; i < relationships.Length; i++)
             {
                 var relationship = relationships[i];
                 if (!relationship.ThisIsTarget)
@@ -519,8 +522,9 @@ namespace Iql.Data.Relationships
 
         private void ProcessTargetKeyChange(object entity, IEntityConfiguration entityConfiguration)
         {
-            foreach (var relationship in entityConfiguration.AllRelationships())
+            for (var i = 0; i < entityConfiguration.AllRelationships.Length; i++)
             {
+                var relationship = entityConfiguration.AllRelationships[i];
                 if (relationship.ThisIsTarget)
                 {
                     var idsMap = _ids.Ensure(relationship.Relationship, () => new Dictionary<object, string>());
@@ -599,8 +603,8 @@ namespace Iql.Data.Relationships
                 }
             }
 
-            var relationships = entityState.EntityConfiguration.AllRelationships();
-            for (var i = 0; i < relationships.Count; i++)
+            var relationships = entityState.EntityConfiguration.AllRelationships;
+            for (var i = 0; i < relationships.Length; i++)
             {
                 var relationship = relationships[i];
                 if (relationship.ThisIsTarget && !relationship.Relationship.Source.Property.TypeDefinition.Nullable)
@@ -644,7 +648,7 @@ namespace Iql.Data.Relationships
         {
             // Map all relationships
             var entityConfiguration = EntityConfiguration<T>();
-            var relationshipMatches = entityConfiguration.AllRelationships();
+            var relationshipMatches = entityConfiguration.AllRelationships;
             for (var i = 0; i < entities.Count; i++)
             {
                 var entity = entities[i];
@@ -685,13 +689,14 @@ namespace Iql.Data.Relationships
             where T : class
         {
             var entityConfiguration = EntityConfiguration<T>();
-            var relationshipMatches = entityConfiguration.AllRelationships();
+            var relationshipMatches = entityConfiguration.AllRelationships;
             // Pair up any relationships using the mappings
             for (var i = 0; i < entities.Count; i++)
             {
                 var entity = entities[i];
-                foreach (var relationship in relationshipMatches)
+                for (var j = 0; j < relationshipMatches.Length; j++)
                 {
+                    var relationship = relationshipMatches[j];
                     if (relationship.ThisIsTarget)
                     {
                         var targetKeyString = GetTargetKeyString(entity, relationship.Relationship);
@@ -754,6 +759,7 @@ namespace Iql.Data.Relationships
             string newRelationshipKey,
             object source)
         {
+            //xreturn;
             if (oldRelationshipKey == newRelationshipKey)
             {
                 return;
@@ -761,10 +767,9 @@ namespace Iql.Data.Relationships
 
             if (oldRelationshipKey != null)
             {
-                var relationshipSourceMaps = _oneToSourceRelationshipKeyMaps.Ensure(
+                var relationshipSourceMap = _oneToSourceRelationshipKeyMaps.Ensure(
                     relationship,
-                    () => new Dictionary<string, Dictionary<object, object>>());
-                var relationshipSourceMap = relationshipSourceMaps.Ensure(
+                    () => new Dictionary<string, Dictionary<object, object>>()).Ensure(
                     oldRelationshipKey,
                     () => new Dictionary<object, object>());
                 relationshipSourceMap.Remove(source);
@@ -772,10 +777,9 @@ namespace Iql.Data.Relationships
 
             if (newRelationshipKey != null)
             {
-                var relationshipSourceMaps = _oneToSourceRelationshipKeyMaps.Ensure(
+                var relationshipSourceMap = _oneToSourceRelationshipKeyMaps.Ensure(
                     relationship,
-                    () => new Dictionary<string, Dictionary<object, object>>());
-                var relationshipSourceMap = relationshipSourceMaps.Ensure(
+                    () => new Dictionary<string, Dictionary<object, object>>()).Ensure(
                     newRelationshipKey,
                     () => new Dictionary<object, object>());
                 if (!relationshipSourceMap.ContainsKey(source))

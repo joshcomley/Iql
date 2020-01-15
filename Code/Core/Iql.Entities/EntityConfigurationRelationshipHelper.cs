@@ -13,7 +13,7 @@ namespace Iql.Entities
 
         internal static void TryAssignRelationshipToPropertyDefinition(IEntityConfiguration entityConfiguration, IProperty definition, bool tryAssignOtherEnd = true)
         {
-            var relationship = entityConfiguration.FindRelationshipByName(((IMetadata) definition).Name);
+            var relationship = entityConfiguration.FindRelationshipByName(definition.Name);
             if (relationship != null)
             {
                 definition.Kind = IqlPropertyKind.Relationship;
@@ -21,28 +21,30 @@ namespace Iql.Entities
                 var otherEndConfiguration = entityConfiguration.Builder.GetEntityByType(relationship.OtherEnd.Type);
                 foreach (var constraint in relationship.Relationship.Constraints)
                 {
-                    var constraintProperty = otherEndConfiguration.FindProperty(((IMetadata) constraint.SourceKeyProperty).Name);
+                    var constraintProperty = otherEndConfiguration.FindProperty(constraint.SourceKeyProperty.Name);
                     if (constraintProperty != null &&
                         !constraintProperty.Kind.HasFlag(IqlPropertyKind.RelationshipKey) &&
                         !constraintProperty.Kind.HasFlag(IqlPropertyKind.Key))
                     {
                         constraintProperty.Kind = constraintProperty.Kind | IqlPropertyKind.RelationshipKey;
-                        constraintProperty.Relationship = otherEndConfiguration.FindRelationshipByName(((IMetadata) relationship.OtherEnd.Property).Name);
+                        constraintProperty.Relationship = otherEndConfiguration.FindRelationshipByName(relationship.OtherEnd.Property.Name);
                     }
                 }
                 if (tryAssignOtherEnd)
                 {
                     TryAssignRelationshipToProperty(
-                        otherEndConfiguration, ((IMetadata) relationship.OtherEnd.Property).Name, false);
+                        otherEndConfiguration, relationship.OtherEnd.Property.Name, false);
                 }
             }
             else
             {
-                foreach (var relationshipMatch in entityConfiguration.AllRelationships())
+                for (var i = 0; i < entityConfiguration.AllRelationships.Length; i++)
                 {
-                    foreach (var constraint in relationshipMatch.Relationship.Constraints)
+                    var relationshipMatch = entityConfiguration.AllRelationships[i];
+                    for (var j = 0; j < relationshipMatch.Relationship.Constraints.Count; j++)
                     {
-                        if (((IMetadata) constraint.SourceKeyProperty).Name == ((IMetadata) definition).Name &&
+                        var constraint = relationshipMatch.Relationship.Constraints[j];
+                        if (constraint.SourceKeyProperty.Name == definition.Name &&
                             !definition.Kind.HasFlag(IqlPropertyKind.RelationshipKey) &&
                             !definition.Kind.HasFlag(IqlPropertyKind.Key))
                         {

@@ -47,11 +47,6 @@ namespace Iql.Entities
             return null;
         }
 
-        public object GetValue(string name)
-        {
-            return Keys.Single(k => k.Name == name).Value;
-        }
-
         public void ApplyTo(object entity)
         {
             foreach (var property in Keys)
@@ -177,7 +172,8 @@ namespace Iql.Entities
         public string TypeName { get; set; }
         private static bool _allInitialized;
         private static List<CompositeKey> _all;
-
+        private bool _initializedKeyLookup = false;
+        private Dictionary<string, object> _keyValuePairs = null;
         public static List<CompositeKey> All { get { if (!_allInitialized) { _allInitialized = true; _all = new List<CompositeKey>(); } return _all; } set { _allInitialized = true; _all = value; } }
 
         public CompositeKey(string typeName, int size)
@@ -185,6 +181,22 @@ namespace Iql.Entities
             //All.Add(this);
             Keys = new KeyValue[size];
             TypeName = typeName;
+        }
+
+        public object GetValue(string key)
+        {
+            if (!_initializedKeyLookup)
+            {
+                _initializedKeyLookup = true;
+                _keyValuePairs = new Dictionary<string, object>();
+                for (var i = 0; i < Keys.Length; i++)
+                {
+                    var k = Keys[i];
+                    _keyValuePairs.Add(k.Name, k.Value);
+                }
+            }
+
+            return _keyValuePairs[key];
         }
         public object Entity { get; set; }
         public KeyValue[] Keys { get; }

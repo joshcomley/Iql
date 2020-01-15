@@ -59,8 +59,13 @@ namespace Iql.Extensions
                 var runtimeProperty = obj.GetType().GetRuntimeProperty(propertyName);
                 if (runtimeProperty == null)
                 {
+#if TypeScript
+                    var fullName = obj.GetType().Name;
+#else
+                    var fullName = obj.GetType().FullName;
+#endif
                     throw new Exception(
-                        $"Unable to find property \"{propertyName}\" on object of type \"{obj.GetType().FullName}\".");
+                        $"Unable to find property \"{propertyName}\" on object of type \"{fullName}\".");
                 }
                 runtimeProperty.SetValue(obj, value);
             }

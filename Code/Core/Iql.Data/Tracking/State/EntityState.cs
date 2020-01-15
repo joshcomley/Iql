@@ -78,10 +78,10 @@ namespace Iql.Data.Tracking.State
             IsTracked = isTracked;
             Id = Guid.NewGuid();
             DataTracker = dataTracker;
-            if (DataTracker != null)
-            {
-                EventSubscriberManager.Subscribe(DataTracker.HasSnapshotChanged, _ => { CheckHasChanged(); });
-            }
+            //if (DataTracker != null)
+            //{
+            //    EventSubscriberManager.Subscribe(DataTracker.HasSnapshotChanged, _ => { CheckHasChanged(); });
+            //}
 
             Entity = entity;
             EntityStates.Register(this);
@@ -93,11 +93,6 @@ namespace Iql.Data.Tracking.State
                 var property = EntityConfiguration.Properties[i];
                 var propertyState = new PropertyState(property, this);
                 Properties.Add(propertyState);
-                propertyState.HasChangesChanged.Subscribe(_ => CheckHasChanged());
-                propertyState.HasChangesSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
-                propertyState.HasNestedChangesChanged.Subscribe(_ => CheckHasChanged());
-                propertyState.HasNestedChangesSinceSnapshotChanged.Subscribe(_ => CheckHasChanged());
-                propertyState.HasSnapshotValueChanged.Subscribe(_ => CheckHasChanged());
             }
 
             UpdateHasChanges();

@@ -47,7 +47,7 @@ namespace Iql.Server.Serialization.Deserialization
                 }
                 foreach (var config in (result as EntityConfigurationDocument).EntityTypes)
                 {
-                    var rels = config.AllRelationships();
+                    var rels = config.AllRelationships;
                     foreach (var rel in rels)
                     {
                         rel.ThisEnd.Property.Relationship = rel;

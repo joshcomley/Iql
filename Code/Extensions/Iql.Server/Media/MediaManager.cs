@@ -47,7 +47,7 @@ namespace Iql.Server.Media
             var expands = new List<string>();
             var relationships = new List<ITargetRelationshipSourceDetail>();
             var entityConfiguration = configuration.EntityType<T>();
-            foreach (var relationship in entityConfiguration.AllRelationships())
+            foreach (var relationship in entityConfiguration.AllRelationships)
             {
                 var collectionRelationship = relationship.ThisEnd as ITargetRelationshipSourceDetail;
                 if (collectionRelationship != null && relationship.ThisIsTarget && collectionRelationship.SupportsCascadeDelete)

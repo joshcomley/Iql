@@ -1,10 +1,21 @@
-﻿using Iql.Entities.Extensions;
+﻿using System.Collections.Generic;
+using Iql.Entities.Extensions;
 
 namespace Iql.Entities.PropertyChangers
 {
     public static class PropertyChangerExtensions
     {
+        private static readonly Dictionary<ITypeDefinition, PropertyChanger> PropertyChangerCache = new Dictionary<ITypeDefinition, PropertyChanger>();
         public static PropertyChanger ResolveChanger(this ITypeDefinition typeDefinition)
+        {
+            if (!PropertyChangerCache.ContainsKey(typeDefinition))
+            {
+                PropertyChangerCache.Add(typeDefinition, PropertyChangerInternal(typeDefinition));
+            }
+            return PropertyChangerCache[typeDefinition];
+        }
+
+        private static PropertyChanger PropertyChangerInternal(ITypeDefinition typeDefinition)
         {
             if (typeDefinition != null)
             {
@@ -23,6 +34,7 @@ namespace Iql.Entities.PropertyChangers
                         return CollectionPropertyChanger.Instance;
                 }
             }
+
             return PrimitivePropertyChanger.Instance;
         }
     }
