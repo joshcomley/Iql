@@ -7,10 +7,17 @@ namespace Iql.Data.Tracking.State
         private static readonly Dictionary<object, IEntityStateBase> States = new Dictionary<object, IEntityStateBase>();
         private static readonly Dictionary<object, IEntityStateBase> StatesByState = new Dictionary<object, IEntityStateBase>();
 
+        public static long Count => States.Count;
+
         public static void Register(IEntityStateBase state)
         {
             States.Add(state.Entity, state);
             StatesByState.Add(state, state);
+            state.Disposed.SubscribeOnce(_ =>
+            {
+                States.Remove(state.Entity);
+                StatesByState.Remove(state);
+            });
         }
 
         public static IEntityStateBase Find(object entity)

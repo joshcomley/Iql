@@ -46,6 +46,7 @@ namespace Iql.Data.Tracking.State
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> PendingDeleteChanged { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsAttachedToGraphChanged { get; }
         EventEmitter<IEntityStateBase> Fetched { get; }
+        EventEmitter<IEntityStateBase> Disposed { get; }
         AsyncEventEmitter<IEntityStateBase> FetchedAsync { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsNewChanged { get; }
         EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }

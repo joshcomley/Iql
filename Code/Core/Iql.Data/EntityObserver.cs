@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Iql.Data.Events;
 using Iql.Data.Lists;
 using Iql.Data.Tracking.State;
+using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Events;
@@ -17,13 +18,12 @@ namespace Iql.Data
         private bool _relatedListChangedSubscriptionsDelayedInitialized;
         private Dictionary<IRelatedList, EventSubscription> _relatedListChangedSubscriptionsDelayed;
         private Dictionary<IRelatedList, EventSubscription> _relatedListChangedSubscriptions { get { if(!_relatedListChangedSubscriptionsDelayedInitialized) { _relatedListChangedSubscriptionsDelayedInitialized = true; _relatedListChangedSubscriptionsDelayed =             new Dictionary<IRelatedList, EventSubscription>(); } return _relatedListChangedSubscriptionsDelayed; } set { _relatedListChangedSubscriptionsDelayedInitialized = true; _relatedListChangedSubscriptionsDelayed = value; } }
-
-        public IEntityStateBase EntityState { get; }
+        public IEntityConfiguration EntityConfiguration { get; }
         private IEntity Entity { get; }
-        public EntityObserver(IEntityStateBase entityState)
+        public EntityObserver(IEntityConfiguration entityConfiguration, IEntity entity)
         {
-            EntityState = entityState;
-            Entity = (IEntity)entityState.Entity;
+            EntityConfiguration = entityConfiguration;
+            Entity = entity;
         }
 
         public void RegisterPropertyChanged(Action<IPropertyChangeEvent> action)
@@ -53,11 +53,6 @@ namespace Iql.Data
             RegisterEvent(action, nameof(IEntity.PropertyChanging), Entity.PropertyChanging);
         }
 
-        public void RegisterMarkForDeletionChanged(Action<MarkedForDeletionChangeEvent> action)
-        {
-            RegisterEvent(action, nameof(IEntityStateBase.MarkedForDeletionChanged), EntityState.MarkedForDeletionChanged);
-        }
-
         private void RegisterEvent<TEvent>(Action<TEvent> action, string key, IEventSubscriber<TEvent> eventEmitter)
         {
             if(_subscriptions.ContainsKey(key))
@@ -69,7 +64,7 @@ namespace Iql.Data
 
         public void RegisterRelatedListChanged(Action<IRelatedListChangeEvent> action)
         {
-            var matches = EntityState.EntityConfiguration.AllRelationships;
+            var matches = EntityConfiguration.AllRelationships;
             for (var j = 0; j < matches.Length; j++)
             {
                 var relationship = matches[j];

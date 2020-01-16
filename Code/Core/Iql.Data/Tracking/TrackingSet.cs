@@ -937,9 +937,8 @@ namespace Iql.Data.Tracking
 
             if (!_entityObservers.ContainsKey(sourceEntity))
             {
-                var observer = new EntityObserver(GetEntityState(entity));
+                var observer = new EntityObserver(EntityConfiguration, entity);
                 _entityObservers.Add(sourceEntity, observer);
-                observer.RegisterMarkForDeletionChanged(MarkedForDeletionChanged);
                 observer.RegisterPropertyChanging(EntityPropertyChanging);
                 observer.RegisterPropertyChanged(EntityPropertyChanged);
                 observer.RegisterRelatedListChanged(RelatedListChanged);
@@ -1116,16 +1115,6 @@ namespace Iql.Data.Tracking
                     propertyState.LocalValue = propertyChange.NewValue;
                 }
             }
-        }
-
-        private void MarkedForDeletionChanged(MarkedForDeletionChangeEvent markedForDeletionChangeEvent)
-        {
-            //if (!markedForDeletionChangeEvent.NewValue)
-            //{
-            //    DataContext.DataStore.RemoveQueuedOperationsOfTypeForEntity(
-            //        markedForDeletionChangeEvent.EntityState.Entity,
-            //        QueuedOperationType.Delete);
-            //}
         }
 
         private void SilentlyMerge(object entity, object mergeWith, bool overrideChanges)
@@ -1391,6 +1380,11 @@ namespace Iql.Data.Tracking
             {
                 state.Dispose();
             }
+        }
+
+        public void NotifyMarkedForDeletionChanged(bool isMarkedForDeletion, IEntityStateBase entityState)
+        {
+            DataTracker.RelationshipObserver.NotifyMarkedForDeletionChange(isMarkedForDeletion, entityState);
         }
     }
 }

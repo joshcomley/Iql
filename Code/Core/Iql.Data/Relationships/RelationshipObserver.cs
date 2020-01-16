@@ -358,17 +358,10 @@ namespace Iql.Data.Relationships
                 var entity = entities[i];
                 if (!_observed.ContainsKey(entity))
                 {
-                    var entityObserver = new EntityObserver(trackingSet.FindMatchingEntityState(entity));
+                    var entityObserver = new EntityObserver(trackingSet.EntityConfiguration, (IEntity)entity);
                     _observed.Add(entity, entityObserver);
-                    entityObserver.RegisterMarkForDeletionChanged(MarkedForDeletionChange);
                     entityObserver.RegisterPropertyChanged(e =>
                     {
-                        //IEntityConfiguration ec = entityConfiguration;
-                        //if (ec.SpecialTypeDefinition != null && ec.SpecialTypeDefinition.EntityConfiguration.Type == e.EntityType)
-                        //{
-                        //    ec = ec.SpecialTypeDefinition.EntityConfiguration;
-                        //}
-                        //PropertyChangeEvent(e, ec);
                         PropertyChangeEvent(e, entityConfiguration);
                     });
                     entityObserver.RegisterRelatedListChanged(RelatedListChanged);
@@ -582,10 +575,10 @@ namespace Iql.Data.Relationships
             }
         }
 
-        private void MarkedForDeletionChange(MarkedForDeletionChangeEvent e)
+        public void NotifyMarkedForDeletionChange(bool isMarkedForDeletion, IEntityStateBase entityState)
         {
             // Recurse all relationships marking for cascade delete if necessary
-            UpdateDeletionStatus(e.NewValue, e.EntityState, null, null);
+            UpdateDeletionStatus(isMarkedForDeletion, entityState, null, null);
         }
 
         private void UpdateDeletionStatus(bool deleted, IEntityStateBase entityState, object parent,

@@ -41,6 +41,7 @@ namespace Iql.Data.Tracking.State
         private bool _isAttachedToGraph;
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _isAttachedToGraphChanged;
         private EventEmitter<IEntityStateBase> _fetched;
+        private EventEmitter<IEntityStateBase> _disposed;
         private AsyncEventEmitter<IEntityStateBase> _fetchedAsync;
 
         private bool _isLocked;
@@ -397,6 +398,10 @@ namespace Iql.Data.Tracking.State
             _isAttachedToGraphChanged =
                 _isAttachedToGraphChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
 
+        public EventEmitter<IEntityStateBase> Disposed =>
+            _disposed =
+                _disposed ?? new EventEmitter<IEntityStateBase>();
+
         public EventEmitter<IEntityStateBase> Fetched =>
             _fetched =
                 _fetched ?? new EventEmitter<IEntityStateBase>();
@@ -451,7 +456,12 @@ namespace Iql.Data.Tracking.State
                 _markedForDeletion = value;
                 if (changed)
                 {
-                    _markedForDeletionChanged.EmitIfExists(() => new MarkedForDeletionChangeEvent(this, value));
+                    var markedForDeletionChangeEvent = new MarkedForDeletionChangeEvent(this, value);
+                    _markedForDeletionChanged.EmitIfExists(() => markedForDeletionChangeEvent);
+                    if(TrackingSet != null)
+                    {
+                        TrackingSet.NotifyMarkedForDeletionChanged(_markedForDeletion, this);
+                    }
                 }
 
                 UpdateStatus();
@@ -887,10 +897,13 @@ namespace Iql.Data.Tracking.State
         {
             MarkedForDeletionChanged?.Dispose();
             EventSubscriberManager?.Dispose();
-            foreach (var propState in PropertyStates)
+            for (var i = 0; i < PropertyStates.Length; i++)
             {
+                var propState = PropertyStates[i];
                 propState.Dispose();
             }
+
+            _disposed.EmitIfExists(() => this);
         }
 
         private void UpdatePendingInsert()

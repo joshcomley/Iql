@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Iql.Data.Tracking.State;
 using Iql.Entities;
 using Iql.Events;
 
@@ -21,5 +22,6 @@ namespace Iql.Data.Relationships
         void DeleteRelationships(object entity, Type type);
         void RestoreRelationships(object entity, Type entityType);
         void Clear();
+        void NotifyMarkedForDeletionChange(bool isMarkedForDeletion, IEntityStateBase entityState);
     }
 }
