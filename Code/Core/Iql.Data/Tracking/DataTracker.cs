@@ -22,6 +22,7 @@ namespace Iql.Data.Tracking
 {
     public class DataTracker : IJsonSerializable, IDataChangeProvider, IDisposable, ISnapshotManager, ILockable
     {
+        internal bool Observing { get; set; }
         public bool LiveTracking { get; }
         private bool _interestedPartiesDelayedInitialized;
         private Dictionary<object, Dictionary<string, Action<IEntityStateBase, IPropertyState>>> _interestedPartiesDelayed;
@@ -686,7 +687,7 @@ namespace Iql.Data.Tracking
             return entityState;
         }
 
-        public IEntityStateBase AddEntity<T>(T entity)
+        public Func<IEntityStateBase> AddEntity<T>(T entity)
             where T : class
         {
             var entityType = ResolveTrackingSet(entity, out var set);
@@ -833,7 +834,7 @@ namespace Iql.Data.Tracking
             }
         }
 
-        public IEntityStateBase AttachEntity<T>(T entity)
+        public Func<IEntityStateBase> AttachEntity<T>(T entity)
             where T : class
         {
             var entityType = ResolveTrackingSet(entity, out var set);
@@ -892,18 +893,20 @@ namespace Iql.Data.Tracking
             where TEntity : class
         {
             var trackingSet = TrackingSet<TEntity>();
-            var state = trackingSet.AttachEntity(
-                (TEntity)operation.Result.RemoteEntity.Clone(
-                    EntityConfigurationBuilder,
-                    typeof(TEntity)),
+            var entity = (TEntity)operation.Result.RemoteEntity.Clone(
+                EntityConfigurationBuilder,
+                typeof(TEntity));
+            trackingSet.AttachEntity(
+                entity,
                 isOffline);
+            var state = trackingSet.GetEntityState(entity);
             if (!isOffline)
             {
                 state.HardReset();
             }
 
             EmitStateChangedEvent();
-            return state;
+            return (IEntityState<TEntity>) state;
         }
 
         protected virtual void EmitStateChangedEvent()

@@ -16,9 +16,10 @@ namespace Iql.Data.Tracking
         Type EntityType { get; }
         IEntityStateBase Restore(SerializedEntityState entityState);
         void RemoveEntityByKey(CompositeKey compositeKey);
-        IEntityStateBase AddEntity(object entity);
-        IEntityStateBase Synchronise(object remoteEntity, bool overrideChanges, bool isRemote, object existingEntity);
-        IEntityStateBase AttachEntity(object entity, bool isLocal);
+        Func<IEntityStateBase> AddEntity(object entity);
+        object Synchronise(object remoteEntity, bool overrideChanges, bool isRemote, object existingEntity);
+        Func<IEntityStateBase> AttachEntity(object entity, bool isLocal);
+        void NotifyEntityIsNewChanged(IEntityStateBase entityStateBase);
         ITrackingSet Merge(object localEntity, object remoteEntity, bool overrideChanges, bool isRemote);
         DataTracker DataTracker { get; }
         void SetKey(object entity, Action action);
@@ -27,7 +28,9 @@ namespace Iql.Data.Tracking
         bool IsEntityTracked(object entity);
         bool DifferentEntityWithSameKeyIsTracked(object entity);
         IEntityConfiguration EntityConfiguration { get; }
+        IEntityStateBase FindEntityState(object entity);
         IEntityStateBase GetEntityState(object entity);
+        object GetEntityByKey(CompositeKey entity);
         IEntityStateBase FindMatchingEntityState(object entity);
         IEntityStateBase GetEntityStateByKey(CompositeKey key);
         bool KeyIsTracked(CompositeKey key);
@@ -48,5 +51,6 @@ namespace Iql.Data.Tracking
         void AbandonChangesForEntityStates(IEnumerable<IEntityStateBase> states, IProperty[] properties = null);
         void Clear();
         void NotifySaveApplied(object[] entities, IProperty[] properties, List<IEntityStateBase> failedEntitySaves);
+        bool IsNew(object entity);
     }
 }

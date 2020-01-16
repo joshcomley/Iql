@@ -427,6 +427,7 @@ namespace Iql.Data.Tracking.State
                     if (DataTracker != null)
                     {
                         DataTracker.NotifyEntityIsNewChanged(this);
+                        TrackingSet.NotifyEntityIsNewChanged(this);
                     }
                 }
             }

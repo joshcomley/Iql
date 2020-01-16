@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Haz.App.Data.Entities;
 using Iql.Data.Http;
 using Iql.Data.Serialization;
+using Iql.Data.Tracking.State;
 using Iql.OData;
 using Iql.Tests.Context;
 using Iql.Tests.Data.Context;
@@ -80,6 +81,7 @@ namespace Iql.Tests.Tests.OData
             var db = new HazceptionDataContext(new ODataDataStore());
             var clients = await db.Clients.Expand(_ => _.CreatedByUser.ExamResults).Expand(_ => _.Type).ToListAsync();
             Assert.AreEqual(ODataFakeHttpRequestResults.LargeRequestSize, clients.Count);
+            var count = EntityStates.Count;
         }
 
         [TestMethod]

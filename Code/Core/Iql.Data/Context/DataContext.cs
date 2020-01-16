@@ -135,7 +135,7 @@ namespace Iql.Data.Context
         private IEntityState<T> AddInternal<T>(T entity)
             where T : class
         {
-            return (IEntityState<T>)TemporalDataTracker.AddEntity(entity);
+            return (IEntityState<T>)TemporalDataTracker.AddEntity(entity)();
         }
         private bool _configurationsDelayedInitialized;
         private Dictionary<string, object> _configurationsDelayed;
@@ -1964,9 +1964,10 @@ namespace Iql.Data.Context
             foreach (var grouping in all)
             {
                 var list = grouping.Value;
+                var trackingSet = TemporalDataTracker.TrackingSetByType(grouping.Key);
                 foreach (var item in list)
                 {
-                    var entityStateBase = GetEntityState(item);
+                    var entityStateBase = trackingSet.FindEntityState(item);
                     if (entityStateBase != null)
                     {
                         entityStateBase.UpdateHasChanges();
@@ -2047,11 +2048,15 @@ namespace Iql.Data.Context
                     {
                         var item = response.Root[i];
                         var trackingSet = dataTracker.TrackingSetByType(typeof(TEntity));
-                        var state = trackingSet.Synchronise(item, false, true, null);
-                        await state.NotifyFetchedAsync();
+                        var entity = trackingSet.Synchronise(item, false, true, null);
+                        var state = trackingSet.FindEntityState(entity);
+                        if(state != null)
+                        {
+                            await state.NotifyFetchedAsync();
+                        }
                         if (dataTracker == localDataTracker)
                         {
-                            dbList.Add((TEntity)state.Entity);
+                            dbList.Add((TEntity)entity);
                         }
                         dealtWith.Add(item, item);
                     }

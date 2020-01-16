@@ -274,8 +274,8 @@ namespace Iql.Data.Relationships
             }
 
             var trackingSetByType = DataTracker.TrackingSetByType(relationship.Target.Type);
-            var state = trackingSetByType.FindMatchingEntityState(entity);
-            if (state.IsNew)
+            //var state = trackingSetByType.FindMatchingEntityState(entity);
+            if (trackingSetByType.IsNew(entity))
             {
                 // Assign a temporary ID
                 Dictionary<object, string> idLookup;
@@ -298,7 +298,7 @@ namespace Iql.Data.Relationships
                 return idLookup[entity];
             }
 
-            return relationship.Target.GetCompositeKey(state.Entity).AsLegacyKeyString(false);
+            return relationship.Target.GetCompositeKey(entity).AsLegacyKeyString(false);
         }
 
         private string GetRelationshipKeyString(
@@ -315,9 +315,8 @@ namespace Iql.Data.Relationships
                 if (target != null)
                 {
                     var targetTracking = DataTracker.TrackingSetByType(relationship.Target.Type);
-                    var state = targetTracking.FindMatchingEntityState(target);
                     targetKey = GetTargetKeyString(target, relationship);
-                    if (state.IsNew)
+                    if (targetTracking.IsNew(target))
                     {
                         return targetKey;
                     }
@@ -904,30 +903,30 @@ namespace Iql.Data.Relationships
 
         private void CheckIfAttachedToGraph(object entity)
         {
-            var state = DataTracker.GetEntityState(entity);
-            if (state != null)
-            {
-                if (!state.IsNew)
-                {
-                    state.IsAttachedToGraph = true;
-                    return;
-                }
-                var entityGraph = EntityConfigurationContext.FlattenObjectGraph(entity, entity.GetType());
-                foreach(var item in entityGraph)
-                {
-                    for (var i = 0; i < item.Value.Count; i++)
-                    {
-                        var gEntity = item.Value[i];
-                        var s = DataTracker.GetEntityState(gEntity);
-                        if(!s.IsNew)
-                        {
-                            state.IsAttachedToGraph = true;
-                            return;
-                        }
-                    }
-                }
-                state.IsAttachedToGraph = false;
-            }
+            //var state = DataTracker.GetEntityState(entity);
+            //if (state != null)
+            //{
+            //    if (!state.IsNew)
+            //    {
+            //        state.IsAttachedToGraph = true;
+            //        return;
+            //    }
+            //    var entityGraph = EntityConfigurationContext.FlattenObjectGraph(entity, entity.GetType());
+            //    foreach(var item in entityGraph)
+            //    {
+            //        for (var i = 0; i < item.Value.Count; i++)
+            //        {
+            //            var gEntity = item.Value[i];
+            //            var s = DataTracker.GetEntityState(gEntity);
+            //            if(!s.IsNew)
+            //            {
+            //                state.IsAttachedToGraph = true;
+            //                return;
+            //            }
+            //        }
+            //    }
+            //    state.IsAttachedToGraph = false;
+            //}
         }
     }
 }
