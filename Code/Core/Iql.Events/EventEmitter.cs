@@ -18,32 +18,35 @@ namespace Iql.Events
             return this;
         }
 
-        EventSubscription IEventSubscriberBase.Subscribe(Action<object> action, string key = null, int? allowedCount = null)
+        EventSubscription IEventSubscriberBase.Subscribe(Action<object> action, string key = null, int? allowedCount = null, int? priority = null)
         {
             return Subscribe(e =>
                 {
                     action(e);
                 },
-                key, allowedCount);
+                key, 
+                allowedCount,
+                priority);
         }
 
-        EventSubscription IEventSubscriberBase.SubscribeOnce(Action<object> action, string key = null)
+        EventSubscription IEventSubscriberBase.SubscribeOnce(Action<object> action, string key = null, int? priority = null)
         {
             return SubscribeOnce(e =>
                 {
                     action(e);
                 },
-                key);
+                key,
+                priority);
         }
 
-        public EventSubscription SubscribeOnce(Action<TEvent> action, string key = null)
+        public EventSubscription SubscribeOnce(Action<TEvent> action, string key = null, int? priority = null)
         {
-            return Subscribe(action, key, 1);
+            return Subscribe(action, key, 1, priority);
         }
 
-        public EventSubscription Subscribe(Action<TEvent> action, string key = null, int? allowedCount = null)
+        public EventSubscription Subscribe(Action<TEvent> action, string key = null, int? allowedCount = null, int? priority = null)
         {
-            var sub = SubscribeInternal(action, key, allowedCount);
+            var sub = SubscribeInternal(action, key, allowedCount, priority);
             switch (BackfireMode)
             {
                 case BackfireMode.All:

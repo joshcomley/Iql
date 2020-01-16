@@ -323,7 +323,7 @@ namespace Iql.Data.Tracking
                 }
                 else
                 {
-                    StateSinceSnapshot.MergeWithSnapshot(snapshotRemoved); 
+                    StateSinceSnapshot.MergeWithSnapshot(snapshotRemoved);
                     //StateSinceSnapshot.RemoveMatching(snapshotRemoved);
                 }
             }
@@ -332,7 +332,7 @@ namespace Iql.Data.Tracking
             {
                 UndoChanges();
             }
-            if(snapshotRemoved != null)
+            if (snapshotRemoved != null)
             {
                 _snapshotRemoved.EmitIfExists(() => new SnapshotEvent(this, snapshotRemoved));
             }
@@ -866,6 +866,10 @@ namespace Iql.Data.Tracking
         public IEntityStateBase GetEntityState<T>(T entity)
             where T : class
         {
+            if (entity == null)
+            {
+                return null;
+            }
             var entityType = ResolveTrackingSet(entity, out var set);
             var state = set.GetEntityState(entity);
             return state;
@@ -1379,7 +1383,7 @@ namespace Iql.Data.Tracking
         }
 
         public void NotifySaveApplied(
-            object[] entities, 
+            object[] entities,
             IProperty[] properties,
             List<IEntityStateBase> failedEntitySaves)
         {

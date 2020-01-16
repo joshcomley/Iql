@@ -990,7 +990,6 @@ namespace Iql.Tests.Tests.DataContextTests
             Db.Clients.Add(entity1);
             entity1.Name = "def";
             var snapshot1 = Db.AddSnapshot();
-
             var entity2 = new Client
             {
                 Name = "abc"

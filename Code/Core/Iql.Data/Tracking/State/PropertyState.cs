@@ -458,10 +458,12 @@ namespace Iql.Data.Tracking.State
                                 Watch(DataTracker.GetEntityState(item));
                             }
                         }
-                        EventSubscriberManager.Subscribe(relatedList.RelatedListChange, _ =>
-                        {
-                            RelatedListUpdated(_, relatedList, remoteList);
-                        }, "LocalValue");
+
+                        EventSubscriberManager.Subscribe(relatedList.RelatedListChange,
+                            _ => { RelatedListUpdated(_, relatedList, remoteList); },
+                            "LocalValue",
+                            null,
+                            100);
                     }
                 }
                 UpdateHasChanged();

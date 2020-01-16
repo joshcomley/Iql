@@ -14,6 +14,7 @@ namespace Iql.Data.Tracking.State
 {
     public interface IEntityStateBase : IJsonSerializable, IStateful, IDisposable, ILockable
     {
+        ITrackingSet TrackingSet { get; }
         bool IsTracked { get; }
         bool IsIqlEntityState { get; }
         EventEmitter<ValueChangedEvent<object, IPropertyState>> PropertyLocalValueChanged { get; }
@@ -42,14 +43,17 @@ namespace Iql.Data.Tracking.State
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> HasAnyChangesSinceSnapshotChanged { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> AttachedToTrackerChanged { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> PendingInsertChanged { get; }
+        EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> PendingDeleteChanged { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsAttachedToGraphChanged { get; }
         EventEmitter<IEntityStateBase> Fetched { get; }
         AsyncEventEmitter<IEntityStateBase> FetchedAsync { get; }
         EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsNewChanged { get; }
         EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged { get; }
+        EventEmitter<MarkedForDeletionChangeEvent> MarkedForAnyDeletionChanged { get; }
         Task NotifyFetchedAsync();
         bool AttachedToTracker { get; set; }
         bool PendingInsert { get; }
+        bool PendingDelete { get; }
         //IAsyncEventSubscriber<IEntityEvent> SavingAsync { get; }
         //IAsyncEventSubscriber<IEntityEvent> SavedAsync { get; }
         bool IsAttachedToGraph { get; set; }

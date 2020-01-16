@@ -5,6 +5,7 @@ namespace Iql.Events
 {
     public class EventSubscription
     {
+        public int Priority { get; set; }
         public IEventUnsubscriber EventSubscriber { get; }
         public object Action { get; }
         public int Id { get; }
@@ -49,11 +50,12 @@ namespace Iql.Events
 
         public bool Paused { get; set; }
 
-        public EventSubscription(IEventUnsubscriber eventSubscriber, int id, object action)
+        public EventSubscription(IEventUnsubscriber eventSubscriber, int id, object action, int priority = 0)
         {
             EventSubscriber = eventSubscriber;
             Id = id;
             Action = action;
+            Priority = priority;
         }
 
         private bool _unsubscribed;

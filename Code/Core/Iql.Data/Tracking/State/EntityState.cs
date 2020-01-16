@@ -50,10 +50,13 @@ namespace Iql.Data.Tracking.State
         private bool _markedForCascadeDeletion;
         private bool _markedForDeletion;
         private EventEmitter<MarkedForDeletionChangeEvent> _markedForDeletionChanged;
+        private EventEmitter<MarkedForDeletionChangeEvent> _markedForAnyDeletionChanged;
+        private EventEmitter<MarkedForDeletionChangeEvent> _markedForAdditionChanged;
         private Dictionary<Guid, IPropertyState[]> _operationsDelayed;
         private bool _operationsDelayedInitialized;
         private bool _pendingInsert;
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _pendingInsertChanged;
+        private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _pendingDeleteChanged;
         private EventEmitter<ValueChangedEvent<object, IPropertyState>> _propertyLocalValueChanged;
         private Dictionary<string, IPropertyState> _propertyStateByNameDelayed;
         private bool _propertyStateByNameDelayedInitialized;
@@ -66,18 +69,22 @@ namespace Iql.Data.Tracking.State
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _statusHasChangedChanged;
         private EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> _statusHasChangedSinceSnapshotChanged;
         private TrackingSet<T> _trackingSet;
+        private bool _markedForAnyDeletion = false;
+        private bool _pendingDelete = false;
+        private bool _markedForAddition = false;
 
         public EntityState(
-            DataTracker dataTracker,
+            TrackingSet<T> trackingSet,
             T entity,
             Type entityType,
             IEntityConfiguration entityConfiguration,
             bool isNew,
-            bool isTracked)
+            bool isTracked,
+            Guid id)
         {
             IsTracked = isTracked;
-            Id = Guid.NewGuid();
-            DataTracker = dataTracker;
+            Id = id;
+            _trackingSet = trackingSet;
             //if (DataTracker != null)
             //{
             //    EventSubscriberManager.Subscribe(DataTracker.HasSnapshotChanged, _ => { CheckHasChanged(); });
@@ -105,22 +112,16 @@ namespace Iql.Data.Tracking.State
             IsNew = isNew;
             SnapshotStatus = Status;
             MonitorSaveEvents();
+            if(Status == EntityStatus.Unattached)
+            {
+                UpdateStatus();
+            }
             CanNotifyStatusChange = true;
             NotifyStatusChange();
         }
 
-        private TrackingSet<T> TrackingSet
-        {
-            get
-            {
-                if (_trackingSet == null && DataTracker != null)
-                {
-                    _trackingSet = DataTracker.TrackingSet<T>();
-                }
-
-                return _trackingSet;
-            }
-        }
+        public DataTracker DataTracker => _trackingSet == null ? null : _trackingSet.DataTracker;
+        public TrackingSet<T> TrackingSet => _trackingSet;
 
         private bool CanNotifyStatusChange { get; }
 
@@ -186,9 +187,8 @@ namespace Iql.Data.Tracking.State
                     DataTracker.NotifyAttachedToTrackerChanged(this, value);
                     _attachedToTrackerChanged.EmitIfExists(() =>
                         new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
+                    UpdateStatus();
                 }
-
-                UpdateStatus();
             }
         }
 
@@ -374,6 +374,9 @@ namespace Iql.Data.Tracking.State
         public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> PendingInsertChanged => _pendingInsertChanged =
             _pendingInsertChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
 
+        public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> PendingDeleteChanged => _pendingDeleteChanged =
+            _pendingDeleteChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
+
         public bool IsAttachedToGraph
         {
             get => _isAttachedToGraph;
@@ -412,30 +415,26 @@ namespace Iql.Data.Tracking.State
             {
                 var old = _isNew;
                 _isNew = value;
-                if (value)
-                {
-                    // TODO: Remove this..?
-                    //_remoteKey = null;
-                    MarkedForDeletion = false;
-                }
-
                 if (old != value)
                 {
                     _isNewChanged.EmitIfExists(() => new ValueChangedEvent<bool, IEntityStateBase>(old, value, this));
-                    UpdatePendingInsert();
-                    CheckHasChanged();
+                    UpdateStatus();
                     if (DataTracker != null)
                     {
                         DataTracker.NotifyEntityIsNewChanged(this);
                     }
                 }
-
-                UpdateStatus();
             }
         }
 
         public EventEmitter<MarkedForDeletionChangeEvent> MarkedForDeletionChanged => _markedForDeletionChanged =
             _markedForDeletionChanged ?? new EventEmitter<MarkedForDeletionChangeEvent>();
+
+        public EventEmitter<MarkedForDeletionChangeEvent> MarkedForAnyDeletionChanged => _markedForAnyDeletionChanged =
+            _markedForAnyDeletionChanged ?? new EventEmitter<MarkedForDeletionChangeEvent>();
+
+        public EventEmitter<MarkedForDeletionChangeEvent> MarkedForAdditionChanged => _markedForAdditionChanged =
+            _markedForAdditionChanged ?? new EventEmitter<MarkedForDeletionChangeEvent>();
 
         public EventEmitter<ValueChangedEvent<bool, IEntityStateBase>> IsNewChanged =>
             _isNewChanged = _isNewChanged ?? new EventEmitter<ValueChangedEvent<bool, IEntityStateBase>>();
@@ -453,7 +452,6 @@ namespace Iql.Data.Tracking.State
                 if (changed)
                 {
                     _markedForDeletionChanged.EmitIfExists(() => new MarkedForDeletionChangeEvent(this, value));
-                    UpdatePendingInsert();
                 }
 
                 UpdateStatus();
@@ -466,12 +464,12 @@ namespace Iql.Data.Tracking.State
             set
             {
                 _markedForCascadeDeletion = value;
-                UpdatePendingInsert();
                 UpdateStatus();
             }
         }
 
-        public bool MarkedForAnyDeletion => MarkedForDeletion || MarkedForCascadeDeletion;
+        public bool MarkedForAnyDeletion => _markedForAnyDeletion;
+        public bool PendingDelete => _pendingDelete;
 
         public void UnmarkForDeletion()
         {
@@ -664,7 +662,6 @@ namespace Iql.Data.Tracking.State
         }
 
         public bool Floating { get; set; }
-        public DataTracker DataTracker { get; }
 
         public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> StatefulSaveEvents => _statefulSaveEvents =
             _statefulSaveEvents ?? new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
@@ -687,6 +684,8 @@ namespace Iql.Data.Tracking.State
 
         //public IDataContext DataContext => DataTracker.DataContext;
         public IEntityConfiguration EntityConfiguration { get; }
+
+        ITrackingSet IEntityStateBase.TrackingSet => TrackingSet;
 
         public bool IsTracked { get; }
         public bool IsIqlEntityState => true;
@@ -897,10 +896,25 @@ namespace Iql.Data.Tracking.State
         private void UpdatePendingInsert()
         {
             PendingInsert = IsNew && !MarkedForAnyDeletion;
+            if (TrackingSet != null)
+            {
+                if (PendingInsert)
+                {
+                    TrackingSet.SetMarkedForAddition(this, true);
+                }
+                else
+                {
+                    TrackingSet.SetMarkedForAddition(this, false);
+                }
+            }
         }
 
         private void UpdateStatus()
         {
+            UpdateMarkedForAnyDeletion();
+            UpdatePendingInsert();
+            CheckHasChanged();
+
             if (_settingStatus)
             {
                 return;
@@ -942,8 +956,43 @@ namespace Iql.Data.Tracking.State
                 status = EntityStatus.ExistingAndDeleted;
             }
 
-            Status = status;
+            if(status != Status)
+            {
+                Status = status;
+                UpdateMarkedForAnyDeletion();
+                UpdatePendingInsert();
+                CheckHasChanged();
+            }
             _settingStatus = false;
+        }
+        private void UpdateMarkedForAnyDeletion()
+        {
+            var oldMarkedForAnyDeletion = _markedForAnyDeletion;
+            _markedForAnyDeletion = MarkedForDeletion || MarkedForCascadeDeletion;
+            if (oldMarkedForAnyDeletion != _markedForAnyDeletion)
+            {
+                _markedForAnyDeletionChanged.EmitIfExists(() =>
+                    new MarkedForDeletionChangeEvent(this, _markedForAnyDeletion));
+            }
+
+            var oldPendingDelete = _pendingDelete;
+            _pendingDelete = _markedForAnyDeletion && !IsNew && AttachedToTracker;
+            if (oldPendingDelete != _pendingDelete)
+            {
+                _pendingDeleteChanged.EmitIfExists(() =>
+                    new ValueChangedEvent<bool, IEntityStateBase>(oldPendingDelete, _pendingDelete, this));
+                if (TrackingSet != null)
+                {
+                    if (_pendingDelete)
+                    {
+                        TrackingSet.SetMarkedForDeletion(this, true);
+                    }
+                    else
+                    {
+                        TrackingSet.SetMarkedForDeletion(this, false);
+                    }
+                }
+            }
         }
 
         private void UpdateStatusHasChanged()

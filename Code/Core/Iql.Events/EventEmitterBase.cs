@@ -64,6 +64,7 @@ namespace Iql.Events
                 return null;
             }
             return subscriptionActions
+                .OrderBy(_ => _.Priority)
                 .Select(_ => new SubscriptionAction<TSubscriptionAction>(_, (TSubscriptionAction)_.Action)).ToList();
         }
 
@@ -205,11 +206,12 @@ namespace Iql.Events
             return () => { return CreateEvent(); };
         }
 
-        protected EventSubscription SubscribeInternal(TSubscriptionAction action, string key = null, int? allowedCount = null)
+        protected EventSubscription SubscribeInternal(TSubscriptionAction action, string key = null, int? allowedCount = null, int? priority = null)
         {
             var id = ++_subscriptionId;
             var sub = new EventSubscription(this, id, action);
             sub.Key = key;
+            sub.Priority = priority ?? 0;
             sub.AllowedCallCount = allowedCount;
             SubscriptionsById.Add(id, sub);
             _subscriptions = SubscriptionsById.Values.ToList();

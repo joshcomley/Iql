@@ -10,6 +10,7 @@ namespace Iql.Data.Tracking
     public interface ITrackingSet : IJsonSerializable, IDataChangeProvider, IDisposable
     {
         bool LiveTracking { get; }
+        ITrackingSet SetMarkedForDeletion(IEntityStateBase state, bool isMarkedForDeletion);
         IEntityStateBase[] GetChangedStates();
         IEntityStateBase[] AllEntityStates();
         Type EntityType { get; }

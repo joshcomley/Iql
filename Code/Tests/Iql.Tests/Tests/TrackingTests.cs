@@ -1069,6 +1069,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(1, changes.Count, "Expecting a delete operation");
             Assert.AreEqual(QueuedOperationKind.Delete, changes.AllChanges[0].Kind, "Expecting a delete operation");
             var result = await Db.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
             changes = Db.GetChanges();
             Assert.AreEqual(0, changes.Count);
         }

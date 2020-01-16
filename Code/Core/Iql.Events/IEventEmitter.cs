@@ -15,8 +15,8 @@ namespace Iql.Events
 
     public interface IAsyncEventSubscriber<out TEvent> : IAsyncEventSubscriberBase
     {
-        EventSubscription SubscribeAsync(Func<TEvent, Task> action, string key = null, int? allowedCount = null);
-        EventSubscription SubscribeOnceAsync(Func<TEvent, Task> action, string key = null);
+        EventSubscription SubscribeAsync(Func<TEvent, Task> action, string key = null, int? allowedCount = null, int? priority = null);
+        EventSubscription SubscribeOnceAsync(Func<TEvent, Task> action, string key = null, int? priority = null);
     }
 
     public interface IEventEmitterRoot : IDisposable
@@ -37,8 +37,8 @@ namespace Iql.Events
     }
     public interface IAsyncEventSubscriberBase : IEventUnsubscriber
     {
-        EventSubscription SubscribeAsync(Func<object, Task> propertyChangeEvent, string key = null, int? allowedCount = null);
-        EventSubscription SubscribeOnceAsync(Func<object, Task> propertyChangeEvent, string key = null);
+        EventSubscription SubscribeAsync(Func<object, Task> propertyChangeEvent, string key = null, int? allowedCount = null, int? priority = null);
+        EventSubscription SubscribeOnceAsync(Func<object, Task> propertyChangeEvent, string key = null, int? priority = null);
     }
 
     public interface IEventManager<TEvent> : IEventEmitter<TEvent>, IEventSubscriber<TEvent>
@@ -58,8 +58,8 @@ namespace Iql.Events
 
     public interface IEventSubscriber<out TEvent> : IEventSubscriberBase
     {
-        EventSubscription Subscribe(Action<TEvent> action, string key = null, int? allowedCount = null);
-        EventSubscription SubscribeOnce(Action<TEvent> action, string key = null);
+        EventSubscription Subscribe(Action<TEvent> action, string key = null, int? allowedCount = null, int? priority = null);
+        EventSubscription SubscribeOnce(Action<TEvent> action, string key = null, int? priority = null);
     }
 
     public interface IEventSubscriberSubscriber
@@ -82,8 +82,8 @@ namespace Iql.Events
 
     public interface IEventSubscriberBase : IEventSubscriberRoot
     {
-        EventSubscription Subscribe(Action<object> propertyChangeEvent, string key = null, int? allowedCount = null);
-        EventSubscription SubscribeOnce(Action<object> propertyChangeEvent, string key = null);
+        EventSubscription Subscribe(Action<object> propertyChangeEvent, string key = null, int? allowedCount = null, int? priority = null);
+        EventSubscription SubscribeOnce(Action<object> propertyChangeEvent, string key = null, int? priority = null);
     }
 
     public interface IEventUnsubscriber : IDisposable

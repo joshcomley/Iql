@@ -35,12 +35,20 @@ namespace Iql.Tests.Tests
         [TestMethod]
         public async Task TestAbandonNewEntity()
         {
+            var changes = Db.GetChanges();
+            Assert.AreEqual(0, changes.Count);
             var reportType = new ReportType();
             Db.ReportTypes.Add(reportType);
+            changes = Db.GetChanges();
+            Assert.AreEqual(1, changes.Count);
             Db.AbandonChangesForEntity(reportType);
+            changes = Db.GetChanges();
+            Assert.AreEqual(0, changes.Count, "Abandoned new entity is not properly abandoned");
             var reportCategory = new ReportCategory();
             reportCategory.Name = "Abc";
             Db.ReportCategories.Add(reportCategory);
+            changes = Db.GetChanges();
+            Assert.AreEqual(1, changes.Count);
             var result = await Db.SaveChangesAsync();
             Assert.IsTrue(result.Success);
         }

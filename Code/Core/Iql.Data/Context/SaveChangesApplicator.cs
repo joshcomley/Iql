@@ -582,12 +582,13 @@ namespace Iql.Data.Context
             where TEntity : class where TMap : class
         {
             var dummyEntityState = new EntityState<TMap>(
-                update.Operation.EntityState.DataTracker,
+                null,
                 mappedEntity,
                 typeof(TMap),
                 DataContext.EntityConfigurationContext.EntityType<TMap>(),
                 true,
-                false);
+                false,
+                Guid.NewGuid());
             return dummyEntityState;
         }
 

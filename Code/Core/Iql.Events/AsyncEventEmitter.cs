@@ -18,31 +18,32 @@ namespace Iql.Events
             return this;
         }
 
-        EventSubscription IAsyncEventSubscriberBase.SubscribeAsync(Func<object, Task> action, string key = null, int? allowedCount = null)
+        EventSubscription IAsyncEventSubscriberBase.SubscribeAsync(Func<object, Task> action, string key = null, int? allowedCount = null, int? priority = null)
         {
-            return SubscribeAsync(async e =>
-            {
-                await action(e);
-            }, key, allowedCount);
+            return SubscribeAsync(async e => { await action(e); },
+                key,
+                allowedCount,
+                priority);
         }
 
-        EventSubscription IAsyncEventSubscriberBase.SubscribeOnceAsync(Func<object, Task> action, string key = null)
+        EventSubscription IAsyncEventSubscriberBase.SubscribeOnceAsync(Func<object, Task> action, string key = null, int? priority = null)
         {
             return SubscribeOnceAsync(async e =>
                 {
                     await action(e);
                 },
-                key);
+                key,
+                priority);
         }
 
-        public EventSubscription SubscribeOnceAsync(Func<TEvent, Task> action, string key = null)
+        public EventSubscription SubscribeOnceAsync(Func<TEvent, Task> action, string key = null, int? priority = null)
         {
-            return SubscribeAsync(action, key, 1);
+            return SubscribeAsync(action, key, 1, priority);
         }
 
-        public EventSubscription SubscribeAsync(Func<TEvent, Task> action, string key = null, int? allowedCount = null)
+        public EventSubscription SubscribeAsync(Func<TEvent, Task> action, string key = null, int? allowedCount = null, int? priority = null)
         {
-            var sub = SubscribeInternal(action, key, allowedCount);
+            var sub = SubscribeInternal(action, key, allowedCount, priority);
             switch (BackfireMode)
             {
                 case BackfireMode.All:

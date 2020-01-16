@@ -8,6 +8,7 @@ namespace Iql.Data.Tracking.State
     public interface IEntityState<T> : IEntityStateBase
         where T : class
     {
+        new TrackingSet<T> TrackingSet { get; }
         new IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> StatefulSaveEvents { get; }
         new IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> SaveEvents { get; }
         new IOperationEvents<AbandonChangeEvent, AbandonChangeEvent> AbandonEvents { get; }
