@@ -534,16 +534,19 @@ namespace Iql.Data.Tracking
                 {
                     list.Add(new SanitizedEntity(true, key, null));
                 }
-                else if (entity is IEntityStateBase state)
-                {
-                    list.Add(new SanitizedEntity(false, state.RemoteKey, state));
-                }
                 else
                 {
-                    var foundState = GetEntityState(entity);
-                    if (foundState != null)
+                    if (entity is IEntityStateBase state)
                     {
-                        list.Add(new SanitizedEntity(false, foundState.RemoteKey, foundState));
+                        list.Add(new SanitizedEntity(false, state.RemoteKey, state));
+                    }
+                    else
+                    {
+                        var foundState = GetEntityState(entity);
+                        if (foundState != null)
+                        {
+                            list.Add(new SanitizedEntity(false, foundState.RemoteKey, foundState));
+                        }
                     }
                 }
             }
