@@ -53,14 +53,14 @@ namespace Iql.Events
                     var history = Backfires.ToArray();
                     foreach (var ev in history)
                     {
-                        EmitToSubscriptions(() => ev, null, new[] { new SubscriptionAction<Action<TEvent>>(sub, action) }.ToList());
+                        EmitToSubscriptions(() => ev, null, new[] { sub }.ToList());
                     }
                     break;
                 case BackfireMode.Last:
                     if (Backfires.Any())
                     {
                         var last = Backfires.LastOrDefault();
-                        EmitToSubscriptions(() => last, null, new[] { new SubscriptionAction<Action<TEvent>>(sub, action) }.ToList());
+                        EmitToSubscriptions(() => last, null, new[] { sub }.ToList());
                     }
                     break;
             }
@@ -72,7 +72,7 @@ namespace Iql.Events
             return EmitToSubscriptions(eventObjectFactory, afterEvent, ResolveSubscriptionActions(subscriptions));
         }
 
-        private TEvent EmitToSubscriptions(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent, List<SubscriptionAction<Action<TEvent>>> subscriptionActions)
+        private TEvent EmitToSubscriptions(Func<TEvent> eventObjectFactory, Action<TEvent> afterEvent, List<EventSubscription> subscriptionActions)
         {
             eventObjectFactory = BuildEventObjectFactory(eventObjectFactory);
             if (subscriptionActions != null && subscriptionActions.Count > 0)
@@ -81,7 +81,7 @@ namespace Iql.Events
                 for (var i = 0; i < subscriptionActions.Count; i++)
                 {
                     var subscriptionAction = subscriptionActions[i];
-                    if (subscriptionAction.Subscription.Paused || !subscriptionAction.Subscription.IsWithinAllowedCallCount)
+                    if (subscriptionAction.Paused || !subscriptionAction.IsWithinAllowedCallCount)
                     {
                         continue;
                     }
@@ -113,16 +113,16 @@ namespace Iql.Events
             return default(TEvent);
         }
 
-        private static void EmitToSubscription(SubscriptionAction<Action<TEvent>> subscriptionAction, TEvent ev)
+        private static void EmitToSubscription(EventSubscription subscriptionAction, TEvent ev)
         {
             try
             {
-                subscriptionAction.Subscription.RegisterCalled();
-                subscriptionAction.Action(ev);
-                if (!subscriptionAction.Subscription.IsWithinAllowedCallCount &&
-                    !subscriptionAction.Subscription.KeepSubscriptionAfterCallCount)
+                subscriptionAction.RegisterCalled();
+                ((Action<TEvent>) subscriptionAction.Action)(ev);
+                if (!subscriptionAction.IsWithinAllowedCallCount &&
+                    !subscriptionAction.KeepSubscriptionAfterCallCount)
                 {
-                    subscriptionAction.Subscription.Unsubscribe();
+                    subscriptionAction.Unsubscribe();
                 }
             }
             catch (Exception e)

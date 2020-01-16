@@ -9,6 +9,46 @@ namespace Iql.Tests.Tests
     public class EventTests
     {
         [TestMethod]
+        public void PriorityTest()
+        {
+            var text = "";
+            var emitter = new EventEmitter<int>();
+            var manager = new IqlEventSubscriberManager();
+            manager.Subscribe(emitter, _ => text += "w", null, null, 4);
+            manager.Subscribe(emitter, _ => text += " ", null, null, 3);
+            manager.Subscribe(emitter, _ => text += "o", null, null, 5);
+            manager.Subscribe(emitter, _ => text += "t", null, null, 2);
+            manager.Subscribe(emitter, _ => text += "i", null, null, 1);
+            manager.Subscribe(emitter, _ => text += "r", null, null, 6);
+            manager.Subscribe(emitter, _ => text += "!", null, null, 9);
+            manager.Subscribe(emitter, _ => text += "k", null, null, 7);
+            manager.Subscribe(emitter, _ => text += "s", null, null, 8);
+            emitter.Emit(() => 0);
+            Assert.AreEqual("it works!", text);
+            manager.UnsubscribeAll();
+        }
+        
+        [TestMethod]
+        public async Task PriorityTestAsync()
+        {
+            var text = "";
+            var emitter = new AsyncEventEmitter<int>();
+            var manager = new IqlEventSubscriberManager();
+            manager.SubscribeAsync(emitter, async _ => text += "w", null, null, 4);
+            manager.SubscribeAsync(emitter, async _ => text += " ", null, null, 3);
+            manager.SubscribeAsync(emitter, async _ => text += "o", null, null, 5);
+            manager.SubscribeAsync(emitter, async _ => text += "t", null, null, 2);
+            manager.SubscribeAsync(emitter, async _ => text += "i", null, null, 1);
+            manager.SubscribeAsync(emitter, async _ => text += "r", null, null, 6);
+            manager.SubscribeAsync(emitter, async _ => text += "!", null, null, 9);
+            manager.SubscribeAsync(emitter, async _ => text += "k", null, null, 7);
+            manager.SubscribeAsync(emitter, async _ => text += "s", null, null, 8);
+            await emitter.EmitAsync(() => 0);
+            Assert.AreEqual("it works!", text);
+            manager.UnsubscribeAll();
+        }
+
+        [TestMethod]
         public void SubscriptionConfigureTest()
         {
             var hasSubscriptionsCounter = 0;

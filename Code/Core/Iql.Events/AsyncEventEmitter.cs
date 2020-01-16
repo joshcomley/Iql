@@ -50,7 +50,7 @@ namespace Iql.Events
                     foreach (var ev in Backfires)
                     {
 #pragma warning disable 4014
-                        EmitToSubscriptionsAsync(() => ev, null, new[] { new SubscriptionAction<Func<TEvent, Task>>(sub, action) }.ToList());
+                        EmitToSubscriptionsAsync(() => ev, null, new[] { sub }.ToList());
 #pragma warning restore 4014
                     }
                     break;
@@ -59,7 +59,7 @@ namespace Iql.Events
                     {
                         var last = Backfires.LastOrDefault();
 #pragma warning disable 4014
-                        EmitToSubscriptionsAsync(() => last, null, new[] { new SubscriptionAction<Func<TEvent, Task>>(sub, action) }.ToList());
+                        EmitToSubscriptionsAsync(() => last, null, new[] { sub }.ToList());
 #pragma warning restore 4014
                     }
                     break;
@@ -72,7 +72,7 @@ namespace Iql.Events
             return await EmitToSubscriptionsAsync(eventObjectFactory, afterEvent, ResolveSubscriptionActions(subscriptions));
         }
 
-        private async Task<TEvent> EmitToSubscriptionsAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent, List<SubscriptionAction<Func<TEvent, Task>>> subscriptionActions)
+        private async Task<TEvent> EmitToSubscriptionsAsync(Func<TEvent> eventObjectFactory, Func<TEvent, Task> afterEvent, List<EventSubscription> subscriptionActions)
         {
             eventObjectFactory = BuildEventObjectFactory(eventObjectFactory);
             if (subscriptionActions != null && subscriptionActions.Count > 0)
@@ -81,7 +81,7 @@ namespace Iql.Events
                 for (var i = 0; i < subscriptionActions.Count; i++)
                 {
                     var subscriptionAction = subscriptionActions[i];
-                    if (subscriptionAction.Subscription.Paused || !subscriptionAction.Subscription.IsWithinAllowedCallCount)
+                    if (subscriptionAction.Paused || !subscriptionAction.IsWithinAllowedCallCount)
                     {
                         continue;
                     }
@@ -117,16 +117,16 @@ namespace Iql.Events
             return default(TEvent);
         }
 
-        private static async Task EmitToSubscriptionAsync(SubscriptionAction<Func<TEvent, Task>> subscriptionAction, TEvent ev)
+        private static async Task EmitToSubscriptionAsync(EventSubscription subscriptionAction, TEvent ev)
         {
             try
             {
-                subscriptionAction.Subscription.RegisterCalled();
-                await subscriptionAction.Action(ev);
-                if (!subscriptionAction.Subscription.IsWithinAllowedCallCount &&
-                    !subscriptionAction.Subscription.KeepSubscriptionAfterCallCount)
+                subscriptionAction.RegisterCalled();
+                await ((Func<TEvent, Task>)subscriptionAction.Action)(ev);
+                if (!subscriptionAction.IsWithinAllowedCallCount &&
+                    !subscriptionAction.KeepSubscriptionAfterCallCount)
                 {
-                    subscriptionAction.Subscription.Unsubscribe();
+                    subscriptionAction.Unsubscribe();
                 }
             }
             catch (Exception e)

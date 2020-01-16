@@ -6,17 +6,6 @@ using Newtonsoft.Json;
 
 namespace Iql.Events
 {
-    public class SubscriptionAction<TSubscriptionAction>
-    {
-        public EventSubscription Subscription { get; }
-        public TSubscriptionAction Action { get; }
-
-        public SubscriptionAction(EventSubscription subscription, TSubscriptionAction action)
-        {
-            Subscription = subscription;
-            Action = action;
-        }
-    }
     public abstract class EventEmitterBase<TEvent, TSubscriptionAction> : EventEmitterRoot, IEventSubscriberRoot
     {
         public EventEmitter<IEventSubscriberRoot> HasSubscriptionChanged => _hasSubscriptionChanged = _hasSubscriptionChanged ?? new EventEmitter<IEventSubscriberRoot>();
@@ -40,7 +29,7 @@ namespace Iql.Events
         private EventEmitter<EventSubscription> _onUnsubscribe;
         private int _subscriptionId;
 
-        protected List<SubscriptionAction<TSubscriptionAction>> ResolveSubscriptionActions(IEnumerable<EventSubscription> subscriptions)
+        protected List<EventSubscription> ResolveSubscriptionActions(IEnumerable<EventSubscription> subscriptions)
         {
             List<EventSubscription> subscriptionActions;
             if (subscriptions == null)
@@ -65,7 +54,7 @@ namespace Iql.Events
             }
             return subscriptionActions
                 .OrderBy(_ => _.Priority)
-                .Select(_ => new SubscriptionAction<TSubscriptionAction>(_, (TSubscriptionAction)_.Action)).ToList();
+                .ToList();
         }
 
         protected EventSubscription FindSubscription(int id)
