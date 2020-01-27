@@ -1,51 +1,38 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Configurations>Debug;Release;Debug TypeScript CSharp</Configurations>
-  </PropertyGroup>
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10071-0-Release" />
-        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10113-0-Release" />
+        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10114-0-Release" />
+        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10114-0-Release" />
+        <PackageReference Include="Iql.Server" Version="0.0.28-preview20586-0-Release" />
+        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10074-0-Release" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10071-1-Debug" />
-        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10113-1-Debug" />
+        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10114-1-Debug" />
+        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10114-1-Debug" />
+        <PackageReference Include="Iql.Server" Version="0.0.28-preview20586-1-Debug" />
+        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10074-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.1.0.9" />
-    <PackageReference Include="NetTopologySuite.Core" Version="1.15.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="NetTopologySuite" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.0\ref\netcoreapp3.1\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Abstractions">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.0\ref\netcoreapp3.1\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Core">
+      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.1.0\ref\netcoreapp3.1\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />
-    <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
-    <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />
-    <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
     <ProjectReference Include="..\Iql.Server\Iql.Server.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Update="C:\Users\Josh Comley\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0010\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </Content>
-    <Content Update="C:\Users\Josh Comley\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0011\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </Content>
-    <Content Update="C:\Users\josh-xps\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0003\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </Content>
-    <Content Update="C:\Users\joshc\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0001\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </Content>
-    <Content Update="C:\Users\joshc\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0003\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </Content>
-    <Content Update="C:\Users\joshc\.nuget\packages\microsoft.aspnetcore.odata\7.2.0-pre-0011\contentFiles\any\netstandard2.0\PropertyContainer.generated.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </Content>
   </ItemGroup>
 </Project>

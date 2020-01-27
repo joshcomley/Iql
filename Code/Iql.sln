@@ -238,7 +238,8 @@ Global
 		{D900FC63-7CC8-4393-9751-7F1797BCC24E}.TypeScript Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F30063B2-FE3F-4F52-B911-E296B94D9B1E}.Debug - Live|Any CPU.ActiveCfg = Debug|Any CPU
 		{F30063B2-FE3F-4F52-B911-E296B94D9B1E}.Debug - Live|Any CPU.Build.0 = Debug|Any CPU
-		{F30063B2-FE3F-4F52-B911-E296B94D9B1E}.Debug TypeScript CSharp|Any CPU.ActiveCfg = Debug TypeScript CSharp|Any CPU
+		{F30063B2-FE3F-4F52-B911-E296B94D9B1E}.Debug TypeScript CSharp|Any CPU.ActiveCfg = Debug|Any CPU
+		{F30063B2-FE3F-4F52-B911-E296B94D9B1E}.Debug TypeScript CSharp|Any CPU.Build.0 = Debug|Any CPU
 		{F30063B2-FE3F-4F52-B911-E296B94D9B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F30063B2-FE3F-4F52-B911-E296B94D9B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F30063B2-FE3F-4F52-B911-E296B94D9B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU

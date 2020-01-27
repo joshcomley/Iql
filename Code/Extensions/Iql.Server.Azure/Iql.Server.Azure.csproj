@@ -9,4 +9,7 @@
     <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />
     <ProjectReference Include="..\Iql.Server\Iql.Server.csproj" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+  </ItemGroup>
 </Project>
