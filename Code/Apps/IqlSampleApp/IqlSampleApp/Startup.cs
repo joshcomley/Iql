@@ -42,7 +42,7 @@ namespace IqlSampleApp
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             OData = services.AddOData();
-            services.AddMvc(_ => _.EnableEndpointRouting = false);
+            services.AddMvcCore(_ => _.EnableEndpointRouting = false);
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // Configure the context to use Microsoft SQL Server.

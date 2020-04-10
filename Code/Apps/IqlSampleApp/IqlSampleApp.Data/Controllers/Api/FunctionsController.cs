@@ -11,7 +11,7 @@ namespace IqlSampleApp.Data.Controllers.Api
 {
     [EnableQuery]
     [Route("odata")]
-    public class FunctionsController : Controller
+    public class FunctionsController : ControllerBase
     {
         [HttpPost("ValidateField")]
         public virtual Task<IActionResult> ValidateField([FromBody] JObject validation)

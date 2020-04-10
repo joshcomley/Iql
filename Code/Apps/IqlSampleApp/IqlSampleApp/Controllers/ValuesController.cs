@@ -9,7 +9,7 @@ namespace IqlSampleApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : Controller
+    public class ValuesController : ControllerBase
     {
         // GET api/values
         [HttpGet]

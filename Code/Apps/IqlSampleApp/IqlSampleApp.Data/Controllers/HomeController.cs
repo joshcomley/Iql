@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IqlSampleApp.Data.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         private readonly IEntityConfigurationProvider _entityConfigurationProvider;
 
