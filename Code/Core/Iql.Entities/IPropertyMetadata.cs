@@ -7,6 +7,7 @@ namespace Iql.Entities
 {
     public interface IPropertyMetadata : ISimpleProperty, IUserPermission
     {
+        bool IgnoreChangesInSnapshots { get; set; }
         IqlCanTranslateKind CanTranslate { get; set; }
         string CanTranslateProperty { get; set; }
         IEnumerable<IRelationship> Relationships { get; }

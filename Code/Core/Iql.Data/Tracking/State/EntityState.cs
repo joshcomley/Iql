@@ -210,7 +210,7 @@ namespace Iql.Data.Tracking.State
         {
             var hasSnapshots = DataTracker != null && DataTracker.HasSnapshot;
             HasChanges = IsNew || Properties.Any(_ => _.HasChanges);
-            HasChangesSinceSnapshot = !hasSnapshots && HasChanges || Properties.Any(_ => _.HasChangesSinceSnapshot);
+            HasChangesSinceSnapshot = Properties.Any(_ => _.HasChangesSinceSnapshot);
             HasNestedChanges = Properties.Any(_ => _.HasNestedChanges);
             HasNestedChangesSinceSnapshot = Properties.Any(_ => _.HasNestedChangesSinceSnapshot);
             HasAnyChanges = HasChanges || HasNestedChanges;
@@ -672,8 +672,6 @@ namespace Iql.Data.Tracking.State
             }
         }
 
-        public bool Floating { get; set; }
-
         public IOperationEvents<IQueuedCrudOperation, IEntityCrudResult> StatefulSaveEvents => _statefulSaveEvents =
             _statefulSaveEvents ?? new OperationEvents<IQueuedCrudOperation, IEntityCrudResult>();
 
@@ -990,7 +988,7 @@ namespace Iql.Data.Tracking.State
             }
 
             var oldPendingDelete = _pendingDelete;
-            _pendingDelete = _markedForAnyDeletion && !IsNew && AttachedToTracker;
+            _pendingDelete = MarkedForDeletion && !IsNew && AttachedToTracker;
             if (oldPendingDelete != _pendingDelete)
             {
                 _pendingDeleteChanged.EmitIfExists(() =>

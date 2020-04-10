@@ -1086,8 +1086,7 @@ namespace Iql.Data.Tracking
                         break;
                     case RelatedListChangeKind.Removed:
                         if (changeEvent.Item != null &&
-                            !DataTracker.RelationshipObserver.IsAttachedToAnotherEntity(changeEvent.Item,
-                                changeEvent.ItemType))
+                            !DataTracker.RelationshipObserver.IsAttachedToAnotherEntity(changeEvent.Item, changeEvent.ItemType))
                         {
                             var relationship = this.EntityConfiguration.FindRelationshipByName(changeEvent.List.PropertyName);
                             if (relationship.OtherEnd.Property.Nullable == false)
@@ -1101,7 +1100,7 @@ namespace Iql.Data.Tracking
                                     }
                                     else if (!state.MarkedForDeletion)
                                     {
-                                        state.MarkForCascadeDeletion(changeEvent.Item, relationship.Relationship);
+                                        DataTracker.DeleteEntity(changeEvent.Item);
                                     }
                                 }
                             }

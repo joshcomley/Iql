@@ -20,6 +20,28 @@ namespace Iql.Tests.Tests
     public class TrackingTests : TestsBase
     {
         [TestMethod]
+        public async Task IgnoredPropertyForSnapshotChangesShouldIgnorePropertyForSnapshotChanges()
+        {
+            AppDbContext.InMemoryDb.Clients.Add(new Client
+            {
+                Id = 2,
+                Name = "Test client",
+                RevisionKey = "abc"
+            });
+            var state = await Db.Clients.GetStateWithKeyAsync(2);
+            var revisionKeyProperty = Db.EntityConfigurationContext.EntityType<Client>().FindProperty(nameof(Client.RevisionKey));
+            revisionKeyProperty.IgnoreChangesInSnapshots = true;
+            Assert.IsFalse(state.HasChangesSinceSnapshot);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            state.Entity.RevisionKey = "def";
+            Assert.IsFalse(state.HasChangesSinceSnapshot);
+            Assert.IsFalse(Db.HasChangesSinceSnapshot);
+            state.Entity.Name = "def";
+            Assert.IsTrue(state.HasChangesSinceSnapshot);
+            Assert.IsTrue(Db.HasChangesSinceSnapshot);
+        }
+
+        [TestMethod]
         public async Task TestFetched()
         {
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType
@@ -253,7 +275,7 @@ namespace Iql.Tests.Tests
             Assert.AreEqual(client, client2);
             Assert.IsNull(client.Type);
             Assert.AreEqual(0, client.TypeId);
-            Assert.IsTrue(clientState.MarkedForCascadeDeletion);
+            Assert.IsTrue(clientState.MarkedForDeletion);
             Assert.AreEqual("abc", client.CreatedByUserId);
         }
 

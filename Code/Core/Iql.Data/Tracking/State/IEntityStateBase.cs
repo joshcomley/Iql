@@ -60,7 +60,6 @@ namespace Iql.Data.Tracking.State
         bool IsAttachedToGraph { get; set; }
         Guid Id { get; set; }
         void Restore(SerializedEntityState state);
-        bool Floating { get; set; }
         DataTracker DataTracker { get; }
         object Entity { get; }
         object EntityBeforeChanges();

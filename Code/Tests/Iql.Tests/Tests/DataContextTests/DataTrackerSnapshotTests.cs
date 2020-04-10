@@ -17,6 +17,95 @@ namespace Iql.Tests.Tests.DataContextTests
     public class DataTrackerSnapshotTests : TestsBase
     {
         [TestMethod]
+        public async Task TestDeleteExistingEntity()
+        {
+            var siteId = 156187;
+            var siteDocumentId = 156188;
+            var siteDocument2Id = 156189;
+            var categoryId = 32532;
+            var siteRemote = new Site
+            {
+                Name = "site",
+                Id = siteId,
+            };
+            var siteDocumentRemote = new SiteDocument
+            {
+                Title = "site document",
+                Id = siteDocumentId,
+                SiteId = siteId
+            };
+            var siteDocumentCategory = new DocumentCategory
+            {
+                Name = "document category",
+                Id = categoryId
+            };
+            var siteDocument2Remote = new SiteDocument
+            {
+                Title = "site document 2",
+                Id = siteDocument2Id,
+                SiteId = siteId,
+                CategoryId = categoryId
+            };
+            AppDbContext.InMemoryDb.Sites.Add(siteRemote);
+            AppDbContext.InMemoryDb.SiteDocuments.Add(siteDocumentRemote);
+            AppDbContext.InMemoryDb.SiteDocuments.Add(siteDocument2Remote);
+            AppDbContext.InMemoryDb.DocumentCategories.Add(siteDocumentCategory);
+            var site = await Db.Sites.Expand(_ => _.Documents).GetStateWithKeyAsync(siteId);
+            var categories = await Db.DocumentCategories.ToListAsync();
+            var siteDocument = site.Entity.Documents[0];
+            var siteDocumentState = Db.GetEntityState(siteDocument);
+            Assert.AreEqual(EntityStatus.Existing, siteDocumentState.Status);
+            site.Entity.Documents.Remove(siteDocument);
+            Assert.AreEqual(EntityStatus.ExistingAndPendingDelete, siteDocumentState.Status);
+            //Db.TemporalDataTracker.DeleteEntity(clientCategoryPivot);
+            Assert.IsTrue(Db.HasChanges);
+            var result = await Db.SaveChangesAsync();
+            Assert.AreEqual(EntityStatus.ExistingAndDeleted, siteDocumentState.Status);
+            Assert.IsTrue(result.Success);
+            Assert.IsFalse(Db.HasChanges);
+            Db.AbandonChanges();
+        }
+
+        [TestMethod]
+        public async Task TestDeleteExistingPivotEntity()
+        {
+            var clientId = 156187;
+            var clientCategoryId = 156188;
+            var clientRemote = new Client
+            {
+                Name = "client",
+                Id = clientId,
+            };
+            var clientCategoryRemote = new ClientCategory
+            {
+                Name = "client category",
+                Id = clientCategoryId,
+            };
+            var clientCategoryPivotRemote = new ClientCategoryPivot
+            {
+                ClientId = clientId,
+                CategoryId = clientCategoryId
+            };
+            AppDbContext.InMemoryDb.Clients.Add(clientRemote);
+            AppDbContext.InMemoryDb.ClientCategories.Add(clientCategoryRemote);
+            AppDbContext.InMemoryDb.ClientCategoriesPivot.Add(clientCategoryPivotRemote);
+            var client = await Db.Clients.Expand(_ => _.Categories).GetStateWithKeyAsync(clientId);
+            var clientCategoryPivot = client.Entity.Categories[0];
+            Db.AddSnapshot();
+            var clientCategoryPivotState = Db.GetEntityState(clientCategoryPivot);
+            Assert.AreEqual(EntityStatus.Existing, clientCategoryPivotState.Status);
+            client.Entity.Categories.Remove(clientCategoryPivot);
+            Assert.AreEqual(EntityStatus.ExistingAndPendingDelete, clientCategoryPivotState.Status);
+            //Db.TemporalDataTracker.DeleteEntity(clientCategoryPivot);
+            Assert.IsTrue(Db.HasChanges);
+            var result = await Db.SaveChangesAsync();
+            Assert.AreEqual(EntityStatus.ExistingAndDeleted, clientCategoryPivotState.Status);
+            Assert.IsTrue(result.Success);
+            Assert.IsFalse(Db.HasChanges);
+            Db.AbandonChanges();
+        }
+
+        [TestMethod]
         public async Task TestDeleteNewEntity()
         {
             var id = 156187;

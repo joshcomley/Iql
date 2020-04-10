@@ -2180,6 +2180,11 @@ namespace Iql.Data.Context
         public virtual EntityState<TEntity> Delete<TEntity>(TEntity entity)
             where TEntity : class
         {
+            if (entity is IEntityStateBase entityState)
+            {
+                DeleteInternalMethod.InvokeGeneric(this, new[] { entityState.Entity }, entityState.EntityType);
+                return null;
+            }
             var entityType = typeof(TEntity);
             if (entityType == typeof(object))
             {

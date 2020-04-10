@@ -194,7 +194,11 @@ namespace Iql.Server
         {
             builder.EntityType<T>().Configure(config =>
             {
-                config.ConfigureProperty(p => p.RevisionKey, p => p.SetReadOnlyAndHidden().SetHint(KnownHints.Version));
+                config.ConfigureProperty(p => p.RevisionKey, p =>
+                    {
+                        p.SetReadOnlyAndHidden().SetHint(KnownHints.Version);
+                        p.IgnoreChangesInSnapshots = true;
+                    });
             });
         }
 

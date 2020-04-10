@@ -101,7 +101,7 @@ namespace Iql.OData
             }
             return Method(
                 parameters,
-                ODataMethodType.Action,
+                method.Kind == IqlMethodKind.Action ? ODataMethodType.Action : ODataMethodType.Function,
                 method.ScopeKind.ToODataMethodScope(),
                 method.NameSpace,
                 method.Name,
@@ -121,7 +121,7 @@ namespace Iql.OData
             }
             return MethodWithResponse<TResult>(
                 parameters,
-                ODataMethodType.Action,
+                method.Kind == IqlMethodKind.Action ? ODataMethodType.Action : ODataMethodType.Function,
                 ODataMethodScopeKind.Entity,
                 method.NameSpace,
                 method.Name,

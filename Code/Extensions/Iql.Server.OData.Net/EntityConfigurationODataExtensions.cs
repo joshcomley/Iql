@@ -132,7 +132,7 @@ namespace Iql.Server.OData.Net
         private static void BuildMethod(IMethodContainer methodContainer, OperationConfiguration operation,
             IqlMethodScopeKind scope)
         {
-            var method = new IqlMethod(scope, operation.Name);
+            var method = new IqlMethod(operation.Kind == OperationKind.Action ? IqlMethodKind.Action : IqlMethodKind.Function, scope, operation.Name);
             if (operation.ReturnType != null && operation.ReturnType.ClrType != typeof(IActionResult) && operation.ReturnType.ClrType != typeof(Task<IActionResult>))
             {
                 method.ReturnType = operation.ReturnType.ClrType;

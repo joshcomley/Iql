@@ -17,6 +17,7 @@ namespace Iql.Entities.Functions
         public bool IsPublic { get; set; }
         public List<IqlMethodParameter> Parameters { get; set; }
         public IqlMethodScopeKind ScopeKind { get; set; }
+        public IqlMethodKind Kind { get; set; }
         public Type ReturnType { get; set; }
         private string _returnTypeName;
         public string ReturnTypeName
@@ -34,6 +35,7 @@ namespace Iql.Entities.Functions
             : Parameters.Where(_ => _.IsBindingParameter == true);
 
         public IqlMethod(
+            IqlMethodKind kind = IqlMethodKind.Action,
             IqlMethodScopeKind scopeKind = IqlMethodScopeKind.Global,
             string name = null, 
             IEnumerable<IqlMethodParameter> parameters = null,
@@ -44,6 +46,7 @@ namespace Iql.Entities.Functions
             bool supportsOffline = false,
             string dataStoreRequired = null)
         {
+            Kind = kind;
             Name = name;
             Parameters = parameters?.ToList() ?? new List<IqlMethodParameter>();
             ScopeKind = scopeKind;

@@ -15,6 +15,7 @@ namespace Iql.Entities
 {
     public abstract class PropertyBase : SimplePropertyGroupBase<IProperty>, IPropertyMetadata, IPropertyMetadataProvider
     {
+        public bool IgnoreChangesInSnapshots { get; set; }
         private IProperty[] _groupStates = null;
         public IProperty[] GroupProperties
         {

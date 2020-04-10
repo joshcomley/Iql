@@ -14,6 +14,7 @@ using Iql.Entities;
 using Iql.Entities.Events;
 using Iql.Entities.Extensions;
 using Iql.Entities.Lists;
+using Iql.Entities.Lists.Events;
 using Iql.Entities.PropertyChangers;
 using Iql.Entities.Relationships;
 using Iql.Events;
@@ -68,6 +69,13 @@ namespace Iql.Data.Tracking.State
             EntityState = entityState;
             EnsureRemoteValue();
             _booted = true;
+            ItemsRemoved.Change.Subscribe(_ =>
+            {
+                if (_.Kind == ObservableListChangeKind.Removed)
+                {
+                    int a = 0;
+                }
+            });
         }
 
         public object DebugKey { get; set; }
@@ -228,7 +236,7 @@ namespace Iql.Data.Tracking.State
 
         public bool HasChangesSinceSnapshot
         {
-            get => _hasChangedSinceSnapshot;
+            get => !Property.IgnoreChangesInSnapshots && _hasChangedSinceSnapshot;
             private set
             {
                 var old = _hasChangedSinceSnapshot;
@@ -236,13 +244,16 @@ namespace Iql.Data.Tracking.State
                 if (old != value)
                 {
                     UpdateHasAnyChanges();
-                    if (EntityState != null)
+                    if (!Property.IgnoreChangesInSnapshots)
                     {
-                        EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, HasChanges, value);
+                        if (EntityState != null)
+                        {
+                            EntityState.DataTracker.NotifyChangedSinceSnapshotChanged(this, HasChanges, value);
+                        }
+                        _hasChangesSinceSnapshotChanged.EmitIfExists(
+                            () => new ValueChangedEvent<bool, IPropertyState>(old, value, this));
                     }
 
-                    _hasChangesSinceSnapshotChanged.EmitIfExists(
-                        () => new ValueChangedEvent<bool, IPropertyState>(old, value, this));
                     EntityState?.CheckHasChanged();
                     if (EntityState != null)
                     {
@@ -430,7 +441,7 @@ namespace Iql.Data.Tracking.State
                     DataTracker.NotifyLocalValueChanged(this);
                 }
 
-                if(EntityState != null)
+                if (EntityState != null)
                 {
                     Property.SetValue(EntityState.Entity, value);
                 }
@@ -578,7 +589,8 @@ namespace Iql.Data.Tracking.State
             return states;
         }
 
-        private void UpdateState(IEntityStateBase state, ChangeCalculationKind changeCalculationKind,
+        private void UpdateState(IEntityStateBase state,
+            ChangeCalculationKind changeCalculationKind,
             ObservableList<IEntityStateBase> itemsAdded,
             ObservableList<IEntityStateBase> itemsRemoved,
             ObservableList<IEntityStateBase> itemsChanged,
@@ -602,11 +614,12 @@ namespace Iql.Data.Tracking.State
                 }
                 else
                 {
-                    if (DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd, null,
+                    if (state.Status != EntityStatus.ExistingAndDeleted &&
+                        DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd, null,
                             changeCalculationKind == ChangeCalculationKind.Remote ? CheckValueKind.Remote : CheckValueKind.Snapshot))
                     {
                         var isDisallowed = changeCalculationKind == ChangeCalculationKind.Remote && state.IsNew;
-                        if (!isDisallowed && !itemsRemoved.Contains(state))
+                        if (!isDisallowed)
                         {
                             itemsRemoved.Add(state);
                         }
@@ -669,12 +682,12 @@ namespace Iql.Data.Tracking.State
                             if (state.IsNew)
                             {
                                 ItemsAdded.Remove(state);
-                                if(DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd, null, CheckValueKind.Snapshot))
+                                if (DoesRelationshipSourceMatch(state, Property.Relationship.OtherEnd, null, CheckValueKind.Snapshot))
                                 {
                                     ItemsRemovedSinceSnapshot.Add(state);
                                 }
                             }
-                            else 
+                            else
                             {
                                 ItemsRemoved.Add(state);
                                 ItemsRemovedSinceSnapshot.Add(state);
@@ -1448,7 +1461,7 @@ namespace Iql.Data.Tracking.State
             for (var i = 0; i < constraints.Count; i++)
             {
                 var constraint = constraints[i];
-                var propertyState = entityState.GetPropertyState(((IMetadata) constraint).Name);
+                var propertyState = entityState.GetPropertyState(((IMetadata)constraint).Name);
                 if (propertyState != null)
                 {
                     var hasChangedValue = kind == ChangeCalculationKind.Remote
@@ -1490,20 +1503,23 @@ namespace Iql.Data.Tracking.State
             if (DataTracker != null)
             {
                 var state = DataTracker.GetEntityState(entityValue);
-                if (state.IsNew)
+                if (state != null)
                 {
-                    var constraints = relationshipDetail.Constraints;
-                    foreach (var constraint in constraints)
+                    if (state.IsNew)
                     {
-                        if (!entityState.GetPropertyState(constraint.Name).IsDefaultValue(constraint.TypeDefinition))
+                        var constraints = relationshipDetail.Constraints;
+                        foreach (var constraint in constraints)
                         {
-                            return false;
+                            if (!entityState.GetPropertyState(constraint.Name).IsDefaultValue(constraint.TypeDefinition))
+                            {
+                                return false;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    return DoesRelationshipSourceMatch(entityState, relationshipDetail, state.Entity);
+                    else
+                    {
+                        return DoesRelationshipSourceMatch(entityState, relationshipDetail, state.Entity);
+                    }
                 }
             }
 
@@ -1526,7 +1542,7 @@ namespace Iql.Data.Tracking.State
             for (var i = 0; i < constraints.Length; i++)
             {
                 var constraint = constraints[i];
-                var propertyState = entityState.GetPropertyState(((IMetadata) constraint).Name);
+                var propertyState = entityState.GetPropertyState(((IMetadata)constraint).Name);
                 if (propertyState != null)
                 {
                     object oldValue;
@@ -1615,7 +1631,7 @@ namespace Iql.Data.Tracking.State
             }
             ObserveIfNecessary(oldValue, _remoteValueClone, ChangeCalculationKind.Remote);
             _remoteValue = value;
-            if(_booted)
+            if (_booted)
             {
                 UpdateHasChanged();
             }

@@ -18,6 +18,7 @@ namespace Iql.Data.Crud.Operations
         void PauseEvents();
         void ResumeEvents();
         bool HasSnapshotValue { get; }
+
         // Non-new items with changes
         ObservableList<IEntityStateBase> ItemsChanged { get; }
         // Non-new items removed

@@ -11,6 +11,54 @@ namespace Iql.Tests.Tests
     public class EntityDeletionTests : TestsBase
     {
         [TestMethod]
+        public async Task DeletingAnEntityWithNestedEntitiesShouldNotTriggerCascadeEffort()
+        {
+            var siteId = 156187;
+            var siteDocumentId = 156188;
+            var siteDocument2Id = 156189;
+            var categoryId = 32532;
+            var siteRemote = new Site
+            {
+                Name = "site",
+                Id = siteId,
+            };
+            var siteDocumentRemote = new SiteDocument
+            {
+                Title = "site document",
+                Id = siteDocumentId,
+                SiteId = siteId
+            };
+            var siteDocumentCategory = new DocumentCategory
+            {
+                Name = "document category",
+                Id = categoryId
+            };
+            var siteDocument2Remote = new SiteDocument
+            {
+                Title = "site document 2",
+                Id = siteDocument2Id,
+                SiteId = siteId,
+                CategoryId = categoryId
+            };
+            AppDbContext.InMemoryDb.Sites.Add(siteRemote);
+            AppDbContext.InMemoryDb.SiteDocuments.Add(siteDocumentRemote);
+            AppDbContext.InMemoryDb.SiteDocuments.Add(siteDocument2Remote);
+            AppDbContext.InMemoryDb.DocumentCategories.Add(siteDocumentCategory);
+            var site = await Db.Sites.Expand(_ => _.Documents).GetStateWithKeyAsync(siteId);
+            var categories = await Db.DocumentCategories.ToListAsync();
+            var deleteCount = 0;
+            Db.Events.DeleteEvents.Started.Subscribe(_ =>
+            {
+                deleteCount++;
+            });
+            Db.Delete(site.Entity);
+            Assert.AreEqual(0, deleteCount);
+            var result = await Db.SaveChangesAsync();
+            Assert.AreEqual(1, deleteCount);
+            Assert.IsTrue(result.Success);
+        }
+
+        [TestMethod]
         public async Task DeletingAnUntrackedEntityByKey()
         {
             AppDbContext.InMemoryDb.People.Add(new Person { Id = 997 });
