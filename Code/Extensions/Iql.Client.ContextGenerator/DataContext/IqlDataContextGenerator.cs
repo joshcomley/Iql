@@ -114,15 +114,15 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                     SafeCasts = false,
                     ForceBaseClass = true
                 };
-                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<IqlExpression>("@brandless/iql", true);
-                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<EventEmitterExceptions>("@brandless/iql.events", true);
-                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<EvaluateContext>("@brandless/iql.conversion", true);
-                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<IqlParserRegistry>("@brandless/iql.parsing", true);
-                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<QueryOperation>("@brandless/iql.queryable", true);
-                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<MediaKeyBase>("@brandless/iql.entities", true);
-                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<Data.Context.DataContext>("@brandless/iql.data", true);
-                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<ODataConfiguration>("@brandless/iql.odata", true);
-                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<IqlSyncResult>("@brandless/iql.forms", true);
+                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<IqlExpression>(defaultConversionSettings, "@brandless/iql", true);
+                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<EventEmitterExceptions>(defaultConversionSettings, "@brandless/iql.events", true);
+                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<EvaluateContext>(defaultConversionSettings, "@brandless/iql.conversion", true);
+                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<IqlParserRegistry>(defaultConversionSettings, "@brandless/iql.parsing", true);
+                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<QueryOperation>(defaultConversionSettings, "@brandless/iql.queryable", true);
+                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<MediaKeyBase>(defaultConversionSettings, "@brandless/iql.entities", true);
+                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<Data.Context.DataContext>(defaultConversionSettings, "@brandless/iql.data", true);
+                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<ODataConfiguration>(defaultConversionSettings, "@brandless/iql.odata", true);
+                await defaultConversionSettings.MetadataReferences.AddReferenceAsync<IqlSyncResult>(defaultConversionSettings, "@brandless/iql.forms", true);
 
                 var result = await new CSharpToTypeScriptConverter(defaultConversionSettings).ConvertToTypeScriptAsync(
                     new[] { conversionCollection }

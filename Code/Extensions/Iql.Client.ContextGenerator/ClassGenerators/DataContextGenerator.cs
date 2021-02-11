@@ -1589,8 +1589,8 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 WrapGettersAndSetters = false,
                 OutputSelector = outputSelector
             };
-            await settings.MetadataReferences.AddReferenceAsync<HelpText>();
-            await settings.MetadataReferences.AddReferenceAsync<ValidationRuleCollection>();
+            await settings.MetadataReferences.AddReferenceAsync<HelpText>(settings);
+            await settings.MetadataReferences.AddReferenceAsync<ValidationRuleCollection>(settings);
             var converter = new CSharpToTypeScriptConverter(settings);
             var typescript = await converter.ConvertToTypeScriptAsync(serialized);
             return outputSelector.Extracted;
