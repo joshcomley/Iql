@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
 
     <Configurations>Debug;Release;Debug TypeScript CSharp</Configurations>
   </PropertyGroup>
