@@ -1578,7 +1578,6 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
             {
                 Compile = false,
                 GenerateImports = true,
-                WriteToDisk = false,
                 ForceOriginalFileStructure = true,
                 OutputClassFunctionsDeclared = false,
                 OutputClassInterfacesImplemented = false,

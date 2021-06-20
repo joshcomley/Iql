@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Brandless.AspNetCore.OData.Extensions;
 using Brandless.AspNetCore.OData.Extensions.Binding;
@@ -13,7 +12,6 @@ using Iql.Server.OData.Net;
 using IqlSampleApp.Data;
 using IqlSampleApp.Data.Contracts;
 using IqlSampleApp.Data.Entities;
-using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +50,7 @@ namespace Iql.Tests.Server
                             services.AddSingleton<IEdmModelAccessor>(new EdmModelAccessor());
                             services.AddIql();
                             services.AddSingleton<IAssemblyProvider>(new TestAssemblyProvider());
-                            services.AddOData();
+                            // services.AddOData();
                             services.AddDbContext<ApplicationDbContext>(options =>
                             {
                                 // Configure the context to use Microsoft SQL Server.

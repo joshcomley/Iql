@@ -10,11 +10,11 @@ using Iql.Entities.Functions;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
 using Iql.Server.OData.Net.Geography;
-using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 
 namespace Iql.Server.OData.Net
 {
@@ -272,7 +272,7 @@ namespace Iql.Server.OData.Net
             var optional = false;
             if (property is StructuralPropertyConfiguration primitive)
             {
-                optional = primitive.OptionalProperty;
+                optional = primitive.NullableProperty;
             }
             else
             {

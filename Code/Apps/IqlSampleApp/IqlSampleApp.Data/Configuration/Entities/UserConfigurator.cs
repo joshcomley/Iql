@@ -10,7 +10,7 @@ using Iql.Server;
 using IqlSampleApp.Data.Contracts;
 using IqlSampleApp.Data.Controllers.Api.Entities;
 using IqlSampleApp.Data.Entities;
-using Microsoft.AspNet.OData.Builder;
+using Microsoft.OData.ModelBuilder;
 
 namespace IqlSampleApp.Data.Configuration.Entities
 {

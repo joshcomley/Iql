@@ -14,7 +14,6 @@ using Brandless.Data.Models;
 using Brandless.Data.Mptt;
 using Iql.Data;
 using Iql.Data.Evaluation;
-using Iql.Data.Extensions;
 using Iql.Entities;
 using Iql.Entities.NestedSets;
 using Iql.Entities.PropertyGroups.Files;
@@ -22,8 +21,9 @@ using Iql.Entities.Services;
 using Iql.Extensions;
 using Iql.Server.Media;
 using Iql.Server.OData.Net.Models;
-using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
+using Microsoft.AspNetCore.OData.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

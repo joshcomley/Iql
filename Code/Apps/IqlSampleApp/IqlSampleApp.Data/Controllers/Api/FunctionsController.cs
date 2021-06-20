@@ -3,8 +3,8 @@ using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.AspNetCore.OData.Extensions.Controllers;
 using IqlSampleApp.Data.Contracts;
 using IqlSampleApp.Data.Entities;
-using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Newtonsoft.Json.Linq;
 
 namespace IqlSampleApp.Data.Controllers.Api

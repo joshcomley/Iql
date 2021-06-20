@@ -7,7 +7,7 @@ using Iql.Entities.InferredValues;
 using Iql.Entities.Permissions;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
-using Microsoft.AspNet.OData.Builder;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.AspNetCore.OData.NetTopology;
 
 namespace IqlSampleApp.Data.Configuration.Entities
@@ -144,7 +144,7 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(ODataModelBuilder builder)
         {
-            builder.UseNetTopology();
+            // builder.UseNetTopology();
             builder.EntityType<Person>()
                 .HasOptional(
                     s => s.Client,

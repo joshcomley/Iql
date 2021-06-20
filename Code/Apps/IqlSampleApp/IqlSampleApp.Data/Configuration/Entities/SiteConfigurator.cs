@@ -5,7 +5,7 @@ using Iql.Entities;
 using Iql.Forms;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
-using Microsoft.AspNet.OData.Builder;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.AspNetCore.OData.NetTopology;
 
 namespace IqlSampleApp.Data.Configuration.Entities
@@ -72,9 +72,9 @@ namespace IqlSampleApp.Data.Configuration.Entities
     {
         public void Configure(ODataModelBuilder builder)
         {
-            builder.MapSpatial<Site>(_ => _.EdmLocation, _ => _.Location);
-            builder.MapSpatial<Site>(_ => _.EdmArea, _ => _.Area);
-            builder.MapSpatial<Site>(_ => _.EdmLine, _ => _.Line);
+            // builder.MapSpatial<Site>(_ => _.EdmLocation, _ => _.Location);
+            // builder.MapSpatial<Site>(_ => _.EdmArea, _ => _.Area);
+            // builder.MapSpatial<Site>(_ => _.EdmLine, _ => _.Line);
             builder.EntityType<Site>()
                 .HasOptional(s => s.Parent, (left, right) => left.ParentId == right.Id, site => site.Children);
             builder.EntityType<Site>()

@@ -9,11 +9,10 @@ using Iql.Server.OData.Net;
 using IqlSampleApp.Data;
 using IqlSampleApp.Data.Contracts;
 using IqlSampleApp.Data.Entities;
-using Microsoft.AspNet.OData.Extensions;
-using Microsoft.AspNet.OData.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OData.Abstracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -41,7 +40,7 @@ namespace IqlSampleApp
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            OData = services.AddOData();
+            // OData = services.AddOData();
             services.AddMvcCore(_ => _.EnableEndpointRouting = false);
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -68,8 +67,8 @@ namespace IqlSampleApp
             var model = ApplicationDbContext.Build(app.ApplicationServices);
             app.UseMvc(builder =>
             {
-                builder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
-                builder.MapODataServiceRoute("odata", "odata", model.Model);
+                // builder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
+                // builder.MapODataServiceRoute("odata", "odata", model.Model);
             });
             app.UseIql<IIqlSampleAppService>(config =>
             {

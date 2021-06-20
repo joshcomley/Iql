@@ -2,24 +2,26 @@
   <Choose>
     <When Condition="'$(Configuration)' == 'Release'">
       <ItemGroup>
-        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10114-0-Release" />
-        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10114-0-Release" />
-        <PackageReference Include="Iql.Server" Version="0.0.28-preview20586-0-Release" />
-        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10074-0-Release" />
+        <PackageReference Include="Brandless.Data" Version="0.0.40017-10116-0-Release" />
+        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10116-0-Release" />
+        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10116-0-Release" />
+        <PackageReference Include="Iql.Server" Version="0.0.28-preview20594-0-Release" />
+        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.20001-0-Release" />
       </ItemGroup>
     </When>
     <When Condition="'$(Configuration)' == 'Debug'">
       <ItemGroup>
-        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10114-1-Debug" />
-        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10114-1-Debug" />
-        <PackageReference Include="Iql.Server" Version="0.0.28-preview20586-1-Debug" />
-        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.10074-1-Debug" />
+        <PackageReference Include="Brandless.Data" Version="0.0.40017-10116-1-Debug" />
+        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10116-1-Debug" />
+        <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10116-1-Debug" />
+        <PackageReference Include="Iql.Server" Version="0.0.28-preview20594-1-Debug" />
+        <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.20001-1-Debug" />
       </ItemGroup>
     </When>
   </Choose>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
-    <PackageReference Include="NetTopologySuite" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.7" />
+    <PackageReference Include="NetTopologySuite" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
     <Reference Include="Microsoft.AspNetCore.Http.Abstractions">

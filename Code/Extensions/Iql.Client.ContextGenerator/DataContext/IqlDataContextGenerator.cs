@@ -107,7 +107,6 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                     ForceOriginalFileStructure = true,
                     OutputJsonClassConversion = false,
                     OutputTypeLoaded = false,
-                    WriteToDisk = false,
                     NpmOutput = true,
                     WrapGettersAndSetters = false,
                     AddUtilityFiles = false,

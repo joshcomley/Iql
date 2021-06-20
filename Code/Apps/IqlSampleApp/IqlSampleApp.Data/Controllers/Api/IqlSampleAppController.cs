@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
-using Brandless.AspNetCore.OData.Extensions.Controllers;
 using Iql.Server.OData.Net;
 using IqlSampleApp.Data.Contracts;
 using IqlSampleApp.Data.Entities;
-using Microsoft.AspNet.OData;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace IqlSampleApp.Data.Controllers.Api
 {

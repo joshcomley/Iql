@@ -1,7 +1,7 @@
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql.Server;
 using IqlSampleApp.Data.Contracts;
-using Microsoft.AspNet.OData.Builder;
+using Microsoft.OData.ModelBuilder;
 
 namespace IqlSampleApp.Data.Configuration.Entities
 {
