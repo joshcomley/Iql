@@ -22,7 +22,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             //url = "http://localhost:28000/odata/$metadata";
             var scopeUrl = "http://localhost:46000/odata/$metadata";
             var iqlSampleUrl = "http://localhost:64000/odata/$metadata";
-            var isiteUrl = "http://localhost:48000/odata/$metadata";
+            var isiteUrl = "https://localhost:44340/v1/$metadata";
 
             var iqlUrl = "http://localhost:28000/odata/$metadata";
             var hazceptionUrl = "http://localhost:58000/odata/$metadata";
@@ -45,9 +45,9 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                     // D:\Code\Playgrounds\lazyNinjas
                     //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
                     await GenerateWebAndMobile(isiteUrl,
-                        @"D:\Code\i-site\Code\Web\src\app\generated\DataContext",
-                        @"D:\Code\i-site\Code\Mobile\i-site\src\app\generated\DataContext",
-                        @"D:\Code\i-site\Code\Api\src\ISite.App.Media.Azure\DataContext");
+                        @"C:\Gen\Web\DataContext",
+                        @"C:\Gen\Mobile\DataContext",
+                        @"C:\Gen\Azure\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
                     //isiteSettings.GenerateCountProperties = false;
                     //isiteSettings.GenerateEntities = false;

@@ -1,4 +1,5 @@
-﻿using Brandless.AspNetCore.OData.Extensions;
+﻿using System;
+using Brandless.AspNetCore.OData.Extensions;
 using Brandless.AspNetCore.OData.Extensions.Binding;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.Data;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Abstracts;
 using Microsoft.AspNetCore.OData.NetTopology;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -37,12 +39,16 @@ namespace IqlSampleApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IEdmModelAccessor>(new EdmModelAccessor());
-            services.AddSingleton<IDesignTimeDbContextFactory<ApplicationDbContext>>(provider => new DesignTimeAppDbContextBuilder(provider));
+            services.AddSingleton<IDesignTimeDbContextFactory<ApplicationDbContext>>(provider =>
+                new DesignTimeAppDbContextBuilder(provider));
             services.AddIql();
+            services.AddControllersWithViews();
             services.AddControllers().AddOData(opt =>
             {
+#pragma warning disable ASP0000
                 Model = ApplicationDbContext.Build(services.BuildServiceProvider());
-                opt.AddModel("odata", Model.Model, _ => _.AddNetTopology());
+#pragma warning restore ASP0000
+                opt.AddModel("v1", Model.Model, _ => _.AddNetTopology());
                 opt.Count().Filter().Expand().Select().OrderBy().SetMaxTop(5);
             });
             services.AddODataNetTopology();
@@ -51,8 +57,7 @@ namespace IqlSampleApp
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            // OData = services.AddOData();
-            services.AddMvcCore(_ => _.EnableEndpointRouting = false);
+            services.AddRazorPages();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // Configure the context to use Microsoft SQL Server.
@@ -67,8 +72,6 @@ namespace IqlSampleApp
 
         public ODataConfigurationResult Model { get; set; }
 
-        public IODataBuilder OData { get; set; }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -77,11 +80,14 @@ namespace IqlSampleApp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc(builder =>
+            app.UseRouting();
+            app.UseEndpoints((Action<IEndpointRouteBuilder>) (endpoints =>
             {
-                // builder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
-                // builder.MapODataServiceRoute("odata", "odata", model.Model);
-            });
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            }));
+
+            app.UseODataBatching();
             app.UseIql<IIqlSampleAppService>(config =>
             {
                 config.ConfigureFromOData<IIqlSampleAppService>(Model.ModelBuilder);
