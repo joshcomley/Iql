@@ -1,5 +1,6 @@
 ﻿using Brandless.AspNetCore.OData.Extensions;
 using Brandless.AspNetCore.OData.Extensions.Binding;
+using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Brandless.Data;
 using Brandless.Data.Contracts;
 using Iql.Conversion;
@@ -12,7 +13,9 @@ using IqlSampleApp.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Abstracts;
+using Microsoft.AspNetCore.OData.NetTopology;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +39,14 @@ namespace IqlSampleApp
             services.AddSingleton<IEdmModelAccessor>(new EdmModelAccessor());
             services.AddSingleton<IDesignTimeDbContextFactory<ApplicationDbContext>>(provider => new DesignTimeAppDbContextBuilder(provider));
             services.AddIql();
+            services.AddControllers().AddOData(opt =>
+            {
+                Model = ApplicationDbContext.Build(services.BuildServiceProvider());
+                opt.AddModel("odata", Model.Model, _ => _.AddNetTopology());
+                opt.Count().Filter().Expand().Select().OrderBy().SetMaxTop(5);
+            });
+            services.AddODataNetTopology();
+
             services.AddSingleton<IRevisionKeyGenerator, StandardRevisionKeyGenerator>();
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -54,6 +65,8 @@ namespace IqlSampleApp
             });
         }
 
+        public ODataConfigurationResult Model { get; set; }
+
         public IODataBuilder OData { get; set; }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +77,6 @@ namespace IqlSampleApp
                 app.UseDeveloperExceptionPage();
             }
 
-            var model = ApplicationDbContext.Build(app.ApplicationServices);
             app.UseMvc(builder =>
             {
                 // builder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
@@ -72,7 +84,7 @@ namespace IqlSampleApp
             });
             app.UseIql<IIqlSampleAppService>(config =>
             {
-                config.ConfigureFromOData<IIqlSampleAppService>(model.ModelBuilder);
+                config.ConfigureFromOData<IIqlSampleAppService>(Model.ModelBuilder);
             });
             using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
