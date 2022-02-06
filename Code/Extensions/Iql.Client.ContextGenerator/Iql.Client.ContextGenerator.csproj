@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10023-1-Debug" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0117-1-Debug" />
+    <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10024-1-Debug" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0122-1-Debug" />
   </ItemGroup>
 
   <ItemGroup>

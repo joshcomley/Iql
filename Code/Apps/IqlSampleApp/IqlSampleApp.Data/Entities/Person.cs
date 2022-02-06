@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Brandless.AspNetCore.OData.NetTopology.Conversion;
 using IqlSampleApp.Data.Entities.Bases;
-using Microsoft.AspNetCore.OData.NetTopology.Conversion;
 using Microsoft.Spatial;
 using NetTopologySuite.Geometries;
 

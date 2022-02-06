@@ -2,6 +2,7 @@
 using Brandless.AspNetCore.OData.Extensions;
 using Brandless.AspNetCore.OData.Extensions.Binding;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
+using Brandless.AspNetCore.OData.NetTopology;
 using Brandless.Data;
 using Brandless.Data.Contracts;
 using Iql.Conversion;
@@ -15,8 +16,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
-using Microsoft.AspNetCore.OData.Abstracts;
-using Microsoft.AspNetCore.OData.NetTopology;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -48,10 +47,10 @@ namespace IqlSampleApp
 #pragma warning disable ASP0000
                 Model = ApplicationDbContext.Build(services.BuildServiceProvider());
 #pragma warning restore ASP0000
-                opt.AddModel("v1", Model.Model, _ => _.AddNetTopology());
+                opt.AddRouteComponents("v1", Model.Model, _ => _.AddNetTopology());
                 opt.Count().Filter().Expand().Select().OrderBy().SetMaxTop(5);
             });
-            services.AddODataNetTopology();
+            services.AddNetTopology();
 
             services.AddSingleton<IRevisionKeyGenerator, StandardRevisionKeyGenerator>();
             services.AddIdentity<ApplicationUser, IdentityRole>()

@@ -6,7 +6,7 @@ using Iql.Forms;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
 using Microsoft.OData.ModelBuilder;
-using Microsoft.AspNetCore.OData.NetTopology;
+using Brandless.AspNetCore.OData.NetTopology;
 
 namespace IqlSampleApp.Data.Configuration.Entities
 {
