@@ -67,6 +67,8 @@ namespace Iql.Tests.Server
                     ;
                 Host.Start();
                 Builder = Host.Services.GetService<IEntityConfigurationProvider>().Get<IIqlSampleAppService>();
+                var context = Host.Services.CreateScope().ServiceProvider.GetService<ApplicationDbContext>();
+                context.Database.EnsureCreated();
             }
         }
 
