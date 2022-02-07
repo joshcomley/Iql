@@ -8,6 +8,7 @@ using Iql.Entities.PropertyGroups.Dates;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Entities.Relationships;
 using Iql.Parsing.Types;
+using Iql.Serialization;
 using Iql.Server.Serialization.Serialization.Resolvers;
 using Newtonsoft.Json;
 
@@ -77,7 +78,7 @@ namespace Iql.Server.Serialization.Serialization.Converters
         private static void WritePropertyGroupReference(JsonWriter writer, object value)
         {
             var serialized = SerializePropertyGroup(value as IPropertyGroup);
-            var json = JsonConvert.SerializeObject(serialized);
+            var json = IqlJsonSerializer.Serialize(serialized);
             writer.WriteValue(json);
         }
 

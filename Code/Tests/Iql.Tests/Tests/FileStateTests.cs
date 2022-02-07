@@ -1,4 +1,5 @@
 ﻿using Iql.Entities.PropertyGroups.Files;
+using Iql.Serialization;
 using IqlSampleApp.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -49,7 +50,7 @@ namespace Iql.Tests.Tests
                 UploadedFromDeviceId = "def456",
                 Url = "test url"
             };
-            person.PhotoState = JsonConvert.SerializeObject(sourceState);
+            person.PhotoState = IqlJsonSerializer.Serialize(sourceState);
             var personPhoto = Db.EntityConfigurationContext.EntityType<Person>().Files[0];
             var state = personPhoto.TryGetFileState(person);
             Assert.IsNotNull(state);
@@ -72,7 +73,7 @@ namespace Iql.Tests.Tests
                 UploadedFromDeviceId = "def456",
                 Url = "test url"
             };
-            person.PhotoState = JsonConvert.SerializeObject(sourceState);
+            person.PhotoState = IqlJsonSerializer.Serialize(sourceState);
             var personPhoto = Db.EntityConfigurationContext.EntityType<Person>().Files[0];
             var success = personPhoto.TrySetFileState(person, null);
             Assert.IsTrue(success);
@@ -92,7 +93,7 @@ namespace Iql.Tests.Tests
                 UploadedFromDeviceId = "def456",
                 Url = "test url"
             };
-            person.PhotoState = JsonConvert.SerializeObject(sourceState);
+            person.PhotoState = IqlJsonSerializer.Serialize(sourceState);
             var personPhoto = Db.EntityConfigurationContext.EntityType<Person>().Files[0];
             var success = personPhoto.TrySetFileState(person, sourceState);
             Assert.IsTrue(success);

@@ -1,21 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configurations>Debug;Release;Debug TypeScript CSharp</Configurations>
-    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
   </PropertyGroup>
-  <Choose>
-    <When Condition="'$(Configuration)' == 'Release'">
-      <ItemGroup>
-        <PackageReference Include="Brandless.Data" Version="0.0.40017-10118-0-Release" />
-      </ItemGroup>
-    </When>
-    <When Condition="'$(Configuration)' == 'Debug'">
-      <ItemGroup>
-        <PackageReference Include="Brandless.Data" Version="0.0.40017-10118-1-Debug" />
-      </ItemGroup>
-    </When>
-  </Choose>
   <ItemGroup>
+    <PackageReference Include="Brandless.Data" Version="0.0.40017-10119-1-Debug" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.1" />
     <FrameworkReference Include="Microsoft.AspNetCore.App"></FrameworkReference>
   </ItemGroup>

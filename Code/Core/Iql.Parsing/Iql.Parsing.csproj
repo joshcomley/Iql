@@ -1,32 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Configurations>Debug;Release;TypeScript Debug;Debug TypeScript CSharp</Configurations>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
-    <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug TypeScript CSharp|AnyCPU'">
-    <DefineConstants>TRACE;CustomEvaluate</DefineConstants>
-  </PropertyGroup>
-  <Choose>
-    <When Condition="'$(Configuration)' == 'Release'">
-      <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0104-0-Release" />
-      </ItemGroup>
-    </When>
-    <When Condition="'$(Configuration)' == 'Debug' or '$(Configuration)' == 'TypeScript Debug' or '$(Configuration)' == 'Debug TypeScript CSharp'">
-      <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0104-1-Debug" />
-      </ItemGroup>
-    </When>
-  </Choose>
-  <ItemGroup>
-    <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj" />
-    <ProjectReference Include="..\Iql.Entities\Iql.Entities.csproj" />
-    <ProjectReference Include="..\Iql\Iql.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Expressions\Conversion\" />
-    <Folder Include="Types\" />
-  </ItemGroup>
+    <PropertyGroup>
+        <Configurations>Debug;Release;TypeScript Debug;Debug TypeScript CSharp</Configurations>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
+        <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug TypeScript CSharp|AnyCPU'">
+        <DefineConstants>TRACE;CustomEvaluate</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0123-1-Debug"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj"/>
+        <ProjectReference Include="..\Iql.Entities\Iql.Entities.csproj"/>
+        <ProjectReference Include="..\Iql\Iql.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Expressions\Conversion\"/>
+        <Folder Include="Types\"/>
+    </ItemGroup>
 </Project>

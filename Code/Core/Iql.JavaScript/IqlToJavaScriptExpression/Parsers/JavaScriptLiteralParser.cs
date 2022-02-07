@@ -34,7 +34,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
                     return new IqlFinalExpression<string>("new Date()");
                 }
                 //return new IqlFinalExpression<string>(
-                //    "JSON.parse(`" + JsonConvert.SerializeObject(action.Value) + "`)");
+                //    "JSON.parse(`" + IqlJsonSerializer.Serialize(action.Value) + "`)");
             }
             if (action.ReturnType == IqlType.Guid)
             {

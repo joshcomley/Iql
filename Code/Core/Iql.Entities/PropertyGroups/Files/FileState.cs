@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Iql.Serialization;
+using Newtonsoft.Json;
 
 namespace Iql.Entities.PropertyGroups.Files
 {
@@ -43,7 +44,7 @@ namespace Iql.Entities.PropertyGroups.Files
                     }
                     else
                     {
-                        var stateJson = JsonConvert.SerializeObject(state);
+                        var stateJson = IqlJsonSerializer.Serialize(state);
                         stateProperty.SetValue(entity, stateJson);
                     }
                     return true;

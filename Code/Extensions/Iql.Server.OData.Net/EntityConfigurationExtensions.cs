@@ -181,7 +181,7 @@
 //            var doc = new EntityConfigurationDocument();
 //            doc.EntityTypes.AddRange(entityConfigurationBuilder.EntityTypes());
 //            settings.Formatting = Newtonsoft.Json.Formatting.Indented;
-//            var serialized = JsonConvert.SerializeObject(doc, settings);
+//            var serialized = IqlJsonSerializer.Serialize(doc, settings);
 //            return serialized;
 //        }
 

@@ -1,56 +1,15 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using Iql.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using TypeSharp.Extensions;
+using Newtonsoft.Json.Serialization;
 
 namespace Iql.JavaScript.Extensions
 {
-    [DoNotConvert]
-    class NumberConverter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(double) || objectType == typeof(double?) || objectType == typeof(float) || objectType == typeof(float?) || objectType == typeof(decimal) || objectType == typeof(decimal?);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            JToken token = JToken.Load(reader);
-            if (token.Type == JTokenType.Float || token.Type == JTokenType.Integer)
-            {
-                return token.ToObject<decimal>();
-            }
-            if (token.Type == JTokenType.String)
-            {
-                // customize this to suit your needs
-                return Decimal.Parse(token.ToString(),
-                    System.Globalization.CultureInfo.GetCultureInfo("es-ES"));
-            }
-            if (token.Type == JTokenType.Null && objectType == typeof(decimal?))
-            {
-                return null;
-            }
-            throw new JsonSerializationException("Unexpected token type: " +
-                                                 token.Type.ToString());
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            if (Equals(value, null))
-            {
-                writer.WriteNull();
-            }
-            else
-            {
-                writer.WriteRawValue(value.ToString());
-            }
-        }
-    }
     public static class IqlStringExtensions
     {
-
         public static string Clean(this string str)
         {
             str = str.Replace("\r", "");
@@ -62,6 +21,30 @@ namespace Iql.JavaScript.Extensions
             return str;
         }
 
+#if !TypeScript
+        private static JObject SortPropertiesAlphabetically(JObject original)
+        {
+            var result = new JObject();
+
+            foreach (var property in original.Properties().ToList().OrderBy(p => p.Name))
+            {
+                var value = property.Value as JObject;
+
+                if (value != null)
+                {
+                    value = SortPropertiesAlphabetically(value);
+                    result.Add(property.Name, value);
+                }
+                else
+                {
+                    result.Add(property.Name, property.Value);
+                }
+            }
+
+            return result;
+        }
+#endif
+
         public static string NormalizeJson(this string json)
         {
 #if TypeScript
@@ -70,6 +53,9 @@ namespace Iql.JavaScript.Extensions
             JsonReader reader = new JsonTextReader(new StringReader(json));
             reader.DateParseHandling = DateParseHandling.None;
             var jObject = JToken.Load(reader);
+#if TEST
+            jObject = SortPropertiesAlphabetically(jObject);
+#endif
             return jObject.ToString(Formatting.None, new NumberConverter()).Clean();
 #endif
         }
@@ -82,10 +68,10 @@ namespace Iql.JavaScript.Extensions
             JsonReader reader = new JsonTextReader(new StringReader(json));
             reader.DateParseHandling = DateParseHandling.None;
             var jObject = JToken.Load(reader);
-            var newJson = JsonConvert.SerializeObject(jObject, new JsonSerializerSettings
+            var newJson = IqlJsonSerializer.Serialize(jObject, new IqlJsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                Converters = new[] { new NumberConverter() }
+                IgnoreNulls = true,
+                UseNumberConverter = true
             }).Clean();
             return newJson;
 #endif

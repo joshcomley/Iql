@@ -7,6 +7,7 @@ using Iql.Conversion;
 using Iql.Entities.Permissions;
 using Iql.Extensions;
 using Iql.Parsing.Types;
+using Iql.Serialization;
 using Newtonsoft.Json;
 
 namespace Iql.Entities
@@ -51,7 +52,7 @@ namespace Iql.Entities
                 return null;
             }
 
-            var json = JsonConvert.SerializeObject(IqlExpression);
+            var json = IqlJsonSerializer.Serialize(IqlExpression);
             if (_iqlConvertedExpressionJson == null || json != _iqlConvertedExpressionJson)
             {
                 _iqlConvertedExpressionJson = json;

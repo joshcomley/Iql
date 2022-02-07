@@ -135,11 +135,11 @@ namespace Iql
             //#if !TypeScript
             //            JsonSerializerSettings jss = new JsonSerializerSettings();
             //            jss.TypeNameHandling = TypeNameHandling.All;
-            //            var json = JsonConvert.SerializeObject(iql, null, jss);
+            //            var json = IqlJsonSerializer.Serialize(iql, null, jss);
             //            var clone = JsonConvert.DeserializeObject<TIql>(json, jss);
             //            return clone;
             //#else
-            //            var json = JsonConvert.SerializeObject(iql);
+            //            var json = IqlJsonSerializer.Serialize(iql);
             //            return IqlJsonDeserializer.DeserializeJson<TIql>(json);
             //#endif
         }

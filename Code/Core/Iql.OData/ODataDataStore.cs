@@ -27,6 +27,7 @@ using Iql.Data.Lists;
 using Iql.Data.Serialization;
 using Iql.Entities.Functions;
 using Iql.Events;
+using Iql.Serialization;
 
 namespace Iql.OData
 {
@@ -181,7 +182,7 @@ namespace Iql.OData
                                 }
                             }
                         }
-                        var body = JsonConvert.SerializeObject(jobject);
+                        var body = IqlJsonSerializer.Serialize(jobject);
                         httpRequest = new HttpRequest(body);
                     }
                     httpResult = await http.Post(uri, httpRequest);

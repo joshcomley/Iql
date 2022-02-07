@@ -13,6 +13,7 @@ using Iql.Data.Tracking;
 using Iql.Entities;
 using Iql.Entities.Extensions;
 using Iql.Extensions;
+using Iql.Serialization;
 using Newtonsoft.Json;
 
 namespace Iql.Data.DataStores.InMemory
@@ -234,7 +235,7 @@ namespace Iql.Data.DataStores.InMemory
                         Entities = JsonDataSerializer.PrepareCollectionForSerialization(_.Value, _.Key, false, true)
                     }
                 );
-            return JsonConvert.SerializeObject(allSets);
+            return IqlJsonSerializer.Serialize(allSets);
         }
 
         public override Task<AddEntityResult<TEntity>> PerformAddAsync<TEntity>(

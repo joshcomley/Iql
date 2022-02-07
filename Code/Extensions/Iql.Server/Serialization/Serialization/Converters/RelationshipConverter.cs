@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Iql.Entities.Relationships;
 using Iql.Parsing.Types;
+using Iql.Serialization;
 using Iql.Server.Serialization.Serialization.Resolvers;
 using Newtonsoft.Json;
 

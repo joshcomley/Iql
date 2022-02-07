@@ -1,5 +1,6 @@
 ﻿using System;
 using Iql.Entities;
+using Iql.Serialization;
 using Iql.Server.Serialization.Serialization.Converters;
 using Iql.Server.Serialization.Serialization.Resolvers;
 using Newtonsoft.Json;

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Iql.Serialization;
+using Newtonsoft.Json;
 
 namespace Iql.JavaScript.Extensions
 {
@@ -7,7 +8,7 @@ namespace Iql.JavaScript.Extensions
         public static bool NormalizeJson { get; set; } = false;
         public static string SerializeDeserialize(this IqlExpression expression)
         {
-            var json = JsonConvert.SerializeObject(expression);
+            var json = IqlJsonSerializer.Serialize(expression);
             if (NormalizeJson)
             {
                 json = json.NormalizeJson();

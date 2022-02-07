@@ -416,6 +416,10 @@ namespace Iql.Entities
         public IEntityProperty<T> DefineAndGetPropertyInternal<TProperty>(string name, Expression<Func<T, TProperty>> property, string convertedFromType, bool nullable = true,
             IqlType? iqlType = null)
         {
+            if (this.Name == "Client")
+            {
+                int a = 0;
+            }
 #if !TypeScript
             if (typeof(TProperty).IsEnumerableType())
             {

@@ -1,46 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <IsTestProject>true</IsTestProject>
-    <IsPackable>false</IsPackable>
-    <Configurations>Debug;Release;TypeScript Debug;Debug TypeScript CSharp</Configurations>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
-    <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETCOREAPP2_0;TypeScript</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug TypeScript CSharp|netcoreapp2.2|AnyCPU'">
-    <DefineConstants>TRACE;CustomEvaluate</DefineConstants>
-  </PropertyGroup>
-  <Choose>
-    <When Condition="'$(Configuration)' == 'Release'">
-      <ItemGroup>
-    <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10012-0-Release" />
-      </ItemGroup>
-    </When>
-    <When Condition="'$(Configuration)' == 'Debug' or '$(Configuration)' == 'Debug TypeScript CSharp'">
-      <ItemGroup>
-    <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10020-1-Debug" />
-      </ItemGroup>
-    </When>
-  </Choose>
-  <ItemGroup>
-    <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10119-1-Debug" />
-    <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.1.20200127.214830" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.0.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
-    <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0104-1-Debug" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />
-    <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
-    <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />
-    <ProjectReference Include="..\..\Core\Iql.JavaScript\Iql.JavaScript.csproj" />
-    <ProjectReference Include="..\..\Core\Iql.OData\Iql.OData.csproj" />
-    <ProjectReference Include="..\..\Core\Iql.Parsing\Iql.Parsing.csproj" />
-    <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj" />
-    <ProjectReference Include="..\..\Core\Iql\Iql.csproj" />
-    <ProjectReference Include="..\..\Extensions\Iql.Server\Iql.Server.csproj" />
-    <ProjectReference Include="..\Iql.Tests.Data\Iql.Tests.Data.csproj" />
-  </ItemGroup>
+    <PropertyGroup>
+        <IsTestProject>true</IsTestProject>
+        <IsPackable>false</IsPackable>
+        <Configurations>Debug;Release;TypeScript Debug;Debug TypeScript CSharp</Configurations>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
+        <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETCOREAPP2_0;TypeScript</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug TypeScript CSharp|netcoreapp2.2|AnyCPU'">
+        <DefineConstants>TRACE;CustomEvaluate</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10020-1-Debug"/>
+        <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10119-1-Debug"/>
+        <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.1.20200127.214830"/>
+        <PackageReference Include="Microsoft.CodeAnalysis" Version="4.0.1"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0"/>
+        <PackageReference Include="MSTest.TestAdapter" Version="2.2.8"/>
+        <PackageReference Include="MSTest.TestFramework" Version="2.2.8"/>
+        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0123-1-Debug"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj"/>
+        <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj"/>
+        <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj"/>
+        <ProjectReference Include="..\..\Core\Iql.JavaScript\Iql.JavaScript.csproj"/>
+        <ProjectReference Include="..\..\Core\Iql.OData\Iql.OData.csproj"/>
+        <ProjectReference Include="..\..\Core\Iql.Parsing\Iql.Parsing.csproj"/>
+        <ProjectReference Include="..\..\Core\Iql.Queryable\Iql.Queryable.csproj"/>
+        <ProjectReference Include="..\..\Core\Iql\Iql.csproj"/>
+        <ProjectReference Include="..\..\Extensions\Iql.Server\Iql.Server.csproj"/>
+        <ProjectReference Include="..\Iql.Tests.Data\Iql.Tests.Data.csproj"/>
+    </ItemGroup>
 </Project>

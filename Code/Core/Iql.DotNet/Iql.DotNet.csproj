@@ -8,24 +8,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug TypeScript CSharp|AnyCPU'">
     <DefineConstants>TRACE;CustomEvaluate</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net46'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net46' OR '$(TargetFramework)'=='net471'">
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0123-1-Debug" />
   </ItemGroup>
-  <Choose>
-    <When Condition="'$(Configuration)' == 'Release'">
-      <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0104-0-Release" />
-      </ItemGroup>
-    </When>
-    <When Condition="'$(Configuration)' == 'Debug'">
-      <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0104-1-Debug" />
-      </ItemGroup>
-    </When>
-  </Choose>
   <ItemGroup>
     <ProjectReference Include="..\Iql.Data\Iql.Data.csproj" />
     <ProjectReference Include="..\Iql.Parsing\Iql.Parsing.csproj" />

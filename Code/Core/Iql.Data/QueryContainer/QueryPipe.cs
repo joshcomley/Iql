@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Iql.Data.Context;
 using Iql.Data.Lists;
 using Iql.Events;
+using Iql.Serialization;
 using Newtonsoft.Json;
 
 namespace Iql.Data.QueryContainer
@@ -121,7 +122,7 @@ namespace Iql.Data.QueryContainer
             {
                 return false;
             }
-            var iqljson = JsonConvert.SerializeObject(iql);
+            var iqljson = IqlJsonSerializer.Serialize(iql);
             var canUpdate = force || iqljson != _lastIql;
             if (canUpdate)
             {

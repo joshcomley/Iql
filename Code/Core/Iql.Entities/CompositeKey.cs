@@ -138,8 +138,7 @@ namespace Iql.Entities
 
         private static CompositeKey ExtractCompositeKey(object entityOrKey, IEntityConfiguration entityConfiguration)
         {
-            CompositeKey compositeKey;
-            compositeKey = new CompositeKey(entityConfiguration.TypeName, entityConfiguration.Key.Properties.Length);
+            var compositeKey = new CompositeKey(entityConfiguration.TypeName, entityConfiguration.Key.Properties.Length);
             for (var i = 0; i < entityConfiguration.Key.Properties.Length; i++)
             {
                 var property = entityConfiguration.Key.Properties[i];

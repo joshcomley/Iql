@@ -220,6 +220,7 @@ namespace Iql.Server.OData.Net
             where T : class
         {
             var typeConfiguration = model.EntityType<T>();
+            
             foreach (EntitySetConfiguration entitySet in model.EntitySets.Where(s => s.EntityType.ClrType == typeof(T)))
             {
                 BuildEntitySet<T>(builder, model, entitySet);
