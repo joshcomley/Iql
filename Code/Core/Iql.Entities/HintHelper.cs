@@ -4,7 +4,8 @@ namespace Iql.Entities
 {
     public static class HintHelper
     {
-        public static HintHelperResult FindHintAndResolveProperty(IMetadata metadata, string name, bool? onlySelf = null)
+        public static HintHelperResult? FindHintAndResolveProperty(IMetadata metadata, string name,
+            bool? onlySelf = null)
         {
             if (onlySelf != true)
             {
@@ -13,6 +14,7 @@ namespace Iql.Entities
                 {
                     return new HintHelperResult(hint, metadata);
                 }
+
                 if (metadata is IPropertyGroup group)
                 {
                     if (group.PrimaryProperty != null)
@@ -23,6 +25,7 @@ namespace Iql.Entities
                             return new HintHelperResult(hint, group.PrimaryProperty);
                         }
                     }
+
                     if (group.PropertyGroup != null)
                     {
                         hint = HintHelper.FindHint(group.PropertyGroup, name, true);
@@ -30,6 +33,7 @@ namespace Iql.Entities
                             return new HintHelperResult(hint, group.PropertyGroup);
                         }
                     }
+
                     if (group.PrimaryProperty != null && group.PrimaryProperty.PropertyGroup != null)
                     {
                         hint = HintHelper.FindHint(group.PrimaryProperty.PropertyGroup, name, true);
@@ -39,12 +43,15 @@ namespace Iql.Entities
                         }
                     }
                 }
+
                 return null;
             }
+
             if (metadata.Hints == null)
             {
                 return null;
             }
+
             name = name.ToLower();
             foreach (var hint in metadata.Hints)
             {
@@ -60,6 +67,7 @@ namespace Iql.Entities
                     return new HintHelperResult(new MetadataHint(name, hint.Substring(startsWith.Length)), metadata);
                 }
             }
+
             return null;
         }
 
@@ -91,16 +99,22 @@ namespace Iql.Entities
             {
                 return;
             }
-            HintHelperResult result = FindHintAndResolveProperty(metadata, name, onlySelf);
-            while(result != null)
+
+            var result = FindHintAndResolveProperty(metadata, name, onlySelf);
+            while (result?.Metadata?.Hints != null)
             {
                 var length = result.Metadata.Hints.Count;
-                result.Metadata.Hints.Remove(result.Hint.Formatted());
+                if (result.Hint != null)
+                {
+                    result.Metadata.Hints.Remove(result.Hint.Formatted());
+                }
+
                 if (result.Metadata.Hints.Count == length)
                 {
                     // Something went wrong
                     break;
                 }
+
                 result = FindHintAndResolveProperty(metadata, name, onlySelf);
             }
         }

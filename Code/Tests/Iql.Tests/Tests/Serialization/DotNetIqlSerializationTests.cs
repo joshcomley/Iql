@@ -64,14 +64,23 @@ namespace Iql.Tests.Tests.Serialization
         }
 
         [TestMethod]
-        public async Task TestConvertLambdaToDotNetString()
+        public void TestConvertLambdaToDotNetString()
         {
-            var db = new AppDbContext();
             Expression<Func<Client, bool>> exp = c => c.Name == "abc";
             var converter = new DotNetExpressionConverter();
             var iql = converter.ConvertLambdaExpressionToIql<Client>(exp, Db.EntityConfigurationContext);
             var fnString = converter.ConvertIqlToExpressionStringAs<object>(iql.Expression, Db.EntityConfigurationContext);
             Assert.AreEqual(@"entity => ((entity.Name == null ? null : entity.Name.ToUpper()) == (""abc"" == null ? null : ""abc"".ToUpper()))", fnString);
+        }
+
+        [TestMethod]
+        public void TestConvertLambdaWithGuidToDotNetString()
+        {
+            Expression<Func<Client, bool>> exp = c => c.Guid == Guid.Empty;
+            var converter = new DotNetExpressionConverter();
+            var iql = converter.ConvertLambdaExpressionToIql<Client>(exp, Db.EntityConfigurationContext);
+            var fnString = converter.ConvertIqlToExpressionStringAs<object>(iql.Expression, Db.EntityConfigurationContext);
+            Assert.AreEqual(@"entity => (entity.Guid == ""00000000-0000-0000-0000-000000000000"")", fnString);
         }
 
         [TestMethod]
@@ -81,10 +90,6 @@ namespace Iql.Tests.Tests.Serialization
             Expression<Func<RelationshipFilterContext<Person>, Expression<Func<PersonLoading, bool>>>> filterExpression
                 = context => loading => loading.Name == context.Owner.Title;
             var iqlXml = IqlXmlSerializer.SerializeToXml(filterExpression, db.EntityConfigurationContext);
-            var iql = IqlXmlSerializer.DeserializeFromXml(iqlXml);
-            var exp = new DotNetExpressionConverter().ConvertIqlToExpression<RelationshipFilterContext<Person>>(iql, Db.EntityConfigurationContext);
-            var expCast
-                = (Expression<Func<RelationshipFilterContext<Person>, Expression<Func<PersonLoading, bool>>>>)exp;
             Assert.AreEqual(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <IqlLambdaExpression xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <Kind>Lambda</Kind>

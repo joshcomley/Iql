@@ -12,10 +12,11 @@ namespace Iql.DotNet.Serialization
         public static string SerializeToXml<T>(this T toSerialize, params Type[] types)
         {
             var xmlSerializer = new XmlSerializer(toSerialize.GetType(), types);
-            using (var textWriter = new StringWriter())
+            using (var writer = new StringWriter())
+            using (var xmlWriter = XmlWriter.Create(writer, new XmlWriterSettings { Indent = true }))
             {
-                xmlSerializer.Serialize(textWriter, toSerialize);
-                return textWriter.ToString();
+                xmlSerializer.Serialize(xmlWriter, toSerialize);
+                return writer.ToString();
             }
         }
 

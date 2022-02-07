@@ -9,7 +9,8 @@
             var value = action.Value == null ? "null" : action.Value.ToString();
             if (action.Value != null)
             {
-                if (action.ReturnType == IqlType.String)
+                if (action.ReturnType == IqlType.String || 
+                    action.ReturnType == IqlType.Guid)
                 {
                     value = $@"""{value}""";
                 }

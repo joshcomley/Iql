@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Iql
 {
     public class IqlIsEqualToExpression : IqlBinaryExpression

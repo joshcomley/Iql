@@ -132,7 +132,7 @@ namespace Iql.Entities
         public string Description { get; set; }
         private bool _hintsInitialized;
         private List<string> _hints;
-        public List<string> Hints { get { if(!_hintsInitialized) { _hintsInitialized = true; _hints = new List<string>(); } return _hints; } set { _hintsInitialized = true; _hints = value; } }
+        public List<string>? Hints { get { if(!_hintsInitialized) { _hintsInitialized = true; _hints = new List<string>(); } return _hints; } set { _hintsInitialized = true; _hints = value; } }
         public MetadataHint FindHint(string name, bool? onlySelf = false)
         {
             return HintHelper.FindHint(this, name, onlySelf);
