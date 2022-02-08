@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10024-1-Debug" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0124-1-Debug" />
+    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0128-1-Debug" />
   </ItemGroup>
 
   <ItemGroup>

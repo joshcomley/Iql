@@ -144,7 +144,12 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
 
         private static Task<GeneratedContexts> GenerateAsync(string odataSchemaUrl, OutputKind outputKind, string outputFolder = null, Func<string, string> nameMapper = null, string @namespace = null, string iqlSchemaUrl = null)
         {
-            return GenerateWithSettingsAsync(odataSchemaUrl, outputKind, outputFolder, new GeneratorSettings(@namespace, nameMapper), iqlSchemaUrl);
+            return GenerateWithSettingsAsync(
+                odataSchemaUrl,
+                outputKind,
+                outputFolder,
+                new GeneratorSettings(@namespace, nameMapper), 
+                iqlSchemaUrl);
         }
 
         private static Task<GeneratedContexts> GenerateWithSettingsAsync(

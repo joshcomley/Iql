@@ -1,23 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <Configurations>Debug;Release;TypeScript Debug;Debug TypeScript CSharp</Configurations>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
-        <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug TypeScript CSharp|AnyCPU'">
-        <DefineConstants>TRACE;CustomEvaluate</DefineConstants>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="TypeSharp.Extensions" Version="0.0.6-preview0124-1-Debug" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj" />
-        <ProjectReference Include="..\Iql.Entities\Iql.Entities.csproj" />
-        <ProjectReference Include="..\Iql\Iql.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Expressions\Conversion\" />
-        <Folder Include="Types\" />
-    </ItemGroup>
+  <PropertyGroup>
+    <Configurations>Debug;Release;TypeScript Debug;Debug TypeScript CSharp</Configurations>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TypeScript Debug|AnyCPU'">
+    <DefineConstants>TRACE;TYPESCRIPT DEBUG;NETSTANDARD2_0;TypeScript</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug TypeScript CSharp|AnyCPU'">
+    <DefineConstants>TRACE;CustomEvaluate</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Iql.Conversion\Iql.Conversion.csproj" />
+    <ProjectReference Include="..\Iql.Entities\Iql.Entities.csproj" />
+    <ProjectReference Include="..\Iql\Iql.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\Conversion\" />
+    <Folder Include="Types\" />
+  </ItemGroup>
 </Project>
