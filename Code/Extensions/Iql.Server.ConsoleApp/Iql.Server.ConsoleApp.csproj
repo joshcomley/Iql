@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10024-1-Debug" />
-    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0123-1-Debug" />
+    <PackageReference Include="TypeSharp.Core" Version="0.0.6-preview0124-1-Debug" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
