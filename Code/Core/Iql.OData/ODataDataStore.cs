@@ -238,12 +238,12 @@ namespace Iql.OData
             if (methodType == ODataMethodType.Function)
             {
                 var otherParameters = parameters.Where(p => p.Name != bindingParameterName).ToArray();
+                baseUri += "(";
                 if (otherParameters.Any())
                 {
-                    baseUri += "(";
                     baseUri += string.Join(",", otherParameters.Select(p => $"{p.Name}={ODataLiteralParser.ODataEncode(p.Value)}"));
-                    baseUri += ")";
                 }
+                baseUri += ")";
             }
 
             return baseUri;

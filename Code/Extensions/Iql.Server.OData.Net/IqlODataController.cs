@@ -60,16 +60,9 @@ namespace Iql.Server.OData.Net
                                                                                          HttpContext.RequestServices.GetService<IEntityConfigurationProvider>(),
                                                                                          MediaManager,
                                                                                          Crud.Unsecured.Context);
-
-        private TUser _loggedInUser;
         public virtual async Task<TUser> GetLoggedInUserAsync()
         {
-            if (User?.Identity == null)
-            {
-                return null;
-            }
-            _loggedInUser = _loggedInUser ?? await UserManager.FindByNameAsync(User.Identity.Name);
-            return _loggedInUser;
+            throw new NotImplementedException();
         }
 
         [ODataGenericAction(ForTypeTypeParameterName = nameof(TModel), BindingName = "keys")]

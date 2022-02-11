@@ -18,7 +18,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Brandless.ObjectSerializer" Version="0.0.2-10020-1-Debug" />
-    <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10119-1-Debug" />
+    <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10120-1-Debug" />
     <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.1.20200127.214830" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="4.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />

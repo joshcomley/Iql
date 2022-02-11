@@ -738,7 +738,7 @@ namespace Iql.Tests.Tests.OData
             var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.Users.Me();
             var uri = meRequest.Uri;
-            Assert.AreEqual(@"http://localhost:28000/odata/Users/IqlSampleApp.Me", uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Users/IqlSampleApp.Me()", uri);
         }
 
         [TestMethod]

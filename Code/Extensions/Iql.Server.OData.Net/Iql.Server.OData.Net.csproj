@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="Brandless.Data" Version="0.0.40017-10119-1-Debug" />
-    <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10119-1-Debug" />
-    <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10119-1-Debug" />
-    <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.20003-1-Debug" />
+    <PackageReference Include="Brandless.Data" Version="0.0.40017-10120-1-Debug" />
+    <PackageReference Include="Brandless.Data.EntityFramework" Version="0.0.40017-10120-1-Debug" />
+    <PackageReference Include="Brandless.Data.Mptt" Version="0.0.40017-10120-1-Debug" />
+    <PackageReference Include="Brandless.AspNetCore.OData.Extensions" Version="2.0.20010-1-Debug" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
     <PackageReference Include="NetTopologySuite" Version="2.4.0" />
   </ItemGroup>

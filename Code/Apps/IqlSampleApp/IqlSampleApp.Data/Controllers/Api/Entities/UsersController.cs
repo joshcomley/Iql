@@ -28,9 +28,9 @@ namespace IqlSampleApp.Data.Controllers.Api.Entities
 
         public async Task<IActionResult> AccountConfirm(string id)
         {
-            var user = await UserManager.FindByIdAsync(id);
-            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-            await UserManager.ConfirmEmailAsync(user, code);
+            // var user = await UserManager.FindByIdAsync(id);
+            // var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+            // await UserManager.ConfirmEmailAsync(user, code);
             return Ok();
         }
 
