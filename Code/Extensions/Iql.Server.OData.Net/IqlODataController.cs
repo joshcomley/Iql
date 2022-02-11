@@ -60,12 +60,13 @@ namespace Iql.Server.OData.Net
                                                                                          HttpContext.RequestServices.GetService<IEntityConfigurationProvider>(),
                                                                                          MediaManager,
                                                                                          Crud.Unsecured.Context);
-        public virtual async Task<TUser> GetLoggedInUserAsync()
+        protected virtual async Task<TUser> GetLoggedInUserAsync()
         {
             throw new NotImplementedException();
         }
 
         [ODataGenericAction(ForTypeTypeParameterName = nameof(TModel), BindingName = "keys")]
+        [HttpPost(nameof(IncrementVersion))]
         public virtual async Task<IActionResult> IncrementVersion([ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] keys, [FromBody]IncrementVersionModel model)
         {
             if (!string.IsNullOrWhiteSpace(model.PropertyName))
@@ -327,7 +328,7 @@ namespace Iql.Server.OData.Net
             }
         }
 
-        public virtual IServiceProviderProvider ResolveServiceProviderProvider()
+        protected virtual IServiceProviderProvider ResolveServiceProviderProvider()
         {
             var context = new IqlHttpServiceProviderContext(
                 HttpContext,
@@ -339,12 +340,12 @@ namespace Iql.Server.OData.Net
             return new IqlHttpServiceProviderProvider<TUser>(context);
         }
 
-        public virtual IqlCurrentUserService NewCurrentUserService(IqlHttpServiceProviderContext context)
+        protected virtual IqlCurrentUserService NewCurrentUserService(IqlHttpServiceProviderContext context)
         {
             return new IqlHttpCurrentUserService<TUser>(context);
         }
 
-        public virtual Task<object> ResolverUserIdByName(string name)
+        protected virtual Task<object> ResolverUserIdByName(string name)
         {
             return Task.FromResult<object>(null);
         }
@@ -588,7 +589,7 @@ namespace Iql.Server.OData.Net
         }
 
         public virtual bool EnqueueThumbnails => false;
-        public virtual async Task UpdatePreviewsAsync(TModel currentEntity, Delta<TModel> patch, File<TModel> file, KeyValuePair<string, object>[] entityKey)
+        protected virtual async Task UpdatePreviewsAsync(TModel currentEntity, Delta<TModel> patch, File<TModel> file, KeyValuePair<string, object>[] entityKey)
         {
             TModel populatedEntity;
             foreach (var filePreview_ in file.Previews)
@@ -624,6 +625,7 @@ namespace Iql.Server.OData.Net
         protected abstract Task EnqueueThumbnailRequest(string sourceUrl, string targetUrl);
 
         [ODataGenericFunction(ForTypeTypeParameterName = nameof(TModel), BindingName = "keys")]
+        [HttpGet(nameof(GetMediaUploadUrl))]
         public virtual Task<string> GetMediaUploadUrl(
             [ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] keys,
             [FromRoute]string property
@@ -632,7 +634,7 @@ namespace Iql.Server.OData.Net
             return GetMediaUrl(keys, Builder.EntityType<TModel>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
         }
 
-        public virtual async Task<string> GetMediaUrl(KeyValuePair<string, object>[] keys, IEntityProperty<TModel> propertyMetadata, MediaAccessKind mediaAccessKind,
+        internal virtual async Task<string> GetMediaUrl(KeyValuePair<string, object>[] keys, IEntityProperty<TModel> propertyMetadata, MediaAccessKind mediaAccessKind,
             TimeSpan? lifetime = null)
         {
             var file = (File<TModel>)propertyMetadata.File;
@@ -651,7 +653,7 @@ namespace Iql.Server.OData.Net
             return newUrl;
         }
 
-        public virtual async Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, TModel entity,
+        protected virtual async Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, TModel entity,
             DeleteActionResult result)
         {
             if (_deleteMediaTasks.ContainsKey(result))
@@ -668,7 +670,7 @@ namespace Iql.Server.OData.Net
             return ODataMediaManager.PreloadMediaKeyDependenciesAsync<TModel>(key, file);
         }
 
-        public virtual Task<TModel> PreloadPropertyPathAsync(KeyValuePair<string, object>[] key,
+        protected virtual Task<TModel> PreloadPropertyPathAsync(KeyValuePair<string, object>[] key,
             IqlPropertyPath path)
         {
             var query = CrudManager.FindQuery<TModel>(key);
@@ -682,7 +684,7 @@ namespace Iql.Server.OData.Net
             return finalQuery.SingleOrDefaultAsync();
         }
 
-        public override async Task<bool> ValidateEntityAsync<TEntity>(TEntity entity, string path, bool isValid, string accessor)
+        protected override async Task<bool> ValidateEntityAsync<TEntity>(TEntity entity, string path, bool isValid, string accessor)
         {
             var modelConfiguration = Builder.EntityType<TEntity>();
             if (modelConfiguration != null)
