@@ -5,9 +5,9 @@ using Iql.JavaScript.Extensions;
 
 namespace Iql.JavaScript.IqlToJavaScriptExpression.Parsers
 {
-    public class JavaScriptCollectionQueryParser : JavaScriptActionParserBase<IqlCollectitonQueryExpression>
+    public class JavaScriptCollectionQueryParser : JavaScriptActionParserBase<IqlCollectionQueryExpression>
     {
-        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectitonQueryExpression action, JavaScriptIqlParserContext parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectionQueryExpression action, JavaScriptIqlParserContext parser)
         {
             var queryParts = new List<string>();
             if (action.Filter != null)

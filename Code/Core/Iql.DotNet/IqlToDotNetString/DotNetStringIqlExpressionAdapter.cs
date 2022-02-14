@@ -12,7 +12,7 @@ namespace Iql.DotNet.IqlToDotNetString
             Registry.Register(typeof(IqlNotExpression), () => new DotNetStringNotExpressionParser());
             Registry.Register(typeof(IqlVariableExpression), () => new DotNetStringVariableParser());
             Registry.Register(typeof(IqlConditionExpression), () => new DotNetStringConditionExpressionParser());
-            Registry.Register(typeof(IqlCollectitonQueryExpression), () => new DotNetStringDataSetQueryExpressionParser());
+            Registry.Register(typeof(IqlCollectionQueryExpression), () => new DotNetStringDataSetQueryExpressionParser());
             Registry.Register(typeof(IqlStringTrimExpression), () => new DotNetStringStringTrimExpressionParser());
             Registry.Register(typeof(IqlLambdaExpression), () => new DotNetStringLambdaParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new DotNetStringPropertyReferenceParser());

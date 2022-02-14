@@ -1,8 +1,8 @@
 namespace Iql.Parsing.Reduction.Reducers
 {
-    public class IqlCollectitonQueryExpressionReducer : IqlReducerBase<IqlCollectitonQueryExpression>
+    public class IqlCollectitonQueryExpressionReducer : IqlReducerBase<IqlCollectionQueryExpression>
     {
-        public override void Traverse(IqlCollectitonQueryExpression expression, IqlTraverser reducer)
+        public override void Traverse(IqlCollectionQueryExpression expression, IqlTraverser reducer)
         {
             reducer.Traverse(expression.Filter);
             reducer.Traverse(expression.WithKey);
@@ -24,12 +24,12 @@ namespace Iql.Parsing.Reduction.Reducers
             base.Traverse(expression, reducer);
         }
 
-        public override IIqlLiteralExpression Evaluate(IqlCollectitonQueryExpression expression, IqlReducer reducer)
+        public override IIqlLiteralExpression Evaluate(IqlCollectionQueryExpression expression, IqlReducer reducer)
         {
             return null;
         }
 
-        public override IqlExpression ReduceStaticContent(IqlCollectitonQueryExpression expression, IqlReducer reducer)
+        public override IqlExpression ReduceStaticContent(IqlCollectionQueryExpression expression, IqlReducer reducer)
         {
             expression.Filter = reducer.ReduceStaticContent(expression.Filter);
             expression.WithKey = (IqlWithKeyExpression)reducer.ReduceStaticContent(expression.WithKey);

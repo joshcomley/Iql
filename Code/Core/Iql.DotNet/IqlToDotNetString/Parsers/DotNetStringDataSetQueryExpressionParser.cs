@@ -6,7 +6,7 @@ using Iql.DotNet.IqlToDotNetExpression.Parsers;
 
 namespace Iql.DotNet.IqlToDotNetString.Parsers
 {
-    public class DotNetStringDataSetQueryExpressionParser : DotNetActionParserBase<IqlCollectitonQueryExpression>
+    public class DotNetStringDataSetQueryExpressionParser : DotNetActionParserBase<IqlCollectionQueryExpression>
     {
         static DotNetStringDataSetQueryExpressionParser()
         {
@@ -16,7 +16,7 @@ namespace Iql.DotNet.IqlToDotNetString.Parsers
 
         internal static MethodInfo EnumerableWhereMethod { get; set; }
 
-        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectitonQueryExpression action, DotNetIqlParserContext parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectionQueryExpression action, DotNetIqlParserContext parser)
         {
             throw new NotImplementedException();
         }

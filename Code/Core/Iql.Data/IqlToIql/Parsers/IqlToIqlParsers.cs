@@ -452,9 +452,9 @@ namespace Iql.Data.IqlToIql.Parsers
     }
 
 
-    public class IqlToIqlCollectitonQueryParser : IqlToIqlActionParserBase<IqlCollectitonQueryExpression>
+    public class IqlToIqlCollectitonQueryParser : IqlToIqlActionParserBase<IqlCollectionQueryExpression>
     {
-        public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlCollectitonQueryExpression action, IqlToIqlParserContext parser)
+        public override async Task<IqlExpression> ToQueryStringTypedAsync<TEntity>(IqlCollectionQueryExpression action, IqlToIqlParserContext parser)
         {
             if (action.OrderBys != null)
             {
@@ -535,7 +535,7 @@ namespace Iql.Data.IqlToIql.Parsers
                     parser.TypeResolver,
                     parser,
                     parser.ContextEvaluator);
-                action.Query = (IqlCollectitonQueryExpression)processed.Result;
+                action.Query = (IqlCollectionQueryExpression)processed.Result;
             }
 
             if (property is IqlCountExpression)

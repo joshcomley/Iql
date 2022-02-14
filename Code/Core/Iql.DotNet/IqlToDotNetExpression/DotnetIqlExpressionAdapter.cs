@@ -8,7 +8,7 @@ namespace Iql.DotNet.IqlToDotNetExpression
         public DotNetIqlExpressionAdapter(string rootVariableName)
         {
             RootVariableName = rootVariableName;
-            Registry.Register(typeof(IqlCollectitonQueryExpression), () => new DotNetDataSetQueryExpressionParser());
+            Registry.Register(typeof(IqlCollectionQueryExpression), () => new DotNetDataSetQueryExpressionParser());
             Registry.Register(typeof(IqlIntersectsExpression), () => new DotNetIntersectsParser());
             Registry.Register(typeof(IqlLengthExpression), () => new DotNetLengthParser());
             Registry.Register(typeof(IqlDistanceExpression), () => new DotNetDistanceParser());

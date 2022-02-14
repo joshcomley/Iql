@@ -5,10 +5,10 @@ using Iql.OData.Extensions;
 
 namespace Iql.OData.IqlToODataExpression.Parsers
 {
-    public class ODataCollectionQueryActionParser : ODataActionParserBase<IqlCollectitonQueryExpression>
+    public class ODataCollectionQueryActionParser : ODataActionParserBase<IqlCollectionQueryExpression>
     {
         public override IqlExpression ToQueryString(
-            IqlCollectitonQueryExpression action, 
+            IqlCollectionQueryExpression action, 
             ODataIqlParserContext parser)
         {
             var odataParts = new List<string>();

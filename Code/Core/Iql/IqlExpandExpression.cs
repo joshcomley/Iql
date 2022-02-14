@@ -16,7 +16,7 @@ namespace Iql
         }
 
         public IqlPropertyExpression NavigationProperty { get; set; }
-        public IqlCollectitonQueryExpression Query { get; set; }
+        public IqlCollectionQueryExpression Query { get; set; }
         public bool Count { get; set; }
 
 
@@ -36,7 +36,7 @@ namespace Iql
 			// #ReplaceStart
 
 			NavigationProperty = (IqlPropertyExpression)context.Replace(this, nameof(NavigationProperty), null, NavigationProperty);
-			Query = (IqlCollectitonQueryExpression)context.Replace(this, nameof(Query), null, Query);
+			Query = (IqlCollectionQueryExpression)context.Replace(this, nameof(Query), null, Query);
 			Parent = context.Replace(this, nameof(Parent), null, Parent);
 			var replaced = context.Replacer(context, this);
 			if(replaced != this)
@@ -54,7 +54,7 @@ namespace Iql
 
 			var expression = new IqlExpandExpression();
 			expression.NavigationProperty = (IqlPropertyExpression)source.NavigationProperty?.Clone();
-			expression.Query = (IqlCollectitonQueryExpression)source.Query?.Clone();
+			expression.Query = (IqlCollectionQueryExpression)source.Query?.Clone();
 			expression.Count = source.Count;
 			expression.Key = source.Key;
 			expression.Kind = source.Kind;

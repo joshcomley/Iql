@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 {
-    public class DotNetDataSetQueryExpressionParser : DotNetActionParserBase<IqlCollectitonQueryExpression>
+    public class DotNetDataSetQueryExpressionParser : DotNetActionParserBase<IqlCollectionQueryExpression>
     {
         static DotNetDataSetQueryExpressionParser()
         {
@@ -15,7 +15,7 @@ namespace Iql.DotNet.IqlToDotNetExpression.Parsers
 
         internal static MethodInfo EnumerableWhereMethod { get; set; }
 
-        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectitonQueryExpression action, DotNetIqlParserContext parser)
+        public override IqlExpression ToQueryStringTyped<TEntity>(IqlCollectionQueryExpression action, DotNetIqlParserContext parser)
         {
             var filter = parser.Parse(action.Filter);
             var orderBys = action.OrderBys?.Select(o => parser.Parse(o));

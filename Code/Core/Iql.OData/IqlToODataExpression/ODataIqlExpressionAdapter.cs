@@ -9,7 +9,7 @@ namespace Iql.OData.IqlToODataExpression
         {
             Registry.Register(typeof(IqlExpression), () => new ODataActionParser());
             Registry.Register(typeof(IqlLambdaExpression), () => new ODataLambdaActionParser());
-            Registry.Register(typeof(IqlCollectitonQueryExpression), () => new ODataCollectionQueryActionParser());
+            Registry.Register(typeof(IqlCollectionQueryExpression), () => new ODataCollectionQueryActionParser());
             Registry.Register(typeof(IqlAnyAllExpression), () => new ODataAnyAllActionParser());
             Registry.Register(typeof(IqlExpandExpression), () => new ODataExpandActionParser());
             Registry.Register(typeof(IqlOrderByExpression), () => new ODataOrderByActionParser());

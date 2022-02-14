@@ -22,7 +22,7 @@ namespace Iql.Data.IqlToIql
             Registry.Register(typeof(IqlAggregateExpression), () => new IqlToIqlAggregateParser());
             Registry.Register(typeof(IqlBinaryExpression), () => new IqlToIqlBinaryParser());
             Registry.Register(typeof(IqlNavigationExpression), () => new IqlToIqlNavigationParser());
-            Registry.Register(typeof(IqlCollectitonQueryExpression), () => new IqlToIqlCollectitonQueryParser());
+            Registry.Register(typeof(IqlCollectionQueryExpression), () => new IqlToIqlCollectitonQueryParser());
             Registry.Register(typeof(IqlDataSetQueryExpression), () => new IqlToIqlDataSetQueryParser());
             Registry.Register(typeof(IqlExpandExpression), () => new IqlToIqlExpandParser());
             Registry.Register(typeof(IqlExpression), () => new IqlToIqlParser());

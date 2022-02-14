@@ -26,7 +26,7 @@ namespace Iql.JavaScript.IqlToJavaScriptExpression
             Registry.Register(typeof(IqlWithKeyExpression), () => new JavaScriptWithKeyQueryParser());
             Registry.Register(typeof(IqlExpandExpression), () => new JavaScriptExpandQueryParser());
             Registry.Register(typeof(IqlOrderByExpression), () => new JavaScriptOrderByQueryParser());
-            Registry.Register(typeof(IqlCollectitonQueryExpression), () => new JavaScriptCollectionQueryParser());
+            Registry.Register(typeof(IqlCollectionQueryExpression), () => new JavaScriptCollectionQueryParser());
             Registry.Register(typeof(IqlNotExpression), () => new JavaScriptNotActionParser());
             Registry.Register(typeof(IqlParenthesisExpression), () => new JavaScriptParenthesisParser());
             Registry.Register(typeof(IqlPropertyExpression), () => new JavaScriptPropertyReferenceParser());

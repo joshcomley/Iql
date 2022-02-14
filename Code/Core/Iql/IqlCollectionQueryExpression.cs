@@ -2,9 +2,9 @@
 
 namespace Iql
 {
-    public abstract class IqlCollectitonQueryExpression : IqlNavigationExpression
+    public abstract class IqlCollectionQueryExpression : IqlNavigationExpression
     {
-        protected IqlCollectitonQueryExpression(
+        protected IqlCollectionQueryExpression(
             string entityTypeName, 
             IqlExpressionKind kind, 
             IqlExpression parent = null) 

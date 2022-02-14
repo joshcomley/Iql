@@ -32,7 +32,7 @@ namespace Iql
     //    public IqlPropertyExpression NavigationProperty { get; set; }
     //}
 
-    public class IqlDataSetQueryExpression : IqlCollectitonQueryExpression
+    public class IqlDataSetQueryExpression : IqlCollectionQueryExpression
     {
         public IqlDataSetQueryExpression(string entityTypeName = null, IqlExpression parent = null)
             : base(entityTypeName, IqlExpressionKind.DataSetQuery, parent)
