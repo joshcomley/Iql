@@ -16,7 +16,7 @@ namespace Iql.OData.Extensions
                 return "";
             }
             entitySetName = entitySetName ?? configuration.GetEntitySetNameByType(type);
-            var apiUriBase = configuration.ApiUriBase();
+            var apiUriBase = (configuration.ApiUriBase == null ? "" : configuration.ApiUriBase()) ?? "";
             if (!apiUriBase.EndsWith("/"))
             {
                 apiUriBase += "/";

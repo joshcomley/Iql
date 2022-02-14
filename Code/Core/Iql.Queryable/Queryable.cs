@@ -46,6 +46,13 @@ namespace Iql.Queryable
             return Then(new ReverseOperation());
         }
 
+        public IQueryableBase ClearOperations()
+        {
+            var copy = Copy();
+            copy.Operations.Clear();
+            return copy;
+        }
+
         public abstract Task<bool> AnyAsync(Expression<Func<T, bool>> expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null

@@ -1922,7 +1922,9 @@ namespace Iql.Data.Context
                         iqlExpandExpression.NavigationProperty.PropertyName = property.Name;
                     }
                     var expandEntityType = property.Relationship.OtherEnd.EntityConfiguration.Type;
-                    var expandDbSet = DataContext.GetDbSetByEntityType(expandEntityType);
+                    var expandDbSet = DataContext.GetDbSetByEntityType(expandEntityType)
+                        .ClearOperations()
+                        ;
                     var expandQueryable = expandQueryExpression.Queryable(expandDbSet);
                     var expandQuery = await expandQueryable.ToIqlAsync();
                     iqlExpandExpression.Query = expandQuery;

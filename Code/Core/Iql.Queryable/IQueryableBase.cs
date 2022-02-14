@@ -25,6 +25,7 @@ namespace Iql.Queryable
         IQueryableBase Skip(int skip);
         IQueryableBase Take(int take);
         IQueryableBase Reverse();
+        IQueryableBase ClearOperations();
         IQueryableBase Then(IQueryOperation operation);
         Task<IEnumerable> ToListAsync(LambdaExpression expression = null
 #if TypeScript

@@ -20,6 +20,7 @@ using Iql.Entities.Services;
 using Iql.Entities.Validation.Validation;
 using Iql.Events;
 using Iql.Parsing;
+using Iql.Queryable;
 
 namespace Iql.Data.Context
 {
@@ -43,6 +44,8 @@ namespace Iql.Data.Context
         Task<bool> RestoreOfflineStateAsync();
         IqlDataChanges GetOfflineChanges(object[] entities = null, IProperty[] properties = null);
         IqlDataChanges GetChanges(object[] entities = null, IProperty[] properties = null);
+        IQueryableBase EnsureDefaults(IQueryableBase queryable);
+
         //DataSnapshotChain SnapshotChain { get; }
         //void ClearSnapshots();
         //DataSnapshot GetSnapshot();

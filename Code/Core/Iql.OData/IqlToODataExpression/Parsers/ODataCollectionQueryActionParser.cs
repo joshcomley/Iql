@@ -7,7 +7,9 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 {
     public class ODataCollectionQueryActionParser : ODataActionParserBase<IqlCollectitonQueryExpression>
     {
-        public override IqlExpression ToQueryString(IqlCollectitonQueryExpression action, ODataIqlParserContext parser)
+        public override IqlExpression ToQueryString(
+            IqlCollectitonQueryExpression action, 
+            ODataIqlParserContext parser)
         {
             var odataParts = new List<string>();
             var filter = action.Filter == null ? null : parser.Parse(action.Filter).ToCodeString();

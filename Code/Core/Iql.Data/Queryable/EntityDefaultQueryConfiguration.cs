@@ -22,9 +22,13 @@ namespace Iql.Data.Queryable
 
         public Func<IDbQueryable> GetQueryable<TEntity>()
         {
-            if (Queryables.ContainsKey(typeof(TEntity)))
+            return GetQueryableByType(typeof(TEntity));
+        }
+        public Func<IDbQueryable> GetQueryableByType(Type type)
+        {
+            if (Queryables.ContainsKey(type))
             {
-                return Queryables[typeof(TEntity)];
+                return Queryables[type];
             }
             return null;
         }

@@ -1893,34 +1893,7 @@ namespace Iql.Data.Context
         public virtual async Task<GetDataResult<TEntity>> GetAsync<TEntity>(GetDataOperation<TEntity> operation)
             where TEntity : class
         {
-            if (!operation.Queryable.HasDefaults)
-            {
-                var getConfiguration = GetConfiguration<EntityDefaultQueryConfiguration>();
-                if (getConfiguration == null)
-                {
-                    getConfiguration = new EntityDefaultQueryConfiguration();
-                    RegisterConfiguration(getConfiguration);
-                }
-
-                var queryableGetter = getConfiguration.GetQueryable<TEntity>();
-                if (queryableGetter != null)
-                {
-                    var queryable = queryableGetter() as global::Iql.Queryable.IQueryable<TEntity>;
-                    queryable.Operations.AddRange(operation.Queryable.Operations);
-                    operation.Queryable = queryable;
-                }
-
-                if (getConfiguration.AlwaysIncludeCount)
-                {
-                    var countOperationCount = operation.Queryable.Operations.Count(o => o is IncludeCountOperation);
-                    if (countOperationCount == 0)
-                    {
-                        operation.Queryable.Operations.Add(new IncludeCountOperation());
-                    }
-                }
-
-                operation.Queryable.HasDefaults = true;
-            }
+            operation.Queryable = (global::Iql.Queryable.IQueryable<TEntity>)EnsureDefaults(operation.Queryable);
 
             var listenConfiguration = GetConfiguration<DataContextEventsConfiguration>();
             if (listenConfiguration != null && listenConfiguration.GetBeginListeners != null)
@@ -1986,6 +1959,40 @@ namespace Iql.Data.Context
             return getDataResult;
         }
 
+        public IQueryableBase EnsureDefaults(IQueryableBase queryable) 
+        {
+            if (!queryable.HasDefaults)
+            {
+                var getConfiguration = GetConfiguration<EntityDefaultQueryConfiguration>();
+                if (getConfiguration == null)
+                {
+                    getConfiguration = new EntityDefaultQueryConfiguration();
+                    RegisterConfiguration(getConfiguration);
+                }
+
+                var queryableGetter = getConfiguration.GetQueryableByType(queryable.ItemType);
+                if (queryableGetter != null)
+                {
+                    IQueryableBase queryable2 = queryableGetter();
+                    queryable2.Operations.AddRange(queryable.Operations);
+                    queryable = queryable2;
+                }
+
+                if (getConfiguration.AlwaysIncludeCount)
+                {
+                    var countOperationCount = queryable.Operations.Count(o => o is IncludeCountOperation);
+                    if (countOperationCount == 0)
+                    {
+                        queryable.Operations.Add(new IncludeCountOperation());
+                    }
+                }
+
+                queryable.HasDefaults = true;
+            }
+
+            return queryable;
+        }
+
         public static DataTracker ResolveDataTracker(IQueryableBase sourceQueryable, IDataContext dataContext)
         {
             bool shouldTrackResults = dataContext.TrackEntities;
@@ -2009,7 +2016,10 @@ namespace Iql.Data.Context
         {
             if (!HasOfflineChanges)
             {
-                await DataStore.PerformGetAsync(queuedGetDataOperation);
+                if (DataStore != null)
+                {
+                    await DataStore.PerformGetAsync(queuedGetDataOperation);
+                }
 
                 if (response.RequestStatus == RequestStatus.Offline)
                 {

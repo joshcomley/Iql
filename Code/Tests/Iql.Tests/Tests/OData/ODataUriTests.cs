@@ -60,6 +60,20 @@ namespace Iql.Tests.Tests.OData
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites", uri);
         }
+        
+        [TestMethod]
+        public async Task TestSingleEntityExpansionDoesNotIncludeCount()
+        {
+            // Calling this first would trigger defaults to be set
+            // on the Sites DbSet query, including IncludeCount,
+            // which would translate to an expand on a single entity
+            // with a count
+            await Db.Sites.ToListAsync();
+            var query = Db.SiteInspections.Expand(_ => _.Site);
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/SiteInspections?$expand=Site", uri);
+        }
 
         [TestMethod]
         public async Task TestIntersectsLiteral()
