@@ -25,6 +25,7 @@ namespace Iql.Data.IqlToIql.Parsers
                 if (value != null && value.ClaimedIqlKind() == IqlExpressionKind.Final)
                 {
                     value = ((IFinalExpression)value).Value;
+                    action.Kind = IqlExpressionKind.Final;
                 }
                 else if (value is IqlLiteralExpression)
                 {
@@ -328,6 +329,16 @@ namespace Iql.Data.IqlToIql.Parsers
             var propertyExpression = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.Property) as IqlPropertyExpression;
             var enumLiteralExpression = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.EnumLiteral) as IqlEnumLiteralExpression;
             var literal = lr.FirstOrDefault(_ => _ != null && _.Kind == IqlExpressionKind.Literal) as IqlLiteralExpression;
+
+            // If it looks like we're comparing a string to a GUID
+            // then we're actually comparing a GUID to a GUID
+            var leftType = action.Left.ResolveIqlType(parser.CurrentEntityType);
+            var rightType = action.Right.ResolveIqlType(parser.CurrentEntityType);
+            if (leftType == IqlType.Guid || rightType == IqlType.Guid)
+            {
+                action.Left.ReturnType = IqlType.Guid;
+                action.Right.ReturnType = IqlType.Guid;
+            }
             if (propertyExpression != null &&
                 enumLiteralExpression != null &&
                 isValidEnumCheck)

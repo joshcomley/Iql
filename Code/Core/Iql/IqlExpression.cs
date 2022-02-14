@@ -85,6 +85,11 @@ namespace Iql
             return propertyExpression;
         }
 
+        public virtual IqlType ResolveIqlType(Type rootEntityType)
+        {
+            return ResolveType(rootEntityType).ToIqlType();
+        }
+        
         public virtual Type ResolveType(Type rootEntityType)
         {
             var ancestors = new List<IqlExpression>();
@@ -133,7 +138,7 @@ namespace Iql
                 {
                     if (ancestor is IqlPropertyExpression)
                     {
-                        type = type.GetProperty((ancestor as IqlPropertyExpression).PropertyName).PropertyType;
+                        type = type.GetProperty((ancestor as IqlPropertyExpression).PropertyName)?.PropertyType;
                     }
                     else
                     {

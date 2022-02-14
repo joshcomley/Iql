@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Iql.Extensions;
 
 namespace Iql.OData.IqlToODataExpression.Parsers
 {
@@ -45,6 +46,8 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 }
             }
 
+            var leftType = action.Left.ResolveType(parser.CurrentEntityType).ToIqlType();
+            var rightType = action.Right.ResolveType(parser.CurrentEntityType).ToIqlType();
             var left = parser.Parse(action.Left);
             var right = parser.Parse(action.Right);
 

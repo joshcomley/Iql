@@ -3,7 +3,7 @@
     <Configurations>Debug;Release;Debug TypeScript CSharp</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Brandless.Data" Version="0.0.40017-10120-1-Debug" />
+    <PackageReference Include="Brandless.Data" Version="0.0.40017-10124-1-Debug" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.2" />
     <FrameworkReference Include="Microsoft.AspNetCore.App"></FrameworkReference>
   </ItemGroup>

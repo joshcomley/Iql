@@ -30,6 +30,10 @@ namespace Iql
             get => _value;
             set
             {
+                if (Equals(value , "hello"))
+                {
+                    int a = 0;
+                }
                 _value = value;
                 UpdateInferredType();
             }

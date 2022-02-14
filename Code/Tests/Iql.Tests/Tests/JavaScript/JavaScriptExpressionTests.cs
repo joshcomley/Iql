@@ -50,6 +50,26 @@ namespace Iql.Tests.Tests.JavaScript
         public string EntityType = "abc";
 
         [TestMethod]
+        public void TestGuidInExpression()
+        {
+            Assert.AreEqual("($it/Guid eq 0000)",
+                ConvertJavaScriptExpressionToODataUri<Client>(
+                    @"function (c) { return c.Guid == '0000'; }")
+            );
+        }
+
+        private string ConvertJavaScriptExpressionToODataUri<T>(string js)
+            where T : class
+        {
+            var converter = new JavaScriptExpressionConverter();
+            var expression = converter.ConvertJavaScriptStringToIql<T>(js,
+                TypeResolver,
+                new EvaluateContext((name) => { return this; }));
+            var url = new ODataExpressionConverter().ConvertIqlToExpressionString(expression.Expression, TypeResolver);
+            return url;
+        }
+
+        [TestMethod]
         public void TestThis()
         {
             //_ => _.EntityType == this.parameters.EntityType

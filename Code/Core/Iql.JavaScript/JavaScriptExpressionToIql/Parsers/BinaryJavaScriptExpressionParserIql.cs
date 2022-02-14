@@ -29,6 +29,13 @@ namespace Iql.JavaScript.JavaScriptExpressionToIql.Parsers
                 CheckBoolean(left);
                 CheckBoolean(right);
             }
+
+            if (left.ReturnType == IqlType.Guid || right.ReturnType == IqlType.Guid)
+            {
+                left.ReturnType = IqlType.Guid;
+                right.ReturnType = IqlType.Guid;
+            }
+            
             IqlExpression exp = null;
             switch (expression.Operator)
             {

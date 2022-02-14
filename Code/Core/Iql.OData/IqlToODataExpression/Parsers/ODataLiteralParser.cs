@@ -11,7 +11,11 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             ODataIqlParserContext parser)
         {
             var value = action.Value;
-            return new IqlFinalExpression<string>(ODataEncode(value, action.ReturnType));
+            return new IqlFinalExpression<string>(
+                action.Kind == IqlExpressionKind.Final
+                    ? (value ?? "").ToString() 
+                    : ODataEncode(value, action.ReturnType)
+                );
         }
 
         public static string ODataEncode(object value, IqlType type = IqlType.Unknown)

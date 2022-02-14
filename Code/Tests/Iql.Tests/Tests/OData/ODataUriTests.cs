@@ -85,7 +85,9 @@ namespace Iql.Tests.Tests.OData
 
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=geo.intersects($it/Location,geography'SRID=4326;POLYGON((2 1,4 5,3 7,2 1))')", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Sites?$filter=geo.intersects($it/Location,geography'SRID=4326;POLYGON((2 1,4 5,3 7,2 1))')",
+                uri);
         }
 
         [TestMethod]
@@ -96,7 +98,9 @@ namespace Iql.Tests.Tests.OData
                 IqlSearchKind.Primary | IqlSearchKind.Secondary | IqlSearchKind.Relationships);
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/ClientCategoriesPivot?$filter=(contains($it/Client/Name,'abc') or contains($it/Category/Name,'abc'))", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/ClientCategoriesPivot?$filter=(contains($it/Client/Name,'abc') or contains($it/Category/Name,'abc'))",
+                uri);
         }
 
         [TestMethod]
@@ -175,7 +179,8 @@ namespace Iql.Tests.Tests.OData
                 new[] { IqlPropertyPath.FromExpression<ClientCategoryPivot>(_ => _.Category, TypeResolver) });
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/ClientCategoriesPivot?$filter=contains($it/Client/Name,'abc')", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/ClientCategoriesPivot?$filter=contains($it/Client/Name,'abc')", uri);
         }
 
         [TestMethod]
@@ -189,7 +194,9 @@ namespace Iql.Tests.Tests.OData
             );
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(contains($it/Name,'abc') and not(Categories/any(child:(child/CategoryId eq 7))))", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Clients?$filter=(contains($it/Name,'abc') and not(Categories/any(child:(child/CategoryId eq 7))))",
+                uri);
         }
 
         [TestMethod]
@@ -238,7 +245,9 @@ namespace Iql.Tests.Tests.OData
                 new object[] { excludeClient, excludeClientByKey });
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=((contains($it/Name,'abc') and not(Categories/any(child:(child/CategoryId eq 7)))) and ((((not(($it/Id eq 100)) and not(($it/Id eq 103))) and not(($it/Id eq 9))) and not(($it/Id eq 15))) and not(($it/Id eq 26))))", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Clients?$filter=((contains($it/Name,'abc') and not(Categories/any(child:(child/CategoryId eq 7)))) and ((((not(($it/Id eq 100)) and not(($it/Id eq 103))) and not(($it/Id eq 9))) and not(($it/Id eq 15))) and not(($it/Id eq 26))))",
+                uri);
         }
 
         [TestMethod]
@@ -264,7 +273,9 @@ namespace Iql.Tests.Tests.OData
 
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=geo.intersects($it/Location,geography'SRID=4326;POLYGON((2 1,4 5,3 7,2 1))')", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Sites?$filter=geo.intersects($it/Location,geography'SRID=4326;POLYGON((2 1,4 5,3 7,2 1))')",
+                uri);
         }
 
         [TestMethod]
@@ -307,10 +318,12 @@ namespace Iql.Tests.Tests.OData
                         Evaluate = n => (Func<object, object>)Evaluator.Eval(n)
                     }
 #endif
-                                               );
+            );
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)",
+                uri);
         }
 
         [TestMethod]
@@ -329,8 +342,51 @@ namespace Iql.Tests.Tests.OData
 
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,$it/Location) lt 150)", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Sites?$filter=(geo.distance($it/Location,$it/Location) lt 150)", uri);
         }
+
+        [TestMethod]
+        public async Task TestWhereWithFinalExpression()
+        {
+            var query = Db.People.WherePropertyEquals(
+                nameof(Person.Description),
+                new IqlFinalExpression<string>("hello"));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=($it/Description eq hello)",
+                uri);
+        }
+        
+#if !TypeScript
+        [TestMethod]
+        public async Task TestWhereOnGuid()
+        {
+            var query = Db.People.WhereEquals(new IqlIsEqualToExpression(
+                new IqlPropertyExpression(
+                    nameof(Person.Guid),
+                    new IqlRootReferenceExpression()),
+                new IqlLiteralExpression(Guid.Empty)));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=($it/Guid eq 00000000-0000-0000-0000-000000000000)",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task TestWhereOnGuidWithString()
+        {
+            var query = Db.People.WhereEquals(new IqlIsEqualToExpression(
+                new IqlPropertyExpression(
+                    nameof(Person.Guid),
+                    new IqlRootReferenceExpression()),
+                new IqlLiteralExpression(Guid.Empty.ToString())));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=($it/Guid eq 00000000-0000-0000-0000-000000000000)",
+                uri);
+        }
+#endif
 
         [TestMethod]
         public async Task TestCurrentUserId()
@@ -346,7 +402,8 @@ namespace Iql.Tests.Tests.OData
                 uri);
             Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
             uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual($@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq '{TestCurrentUserResolver.TestCurrentUserId}')",
+            Assert.AreEqual(
+                $@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq '{TestCurrentUserResolver.TestCurrentUserId}')",
                 uri);
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();
         }
@@ -378,7 +435,8 @@ namespace Iql.Tests.Tests.OData
                 uri);
             Db.ServiceProvider.RegisterInstance<IqlCurrentUserService>(new TestCurrentUserResolver());
             uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual($@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq '{TestCurrentUserResolver.TestCurrentUserId}')",
+            Assert.AreEqual(
+                $@"http://localhost:28000/odata/People?$filter=($it/CreatedByUserId eq '{TestCurrentUserResolver.TestCurrentUserId}')",
                 uri);
             Db.ServiceProvider.Unregister<IqlCurrentUserService>();
         }
@@ -498,7 +556,8 @@ namespace Iql.Tests.Tests.OData
             var currentLongitude = -0.0775452;
             TestCurrentLocationResolver.CurrentLongitude = currentLongitude;
             uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual(@"http://localhost:28000/odata/People?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(-0.077545 51.50546)') lt 500)",
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=(geo.distance($it/Location,geography'SRID=4326;POINT(-0.077545 51.50546)') lt 500)",
                 uri);
             TestCurrentLocationResolver.CurrentLatitude = null;
             TestCurrentLocationResolver.CurrentLongitude = null;
@@ -529,7 +588,8 @@ namespace Iql.Tests.Tests.OData
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             var reducedValue = "463202.03500926046";
-            Assert.AreEqual($@"http://localhost:28000/odata/Sites?$filter=(geo.length($it/Line) lt {reducedValue})", uri);
+            Assert.AreEqual($@"http://localhost:28000/odata/Sites?$filter=(geo.length($it/Line) lt {reducedValue})",
+                uri);
         }
 
         [TestMethod]
@@ -585,7 +645,9 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Clients.Where(c => c.Sites.Where(s => s.AdditionalSendReportsTo.Count > 22).Count() > 3);
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Clients?$filter=(Sites/$count($filter=(AdditionalSendReportsTo/$count gt 22)) gt 3)",
+                uri);
         }
 
 #if !TypeScript
@@ -596,7 +658,9 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Clients.Where(c => !c.Name.Contains("xyz"));
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=((not(contains($it/Name,'xyz')) or ($it/Name eq null)) or ($it/Name eq ''))", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Clients?$filter=((not(contains($it/Name,'xyz')) or ($it/Name eq null)) or ($it/Name eq ''))",
+                uri);
         }
 
 #endif
@@ -606,7 +670,9 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Clients.Where(c => c.Name.IndexOf("xyz") == -1);
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=(((indexof(tolower($it/Name),'xyz') eq -1) or ($it/Name eq null)) or ($it/Name eq ''))", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Clients?$filter=(((indexof(tolower($it/Name),'xyz') eq -1) or ($it/Name eq null)) or ($it/Name eq ''))",
+                uri);
         }
 
         [TestMethod]
@@ -615,7 +681,9 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Clients.Where(c => !!(c.Name.IndexOf("xyz") == -1));
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=not(not((((indexof(tolower($it/Name),'xyz') eq -1) or ($it/Name eq null)) or ($it/Name eq ''))))", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Clients?$filter=not(not((((indexof(tolower($it/Name),'xyz') eq -1) or ($it/Name eq null)) or ($it/Name eq ''))))",
+                uri);
         }
 
         [TestMethod]
@@ -624,7 +692,9 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Clients.Where(c => !!!(c.Name.IndexOf("xyz") == -1));
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=not(not(not((indexof(tolower($it/Name),'xyz') eq -1))))", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Clients?$filter=not(not(not((indexof(tolower($it/Name),'xyz') eq -1))))",
+                uri);
         }
 
         [TestMethod]
@@ -633,7 +703,9 @@ namespace Iql.Tests.Tests.OData
             var query = Db.Clients.Where(c => (((c.Name.IndexOf("xyz") == -1) == false) == false) == false);
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=not(not(not((indexof(tolower($it/Name),'xyz') eq -1))))", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Clients?$filter=not(not(not((indexof(tolower($it/Name),'xyz') eq -1))))",
+                uri);
         }
 
         [TestMethod]
@@ -690,7 +762,9 @@ namespace Iql.Tests.Tests.OData
                 .Take(5);
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/SiteInspections?$filter=(contains($it/Site/Name,'abc') or contains($it/CreatedByUser/FullName,'abc'))&$expand=Site,CreatedByUser&$orderby=$it/CreatedDate&$top=5", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/SiteInspections?$filter=(contains($it/Site/Name,'abc') or contains($it/CreatedByUser/FullName,'abc'))&$expand=Site,CreatedByUser&$orderby=$it/CreatedDate&$top=5",
+                uri);
         }
 
         [TestMethod]
@@ -725,7 +799,7 @@ namespace Iql.Tests.Tests.OData
                 .Clients
                 .ExpandRelationship(nameof(Client.SitesCount));
             var query = initialExpand
-                .ExpandRelationship(nameof(Client.SitesCount))
+                    .ExpandRelationship(nameof(Client.SitesCount))
                 ;
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
@@ -756,7 +830,9 @@ namespace Iql.Tests.Tests.OData
             var db = new AppDbContext(new ODataDataStore());
             var meRequest = db.Users.ReinstateUser(new ApplicationUser { Id = "928B9116-B06C-49EF-98C9-52A776E03ECD" });
             var uri = meRequest.Uri;
-            Assert.AreEqual(@"http://localhost:28000/odata/Users('928B9116-B06C-49EF-98C9-52A776E03ECD')/IqlSampleApp.ReinstateUser", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Users('928B9116-B06C-49EF-98C9-52A776E03ECD')/IqlSampleApp.ReinstateUser",
+                uri);
         }
 
         [TestMethod]
@@ -781,14 +857,16 @@ namespace Iql.Tests.Tests.OData
             query = query.OrderBy(c => c.Name).Expand(c => c.Type);
             uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$expand=Type&$orderby=$it/Name",
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Clients?$filter=($it/Name eq 'hello')&$expand=Type&$orderby=$it/Name",
                 uri);
         }
 
         [TestMethod]
         public async Task TestFilteringOnFilteredNestedCollectionResultCount()
         {
-            var query = Db.People.ExpandCollection(c => c.Types, tq => tq.Where(c => c.Description == "a").Expand(c => c.Type));
+            var query = Db.People.ExpandCollection(c => c.Types,
+                tq => tq.Where(c => c.Description == "a").Expand(c => c.Type));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
                 @"http://localhost:28000/odata/People?$expand=Types($filter=(Description eq 'a');$expand=Type)",
@@ -864,7 +942,8 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestMultiply()
         {
-            var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count * 0.5);
+            var query = Db.People.Where(c =>
+                c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count * 0.5);
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
                 @"http://localhost:28000/odata/People?$filter=(Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt (Types/$count mul 0.5))",
@@ -874,7 +953,8 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestDivide()
         {
-            var query = Db.People.Where(c => c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count / 0.5);
+            var query = Db.People.Where(c =>
+                c.Types.Count(t => t.Description.IndexOf("TEST") != -1) > c.Types.Count / 0.5);
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
                 @"http://localhost:28000/odata/People?$filter=(Types/$count($filter=(indexof(tolower(Description),'test') ne -1)) gt (Types/$count div 0.5))",
@@ -947,7 +1027,8 @@ namespace Iql.Tests.Tests.OData
                 new IqlSubtractExpression(new IqlNowExpression(),
                     new IqlTimeSpanExpression().Set(7))));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt (now() sub duration'P7D'))",
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt (now() sub duration'P7D'))",
                 uri);
         }
 
@@ -961,7 +1042,8 @@ namespace Iql.Tests.Tests.OData
                 new IqlSubtractExpression(new IqlNowExpression(),
                     new IqlTimeSpanExpression().Set(7)))));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=not(($it/CreatedDate gt (now() sub duration'P7D')))",
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Users?$filter=not(($it/CreatedDate gt (now() sub duration'P7D')))",
                 uri);
         }
 
@@ -989,7 +1071,8 @@ namespace Iql.Tests.Tests.OData
                 new IqlSubtractExpression(new IqlNowExpression(),
                     new IqlTimeSpanExpression().Set(365 * 10, 7, 15, 33, 14))));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt (now() sub duration'P3650DT7H15M33.014S'))",
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt (now() sub duration'P3650DT7H15M33.014S'))",
                 uri);
         }
 
@@ -1129,7 +1212,8 @@ namespace Iql.Tests.Tests.OData
                         new IqlRootReferenceExpression(rootVariableName)),
                     new IqlLiteralExpression("jimbo", IqlType.String)), IqlType.Boolean, rootVariableName)));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/any(_:contains(_/Name,'jimbo'))",
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Users?$filter=ClientsCreated/any(_:contains(_/Name,'jimbo'))",
                 uri);
         }
 
@@ -1163,7 +1247,8 @@ namespace Iql.Tests.Tests.OData
                         new IqlRootReferenceExpression(rootVariableName)),
                     new IqlLiteralExpression("jimbo", IqlType.String)), IqlType.Boolean, rootVariableName)));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=ClientsCreated/all(_:contains(_/Name,'jimbo'))",
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Users?$filter=ClientsCreated/all(_:contains(_/Name,'jimbo'))",
                 uri);
         }
 
@@ -1207,13 +1292,16 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task EnumFlagsContainsOrCheck()
         {
-            var query = Db.Users.Where(c => (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0 || (c.Permissions & (UserPermissions.Delete)) != 0
+            var query = Db.Users.Where(c =>
+                    (c.Permissions & (UserPermissions.Edit | UserPermissions.Create)) != 0 ||
+                    (c.Permissions & (UserPermissions.Delete)) != 0
 #if TypeScript
     , new EvaluateContext(code => Evaluator.Eval(code))
 #endif
             );
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(($it/Permissions has 'Create,Edit') or ($it/Permissions has 'Delete'))",
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Users?$filter=(($it/Permissions has 'Create,Edit') or ($it/Permissions has 'Delete'))",
                 uri);
         }
 
@@ -1248,7 +1336,8 @@ namespace Iql.Tests.Tests.OData
                 has1,
                 has2));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
-            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=(($it/Permissions has 'Create,Edit') or ($it/Permissions has 'Delete'))",
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Users?$filter=(($it/Permissions has 'Create,Edit') or ($it/Permissions has 'Delete'))",
                 uri);
         }
 
@@ -1271,7 +1360,7 @@ namespace Iql.Tests.Tests.OData
             var query = await Db.SiteAreas.ApplyRelationshipFiltersByExpressionAsync(
                 p => p.SiteArea,
                 person
-                );
+            );
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/SiteAreas?$filter=($it/SiteId eq 12)",
@@ -1330,7 +1419,9 @@ namespace Iql.Tests.Tests.OData
             var iql = await query.ToIqlAsync();
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
-            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$orderby=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)", uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Sites?$orderby=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)",
+                uri);
         }
     }
 }
