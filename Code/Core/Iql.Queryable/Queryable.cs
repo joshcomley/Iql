@@ -34,7 +34,7 @@ namespace Iql.Queryable
 
         public EvaluateContext EvaluateContext { get; set; }
 
-        public List<IQueryOperation> Operations { get; }
+        public virtual List<IQueryOperation> Operations { get; }
 
         public abstract void AddEntity(object entity);
         public abstract void DeleteEntity(object entity);

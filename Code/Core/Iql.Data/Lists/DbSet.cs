@@ -11,6 +11,7 @@ using Iql.Entities;
 using Iql.Entities.Functions;
 using Iql.Entities.Relationships;
 using Iql.Parsing;
+using Iql.Queryable;
 using Iql.Queryable.Expressions;
 
 namespace Iql.Data.Lists
@@ -24,6 +25,15 @@ namespace Iql.Data.Lists
             EntityConfigurationBuilder = entityConfigurationBuilder;
             DataContext = dataContext;
             DataStoreGetter = dataStoreGetter;
+        }
+
+        public override List<IQueryOperation> Operations
+        {
+            get
+            {
+                DataContext.EnsureDefaults(this);
+                return base.Operations;
+            }
         }
 
         //Task IDbSetOperations<T, TKey>.LoadRelationshipPropertyAsync(T entity, IProperty relationship,

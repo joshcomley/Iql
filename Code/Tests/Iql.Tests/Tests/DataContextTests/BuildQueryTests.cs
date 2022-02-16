@@ -19,10 +19,9 @@ namespace Iql.Tests.Tests.DataContextTests
             var collection = config.PropertyCollection(
                 _ => childrenRelationship,
                 _ => _.PropertyCollection(pc => pc.PropertyPath(p => p.CreatedByUser.Client.Type.Name))
-                );
+            );
             var query = collection.BuildQueryFromPropertyGroup<Site>(Db);
             var uri = await query.ResolveODataUriAsync();
-            Assert.AreEqual(@"http://localhost:28000/odata/Sites?$expand=Children%2F%24count%2CCreatedByUser(%24expand%3DClient(%24expand%3DType))", uri.NormaliseEncodedUri());
             Assert.AreEqual(@"http://localhost:28000/odata/Sites?$expand=Children/$count,CreatedByUser($expand=Client($expand=Type))", Uri.UnescapeDataString(uri));
         }
     }

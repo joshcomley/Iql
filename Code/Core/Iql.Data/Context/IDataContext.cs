@@ -115,7 +115,7 @@ namespace Iql.Data.Context
         IDataStore DataStore { get; }
         EntityConfigurationBuilder EntityConfigurationContext { get; set; }
 
-        void RegisterConfiguration<T>(T configuration)
+        bool RegisterConfiguration<T>(T configuration)
             where T : class;
 
         IEntityStateBase GetEntityState(object entity, Type entityType = null);

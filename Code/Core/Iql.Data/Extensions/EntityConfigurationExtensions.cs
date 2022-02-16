@@ -32,7 +32,10 @@ namespace Iql.Data.Extensions
             {
                 expandedDbSet = expandedDbSet.ExpandRelationship(path.Child.PathFromHere);
             }
-            expandOperation.QueryExpression = new ExpandQueryExpression(null, q => expandedDbSet);
+            expandOperation.QueryExpression = new ExpandQueryExpression(null
+                , q => expandedDbSet
+                // .ClearOperations()
+                );
             path.Expression.Parent = new IqlRootReferenceExpression();
             expandOperation.Expression = path.Expression;
             return returnOperation;

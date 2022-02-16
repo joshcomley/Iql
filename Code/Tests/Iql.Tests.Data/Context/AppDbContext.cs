@@ -94,9 +94,9 @@ namespace Iql.Tests.Context
             }
 
             ServiceProvider.Register<TestNowService>();
-            var defaultQueries = new EntityDefaultQueryConfiguration();
-            defaultQueries.ConfigureDefaultGetOperations(() => ClientTypes.Expand(c => c.Clients));
-            RegisterConfiguration(defaultQueries);
+            // var defaultQueries = new EntityDefaultQueryConfiguration();
+            // defaultQueries.ConfigureDefaultGetOperations<ClientType>(_ => _.Expand(c => c.Clients));
+            // RegisterConfiguration(defaultQueries);
             ODataConfiguration.ApiUriBase = () => @"http://localhost:28000/odata";
             ODataConfiguration.HttpProvider = new ODataFakeHttpProvider();
             if (DataStore is ODataDataStore)
@@ -148,6 +148,15 @@ namespace Iql.Tests.Context
             builder.EntityType<Person>()
                 .DefineDisplayFormatter(entity => entity.Title + " - " + entity.Type.CreatedByUser.Client.Name + " (" + entity.Id + ")", "ReportLong");
             ConfigureCustomReports();
+        }
+
+        public override void ConfigureInstance()
+        {
+            base.ConfigureInstance();
+            var defaultQueries = new EntityDefaultQueryConfiguration();
+            defaultQueries.AlwaysIncludeCount = false;
+            defaultQueries.ConfigureDefaultGetOperations<ClientType>(_ => _.Expand(c => c.Clients));
+            RegisterConfiguration(defaultQueries);
         }
     }
 }

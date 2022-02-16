@@ -65,13 +65,13 @@ namespace Iql.Server.OData.Net
             throw new NotImplementedException();
         }
 
-        [ODataGenericAction(ForTypeTypeParameterName = nameof(TModel), BindingName = "keys")]
-        [HttpPost(nameof(IncrementVersion))]
-        public virtual async Task<IActionResult> IncrementVersion([ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] keys, [FromBody]IncrementVersionModel model)
+        [ODataGenericAction(ForTypeTypeParameterName = nameof(TModel))]
+        [HttpPost]
+        public virtual async Task<IActionResult> IncrementVersion([ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] key, [FromBody]IncrementVersionModel model)
         {
             if (!string.IsNullOrWhiteSpace(model.PropertyName))
             {
-                var entity = Crud.Unsecured.Find(keys);
+                var entity = Crud.Unsecured.Find(key);
                 if (entity != null)
                 {
                     var propertyFound = entity.GetType().GetProperties().SingleOrDefault(_ => _.Name == model.PropertyName);
@@ -624,21 +624,21 @@ namespace Iql.Server.OData.Net
 
         protected abstract Task EnqueueThumbnailRequest(string sourceUrl, string targetUrl);
 
-        [ODataGenericFunction(ForTypeTypeParameterName = nameof(TModel), BindingName = "keys")]
-        [HttpGet(nameof(GetMediaUploadUrl))]
+        [ODataGenericFunction(ForTypeTypeParameterName = nameof(TModel))]
+        [HttpGet]
         public virtual Task<string> GetMediaUploadUrl(
-            [ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] keys,
+            [ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] key,
             [FromRoute]string property
             )
         {
-            return GetMediaUrl(keys, Builder.EntityType<TModel>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
+            return GetMediaUrl(key, Builder.EntityType<TModel>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
         }
 
-        internal virtual async Task<string> GetMediaUrl(KeyValuePair<string, object>[] keys, IEntityProperty<TModel> propertyMetadata, MediaAccessKind mediaAccessKind,
+        internal virtual async Task<string> GetMediaUrl(KeyValuePair<string, object>[] key, IEntityProperty<TModel> propertyMetadata, MediaAccessKind mediaAccessKind,
             TimeSpan? lifetime = null)
         {
             var file = (File<TModel>)propertyMetadata.File;
-            var populatedEntity = await PreloadMediaKeyDependenciesAsync(keys, file);
+            var populatedEntity = await PreloadMediaKeyDependenciesAsync(key, file);
             var oldValue = propertyMetadata.GetValue(populatedEntity) as string;
             lifetime = TimeSpan.FromDays(1);
             var newUrl = await MediaManager.SetMediaUriAsync(populatedEntity, file, mediaAccessKind, lifetime);

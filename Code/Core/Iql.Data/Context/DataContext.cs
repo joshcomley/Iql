@@ -289,7 +289,7 @@ namespace Iql.Data.Context
         {
             AllDataContexts.Add(this);
             EvaluateContext = evaluateContext;
-            void midSetup()
+            void MidSetup()
             {
                 DataStore = dataStore;
             }
@@ -298,16 +298,18 @@ namespace Iql.Data.Context
             {
                 EntityConfigurationContext = new EntityConfigurationBuilder();
                 EntityConfigurationsBuilders.Add(thisType, EntityConfigurationContext);
-                midSetup();
+                MidSetup();
                 Initialize();
+                ConfigureInstance();
             }
             else
             {
                 EntityConfigurationContext = EntityConfigurationsBuilders[thisType];
-                midSetup();
+                MidSetup();
                 _initialized = true;
                 InitializeProperties();
                 InitializeSetNames();
+                ConfigureInstance();
             }
         }
 
@@ -445,10 +447,16 @@ namespace Iql.Data.Context
         public EvaluateContext EvaluateContext { get; set; }
         public EntityConfigurationBuilder EntityConfigurationContext { get; set; }
 
-        public void RegisterConfiguration<T>(T configuration)
+        public bool RegisterConfiguration<T>(T configuration)
             where T : class
         {
-            _configurations.Add(ConfigurationNameByType(configuration.GetType()), configuration);
+            if (!_configurations.ContainsKey(ConfigurationNameByType(configuration.GetType())))
+            {
+                _configurations.Add(ConfigurationNameByType(configuration.GetType()), configuration);
+                return true;
+            }
+
+            return false;
         }
 
         public IEntityStateBase GetEntityState(object entity, Type entityType = null)
@@ -775,6 +783,10 @@ namespace Iql.Data.Context
         }
 
         public virtual void Configure(EntityConfigurationBuilder builder)
+        {
+        }
+
+        public virtual void ConfigureInstance()
         {
         }
 
@@ -1963,6 +1975,7 @@ namespace Iql.Data.Context
         {
             if (!queryable.HasDefaults)
             {
+                queryable.HasDefaults = true;
                 var getConfiguration = GetConfiguration<EntityDefaultQueryConfiguration>();
                 if (getConfiguration == null)
                 {
@@ -1973,7 +1986,7 @@ namespace Iql.Data.Context
                 var queryableGetter = getConfiguration.GetQueryableByType(queryable.ItemType);
                 if (queryableGetter != null)
                 {
-                    IQueryableBase queryable2 = queryableGetter();
+                    IQueryableBase queryable2 = queryableGetter((IDbQueryable)queryable);
                     queryable2.Operations.AddRange(queryable.Operations);
                     queryable = queryable2;
                 }
@@ -1986,8 +1999,6 @@ namespace Iql.Data.Context
                         queryable.Operations.Add(new IncludeCountOperation());
                     }
                 }
-
-                queryable.HasDefaults = true;
             }
 
             return queryable;

@@ -13,7 +13,7 @@ namespace Iql.Tests.Data.Context
         {
             Lookup = new Dictionary<string, Func<string>>();
             //http://localhost:58000/odata/Users('2b2b0e44-4579-4965-8e3a-097e6684b767')$count=true&$expand=ExamResults($expand=Exam,Video,Results($expand=Hazard))
-            Add(@"http://localhost:28000/odata/Sites?$count=true",
+            Add(@"http://localhost:28000/odata/Sites",
                 () => @"{""@odata.context"":""http://localhost:28000/odata/$metadata#Clients"",""value"":[{""Id"":1,""Description"":""Hey"",""Area"":{""type"":""Polygon"",""coordinates"":[[[-80.19,25.774],[-66.118,18.466],[-64.757,32.321],[-80.19,25.774]]]},""Location"":{""type"":""Point"",""coordinates"":[13.2846523,52.5067614]},""Line"":{""type"":""LineString"",""coordinates"":[[-80.19,25.774],[-66.118,18.466],[-64.757,32.321]]}},{""Id"":2,""Description"":""You"",""Area"":null,""Location"":null,""Line"":null}]}");
             Add(@"http://localhost:28000/odata/Sites(1)",
                 () => @"{""@odata.context"":""http://localhost:28000/odata/$metadata#Sites/$entity"",""Id"":1,""Description"":""Hey"",""Area"":{""type"":""Polygon"",""coordinates"":[[[-80.19,25.774],[-66.118,18.466],[-64.757,32.321],[-80.19,25.774]]]},""Location"":{""type"":""Point"",""coordinates"":[13.2846523,52.5067614]},""Line"":{""type"":""LineString"",""coordinates"":[[-80.19,25.774],[-66.118,18.466],[-64.757,32.321]]}}");

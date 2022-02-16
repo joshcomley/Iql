@@ -76,6 +76,21 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task ExpandOnlyCountShouldNotIncludeElements()
+        {
+            // See above
+            await Db.Sites.ToListAsync();
+            var query = Db
+                    .Clients
+                    .ExpandRelationship(nameof(Client.SitesCount))
+                ;
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$expand=Sites/$count", uri);
+        }
+
+
+        [TestMethod]
         public async Task TestIntersectsLiteral()
         {
             var polygon = new IqlPolygonExpression(
@@ -1430,11 +1445,27 @@ namespace Iql.Tests.Tests.OData
                     }
 #endif
             );
-            var iql = await query.ToIqlAsync();
             var uri = await query.ResolveODataUriAsync();
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(
                 @"http://localhost:28000/odata/Sites?$orderby=(geo.distance($it/Location,geography'SRID=4326;POINT(2 1)') lt 150)",
+                uri);
+        }
+
+        [TestMethod]
+        public async Task TestSimple()
+        {
+            var query = Db.Sites;
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Sites",
+                uri);
+            var sites = await Db.Sites.ToListAsync();
+            uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/Sites",
                 uri);
         }
     }

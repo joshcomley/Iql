@@ -14,6 +14,7 @@ using Iql.Server.Serialization.Serialization;
 namespace Iql.Tests.Tests.MetadataSerialization
 {
     [TestClass]
+    [Ignore]
     public class MetadataSerializationTests
     {
         public void TestSerializeDeserialize()
