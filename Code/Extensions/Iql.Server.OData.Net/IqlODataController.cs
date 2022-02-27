@@ -626,12 +626,13 @@ namespace Iql.Server.OData.Net
 
         [ODataGenericFunction(ForTypeTypeParameterName = nameof(TModel))]
         [HttpGet]
-        public virtual Task<MediaUrl> GetMediaUploadUrl(
+        public virtual async Task<ActionResult<MediaUrl>> GetMediaUploadUrl(
             [ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] key,
             [FromRoute]string property
             )
         {
-            return GetMediaUrl(key, Builder.EntityType<TModel>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
+            var url = await GetMediaUrl(key, Builder.EntityType<TModel>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
+            return new JsonResult(url);
         }
 
         internal virtual async Task<MediaUrl> GetMediaUrl(KeyValuePair<string, object>[] key, IEntityProperty<TModel> propertyMetadata, MediaAccessKind mediaAccessKind,
@@ -653,7 +654,7 @@ namespace Iql.Server.OData.Net
             return new MediaUrl
             {
                 ReadUrl = clippedUri,
-                UploadUrl = newValue
+                UploadUrl = newUrl
             };
         }
 

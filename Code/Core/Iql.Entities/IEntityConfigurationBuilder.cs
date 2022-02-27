@@ -23,8 +23,8 @@ namespace Iql.Entities
         Dictionary<Type, IList> FlattenObjectGraphs(Type entityType, IEnumerable entities);
         //Dictionary<Type, IList> FlattenDependencyGraph(object entity, Type entityType);
         //Dictionary<Type, IList> FlattenDependencyGraphs(Type entityType, IEnumerable entities);
-        IEntityConfiguration GetEntityByType(Type type);
-        IEntityConfiguration GetEntityByTypeName(string typeName);
+        IEntityConfiguration? GetEntityByType(Type type);
+        IEntityConfiguration? GetEntityByTypeName(string typeName);
         bool IsEntityType(Type type);
     }
 }
