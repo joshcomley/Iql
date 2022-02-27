@@ -626,7 +626,7 @@ namespace Iql.Server.OData.Net
 
         [ODataGenericFunction(ForTypeTypeParameterName = nameof(TModel))]
         [HttpGet]
-        public virtual Task<string> GetMediaUploadUrl(
+        public virtual Task<MediaUrl> GetMediaUploadUrl(
             [ModelBinder(typeof(KeyValueBinder))] KeyValuePair<string, object>[] key,
             [FromRoute]string property
             )
@@ -634,7 +634,7 @@ namespace Iql.Server.OData.Net
             return GetMediaUrl(key, Builder.EntityType<TModel>().FindProperty(property), MediaAccessKind.Admin, TimeSpan.FromSeconds(10));
         }
 
-        internal virtual async Task<string> GetMediaUrl(KeyValuePair<string, object>[] key, IEntityProperty<TModel> propertyMetadata, MediaAccessKind mediaAccessKind,
+        internal virtual async Task<MediaUrl> GetMediaUrl(KeyValuePair<string, object>[] key, IEntityProperty<TModel> propertyMetadata, MediaAccessKind mediaAccessKind,
             TimeSpan? lifetime = null)
         {
             var file = (File<TModel>)propertyMetadata.File;
@@ -650,7 +650,11 @@ namespace Iql.Server.OData.Net
                 propertyMetadata.SetValue(populatedEntity, clippedUri);
                 await ODataMediaManager.Context.SaveChangesAsync();
             }
-            return newUrl;
+            return new MediaUrl
+            {
+                ReadUrl = clippedUri,
+                UploadUrl = newValue
+            };
         }
 
         protected virtual async Task DeleteAssociatedMediaAsync(KeyValuePair<string, object>[] key, TModel entity,

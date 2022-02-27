@@ -18,5 +18,6 @@ namespace Iql.Data.Crud
         object LocalEntity { get; }
         Dictionary<object, IEntityValidationResult> EntityValidationResults { get; set; }
         IEntityValidationResult RootEntityValidationResult { get; set; }
+        string[] ToValidationStrings(bool includeCollectionResults);
     }
 }

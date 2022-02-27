@@ -87,7 +87,7 @@ namespace IqlSampleApp.ApiContext.Base
             this.RegisterConfiguration<ODataConfiguration>(this.ODataConfiguration);
         }
         private ODataConfiguration _oDataConfiguration;
-        public ODataConfiguration ODataConfiguration => _oDataConfiguration = _oDataConfiguration ?? new ODataConfiguration(EntityConfigurationContext);
+        public ODataConfiguration ODataConfiguration => _oDataConfiguration = _oDataConfiguration ?? new ODataConfiguration(() => EntityConfigurationContext);
         public override void Configure(EntityConfigurationBuilder builder)
         {
             builder.PermissionRules.Add(new IqlUserPermissionRule

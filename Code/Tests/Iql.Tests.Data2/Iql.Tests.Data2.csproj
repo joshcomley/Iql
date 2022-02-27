@@ -8,6 +8,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Core\Iql.Data\Iql.Data.csproj" />
+      <ProjectReference Include="..\..\Core\Iql.DotNet\Iql.DotNet.csproj" />
+      <ProjectReference Include="..\..\Core\Iql.JavaScript\Iql.JavaScript.csproj" />
       <ProjectReference Include="..\..\Core\Iql.OData\Iql.OData.csproj" />
     </ItemGroup>
 

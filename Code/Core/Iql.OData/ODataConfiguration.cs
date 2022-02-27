@@ -7,16 +7,19 @@ namespace Iql.OData
 {
     public class ODataConfiguration
     {
-        public IEntityConfigurationBuilder Builder { get; }
+        public IEntityConfigurationBuilder Builder => _builder = _builder ?? BuilderGetter();
+
+        public Func<IEntityConfigurationBuilder> BuilderGetter { get; set; }
         private bool _entitySetsDelayedInitialized;
         private Dictionary<Type, string> _entitySetsDelayed;
+        private IEntityConfigurationBuilder _builder;
         private Dictionary<Type, string> _entitySets { get { if(!_entitySetsDelayedInitialized) { _entitySetsDelayedInitialized = true; _entitySetsDelayed = new Dictionary<Type, string>(); } return _entitySetsDelayed; } set { _entitySetsDelayedInitialized = true; _entitySetsDelayed = value; } }
         public IHttpProvider HttpProvider { get; set; }
         public Func<string> ApiUriBase { get; set; }
 
-        public ODataConfiguration(IEntityConfigurationBuilder builder)
+        public ODataConfiguration(Func<IEntityConfigurationBuilder> builder)
         {
-            Builder = builder;
+            BuilderGetter = builder;
         }
 
         public void RegisterEntitySet<T>(string name)

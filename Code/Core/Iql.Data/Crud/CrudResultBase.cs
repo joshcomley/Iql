@@ -8,9 +8,10 @@ namespace Iql.Data.Crud
         private ICrudOperation _operation;
         ICrudOperation ICrudResult.Operation => _operation;
         public RequestStatus RequestStatus { get; set; }
+
         public CrudResultBase(
             ICrudOperation operation,
-            bool success, 
+            bool success,
             RequestStatus requestStatus = RequestStatus.Online)
         {
             _operation = operation;
@@ -19,6 +20,7 @@ namespace Iql.Data.Crud
             {
                 RequestStatus = RequestStatus.Online;
             }
+
             Success = success;
         }
 
