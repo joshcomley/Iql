@@ -8,7 +8,7 @@ using Iql.Entities.Validation.Validation;
 
 namespace Iql.Data.Crud
 {
-    public class EntityCrudResult<T, TOperation> : CrudResult<T, TOperation>, 
+    public class EntityCrudResult<T, TOperation> : CrudResult<T, TOperation>,
         IEntityCrudResult, IValidationContainer
         where TOperation : IEntityCrudOperationBase
         where T : class
@@ -45,16 +45,23 @@ namespace Iql.Data.Crud
         public EntityValidationResult<T> RootEntityValidationResult { get; set; }
 
         public virtual string ValidationString => ToValidationString();
+
         public virtual string ToValidationString(bool includeCollectionResults = false)
         {
             return string.Join("\n", ToValidationStrings(includeCollectionResults));
         }
+
         public string[] ToValidationStrings(bool includeCollectionResults = false)
         {
             var all = new List<string>();
 
             void AddFailures(string name, List<ValidationError> validationFailures)
             {
+                if (validationFailures == null || validationFailures.Count == 0)
+                {
+                    return;
+                }
+
                 foreach (var failure in validationFailures)
                 {
                     var parts = new[] { name, failure.Key, failure.Message }
@@ -67,6 +74,11 @@ namespace Iql.Data.Crud
             {
                 foreach (var entityResult in EntityValidationResults)
                 {
+                    if (entityResult.Value == null)
+                    {
+                        continue;
+                    }
+
                     if (entityResult.Value.ValidationFailures != null &&
                         entityResult.Value.ValidationFailures.Count > 0)
                     {
@@ -80,7 +92,7 @@ namespace Iql.Data.Crud
                         foreach (var validationResult in entityResult.Value.PropertyValidationResults)
                         {
                             AddFailures(
-                                validationResult.Property.Name,
+                                validationResult.Property?.Name,
                                 validationResult.ValidationFailures);
                         }
                     }
@@ -90,7 +102,7 @@ namespace Iql.Data.Crud
                         foreach (var validationResult in entityResult.Value.RelationshipValidationResults)
                         {
                             AddFailures(
-                                validationResult.Property.Name,
+                                validationResult.Property?.Name,
                                 validationResult.ValidationFailures);
                         }
                     }
@@ -106,8 +118,13 @@ namespace Iql.Data.Crud
                                 {
                                     foreach (var resultItem in validationResult.RelationshipValidationResults)
                                     {
+                                        if (resultItem.ValidationResult == null)
+                                        {
+                                            continue;
+                                        }
+
                                         AddFailures(
-                                            resultItem.ValidationResult.Property.Name,
+                                            resultItem.ValidationResult.Property?.Name,
                                             resultItem.ValidationResult.ValidationFailures);
                                     }
                                 }

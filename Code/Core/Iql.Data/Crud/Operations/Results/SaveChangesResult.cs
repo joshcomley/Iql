@@ -61,6 +61,10 @@ namespace Iql.Data.Crud.Operations.Results
             var all = new List<string>();
             foreach (var result in Results)
             {
+                if (result == null)
+                {
+                    continue;
+                }
                 all.AddRange(
                     result.ToValidationStrings(includeCollectionResults)
                 );

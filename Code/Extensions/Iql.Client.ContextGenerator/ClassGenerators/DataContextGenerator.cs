@@ -160,7 +160,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         var odataConfigurationBackingFieldName = AsBackingFieldName(odataConfigurationPropertyName);
                         AppendLine($@"        private {nameof(ODataConfiguration)} {odataConfigurationBackingFieldName};
-        public {nameof(ODataConfiguration)} {odataConfigurationPropertyName} => {odataConfigurationBackingFieldName} = {odataConfigurationBackingFieldName} ?? new {nameof(ODataConfiguration)}({nameof(IDataContext.EntityConfigurationContext)});");
+        public {nameof(ODataConfiguration)} {odataConfigurationPropertyName} => {odataConfigurationBackingFieldName} = {odataConfigurationBackingFieldName} ?? new {nameof(ODataConfiguration)}(() => {nameof(IDataContext.EntityConfigurationContext)});");
                         //Property("public", odataConfigurationPropertyName, TypeResolver.TranslateType(typeof(ODataConfiguration)), null, true);
                     }
                     AppendLine();
