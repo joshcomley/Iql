@@ -102,8 +102,8 @@ namespace Iql.Data.Serialization
                         var genericList = ListExtensions.NewGenericList(entityConfiguration.Type);
                         foreach (var entity in set.Entities)
                         {
-                            var parsed = ParseEntityInternal(entity, entityConfiguration, false);
-                            var entityResult = parsed.ToObject(entityConfiguration.Type);
+                            var parsed = ParseEntityInternal(entity, entityConfiguration, null, null, false);
+                            var entityResult = parsed.Token.ToObject(entityConfiguration.Type);
                             entityResult =
                                 builder.EnsureTypedEntityByType(entityResult, entityConfiguration.Type, false);
                             genericList.Add(entityResult);
@@ -163,7 +163,7 @@ namespace Iql.Data.Serialization
             IEntityConfiguration entityConfiguration)
         {
             var odataResultRoot = JObject.Parse(json);
-            ParseEntityInternal(odataResultRoot, entityConfiguration, true);
+            ParseEntityInternal(odataResultRoot, entityConfiguration, null, null, true);
             return new DeserializeCollectionResult<T>(entityConfiguration, odataResultRoot);
         }
 
@@ -171,28 +171,53 @@ namespace Iql.Data.Serialization
             IEntityConfiguration entityConfiguration)
         {
             var odataResultRoot = JObject.Parse(json);
-            ParseEntityInternal(odataResultRoot, entityConfiguration, false);
+            ParseEntityInternal(odataResultRoot, entityConfiguration, null, null, false);
             return new DeserializeSingleResult<T>(entityConfiguration, odataResultRoot);
         }
 
         public static void ParseSerializedValue(JToken jvalue, IEntityConfiguration entityType)
         {
-            ParseEntityInternal(jvalue, entityType, false);
+            ParseEntityInternal(jvalue, entityType, null, null, false);
         }
 
-        private static JToken ParseEntityInternal(JToken jvalue, IEntityConfiguration entityType, bool isCollectionRoot, IProperty property = null)
+        private static ParseTokenResult ParseEntityInternal(
+            JToken jvalue,
+            IEntityConfiguration entityType,
+            JToken parent,
+            IEntityConfiguration parentEntityType,
+            bool isCollectionRoot,
+            IProperty property = null)
         {
+            var isEmptyObject = false;
             if (jvalue is JArray)
             {
+                var isCountArray = true;
                 foreach (var child in (JArray)jvalue)
                 {
-                    ParseEntityInternal(child, entityType, isCollectionRoot);
+                    var result = ParseEntityInternal(child, entityType, jvalue, parentEntityType, isCollectionRoot);
+                    if (!result.IsEmptyObject)
+                    {
+                        isCountArray = false;
+                    }
+                }
+
+                if (isCountArray && parentEntityType != null)
+                {
+                    var countProperty =
+                        parentEntityType
+                            .FindProperty($"{property.Name}Count");
+                    if (countProperty != null)
+                    {
+                        parent[countProperty.Name] = ((JArray)jvalue).Count;
+                    }
                 }
             }
             else if (jvalue is JObject)
             {
                 var jobj = (JObject)jvalue;
-                foreach (var prop in jobj.Properties().ToArray())
+                var jProperties = jobj.Properties().ToArray();
+                var remainingProperties = jProperties.Length;
+                foreach (var prop in jProperties)
                 {
                     var value = jobj[prop.Name];
                     const string odataKey = "@odata.";
@@ -207,7 +232,16 @@ namespace Iql.Data.Serialization
                                 odataName = "Count";
                                 break;
                         }
-                        jobj[before + odataName] = value;
+
+                        // Remove @odata.id values
+                        if (odataName != "id")
+                        {
+                            jobj[before + odataName] = value;
+                        }
+                        else
+                        {
+                            remainingProperties--;
+                        }
                         jobj.Remove(prop.Name);
                     }
 
@@ -218,7 +252,8 @@ namespace Iql.Data.Serialization
                         {
                             if (entityProperty.Kind == IqlPropertyKind.Relationship)
                             {
-                                jobj[prop.Name] = ParseEntityInternal(value, entityProperty.Relationship.OtherEnd.EntityConfiguration, false, entityProperty);
+                                jobj[prop.Name] = ParseEntityInternal(value, entityProperty.Relationship.OtherEnd.EntityConfiguration, jvalue, entityType, false, entityProperty)
+                                    .Token;
                             }
                             else if (entityProperty.TypeDefinition.Kind.IsGeographic())
                             {
@@ -237,12 +272,17 @@ namespace Iql.Data.Serialization
                     var collection = jobj["value"] as JArray;
                     foreach (var entity in collection)
                     {
-                        ParseEntityInternal(entity, entityType, false);
+                        ParseEntityInternal(entity, entityType, collection, null, false);
                     }
+                }
+
+                if (remainingProperties == 0)
+                {
+                    isEmptyObject = true;
                 }
             }
 
-            return jvalue;
+            return new ParseTokenResult(jvalue, isEmptyObject);
         }
 
         private static JObject SerializePropertyChangesInternal(
@@ -587,5 +627,17 @@ namespace Iql.Data.Serialization
         }
 
         public Type[] Types => Dictionary.Keys.Select(_ => _.Type).ToArray();
+    }
+
+    class ParseTokenResult
+    {
+        public JToken Token { get; }
+        public bool IsEmptyObject { get; }
+
+        public ParseTokenResult(JToken token, bool isEmptyObject)
+        {
+            Token = token;
+            IsEmptyObject = isEmptyObject;
+        }
     }
 }
