@@ -129,6 +129,19 @@ namespace Iql.Data.Context
             return Take(amount);
         }
 
+        IDbQueryable IDbQueryable.WhereEquals(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        )
+        {
+            return WhereEquals(expression
+#if TypeScript
+            , evaluateContext
+#endif
+            );
+        }
+
         IDbQueryable IDbQueryable.WithCompositeKeys(IEnumerable<CompositeKey> keys)
         {
             return WithKeys(keys);

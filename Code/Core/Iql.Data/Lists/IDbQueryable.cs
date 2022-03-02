@@ -84,6 +84,12 @@ namespace Iql.Data.Lists
 #endif
         );
         
+        IDbQueryable WhereEquals(IqlExpression expression
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+        );
+
         IDbQueryable Skip(int skip);
         
         IDbQueryable Take(int take);
