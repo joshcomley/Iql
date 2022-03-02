@@ -329,14 +329,14 @@ namespace Iql.Queryable
             return Then(new OrderByOperation(expression, true));
         }
 
-        public TQueryable Skip(int skip)
+        public TQueryable Skip(int amount)
         {
-            return Then(new SkipOperation(skip));
+            return Then(new SkipOperation(amount));
         }
 
-        public TQueryable Take(int take)
+        public TQueryable Take(int amount)
         {
-            return Then(new TakeOperation(take));
+            return Then(new TakeOperation(amount));
         }
 
         public virtual TQueryable Then(IQueryOperation operation = null)
@@ -513,13 +513,13 @@ namespace Iql.Queryable
         {
             return Copy();
         }
-        IQueryableBase IQueryableBase.Skip(int skip)
+        IQueryableBase IQueryableBase.Skip(int amount)
         {
-            return Skip(skip);
+            return Skip(amount);
         }
-        IQueryableBase IQueryableBase.Take(int take)
+        IQueryableBase IQueryableBase.Take(int amount)
         {
-            return Take(take);
+            return Take(amount);
         }
         IQueryableBase IQueryableBase.Reverse()
         {

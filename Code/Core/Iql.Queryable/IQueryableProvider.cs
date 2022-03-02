@@ -65,9 +65,9 @@ namespace Iql.Queryable
 #endif
             );
 
-        TQueryable Skip(int skip);
+        TQueryable Skip(int amount);
 
-        TQueryable Take(int take);
+        TQueryable Take(int amount);
 
         TQueryable Reverse();
 

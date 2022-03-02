@@ -22,8 +22,8 @@ namespace Iql.Queryable
         List<IQueryOperation> Operations { get; }
         IQueryableBase Copy();
         IQueryableBase New();
-        IQueryableBase Skip(int skip);
-        IQueryableBase Take(int take);
+        IQueryableBase Skip(int amount);
+        IQueryableBase Take(int amount);
         IQueryableBase Reverse();
         IQueryableBase ClearOperations();
         IQueryableBase Then(IQueryOperation operation);

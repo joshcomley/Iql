@@ -118,6 +118,16 @@ namespace Iql.Data.Context
         {
             return WithKey(entityOrKey);
         }
+        
+        IDbQueryable IDbQueryable.Skip(int amount)
+        {
+            return Skip(amount);
+        }
+        
+        IDbQueryable IDbQueryable.Take(int amount)
+        {
+            return Take(amount);
+        }
 
         IDbQueryable IDbQueryable.WithCompositeKeys(IEnumerable<CompositeKey> keys)
         {

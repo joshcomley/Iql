@@ -83,6 +83,11 @@ namespace Iql.Data.Lists
             , EvaluateContext evaluateContext = null
 #endif
         );
+        
+        IDbQueryable Skip(int skip);
+        
+        IDbQueryable Take(int take);
+
         Task<IDbList> ToListAsync(LambdaExpression expression = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
