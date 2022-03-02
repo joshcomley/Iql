@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,6 +10,7 @@ using Iql.Entities;
 using Iql.Entities.Functions;
 using Iql.Entities.Relationships;
 using Iql.Extensions;
+using Iql.Server.OData.Net.Extensions;
 using Iql.Server.OData.Net.Geography;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +25,8 @@ namespace Iql.Server.OData.Net
         static EntityConfigurationODataExtensions()
         {
             BuildEntityTypeMethod = typeof(EntityConfigurationODataExtensions).GetMethod(nameof(BuildEntityType),
+                BindingFlags.NonPublic | BindingFlags.Static);
+            BuildComplexTypeMethod = typeof(EntityConfigurationODataExtensions).GetMethod(nameof(BuildComplexType),
                 BindingFlags.NonPublic | BindingFlags.Static);
             BuildEntityMethodMethod = typeof(EntityConfigurationODataExtensions).GetMethod(nameof(BuildEntityMethod),
                 BindingFlags.NonPublic | BindingFlags.Static);
@@ -44,6 +48,7 @@ namespace Iql.Server.OData.Net
 
         private static MethodInfo BuildEntitySetMethod { get; }
         private static MethodInfo BuildEntityTypeMethod { get; }
+        private static MethodInfo BuildComplexTypeMethod { get; }
         private static MethodInfo BuildEnumTypeMethod { get; }
         private static MethodInfo BuildEntityMethodMethod { get; }
         private static MethodInfo BuildEntityPropertyMethod { get; }
@@ -126,21 +131,44 @@ namespace Iql.Server.OData.Net
             bool forCollection)
             where T : class
         {
-            BuildMethod(entityConfiguration, operation, forCollection ? IqlMethodScopeKind.EntitySet : IqlMethodScopeKind.Entity);
+            BuildMethod(
+                entityConfiguration,
+                operation, 
+                forCollection ? IqlMethodScopeKind.EntitySet : IqlMethodScopeKind.Entity,
+                builder,
+                model);
         }
 
-        private static void BuildMethod(IMethodContainer methodContainer, OperationConfiguration operation,
-            IqlMethodScopeKind scope)
+        private static void BuildMethod(
+            IMethodContainer methodContainer, 
+            OperationConfiguration operation,
+            IqlMethodScopeKind scope,
+            IEntityConfigurationBuilder builder,
+            ODataModelBuilder model)
         {
             var method = new IqlMethod(operation.Kind == OperationKind.Action ? IqlMethodKind.Action : IqlMethodKind.Function, scope, operation.Name);
             if (operation.ReturnType != null && operation.ReturnType.ClrType != typeof(IActionResult) && operation.ReturnType.ClrType != typeof(Task<IActionResult>))
             {
                 method.ReturnType = operation.ReturnType.ClrType;
+                var types = GetNestedTypes(method.ReturnType)
+                        .Where(_ => !_.IsValueType && _ != typeof(string))
+                    ;
+                foreach (var type in types)
+                {
+                    try
+                    {
+                        BuildComplexTypeMethod.MakeGenericMethod(type).Invoke(null, new object[] { builder, model });
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
             }
             else
             {
                 method.ReturnType = null;
             }
+            
             method.DataStoreRequired = "ODataDataStore";
             if (method.Name == nameof(IqlODataController<object, DbContext, DbContext, object, object>.IncrementVersion)
                 || method.Name == nameof(IqlODataController<object, DbContext, DbContext, object, object>.GetMediaUploadUrl)
@@ -173,13 +201,44 @@ namespace Iql.Server.OData.Net
 
             methodContainer.Methods.Add(method);
         }
+        
+        public static List<Type> GetNestedTypes(Type type)
+        {
+            var all = new List<Type>();
+            GetNestedTypes(type, all);
+            return all;
+        }
+        public static void GetNestedTypes(Type type, List<Type> types)
+        {
+            if (types.Contains(type))
+            {
+                return;
+            }
+            types.Add(type.UnwrapNullable());
+            foreach (var property in type.GetProperties())
+            {
+                var p = property.PropertyType.UnwrapNullable();
+                if (p != typeof(string) && typeof(IEnumerable).IsAssignableFrom(p))
+                {
+                    var t = p.GetGenericArguments().FirstOrDefault();
+                    if (t != null)
+                    {
+                        GetNestedTypes(t, types);
+                    }
+                }
+                else
+                {
+                    GetNestedTypes(p, types);
+                }
+            }
+        }
 
         private static void BuildGlobalMethod(
             IEntityConfigurationBuilder builder,
             ODataModelBuilder model,
             OperationConfiguration operation)
         {
-            BuildMethod(builder, operation, IqlMethodScopeKind.Global);
+            BuildMethod(builder, operation, IqlMethodScopeKind.Global, builder, model);
         }
 
         private static void BuildEnumType<T>(IEntityConfigurationBuilder builder, EnumTypeConfiguration enumTypeConfiguration)
@@ -216,11 +275,34 @@ namespace Iql.Server.OData.Net
             builder.EntityType<T>().HasKey((Expression<Func<T, TKey>>)expression);
         }
 
+        private static void BuildComplexType<T>(EntityConfigurationBuilder builder, ODataModelBuilder model)
+            where T : class
+        {
+            if (model.StructuralTypes.Any(_ => _.ClrType == typeof(T)))
+            {
+                return;
+            }
+            var typeConfiguration = model.ComplexType<T>();
+            var propertiesDealtWith = new List<string>();
+            foreach (var property in typeConfiguration.Properties)
+            {
+                if (propertiesDealtWith.Contains(property.Name))
+                {
+                    continue;
+                }
+
+                var parameter = Expression.Parameter(typeof(T));
+                var expression = Expression.Lambda(Expression.Property(parameter, property.Name), parameter);
+                BuildEntityPropertyMethod.MakeGenericMethod(typeof(T), ResolvePropertyType(property))
+                    .Invoke(null, new object[] { builder, model, typeConfiguration, property, expression });
+            }
+        }
+        
         private static void BuildEntityType<T>(EntityConfigurationBuilder builder, ODataModelBuilder model)
             where T : class
         {
             var typeConfiguration = model.EntityType<T>();
-            
+
             foreach (EntitySetConfiguration entitySet in model.EntitySets.Where(s => s.EntityType.ClrType == typeof(T)))
             {
                 BuildEntitySet<T>(builder, model, entitySet);
@@ -263,7 +345,7 @@ namespace Iql.Server.OData.Net
         private static void BuildEntityProperty<T, TProperty>(
             EntityConfigurationBuilder builder,
             ODataModelBuilder model,
-            EntityTypeConfiguration<T> typeConfiguration,
+            StructuralTypeConfiguration<T> typeConfiguration,
             PropertyConfiguration property,
             Expression<Func<T, TProperty>> expression)
             where T : class
@@ -279,10 +361,22 @@ namespace Iql.Server.OData.Net
             {
                 optional = property.PropertyInfo.PropertyType.IsNullable();
             }
+
             entityConfiguration.DefineProperty(expression, optional,
                 geographyType == 0
                     ? property.PropertyInfo.PropertyType.ToIqlType()
                     : geographyType);
+            // if (typeof(IEnumerable).IsAssignableFrom(
+            //         property.PropertyInfo.PropertyType) &&
+            //     property.PropertyInfo.PropertyType.UnwrapNullable() != typeof(string))
+            // {
+            //     var elementType =
+            //         property.PropertyInfo.PropertyType.GetElementType();
+            //     // entityConfiguration.DefineCollectionProperty<TProperty>(expression);
+            // }
+            // else
+            // {
+            // }
             // Nullable
             // Type
 

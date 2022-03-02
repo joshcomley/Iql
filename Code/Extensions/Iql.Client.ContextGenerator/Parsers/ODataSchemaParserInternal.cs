@@ -22,9 +22,11 @@ namespace Iql.OData.TypeScript.Generator.Parsers
             var entityConfigurationDocument = EntityConfigurationParser.FromJson(iqlJson);
             _schema.EntityConfigurations = entityConfigurationDocument.EntityTypes.ToDictionary(t => t.Name);
             _schema.EntityConfigurationDocument = entityConfigurationDocument;
+            ParseEntityTypes(_doc.ByTagNames("ComplexType"));
+            ParseEntityTypeProperties(_doc.ByTagNames("ComplexType"));
             ParseEntityTypes(_doc.ByTagNames("EntityType"));
-            ParseEnumTypes(_doc.ByTagNames("EnumType"));
             ParseEntityTypeProperties(_doc.ByTagNames("EntityType"));
+            ParseEnumTypes(_doc.ByTagNames("EnumType"));
             ParseEntitySets(_doc.ByTagNames("EntitySet"));
             ParseFunctions(_doc.ByTagNames("Function", "Action"));
             //ParseNavigationProperties(ByTagNames("NavigationProperty"));

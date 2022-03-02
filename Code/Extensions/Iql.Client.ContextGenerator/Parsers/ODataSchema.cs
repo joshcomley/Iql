@@ -9,6 +9,7 @@ namespace Iql.OData.TypeScript.Generator.Parsers
     public class ODataSchema
     {
         public List<EntityTypeDefinition> EntityTypes { get; set; } = new List<EntityTypeDefinition>();
+        public List<EntityTypeDefinition> ComplexTypes { get; set; } = new List<EntityTypeDefinition>();
         public List<EntitySetDefinition> EntitySets { get; set; } = new List<EntitySetDefinition>();
         public List<EnumTypeDefinition> EnumTypes { get; set; } = new List<EnumTypeDefinition>();
         public List<EntityFunctionDefinition> Functions { get; set; } = new List<EntityFunctionDefinition>();

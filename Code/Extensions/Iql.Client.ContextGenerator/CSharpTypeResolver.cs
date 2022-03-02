@@ -39,7 +39,7 @@ namespace Iql.OData.TypeScript.Generator
                 innnerType = innnerType.Substring(0, innnerType.Length - 1);
                 var resolved = ResolveTypeNameFromODataNameInternal(
                     new TypeInfo(innnerType));
-                resolvedName = $"IEnumerable<{resolved.Name}>";
+                resolvedName = $"List<{resolved.Name}>";
                 def.ElementName = resolved.Name;
                 def.IsCollection = true;
             }
