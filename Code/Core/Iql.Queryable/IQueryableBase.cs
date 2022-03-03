@@ -131,11 +131,8 @@ namespace Iql.Queryable
 #endif
         );
 
-        IQueryableBase OrderByProperty(string propertyName, bool? descending = null
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        );
+        IQueryableBase OrderByProperty(string propertyName, bool? descending = null);
+        IQueryableBase OrderByPropertyExpression(IqlPropertyExpression property, bool? descending = null);
 
         IQueryableBase OrderByDefault(bool? descending = null, IqlDefaultOrderKind? orderKind = null);
 

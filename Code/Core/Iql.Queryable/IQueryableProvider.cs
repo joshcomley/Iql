@@ -47,10 +47,8 @@ namespace Iql.Queryable
 #endif
         );
 
-        TQueryable OrderByQuery(PropertyQueryExpression expression
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
+        TQueryable OrderByQuery(PropertyQueryExpression expression,
+            bool? descending = null
             );
 
         TQueryable OrderByDescending<TProperty>(Expression<Func<T, TProperty>> expression

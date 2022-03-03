@@ -133,7 +133,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             var propertyValues = new List<string>();
             PropertyInfo[] properties;
             #if !TypeScript
-            if (valueType?.IsValueType != true)
+            if (type?.IsValueType != true)
             #endif
             {
                 if (entityType == null || !(entityType is EntityConfigurationTypeProvider))

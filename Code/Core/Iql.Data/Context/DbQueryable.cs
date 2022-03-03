@@ -142,6 +142,26 @@ namespace Iql.Data.Context
             );
         }
 
+        IDbQueryable IDbQueryable.OrderByProperty(string propertyName, bool? descending = null)
+        {
+            return OrderByProperty(propertyName, descending);
+        }
+
+        IDbQueryable IDbQueryable.OrderByPropertyExpression(IqlPropertyExpression property, bool? descending = null)
+        {
+            return OrderByPropertyExpression(property, descending);
+        }
+
+        IDbQueryable IDbQueryable.OrderByQuery(PropertyQueryExpression expression)
+        {
+            return OrderByQuery(expression);
+        }
+
+        IDbQueryable IDbQueryable.OrderByDefault(bool? descending = null, IqlDefaultOrderKind? orderKind = null)
+        {
+            return OrderByDefault(descending, orderKind);
+        }
+
         IDbQueryable IDbQueryable.WithCompositeKeys(IEnumerable<CompositeKey> keys)
         {
             return WithKeys(keys);

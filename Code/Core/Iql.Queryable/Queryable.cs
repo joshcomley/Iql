@@ -254,31 +254,29 @@ namespace Iql.Queryable
 #endif
                     ));
         }
-
-        public TQueryable OrderByQuery(PropertyQueryExpression expression
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
+        
+        public TQueryable OrderByQuery(PropertyQueryExpression expression,
+            bool? descending = null
         )
         {
-            return Then(new OrderByOperation(expression));
+            return Then(new OrderByOperation(expression, descending ?? false));
         }
 
-
-
-        public TQueryable OrderByProperty(string propertyName, bool? descending = null
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        )
+        public TQueryable OrderByProperty(string propertyName, bool? descending = null)
+        {
+            var propertyExpression = PropertyExpression(propertyName, "entity");
+            return OrderByPropertyExpression(propertyExpression, descending
+            );
+        }
+        
+        public TQueryable OrderByPropertyExpression(IqlPropertyExpression propertyExpression, bool? descending = null)
         {
             var orderByOperation = new OrderByOperation(null, descending == true);
-            var rootReferenceName = "entity";
-            var propertyExpression = PropertyExpression(propertyName, rootReferenceName);
             var lambdaExpression = new IqlLambdaExpression
             {
                 Body = propertyExpression
             };
+            
             var parent = propertyExpression.Parent;
             while (parent.Parent != null)
             {
@@ -574,17 +572,14 @@ namespace Iql.Queryable
             );
         }
 
-        IQueryableBase IQueryableBase.OrderByProperty(string propertyName, bool? descending = null
-#if TypeScript
-            , EvaluateContext evaluateContext = null
-#endif
-        )
+        IQueryableBase IQueryableBase.OrderByProperty(string propertyName, bool? descending = null)
         {
-            return OrderByProperty(propertyName, descending
-#if TypeScript
-                , evaluateContext
-#endif
-            );
+            return OrderByProperty(propertyName, descending);
+        }
+
+        IQueryableBase IQueryableBase.OrderByPropertyExpression(IqlPropertyExpression property, bool? descending = null)
+        {
+            return OrderByPropertyExpression(property, descending);
         }
 
         //        IQueryableBase IQueryableBase.ExpandProperty(string propertyName

@@ -434,7 +434,7 @@ namespace Iql.Server.OData.Net
         protected override async Task OnBeforePostAsync(TModel currentEntity)
         {
             var serverEvaluator = NewDataEvaluator(currentEntity);
-            if (EntityConfiguration.PersistenceKeyProperty != null)
+            if (EntityConfiguration.PersistenceKeyProperty != null && currentEntity != null)
             {
                 var value = EntityConfiguration.PersistenceKeyProperty.GetValue(currentEntity);
                 while (true)
@@ -483,19 +483,22 @@ namespace Iql.Server.OData.Net
                 EntityConfiguration.PersistenceKeyProperty.SetValue(currentEntity, value);
             }
 
-            await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
-                EntityConfiguration,
-                null,
-                currentEntity,
-                true,
-                serverEvaluator,
-                ResolveServiceProviderProvider());
-            ClearNestedEntities(currentEntity);
+            if (currentEntity != null)
+            {
+                await new InferredValueEvaluationSession().TrySetInferredValuesCustomAsync(
+                    EntityConfiguration,
+                    null,
+                    currentEntity,
+                    true,
+                    serverEvaluator,
+                    ResolveServiceProviderProvider());
+                ClearNestedEntities(currentEntity);
+            }
         }
 
         protected override async Task OnBeforePostAndPatchAsync(TModel currentEntity, Delta<TModel> patch)
         {
-            if (EntityConfiguration.Files != null)
+            if (EntityConfiguration.Files != null && currentEntity != null)
             {
                 foreach (var file in EntityConfiguration.Files)
                 {

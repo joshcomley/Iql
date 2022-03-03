@@ -12,10 +12,12 @@ using Iql.Entities;
 using Iql.Entities.DisplayFormatting;
 using Iql.Entities.Relationships;
 using Iql.Entities.Search;
+using Iql.Parsing.Expressions.QueryExpressions;
 #if TypeScript
 using Iql.Parsing;
 #endif
 using Iql.Queryable;
+using Iql.Queryable.Operations;
 
 namespace Iql.Data.Lists
 {
@@ -116,6 +118,12 @@ namespace Iql.Data.Lists
             , EvaluateContext evaluateContext = null
 #endif
         );
+        IDbQueryable OrderByProperty(string propertyName, bool? descending = null);
+
+        IDbQueryable OrderByDefault(bool? descending = null, IqlDefaultOrderKind? orderKind = null);
+
+        IDbQueryable OrderByQuery(PropertyQueryExpression expression);
+        IDbQueryable OrderByPropertyExpression(IqlPropertyExpression property, bool? descending = null);
         Task<object> GetWithKeyAsync(object key);
         Task<IList> GetWithKeysAsync(IEnumerable<object> keys);
         Task<IList> LoadRelationshipPropertyAsync(object entity, IProperty relationship, Func<IDbQueryable, IDbQueryable> queryFilter = null);
