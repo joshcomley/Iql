@@ -176,12 +176,16 @@ namespace Iql.Server.OData.Net
             bool? success = null;
             if (EntityConfiguration.NestedSets != null && EntityConfiguration.NestedSets.Any())
             {
-                success = true;
                 foreach (var nestedSet in EntityConfiguration.NestedSets)
                 {
-                    if (!await ApplyDeleteNestedSetItem(nestedSet, entity))
+                    var result = await ApplyDeleteNestedSetItem(nestedSet, entity);
+                    if (result == false)
                     {
                         success = false;
+                    }
+                    else if (result == true && success == null)
+                    {
+                        success = true;
                     }
                 }
             }
@@ -203,8 +207,14 @@ namespace Iql.Server.OData.Net
             await base.OnAfterPatchAsync(id, currentEntity, patch, prePatchObject);
         }
 
-        private Task<bool> ApplyDeleteNestedSetItem(INestedSet nestedSet, TModel entity)
+        private async Task<bool?> ApplyDeleteNestedSetItem(INestedSet nestedSet, TModel entity)
         {
+            if (Equals(nestedSet.LeftProperty.GetValue(entity), 0) &&
+                Equals(nestedSet.RightProperty.GetValue(entity), 0))
+            {
+                return null;
+            }
+
             var method = typeof(IqlODataController<
                     TService,
                     TDbContextSecured,
@@ -217,7 +227,7 @@ namespace Iql.Server.OData.Net
                 nestedSet.IdProperty.TypeDefinition.Type,
                 nestedSet.ParentIdProperty.TypeDefinition.Type,
                 nestedSet.KeyProperty.TypeDefinition.Type);
-            return (Task<bool>)genericMethod
+            return await (Task<bool>)genericMethod
                 .Invoke(this, new object[] { nestedSet, entity, nestedSet.KeyProperty.GetValue(entity) });
         }
 
