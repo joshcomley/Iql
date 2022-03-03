@@ -72,7 +72,12 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         public async Task FieldAsync(IVariable field, Func<Task> instantiate = null)
         {
             AppendLine();
-            Append(string.Format($"protected {field.TypeInfo.ResolvedType ?? TypeResolver.ResolveTypeNameFromODataName(field.TypeInfo).Name} {field.Name}"));
+            var type = field.TypeInfo.ResolvedType ?? TypeResolver.ResolveTypeNameFromODataName(field.TypeInfo).Name;
+            if (!type.EndsWith("?"))
+            {
+                type += "?";
+            }
+            Append(string.Format($"protected {type} {field.Name}"));
             if (instantiate != null)
             {
                 Append(" = ");
@@ -104,6 +109,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             var typeName = string.IsNullOrWhiteSpace(type.ResolvedType)
                 ? TypeResolver.ResolveTypeNameFromODataName(type).Name
                 : type.ResolvedType;
+            if (instantiationParameters.Any(_ => _ == "nullable") &&
+                !typeName.EndsWith("?"))
+            {
+                typeName += "?";
+            }
             var backingName = $"_{name.FirstCharToLower()}";
             var set = getterSetter?.Set;
             var afterSet = getterSetter?.AfterSet;

@@ -41,7 +41,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 DefineEventProperty<EventEmitter<IPropertyChangeEvent>>(nameof(IEntity.PropertyChanged));
                 DefineEventProperty<EventEmitter<ExistsChangeEvent>>("ExistsChanged");
 
-                var booleanType = TypeResolver.TranslateType(typeof(bool), "raw");
+                // var booleanType = TypeResolver.TranslateType(typeof(bool), "raw");
                 //Method(nameof(IEntity.OnSaving), null, booleanType, () =>
                 //{
                 //    Return("true");
@@ -89,7 +89,7 @@ $"\"{generatedFile.BaseClassName}\"");
                     () => { IsNotNull(() => { VariableAccessor(valueVariable); }); });
                 AppendLine();
             };
-            Property("public", eventName, propertyChangedType, null, false, propertyChangingGetterSetter);
+            Property("public", eventName, propertyChangedType, null, false, propertyChangingGetterSetter, "nullable");
             return propertyChangedType;
         }
     }

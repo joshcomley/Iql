@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using Iql.Entities;
+using Iql.Entities.Extensions;
+using Iql.Parsing.Types;
+using Newtonsoft.Json;
 
 namespace Iql.OData.IqlToODataExpression.Parsers
 {
@@ -13,16 +18,52 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             var value = action.Value;
             return new IqlFinalExpression<string>(
                 action.Kind == IqlExpressionKind.Final
-                    ? (value ?? "").ToString() 
-                    : ODataEncode(value, action.ReturnType)
-                );
+                    ? (value ?? "").ToString()
+                    : ODataEncode(value, null, action.ReturnType, parser.TypeResolver)
+            );
         }
 
-        public static string ODataEncode(object value, IqlType type = IqlType.Unknown)
+        public static string ODataEncode(object value,
+            Type valueType = null,
+            IqlType iqlType = IqlType.Unknown,
+            ITypeResolver typeResolver = null)
         {
-            if (type == IqlType.Guid)
+            return ODataEncodeInternal(
+                0,
+                new List<object>(),
+                value,
+                valueType,
+                iqlType,
+                typeResolver);
+        }
+
+        private static string ODataEncodeInternal(
+            int depth,
+            List<object> references,
+            object value,
+            Type valueType = null,
+            IqlType iqlType = IqlType.Unknown,
+            ITypeResolver typeResolver = null)
+        {
+            if (depth > 20)
+            {
+                return "";
+            }
+
+            references.Add(value);
+            if (value == null)
+            {
+                return "null";
+            }
+
+            if (iqlType == IqlType.Guid)
             {
                 return (value ?? "").ToString();
+            }
+
+            if (value is Int64)
+            {
+                return value.ToString();
             }
 
             if (value is string)
@@ -32,16 +73,20 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 return $"\'{str}\'";
             }
 
-            if (value is DateTime)
+            if (value is DateTime || value is DateTimeOffset)
             {
-                var dateTime = (DateTime)value;
-                return dateTime.ToString("o");
-            }
+                var v = JsonConvert.SerializeObject(value);
+                if (v.StartsWith("'") || v.StartsWith("\""))
+                {
+                    v = v.Substring(1, v.Length - 2);
+                }
 
-            if (value is DateTimeOffset)
-            {
-                var dateTimeOffset = (DateTimeOffset)value;
-                return dateTimeOffset.ToString("o");
+                if (!v.EndsWith("Z"))
+                {
+                    v = $"{v}Z";
+                }
+
+                return $"'{v}'";
             }
 
             if (value is IqlPointExpression)
@@ -60,6 +105,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 {
                     pointsExpressions.AddRange(polygon.InnerRings);
                 }
+
                 return
                     $@"geography'SRID={TryGetSrid(value)};POLYGON({string.Join(",", pointsExpressions.Select(_ => SerializePoints(_, true, true)))})'";
             }
@@ -75,6 +121,55 @@ namespace Iql.OData.IqlToODataExpression.Parsers
             {
                 var b = (bool)value;
                 return b ? "true" : "false";
+            }
+
+            var type = valueType ?? value.GetType();
+            IIqlTypeMetadata entityType = null;
+            if (typeResolver != null)
+            {
+                entityType = typeResolver.FindTypeByType(type);
+            }
+
+            var propertyValues = new List<string>();
+            PropertyInfo[] properties;
+            #if !TypeScript
+            if (valueType?.IsValueType != true)
+            #endif
+            {
+                if (entityType == null || !(entityType is EntityConfigurationTypeProvider))
+                {
+                    properties = value.GetType().GetRuntimeProperties().ToArray();
+                }
+                else
+                {
+                    properties = (entityType as EntityConfigurationTypeProvider).GetProperties();
+                }
+
+                if (properties != null && properties.Length > 0)
+                {
+                    foreach (var property in properties)
+                    {
+                        var childValue = property.GetValue(value);
+                        if (!references.Contains(childValue))
+                        {
+                            var encodedValue = ODataEncodeInternal(
+                                depth + 1,
+                                references,
+                                childValue,
+                                property.PropertyType,
+                                IqlType.Unknown,
+                                typeResolver);
+                            propertyValues.Add($"{property.Name}:{encodedValue}");
+                        }
+                    }
+
+                    return $"{{{string.Join(",", propertyValues)}}}";
+                }
+            }
+
+            if (JsonConvert.SerializeObject(value) == JsonConvert.SerializeObject(new { }))
+            {
+                return "{}";
             }
 
             return value == null ? "null" : value.ToString();
@@ -102,11 +197,13 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                     pointsCopy.Add(new IqlPointExpression(first.X, first.Y));
                 }
             }
-            var serializedPoints = string.Join(",", pointsCopy.Select(_ => $"{RoundForOData(_.X)} {RoundForOData(_.Y)}"));
+
+            var serializedPoints =
+                string.Join(",", pointsCopy.Select(_ => $"{RoundForOData(_.X)} {RoundForOData(_.Y)}"));
             return
                 wrapInBrackets
-                ? $"({serializedPoints})"
-                : serializedPoints;
+                    ? $"({serializedPoints})"
+                    : serializedPoints;
         }
 
         private static double RoundForOData(double num)

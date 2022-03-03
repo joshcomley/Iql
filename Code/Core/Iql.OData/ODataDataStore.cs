@@ -241,7 +241,11 @@ namespace Iql.OData
                 baseUri += "(";
                 if (otherParameters.Any())
                 {
-                    baseUri += string.Join(",", otherParameters.Select(p => $"{p.Name}={ODataLiteralParser.ODataEncode(p.Value)}"));
+                    baseUri += string.Join(",", otherParameters.Select(p =>
+                    {
+                        var parameterEncoded = ODataLiteralParser.ODataEncode(p.Value, p.ValueType, IqlType.Unknown, EntityConfigurationBuilder);
+                        return $"{p.Name}={parameterEncoded}";
+                    }));
                 }
                 baseUri += ")";
             }
