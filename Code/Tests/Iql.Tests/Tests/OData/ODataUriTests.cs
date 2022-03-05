@@ -386,7 +386,18 @@ namespace Iql.Tests.Tests.OData
                 @"http://localhost:28000/odata/People?$filter=($it/Description eq hello)",
                 uri);
         }
-        
+
+        [TestMethod]
+        public async Task TestWhereOnGuidWithLiteralString()
+        {
+            var query = Db.People.WherePropertyEquals(nameof(Person.Id), 
+                new IqlLiteralExpression("00000000-0000-0000-0000-000000000001", IqlType.Guid));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+            Assert.AreEqual(
+                @"http://localhost:28000/odata/People?$filter=($it/Id eq 00000000-0000-0000-0000-000000000001)",
+                uri);
+        }
+
 #if !TypeScript
         [TestMethod]
         public async Task TestWhereOnGuid()

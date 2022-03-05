@@ -15,10 +15,9 @@ namespace Iql.Server
             return services;
         }
 
-        public static IEntityConfigurationBuilder UseIql<TService>(this IApplicationBuilder app, Action<IqlConfiguration> configure = null)
+        public static IEntityConfigurationBuilder UseIql<TService>(this IServiceProvider serviceProvider, Action<IqlConfiguration> configure = null)
         {
-            var serviceProvider = app.ApplicationServices;
-            var config = new IqlConfiguration(app);
+            var config = new IqlConfiguration(serviceProvider);
             configure?.Invoke(config);
             config.Key = config.Key ?? typeof(TService).FullName;
             var provider = serviceProvider.GetService<IEntityConfigurationProvider>() as EntityConfigurationProvider;

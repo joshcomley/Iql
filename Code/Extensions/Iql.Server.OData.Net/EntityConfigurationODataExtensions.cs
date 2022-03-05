@@ -82,7 +82,7 @@ namespace Iql.Server.OData.Net
         {
             app.Bootup.Add(() =>
             {
-                var provider = app.App.ApplicationServices.GetService<IEntityConfigurationProvider>();
+                var provider = app.Services.GetService<IEntityConfigurationProvider>();
                 if (builder == null)
                 {
                     builder = string.IsNullOrWhiteSpace(key)

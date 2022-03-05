@@ -63,7 +63,9 @@ namespace Iql.OData
                     var responseElementType = isCollectionResult ? responseType.GenericTypeArguments[0] : responseType;
                     if (EntityConfigurationBuilder.IsEntityType(responseElementType))
                     {
-                        var flattenedResponse = await ParseODataEntityResponseByTypeAsync(responseElementType, httpResult, isCollectionResult);
+                        var flattenedResponse =
+                            await ParseODataEntityResponseByTypeAsync(responseElementType, httpResult,
+                                isCollectionResult);
                         DataSetRetrieved.EmitIfExists(() => new DataSetRetrievedEvent(flattenedResponse));
                         var dbList = flattenedResponse.ToDbList();
                         var list = dbList.ToList(responseElementType);
@@ -78,7 +80,8 @@ namespace Iql.OData
                     {
                         if (isCollectionResult)
                         {
-                            var collectionResult = await GetODataCollectionResponseByTypeAsync(responseElementType, httpResult);
+                            var collectionResult =
+                                await GetODataCollectionResponseByTypeAsync(responseElementType, httpResult);
                             dataMethodResult.Data = (TResult)collectionResult.Items;
                         }
                         else
@@ -87,6 +90,7 @@ namespace Iql.OData
                             dataMethodResult.Data = oDataGetResult;
                         }
                     }
+
                     return dataMethodResult;
                 });
             return request;
@@ -100,6 +104,7 @@ namespace Iql.OData
                 var p = method.Parameters.Single(_ => _.Name == args[i].Name);
                 parameters.Add(new ODataParameter(args[i].Value, p.Type.Type, p.Name, p.IsBindingParameter));
             }
+
             return Method(
                 parameters,
                 method.Kind == IqlMethodKind.Action ? ODataMethodType.Action : ODataMethodType.Function,
@@ -120,6 +125,7 @@ namespace Iql.OData
                 var p = method.Parameters.Single(_ => _.Name == args[i].Name);
                 parameters.Add(new ODataParameter(args[i].Value, p.Type.Type, p.Name, p.IsBindingParameter));
             }
+
             return MethodWithResponse<TResult>(
                 parameters,
                 method.Kind == IqlMethodKind.Action ? ODataMethodType.Action : ODataMethodType.Function,
@@ -153,7 +159,8 @@ namespace Iql.OData
             return request;
         }
 
-        private async Task<IHttpResult> GetMethodHttpResult(ODataMethodType methodType, string uri, IEnumerable<ODataParameter> parameters)
+        private async Task<IHttpResult> GetMethodHttpResult(ODataMethodType methodType, string uri,
+            IEnumerable<ODataParameter> parameters)
         {
             var http = GetHttp();
             IHttpResult httpResult = null;
@@ -170,11 +177,15 @@ namespace Iql.OData
                             {
                                 if (parameter.Value != null)
                                 {
-                                    var entityConfiguration = EntityConfigurationBuilder.GetEntityByType(parameter.ValueType);
+                                    var entityConfiguration =
+                                        EntityConfigurationBuilder.GetEntityByType(parameter.ValueType);
                                     jobject[parameter.Name] =
                                         entityConfiguration == null
                                             ? JToken.FromObject(parameter.Value)
-                                            : JToken.Parse(JsonDataSerializer.SerializeEntityPropertiesToJson(parameter.Value, entityConfiguration, false, false, EntityConfigurationBuilder.EntityNonNullProperties(parameter.Value).ToArray()));
+                                            : JToken.Parse(JsonDataSerializer.SerializeEntityPropertiesToJson(
+                                                parameter.Value, entityConfiguration, false, false,
+                                                EntityConfigurationBuilder.EntityNonNullProperties(parameter.Value)
+                                                    .ToArray()));
                                 }
                                 else
                                 {
@@ -182,9 +193,11 @@ namespace Iql.OData
                                 }
                             }
                         }
+
                         var body = IqlJsonSerializer.Serialize(jobject);
                         httpRequest = new HttpRequest(body);
                     }
+
                     httpResult = await http.Post(uri, httpRequest);
                     break;
                 case ODataMethodType.Function:
@@ -243,10 +256,12 @@ namespace Iql.OData
                 {
                     baseUri += string.Join(",", otherParameters.Select(p =>
                     {
-                        var parameterEncoded = ODataLiteralParser.ODataEncode(p.Value, p.ValueType, IqlType.Unknown, EntityConfigurationBuilder);
+                        var parameterEncoded = ODataLiteralParser.ODataEncode(p.Value, p.ValueType, IqlType.Unknown,
+                            EntityConfigurationBuilder);
                         return $"{p.Name}={parameterEncoded}";
                     }));
                 }
+
                 baseUri += ")";
             }
 
@@ -256,14 +271,17 @@ namespace Iql.OData
         public override async Task<FlattenedGetDataResult<TEntity>> PerformGetAsync<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
-            var fullQueryUri = await operation.Operation.Queryable.ResolveODataUriFromQueryAsync(EntityConfigurationBuilder, Configuration);
+            var fullQueryUri =
+                await operation.Operation.Queryable.ResolveODataUriFromQueryAsync(EntityConfigurationBuilder,
+                    Configuration);
             return await PerformGetInternalAsync(operation, fullQueryUri);
         }
 
         public override async Task<FlattenedGetDataResult<TEntity>> PerformCountAsync<TEntity>(
             QueuedGetDataOperation<TEntity> operation)
         {
-            var fullQueryUri = await (operation.Operation.Queryable as IDbQueryable).IncludeCount().Take(0).ResolveODataUriFromQueryAsync(EntityConfigurationBuilder, Configuration);
+            var fullQueryUri = await (operation.Operation.Queryable as IDbQueryable).IncludeCount().Take(0)
+                .ResolveODataUriFromQueryAsync(EntityConfigurationBuilder, Configuration);
             return await PerformGetInternalAsync(operation, fullQueryUri);
         }
 
@@ -286,7 +304,8 @@ namespace Iql.OData
             bool isCollection,
             IFlattenedGetDataResult result = null)
         {
-            return (Task<IFlattenedGetDataResult>)GetType().GetMethod(nameof(ParseODataEntityResponseAsync), BindingFlags.Instance | BindingFlags.NonPublic)
+            return (Task<IFlattenedGetDataResult>)GetType().GetMethod(nameof(ParseODataEntityResponseAsync),
+                    BindingFlags.Instance | BindingFlags.NonPublic)
                 .InvokeGeneric(this, new object[] { httpResult, isCollection, result }, entityType);
         }
 
@@ -296,7 +315,7 @@ namespace Iql.OData
             FlattenedGetDataResult<TEntity> result = null)
             where TEntity : class
         {
-            if(result == null)
+            if (result == null)
             {
                 result = new FlattenedGetDataResult<TEntity>(
                     null,
@@ -304,10 +323,12 @@ namespace Iql.OData
                     new GetDataOperation<TEntity>(null, null),
                     false);
             }
+
             if (httpResult.IsOffline)
             {
                 result.RequestStatus = RequestStatus.Offline;
             }
+
             result.Success = httpResult.Success;
             if (!result.IsSuccessful())
             {
@@ -361,20 +382,24 @@ namespace Iql.OData
                     {
                         return (TResult)(object)jobj["value"];
                     }
+
                     return (TResult)(object)jobj;
                 }
+
                 return (TResult)obj;
             }
             catch
             {
-
             }
+
             return (TResult)(object)json;
         }
 
-        private Task<IODataCollectionResult> GetODataCollectionResponseByTypeAsync(Type entityType, IHttpResult httpResult)
+        private Task<IODataCollectionResult> GetODataCollectionResponseByTypeAsync(Type entityType,
+            IHttpResult httpResult)
         {
-            return (Task<IODataCollectionResult>)typeof(ODataDataStore).GetMethod(nameof(GetODataCollectionResponseAsync))
+            return (Task<IODataCollectionResult>)typeof(ODataDataStore)
+                .GetMethod(nameof(GetODataCollectionResponseAsync))
                 .InvokeGeneric(
                     this,
                     new object[] { httpResult },
@@ -382,11 +407,13 @@ namespace Iql.OData
                 );
         }
 
-        private async Task<ODataCollectionResult<TEntity>> GetODataCollectionResponseAsync<TEntity>(IHttpResult httpResult)
+        private async Task<ODataCollectionResult<TEntity>> GetODataCollectionResponseAsync<TEntity>(
+            IHttpResult httpResult)
             where TEntity : class
         {
             var json = await httpResult.GetResponseTextAsync();
-            var result = JsonDataSerializer.DeserializeCollection<TEntity>(json, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)));
+            var result = JsonDataSerializer.DeserializeCollection<TEntity>(json,
+                EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)));
             var countToken = result.Root["Count"];
             var count = countToken?.ToObject<int?>();
             var values = result.Root["value"].ToObject<TEntity[]>();
@@ -404,7 +431,8 @@ namespace Iql.OData
             var configuration = Configuration;
             var http = configuration.HttpProvider;
             var entitySetUri = Configuration.ResolveEntitySetUri<TEntity>();
-            var json = JsonDataSerializer.SerializeEntityPropertiesToJson(operation.Operation.EntityState.Entity, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), true, false);
+            var json = JsonDataSerializer.SerializeEntityPropertiesToJson(operation.Operation.EntityState.Entity,
+                EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)), true, false);
             var httpResult = await http.Post(entitySetUri, new HttpRequest(json));
             var responseData = await httpResult.GetResponseTextAsync();
             if (httpResult.IsOffline)
@@ -414,9 +442,11 @@ namespace Iql.OData
             else if (httpResult.Success)
             {
                 var odataResultRoot = JObject.Parse(responseData);
-                JsonDataSerializer.ParseSerializedValue(odataResultRoot, EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)));
+                JsonDataSerializer.ParseSerializedValue(odataResultRoot,
+                    EntityConfigurationBuilder.GetEntityByType(typeof(TEntity)));
                 operation.Result.RemoteEntity = odataResultRoot.ToObject<TEntity>();
             }
+
             operation.Result.Success = httpResult.Success;
             ParseValidation(operation.Result, operation.Operation.EntityState.Entity, responseData);
             return operation.Result;
@@ -433,7 +463,7 @@ namespace Iql.OData
             for (var i = 0; i < changedProperties.Length; i++)
             {
                 var property = changedProperties[i];
-                properties.Add(((IMetadata) property.Property).Name);
+                properties.Add(((IMetadata)property.Property).Name);
             }
 
             var entityConfiguration = EntityConfigurationBuilder.EntityType<TEntity>();
@@ -441,7 +471,7 @@ namespace Iql.OData
             for (var i = 0; i < keys.Length; i++)
             {
                 var key = keys[i];
-                properties.Add(((IMetadata) key).Name);
+                properties.Add(((IMetadata)key).Name);
             }
 
             var json = JsonDataSerializer.SerializeEntityPropertiesToJson(
@@ -460,7 +490,9 @@ namespace Iql.OData
             {
                 operation.Result.Success = httpResult.Success;
             }
-            ParseValidation(operation.Result, operation.Operation.EntityState.Entity, await httpResult.GetResponseTextAsync());
+
+            ParseValidation(operation.Result, operation.Operation.EntityState.Entity,
+                await httpResult.GetResponseTextAsync());
             return operation.Result;
         }
 
@@ -479,7 +511,9 @@ namespace Iql.OData
             {
                 operation.Result.Success = httpResult.Success;
             }
-            ParseValidation(operation.Result, operation.Operation.EntityState.Entity, await httpResult.GetResponseTextAsync());
+
+            ParseValidation(operation.Result, operation.Operation.EntityState.Entity,
+                await httpResult.GetResponseTextAsync());
             return operation.Result;
         }
 
@@ -490,6 +524,7 @@ namespace Iql.OData
             {
                 compositeKey = EntityConfigurationBuilder.EntityType<TEntity>().GetCompositeKey(entity);
             }
+
             return ResolveEntityUriByType(compositeKey, typeof(TEntity));
         }
 
@@ -514,7 +549,9 @@ namespace Iql.OData
         }
 
         #region Validation
-        private void ParseValidation<TEntity>(IEntityCrudResult result, TEntity entity, string responseData) where TEntity : class
+
+        private void ParseValidation<TEntity>(IEntityCrudResult result, TEntity entity, string responseData)
+            where TEntity : class
         {
             if (!result.Success)
             {
@@ -529,6 +566,7 @@ namespace Iql.OData
                     entityValidationResult.ValidationFailures.Add(new ValidationError("", responseData));
                     result.EntityValidationResults.Add("", entityValidationResult);
                 }
+
                 var error = errorResult?.error;
                 if (error != null)
                 {
@@ -556,71 +594,87 @@ namespace Iql.OData
                                     var propertyName = pathPart.Substring(0, openBracketIndex);
                                     var property = EntityConfigurationBuilder.EntityType<TEntity>()
                                         .FindProperty(propertyName);
-                                    index = Convert.ToInt32(pathPart.Substring(openBracketIndex + 1));
-                                    var relationship = FindRelationship(currentEntityType, ((IMetadata) property).Name);
-                                    if (relationship != null)
+                                    if (property != null)
                                     {
-                                        var relationshipEntityType = relationship.Type;
+                                        index = Convert.ToInt32(pathPart.Substring(openBracketIndex + 1));
+                                        var relationship = FindRelationship(currentEntityType,
+                                            ((IMetadata)property).Name);
+                                        if (relationship != null)
+                                        {
+                                            var relationshipEntityType = relationship.Type;
 
-                                        RelationshipCollectionValidationResult<TEntity> relationshipCollectionValidationResult = null;
-                                        foreach (var existingCollectionResult in currentError
-                                            .RelationshipCollectionValidationResults)
-                                        {
-                                            if (existingCollectionResult.Property == property)
+                                            RelationshipCollectionValidationResult<TEntity>
+                                                relationshipCollectionValidationResult = null;
+                                            foreach (var existingCollectionResult in currentError
+                                                         .RelationshipCollectionValidationResults)
                                             {
-                                                relationshipCollectionValidationResult = existingCollectionResult;
-                                                break;
+                                                if (existingCollectionResult.Property == property)
+                                                {
+                                                    relationshipCollectionValidationResult = existingCollectionResult;
+                                                    break;
+                                                }
                                             }
+
+                                            if (relationshipCollectionValidationResult == null)
+                                            {
+                                                relationshipCollectionValidationResult =
+                                                    new RelationshipCollectionValidationResult<TEntity>(
+                                                        relationshipEntityType, entity, property);
+                                                currentError.RelationshipCollectionValidationResults.Add(
+                                                    relationshipCollectionValidationResult);
+                                            }
+
+                                            var relationshipCollectionEntityValidationResult =
+                                                new EntityValidationResult<TEntity>(entity);
+                                            var match = relationshipCollectionValidationResult
+                                                .RelationshipValidationResults
+                                                .FirstOrDefault(r => r.Index == index);
+                                            if (match == null)
+                                            {
+                                                var relationshipValidationResult =
+                                                    new RelationshipValidationResult<TEntity>(
+                                                        relationshipEntityType, entity,
+                                                        relationshipCollectionEntityValidationResult, property);
+                                                relationshipCollectionValidationResult.RelationshipValidationResults
+                                                    .Add(new RelationshipCollectionValidationResultItem<TEntity>(
+                                                        relationshipValidationResult, index));
+                                                currentError = relationshipValidationResult.EntityValidationResult;
+                                            }
+                                            else
+                                            {
+                                                currentError = match.ValidationResult.EntityValidationResult;
+                                            }
+
+                                            currentEntityType = relationshipEntityType;
                                         }
-                                        if (relationshipCollectionValidationResult == null)
-                                        {
-                                            relationshipCollectionValidationResult = new RelationshipCollectionValidationResult<TEntity>(
-                                                relationshipEntityType, entity, property);
-                                            currentError.RelationshipCollectionValidationResults.Add(
-                                                relationshipCollectionValidationResult);
-                                        }
-                                        var relationshipCollectionEntityValidationResult =
-                                            new EntityValidationResult<TEntity>(entity);
-                                        var match = relationshipCollectionValidationResult.RelationshipValidationResults
-                                            .FirstOrDefault(r => r.Index == index);
-                                        if (match == null)
-                                        {
-                                            var relationshipValidationResult = new RelationshipValidationResult<TEntity>(
-                                                relationshipEntityType, entity,
-                                                relationshipCollectionEntityValidationResult, property);
-                                            relationshipCollectionValidationResult.RelationshipValidationResults
-                                            .Add(new RelationshipCollectionValidationResultItem<TEntity>(relationshipValidationResult, index));
-                                            currentError = relationshipValidationResult.EntityValidationResult;
-                                        }
-                                        else
-                                        {
-                                            currentError = match.ValidationResult.EntityValidationResult;
-                                        }
-                                        currentEntityType = relationshipEntityType;
+
+                                        AddPropertyError(currentError, property, entity, detail);
                                     }
-                                    AddPropertyError(currentError, property, entity, detail);
                                 }
                                 else
                                 {
                                     var propertyName = pathPart;
                                     var property = EntityConfigurationBuilder.EntityType<TEntity>()
                                         .FindProperty(propertyName);
-                                    var relationship = FindRelationship(currentEntityType, ((IMetadata) property).Name);
-                                    if (relationship != null)
+                                    if (property != null)
                                     {
-                                        var relationshipEntityType = relationship.Type;
-                                        var relationshipValidationResult = new RelationshipValidationResult<TEntity>(
-                                            relationshipEntityType, entity, currentError, property);
-                                        currentError.RelationshipValidationResults.Add(relationshipValidationResult);
-                                        relationshipValidationResult.EntityValidationResult =
-                                            new EntityValidationResult<TEntity>(entity);
-                                        AddPropertyError(currentError, property, entity, detail);
-                                        currentError = relationshipValidationResult.EntityValidationResult;
-                                        currentEntityType = relationshipEntityType;
-                                    }
-                                    else
-                                    {
-                                        AddPropertyError(currentError, property, entity, detail);
+                                        var relationship = FindRelationship(currentEntityType, ((IMetadata)property).Name);
+                                        if (relationship != null)
+                                        {
+                                            var relationshipEntityType = relationship.Type;
+                                            var relationshipValidationResult = new RelationshipValidationResult<TEntity>(
+                                                relationshipEntityType, entity, currentError, property);
+                                            currentError.RelationshipValidationResults.Add(relationshipValidationResult);
+                                            relationshipValidationResult.EntityValidationResult =
+                                                new EntityValidationResult<TEntity>(entity);
+                                            AddPropertyError(currentError, property, entity, detail);
+                                            currentError = relationshipValidationResult.EntityValidationResult;
+                                            currentEntityType = relationshipEntityType;
+                                        }
+                                        else
+                                        {
+                                            AddPropertyError(currentError, property, entity, detail);
+                                        }
                                     }
                                 }
                             }
@@ -633,6 +687,7 @@ namespace Iql.OData
                     {
                         result.EntityValidationResults.Add(entity, entityValidationResult);
                     }
+
                     result.RootEntityValidationResult = entityValidationResult;
                 }
             }
@@ -651,6 +706,7 @@ namespace Iql.OData
                     currentError.AddPropertyValidationResult(propertyError);
                 }
             }
+
             propertyError.AddFailure(detail.code, detail.message);
         }
 
@@ -662,13 +718,15 @@ namespace Iql.OData
                 var end = relationship.Source.EntityConfiguration == entityConfiguration
                     ? relationship.Source
                     : relationship.Target;
-                if (((IMetadata) end.Property).Name == property)
+                if (((IMetadata)end.Property).Name == property)
                 {
                     return end;
                 }
             }
+
             return null;
         }
+
         #endregion Validation
 
         public ODataDataStore(string name = null) : base(name ?? nameof(ODataDataStore))

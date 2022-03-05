@@ -9,7 +9,12 @@ namespace Iql.OData.TypeScript.Generator.Extensions
     {
         public static IEnumerable<ODataTypeDefinition> AllTypes(this ODataSchema schema)
         {
-            return schema.EntityTypes.Cast<ODataTypeDefinition>().Concat(schema.EnumTypes);
+            return schema
+                    .EntityTypes
+                    .Cast<ODataTypeDefinition>()
+                    .Concat(schema.ComplexTypes)
+                    .Concat(schema.EnumTypes)
+                ;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Iql.Tests.Server
                         .Configure(app =>
                         {
                             var model = ApplicationDbContext.Build(app.ApplicationServices);
-                            app.UseIql<IIqlSampleAppService>(config =>
+                            app.ApplicationServices.UseIql<IIqlSampleAppService>(config =>
                             {
                                 config.ConfigureFromOData<IIqlSampleAppService>(model.ModelBuilder);
                             });

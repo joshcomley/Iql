@@ -272,7 +272,7 @@ namespace Iql.Entities
         private Dictionary<string, IEntityProperty<T>> _propertyByNameLookupDelayed;
 
         private Dictionary<string, IEntityProperty<T>> _propertyByNameLookup { get { if(!_propertyByNameLookupDelayedInitialized) { _propertyByNameLookupDelayedInitialized = true; _propertyByNameLookupDelayed = new Dictionary<string, IEntityProperty<T>>(); } return _propertyByNameLookupDelayed; } set { _propertyByNameLookupDelayedInitialized = true; _propertyByNameLookupDelayed = value; } }
-        public IEntityProperty<T> FindProperty(string name)
+        public IEntityProperty<T>? FindProperty(string name)
         {
             if (!_propertyByNameLookup.ContainsKey(name))
             {

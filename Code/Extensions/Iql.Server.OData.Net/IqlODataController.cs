@@ -46,7 +46,7 @@ namespace Iql.Server.OData.Net
         private IEntityConfigurationBuilder _builder;
         private IMediaManager _mediaManager;
         private CrudManager _crudManager;
-        private ODataMediaManager<TService> _oDataMediaManager;
+        private IqlMediaManager<TService> _iqlMediaManager;
         private EntityConfiguration<TModel> _entityConfiguration;
 
         public virtual EntityConfiguration<TModel> EntityConfiguration =>
@@ -63,8 +63,8 @@ namespace Iql.Server.OData.Net
         public virtual CrudManager CrudManager =>
             _crudManager = _crudManager ?? new CrudManager(Crud.Unsecured.Context);
 
-        public virtual ODataMediaManager<TService> ODataMediaManager => _oDataMediaManager = _oDataMediaManager ??
-            new ODataMediaManager<TService>(
+        public virtual IqlMediaManager<TService> IqlMediaManager => _iqlMediaManager = _iqlMediaManager ??
+            new IqlMediaManager<TService>(
                 HttpContext.RequestServices.GetService<IEntityConfigurationProvider>(),
                 MediaManager,
                 Crud.Unsecured.Context);
@@ -638,7 +638,7 @@ namespace Iql.Server.OData.Net
                             var oldUrl = existingUrl;
                             await MediaManager.CloneUrlAsync(oldUrl, newUrl);
                             file.UrlProperty.SetValue(populatedEntity, newUrl);
-                            await ODataMediaManager.Context.SaveChangesAsync();
+                            await IqlMediaManager.Context.SaveChangesAsync();
                         }
                     }
 
@@ -684,7 +684,7 @@ namespace Iql.Server.OData.Net
                     var targetUrlReadOnly =
                         await MediaManager.SetMediaUriAsync(populatedEntity, filePreview, MediaAccessKind.ReadOnly);
                     previewProperty.SetValue(populatedEntity, targetUrlReadOnly);
-                    await ODataMediaManager.Context.SaveChangesAsync();
+                    await IqlMediaManager.Context.SaveChangesAsync();
                     // Should be preview
                     await MediaManager.DeleteAsync(populatedEntity, filePreview);
                     await EnqueueThumbnailRequest(sourceUrl, targetUrl);
@@ -706,36 +706,24 @@ namespace Iql.Server.OData.Net
             [FromRoute] string property
         )
         {
-            var url = await GetMediaUrl(key, Builder.EntityType<TModel>().FindProperty(property), MediaAccessKind.Admin,
-                TimeSpan.FromSeconds(10));
-            return new JsonResult(url);
+            return new JsonResult(await IqlMediaManager.GetAndSetMediaUrlAsync<TModel>(
+                key,
+                property
+            ));
         }
 
         internal virtual async Task<MediaUrl> GetMediaUrl(KeyValuePair<string, object>[] key,
             IEntityProperty<TModel> propertyMetadata, MediaAccessKind mediaAccessKind,
             TimeSpan? lifetime = null)
         {
-            var file = (File<TModel>)propertyMetadata.File;
-            var populatedEntity = await PreloadMediaKeyDependenciesAsync(key, file);
-            var oldValue = propertyMetadata.GetValue(populatedEntity) as string;
-            lifetime = TimeSpan.FromDays(1);
-            var newUrl = await MediaManager.SetMediaUriAsync(populatedEntity, file, mediaAccessKind, lifetime);
-            var newValue = propertyMetadata.GetValue(populatedEntity) as string;
-            var uri = new Uri(newValue);
-            var clippedUri = $"{uri.Scheme}://{uri.Host}{(uri.Port == 80 ? "" : $":{uri.Port}")}{uri.LocalPath}";
-            if (oldValue != clippedUri)
-            {
-                propertyMetadata.SetValue(populatedEntity, clippedUri);
-                await ODataMediaManager.Context.SaveChangesAsync();
-            }
-
-            return new MediaUrl
-            {
-                ReadUrl = clippedUri,
-                UploadUrl = newUrl
-            };
+            return await IqlMediaManager.GetAndSetMediaUrlAsync(
+                key,
+                propertyMetadata,
+                mediaAccessKind,
+                lifetime
+            );
         }
-
+        
         protected virtual async Task DeleteAssociatedMediaAsync(
             KeyValuePair<string, object>[] key,
             TModel entity,
@@ -752,7 +740,7 @@ namespace Iql.Server.OData.Net
         protected virtual Task<TModel> PreloadMediaKeyDependenciesAsync(KeyValuePair<string, object>[] key,
             IFileUrl<TModel> file)
         {
-            return ODataMediaManager.PreloadMediaKeyDependenciesAsync<TModel>(key, file);
+            return IqlMediaManager.PreloadMediaKeyDependenciesAsync<TModel>(key, file);
         }
 
         protected virtual Task<TModel> PreloadPropertyPathAsync(KeyValuePair<string, object>[] key,

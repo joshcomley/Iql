@@ -6,13 +6,13 @@ namespace Iql.Server
 {
     public class IqlConfiguration
     {
-        public IApplicationBuilder App { get; }
+        public IServiceProvider Services { get; }
         public string Key { get; set; }
         public List<Action> Bootup { get; set; } = new List<Action>();
 
-        internal IqlConfiguration(IApplicationBuilder app)
+        internal IqlConfiguration(IServiceProvider services)
         {
-            App = app;
+            Services = services;
         }
     }
 }

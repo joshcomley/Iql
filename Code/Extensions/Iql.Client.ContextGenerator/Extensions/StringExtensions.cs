@@ -2,6 +2,15 @@
 {
     public static class StringExtensions
     {
+        public static string StripNullability(this string str)
+        {
+            while (str.EndsWith("?"))
+            {
+                str = str.Substring(0, str.Length - 1);
+            }
+
+            return str;
+        }
         public static string AsSafeClassName(this string str)
         {
             return str.Replace(".", "");

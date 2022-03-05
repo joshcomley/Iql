@@ -56,6 +56,21 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                 return "null";
             }
 
+            if (value is IqlLiteralExpression)
+            {
+                var literal = value as IqlLiteralExpression;
+                if (literal.ReturnType != IqlType.Unknown)
+                {
+                    iqlType = literal.ReturnType;
+                }
+                else if (literal.InferredReturnType != IqlType.Unknown)
+                {
+                    iqlType = literal.InferredReturnType;
+                }
+
+                value = literal.Value;
+            }
+
             if (iqlType == IqlType.Guid)
             {
                 return (value ?? "").ToString();
@@ -132,9 +147,9 @@ namespace Iql.OData.IqlToODataExpression.Parsers
 
             var propertyValues = new List<string>();
             PropertyInfo[] properties;
-            #if !TypeScript
+#if !TypeScript
             if (type?.IsValueType != true)
-            #endif
+#endif
             {
                 if (entityType == null || !(entityType is EntityConfigurationTypeProvider))
                 {

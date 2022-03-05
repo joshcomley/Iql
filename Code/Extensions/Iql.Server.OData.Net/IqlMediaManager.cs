@@ -10,12 +10,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Iql.Server.OData.Net
 {
-    public class ODataMediaManager<TService>
+    public class IqlMediaManager<TService>
     {
         public IEntityConfigurationBuilder Builder { get; }
         public IMediaManager MediaManager { get; }
 
-        public ODataMediaManager(IEntityConfigurationProvider builderProvider,
+        public IqlMediaManager(IEntityConfigurationProvider builderProvider,
             IMediaManager mediaManager,
             DbContext context)
         {
@@ -38,12 +38,13 @@ namespace Iql.Server.OData.Net
         /// <param name="mediaAccessKind"></param>
         /// <param name="lifetime"></param>
         /// <returns></returns>
-        public async Task<string> GetMediaUrl<TEntity>(TEntity entity, IFileUrl<TEntity> file, MediaAccessKind mediaAccessKind,
+        public async Task<string> GetMediaUrl<TEntity>(TEntity entity, IFileUrl<TEntity> file,
+            MediaAccessKind mediaAccessKind,
             TimeSpan? lifetime = null)
             where TEntity : class
         {
             var populatedEntity = await PreloadMediaKeyDependenciesAsync<TEntity>(CrudManager.EntityKey(entity), file);
-            return await MediaManager.SetMediaUriAsync(populatedEntity, (File<TEntity>) file, mediaAccessKind, lifetime);
+            return await MediaManager.SetMediaUriAsync(populatedEntity, (File<TEntity>)file, mediaAccessKind, lifetime);
         }
 
         public virtual async Task<TEntity> PreloadMediaKeyDependenciesAsync<TEntity>(KeyValuePair<string, object>[] key,
@@ -65,9 +66,49 @@ namespace Iql.Server.OData.Net
                     }
                 }
             }
+
             var where = CrudManager.KeyEqualsExpression<TEntity>(key);
             var finalQuery = query.Where(where);
             return await finalQuery.SingleOrDefaultAsync();
+        }
+
+        public virtual async Task<MediaUrl> GetAndSetMediaUrlAsync<TModel>(
+            KeyValuePair<string, object>[] key,
+            string property)
+            where TModel : class
+        {
+            var url = await GetAndSetMediaUrlAsync(key,
+                Builder.EntityType<TModel>().FindProperty(property),
+                MediaAccessKind.Admin,
+                TimeSpan.FromSeconds(10));
+            return url;
+        }
+
+        public async Task<MediaUrl> GetAndSetMediaUrlAsync<TModel>(KeyValuePair<string, object>[] key,
+            IEntityProperty<TModel> propertyMetadata,
+            MediaAccessKind mediaAccessKind,
+            TimeSpan? lifetime = null)
+            where TModel : class
+        {
+            var file = (File<TModel>)propertyMetadata.File;
+            var populatedEntity = await PreloadMediaKeyDependenciesAsync(key, file);
+            var oldValue = propertyMetadata.GetValue(populatedEntity) as string;
+            lifetime ??= TimeSpan.FromDays(1);
+            var newUrl = await MediaManager.SetMediaUriAsync(populatedEntity, file, mediaAccessKind, lifetime);
+            var newValue = propertyMetadata.GetValue(populatedEntity) as string;
+            var uri = new Uri(newValue);
+            var clippedUri = $"{uri.Scheme}://{uri.Host}{(uri.Port == 80 ? "" : $":{uri.Port}")}{uri.LocalPath}";
+            if (oldValue != clippedUri)
+            {
+                propertyMetadata.SetValue(populatedEntity, clippedUri);
+                await Context.SaveChangesAsync();
+            }
+
+            return new MediaUrl
+            {
+                ReadUrl = clippedUri,
+                UploadUrl = newUrl
+            };
         }
     }
 }

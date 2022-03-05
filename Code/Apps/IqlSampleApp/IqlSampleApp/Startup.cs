@@ -87,7 +87,7 @@ namespace IqlSampleApp
             }));
 
             app.UseODataBatching();
-            app.UseIql<IIqlSampleAppService>(config =>
+            app.ApplicationServices.UseIql<IIqlSampleAppService>(config =>
             {
                 config.ConfigureFromOData<IIqlSampleAppService>(Model.ModelBuilder);
             });

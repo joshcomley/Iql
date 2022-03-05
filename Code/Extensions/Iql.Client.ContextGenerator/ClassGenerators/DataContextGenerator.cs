@@ -253,7 +253,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                         var propertyType =
                                             TypeResolver.ResolveTypeNameFromODataName(property.TypeInfo, true, "nonull");
                                         var propertyEntityType =
-                                            Schema.AllTypes().SingleOrDefault(t => t.Name == propertyType.Name);
+                                            Schema.AllTypes().SingleOrDefault(t => t.Name == propertyType.Name
+                                                .StripNullability());
                                         if (propertyEntityType != null)
                                         {
                                             File.References.Add(propertyEntityType);

@@ -29,7 +29,9 @@ namespace Iql.Data.IqlToIql.Parsers
                 }
                 else if (value is IqlLiteralExpression)
                 {
-                    value = (value as IqlLiteralExpression).Value;
+                    var iqlLiteralExpression = value as IqlLiteralExpression;
+                    value = iqlLiteralExpression.Value;
+                    action.ReturnType = iqlLiteralExpression.ReturnType;
                 }
                 else
                 {
