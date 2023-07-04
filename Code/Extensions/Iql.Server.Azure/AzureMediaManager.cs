@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Iql.Entities;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs.Specialized;
+using Azure.Storage.Sas;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Server.Media;
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.Blob;
 
 namespace Iql.Server.Azure
 {
@@ -18,38 +19,34 @@ namespace Iql.Server.Azure
             ConnectionDetails = connectionDetails;
         }
 
-        protected async Task<CloudBlockBlob> GetBlobAsync(string container, string id, bool createIfNotExists = true)
+        protected async Task<BlobClient> GetBlobAsync(string container, string id, bool createIfNotExists = true)
         {
             var containerReference = await GetContainerAsync(container, createIfNotExists);
-            var blockBlob = containerReference.GetBlockBlobReference(id);
+            var blockBlob = containerReference.GetBlobClient(id);
             return blockBlob;
         }
 
-        protected async Task<CloudBlobContainer> GetContainerAsync(string name, bool createIfNotExists = true)
+        protected async Task<BlobContainerClient> GetContainerAsync(string name, bool createIfNotExists = true)
         {
             var client = NewClient();
             // Retrieve a reference to a container.
-            var container = client.GetContainerReference(AzureSafe(name));
-            if (createIfNotExists)
+            var container = await client.CreateBlobContainerAsync(AzureSafe(name));
+            if (createIfNotExists && container.HasValue)
             {
-                if (await container.CreateIfNotExistsAsync())
+                var result = await container.Value.CreateIfNotExistsAsync();
+                if (result.HasValue)
                 {
-                    var permissions = await container.GetPermissionsAsync();
-                    permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
-                    await container.SetPermissionsAsync(permissions);
+                    await container.Value.SetAccessPolicyAsync(PublicAccessType.Blob);
                 }
             }
-            return container;
+
+            return container.Value;
         }
 
-        private CloudBlobClient NewClient()
+        private BlobServiceClient NewClient()
         {
-            var storageAccount = CloudStorageAccount.Parse(
-                ConnectionDetails.ConnectionString);
-
-            // Create the blob client.
-            var blobClient = storageAccount.CreateCloudBlobClient();
-            return blobClient;
+            var storageAccount = new BlobServiceClient(ConnectionDetails.ConnectionString);
+            return storageAccount;
         }
 
         private string AzureSafe(string name)
@@ -80,26 +77,30 @@ namespace Iql.Server.Azure
             {
                 var existingUri = new Uri(new Uri(existingReadUrl).GetLeftPart(UriPartial.Path));
                 var expectedBlob = await BuildCloudBlockBlobAsync(entity, file, false);
-                if (existingUri.GetLeftPart(UriPartial.Path).ToLower() != expectedBlob.Uri.GetLeftPart(UriPartial.Path).ToLower())
+                if (existingUri.GetLeftPart(UriPartial.Path).ToLower() !=
+                    expectedBlob.Uri.GetLeftPart(UriPartial.Path).ToLower())
                 {
                     file.UrlProperty.SetValue(entity, null);
                     existingReadUrl = null;
                 }
             }
+
             var cloudBlockBlob = await GetCloudBlockBlob(entity, file);
-            var sasToken = cloudBlockBlob.GetSharedAccessSignature(
+            var sasToken = cloudBlockBlob.GenerateSasUri(
                 accessKind == MediaAccessKind.Admin ? AdminPolicy(lifetime) : ReadOnlyPolicy(lifetime));
             if (string.IsNullOrWhiteSpace(existingReadUrl))
             {
-                var readOnlySasToken = cloudBlockBlob.GetSharedAccessSignature(ReadOnlyPolicy());
-                var readOnlyUrl = string.Format(CultureInfo.InvariantCulture, "{0}{1}", cloudBlockBlob.Uri, readOnlySasToken);
+                var readOnlySasToken = cloudBlockBlob.GenerateSasUri(ReadOnlyPolicy());
+                var readOnlyUrl = string.Format(CultureInfo.InvariantCulture, "{0}{1}", cloudBlockBlob.Uri,
+                    readOnlySasToken);
                 file.UrlProperty.SetValue(entity, readOnlyUrl);
             }
+
             var url = string.Format(CultureInfo.InvariantCulture, "{0}{1}", cloudBlockBlob.Uri, sasToken);
             return url;
         }
 
-        private async Task<CloudBlockBlob> GetCloudBlockBlob<T>(T entity, IFileUrl<T> file, bool createIfNotExists = true)
+        private async Task<BlobClient> GetCloudBlockBlob<T>(T entity, IFileUrl<T> file, bool createIfNotExists = true)
             where T : class
         {
             var existingUrl = file.UrlProperty.GetValue(entity) as string;
@@ -109,8 +110,8 @@ namespace Iql.Server.Azure
             {
                 if (Uri.TryCreate(existingUrl, UriKind.Absolute, out var uri))
                 {
-                    var cloudBlockBlob = new CloudBlockBlob(uri);
-                    containerName = cloudBlockBlob.Container.Name;
+                    var cloudBlockBlob = new BlobClient(uri);
+                    containerName = cloudBlockBlob.BlobContainerName;
                     id = cloudBlockBlob.Name;
                 }
             }
@@ -123,47 +124,47 @@ namespace Iql.Server.Azure
             return await GetBlobAsync(containerName, id, createIfNotExists);
         }
 
-        protected async Task<CloudBlockBlob> BuildCloudBlockBlobAsync<T>(T entity, IFileUrl<T> file, bool createIfNotExists)
+        protected async Task<BlobClient> BuildCloudBlockBlobAsync<T>(T entity, IFileUrl<T> file, bool createIfNotExists)
             where T : class
         {
             var fileMediaKey = file.MediaKey ?? file.RootFile?.MediaKey;
             var containerName = fileMediaKey.Groups[0].EvaluateToString(entity);
             var id = fileMediaKey.Groups[1].EvaluateToString(entity);
 
-            CloudBlockBlob cloudBlockBlob = null;
+            BlobClient cloudBlockBlob = null;
             if (!string.IsNullOrWhiteSpace(containerName))
             {
                 cloudBlockBlob = await GetBlobAsync(containerName, id, createIfNotExists);
             }
+
             return cloudBlockBlob;
-
         }
 
-        public static SharedAccessBlobPolicy AdminPolicy(TimeSpan? lifetime = null)
+        public static BlobSasBuilder AdminPolicy(TimeSpan? lifetime = null)
         {
-            return SetLifeTime(new SharedAccessBlobPolicy
-            {
-                Permissions = SharedAccessBlobPermissions.Read |
-                              SharedAccessBlobPermissions.Create |
-                              SharedAccessBlobPermissions.Add |
-                              SharedAccessBlobPermissions.Write |
-                              SharedAccessBlobPermissions.Delete |
-                              SharedAccessBlobPermissions.List
-            }, lifetime);
+            var builder = new BlobSasBuilder();
+            builder.SetPermissions(
+                BlobSasPermissions.Read |
+                BlobSasPermissions.Create |
+                BlobSasPermissions.Add |
+                BlobSasPermissions.Write |
+                BlobSasPermissions.Delete |
+                BlobSasPermissions.List
+            );
+            return SetLifeTime(builder, lifetime);
         }
 
-        public static SharedAccessBlobPolicy ReadOnlyPolicy(TimeSpan? lifetime = null)
+        public static BlobSasBuilder ReadOnlyPolicy(TimeSpan? lifetime = null)
         {
-            return SetLifeTime(new SharedAccessBlobPolicy
-            {
-                Permissions = SharedAccessBlobPermissions.Read
-            }, lifetime);
+            var builder = new BlobSasBuilder();
+            builder.SetPermissions(BlobSasPermissions.Read);
+            return SetLifeTime(builder, lifetime);
         }
 
-        protected static SharedAccessBlobPolicy SetLifeTime(SharedAccessBlobPolicy policy, TimeSpan? lifetime)
+        protected static BlobSasBuilder SetLifeTime(BlobSasBuilder policy, TimeSpan? lifetime)
         {
-            policy.SharedAccessStartTime = DateTimeOffset.UtcNow;
-            policy.SharedAccessExpiryTime = lifetime.HasValue
+            policy.StartsOn = DateTimeOffset.UtcNow;
+            policy.ExpiresOn = lifetime.HasValue
                 ? DateTime.UtcNow.Add(lifetime.Value)
                 : DateTimeOffset.MaxValue;
             return policy;
@@ -175,19 +176,26 @@ namespace Iql.Server.Azure
             if (fromBlob != null && await fromBlob.ExistsAsync())
             {
                 var toBlob = await GetCloudBlockBlob(toEntity, file);
-                await fromBlob.StartCopyAsync(toBlob);
+                await fromBlob.StartCopyFromUriAsync(toBlob.Uri);
             }
         }
 
         public override async Task CloneUrlAsync(string fromUrl, string toUrl)
         {
-            var client = NewClient();
-            var fromBlob = new CloudBlockBlob(new Uri(new Uri(fromUrl).GetLeftPart(UriPartial.Path)), client);
-            var toBlob = new CloudBlockBlob(new Uri(new Uri(toUrl).GetLeftPart(UriPartial.Path)), client);
+            var fromBlob = new BlobClient(new Uri(new Uri(fromUrl).GetLeftPart(UriPartial.Path)));
+            fromBlob = new BlobClient(
+                ConnectionDetails.ConnectionString,
+                fromBlob.BlobContainerName,
+                fromBlob.Name);
+            var toBlob = new BlobClient(new Uri(new Uri(toUrl).GetLeftPart(UriPartial.Path)));
+            toBlob = new BlobClient(
+                ConnectionDetails.ConnectionString,
+                toBlob.BlobContainerName,
+                toBlob.Name);
             if (await fromBlob.ExistsAsync())
             {
-                await toBlob.Container.CreateIfNotExistsAsync();
-                await toBlob.StartCopyAsync(fromBlob);
+                await toBlob.GetParentBlobContainerClient().CreateIfNotExistsAsync();
+                await toBlob.StartCopyFromUriAsync(fromBlob.Uri);
             }
         }
 

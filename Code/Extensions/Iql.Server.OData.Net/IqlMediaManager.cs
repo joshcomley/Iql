@@ -92,6 +92,13 @@ namespace Iql.Server.OData.Net
         {
             var file = (File<TModel>)propertyMetadata.File;
             var populatedEntity = await PreloadMediaKeyDependenciesAsync(key, file);
+            if (populatedEntity == null)
+            {
+                return new MediaUrl
+                {
+                    NotFound = true
+                };
+            }
             var oldValue = propertyMetadata.GetValue(populatedEntity) as string;
             lifetime ??= TimeSpan.FromDays(1);
             var newUrl = await MediaManager.SetMediaUriAsync(populatedEntity, file, mediaAccessKind, lifetime);
