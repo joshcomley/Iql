@@ -30,17 +30,17 @@ namespace Iql.Server.Azure
         {
             var client = NewClient();
             // Retrieve a reference to a container.
-            var container = await client.CreateBlobContainerAsync(AzureSafe(name));
-            if (createIfNotExists && container.HasValue)
+            var container = client.GetBlobContainerClient(AzureSafe(name));
+            if (createIfNotExists && !await container.ExistsAsync())
             {
-                var result = await container.Value.CreateIfNotExistsAsync();
+                var result = await container.CreateIfNotExistsAsync();
                 if (result.HasValue)
                 {
-                    await container.Value.SetAccessPolicyAsync(PublicAccessType.Blob);
+                    await container.SetAccessPolicyAsync(PublicAccessType.Blob);
                 }
             }
 
-            return container.Value;
+            return container;
         }
 
         private BlobServiceClient NewClient()
