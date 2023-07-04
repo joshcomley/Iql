@@ -60,6 +60,7 @@ namespace Iql.Server.Azure
             MediaAccessKind accessKind,
             TimeSpan? lifetime = null)
         {
+            lifetime = TimeSpan.FromDays(1);
             var mediaKey = file.MediaKey ?? file.RootFile?.MediaKey;
             if (mediaKey == null)
             {
@@ -86,18 +87,15 @@ namespace Iql.Server.Azure
             }
 
             var cloudBlockBlob = await GetCloudBlockBlob(entity, file);
-            var sasToken = cloudBlockBlob.GenerateSasUri(
+            var sasTokenUri = cloudBlockBlob.GenerateSasUri(
                 accessKind == MediaAccessKind.Admin ? AdminPolicy(lifetime) : ReadOnlyPolicy(lifetime));
             if (string.IsNullOrWhiteSpace(existingReadUrl))
             {
-                var readOnlySasToken = cloudBlockBlob.GenerateSasUri(ReadOnlyPolicy());
-                var readOnlyUrl = string.Format(CultureInfo.InvariantCulture, "{0}{1}", cloudBlockBlob.Uri,
-                    readOnlySasToken);
-                file.UrlProperty.SetValue(entity, readOnlyUrl);
+                var readOnlySasUri = cloudBlockBlob.GenerateSasUri(ReadOnlyPolicy());
+                file.UrlProperty.SetValue(entity, readOnlySasUri.ToString());
             }
 
-            var url = string.Format(CultureInfo.InvariantCulture, "{0}{1}", cloudBlockBlob.Uri, sasToken);
-            return url;
+            return sasTokenUri.ToString();
         }
 
         private async Task<BlobClient> GetCloudBlockBlob<T>(T entity, IFileUrl<T> file, bool createIfNotExists = true)
