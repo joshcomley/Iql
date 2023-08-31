@@ -506,7 +506,7 @@ namespace Iql.Server.OData.Net
             }
         }
 
-        protected override async Task OnBeforePostAndPatchAsync(TModel currentEntity, Delta<TModel> patch)
+        protected override async Task OnBeforePostAndPatchAsync(TModel currentEntity, Delta<TModel>? patch)
         {
             if (EntityConfiguration.Files != null && currentEntity != null)
             {

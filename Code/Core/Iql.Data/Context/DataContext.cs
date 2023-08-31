@@ -1963,6 +1963,7 @@ namespace Iql.Data.Context
             var getDataResult =
                 new GetDataResult<TEntity>(response.IsOffline, localDataTracker, dbList, operation, response.IsSuccessful())
                 {
+                    Root = response.Root,
                     TotalCount = response.TotalCount
                 };
 

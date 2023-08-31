@@ -333,7 +333,7 @@ namespace Iql.Data.Context
                             }
                             else
                             {
-                                await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore(operationEntity);
+                                await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStoreAsync(operationEntity);
                             }
                         }
                     }
@@ -422,7 +422,7 @@ namespace Iql.Data.Context
                         }
                         else
                         {
-                            await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore(deleteEntityOperation.Operation.EntityState.Entity);
+                            await RemoveEntityIfEntityDoesNotExistInOnlineRemoteStoreAsync(deleteEntityOperation.Operation.EntityState.Entity);
                         }
                     }
                     await DataContext.Events.DeleteEvents.EmitCompletedAsync(() => deleteEntityOperation.Result);
@@ -632,7 +632,7 @@ namespace Iql.Data.Context
             return true;
         }
 
-        private async Task RemoveEntityIfEntityDoesNotExistInOnlineRemoteStore<TEntity>(TEntity entity) where TEntity : class
+        public async Task RemoveEntityIfEntityDoesNotExistInOnlineRemoteStoreAsync<TEntity>(TEntity entity) where TEntity : class
         {
             // TODO: We should return NotFound from our data store implementations
             // Todoot: 159

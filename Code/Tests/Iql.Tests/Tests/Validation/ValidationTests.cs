@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Iql.Data.Crud.Operations.Results;
 using Iql.Entities;
 using Iql.Entities.Validation;
-using Iql.Extensions;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
@@ -268,7 +267,6 @@ namespace Iql.Tests.Tests.Validation
         {
             var person = new Person();
             var entityConfig = new AppDbContext().EntityConfigurationContext.EntityType<Person>();
-
             var entityValidationResult = await Db.ValidateEntityAsync(person);
             Assert.IsNotNull(entityValidationResult);
             Assert.AreEqual(entityValidationResult.ValidationFailures.Count, 1);

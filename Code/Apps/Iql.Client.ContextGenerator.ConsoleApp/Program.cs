@@ -22,11 +22,11 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             //url = "http://localhost:28000/odata/$metadata";
             var scopeUrl = "http://localhost:46000/odata/$metadata";
             var iqlSampleUrl = "http://localhost:64000/odata/$metadata";
-            var isiteUrl = "https://localhost:44340/v1/$metadata";
+            var safesiteUrl = "https://localhost:44340/v1/$metadata";
 
             var iqlUrl = "http://localhost:28000/odata/$metadata";
             var hazceptionUrl = "http://localhost:58000/odata/$metadata";
-            switch ("isite")
+            switch ("safesite")
             {
                 case "todoot":
                     await GenerateWebAndMobile(
@@ -41,11 +41,19 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                     //isiteSettings.ConfigureOData = false;
                     //GenerateWithSettings(isiteUrl, OutputType.CSharp, @"D:\Code\i-site\Code\Api\src\ISite.App.Data\", @"IqlContext", isiteSettings);
                     break;
-                case "isite":
+                case "cutter":
                     // D:\Code\Playgrounds\lazyNinjas
                     //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
-                    await GenerateWebAndMobile(isiteUrl,
-                        @"C:\Gen\Web\DataContext",
+                    await GenerateWebAndMobile("https://localhost:44350/v1/$metadata",
+                        @"D:\code\Cutter\web\code\src\generated\DataContext",
+                        @"D:\code\Cutter\mobile\code\apps\nativescript-cutter\src\generated\DataContext",
+                        @"C:\Gen\Azure\DataContext");
+                    break;
+                case "safesite":
+                    // D:\Code\Playgrounds\lazyNinjas
+                    //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
+                    await GenerateWebAndMobile(safesiteUrl,
+                        @"D:\code\SafeSite\web\code\src\generated\DataContext",
                         @"C:\Gen\Mobile\DataContext",
                         @"C:\Gen\Azure\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);

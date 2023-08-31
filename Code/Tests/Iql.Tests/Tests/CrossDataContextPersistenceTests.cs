@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Iql.Data.Context;
 using Iql.Tests.Context;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IqlSampleApp.Data.Entities;
@@ -42,6 +43,29 @@ namespace Iql.Tests.Tests
         }
 
         [TestMethod]
+        public async Task UpdatingAnEntityShouldFindRemoteEntity()
+        {
+            var db1 = new AppDbContext();
+            var db2 = new AppDbContext();
+            db1.SynchronicityKey = "db";
+            db2.SynchronicityKey = db1.SynchronicityKey;
+
+            var client = new Client();
+            client.Name = "My client";
+            client.TypeId = 7;
+
+            db1.Clients.Add(client);
+            var result = await db1.SaveChangesAsync();
+            Assert.IsTrue(result.Success);
+
+            client.Name = null;
+            Assert.IsTrue(db1.HasChanges);
+            var applicator = new SaveChangesApplicator(db1);
+            await applicator.RemoveEntityIfEntityDoesNotExistInOnlineRemoteStoreAsync(client);
+            Assert.IsTrue(db1.HasChanges);
+        }
+
+        [TestMethod]
         public async Task GettingTheLatestVersionOfAnEntityInOneDataContextShouldResetItAcrossAllDataContexts()
         {
             var db1 = new AppDbContext();
@@ -80,9 +104,9 @@ namespace Iql.Tests.Tests
             ModifyingARelationshipShouldUpdateInMemoryDatabaseRelationships()
         {
             // Set up
-            var inMemoryDbClient1 = new Client {Id = 1, Name = "Test", TypeId = 1};
+            var inMemoryDbClient1 = new Client { Id = 1, Name = "Test", TypeId = 1 };
             AppDbContext.InMemoryDb.Clients.Add(inMemoryDbClient1);
-            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2", TypeId = 2});
+            AppDbContext.InMemoryDb.Clients.Add(new Client { Id = 2, Name = "Test 2", TypeId = 2 });
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = 1, Name = "Type 1" });
             AppDbContext.InMemoryDb.ClientTypes.Add(new ClientType { Id = 2, Name = "Type 2" });
 

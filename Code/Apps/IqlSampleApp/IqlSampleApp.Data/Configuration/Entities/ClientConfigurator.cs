@@ -1,6 +1,7 @@
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql.Entities;
 using Iql.Entities.Permissions;
+using Iql.Forms;
 using Iql.Server;
 using IqlSampleApp.Data.Contracts;
 using IqlSampleApp.Data.Controllers.Api.Entities;
