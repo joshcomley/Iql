@@ -24,9 +24,9 @@ namespace Iql.Tests.Tests.OData
             };
             var result = ODataLiteralParser.ODataEncode(o);
 #if TypeScript
-            Assert.AreEqual("{Name:'Mr',Age:99,Date:'1999-09-09T01:02:03.000Z'}", result);
+            Assert.AreEqual("{Name:'Mr',Age:99,Date:1999-09-09T00:02:03.000Z}", result);
 #else
-            Assert.AreEqual("{Name:'Mr',Age:99,Date:'1999-09-09T01:02:03Z'}", result);
+            Assert.AreEqual("{Name:'Mr',Age:99,Date:1999-09-09T01:02:03Z}", result);
 #endif
         }
 

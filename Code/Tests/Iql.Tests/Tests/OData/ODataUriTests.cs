@@ -60,7 +60,7 @@ namespace Iql.Tests.Tests.OData
             uri = Uri.UnescapeDataString(uri);
             Assert.AreEqual(@"http://localhost:28000/odata/Sites", uri);
         }
-        
+
         [TestMethod]
         public async Task TestSingleEntityExpansionDoesNotIncludeCount()
         {
@@ -390,7 +390,7 @@ namespace Iql.Tests.Tests.OData
         [TestMethod]
         public async Task TestWhereOnGuidWithLiteralString()
         {
-            var query = Db.People.WherePropertyEquals(nameof(Person.Id), 
+            var query = Db.People.WherePropertyEquals(nameof(Person.Id),
                 new IqlLiteralExpression("00000000-0000-0000-0000-000000000001", IqlType.Guid));
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(
@@ -1035,6 +1035,24 @@ namespace Iql.Tests.Tests.OData
             var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
             Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt now())",
                 uri);
+        }
+
+        [TestMethod]
+        public async Task DateExpression()
+        {
+            var query = Db.Users.WhereEquals(new IqlIsGreaterThanExpression(
+                new IqlPropertyExpression(
+                    nameof(Client.CreatedDate),
+                    new IqlRootReferenceExpression()),
+                new IqlLiteralExpression(new DateTime(2024, 1, 2, 3, 4, 5))));
+            var uri = Uri.UnescapeDataString(await query.ResolveODataUriAsync());
+#if TypeScript
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt 2024-01-02T03:04:05.000Z)",
+                uri);
+#else
+            Assert.AreEqual(@"http://localhost:28000/odata/Users?$filter=($it/CreatedDate gt 2024-01-02T03:04:05Z)",
+                uri);
+#endif
         }
 
         [TestMethod]

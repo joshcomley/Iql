@@ -54,7 +54,7 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                     //await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site\", @"D:\Code\i-site\Code\Mobile\i-site\src\", @"app\generated\DataContext");
                     await GenerateWebAndMobile(safesiteUrl,
                         @"D:\code\SafeSite\web\code\src\generated\DataContext",
-                        @"C:\Gen\Mobile\DataContext",
+                        @"D:\code\SafeSite\mobile\code\apps\nativescript-safesite\src\generated\DataContext",
                         @"C:\Gen\Azure\DataContext");
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
                     //isiteSettings.GenerateCountProperties = false;

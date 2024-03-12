@@ -87,7 +87,8 @@ namespace Iql.Server.Azure
 
             var cloudBlockBlob = await GetCloudBlockBlob(entity, file);
             var sasTokenUri = cloudBlockBlob.GenerateSasUri(
-                accessKind == MediaAccessKind.Admin ? AdminPolicy(lifetime) : ReadOnlyPolicy(lifetime));
+                accessKind == MediaAccessKind.Admin ? AdminPolicy(lifetime) : ReadOnlyPolicy(lifetime)
+            );
             if (string.IsNullOrWhiteSpace(existingReadUrl))
             {
                 var readOnlySasUri = cloudBlockBlob.GenerateSasUri(ReadOnlyPolicy());

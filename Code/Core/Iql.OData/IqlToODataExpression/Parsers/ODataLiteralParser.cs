@@ -101,7 +101,7 @@ namespace Iql.OData.IqlToODataExpression.Parsers
                     v = $"{v}Z";
                 }
 
-                return $"'{v}'";
+                return $"{v}";
             }
 
             if (value is IqlPointExpression)
