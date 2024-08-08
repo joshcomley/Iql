@@ -97,7 +97,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     EntityType = NameMapper(@class.Type.Name),
                     KeyType = keyType
                 };
-                propertyDefinition.TypeInfo.ResolvedType = $"{nameof(DbSet<object, object>)}<{propertyDefinition.EntityType}, {propertyDefinition.KeyType}>";
+                propertyDefinition.TypeInfo.ResolvedType =
+                    $"{nameof(DbSet<object, object>)}<{propertyDefinition.EntityType}, {propertyDefinition.KeyType}>";
                 propertyDefinition.Private = false;
                 entitySetDefinitions.Add(propertyDefinition);
             }
@@ -110,20 +111,21 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 {
                     var ctorParams = new IVariable[]
                     {
-                        new EntityFunctionParameterDefinition("dataStore", TypeResolver.TranslateType(typeof(IDataStore))),
+                        new EntityFunctionParameterDefinition("dataStore",
+                            TypeResolver.TranslateType(typeof(IDataStore))),
                     }.ToList();
                     if (OutputKind == OutputKind.TypeScript)
                     {
-                        ctorParams.Add(new EntityFunctionParameterDefinition("evaluateContext", TypeResolver.TranslateType(typeof(EvaluateContext), "nullable"), true));
+                        ctorParams.Add(new EntityFunctionParameterDefinition("evaluateContext",
+                            TypeResolver.TranslateType(typeof(EvaluateContext), "nullable"), true));
                     }
-                    Constructor(ctorParams, () =>
-                    {
-                    },
+
+                    Constructor(ctorParams, () => { },
                         ctorParams);
                     Method(MyDataContext.InitializePropertiesName, null, new EntityTypeDefinition
-                    {
-                        Name = "void"
-                    },
+                        {
+                            Name = "void"
+                        },
                         () =>
                         {
                             if (Settings.GenerateEntitySets)
@@ -163,31 +165,35 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         public {nameof(ODataConfiguration)} {odataConfigurationPropertyName} => {odataConfigurationBackingFieldName} = {odataConfigurationBackingFieldName} ?? new {nameof(ODataConfiguration)}(() => {nameof(IDataContext.EntityConfigurationContext)});");
                         //Property("public", odataConfigurationPropertyName, TypeResolver.TranslateType(typeof(ODataConfiguration)), null, true);
                     }
+
                     AppendLine();
-                    var builder = new EntityFunctionParameterDefinition("builder", TypeResolver.TranslateType(typeof(EntityConfigurationBuilder)));
+                    var builder = new EntityFunctionParameterDefinition("builder",
+                        TypeResolver.TranslateType(typeof(EntityConfigurationBuilder)));
                     builder.IsLocal = true;
-                    await MethodAsync(nameof(Data.Context.DataContext.Configure), new[] { builder }, TypeResolver.TranslateType(typeof(void)), async () =>
+                    await MethodAsync(nameof(Data.Context.DataContext.Configure), new[] { builder },
+                        TypeResolver.TranslateType(typeof(void)), async () =>
                         {
                             await ConfigureMetadataAsync(Schema.EntityConfigurationDocument, null, "builder", false);
                             if (Schema.EntityConfigurationDocument.PermissionRules?.Any() == true)
                             {
                                 foreach (var rule in Schema.EntityConfigurationDocument.PermissionRules)
                                 {
-                                    var iql = rule.IqlExpression;
                                     AppendLine();
                                     VariableAccessor(builder);
                                     AppendLine();
                                     Dot();
-                                    AppendLine($"{nameof(IUserPermissionContainer.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
+                                    AppendLine(
+                                        $"{nameof(IUserPermissionContainer.PermissionRules)}.Add({CSharpObjectSerializer.Serialize(rule).Initialiser});");
                                 }
                             }
+
                             foreach (var entityDefinition in _entitySetDefinitions)
                             {
                                 var entityTypeName = entityDefinition.Type.Name;
                                 var entityConfiguration =
                                     Schema.EntityConfigurations.ContainsKey(entityTypeName)
-                                    ? Schema.EntityConfigurations[entityTypeName]
-                                    : null;
+                                        ? Schema.EntityConfigurations[entityTypeName]
+                                        : null;
                                 var defineEntityParameters =
                                     OutputKind == OutputKind.TypeScript
                                         ? new[]
@@ -201,6 +207,15 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                     defineEntityName += $"<{NameMapper(entityTypeName)}>";
                                 }
 
+                                var entityConfigurationAccessor =
+                                    GetEntityTypeConfiguration(builder, entityTypeName, false);
+
+                                void FetchEntityConfiguration()
+                                {
+                                    Append(entityConfigurationAccessor);
+                                }
+                                // var entityConfigurationVariable =
+                                //     new PropertyDefinition(entityTypeName.FirstCharToLower());
                                 VariableAccessor(builder, () =>
                                 {
                                     MethodCall(
@@ -225,33 +240,46 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                         if (OutputKind == OutputKind.TypeScript)
                                         {
                                             keyIqlType = hasKeyParameters.First().TypeInfo.ResolveIqlType();
-                                            hasKeyParameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{keyIqlType}"));
-                                            var keyName = TypeResolver.ResolveTypeNameFromODataName(hasKeyParameters.First().TypeInfo).Name;
+                                            hasKeyParameters.Add(
+                                                new PropertyDefinition($"{nameof(IqlType)}.{keyIqlType}"));
+                                            var keyName = TypeResolver
+                                                .ResolveTypeNameFromODataName(hasKeyParameters.First().TypeInfo).Name;
                                             hasKeyParameters.Add(new EntityFunctionParameterDefinition(
                                                 keyName.AsTypeScriptTypeParameter()));
                                         }
                                         else
                                         {
-                                            hasKeyParameters.Add(new PropertyDefinition($"{nameof(IqlType)}.{keyIqlType}"));
-                                            hasKeyParameters.Add(new PropertyDefinition($"{entityConfiguration.Key.CanWrite.ToString().ToLower()}"));
+                                            hasKeyParameters.Add(
+                                                new PropertyDefinition($"{nameof(IqlType)}.{keyIqlType}"));
+                                            hasKeyParameters.Add(new PropertyDefinition(
+                                                $"{entityConfiguration.Key.CanWrite.ToString().ToLower()}"));
                                         }
                                     }
                                     else
                                     {
-                                        hasKeyParameters.Insert(0, new PropertyDefinition($"{entityConfiguration.Key.CanWrite.ToString().ToLower()}"));
+                                        hasKeyParameters.Insert(0,
+                                            new PropertyDefinition(
+                                                $"{entityConfiguration.Key.CanWrite.ToString().ToLower()}"));
                                     }
+
                                     // Currently only support types with single property keys
                                     MethodCall(
-                                            compositeKey ? nameof(EntityConfiguration<object>.HasCompositeKey) : nameof(EntityConfiguration<object>.HasKey),
-                                            false,
-                                            hasKeyParameters.ToArray()
-                                        );
+                                        compositeKey
+                                            ? nameof(EntityConfiguration<object>.HasCompositeKey)
+                                            : nameof(EntityConfiguration<object>.HasKey),
+                                        false,
+                                        hasKeyParameters.ToArray()
+                                    );
+                                    Append(";");
                                     foreach (var property in entityDefinition.Type.Properties)
                                     {
                                         AppendLine();
+                                        FetchEntityConfiguration();
+                                        AppendLine();
                                         Dot();
                                         var propertyType =
-                                            TypeResolver.ResolveTypeNameFromODataName(property.TypeInfo, true, "nonull");
+                                            TypeResolver.ResolveTypeNameFromODataName(property.TypeInfo, true,
+                                                "nonull");
                                         var propertyEntityType =
                                             Schema.AllTypes().SingleOrDefault(t => t.Name == propertyType.Name
                                                 .StripNullability());
@@ -259,9 +287,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                         {
                                             File.References.Add(propertyEntityType);
                                         }
+
                                         var parameters = new List<IVariable>(new[]
                                         {
-                                        new EntityFunctionParameterDefinition("p => p." + property.Name)
+                                            new EntityFunctionParameterDefinition("p => p." + property.Name)
                                         });
                                         var isConverted = false;
                                         if (property.TypeInfo.EdmType == "Edm.Guid")
@@ -269,6 +298,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                             isConverted = true;
                                             parameters.Add(new EntityFunctionParameterDefinition(String("Guid")));
                                         }
+
                                         if (propertyType.IsCollection)
                                         {
                                             if (Settings.GenerateCountProperties)
@@ -286,7 +316,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                         }
                                         else
                                         {
-                                            parameters.Add(new EntityFunctionParameterDefinition(property.TypeInfo.Nullable ? "true" : "false"));
+                                            parameters.Add(
+                                                new EntityFunctionParameterDefinition(property.TypeInfo.Nullable
+                                                    ? "true"
+                                                    : "false"));
                                         }
 
                                         if (!propertyType.IsCollection)
@@ -306,67 +339,89 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                         //    name += $"<{propertyEntityType.Name}>";
                                         //}
                                         MethodCall(
-                                              name,
-                                              false,
-                                              parameters.ToArray()
-                                          );
+                                            name,
+                                            false,
+                                            parameters.ToArray()
+                                        );
                                         if (entityConfiguration != null)
                                         {
                                             IMetadata propertyMetadata =
-                                                entityConfiguration.Properties.SingleOrDefault(p => p.Name == property.Name);
-                                            await ConfigureMetadataAsync(propertyMetadata, parameters.First(), "p", true, entityConfiguration);
+                                                entityConfiguration.Properties.SingleOrDefault(p =>
+                                                    p.Name == property.Name);
+                                            await ConfigureMetadataAsync(propertyMetadata, parameters.First(), "p",
+                                                true, entityConfiguration);
                                         }
+
+                                        Append(";");
                                     }
+
                                     if (entityConfiguration != null)
                                     {
                                         if (entityConfiguration.EntityValidation != null)
                                         {
                                             foreach (var validation in entityConfiguration.EntityValidation.All)
                                             {
-                                                var expression = validation.GetPropertyValueByNameAs<IqlExpression>(nameof(RuleBase.ExpressionIql));
+                                                var expression =
+                                                    validation.GetPropertyValueByNameAs<IqlExpression>(
+                                                        nameof(RuleBase.ExpressionIql));
+                                                AppendLine();
+                                                FetchEntityConfiguration();
                                                 AppendLine();
                                                 Dot();
                                                 MethodCall(nameof(EntityConfiguration<object>.DefineEntityValidation),
                                                     false,
                                                     new[]
                                                     {
-                                                      new EntityFunctionParameterDefinition(
-                                                          GetExpressionString(expression)),
-                                                      new EntityFunctionParameterDefinition(
-                                                          String(validation.Message)),
-                                                      new EntityFunctionParameterDefinition(
-                                                          String(validation.Key)),
+                                                        new EntityFunctionParameterDefinition(
+                                                            GetExpressionString(expression)),
+                                                        new EntityFunctionParameterDefinition(
+                                                            String(validation.Message)),
+                                                        new EntityFunctionParameterDefinition(
+                                                            String(validation.Key)),
                                                     });
+                                                Append(";");
                                             }
                                         }
+
                                         if (entityConfiguration.DisplayFormatting != null)
                                         {
                                             foreach (var formatter in entityConfiguration.DisplayFormatting.All)
                                             {
-                                                var expression = formatter.GetPropertyValueByNameAs<IqlExpression>(nameof(DisplayFormatter.FormatterExpressionIql));
+                                                var expression =
+                                                    formatter.GetPropertyValueByNameAs<IqlExpression>(
+                                                        nameof(DisplayFormatter.FormatterExpressionIql));
+                                                AppendLine();
+                                                FetchEntityConfiguration();
                                                 AppendLine();
                                                 Dot();
                                                 MethodCall(nameof(EntityConfiguration<object>.DefineDisplayFormatter),
                                                     false,
                                                     new[]
                                                     {
-                                                  new EntityFunctionParameterDefinition(
-                                                      GetExpressionString(expression)),
-                                                  new EntityFunctionParameterDefinition(
-                                                      String(formatter.Key))
+                                                        new EntityFunctionParameterDefinition(
+                                                            GetExpressionString(expression)),
+                                                        new EntityFunctionParameterDefinition(
+                                                            String(formatter.Key))
                                                     });
+                                                Append(";");
                                             }
                                         }
+
                                         if (entityConfiguration.Properties != null)
                                         {
                                             foreach (var property in entityConfiguration.Properties)
                                             {
                                                 foreach (var validation in property.ValidationRules.All)
                                                 {
-                                                    var expression = validation.GetPropertyValueByNameAs<IqlExpression>(nameof(RuleBase.ExpressionIql));
-                                                    var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
+                                                    var expression =
+                                                        validation.GetPropertyValueByNameAs<IqlExpression>(
+                                                            nameof(RuleBase.ExpressionIql));
+                                                    var propertyExpression =
+                                                        new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
                                                     var iqlRootReference = new IqlRootReferenceExpression("e", "");
                                                     propertyExpression.Parent = iqlRootReference;
+                                                    AppendLine();
+                                                    FetchEntityConfiguration();
                                                     AppendLine();
                                                     Dot();
                                                     MethodCall(
@@ -374,42 +429,52 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                         false,
                                                         new[]
                                                         {
-                                                          new EntityFunctionParameterDefinition(
-                                                              "p => p." + propertyExpression.PropertyName),
-                                                          new EntityFunctionParameterDefinition(
-                                                              GetExpressionString(expression)),
-                                                          new EntityFunctionParameterDefinition(
-                                                              String(validation.Message)),
-                                                          new EntityFunctionParameterDefinition(
-                                                              String(validation.Key)),
+                                                            new EntityFunctionParameterDefinition(
+                                                                "p => p." + propertyExpression.PropertyName),
+                                                            new EntityFunctionParameterDefinition(
+                                                                GetExpressionString(expression)),
+                                                            new EntityFunctionParameterDefinition(
+                                                                String(validation.Message)),
+                                                            new EntityFunctionParameterDefinition(
+                                                                String(validation.Key)),
                                                         });
+                                                    Append(";");
                                                 }
 
                                                 if (property.RelationshipFilterRules != null)
                                                 {
-                                                    foreach (var relationshipFilterRule in property.RelationshipFilterRules.All)
+                                                    foreach (var relationshipFilterRule in property
+                                                                 .RelationshipFilterRules.All)
                                                     {
                                                         var expression =
-                                                            relationshipFilterRule.GetPropertyValueByNameAs<IqlExpression>(
-                                                                "ExpressionIql");
-                                                        var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
+                                                            relationshipFilterRule
+                                                                .GetPropertyValueByNameAs<IqlExpression>(
+                                                                    "ExpressionIql");
+                                                        var propertyExpression =
+                                                            new IqlPropertyExpression(property.Name, null,
+                                                                IqlType.Unknown);
                                                         var iqlRootReference = new IqlRootReferenceExpression("e", "");
                                                         propertyExpression.Parent = iqlRootReference;
                                                         AppendLine();
+                                                        FetchEntityConfiguration();
+                                                        AppendLine();
                                                         Dot();
-                                                        MethodCall(nameof(EntityConfiguration<object>.DefineRelationshipFilterRule),
+                                                        MethodCall(
+                                                            nameof(EntityConfiguration<object>
+                                                                .DefineRelationshipFilterRule),
                                                             false,
                                                             new[]
                                                             {
-                                                      new EntityFunctionParameterDefinition(
-                                                          "p => p." + propertyExpression.PropertyName),
-                                                      new EntityFunctionParameterDefinition(
-                                                          GetExpressionString(expression)),
-                                                      new EntityFunctionParameterDefinition(
-                                                          String(relationshipFilterRule.Key)),
-                                                      new EntityFunctionParameterDefinition(
-                                                          String(relationshipFilterRule.Message))
+                                                                new EntityFunctionParameterDefinition(
+                                                                    "p => p." + propertyExpression.PropertyName),
+                                                                new EntityFunctionParameterDefinition(
+                                                                    GetExpressionString(expression)),
+                                                                new EntityFunctionParameterDefinition(
+                                                                    String(relationshipFilterRule.Key)),
+                                                                new EntityFunctionParameterDefinition(
+                                                                    String(relationshipFilterRule.Message))
                                                             });
+                                                        Append(";");
                                                     }
                                                 }
 
@@ -418,36 +483,43 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                     foreach (var displayRule in property.DisplayRules.All)
                                                     {
                                                         var expression =
-                                                            displayRule.GetPropertyValueByNameAs<IqlExpression>("ExpressionIql");
-                                                        var propertyExpression = new IqlPropertyExpression(property.Name, null, IqlType.Unknown);
+                                                            displayRule.GetPropertyValueByNameAs<IqlExpression>(
+                                                                "ExpressionIql");
+                                                        var propertyExpression =
+                                                            new IqlPropertyExpression(property.Name, null,
+                                                                IqlType.Unknown);
                                                         var iqlRootReference = new IqlRootReferenceExpression("e", "");
                                                         propertyExpression.Parent = iqlRootReference;
                                                         AppendLine();
+                                                        FetchEntityConfiguration();
+                                                        AppendLine();
                                                         Dot();
-                                                        MethodCall(nameof(EntityConfiguration<object>.DefinePropertyDisplayRuleByExpression),
+                                                        MethodCall(
+                                                            nameof(EntityConfiguration<object>
+                                                                .DefinePropertyDisplayRuleByExpression),
                                                             false,
                                                             new[]
                                                             {
-                                                      new EntityFunctionParameterDefinition(
-                                                          "p => p." + propertyExpression.PropertyName),
-                                                      new EntityFunctionParameterDefinition(
-                                                          GetExpressionString(expression)),
-                                                      new EntityFunctionParameterDefinition(
-                                                          String(displayRule.Key)),
-                                                      new EntityFunctionParameterDefinition(
-                                                          String(displayRule.Message)),
-                                                      new EntityFunctionParameterDefinition(
-                                                          $"{nameof(DisplayRuleKind)}.{displayRule.Kind}"),
-                                                      new EntityFunctionParameterDefinition(
-                                                          $"{nameof(DisplayRuleAppliesToKind)}.{displayRule.AppliesToKind}"),
+                                                                new EntityFunctionParameterDefinition(
+                                                                    "p => p." + propertyExpression.PropertyName),
+                                                                new EntityFunctionParameterDefinition(
+                                                                    GetExpressionString(expression)),
+                                                                new EntityFunctionParameterDefinition(
+                                                                    String(displayRule.Key)),
+                                                                new EntityFunctionParameterDefinition(
+                                                                    String(displayRule.Message)),
+                                                                new EntityFunctionParameterDefinition(
+                                                                    $"{nameof(DisplayRuleKind)}.{displayRule.Kind}"),
+                                                                new EntityFunctionParameterDefinition(
+                                                                    $"{nameof(DisplayRuleAppliesToKind)}.{displayRule.AppliesToKind}"),
                                                             });
+                                                        Append(";");
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 });
-                                Append(";");
                                 AppendLine();
 
                                 foreach (var property in entityDefinition.Type.Properties)
@@ -458,6 +530,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                     {
                                         continue;
                                     }
+
                                     AppendLine();
                                     VariableAccessor(builder, () =>
                                     {
@@ -486,12 +559,15 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                             Dot();
                                             var hasOneParameters = new[]
                                             {
-                                            propertyLambda
+                                                propertyLambda
                                             }.ToList();
                                             if (OutputKind == OutputKind.TypeScript)
                                             {
-                                                hasOneParameters.Add(new EntityFunctionParameterDefinition(type.Name.AsTypeScriptTypeParameter()));
+                                                hasOneParameters.Add(
+                                                    new EntityFunctionParameterDefinition(
+                                                        type.Name.AsTypeScriptTypeParameter()));
                                             }
+
                                             MethodCall(nameof(EntityConfiguration<object>.HasOne),
                                                 false,
                                                 hasOneParameters.ToArray());
@@ -504,20 +580,20 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                                 false,
                                                 new[]
                                                 {
-                                                new EntityFunctionParameterDefinition(
-                                                    "p => p." + navigationProperty.Partner)
+                                                    new EntityFunctionParameterDefinition(
+                                                        "p => p." + navigationProperty.Partner)
                                                 });
                                             AppendLine();
                                             Dot();
                                             MethodCall(nameof(OneToOneRelationship<object, object>.WithConstraint),
                                                 false,
                                                 new[]
-                                            {
-                                            new EntityFunctionParameterDefinition(
-                                                "p => p." + navigationProperty.Constraint.LocalIdProperty),
-                                            new EntityFunctionParameterDefinition(
-                                                "p => p." + navigationProperty.Constraint.RemoteIdProperty)
-                                            });
+                                                {
+                                                    new EntityFunctionParameterDefinition(
+                                                        "p => p." + navigationProperty.Constraint.LocalIdProperty),
+                                                    new EntityFunctionParameterDefinition(
+                                                        "p => p." + navigationProperty.Constraint.RemoteIdProperty)
+                                                });
                                         });
                                         Append(";");
                                         AppendLine();
@@ -589,7 +665,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                     //}
                                 });
 
-                                if (entityDefinition.Functions?.Any() == true && entityConfiguration.Methods?.Any() == true)
+                                if (entityDefinition.Functions?.Any() == true &&
+                                    entityConfiguration.Methods?.Any() == true)
                                 {
                                     // TODO: Define methods
                                 }
@@ -646,17 +723,19 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 //        false);
                                 //}
                             }
+
                             Append(await ConfigureRelationshipsAsync(builder));
                             Append(await ConfigurePropertyOrdersAsync(builder));
                             Append(ConfigureSpecialTypes(builder));
                         },
-                      modifier: Modifier.Override);
+                        modifier: Modifier.Override);
                     AppendLine();
                     if (Settings.GenerateEntitySets)
                     {
                         foreach (var propertyDefinition in entitySetDefinitions)
                         {
-                            propertyDefinition.TypeInfo = new TypeInfo(propertyDefinition.EntitySet.GetDbSetName(NameMapper));
+                            propertyDefinition.TypeInfo =
+                                new TypeInfo(propertyDefinition.EntitySet.GetDbSetName(NameMapper));
                             propertyDefinition.TypeInfo.ResolvedType = propertyDefinition.TypeInfo.EdmType;
                             Property(propertyDefinition, false);
                         }
@@ -666,13 +745,14 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         PrintODataMethod(method, true);
                     }
-                }, 
+                },
                 nameof(DataContext));
             foreach (var set in _entitySetDefinitions)
             {
                 File.References.Add(set.Type);
                 File.References.Add(new ODataTypeDefinition(set.GetDbSetName(NameMapper), $"./{_dbSetsPath}", true));
             }
+
             File.Contents = Contents();
             return File;
         }
@@ -688,7 +768,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             var cr = Schema.EntityConfigurationDocument.CustomReportsDefinition as CustomReportsDefinition;
             if (cr != null)
             {
-                sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.CustomReportsDefinition)} = {nameof(IEntityConfigurationBuilder.CustomReportsDefinition)}.{nameof(CustomReportsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{cr.EntityConfiguration.Name}>(),
+                sb.AppendLine(
+                    $@"{builder.Name}.{nameof(IEntityConfigurationBuilder.CustomReportsDefinition)} = {nameof(IEntityConfigurationBuilder.CustomReportsDefinition)}.{nameof(CustomReportsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{cr.EntityConfiguration.Name}>(),
                 _ => _.{cr.IdProperty.Name},
                 _ => _.{cr.UserIdProperty.Name},
                 _ => _.{cr.NameProperty.Name},
@@ -700,10 +781,12 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 _ => _.{cr.SearchProperty.Name}
                 );");
             }
+
             var us = Schema.EntityConfigurationDocument.UserSettingsDefinition as UserSettingsDefinition;
             if (us != null)
             {
-                sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UserSettingsDefinition)} = {nameof(IEntityConfigurationBuilder.UserSettingsDefinition)}.{nameof(UserSettingsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{us.EntityConfiguration.Name}>(),
+                sb.AppendLine(
+                    $@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UserSettingsDefinition)} = {nameof(IEntityConfigurationBuilder.UserSettingsDefinition)}.{nameof(UserSettingsDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{us.EntityConfiguration.Name}>(),
                 _ => _.{us.IdProperty.Name},
                 _ => _.{us.UserIdProperty.Name},
                 _ => _.{us.Key1Property.Name},
@@ -713,18 +796,22 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 _ => _.{us.ValueProperty.Name}
                 );");
             }
+
             var u = Schema.EntityConfigurationDocument.UsersDefinition as UsersDefinition;
             if (u != null)
             {
-                sb.AppendLine($@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UsersDefinition)} = {nameof(IEntityConfigurationBuilder.UsersDefinition)}.{nameof(UsersDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{u.EntityConfiguration.Name}>(),
+                sb.AppendLine(
+                    $@"{builder.Name}.{nameof(IEntityConfigurationBuilder.UsersDefinition)} = {nameof(IEntityConfigurationBuilder.UsersDefinition)}.{nameof(UsersDefinition.Define)}({builder.Name}.{nameof(IEntityConfigurationBuilder.EntityType)}<{u.EntityConfiguration.Name}>(),
                 _ => _.{u.IdProperty.Name},
                 _ => _.{u.NameProperty.Name}
                 );");
             }
+
             return sb.ToString();
         }
 
-        private IVariable GetAndAddTypeScriptTypeParameter(GeneratorTypeDefinition propertyType, List<IVariable> parameters)
+        private IVariable GetAndAddTypeScriptTypeParameter(GeneratorTypeDefinition propertyType,
+            List<IVariable> parameters)
         {
             IVariable typeParameter = null;
             if (OutputKind == OutputKind.TypeScript)
@@ -758,6 +845,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         }
 
         private const string DefaultLambdaKey = "p";
+
         private static Type[] NumberTypes = new[]
         {
             typeof(byte),
@@ -783,12 +871,13 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             string lambdaKey = null,
             bool appendConfigure = true,
             IEntityMetadata sourceEntityConfiguration = null
-            )
+        )
         {
             if (lambdaKey == null)
             {
                 lambdaKey = DefaultLambdaKey;
             }
+
             if (metadata != null)
             {
                 if (appendConfigure)
@@ -796,15 +885,18 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     AppendLine();
                     Dot();
                 }
+
                 var configureParameters = new List<IVariable>();
                 if (propertyParameter != null)
                 {
                     configureParameters.Add(propertyParameter);
                 }
+
                 var sb = new StringBuilder();
                 var isProperty = metadata is IPropertyMetadata || metadata is IPropertyGroup;
                 var metadataType = typeof(IEntityMetadata);
-                var metadataSolidType = typeof(Server.Serialization.Deserialization.EntityConfiguration.EntityConfiguration);
+                var metadataSolidType =
+                    typeof(Server.Serialization.Deserialization.EntityConfiguration.EntityConfiguration);
                 if (isProperty)
                 {
                     if (metadata is IPropertyCollection)
@@ -851,6 +943,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         metadataSolidType = typeof(EntityConfigurationDocument);
                     }
                 }
+
                 var metadataProperties = metadataType.GetPublicProperties().ToArray();
                 var propertyMetadata = metadata as IPropertyMetadata;
                 var entityMetadata = metadata as IEntityMetadata;
@@ -866,7 +959,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         // get a null reference exception from somewhere. Repeating the GetValue fixes this......
                         var value1 = metadataProperty.GetValue(metadata);
                     }
-                    catch { }
+                    catch
+                    {
+                    }
+
                     var value = metadataProperty.GetValue(metadata);
                     var nullAllowed =
                         metadata is IInferredValueConfiguration &&
@@ -877,7 +973,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     }
 
                     // Default value is "true", so we don't need to do anything that will bloat the code
-                    if (metadata is IEntityMetadata && metadataProperty.Name == nameof(IEntityConfiguration.ManageKind) &&
+                    if (metadata is IEntityMetadata &&
+                        metadataProperty.Name == nameof(IEntityConfiguration.ManageKind) &&
                         Equals(EntityManageKind.Full, value))
                     {
                         continue;
@@ -896,7 +993,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     void PrintMapping<TMapping, T>(
                         Func<T, string> entityPropertyName,
                         string suffix = "")
-                    where TMapping : IMapping<T>
+                        where TMapping : IMapping<T>
                     {
                         var mappings = (IEnumerable<IMapping<T>>)value;
                         if (mappings != null)
@@ -927,9 +1024,11 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 {
                                     sb.Append($".{nameof(UserPermissionsCollection.UseRule)}(\"{permissionKey}\")");
                                 }
+
                                 sb.Append(";");
                             });
                         }
+
                         dealtWith = true;
                     }
 
@@ -941,6 +1040,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             dealtWith = true;
                         }
                     }
+
                     var useAutoResolve = true;
                     if (metadata is IPropertyGroup propertyGroup &&
                         metadataProperty.Name == nameof(IPropertyGroup.CanWrite))
@@ -951,6 +1051,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             dealtWith = true;
                         }
                     }
+
                     if (metadata is IEntityConfiguration ec &&
                         metadataProperty.Name == nameof(IEntityConfiguration.TitlePropertyName))
                     {
@@ -969,9 +1070,10 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             dealtWith = true;
                         }
                         else if (metadata is IRelationshipDetailMetadata &&
-                            metadataProperty.Name == nameof(IRelationshipDetail.RelationshipMappings))
+                                 metadataProperty.Name == nameof(IRelationshipDetail.RelationshipMappings))
                         {
-                            PrintMapping<RelationshipMapping, IRelationshipDetail>(_ => _.Property.Name, $".{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)}");
+                            PrintMapping<RelationshipMapping, IRelationshipDetail>(_ => _.Property.Name,
+                                $".{nameof(IProperty.Relationship)}.{nameof(EntityRelationship.ThisEnd)}");
                             dealtWith = true;
                         }
                         else if (!isProperty && metadataProperty.Name == nameof(IEntityMetadata.DisplayConfigurations))
@@ -989,7 +1091,8 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 {
                                     sb.AppendLine();
                                     sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasGeographic)}(");
-                                    sb.Append($"{lambdaKey}_g => {lambdaKey}_g.{geographic.LongitudeProperty.Name}, {lambdaKey}_g => {lambdaKey}_g.{geographic.LatitudeProperty.Name}");
+                                    sb.Append(
+                                        $"{lambdaKey}_g => {lambdaKey}_g.{geographic.LongitudeProperty.Name}, {lambdaKey}_g => {lambdaKey}_g.{geographic.LatitudeProperty.Name}");
                                     sb.Append($@", {String(geographic.Key)}");
                                     sb.Append($@", {await ConfigureMetadataAsync(geographic, null, "geo", false)}");
                                     sb.Append(");");
@@ -1011,10 +1114,12 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                         dateRange.EndDateProperty
                                     };
                                     var parameterStrings =
-                                        parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
+                                        parameters.Select(p =>
+                                                p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
                                             .ToList();
                                     parameterStrings.Add(String(dateRange.Key));
-                                    parameterStrings.Add(await ConfigureMetadataAsync(dateRange, null, $"{lambdaKey}_ns", false));
+                                    parameterStrings.Add(await ConfigureMetadataAsync(dateRange, null,
+                                        $"{lambdaKey}_ns", false));
                                     sb.Append(string.Join(", ", parameterStrings));
                                     sb.Append(");");
                                 }
@@ -1036,12 +1141,12 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                     };
                                     var subLambda = $"{lambdaKey}_f";
                                     var parameterStrings = new string[]
-                                        {
-                                            file.UrlProperty == null
-                                                ? "null"
-                                                : $"{subLambda} => {subLambda}.{file.UrlProperty.Name}",
-                                            $@"new Guid(""{file.Guid.ToString()}"")"
-                                        };
+                                    {
+                                        file.UrlProperty == null
+                                            ? "null"
+                                            : $"{subLambda} => {subLambda}.{file.UrlProperty.Name}",
+                                        $@"new Guid(""{file.Guid.ToString()}"")"
+                                    };
                                     var config = await ConfigureMetadataAsync(file, null, subLambda, false);
                                     if (string.IsNullOrWhiteSpace(config))
                                     {
@@ -1070,22 +1175,24 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                     sb.Append($"{lambdaKey}.{nameof(EntityConfiguration<object>.HasNestedSet)}(");
                                     var parameters = new[]
                                     {
-                                    nestedSet.LeftProperty,
-                                    nestedSet.RightProperty,
-                                    nestedSet.LeftOfProperty,
-                                    nestedSet.RightOfProperty,
-                                    nestedSet.KeyProperty,
-                                    nestedSet.LevelProperty,
-                                    nestedSet.ParentIdProperty,
-                                    nestedSet.ParentProperty,
-                                    nestedSet.IdProperty
-                                };
+                                        nestedSet.LeftProperty,
+                                        nestedSet.RightProperty,
+                                        nestedSet.LeftOfProperty,
+                                        nestedSet.RightOfProperty,
+                                        nestedSet.KeyProperty,
+                                        nestedSet.LevelProperty,
+                                        nestedSet.ParentIdProperty,
+                                        nestedSet.ParentProperty,
+                                        nestedSet.IdProperty
+                                    };
                                     var parameterStrings =
-                                        parameters.Select(p => p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
+                                        parameters.Select(p =>
+                                                p == null ? "null" : $"{lambdaKey}_ns => {lambdaKey}_ns.{p.Name}")
                                             .ToList();
                                     parameterStrings.Add(String(nestedSet.SetKey));
                                     parameterStrings.Add(String(nestedSet.Key));
-                                    parameterStrings.Add(await ConfigureMetadataAsync(nestedSet, null, $"{lambdaKey}_ns", false));
+                                    parameterStrings.Add(await ConfigureMetadataAsync(nestedSet, null,
+                                        $"{lambdaKey}_ns", false));
                                     sb.Append(string.Join(", ", parameterStrings));
                                     sb.Append(");");
                                 }
@@ -1097,6 +1204,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             {
                                 assign = String(value as string);
                             }
+
                             dealtWith = true;
                         }
                         else if (metadataProperty.CanWrite && NumberTypes.Contains(metadataProperty.PropertyType))
@@ -1105,6 +1213,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             {
                                 assign = Equals(value, null) ? "null" : value.ToString().ToLower();
                             }
+
                             dealtWith = true;
                         }
                         else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool))
@@ -1113,6 +1222,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             {
                                 assign = value.ToString().ToLower();
                             }
+
                             dealtWith = true;
                         }
                         else if (metadataProperty.CanWrite && metadataProperty.PropertyType == typeof(bool?))
@@ -1125,6 +1235,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             {
                                 assign = "false";
                             }
+
                             dealtWith = true;
                         }
                         else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumOrNullableEnum())
@@ -1136,6 +1247,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                     assign = value.ToEnumCodeString();
                                 }
                             }
+
                             dealtWith = true;
                         }
                         else if (metadataProperty.Name == nameof(IPropertyMetadata.InferredValueConfigurations))
@@ -1144,7 +1256,8 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             sb.Append($"{lambdaKey}.{metadataProperty.Name} = {output.Initialiser};");
                             dealtWith = true;
                         }
-                        else if (typeof(IFile).IsAssignableFrom(metadataProperty.DeclaringType) && metadataProperty.Name == nameof(IFile.Previews))
+                        else if (typeof(IFile).IsAssignableFrom(metadataProperty.DeclaringType) &&
+                                 metadataProperty.Name == nameof(IFile.Previews))
                         {
                             var filePreviews = value as IList<IFilePreview>;
                             if (filePreviews != null && filePreviews.Any())
@@ -1152,7 +1265,8 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 var sbFilePreviews = new StringBuilder();
                                 foreach (var filePreview in filePreviews)
                                 {
-                                    sbFilePreviews.Append($"{lambdaKey}.{nameof(File<object>.AddPreview)}(fp => fp.{filePreview.UrlProperty.Name}, new Guid(\"{filePreview.Guid}\"), {nameof(IqlPreviewKind)}.{filePreview.Kind.ToString()}, {(filePreview.MaxWidth == null ? "null" : filePreview.MaxWidth.Value.ToString())}, {(filePreview.MaxHeight == null ? "null" : filePreview.MaxHeight.Value.ToString())}, {String(filePreview.Key)}, {await ConfigureMetadataAsync(filePreview, null, "fp", false)});");
+                                    sbFilePreviews.Append(
+                                        $"{lambdaKey}.{nameof(File<object>.AddPreview)}(fp => fp.{filePreview.UrlProperty.Name}, new Guid(\"{filePreview.Guid}\"), {nameof(IqlPreviewKind)}.{filePreview.Kind.ToString()}, {(filePreview.MaxWidth == null ? "null" : filePreview.MaxWidth.Value.ToString())}, {(filePreview.MaxHeight == null ? "null" : filePreview.MaxHeight.Value.ToString())}, {String(filePreview.Key)}, {await ConfigureMetadataAsync(filePreview, null, "fp", false)});");
                                 }
 
                                 assign = sbFilePreviews.ToString();
@@ -1161,13 +1275,15 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             assignIsAssign = false;
                             dealtWith = true;
                         }
-                        else if (!isProperty && entityMetadata != null && metadataProperty.Name == nameof(IEntityMetadata.PersistenceKeyProperty))
+                        else if (!isProperty && entityMetadata != null &&
+                                 metadataProperty.Name == nameof(IEntityMetadata.PersistenceKeyProperty))
                         {
                             if (entityMetadata.PersistenceKeyProperty != null)
                             {
                                 sb.Append(
                                     $"{lambdaKey}.{nameof(IEntityMetadata.PersistenceKeyProperty)} = {lambdaKey}.{nameof(IEntityConfiguration.FindProperty)}(\"{entityMetadata.PersistenceKeyProperty.Name}\");");
                             }
+
                             dealtWith = true;
                         }
                         else if (metadataProperty.CanWrite && metadataProperty.PropertyType.IsEnumerableType())
@@ -1187,7 +1303,8 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                     else
                                     {
                                         var typeScript = await ConvertToTypeScriptAsync(serialized.Class);
-                                        var trimmed = typeScript.Substring(0, typeScript.LastIndexOf("return instance;"));
+                                        var trimmed = typeScript.Substring(0,
+                                            typeScript.LastIndexOf("return instance;"));
                                         var init = "let instance = ";
                                         trimmed = trimmed.Substring(trimmed.IndexOf(init) + init.Length);
                                         assign = trimmed;
@@ -1215,6 +1332,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                     }
                                 }
                             }
+
                             dealtWith = true;
                         }
                         else if (typeof(IMediaKey).IsAssignableFrom(metadataProperty.PropertyType))
@@ -1229,7 +1347,8 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 {
                                     if (group.Parts != null && group.Parts.Any())
                                     {
-                                        sb.AppendLine($".{nameof(MediaKey<object>.AddGroup)}({lambdaKey}_g => {lambdaKey}_g");
+                                        sb.AppendLine(
+                                            $".{nameof(MediaKey<object>.AddGroup)}({lambdaKey}_g => {lambdaKey}_g");
                                         foreach (var part in group.Parts)
                                         {
                                             sb.AppendLine(
@@ -1257,8 +1376,10 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                 {
                                     var os = new CSharpObjectSerializer();
                                     var serialized = os.Serialize(item.Value);
-                                    items.Add($"{nameof(IMetadataCollection.Set)}({String(item.Key)}, {serialized.Initialiser})");
+                                    items.Add(
+                                        $"{nameof(IMetadataCollection.Set)}({String(item.Key)}, {serialized.Initialiser})");
                                 }
+
                                 sb.Append($"{string.Join(".", items)};");
                             }
                         }
@@ -1269,10 +1390,13 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             var property = (IProperty)metadataProperty.GetValue(metadata);
                             if (property != null)
                             {
-                                sb.AppendLine($"{lambdaKey}.{metadataProperty.Name} = {DefaultLambdaKey}.{nameof(EntityConfiguration<object>.FindProperty)}({String(property.Name)});");
+                                sb.AppendLine(
+                                    $"{lambdaKey}.{metadataProperty.Name} = {DefaultLambdaKey}.{nameof(EntityConfiguration<object>.FindProperty)}({String(property.Name)});");
                             }
                         }
-                        else if (metadataProperty.CanWrite && (metadataProperty.PropertyType.IsClass || metadataProperty.PropertyType.IsInterface) && metadataProperty.PropertyType != typeof(string))
+                        else if (metadataProperty.CanWrite &&
+                                 (metadataProperty.PropertyType.IsClass || metadataProperty.PropertyType.IsInterface) &&
+                                 metadataProperty.PropertyType != typeof(string))
                         {
                             var skip = false;
                             if (!isProperty)
@@ -1297,6 +1421,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                         break;
                                 }
                             }
+
                             dealtWith = true;
                             if (!skip && value != null)
                             {
@@ -1317,10 +1442,12 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                             }
                         }
                     }
+
                     if (assignIsAssign && !metadataProperty.CanWrite)
                     {
                         continue;
                     }
+
                     if (assign != null)
                     {
                         sb.Append("\r\n");
@@ -1329,6 +1456,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                         {
                             sb.Append($"{lambdaKey}.{metadataProperty.Name} = ");
                         }
+
                         sb.Append($"{assign};");
                     }
                     else if (!Equals(value, false) && !dealtWith && metadataProperty.CanWrite)
@@ -1344,6 +1472,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 {
                     return null;
                 }
+
                 var finalSb = new StringBuilder();
                 finalSb.Append($"{lambdaKey} => {{");
                 finalSb.Append(body);
@@ -1359,12 +1488,12 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                     configureParameters.Add(
                         new PropertyDefinition(finalSb.ToString()));
                     MethodCall(
-                                      isProperty
-                                          ? nameof(EntityConfiguration<object>.ConfigureProperty)
-                                          : nameof(EntityConfiguration<object>.Configure),
-                                      false,
-                                      configureParameters.ToArray()
-                                  );
+                        isProperty
+                            ? nameof(EntityConfiguration<object>.ConfigureProperty)
+                            : nameof(EntityConfiguration<object>.Configure),
+                        false,
+                        configureParameters.ToArray()
+                    );
                 }
 
                 return finalSb.ToString();
@@ -1380,6 +1509,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
         }
 
         private readonly Dictionary<Type, object> _instances = new Dictionary<Type, object>();
+
         private bool IsDefaultValue(MemberInfo metadataProperty, object value, Type metadataSolidType)
         {
             if (!_instances.ContainsKey(metadataSolidType))
@@ -1401,8 +1531,10 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 {
                     instance = Activator.CreateInstance(metadataSolidType);
                 }
+
                 _instances.Add(metadataSolidType, instance);
             }
+
             return Equals(_instances[metadataSolidType].GetPropertyValue(metadataProperty.Name),
                 value);
         }
@@ -1415,9 +1547,11 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 var entityMetadata = config.Value;
                 foreach (var displayConfig in entityMetadata.DisplayConfigurations)
                 {
-                    await ConfigureDisplaySettingAsync(builder, displayConfig, sb, config, nameof(EntityConfiguration<object>.SetDisplay), entityMetadata);
+                    await ConfigureDisplaySettingAsync(builder, displayConfig, sb, config,
+                        nameof(EntityConfiguration<object>.SetDisplay), entityMetadata);
                 }
             }
+
             return sb.ToString();
         }
 
@@ -1436,6 +1570,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 {
                     serializedPropertyGroups.Add(await SerializePropertyGroupsAsync(property, entityMetadata, 0));
                 }
+
                 var properties = string.Join(",\n", serializedPropertyGroups);
                 var configurator = $@"(ec, displayConfiguration) => {{
                     displayConfiguration.{nameof(DisplayConfiguration.SetProperties)}(
@@ -1443,7 +1578,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                         {properties});
             }}";
                 sb.AppendLine(
-                    $"{GetEntityTypeConfiguration(builder, config.Key)}.{displaySettingMethodName}({String(displayConfiguration.Key)}, {nameof(DisplayConfigurationKind)}.{displayConfiguration.Kind}, {configurator});");
+                    $"{GetEntityTypeConfiguration(builder, config.Key, true)}.{displaySettingMethodName}({String(displayConfiguration.Key)}, {nameof(DisplayConfigurationKind)}.{displayConfiguration.Kind}, {configurator});");
             }
         }
 
@@ -1475,11 +1610,13 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                                     ? nameof(EntityConfiguration<object>.FindCollectionRelationship)
                                     : nameof(EntityConfiguration<object>.FindRelationship)
                             ;
-                        var configured = await ConfigureMetadataAsync(detail, null, $"{lambdaKey}_cnf", false, entityConfig);
+                        var configured =
+                            await ConfigureMetadataAsync(detail, null, $"{lambdaKey}_cnf", false, entityConfig);
                         if (!string.IsNullOrWhiteSpace(configured))
                         {
                             sb.AppendLine();
-                            sb.Append($"{lambdaKey}.{method}({nestedLambdaKey} => {nestedLambdaKey}.{detail.Property.Name})");
+                            sb.Append(
+                                $"{lambdaKey}.{method}({nestedLambdaKey} => {nestedLambdaKey}.{detail.Property.Name})");
                             sb.Append($@".{nameof(IRelationshipDetail.Configure)}({configured});");
                         }
                     }
@@ -1489,8 +1626,9 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 if (!string.IsNullOrWhiteSpace(relationshipConfigurations))
                 {
                     result.AppendLine(
-                        RunWithinEntityTypeConfiguration(builder, config.Key, lambdaKey, () => relationshipConfigurations)
-                        );
+                        RunWithinEntityTypeConfiguration(builder, config.Key, lambdaKey,
+                            () => relationshipConfigurations)
+                    );
                 }
             }
 
@@ -1501,16 +1639,20 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
             string lambdaKey,
             Func<string> content)
         {
-            return $@"{GetEntityTypeConfiguration(builder, entityTypeName)}.{nameof(EntityConfiguration<object>.Configure)}({lambdaKey} => {{
+            return
+                $@"{GetEntityTypeConfiguration(builder, entityTypeName, true)}.{nameof(EntityConfiguration<object>.Configure)}({lambdaKey} => {{
 {content()}
 }});";
         }
 
-        private string GetEntityTypeConfiguration(IVariable builder, string entityTypeName)
+        private string GetEntityTypeConfiguration(IVariable builder, string entityTypeName, bool includeAlias)
         {
-            return $@"{builder.Name}.{nameof(EntityConfigurationBuilder.DefineEntityType)}<{NameMapper(entityTypeName)}>({String(NameMapper(entityTypeName))})";
+            return
+                $@"{builder.Name}.{nameof(EntityConfigurationBuilder.DefineEntityType)}<{NameMapper(entityTypeName)}>({(includeAlias ? String(NameMapper(entityTypeName)) : "")})";
         }
-        private async Task<string> SerializePropertyGroupsAsync(IPropertyGroup propertyGroup, IEntityMetadata entityMetadata, int index)
+
+        private async Task<string> SerializePropertyGroupsAsync(IPropertyGroup propertyGroup,
+            IEntityMetadata entityMetadata, int index)
         {
             var groupSb = new StringBuilder();
 
@@ -1520,6 +1662,7 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 var inlineStr = $"_{indexCh}.";
                 return $"_{indexCh} => {(inline ? inlineStr : "")}";
             }
+
             groupSb.Append(Lambda(index));
             if (propertyGroup is IGeographicPoint)
             {
@@ -1539,14 +1682,17 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
             else if (propertyGroup is IRelationshipDetailMetadata)
             {
                 var rel = propertyGroup as IRelationshipDetailMetadata;
-                groupSb.Append($"{(rel.IsCollection ? nameof(EntityConfiguration<object>.FindCollectionRelationship) : nameof(EntityConfiguration<object>.FindRelationship))}({Lambda(++index)}{rel.Property.Name})");
+                groupSb.Append(
+                    $"{(rel.IsCollection ? nameof(EntityConfiguration<object>.FindCollectionRelationship) : nameof(EntityConfiguration<object>.FindRelationship))}({Lambda(++index)}{rel.Property.Name})");
             }
             else if (propertyGroup is IPropertyPath)
             {
                 var propertyPath = propertyGroup as IPropertyPath;
                 var lambda = $"{Lambda(++index)}";
-                groupSb.Append($"{nameof(EntityConfiguration<object>.PropertyPath)}({lambda}{propertyPath.Path.Replace("/", ".")})");
-                groupSb.Append($@".{nameof(PropertyGroupBase<IPropertyPath>.Configure)}({await ConfigureMetadataAsync(propertyPath, null, $"coll{++index}", false, entityMetadata)})");
+                groupSb.Append(
+                    $"{nameof(EntityConfiguration<object>.PropertyPath)}({lambda}{propertyPath.Path.Replace("/", ".")})");
+                groupSb.Append(
+                    $@".{nameof(PropertyGroupBase<IPropertyPath>.Configure)}({await ConfigureMetadataAsync(propertyPath, null, $"coll{++index}", false, entityMetadata)})");
             }
             else if (propertyGroup is IPropertyCollection)
             {
@@ -1558,15 +1704,18 @@ new {typeof(TMapping).Name}({lambdaKey}) {{
                 }
 
                 groupSb.Append($"{nameof(EntityConfiguration<object>.PropertyCollection)}({string.Join(",\n", list)})");
-                var collectionMetadata = await ConfigureMetadataAsync(coll, null, $"coll{++index}", false, entityMetadata);
+                var collectionMetadata =
+                    await ConfigureMetadataAsync(coll, null, $"coll{++index}", false, entityMetadata);
                 if (!string.IsNullOrWhiteSpace(collectionMetadata))
                 {
-                    groupSb.Append($@".{nameof(PropertyGroupBase<IPropertyCollection>.Configure)}({collectionMetadata})");
+                    groupSb.Append(
+                        $@".{nameof(PropertyGroupBase<IPropertyCollection>.Configure)}({collectionMetadata})");
                 }
             }
             else
             {
-                groupSb.Append($"{nameof(EntityConfiguration<object>.FindPropertyByExpression)}({Lambda(++index)}{propertyGroup.Name})");
+                groupSb.Append(
+                    $"{nameof(EntityConfiguration<object>.FindPropertyByExpression)}({Lambda(++index)}{propertyGroup.Name})");
             }
 
             return groupSb.ToString();

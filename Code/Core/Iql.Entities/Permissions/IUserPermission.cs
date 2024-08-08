@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +21,25 @@ namespace Iql.Entities
         public IEntityConfigurationContainer Builder { get; }
         private bool _keysInitialized;
         private List<string> _keys;
-        public List<string> Keys { get { if(!_keysInitialized) { _keysInitialized = true; _keys = new List<string>(); } return _keys; } set { _keysInitialized = true; _keys = value; } }
+
+        public List<string> Keys
+        {
+            get
+            {
+                if (!_keysInitialized)
+                {
+                    _keysInitialized = true;
+                    _keys = new List<string>();
+                }
+
+                return _keys;
+            }
+            set
+            {
+                _keysInitialized = true;
+                _keys = value;
+            }
+        }
 
         public UserPermissionsCollection(IEntityConfigurationContainer builder = null)
         {
@@ -29,14 +48,21 @@ namespace Iql.Entities
 
         public UserPermissionsCollection()
         {
-
         }
 
-        public UserPermissionsCollection UseRule(string key)
+        public UserPermissionsCollection UseRule(
+            string key,
+            Action<IEntityConfigurationContainer>? buildRule = null
+        )
         {
             if (!Keys.Contains(key))
             {
                 Keys.Add(key);
+            }
+
+            if (buildRule != null)
+            {
+                buildRule(Builder);
             }
 
             return this;

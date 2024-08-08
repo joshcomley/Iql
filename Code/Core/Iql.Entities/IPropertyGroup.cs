@@ -33,6 +33,6 @@ namespace Iql.Entities
         IqlPropertyKind Kind { get; set; }
         IRuleCollection<IRelationshipRule> RelationshipFilterRules { get; set; }
         IRuleCollection<IBinaryRule> ValidationRules { get; set; }
-        IRuleCollection<IDisplayRule> DisplayRules { get; set; }
+        IRuleCollection<IDisplayRule>? DisplayRules { get; set; }
     }
 }

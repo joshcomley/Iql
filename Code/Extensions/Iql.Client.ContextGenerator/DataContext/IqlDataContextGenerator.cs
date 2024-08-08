@@ -123,6 +123,13 @@ namespace Iql.OData.TypeScript.Generator.DataContext
                 await defaultConversionSettings.MetadataReferences.AddReferenceAsync<ODataConfiguration>(defaultConversionSettings, "@brandless/iql.odata", true);
                 await defaultConversionSettings.MetadataReferences.AddReferenceAsync<IqlSyncResult>(defaultConversionSettings, "@brandless/iql.forms", true);
 
+                // foreach (var file in conversionCollection.Files)
+                // {
+                //     await File.WriteAllTextAsync(
+                //         Path.Combine(@"D:\code\SafeSite\api\code\SafeSite.Tests\Db", file.FullName),
+                //         file.Content
+                //     );
+                // }
                 var result = await new CSharpToTypeScriptConverter(defaultConversionSettings).ConvertToTypeScriptAsync(
                     new[] { conversionCollection }
                 );

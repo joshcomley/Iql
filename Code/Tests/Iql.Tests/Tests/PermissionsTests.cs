@@ -19,6 +19,22 @@ namespace Iql.Tests.Tests
     public class PermissionsTests : TestsBase
     {
         [TestMethod]
+        public async Task TestDenyAllRule()
+        {
+            var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();
+            var rule =
+                clientConfiguration.Builder.PermissionManager.DefineEntityUserPermissionRule<Client, ApplicationUser>(nameof(TestSimplePermissionRule), _ => IqlUserPermission.None, null
+#if TypeScript
+            , new EvaluateContext(_ => Evaluator.Eval(_))
+#endif
+                );
+            var user = new ApplicationUser();
+            var client = new Client();
+            var permission = await new PermissionsEvaluationSession().EvaluateEntityPermissionsRuleAsync(rule, user, client, Db);
+            Assert.AreEqual(IqlUserPermission.None, permission);
+        }
+
+        [TestMethod]
         public async Task TestSimplePermissionRule()
         {
             var clientConfiguration = Db.EntityConfigurationContext.EntityType<Client>();

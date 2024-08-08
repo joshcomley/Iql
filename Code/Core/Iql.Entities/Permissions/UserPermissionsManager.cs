@@ -76,7 +76,7 @@ namespace Iql.Entities
                     typeof(IqlEntityUserPermissionContext<TEntity, TUser>).GetFullName())
                 {
                     variableExpression.EntityTypeName =
-                        $"{nameof(IqlEntityUserPermissionContext<TEntity, TUser>)}<{nameof(TEntity)}, {typeof(TUser).Name}>";
+                        $"{nameof(IqlEntityUserPermissionContext<TEntity, TUser>)}<{typeof(TEntity).Name}, {typeof(TUser).Name}>";
                 }
             }
 
