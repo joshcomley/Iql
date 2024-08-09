@@ -55,7 +55,9 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                     await GenerateWebAndMobile(safesiteUrl,
                         @"D:\code\SafeSite\web\code\src\generated\DataContext",
                         @"D:\code\SafeSite\mobile\code\apps\nativescript-safesite\src\generated\DataContext",
-                        @"C:\Gen\Azure\DataContext");
+                        // @"D:\code\SafeSite\api\code\SafeSite.Tests\Db"
+                        @"C:\Gen\Azure\DataContext"
+                    );
                     //var isiteSettings = new GeneratorSettings("ISite.App.Data.Entities", null);
                     //isiteSettings.GenerateCountProperties = false;
                     //isiteSettings.GenerateEntities = false;
@@ -82,43 +84,44 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
                 //    break;
                 case "iql":
                     await GenerateAsync(
-                        iqlUrl, 
+                        iqlUrl,
                         OutputKind.CSharp,
                         @"D:\Code\Brandless\Iql\Code\Tests\Iql.Tests.Data\Context");
                     break;
-                    //case "hazception-mobile":
-                    //    await GenerateAsync(hazceptionUrl, OutputType.TypeScript, @"D:\Code\Hazception.App\Code\Mobile\Hazception\app\", @"DataContext\Generated");
-                    //    break;
-                    //case "isite-mobile":
-                    //    await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site3\app\", @"DataContext\Generated");
-                    //    break;
-                    //case "scope":
-                    //    await GenerateAsync(scopeUrl, OutputType.TypeScript, @"D:\Code\Scope.App\Code\Web\ClientApp\", @"app\generated\DataContext");
-                    //    break;
-                    //case "iqlsample":
-                    //    await GenerateAsync(iqlSampleUrl, OutputType.TypeScript, @"D:\Code\Brandless\IqlSample\Code\Web\ClientApp\", @"app\generated\DataContext");
-                    //    break;
-                    //case "hazception":
-                    //    await GenerateAsync(hazceptionUrl, OutputType.TypeScript, @"D:\Code\Hazception.App\Code\Web3\ClientApp\", @"app\External\DataContext");
-                    //    break;
-                    //case "hazception-cs":
-                    //    await GenerateAsync(hazceptionUrl, OutputType.CSharp, @"D:\Code\Iql\Code\Tests\Iql.Tests.Data\", @"Context", name =>
-                    //    {
-                    //        switch (name)
-                    //        {
-                    //            case "Client":
-                    //            case "ClientType":
-                    //            case "UserType":
-                    //            case "ApplicationUser":
-                    //                return "Haz" + name;
-                    //        }
-                    //        return name;
-                    //    });
-                    //    break;
+                //case "hazception-mobile":
+                //    await GenerateAsync(hazceptionUrl, OutputType.TypeScript, @"D:\Code\Hazception.App\Code\Mobile\Hazception\app\", @"DataContext\Generated");
+                //    break;
+                //case "isite-mobile":
+                //    await GenerateAsync(isiteUrl, OutputType.TypeScript, @"D:\Code\i-site\Code\Mobile\i-site3\app\", @"DataContext\Generated");
+                //    break;
+                //case "scope":
+                //    await GenerateAsync(scopeUrl, OutputType.TypeScript, @"D:\Code\Scope.App\Code\Web\ClientApp\", @"app\generated\DataContext");
+                //    break;
+                //case "iqlsample":
+                //    await GenerateAsync(iqlSampleUrl, OutputType.TypeScript, @"D:\Code\Brandless\IqlSample\Code\Web\ClientApp\", @"app\generated\DataContext");
+                //    break;
+                //case "hazception":
+                //    await GenerateAsync(hazceptionUrl, OutputType.TypeScript, @"D:\Code\Hazception.App\Code\Web3\ClientApp\", @"app\External\DataContext");
+                //    break;
+                //case "hazception-cs":
+                //    await GenerateAsync(hazceptionUrl, OutputType.CSharp, @"D:\Code\Iql\Code\Tests\Iql.Tests.Data\", @"Context", name =>
+                //    {
+                //        switch (name)
+                //        {
+                //            case "Client":
+                //            case "ClientType":
+                //            case "UserType":
+                //            case "ApplicationUser":
+                //                return "Haz" + name;
+                //        }
+                //        return name;
+                //    });
+                //    break;
             }
         }
 
-        private static async Task GenerateWebAndMobile(string url, string webOutputPath, string mobileOutputPath, string azureFunctionOutputPath = null)
+        private static async Task GenerateWebAndMobile(string url, string webOutputPath, string mobileOutputPath,
+            string azureFunctionOutputPath = null)
         {
             var generatedContexts = await GenerateAsync(url, OutputKind.TypeScript);
             generatedContexts.TypeScriptContext.SaveTo(webOutputPath, true);
@@ -150,21 +153,23 @@ namespace Iql.Client.ContextGenerator.ConsoleApp
             //}
         }
 
-        private static Task<GeneratedContexts> GenerateAsync(string odataSchemaUrl, OutputKind outputKind, string outputFolder = null, Func<string, string> nameMapper = null, string @namespace = null, string iqlSchemaUrl = null)
+        private static Task<GeneratedContexts> GenerateAsync(string odataSchemaUrl, OutputKind outputKind,
+            string outputFolder = null, Func<string, string> nameMapper = null, string @namespace = null,
+            string iqlSchemaUrl = null)
         {
             return GenerateWithSettingsAsync(
                 odataSchemaUrl,
                 outputKind,
                 outputFolder,
-                new GeneratorSettings(@namespace, nameMapper), 
+                new GeneratorSettings(@namespace, nameMapper),
                 iqlSchemaUrl);
         }
 
         private static Task<GeneratedContexts> GenerateWithSettingsAsync(
-            string odataSchemaUrl, 
-            OutputKind outputKind, 
-            string outputFolder, 
-            GeneratorSettings settings = null, 
+            string odataSchemaUrl,
+            OutputKind outputKind,
+            string outputFolder,
+            GeneratorSettings settings = null,
             string iqlSchemaUrl = null)
         {
             settings = settings ?? new GeneratorSettings(null, null);

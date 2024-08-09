@@ -58,18 +58,18 @@ namespace Iql.Entities
                 _iqlConvertedExpressionJson = json;
                 if (AcceptsEntity)
                 {
-                    _iqlConvertedExpression = (LambdaExpression) ConvertEntityIqlToLambdaMethod.InvokeGeneric(
+                    _iqlConvertedExpression = (LambdaExpression)ConvertEntityIqlToLambdaMethod.InvokeGeneric(
                         null,
-                        new object[] {IqlExpression, EntityConfigurationBuilder},
+                        new object[] { IqlExpression, EntityConfigurationBuilder },
                         entityType,
                         UserType.Type
                     );
                 }
                 else
                 {
-                    _iqlConvertedExpression = (LambdaExpression) ConvertIqlToLambdaMethod.InvokeGeneric(
+                    _iqlConvertedExpression = (LambdaExpression)ConvertIqlToLambdaMethod.InvokeGeneric(
                         null,
-                        new object[] {IqlExpression, EntityConfigurationBuilder},
+                        new object[] { IqlExpression, EntityConfigurationBuilder },
                         UserType.Type
                     );
                 }
@@ -78,17 +78,20 @@ namespace Iql.Entities
             return _iqlConvertedExpression;
         }
 
-        private static LambdaExpression ConvertEntityIqlToLambda<TEntity, TUser>(IqlExpression expression, ITypeResolver typeResolver)
+        private static LambdaExpression ConvertEntityIqlToLambda<TEntity, TUser>(IqlExpression expression,
+            ITypeResolver typeResolver)
             where TEntity : class
             where TUser : class
         {
-            return IqlConverter.Instance.ConvertIqlToExpression<IqlEntityUserPermissionContext<TEntity, TUser>>(expression, typeResolver);
+            return IqlConverter.Instance.ConvertIqlToExpression<IqlEntityUserPermissionContext<TEntity, TUser>>(
+                expression, typeResolver);
         }
 
         private static LambdaExpression ConvertIqlToLambda<TUser>(IqlExpression expression, ITypeResolver typeResolver)
             where TUser : class
         {
-            return IqlConverter.Instance.ConvertIqlToExpression<IqlUserPermissionContext<TUser>>(expression, typeResolver);
+            return IqlConverter.Instance.ConvertIqlToExpression<IqlUserPermissionContext<TUser>>(expression,
+                typeResolver);
         }
 
         public IEntityConfiguration UserType => EntityConfigurationBuilder.GetEntityByTypeName(UserTypeName);
@@ -101,10 +104,14 @@ namespace Iql.Entities
             {
                 if (entity == null)
                 {
-                    throw new ArgumentException($"Parameter '{nameof(entity)}' must have a value if the permission rule accepts an entity.");
+                    throw new ArgumentException(
+                        $"Parameter '{nameof(entity)}' must have a value if the permission rule accepts an entity.");
                 }
-                return (IqlUserPermission)RunGenericWithEntityMethod.InvokeGeneric(this, new object[] { user, entity }, entity.GetType(), user.GetType());
+
+                return (IqlUserPermission)RunGenericWithEntityMethod.InvokeGeneric(this, new object[] { user, entity },
+                    entity.GetType(), user.GetType());
             }
+
             return (IqlUserPermission)RunGenericMethod.InvokeGeneric(this, new object[] { user }, user.GetType());
         }
 
@@ -129,19 +136,18 @@ namespace Iql.Entities
 
         public IqlUserPermissionRule(IEntityConfigurationBuilder entityConfigurationBuilder = null, string key = null,
             IqlLambdaExpression iqlExpression = null, string userTypeName = null, string entityTypeName = null,
-            IqlUserPermissionRulePrecedenceDirection precedence = IqlUserPermissionRulePrecedenceDirection.Down)
+            IqlUserPermissionRulePrecedenceDirection? precedence = null)
         {
             EntityConfigurationBuilder = entityConfigurationBuilder;
             Key = key;
             IqlExpression = iqlExpression;
             UserTypeName = userTypeName;
             EntityTypeName = entityTypeName;
-            Precedence = precedence;
+            Precedence = precedence ?? IqlUserPermissionRulePrecedenceDirection.Down;
         }
 
         public IqlUserPermissionRule()
         {
-
         }
     }
 }

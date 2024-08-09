@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Iql.Conversion;
 using Iql.Entities.Permissions;
 using Iql.Extensions;
+using Iql.Serialization;
 
 #if TypeScript
 using Iql.Parsing;
@@ -15,10 +16,11 @@ namespace Iql.Entities
     {
         public IUserPermissionContainer Container { get; }
         public IEntityConfigurationBuilder EntityConfigurationBuilder { get; }
+        public IEntityConfiguration EntityConfiguration { get; }
 
         public IqlUserPermissionRule DefineUserPermissionRule<TUser>(string key,
             Expression<Func<IqlUserPermissionContext<TUser>, IqlUserPermission>> rule,
-            IqlUserPermissionRulePrecedenceDirection precedence = IqlUserPermissionRulePrecedenceDirection.Down
+            IqlUserPermissionRulePrecedenceDirection? precedence = null
 #if TypeScript
             , EvaluateContext evaluateContext = null
 #endif
@@ -33,6 +35,7 @@ namespace Iql.Entities
             , evaluateContext
 #endif
                 );
+            var json = IqlJsonSerializer.Serialize(result.Expression);
             var lambdaExpression = result.Expression as IqlLambdaExpression;
             var configuredRule = new IqlUserPermissionRule(
                 EntityConfigurationBuilder,
@@ -98,10 +101,14 @@ namespace Iql.Entities
             return Container.PermissionRules?.FirstOrDefault(_ => _.Key == key);
         }
 
-        public UserPermissionsManager(IUserPermissionContainer container, IEntityConfigurationBuilder entityConfigurationBuilder)
+        public UserPermissionsManager(
+            IUserPermissionContainer container, 
+            IEntityConfigurationBuilder entityConfigurationBuilder,
+            IEntityConfiguration entityConfiguration)
         {
             Container = container;
             EntityConfigurationBuilder = entityConfigurationBuilder;
+            EntityConfiguration = entityConfiguration;
         }
     }
 }

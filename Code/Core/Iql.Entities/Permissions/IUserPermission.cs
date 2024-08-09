@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using Iql.Entities.Permissions;
+using Iql.Parsing;
+using Iql.Serialization;
 
 namespace Iql.Entities
 {
@@ -18,6 +22,7 @@ namespace Iql.Entities
 
     public class UserPermissionsCollection
     {
+        public IEntityConfiguration EntityConfiguration { get; }
         public IEntityConfigurationContainer Builder { get; }
         private bool _keysInitialized;
         private List<string> _keys;
@@ -41,28 +46,20 @@ namespace Iql.Entities
             }
         }
 
-        public UserPermissionsCollection(IEntityConfigurationContainer builder = null)
+        public UserPermissionsCollection(
+            IEntityConfiguration? entityConfiguration = null)
         {
-            Builder = builder;
-        }
-
-        public UserPermissionsCollection()
-        {
+            EntityConfiguration = entityConfiguration;
+            Builder = entityConfiguration?.Builder;
         }
 
         public UserPermissionsCollection UseRule(
-            string key,
-            Action<IEntityConfigurationContainer>? buildRule = null
+            string key
         )
         {
             if (!Keys.Contains(key))
             {
                 Keys.Add(key);
-            }
-
-            if (buildRule != null)
-            {
-                buildRule(Builder);
             }
 
             return this;
@@ -95,6 +92,71 @@ namespace Iql.Entities
 
                 return rules.ToArray();
             }
+        }
+    }
+
+    public static class UserPermissionsCollectionExtensions
+    {
+        public static IqlUserPermissionRule DefineAndUseUserPermissionRule<TUser>(
+            this UserPermissionsCollection permissions,
+            Expression<Func<IqlUserPermissionContext<TUser>, IqlUserPermission>> rule,
+            string? key = null,
+            IqlUserPermissionRulePrecedenceDirection? precedence = null
+#if TypeScript
+        , EvaluateContext evaluateContext = null
+#endif
+        ) where TUser : class
+        {
+            if (key == null)
+            {
+                var iql = rule.ToIqlPropertyExpression(
+                    permissions.EntityConfiguration
+                );
+                key = Md5.Hash(IqlJsonSerializer.Serialize(iql));
+            }
+
+            permissions.UseRule(key!);
+            return permissions.Builder.PermissionManager.DefineUserPermissionRule(
+                key,
+                rule,
+                precedence
+#if TypeScript
+        , evaluateContext
+#endif
+            );
+        }
+
+        public static IqlUserPermissionRule DefineAndUseEntityUserPermissionRule<TEntity, TUser>(
+            this UserPermissionsCollection permissions,
+            Expression<Func<IqlEntityUserPermissionContext<TEntity, TUser>, IqlUserPermission>> rule,
+            string? key = null,
+            IqlUserPermissionRulePrecedenceDirection? precedence = null
+#if TypeScript
+        , EvaluateContext evaluateContext = null
+#endif
+        ) where TUser : class where TEntity : class
+        {
+            if (key == null)
+            {
+                var iql = rule.ToIqlPropertyExpression(
+                    permissions
+                        .Builder
+                        .PermissionManager
+                        .EntityConfigurationBuilder
+                        .EntityConfiguration
+                );
+                key = Md5.Hash(IqlJsonSerializer.Serialize(iql));
+            }
+
+            permissions.UseRule(key!);
+            return permissions.Builder.PermissionManager.DefineEntityUserPermissionRule(
+                key,
+                rule,
+                precedence
+#if TypeScript
+        , evaluateContext
+#endif
+            );
         }
     }
 }

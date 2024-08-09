@@ -12,7 +12,7 @@ namespace Iql.Entities
         protected bool _nameSet;
         private string _title;
         private bool _titleSet;
-        private UserPermissionsCollection _permissions;
+        private UserPermissionsCollection? _permissions;
         private bool _metadataInitialized;
         private IMetadataCollection _metadata;
         public IMetadataCollection Metadata { get { if(!_metadataInitialized) { _metadataInitialized = true; _metadata = new MetadataCollection(); } return _metadata; } set { _metadataInitialized = true; _metadata = value; } }
@@ -161,7 +161,7 @@ namespace Iql.Entities
 
         public UserPermissionsCollection Permissions
         {
-            get => _permissions = _permissions ?? new UserPermissionsCollection(EntityConfiguration?.Builder);
+            get => _permissions = _permissions ?? new UserPermissionsCollection(EntityConfiguration);
             set => _permissions = value;
         }
 

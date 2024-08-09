@@ -22,17 +22,20 @@ namespace Iql.Entities
         private GuidManager _guidManager { get { if(!_guidManagerDelayedInitialized) { _guidManagerDelayedInitialized = true; _guidManagerDelayed = new GuidManager(); } return _guidManagerDelayed; } set { _guidManagerDelayedInitialized = true; _guidManagerDelayed = value; } }
         public GuidManager GuidManager => _guidManager;
 
-        private UserPermissionsManager _permissionsManager;
+        private UserPermissionsManager? _permissionsManager;
         private bool _permissionRulesDelayedInitialized;
         private List<IqlUserPermissionRule> _permissionRulesDelayed;
 
         private List<IqlUserPermissionRule> _permissionRules { get { if(!_permissionRulesDelayedInitialized) { _permissionRulesDelayedInitialized = true; _permissionRulesDelayed =             new List<IqlUserPermissionRule>(); } return _permissionRulesDelayed; } set { _permissionRulesDelayedInitialized = true; _permissionRulesDelayed = value; } }
         public List<IqlUserPermissionRule> PermissionRules =>
             _permissionRules.EnsureHasBuilder(this);
+
         public UserPermissionsManager PermissionManager =>
             _permissionsManager = _permissionsManager ?? new UserPermissionsManager(
-                               this,
-                               this);
+                this,
+                this,
+                EntityConfiguration
+            );
         private bool _entitiesDelayedInitialized;
         private Dictionary<Type, IEntityConfiguration> _entitiesDelayed;
 
