@@ -53,6 +53,7 @@ namespace Iql.Tests.Tests
                     Db
                 );
             Assert.AreEqual(IqlUserPermission.Delete, permission);
+            clientConfiguration.Permissions.RemoveRule(rule.Key);
         }
 
         [TestMethod]

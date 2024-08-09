@@ -8,23 +8,27 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Iql.Entities.PropertyGroups.Files;
 using Iql.Forms;
+using Iql.Server;
 using IqlSampleApp.Data.Entities;
 using Iql.Server.Serialization.Serialization;
 
 namespace Iql.Tests.Tests.MetadataSerialization
 {
     [TestClass]
-    [Ignore]
+    // [Ignore]
     public class MetadataSerializationTests
     {
+        [TestMethod]
         public void TestSerializeDeserialize()
         {
             var db = new AppDbContext();
             var json2 =
                 false
                     // For speedy debugging
-                    ? MetadataSerializationJsonCache.Json
+                    ? new Result<string>(MetadataSerializationJsonCache.Json)
                     : db.EntityConfigurationContext.ToJson();
+            Assert.IsNotNull(json2.Value, json2.Errors);
+            return;
             var clientConfig = db.EntityConfigurationContext.EntityType<Client>();
             var sitesConfig = db.EntityConfigurationContext.EntityType<Site>();
             sitesConfig.FindRelationship(_ => _.Client)
@@ -92,7 +96,7 @@ namespace Iql.Tests.Tests.MetadataSerialization
                 false
                 // For speedy debugging
                 ? MetadataSerializationJsonCache.Json
-                : db.EntityConfigurationContext.ToJson();
+                : db.EntityConfigurationContext.ToJson().Value;
             // return;
             var document = EntityConfigurationDocument.FromJson(json);
             var clientContentParsed = document.EntityTypes.Single(et => et.Name == nameof(Client));

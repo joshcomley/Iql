@@ -14,10 +14,12 @@ namespace Iql.Entities
         List<IqlUserPermissionRule> PermissionRules { get; }
     }
 
-    public interface IUserPermission
+    public interface IUserPermission : IEntityConfigurationItem
     {
         UserPermissionsCollection Permissions { get; }
+
         IUserPermission ParentPermissions { get; }
+        // IEntityConfiguration EntityConfiguration { get; set; }
     }
 
     public class UserPermissionsCollection
@@ -109,10 +111,11 @@ namespace Iql.Entities
         {
             if (key == null)
             {
-                var iql = rule.ToIqlPropertyExpression(
+                var iql = rule.ToIqlLambdaExpression(
                     permissions.EntityConfiguration
                 );
-                key = Md5.Hash(IqlJsonSerializer.Serialize(iql));
+                var json = IqlJsonSerializer.Serialize(iql);
+                key = Md5.Hash(json);
             }
 
             permissions.UseRule(key!);
@@ -139,11 +142,7 @@ namespace Iql.Entities
             if (key == null)
             {
                 var iql = rule.ToIqlPropertyExpression(
-                    permissions
-                        .Builder
-                        .PermissionManager
-                        .EntityConfigurationBuilder
-                        .EntityConfiguration
+                    permissions.EntityConfiguration
                 );
                 key = Md5.Hash(IqlJsonSerializer.Serialize(iql));
             }

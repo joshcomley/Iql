@@ -49,8 +49,8 @@ namespace Iql.Tests.Tests.Properties
                 displayConfiguration,
                 SnapshotOrdering.Standard
             );
-            var siteAddress = instance.FindChildPropertyByExpression<Site>(_ => _.Address);
-            var sitePostCode = instance.FindChildPropertyByExpression<Site>(_ => _.PostCode);
+            var siteAddress = instance.FindDescendentPropertyByExpression<Site>(_ => _.Address);
+            var sitePostCode = instance.FindDescendentPropertyByExpression<Site>(_ => _.PostCode);
             siteEntityConfiguration.Builder.PermissionManager.Container.PermissionRules.Remove(rule);
             Assert.AreEqual(true, siteAddress.CanShow);
             Assert.AreEqual(false, sitePostCode.CanShow);
@@ -73,7 +73,7 @@ namespace Iql.Tests.Tests.Properties
                 displayConfiguration,
                 SnapshotOrdering.Standard
             );
-            var sitePostCode = instance.FindChildPropertyByExpression<Site>(_ => _.PostCode);
+            var sitePostCode = instance.FindDescendentPropertyByExpression<Site>(_ => _.PostCode);
             Assert.IsNotNull(sitePostCode);
             Assert.AreEqual(sitePostCode.PropertyName, nameof(Site.PostCode));
         }

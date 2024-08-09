@@ -20,7 +20,7 @@ namespace IqlSampleApp.Data.Controllers
         public IActionResult Iql()
         {
             var entityConfigurationBuilder = _entityConfigurationProvider.Get<IIqlSampleAppService>();
-            IqlJson = IqlJson ?? entityConfigurationBuilder.ToJson();
+            IqlJson = IqlJson ?? entityConfigurationBuilder.ToJson().Value;
             return Content(IqlJson, "application/json");
         }
 
@@ -28,7 +28,7 @@ namespace IqlSampleApp.Data.Controllers
         public IActionResult Unql()
         {
             var entityConfigurationBuilder = _entityConfigurationProvider.Get<IIqlSampleAppService>();
-            IqlJson = IqlJson ?? entityConfigurationBuilder.ToJson();
+            IqlJson = IqlJson ?? entityConfigurationBuilder.ToJson().Value;
             return Content(IqlJson, "application/json");
         }
     }

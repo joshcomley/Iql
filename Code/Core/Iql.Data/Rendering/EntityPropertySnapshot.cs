@@ -109,12 +109,17 @@ namespace Iql.Data.Rendering
             }
         }
 
-        public EntityPropertySnapshot FindChildProperty(string name)
+        public EntityPropertySnapshot FindDescendentPropertyByName(string name)
         {
             return Flattened().Where(_ => _.PropertyName == name).SingleOrDefault();
         }
+        
+        public EntityPropertySnapshot FindDescendentProperty(IProperty property)
+        {
+            return Flattened().Where(_ => _.Property == property).SingleOrDefault();
+        }
 
-        public EntityPropertySnapshot FindChildPropertyByExpression<T>(Expression<Func<T, object>> expression)
+        public EntityPropertySnapshot FindDescendentPropertyByExpression<T>(Expression<Func<T, object>> expression)
         {
             var name = expression.ToIqlPropertyExpression(Root.EntityConfiguration)?.PropertyName;
             if (string.IsNullOrWhiteSpace(name))

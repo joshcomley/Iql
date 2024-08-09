@@ -10,7 +10,7 @@ namespace Iql.Server.Serialization.Serialization
 {
     public static class EntityConfigurationBuilderSerialization
     {
-        public static string ToJson(this IEntityConfigurationBuilder entityConfigurationBuilder)
+        public static Result<string> ToJson(this IEntityConfigurationBuilder entityConfigurationBuilder)
         {
             var settings = new JsonSerializerSettings
             {
@@ -28,12 +28,12 @@ namespace Iql.Server.Serialization.Serialization
                     entityConfigurationBuilder,
                     settings);
 
-                return serialized;
+                return new Result<string>(serialized);
             }
             catch (Exception e)
             {
+                return new Result<string>(null, e);
             }
-            return null;
         }
     }
 }
