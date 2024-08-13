@@ -103,6 +103,29 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 entitySetDefinitions.Add(propertyDefinition);
             }
 
+            var interfaceName = $"I{_className}";
+            await InterfaceAsync(
+                interfaceName,
+                Namespace,
+                null,
+                async () =>
+                {
+                    foreach (var propertyDefinition in entitySetDefinitions)
+                    {
+                        // propertyDefinition.TypeInfo =
+                        //     new TypeInfo(propertyDefinition.EntitySet.GetDbSetName(NameMapper));
+                        // propertyDefinition.TypeInfo.ResolvedType = propertyDefinition.TypeInfo.EdmType;
+                        var definition = new PropertyDefinition(
+                            propertyDefinition.Name
+                        );
+                        definition.TypeInfo = new TypeInfo(propertyDefinition.EntitySet.GetDbSetName(NameMapper));
+                        definition.TypeInfo.ResolvedType = definition.TypeInfo.EdmType;
+                        await InterfacePropertyAsync(
+                            definition
+                        );
+                    }
+                });
+
             await ClassAsync(
                 _className,
                 Namespace,
@@ -214,6 +237,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                                 {
                                     Append(entityConfigurationAccessor);
                                 }
+
                                 // var entityConfigurationVariable =
                                 //     new PropertyDefinition(entityTypeName.FirstCharToLower());
                                 VariableAccessor(builder, () =>
@@ -746,7 +770,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         PrintODataMethod(method, true);
                     }
                 },
-                nameof(DataContext));
+                nameof(DataContext),
+                new[] { interfaceName });
             foreach (var set in _entitySetDefinitions)
             {
                 File.References.Add(set.Type);

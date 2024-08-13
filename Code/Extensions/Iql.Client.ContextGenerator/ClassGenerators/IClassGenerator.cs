@@ -45,10 +45,18 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             string baseClass = null,
             IEnumerable<string> interfaces = null);
 
+        Task InterfaceAsync(
+            string @class,
+            string @namespace,
+            string genericParameters,
+            Func<Task> action,
+            IEnumerable<string> interfaces = null);
+
         void Field(IVariable field, Action instantiate = null);
         Task FieldAsync(IVariable field, Func<Task> instantiate = null);
         void Property(PropertyInfo property);
         void Property(IVariable property, bool instantiate, GetterSetter getterSetter = null);
+        Task InterfacePropertyAsync(IVariable property);
 
         void Property(string privacy, string name, ITypeInfo type, 
             Action instantiator, 

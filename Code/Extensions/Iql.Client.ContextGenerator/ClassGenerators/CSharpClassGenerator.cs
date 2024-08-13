@@ -17,7 +17,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
     {
         private string _className;
 
-        public CSharpClassGenerator(ODataSchema schema, GeneratorSettings settings) : base(schema, new CSharpTypeResolver(schema, settings), settings)
+        public CSharpClassGenerator(ODataSchema schema, GeneratorSettings settings) : base(schema,
+            new CSharpTypeResolver(schema, settings), settings)
         {
             Converter = new DotNetExpressionConverter();
         }
@@ -54,6 +55,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 str += " : " + baseClass;
             }
+
             File.BaseClassName = baseClass;
             if (interfaces != null)
             {
@@ -63,10 +65,29 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     str += $"{(string.IsNullOrWhiteSpace(baseClass) ? " :" : ",")} " + string.Join(", ", interfacesArr);
                 }
             }
-            await NamespaceAsync(@namespace, async () =>
+
+            await NamespaceAsync(@namespace, async () => { await ScopeAsync(str, action); });
+        }
+
+        public override async Task InterfaceAsync(
+            string @class,
+            string @namespace,
+            string genericParameters,
+            Func<Task> action,
+            IEnumerable<string> interfaces = null)
+        {
+            _className = @class;
+            var str = "public interface " + @class + genericParameters;
+            if (interfaces != null)
             {
-                await ScopeAsync(str, action);
-            });
+                var interfacesArr = interfaces as string[] ?? interfaces.ToArray();
+                if (interfacesArr.Any())
+                {
+                    str += $": " + string.Join(", ", interfacesArr);
+                }
+            }
+
+            await NamespaceAsync(@namespace, async () => { await ScopeAsync(str, action); });
         }
 
         public async Task FieldAsync(IVariable field, Func<Task> instantiate = null)
@@ -79,6 +100,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 Append(" = ");
                 await instantiate();
             }
+
             CloseLine();
             AppendLine();
         }
@@ -101,6 +123,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 privacy = privacy + " ";
             }
+
             TryAddReference(type);
             var typeName = string.IsNullOrWhiteSpace(type.ResolvedType)
                 ? TypeResolver.ResolveTypeNameFromODataName(type).Name
@@ -116,7 +139,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             var beforeSet = getterSetter?.BeforeSet;
             var afterGet = getterSetter?.AfterGet;
             var beforeGet = getterSetter?.BeforeGet;
-            var useBackingField = getterSetter != null && new[] { set, beforeSet, afterSet, beforeGet, afterGet }.Any(s => s != null);
+            var useBackingField = getterSetter != null &&
+                                  new[] { set, beforeSet, afterSet, beforeGet, afterGet }.Any(s => s != null);
             if (useBackingField)
             {
                 getterSetter.BackingFieldName = backingName;
@@ -127,6 +151,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         new EntityFunctionParameterDefinition(backingName, type), instantiator);
                 });
             }
+
             sb.AppendLine();
             sb.Append(GetIndent());
             sb.Append(privacy);
@@ -144,35 +169,19 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 {
                     sb.AppendLine(GetIndentPlus(1) + "get");
                     sb.AppendLine(GetIndentPlus(1) + "{");
-                    Indent(() =>
-                    {
-                        Indent(() =>
-                        {
-                            UseTempStringBuilder(sb, () =>
-                            {
-                                beforeGet?.Invoke();
-                            });
-                        });
-                    });
+                    Indent(() => { Indent(() => { UseTempStringBuilder(sb, () => { beforeGet?.Invoke(); }); }); });
                     if (afterGet == null)
                     {
                         sb.AppendLine(GetIndentPlus(2) + $"return {backingName};");
                     }
                     else
                     {
-                        Indent(() =>
-                        {
-                            Indent(() =>
-                            {
-                                UseTempStringBuilder(sb, () =>
-                                {
-                                    afterGet?.Invoke();
-                                });
-                            });
-                        });
+                        Indent(() => { Indent(() => { UseTempStringBuilder(sb, () => { afterGet?.Invoke(); }); }); });
                     }
+
                     sb.AppendLine(GetIndentPlus(1) + "}");
                 }
+
                 sb.AppendLine(GetIndentPlus(1) + "set");
                 sb.AppendLine(GetIndentPlus(1) + "{");
                 Indent(() =>
@@ -196,6 +205,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 {
                     sb.AppendLine(GetIndentPlus(2) + $"{backingName} = {getterSetter.NewValueName};");
                 }
+
                 Indent(() =>
                 {
                     Indent(() =>
@@ -230,7 +240,28 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     });
                 }
             }
+
             AppendLine(sb.ToString());
+        }
+
+        public override Task InterfacePropertyAsync(
+            IVariable variable
+        )
+        {
+            var sb = new StringBuilder();
+
+            TryAddReference(variable.TypeInfo);
+            var typeName = string.IsNullOrWhiteSpace(variable.TypeInfo.ResolvedType)
+                ? TypeResolver.ResolveTypeNameFromODataName(variable.TypeInfo).Name
+                : variable.TypeInfo.ResolvedType;
+
+            sb.Append(GetIndent());
+            sb.Append($"{typeName} ");
+            sb.Append(variable.Name);
+            sb.Append(" { get; set; }");
+
+            AppendLine(sb.ToString());
+            return Task.CompletedTask;
         }
 
         void AppendInstantiate(Action instantiator)
@@ -247,10 +278,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
 
         void AppendInstantiate(ITypeInfo type, params string[] instantiationParameters)
         {
-            AppendInstantiate(() =>
-            {
-                Append(NewInstanceIdentifier(type.ResolvedType, instantiationParameters));
-            });
+            AppendInstantiate(() => { Append(NewInstanceIdentifier(type.ResolvedType, instantiationParameters)); });
         }
 
         public override string GetCoalesce(string left, string right)
@@ -258,7 +286,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return $"{left} ?? {right}";
         }
 
-        public async Task MethodAsync(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Func<Task> action, string privacy = null,
+        public async Task MethodAsync(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType,
+            Func<Task> action, string privacy = null,
             bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
         {
             var returnTypeResolved = "";
@@ -269,6 +298,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 {
                     privacy = "public";
                 }
+
                 switch (modifier)
                 {
                     case Modifier.None:
@@ -277,6 +307,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                         modifiers = $"{modifier.ToString().ToLower()} ";
                         break;
                 }
+
                 if (!string.IsNullOrWhiteSpace(privacy))
                 {
                     privacy = privacy + " ";
@@ -287,8 +318,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 {
                     privacy = privacy + "async ";
                 }
+
                 TryAddReference(returnType);
-                returnTypeResolved = resolveTypeName ? TypeResolver.ResolveTypeNameFromODataName(returnType).Name : returnType.EdmType;
+                returnTypeResolved = resolveTypeName
+                    ? TypeResolver.ResolveTypeNameFromODataName(returnType).Name
+                    : returnType.EdmType;
                 if (async)
                 {
                     var promiseKind = returnTypeResolved;
@@ -296,6 +330,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         promiseKind = "any";
                     }
+
                     returnTypeResolved = $"Task<{promiseKind}>";
                 }
             }
@@ -314,7 +349,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 action);
         }
 
-        public void Method(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Action action, string privacy = null, bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
+        public void Method(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Action action,
+            string privacy = null, bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
         {
 #pragma warning disable 4014
             MethodAsync(
@@ -336,6 +372,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 name = TypeResolver.ResolveTypeNameFromODataName(type).Name;
             }
+
             return TypeOfExpression(name);
         }
 
@@ -350,6 +387,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 return "";
             }
+
             var array = parameters as IVariable[] ?? parameters.ToArray();
             return parameters == null || !array.Any()
                 ? ""
@@ -372,6 +410,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                 Append(" = ");
                 right();
             }
+
             CloseLine();
             AppendLine();
         }
@@ -404,6 +443,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     parameter.DefaultValue);
                 parameters.Add(p);
             }
+
             InConstructor = true;
             BaseCall = baseCall;
             Method(name, parameters, null, action, privacy: "public");
@@ -416,10 +456,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             _className = @class;
             AddReference(extends);
             File.BaseClassName = extends.AbsoluteName;
-            Namespace(@namespace, () =>
-            {
-                Scope("public class " + @class + " : " + extends.AbsoluteName, action);
-            });
+            Namespace(@namespace, () => { Scope("public class " + @class + " : " + extends.AbsoluteName, action); });
         }
 
         public void IsNotNull(Action action)
@@ -464,6 +501,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 obj.AppendLine($"{name}[\"{pair.Key}\"] = {pair.Value};");
             }
+
             AppendLine(obj.ToString());
         }
 
@@ -476,6 +514,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     Append("[Flags]");
                     AppendLine();
                 }
+
                 Scope(string.Format("public enum {0}", entityType.Name), () =>
                 {
                     var count = 0;

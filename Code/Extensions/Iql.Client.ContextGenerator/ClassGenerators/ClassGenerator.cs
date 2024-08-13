@@ -44,6 +44,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 FileName = fileName;
             }
+
             if (!string.IsNullOrWhiteSpace(@namespace))
             {
                 Namespace = @namespace;
@@ -51,6 +52,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
         }
 
         public IClassGenerator Generator { get; set; }
+
         public void UseTempStringBuilder(StringBuilder temp, Action action)
         {
             Generator.UseTempStringBuilder(temp, action);
@@ -125,6 +127,13 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             return Generator.ClassAsync(@class, @namespace, genericParameters, action, baseClass, interfaces);
         }
 
+        public Task InterfaceAsync(string @class, string @namespace,
+            string genericParameters, Func<Task> action,
+            IEnumerable<string> interfaces = null)
+        {
+            return Generator.InterfaceAsync(@class, @namespace, genericParameters, action, interfaces);
+        }
+
         public void Field(IVariable field, Action instantiate = null)
         {
             Generator.Field(field, instantiate);
@@ -145,6 +154,11 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             Generator.Property(property, instantiate, getterSetter);
         }
 
+        public Task InterfacePropertyAsync(IVariable property)
+        {
+            return Generator.InterfacePropertyAsync(property);
+        }
+
         public void Property(string privacy, string name, ITypeInfo type, Action instantiator, bool instantiate,
             GetterSetter getterSetter = null,
             params string[] instantiationParameters)
@@ -152,16 +166,19 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             Generator.Property(privacy, name, type, instantiator, instantiate, getterSetter, instantiationParameters);
         }
 
-        public void Method(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Action action, string privacy = null,
+        public void Method(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Action action,
+            string privacy = null,
             bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
         {
             Generator.Method(name, parameters, returnType, action, privacy, async, resolveTypeName, modifier);
         }
 
-        public Task MethodAsync(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Func<Task> action, string privacy = null,
+        public Task MethodAsync(string name, IEnumerable<IVariable> parameters, ITypeInfo returnType, Func<Task> action,
+            string privacy = null,
             bool async = false, bool resolveTypeName = true, Modifier modifier = Modifier.None)
         {
-            return Generator.MethodAsync(name, parameters, returnType, action, privacy, async, resolveTypeName, modifier);
+            return Generator.MethodAsync(name, parameters, returnType, action, privacy, async, resolveTypeName,
+                modifier);
         }
 
         public string TypeOfExpression(ITypeInfo type)
@@ -224,7 +241,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             Generator.Throw(error);
         }
 
-        public void Constructor(IEnumerable<IVariable> parameters, Action action, IEnumerable<IVariable> baseCall = null)
+        public void Constructor(IEnumerable<IVariable> parameters, Action action,
+            IEnumerable<IVariable> baseCall = null)
         {
             Generator.Constructor(parameters, action, baseCall);
         }
@@ -468,6 +486,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             {
                 typeScriptReturnTypeParameter = typeScriptReturnTypeParameter.AsTypeScriptTypeParameter();
             }
+
             const string dataStoreWithDataMethod = nameof(ODataDataStore.MethodWithResponse);
             const string dataStoreWithoutDataMethod = nameof(ODataDataStore.Method);
             var methodParameters = method.Parameters;
@@ -486,8 +505,8 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             if (method.Scope == ODataMethodScopeKind.Entity)
             {
                 keyParam = new EntityFunctionParameterDefinition(
-                   "bindingParameter",
-                   method.EntityType.Type);
+                    "bindingParameter",
+                    method.EntityType.Type);
                 methodParameters.Insert(0,
                     keyParam);
             }
@@ -505,9 +524,13 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         parameters.Add(parameter.Name, parameter.Name);
                     }
+
                     Let(
                         () => { Append(parametersVariableName); },
-                        () => { Append(NewInstanceIdentifier(TypeResolver.ResolveName(typeof(List<ODataParameter>)))); });
+                        () =>
+                        {
+                            Append(NewInstanceIdentifier(TypeResolver.ResolveName(typeof(List<ODataParameter>))));
+                        });
                     AppendLine();
                     foreach (var parameter in methodParameters)
                     {
@@ -533,6 +556,7 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
                     {
                         typeScriptReturnType = $"<{typeScriptReturnType}>";
                     }
+
                     var newLine = $"\r\n{GetIndentPlusOne()}";
                     var scope = isGlobal ? "" : $".{nameof(DbSet<object, object>.DataContext)}";
                     var entityType = "null";

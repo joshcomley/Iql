@@ -228,6 +228,13 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             ClassAsync(@class, @namespace, genericParameters, action.AsAsync(), baseClass, interfaces);
         }
 
+        public abstract Task InterfaceAsync(
+            string @class,
+            string @namespace,
+            string genericParameters,
+            Func<Task> action,
+            IEnumerable<string> interfaces = null);
+
         public virtual void Property(PropertyInfo property)
         {
             Property(
@@ -270,6 +277,10 @@ namespace Iql.OData.TypeScript.Generator.ClassGenerators
             bool instantiate,
             GetterSetter getterSetter = null,
             params string[] instantiationParameters);
+
+        public abstract Task InterfacePropertyAsync(
+            IVariable variable
+        );
 
         public virtual void MethodCall(string name, bool fromObject, params IVariable[] parameters)
         {
