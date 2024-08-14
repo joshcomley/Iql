@@ -3,7 +3,7 @@
     <Configurations>Debug;Release;Debug TypeScript CSharp</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.21.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Iql.Entities\Iql.Entities.csproj" />

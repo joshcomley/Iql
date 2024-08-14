@@ -1,4 +1,3 @@
-using System.Linq;
 using Brandless.AspNetCore.OData.Extensions.Configuration;
 using Iql;
 using Iql.Entities;
@@ -6,7 +5,6 @@ using Iql.Forms;
 using Iql.Server;
 using IqlSampleApp.Data.Entities;
 using Microsoft.OData.ModelBuilder;
-using Brandless.AspNetCore.OData.NetTopology;
 
 namespace IqlSampleApp.Data.Configuration.Entities
 {

@@ -8,8 +8,4 @@
     <ProjectReference Include="..\IqlSampleApp.Data\IqlSampleApp.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Brandless.AspNetCore.OData.NetTopology" Version="1.1.7" />
-  </ItemGroup>
-
 </Project>

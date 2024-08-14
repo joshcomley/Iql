@@ -101,7 +101,7 @@ namespace IqlSampleApp.Data
         IQueryable<SiteInspection> IIqlSampleAppService.SiteInspections => SiteInspections;
         IQueryable<UserSetting> IIqlSampleAppService.UserSettings => UserSettings;
         IQueryable<UserSite> IIqlSampleAppService.UserSites => UserSites;
-        public const string ConnectionString = "Server=.;Database=IqlSampleApp;Integrated Security=True;";
+        public const string ConnectionString = "Server=.;Database=IqlSampleApp;Integrated Security=True;TrustServerCertificate=True";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.EnableSensitiveDataLogging();
