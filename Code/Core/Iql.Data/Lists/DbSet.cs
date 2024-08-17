@@ -167,10 +167,18 @@ namespace Iql.Data.Lists
 
         public new DbSet<T, TKey> ExpandSingle<TTarget>(
             Expression<Func<T, TTarget>> target,
-            Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter)
+            Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
             where TTarget : class
         {
-            return (DbSet<T, TKey>)base.ExpandSingle(target, filter);
+            return (DbSet<T, TKey>)base.ExpandSingle(target, filter
+#if TypeScript
+            , evaluateContext
+#endif
+            );
         }
 
         public new DbSet<T, TKey> ExpandCollection<TTarget>(

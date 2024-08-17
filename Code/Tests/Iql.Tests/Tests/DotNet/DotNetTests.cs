@@ -47,11 +47,22 @@ namespace Iql.Tests.Tests.DotNet
         public void TestEnumComparisonParsers()
         {
             var iql = IqlConverter.Instance.ConvertLambdaToIql<PersonReport>(_ =>
-                _.Status == FaultReportStatus.PassWithObservations,
+                    _.Status == FaultReportStatus.PassWithObservations,
                 TypeResolver);
             var csharp = IqlConverter.Instance.ConvertIqlToExpressionString(iql.Expression,
                 TypeResolver);
             Assert.AreEqual($"entity => ((int)entity.Status == 1)", csharp);
+        }
+
+        [TestMethod]
+        public void TestGuidComparison()
+        {
+            var iql = IqlConverter.Instance.ConvertLambdaToIql<PersonReport>(_ =>
+                    _.Guid == Guid.Empty,
+                TypeResolver);
+            var csharp = IqlConverter.Instance.ConvertIqlToExpressionString(iql.Expression,
+                TypeResolver);
+            Assert.AreEqual($"entity => (entity.Guid == new System.Guid(\"00000000-0000-0000-0000-000000000000\")", csharp);
         }
 
         [TestMethod]

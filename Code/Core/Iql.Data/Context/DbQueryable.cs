@@ -1466,13 +1466,20 @@ namespace Iql.Data.Context
 
         public DbQueryable<T> ExpandSingle<TTarget>(
             Expression<Func<T, TTarget>> target,
-            Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter)
+            Func<DbQueryable<TTarget>, DbQueryable<TTarget>> filter
+#if TypeScript
+            , EvaluateContext evaluateContext = null
+#endif
+            )
             where TTarget : class
         {
             return ExpandQuery(
                 new ExpandQueryExpression(
                     target,
                     q => filter((DbQueryable<TTarget>)q)
+#if TypeScript
+            , evaluateContext
+#endif
                     ));
         }
 

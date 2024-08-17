@@ -776,6 +776,15 @@ namespace Iql.Tests.Tests.OData
         }
 
         [TestMethod]
+        public async Task TestNestedSingleExpand()
+        {
+            var query = Db.Clients.ExpandSingle(c => c.CreatedByUser, u => u.Expand(x => x.Client));
+            var uri = await query.ResolveODataUriAsync();
+            uri = Uri.UnescapeDataString(uri);
+            Assert.AreEqual(@"http://localhost:28000/odata/Clients?$expand=CreatedByUser($expand=Client)", uri);
+        }
+
+        [TestMethod]
         public async Task TestNestedOrderByCount()
         {
             var query = Db.Clients.ExpandCollection(c => c.Sites, sq => sq.OrderBy(c => c.ChildrenCount));
