@@ -12,4 +12,4 @@ Steps:
 7. Cut: bump nothing (VersionPrefix already 0.1.0), `git tag v0.1.0` → push tag → release workflow **dry-run** green → draft GitHub Release notes from CHANGELOG.
 8. **Publish gate:** actual nuget.org push needs Josh — his NUGET_API_KEY secret + explicit go (and task 00007 resolved first; the workflow's resolvability guard enforces it). Report ready-state to him.
 
-**Acceptance:** plan §7 checklist all ticked except the two Josh-gated items (publish, and LICENSE if Q1 still unanswered — chase it).
+**Acceptance:** plan §7 checklist all ticked except the one Josh-gated item (the actual nuget.org publish).
